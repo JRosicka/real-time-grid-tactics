@@ -8,9 +8,11 @@ public class SteamLobby : MonoBehaviour {
 
     private const string HostAddressKey = "HostAddress";
 
-    protected Callback<LobbyCreated_t> _lobbyCreated;
-    protected Callback<GameLobbyJoinRequested_t> _gameLobbyJoinRequested;
-    protected Callback<LobbyEnter_t> _lobbyEntered;
+    private Callback<LobbyCreated_t> _lobbyCreated;
+    private Callback<GameLobbyJoinRequested_t> _gameLobbyJoinRequested;
+    private Callback<LobbyEnter_t> _lobbyEntered;
+
+    private CSteamID currentLobbyID;
 
     private void Start() {
         if (!SteamManager.Initialized)    // TODO error handling
@@ -24,6 +26,15 @@ public class SteamLobby : MonoBehaviour {
     public void HostLobby() {
         // Tell Steam to create a lobby, then wait for callbacks to trigger
         SteamMatchmaking.CreateLobby(ELobbyType.k_ELobbyTypePublic, _networkManager.maxConnections);
+    }
+
+    public void ExitLobby() {
+        if (currentLobbyID == CSteamID.Nil) {
+            Debug.Log("Tried to leave a lobby, but we are not in a lobby");
+            return;
+        }
+        SteamMatchmaking.LeaveLobby(currentLobbyID);
+        currentLobbyID = CSteamID.Nil;
     }
 
     public void JoinLobby(ulong steamIDLobby) {
@@ -66,8 +77,9 @@ public class SteamLobby : MonoBehaviour {
         }
 
         // Tell Mirror to connect to the host
+        currentLobbyID = new CSteamID(callback.m_ulSteamIDLobby);
         string hostAddress = SteamMatchmaking.GetLobbyData(
-            new CSteamID(callback.m_ulSteamIDLobby),
+            currentLobbyID,
             HostAddressKey);
         _networkManager.networkAddress = hostAddress;
         _networkManager.StartClient();
