@@ -1,5 +1,5 @@
 using Game.Network;
-using Mirror;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -11,11 +11,14 @@ public class LobbyView : MonoBehaviour {
     public Button CancelButton;
     public Button StopHostButton;
 
+    public TMP_Text LobbyStatusText;
+
     public GameNetworkManager NetworkManager;
-    public SteamLobby SteamLobby;
+    public SteamLobbyService SteamLobbyService;
     void Start() {
         ShowDefaultButtons(true);
         StopHostButton.gameObject.SetActive(false);
+        CancelButton.gameObject.SetActive(false);
     }
 
     private void ShowDefaultButtons(bool show) {
@@ -24,15 +27,17 @@ public class LobbyView : MonoBehaviour {
         JoinByIDButton.gameObject.SetActive(show);
     }
 
+    #region Buttons
+    
     public void OnStartHostClicked() {
-        SteamLobby.HostLobby();
+        SteamLobbyService.HostLobby();
 
         ShowDefaultButtons(false);
         StopHostButton.gameObject.SetActive(true);
     }
 
     public void OnStopHostClicked() {
-        SteamLobby.ExitLobby();
+        SteamLobbyService.ExitLobby();
         
         ShowDefaultButtons(true);
         StopHostButton.gameObject.SetActive(false);
@@ -42,6 +47,7 @@ public class LobbyView : MonoBehaviour {
         ShowDefaultButtons(false);
         CancelButton.gameObject.SetActive(true);
         
+        SteamLobbyService.GetAllOpenLobbies();
         // TODO display list
     }
 
@@ -49,7 +55,11 @@ public class LobbyView : MonoBehaviour {
         ShowDefaultButtons(false);
         CancelButton.gameObject.SetActive(true);
         
-        // TODO UI and logic for entering ID and password and connecting
+        SteamLobbyService.DirectJoinLobby("", lobby => {
+            // TODO UI and logic for entering ID and password and connecting
+
+            SteamLobbyService.JoinLobby(lobby.SteamID);
+        });
     }
 
     public void OnCancelClicked() {
@@ -57,7 +67,18 @@ public class LobbyView : MonoBehaviour {
         CancelButton.gameObject.SetActive(false);
         
         // TODO cancel logic
-        SteamLobby.ExitLobby();
+        SteamLobbyService.ExitLobby();
 
+    }
+    
+    #endregion
+
+    private void UpdateLobbyStatus(string message) {
+        LobbyStatusText.gameObject.SetActive(true);
+        LobbyStatusText.text = message;
+    }
+
+    private void DisableLobbyStatus() {
+        LobbyStatusText.gameObject.SetActive(false);
     }
 }
