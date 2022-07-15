@@ -303,7 +303,7 @@ public class SteamLobbyService : MonoBehaviour {
     
     #endregion
     
-    // TODO callback for this?
+    // TODO callback for this? Looks like not necessary for the client, and we can notify other players when they listen to LobbyChatUpdate_t
     public void ExitLobby() {
         if (_currentLobbyID == CSteamID.Nil) {
             Debug.Log("Tried to leave a lobby, but we are not in a lobby");
