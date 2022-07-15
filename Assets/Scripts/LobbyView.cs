@@ -47,15 +47,20 @@ public class LobbyView : MonoBehaviour {
         ShowDefaultButtons(false);
         CancelButton.gameObject.SetActive(true);
         
+        // TODO display list. Probably put this in start. 
+        // SteamLobbyService.OnLobbyEntryConstructed += 
+        
         SteamLobbyService.GetAllOpenLobbies();
-        // TODO display list
     }
 
     public void OnJoinByIDButtonClicked() {
         ShowDefaultButtons(false);
         CancelButton.gameObject.SetActive(true);
         
-        SteamLobbyService.DirectJoinLobby("", lobby => {
+        SteamLobbyService.RequestLobbyByID("", (lobby, success) => {
+            if (!success) {
+                // TODO UI and logic for failing to join
+            }
             // TODO UI and logic for entering ID and password and connecting
 
             SteamLobbyService.JoinLobby(lobby.SteamID);
