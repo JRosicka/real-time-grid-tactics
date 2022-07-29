@@ -18,6 +18,21 @@ namespace Game.Network
         [Tooltip("Reward Prefab for the Spawner")]
         public GameObject rewardPrefab;
 
+        public override void Start() {
+            base.Start();
+            
+            // Listen for any updates to the Steam lobby metadata
+            SteamLobbyService.Instance.OnCurrentLobbyMetadataChanged += GetUpdatedLobbyData;
+        }
+
+        public event Action<SteamLobbyService.Lobby> OnLobbyUpdated;
+        private void GetUpdatedLobbyData() {
+            SteamLobbyService.Lobby updatedLobby = SteamLobbyService.Instance.GetLobbyData(
+                SteamLobbyService.Instance.CurrentLobbyID, null);
+            // TODO update room with update lobby info
+            OnLobbyUpdated.SafeInvoke(updatedLobby);
+        }
+        
         // Events invoked if this is the server
         #region Server events
 
@@ -189,6 +204,9 @@ namespace Game.Network
             DebugLog(nameof(OnRoomClientEnter));
             RoomClientEnterAction.SafeInvoke();
             base.OnRoomClientEnter();
+            
+            // Get whatever lobby data is there when we first join the room
+            GetUpdatedLobbyData();
         }
 
         public event Action RoomClientExitAction;
@@ -234,7 +252,7 @@ namespace Game.Network
         }
 
         #endregion
-
+        
         private void DebugLog(string message) {
             // Debug.Log(message);
         }

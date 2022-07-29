@@ -1,7 +1,10 @@
 using System;
+using System.Linq;
 using Game.Network;
 using Mirror;
+using Sirenix.Utilities;
 using Steamworks;
+using Unity.VisualScripting;
 using UnityEngine;
 
 /// <summary>
@@ -29,36 +32,58 @@ public class SteamLobbyService : MonoBehaviour {
     /// </summary>
     public struct Lobby {
         public CSteamID SteamID;
-        public CSteamID Owner;
+        // public CSteamID Owner;
         public LobbyMember[] Members;
         public int MemberLimit;
         public LobbyMetaData[] Data;
+
+        public string this[string key] => Data.FirstOrDefault(data => data.Key.Equals(key)).Value;
     }
 
     [SerializeField] private GameNetworkManager _networkManager;
 
     private const string HostAddressKey = "HostAddress";
     private const string LobbyUIDKey = "LobbyUID";
+    public const string LobbyIsOpenKey = "LobbyIsOpen";
+    public const string LobbyOwnerKey = "LobbyOwner";
 
-    private CallResult<LobbyCreated_t> _lobbyCreated;                        // When creating a lobby
+    public static readonly string[] LobbyMemberDataKeys = { "faction", "playerType", "color" };
+
+    private CallResult<LobbyCreated_t> _lobbyCreated;                      // When creating a lobby
     private CallResult<LobbyMatchList_t> _lobbyMatchList;                  // When receiving the list of lobbies
-    private Callback<GameLobbyJoinRequested_t> _gameLobbyJoinRequested;  // When a player direct joins a lobby (not a game)
+    private Callback<GameLobbyJoinRequested_t> _gameLobbyJoinRequested;    // When a player direct joins a lobby (not a game)
     private CallResult<LobbyEnter_t> _lobbyEntered;                        // At the entrance to the lobby
     // private CallResult<LobbyChatMsg_t> _lobbyChatMessage;               // When you receive a message in the lobby
     // private CallResult<LobbyChatUpdate_t> _lobbyChatUpdate;             // When changing the list of players in the lobby
-    // private CallResult<LobbyDataUpdate_t> _lobbyDataUpdate;             // When you update metadata in the lobby
+    private CallResult<LobbyDataUpdate_t> _lobbyDataUpdate;             // When you update metadata in the lobby
 
     private bool _isCurrentlyCreatingLobby;
+    private bool _lobbyOpenToEveryone;
     private bool _isCurrentlyRequestingLobbies;
     private bool _isCurrentlyJoiningLobby;
 
     private Action<uint, bool> _onLobbiesReturned;
-    private CSteamID _currentLobbyID;
+    public CSteamID CurrentLobbyID;
+
+    public static SteamLobbyService Instance { get; private set; }
 
     // Events
+    /// <summary>The lobby that we tried to host has succeeded or failed to get created</summary>
     public event Action<bool> OnLobbyCreationComplete;
+    /// <summary>We have either succeeded for failed to join a lobby</summary>
     public event Action<bool> OnLobbyJoinComplete;
+    /// <summary>We have gotten the data for a particular lobby that we requested</summary>
     public event Action<Lobby> OnLobbyEntryConstructed;
+    /// <summary>The lobby metadata just got updated</summary>
+    public event Action OnCurrentLobbyMetadataChanged;
+
+    private void Awake() {
+        if (Instance != null) {
+            throw new Exception("Trying to set the SteamLobbyService singleton, but it is already set!");
+        }
+
+        Instance = this;
+    }
     
     private void Start() {
         if (!SteamManager.Initialized) {
@@ -70,6 +95,7 @@ public class SteamLobbyService : MonoBehaviour {
         _lobbyMatchList = CallResult<LobbyMatchList_t>.Create(OnLobbyMatchListReturned);
         _gameLobbyJoinRequested = Callback<GameLobbyJoinRequested_t>.Create(OnGameLobbyJoinRequested);
         _lobbyEntered = CallResult<LobbyEnter_t>.Create(OnLobbyEntered);
+        _lobbyDataUpdate = CallResult<LobbyDataUpdate_t>.Create(OnMetadataUpdated);
     }
 
     #region Host Lobby
@@ -77,13 +103,14 @@ public class SteamLobbyService : MonoBehaviour {
     /// <summary>
     /// Create a new lobby. Listen for <see cref="OnLobbyCreationComplete"/> for the result. 
     /// </summary>
-    public void HostLobby() {
+    public void HostLobby(bool openToEveryone) {
         if (_isCurrentlyCreatingLobby) {
             Debug.LogError("Trying to create a lobby, but we are already creating one!");
             return;
         }
 
         _isCurrentlyCreatingLobby = true;
+        _lobbyOpenToEveryone = openToEveryone;
         // Tell Steam to create a lobby, then wait for callbacks to trigger
         _lobbyCreated.Set(SteamMatchmaking.CreateLobby(ELobbyType.k_ELobbyTypePublic, _networkManager.maxConnections));
     }
@@ -92,6 +119,7 @@ public class SteamLobbyService : MonoBehaviour {
         if (bIoFailure || callback.m_eResult != EResult.k_EResultOK) {
             Debug.LogError("Lobby failed to get created! Error: " + callback.m_eResult);
             _isCurrentlyCreatingLobby = false;
+            _lobbyOpenToEveryone = false;
             OnLobbyCreationComplete.SafeInvoke(false);
             return;
         }
@@ -99,20 +127,27 @@ public class SteamLobbyService : MonoBehaviour {
         // Tell Mirror to start the host
         _networkManager.StartHost();
 
-        CSteamID lobbyID = new CSteamID(callback.m_ulSteamIDLobby);
+        CurrentLobbyID = new CSteamID(callback.m_ulSteamIDLobby);
 
         // Give Steam our lobby info
         SteamMatchmaking.SetLobbyData(
-            lobbyID,                            // The lobby
+            CurrentLobbyID,                            // The lobby
             HostAddressKey,                     // Key
             SteamUser.GetSteamID().ToString()); // Our Steam ID
         
         // Assign a UID
-        SteamMatchmaking.SetLobbyData(lobbyID, LobbyUIDKey, GenerateUniqueID());
+        SteamMatchmaking.SetLobbyData(CurrentLobbyID, LobbyUIDKey, GenerateUniqueID());
+        
+        // Assign lobby availability (public or private)
+        SteamMatchmaking.SetLobbyData(CurrentLobbyID, LobbyIsOpenKey, _lobbyOpenToEveryone.ToString());
+        
+        // Assign lobby owner (us)
+        SteamMatchmaking.SetLobbyData(CurrentLobbyID, LobbyOwnerKey, SteamFriends.GetPersonaName());
 
         // TODO can assign any other metadata like the map it's on, description, password
-
+        
         _isCurrentlyCreatingLobby = false;
+        _lobbyOpenToEveryone = false;
         OnLobbyCreationComplete.SafeInvoke(true);
     }
     
@@ -152,9 +187,14 @@ public class SteamLobbyService : MonoBehaviour {
                 Debug.LogError("Failed to request lobby by ID!");
                 onLobbyProcessed.SafeInvoke(new Lobby(), false);
                 return;
-            }
+            } 
+            if (lobbyCount == 0) {
+                Debug.Log("Failed to find a lobby");
+                onLobbyProcessed.SafeInvoke(new Lobby(), false);
+                return;
+            } 
             Debug.Log($"Retrieved {lobbyCount} lobbies when searching via direct join with ID {joinID}");
-            ProcessReturnedLobby(SteamMatchmaking.GetLobbyByIndex(0), lobby => {
+            GetLobbyData(SteamMatchmaking.GetLobbyByIndex(0), lobby => {
                 Debug.Log($"Processed lobby for id {joinID}. Joining...");
                 onLobbyProcessed.SafeInvoke(lobby, true);
             });
@@ -165,15 +205,14 @@ public class SteamLobbyService : MonoBehaviour {
     /// Requests all public lobbies. If filters should be applied, then do so before calling this method.
     /// Can fail.
     /// </summary>
-    public void GetAllOpenLobbies(Action<uint, bool> onLobbiesReturned = null) {
+    public void GetAllOpenLobbies(Action<uint, bool> onLobbiesReturned) {
         if (SteamMatchmakingServers.IsRefreshing(_currentServerListRequest)) {
             Debug.LogError("Attempted to retrieve lobby list when we are already requesting lobbies!");
             _isCurrentlyRequestingLobbies = false;
             return;
         }
 
-        // Use the default lobby processing if we do not specify a different one
-        _onLobbiesReturned = onLobbiesReturned ?? ProcessReturnedLobbies;
+        _onLobbiesReturned = onLobbiesReturned;
 
         SteamMatchmaking.AddRequestLobbyListDistanceFilter(ELobbyDistanceFilter.k_ELobbyDistanceFilterWorldwide);
         _lobbyMatchList.Set(SteamMatchmaking.RequestLobbyList());
@@ -241,14 +280,21 @@ public class SteamLobbyService : MonoBehaviour {
             OnLobbyJoinComplete.SafeInvoke(true);
             return;
         }
-
-        _isCurrentlyJoiningLobby = false;
         
         // Tell Mirror to connect to the host
-        _currentLobbyID = new CSteamID(callback.m_ulSteamIDLobby);
+        CurrentLobbyID = new CSteamID(callback.m_ulSteamIDLobby);
         string hostAddress = SteamMatchmaking.GetLobbyData(
-            _currentLobbyID,
+            CurrentLobbyID,
             HostAddressKey);
+        if (hostAddress.IsNullOrWhitespace()) {
+            Debug.LogError("No host address data found when trying to enter lobby, aborting");
+            _isCurrentlyJoiningLobby = false;
+            OnLobbyJoinComplete.SafeInvoke(false);
+            return;
+        }
+        
+        _isCurrentlyJoiningLobby = false;
+
         _networkManager.networkAddress = hostAddress;
         _networkManager.StartClient();
         
@@ -259,14 +305,14 @@ public class SteamLobbyService : MonoBehaviour {
 
     #region Process Returned Lobbies
     
-    private void ProcessReturnedLobbies(uint lobbyCount, bool success) {
+    public void ProcessReturnedLobbies(uint lobbyCount, bool success) {
         if (!success) {
             return;
         }
         // We use the lobbyCount to iterate through the list of lobbies that just got cached in SteamMatchmaking. 
         // A maximum of 50 lobbies can be returned from this. That's probably fine. Probably. TODO I should really address that with filters or something
         for (int i = 0; i < lobbyCount; i++) {
-            ProcessReturnedLobby(SteamMatchmaking.GetLobbyByIndex(i), lobby => OnLobbyEntryConstructed.SafeInvoke(lobby));
+            GetLobbyData(SteamMatchmaking.GetLobbyByIndex(i), lobby => OnLobbyEntryConstructed.SafeInvoke(lobby));
         }
     }
 
@@ -274,16 +320,18 @@ public class SteamLobbyService : MonoBehaviour {
     /// Constructs a new <see cref="Lobby"/> by querying Steam for relevant info using the provided lobby ID
     /// Always succeeds.
     /// </summary>
-    private void ProcessReturnedLobby(CSteamID lobbyID, Action<Lobby> onLobbyProcessed) {
+    public Lobby GetLobbyData(CSteamID lobbyID, Action<Lobby> onLobbyProcessed) {
         int dataCount = SteamMatchmaking.GetLobbyDataCount(lobbyID);
+        int memberCount = SteamMatchmaking.GetNumLobbyMembers(lobbyID);
         Lobby lobby = new Lobby {
             SteamID = lobbyID,
-            Owner = SteamMatchmaking.GetLobbyOwner(lobbyID),
-            Members = new LobbyMember[SteamMatchmaking.GetNumLobbyMembers(lobbyID)],
+            // Owner = SteamMatchmaking.GetLobbyOwner(lobbyID),
+            Members = new LobbyMember[memberCount],
             MemberLimit = SteamMatchmaking.GetLobbyMemberLimit(lobbyID),
             Data = new LobbyMetaData[dataCount]
         };
 
+        // Get lobby metadata
         for (int i = 0; i < dataCount; i++) {
             bool lobbyDataRet = SteamMatchmaking.GetLobbyDataByIndex(
                                                     lobbyID, 
@@ -298,20 +346,67 @@ public class SteamLobbyService : MonoBehaviour {
             }
         }
         
+        // Get lobby member IDs and metadata
+        for (int i = 0; i < memberCount; i++) {
+            // TODO is it okay that this only works when we are in the lobby?
+            CSteamID lobbyMember = SteamMatchmaking.GetLobbyMemberByIndex(lobbyID, i);
+            lobby.Members[i] = new LobbyMember {
+                SteamID = lobbyMember,
+                Data = new LobbyMetaData[LobbyMemberDataKeys.Length]
+            };
+            for (int j = 0; j < LobbyMemberDataKeys.Length; j++) {
+                lobby.Members[i].Data[j] = new LobbyMetaData {
+                    Key = LobbyMemberDataKeys[j],
+                    Value = SteamMatchmaking.GetLobbyMemberData(lobbyID, lobbyMember, LobbyMemberDataKeys[j])
+                };
+            }
+        }
+        
         onLobbyProcessed.SafeInvoke(lobby);
+        return lobby;
+    }
+    
+    #endregion
+    
+    #region Update Lobby Metadata
+
+    public void UpdateCurrentLobbyMetadata(string key, string value) {
+        // TODO error handling for not being in a lobby
+        SteamMatchmaking.SetLobbyData(CurrentLobbyID, key, value);
+
+        OnCurrentLobbyMetadataChanged.SafeInvoke();    // TODO is this actually necessary? Should not be for other users since they will get alerted from the steam callback, but what about for the user who sets this? Do they get the steam callback? If so then this should never be necessary. 
+    }
+
+    /// <summary>
+    /// Sets member data for the local user in the current lobby. TODO does this broadcast to all players like the above one does?
+    /// </summary>
+    public void UpdateCurrentLobbyPlayerMetadata(string key, string value) {
+        // TODO error handling for not being in a lobby
+        SteamMatchmaking.SetLobbyMemberData(CurrentLobbyID, key, value);
+
+        OnCurrentLobbyMetadataChanged.SafeInvoke();    // TODO is this actually necessary? Should not be for other users since they will get alerted from the steam callback, but what about for the user who sets this? Do they get the steam callback? If so then this should never be necessary. 
+    }
+
+    private void OnMetadataUpdated(LobbyDataUpdate_t callback, bool bIoFailure) {
+        // TODO error handling
+        if (bIoFailure || Convert.ToBoolean(callback.m_bSuccess) == false) {
+            
+        }
+        
+        OnCurrentLobbyMetadataChanged.SafeInvoke();
     }
     
     #endregion
     
     // TODO callback for this? Looks like not necessary for the client, and we can notify other players when they listen to LobbyChatUpdate_t
     public void ExitLobby() {
-        if (_currentLobbyID == CSteamID.Nil) {
+        if (CurrentLobbyID == CSteamID.Nil) {
             Debug.Log("Tried to leave a lobby, but we are not in a lobby");
             return;
         }
 
-        SteamMatchmaking.LeaveLobby(_currentLobbyID);
-        _currentLobbyID = CSteamID.Nil;
+        SteamMatchmaking.LeaveLobby(CurrentLobbyID);
+        CurrentLobbyID = CSteamID.Nil;
     }
 
     // TODO periodically call RefreshServer on the request
@@ -323,6 +418,6 @@ public class SteamLobbyService : MonoBehaviour {
     public void RefreshServerList() {
         // TODO call
         SteamMatchmakingServers.ReleaseRequest(_currentServerListRequest);
-        GetAllOpenLobbies();
+        GetAllOpenLobbies(ProcessReturnedLobbies);
     }
 }
