@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Game.Network;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -8,9 +9,21 @@ public class RoomMenu : MonoBehaviour {
     public PlayerSlot PlayerSlot1;
     public PlayerSlot PlayerSlot2;
     public Button StartButton;
+    public Button ToggleReadyButton;
+    public TMP_Text ToggleReadyButtonText;
     
     private GameNetworkManager _gameNetworkManager;
     private SteamLobbyService steamLobbyService => SteamLobbyService.Instance;
+    private GameNetworkPlayer _cachedGameNetworkPlayer;
+    private GameNetworkPlayer _gameNetworkPlayer {
+        get {
+            if (_cachedGameNetworkPlayer == null) {
+                _cachedGameNetworkPlayer = FindObjectOfType<GameNetworkPlayer>();
+            }
+
+            return _cachedGameNetworkPlayer;
+        }
+    }
 
     void Start() {
         StartButton.gameObject.SetActive(false);
@@ -38,5 +51,20 @@ public class RoomMenu : MonoBehaviour {
 
     private void UpdatePlayerSlots() {
         
+    }
+
+    public void ToggleReady() {
+        if (_gameNetworkPlayer.readyToBegin) {
+            ToggleReadyButtonText.text = "Ready";
+            _gameNetworkPlayer.CmdChangeReadyState(false);
+        } else {
+            ToggleReadyButtonText.text = "Cancel";
+            _gameNetworkPlayer.CmdChangeReadyState(true);
+        }
+
+    }
+
+    public void StartGame() {
+        _gameNetworkManager.ServerChangeScene(_gameNetworkManager.GameplayScene);
     }
 }
