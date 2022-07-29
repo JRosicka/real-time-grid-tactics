@@ -55,7 +55,7 @@ public class SteamLobbyService : MonoBehaviour {
     private CallResult<LobbyEnter_t> _lobbyEntered;                        // At the entrance to the lobby
     // private CallResult<LobbyChatMsg_t> _lobbyChatMessage;               // When you receive a message in the lobby
     // private CallResult<LobbyChatUpdate_t> _lobbyChatUpdate;             // When changing the list of players in the lobby
-    private CallResult<LobbyDataUpdate_t> _lobbyDataUpdate;             // When you update metadata in the lobby
+    private Callback<LobbyDataUpdate_t> _lobbyDataUpdate;             // When you update metadata in the lobby
 
     private bool _isCurrentlyCreatingLobby;
     private bool _lobbyOpenToEveryone;
@@ -78,10 +78,12 @@ public class SteamLobbyService : MonoBehaviour {
     public event Action OnCurrentLobbyMetadataChanged;
 
     private void Awake() {
+        // Only one instance of SteamLobbyService!
         if (Instance != null) {
-            throw new Exception("Trying to set the SteamLobbyService singleton, but it is already set!");
+            Destroy(gameObject);
+            return;
         }
-
+        
         Instance = this;
     }
     
@@ -95,7 +97,7 @@ public class SteamLobbyService : MonoBehaviour {
         _lobbyMatchList = CallResult<LobbyMatchList_t>.Create(OnLobbyMatchListReturned);
         _gameLobbyJoinRequested = Callback<GameLobbyJoinRequested_t>.Create(OnGameLobbyJoinRequested);
         _lobbyEntered = CallResult<LobbyEnter_t>.Create(OnLobbyEntered);
-        _lobbyDataUpdate = CallResult<LobbyDataUpdate_t>.Create(OnMetadataUpdated);
+        _lobbyDataUpdate = Callback<LobbyDataUpdate_t>.Create(OnMetadataUpdated);
     }
 
     #region Host Lobby
@@ -373,8 +375,6 @@ public class SteamLobbyService : MonoBehaviour {
     public void UpdateCurrentLobbyMetadata(string key, string value) {
         // TODO error handling for not being in a lobby
         SteamMatchmaking.SetLobbyData(CurrentLobbyID, key, value);
-
-        OnCurrentLobbyMetadataChanged.SafeInvoke();    // TODO is this actually necessary? Should not be for other users since they will get alerted from the steam callback, but what about for the user who sets this? Do they get the steam callback? If so then this should never be necessary. 
     }
 
     /// <summary>
@@ -383,13 +383,11 @@ public class SteamLobbyService : MonoBehaviour {
     public void UpdateCurrentLobbyPlayerMetadata(string key, string value) {
         // TODO error handling for not being in a lobby
         SteamMatchmaking.SetLobbyMemberData(CurrentLobbyID, key, value);
-
-        OnCurrentLobbyMetadataChanged.SafeInvoke();    // TODO is this actually necessary? Should not be for other users since they will get alerted from the steam callback, but what about for the user who sets this? Do they get the steam callback? If so then this should never be necessary. 
     }
 
-    private void OnMetadataUpdated(LobbyDataUpdate_t callback, bool bIoFailure) {
+    private void OnMetadataUpdated(LobbyDataUpdate_t callback) {
         // TODO error handling
-        if (bIoFailure || Convert.ToBoolean(callback.m_bSuccess) == false) {
+        if (Convert.ToBoolean(callback.m_bSuccess) == false) {
             
         }
         
