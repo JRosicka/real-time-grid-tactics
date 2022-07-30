@@ -14,7 +14,7 @@ namespace Game.Network
 
         public bool IsHostPlayer => isLocalPlayer && isServer;
         
-        [SyncVar]
+        [SyncVar(hook = nameof(OnDisplayNameSet))]
         public string DisplayName;
         [SyncVar]
         private CSteamID _steamID;
@@ -25,6 +25,9 @@ namespace Game.Network
         private void CmdSetSteamIDs(CSteamID newSteamID, string newDisplayName) {
             _steamID = newSteamID;
             DisplayName = newDisplayName;
+        }
+
+        private void OnDisplayNameSet(string oldName, string newName) {
             PlayerSteamInfoDetermined.SafeInvoke();
         }
 

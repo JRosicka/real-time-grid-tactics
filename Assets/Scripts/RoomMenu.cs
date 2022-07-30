@@ -75,6 +75,7 @@ public class RoomMenu : MonoBehaviour {
     }
 
     private void UpdatePlayerSlots() {
+        // List<GameNetworkPlayer> players = _gameNetworkManager.roomSlots.ConvertAll(player => (GameNetworkPlayer)player);
         List<GameNetworkPlayer> players = FindObjectsOfType<GameNetworkPlayer>().ToList();
 
         // TODO Un-assign any players who left
