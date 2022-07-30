@@ -853,6 +853,10 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 693523754353465205, guid: 5e8532a3114bc8041ad2a66875c6058e, type: 3}
+      propertyPath: PlayerColor.a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 693523754353465205, guid: 5e8532a3114bc8041ad2a66875c6058e, type: 3}
       propertyPath: PlayerColor.b
       value: 1
       objectReference: {fileID: 0}
@@ -1722,6 +1726,10 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 693523754353465205, guid: 5e8532a3114bc8041ad2a66875c6058e, type: 3}
       propertyPath: PlayerIndex
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 693523754353465205, guid: 5e8532a3114bc8041ad2a66875c6058e, type: 3}
+      propertyPath: PlayerColor.a
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 693523754353465205, guid: 5e8532a3114bc8041ad2a66875c6058e, type: 3}
