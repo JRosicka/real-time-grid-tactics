@@ -35,13 +35,26 @@ public class RoomMenu : MonoBehaviour {
 
     private PlayerSlot localPlayerSlot => PlayerSlot1.AssignedPlayer.isLocalPlayer ? PlayerSlot1 : PlayerSlot2;
     private PlayerSlot opponentPlayerSlot => PlayerSlot1.AssignedPlayer.isLocalPlayer ? PlayerSlot2 : PlayerSlot1;
-    
+
+    private PlayerSlot GetSlotForPlayer(GameNetworkPlayer player) {
+        if (PlayerSlot1.AssignedPlayer == player) {
+            return PlayerSlot1;
+        }
+
+        if (PlayerSlot2.AssignedPlayer == player) {
+            return PlayerSlot2;
+        }
+
+        return null;
+    }
 
     void Start() {
         StartButton.gameObject.SetActive(false);
         _gameNetworkManager = FindObjectOfType<GameNetworkManager>();
         _gameNetworkManager.RoomServerPlayersReadyAction += ShowStartButton;
         _gameNetworkManager.RoomServerPlayersNotReadyAction += HideStartButton;
+
+        _gameNetworkManager.RoomServerConnectAction += UpdatePlayerSlots;
         // steamLobbyService.OnCurrentLobbyMetadataChanged += UpdatePlayerSlots;    // TODO do we listen to this, or maybe to one of the GameNetworkPlayer methods, or maybe to the GameNetworkManager updatelobby event.
     }
 
@@ -62,7 +75,21 @@ public class RoomMenu : MonoBehaviour {
     }
 
     private void UpdatePlayerSlots() {
-        
+        List<GameNetworkPlayer> players = FindObjectsOfType<GameNetworkPlayer>().ToList();
+
+        // TODO Un-assign any players who left
+    
+
+        // Assign any unassigned players
+        foreach (GameNetworkPlayer player in players) {
+            if (PlayerSlot1.AssignedPlayer != player && PlayerSlot2.AssignedPlayer != player) {
+                if (PlayerSlot1.AssignedPlayer == null) {
+                    PlayerSlot1.AssignPlayer(player);
+                }
+            }
+        }
+
+        // TODO: If players can update their info for their slots, do so here
     }
 
     public void ToggleReady() {

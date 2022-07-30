@@ -31,11 +31,11 @@ public class PlayerSlot : MonoBehaviour {
         EmptyLabel.gameObject.SetActive(true);
     }
 
-    public void AssignPlayer(GameNetworkPlayer player, string playerName, bool isHost) {
+    public void AssignPlayer(GameNetworkPlayer player) {
         AssignedPlayer = player;
         
-        string displayName = playerName;
-        if (isHost) {
+        string displayName = player.DisplayName;
+        if (player.IsHostPlayer) {
             displayName += " (Host)";
         }
         PlayerName.text = displayName;
