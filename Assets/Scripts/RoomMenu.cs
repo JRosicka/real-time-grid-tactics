@@ -54,7 +54,7 @@ public class RoomMenu : MonoBehaviour {
         _gameNetworkManager = FindObjectOfType<GameNetworkManager>();
         _gameNetworkManager.RoomServerPlayersReadyAction += ShowStartButton;
         _gameNetworkManager.RoomServerPlayersNotReadyAction += HideStartButton;
-        _gameNetworkManager.RoomServerConnectAction += UpdatePlayerSlots;
+        GameNetworkPlayer.ClientStarted += UpdatePlayerSlots;
         // steamLobbyService.OnCurrentLobbyMetadataChanged += UpdatePlayerSlots;    // TODO do we listen to this, or maybe to one of the GameNetworkPlayer methods, or maybe to the GameNetworkManager updatelobby event.
     }
 
@@ -75,18 +75,10 @@ public class RoomMenu : MonoBehaviour {
     }
 
     private void UpdatePlayerSlots() {
-        StartCoroutine(DoUpdatePlayerSlotsAfterDelay());
-    }
-    
-    private IEnumerator DoUpdatePlayerSlotsAfterDelay() {
-        // Wait for a bit while the new player object is instantiated    // TODO this way sucks
-        yield return new WaitForSeconds(.2f);
-        
         List<GameNetworkPlayer> players = FindObjectsOfType<GameNetworkPlayer>().ToList();
 
         // TODO Un-assign any players who left
-    
-
+        
         // Assign any unassigned players
         foreach (GameNetworkPlayer player in players) {
             if (PlayerSlot1.AssignedPlayer != player && PlayerSlot2.AssignedPlayer != player) {

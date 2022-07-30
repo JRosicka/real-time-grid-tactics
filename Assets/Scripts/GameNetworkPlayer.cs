@@ -1,3 +1,4 @@
+using System;
 using Mirror;
 using Steamworks;
 using UnityEngine;
@@ -23,7 +24,8 @@ namespace Game.Network
             _steamID = newSteamID;
             DisplayName = newDisplayName;
         }
-        
+
+        public static event Action ClientStarted;
         public override void OnStartClient()
         {
             // TODO here or elsewhere, link the steamID of the steam player object (whatever that is) with the correct Mirror player object. 
@@ -31,6 +33,7 @@ namespace Game.Network
                 CmdSetSteamIDs(SteamUser.GetSteamID(), SteamFriends.GetPersonaName());
             }
             Debug.Log($"OnStartClient {gameObject}");
+            ClientStarted.SafeInvoke();
         }
 
         public override void OnClientEnterRoom()
