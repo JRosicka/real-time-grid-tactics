@@ -1,3 +1,4 @@
+using Game.Network;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -16,6 +17,7 @@ public class PlayerSlot : MonoBehaviour {
     [Header("Config")]
     public Color PlayerColor;
     public int PlayerIndex;
+    public GameNetworkPlayer AssignedPlayer;
 
     public void Start() {
         // Configure
@@ -29,7 +31,9 @@ public class PlayerSlot : MonoBehaviour {
         EmptyLabel.gameObject.SetActive(true);
     }
 
-    public void AssignPlayer(string playerName, bool isHost) {
+    public void AssignPlayer(GameNetworkPlayer player, string playerName, bool isHost) {
+        AssignedPlayer = player;
+        
         string displayName = playerName;
         if (isHost) {
             displayName += " (Host)";

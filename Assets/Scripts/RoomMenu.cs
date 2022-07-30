@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Game.Network;
 using TMPro;
 using UnityEngine;
@@ -15,15 +16,26 @@ public class RoomMenu : MonoBehaviour {
     private GameNetworkManager _gameNetworkManager;
     private SteamLobbyService steamLobbyService => SteamLobbyService.Instance;
     private GameNetworkPlayer _cachedGameNetworkPlayer;
-    private GameNetworkPlayer _gameNetworkPlayer {
+    private GameNetworkPlayer _localPlayer {
         get {
             if (_cachedGameNetworkPlayer == null) {
-                _cachedGameNetworkPlayer = FindObjectOfType<GameNetworkPlayer>();
+                _cachedGameNetworkPlayer = FindObjectsOfType<GameNetworkPlayer>().First(player => player.isLocalPlayer);
             }
 
             return _cachedGameNetworkPlayer;
         }
     }
+    
+    // Do not cache because other players can leave/join later
+    private GameNetworkPlayer _opponentPlayer {
+        get {
+            return FindObjectsOfType<GameNetworkPlayer>().First(player => !player.isLocalPlayer);
+        }
+    }
+
+    private PlayerSlot localPlayerSlot => PlayerSlot1.AssignedPlayer.isLocalPlayer ? PlayerSlot1 : PlayerSlot2;
+    private PlayerSlot opponentPlayerSlot => PlayerSlot1.AssignedPlayer.isLocalPlayer ? PlayerSlot2 : PlayerSlot1;
+    
 
     void Start() {
         StartButton.gameObject.SetActive(false);
@@ -54,12 +66,12 @@ public class RoomMenu : MonoBehaviour {
     }
 
     public void ToggleReady() {
-        if (_gameNetworkPlayer.readyToBegin) {
+        if (_localPlayer.readyToBegin) {
             ToggleReadyButtonText.text = "Ready";
-            _gameNetworkPlayer.CmdChangeReadyState(false);
+            _localPlayer.CmdChangeReadyState(false);
         } else {
             ToggleReadyButtonText.text = "Cancel";
-            _gameNetworkPlayer.CmdChangeReadyState(true);
+            _localPlayer.CmdChangeReadyState(true);
         }
 
     }
