@@ -54,7 +54,7 @@ public class RoomMenu : MonoBehaviour {
         _gameNetworkManager = FindObjectOfType<GameNetworkManager>();
         _gameNetworkManager.RoomServerPlayersReadyAction += ShowStartButton;
         _gameNetworkManager.RoomServerPlayersNotReadyAction += HideStartButton;
-        GameNetworkPlayer.ClientStarted += UpdatePlayerSlots;
+        GameNetworkPlayer.PlayerSteamInfoDetermined += UpdatePlayerSlots;
         // steamLobbyService.OnCurrentLobbyMetadataChanged += UpdatePlayerSlots;    // TODO do we listen to this, or maybe to one of the GameNetworkPlayer methods, or maybe to the GameNetworkManager updatelobby event.
     }
 
