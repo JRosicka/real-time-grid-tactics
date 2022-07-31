@@ -25,10 +25,7 @@ public class PlayerSlot : MonoBehaviour {
         Color.color = PlayerColor;
         
         // Show as empty
-        PlayerName.gameObject.SetActive(false);
-        ColorLabel.gameObject.SetActive(false);
-        Color.gameObject.SetActive(false);
-        EmptyLabel.gameObject.SetActive(true);
+        DisplayActive(false);
     }
 
     public void AssignPlayer(GameNetworkPlayer player) {
@@ -41,9 +38,25 @@ public class PlayerSlot : MonoBehaviour {
         PlayerName.text = displayName;
         
         // Show as occupied
-        PlayerName.gameObject.SetActive(true);
-        ColorLabel.gameObject.SetActive(true);
-        Color.gameObject.SetActive(true);
-        EmptyLabel.gameObject.SetActive(false);
+        DisplayActive(true);
+    }
+
+    public void UnassignPlayer() {
+        AssignedPlayer = null;
+        PlayerName.text = "Player Name";
+        
+        // Show as empty
+        DisplayActive(false);
+    }
+
+    /// <summary>
+    /// Either display the slot in its active or inactive state
+    /// </summary>
+    private void DisplayActive(bool active) {
+        PlayerName.gameObject.SetActive(active);
+        ColorLabel.gameObject.SetActive(active);
+        Color.gameObject.SetActive(active);
+        EmptyLabel.gameObject.SetActive(!active);
+
     }
 }

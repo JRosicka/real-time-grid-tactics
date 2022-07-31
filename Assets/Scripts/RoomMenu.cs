@@ -87,7 +87,13 @@ public class RoomMenu : MonoBehaviour {
         // List<GameNetworkPlayer> players = _gameNetworkManager.roomSlots.ConvertAll(player => (GameNetworkPlayer)player);
         List<GameNetworkPlayer> players = FindObjectsOfType<GameNetworkPlayer>().ToList();
 
-        // TODO Un-assign any players who left
+        // Unassign any players who left
+        if (PlayerSlot1.AssignedPlayer != null && !players.Contains(PlayerSlot1.AssignedPlayer)) {
+            PlayerSlot1.UnassignPlayer();
+        }
+        if (PlayerSlot2.AssignedPlayer != null && !players.Contains(PlayerSlot2.AssignedPlayer)) {
+            PlayerSlot2.UnassignPlayer();
+        }
         
         // Assign any unassigned players
         foreach (GameNetworkPlayer player in players) {

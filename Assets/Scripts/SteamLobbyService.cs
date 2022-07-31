@@ -53,7 +53,7 @@ public class SteamLobbyService : MonoBehaviour {
     public static readonly string[] LobbyMemberDataKeys = { "faction", "playerType", "color" };
 
     private CallResult<LobbyCreated_t> _lobbyCreated;                      // When creating a lobby
-    private CallResult<LobbyMatchList_t> _lobbyMatchList;
+    private CallResult<LobbyMatchList_t> _lobbyMatchList;                  // When getting a list of lobbies
     private Callback<GameLobbyJoinRequested_t> _gameLobbyJoinRequested;    // When a player direct joins a lobby (not a game)
     private CallResult<LobbyEnter_t> _lobbyEntered;                        // At the entrance to the lobby
     // private CallResult<LobbyChatMsg_t> _lobbyChatMessage;               // When you receive a message in the lobby
