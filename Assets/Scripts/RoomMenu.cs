@@ -56,11 +56,13 @@ public class RoomMenu : MonoBehaviour {
         _gameNetworkManager.RoomServerPlayersReadyAction += ShowStartButton;
         _gameNetworkManager.RoomServerPlayersNotReadyAction += HideStartButton;
         GameNetworkPlayer.PlayerSteamInfoDetermined += UpdatePlayerSlots;
+        GameNetworkPlayer.PlayerExitedRoom += UpdatePlayerSlots;
         // steamLobbyService.OnCurrentLobbyMetadataChanged += UpdatePlayerSlots;    // TODO do we listen to this, or maybe to one of the GameNetworkPlayer methods, or maybe to the GameNetworkManager updatelobby event.
     }
 
     private void OnDestroy() {
         GameNetworkPlayer.PlayerSteamInfoDetermined -= UpdatePlayerSlots;
+        GameNetworkPlayer.PlayerExitedRoom -= UpdatePlayerSlots;
         if (_gameNetworkManager != null) {
             _gameNetworkManager.RoomServerPlayersReadyAction -= ShowStartButton;
             _gameNetworkManager.RoomServerPlayersNotReadyAction -= HideStartButton;

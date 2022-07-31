@@ -33,10 +33,10 @@ namespace Game.Network
 
         public override void OnStartClient()
         {
+            Debug.Log($"OnStartClient {gameObject}");
             if (isLocalPlayer) {
                 CmdSetSteamIDs(SteamUser.GetSteamID(), SteamFriends.GetPersonaName());
             }
-            Debug.Log($"OnStartClient {gameObject}");
         }
 
         public override void OnClientEnterRoom()
@@ -44,9 +44,11 @@ namespace Game.Network
             Debug.Log($"OnClientEnterRoom {SceneManager.GetActiveScene().path}");
         }
 
+        public static event Action PlayerExitedRoom;
         public override void OnClientExitRoom()
         {
             Debug.Log($"OnClientExitRoom {SceneManager.GetActiveScene().path}");
+            PlayerExitedRoom.SafeInvoke();
         }
 
         public override void IndexChanged(int oldIndex, int newIndex)
