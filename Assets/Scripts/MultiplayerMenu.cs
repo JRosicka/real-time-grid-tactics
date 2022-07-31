@@ -22,20 +22,25 @@ public class MultiplayerMenu : MonoBehaviour {
     public TMP_Text LobbyStatusText;
 
     public GameNetworkManager NetworkManager;
-    public SteamLobbyService SteamLobbyService;
 
     public Color DisabledTextColor;
     public Color EnabledTextColor;
 
     private void Start() {
-        SteamLobbyService.OnLobbyJoinComplete += success => {
-            if (!success) {
-                ResetMultiplayerMenu();
-                FailedToJoinLobbyDialog.SetActive(true);
-            } else {
-                // TODO I don't think we need to do anything here since we're about to be whisked away to the room scene. 
-            }
-        };
+        SteamLobbyService.Instance.OnLobbyJoinComplete += OnLobbyJoinComplete;
+    }
+
+    private void OnDestroy() {
+        SteamLobbyService.Instance.OnLobbyJoinComplete -= OnLobbyJoinComplete;
+    }
+
+    private void OnLobbyJoinComplete(bool success) {
+        if (!success) {
+            ResetMultiplayerMenu();
+            FailedToJoinLobbyDialog.SetActive(true);
+        } else {
+            // TODO I don't think we need to do anything here since we're about to be whisked away to the room scene. 
+        }
     }
 
     private void ResetMultiplayerMenu() {
@@ -60,7 +65,7 @@ public class MultiplayerMenu : MonoBehaviour {
     }
 
     public void OnHostPrivateLobbyClicked() {
-        SteamLobbyService.HostLobby(false);
+        SteamLobbyService.Instance.HostLobby(false);
 
         LobbyTypeSelection.SetActive(false);
         // StopHostButton.gameObject.SetActive(true);
@@ -70,7 +75,7 @@ public class MultiplayerMenu : MonoBehaviour {
     }
 
     public void OnHostPublicLobbyClicked() {
-        SteamLobbyService.HostLobby(true);
+        SteamLobbyService.Instance.HostLobby(true);
 
         LobbyTypeSelection.SetActive(false);
         // StopHostButton.gameObject.SetActive(true);
@@ -83,7 +88,7 @@ public class MultiplayerMenu : MonoBehaviour {
     }
 
     public void OnStopHostClicked() {
-        SteamLobbyService.ExitLobby();
+        SteamLobbyService.Instance.ExitLobby();
         
         ResetMultiplayerMenu();
         StopHostButton.gameObject.SetActive(false);
@@ -110,7 +115,7 @@ public class MultiplayerMenu : MonoBehaviour {
         CancelButton.gameObject.SetActive(false);
         
         // TODO cancel logic
-        SteamLobbyService.ExitLobby();
+        SteamLobbyService.Instance.ExitLobby();
     }
 
     private event Action _onClickedOkayOnFailedToJoinLobbyDialog;
@@ -123,7 +128,7 @@ public class MultiplayerMenu : MonoBehaviour {
     public void OnSubmitLobbyJoinIDClicked() {
         string id = JoinByIDField.text;
         
-        SteamLobbyService.RequestLobbyByID(id, (lobby, success) => {
+        SteamLobbyService.Instance.RequestLobbyByID(id, (lobby, success) => {
             if (!success) {
                 Debug.Log("Failed to join lobby by ID");
                 FailedToJoinLobbyDialog.SetActive(true);
@@ -132,7 +137,7 @@ public class MultiplayerMenu : MonoBehaviour {
                 return;
             }
 
-            SteamLobbyService.JoinLobby(lobby.SteamID);
+            SteamLobbyService.Instance.JoinLobby(lobby.SteamID);
         });
     }
     

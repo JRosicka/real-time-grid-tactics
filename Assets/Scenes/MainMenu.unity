@@ -1789,7 +1789,6 @@ MonoBehaviour:
   FailedToJoinLobbyDialog: {fileID: 290823803}
   LobbyStatusText: {fileID: 1910855630}
   NetworkManager: {fileID: 751459968}
-  SteamLobbyService: {fileID: 1716136050}
   DisabledTextColor: {r: 0.4811321, g: 0.4811321, b: 0.4811321, a: 0.6862745}
   EnabledTextColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!1 &824770672
@@ -2929,7 +2928,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 345bf638bd26dc84a96237cfaad3feb5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SteamLobbyService: {fileID: 1716136050}
   LobbyListEntryPrefab: {fileID: 603590418179539135, guid: cd94b72307690444c8f24db1d406c85d, type: 3}
   ScrollViewContent: {fileID: 71300313}
 --- !u!1 &1343540899
@@ -3683,7 +3681,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1716136046}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -3719,7 +3717,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f3b8db0845e35a54f8de671440a0b384, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  SteamTransport: {fileID: 1716136049}
   _networkManager: {fileID: 751459968}
+  CurrentLobbyID:
+    m_SteamID: 0
 --- !u!1 &1727441354
 GameObject:
   m_ObjectHideFlags: 0

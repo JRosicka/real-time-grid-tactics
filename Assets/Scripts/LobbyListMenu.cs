@@ -5,7 +5,6 @@ using UnityEngine;
 using Object = System.Object;
 
 public class LobbyListMenu : MonoBehaviour {
-    public SteamLobbyService SteamLobbyService;
     public LobbyListEntry LobbyListEntryPrefab;
     public GameObject ScrollViewContent;
     
@@ -31,15 +30,19 @@ public class LobbyListMenu : MonoBehaviour {
         _lobbyEntries.Clear();
         
         // Get ready to display lobbies when we find them
-        SteamLobbyService.OnLobbyEntryConstructed += DisplayLobby;
+        SteamLobbyService.Instance.OnLobbyEntryConstructed += DisplayLobby;
 
         // Search for lobbies
-        SteamLobbyService.GetAllOpenLobbies(SteamLobbyService.ProcessReturnedLobbies);
+        SteamLobbyService.Instance.GetAllOpenLobbies(SteamLobbyService.Instance.ProcessReturnedLobbies);
     }
 
     private void DisplayLobby(SteamLobbyService.Lobby lobby) {
         LobbyListEntry newEntry = Instantiate(LobbyListEntryPrefab, ScrollViewContent.transform);
         newEntry.PopulateEntry(lobby);
         _lobbyEntries.Add(newEntry);
+    }
+
+    private void OnDestroy() {
+        SteamLobbyService.Instance.OnLobbyEntryConstructed -= DisplayLobby;
     }
 }

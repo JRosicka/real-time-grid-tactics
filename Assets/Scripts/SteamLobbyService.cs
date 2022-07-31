@@ -1,4 +1,6 @@
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using Game.Network;
 using Mirror;
@@ -40,6 +42,7 @@ public class SteamLobbyService : MonoBehaviour {
         public string this[string key] => Data.FirstOrDefault(data => data.Key.Equals(key)).Value;
     }
 
+    public Transport SteamTransport;
     [SerializeField] private GameNetworkManager _networkManager;
 
     private const string HostAddressKey = "HostAddress";
@@ -50,7 +53,7 @@ public class SteamLobbyService : MonoBehaviour {
     public static readonly string[] LobbyMemberDataKeys = { "faction", "playerType", "color" };
 
     private CallResult<LobbyCreated_t> _lobbyCreated;                      // When creating a lobby
-    private CallResult<LobbyMatchList_t> _lobbyMatchList;                  // When receiving the list of lobbies
+    private CallResult<LobbyMatchList_t> _lobbyMatchList;
     private Callback<GameLobbyJoinRequested_t> _gameLobbyJoinRequested;    // When a player direct joins a lobby (not a game)
     private CallResult<LobbyEnter_t> _lobbyEntered;                        // At the entrance to the lobby
     // private CallResult<LobbyChatMsg_t> _lobbyChatMessage;               // When you receive a message in the lobby
@@ -86,13 +89,32 @@ public class SteamLobbyService : MonoBehaviour {
         
         Instance = this;
     }
-    
-    private void Start() {
+
+    public void Start() {
+        if (!SteamManager.Initialized) {
+            Debug.LogError("SteamManager is not yet initialized!");
+            return;
+        }
+        
+        SetupCallbacks();
+    }
+
+    public void ReInitialize(GameNetworkManager newManager) {
         if (!SteamManager.Initialized) {
             Debug.LogError("SteamManager is not yet initialized!");
             return;
         }
 
+        _networkManager = newManager;
+        CurrentLobbyID = CSteamID.Nil;
+        _isCurrentlyCreatingLobby = false;
+        _isCurrentlyJoiningLobby = false;
+        _isCurrentlyRequestingLobbies = false;
+
+        Transport.activeTransport = SteamTransport;
+    }
+
+    private void SetupCallbacks() {
         _lobbyCreated = CallResult<LobbyCreated_t>.Create(OnLobbyCreated);
         _lobbyMatchList = CallResult<LobbyMatchList_t>.Create(OnLobbyMatchListReturned);
         _gameLobbyJoinRequested = Callback<GameLobbyJoinRequested_t>.Create(OnGameLobbyJoinRequested);

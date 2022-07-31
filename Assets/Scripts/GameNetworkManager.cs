@@ -21,8 +21,17 @@ namespace Game.Network
         public override void Start() {
             base.Start();
             
+            // Tell the steam lobby service that this is the new network manager to use
+            SteamLobbyService.Instance.ReInitialize(this);
+            
             // Listen for any updates to the Steam lobby metadata
             SteamLobbyService.Instance.OnCurrentLobbyMetadataChanged += GetUpdatedLobbyData;
+
+            transport = SteamLobbyService.Instance.SteamTransport;
+        }
+
+        public override void OnDestroy() {
+            SteamLobbyService.Instance.OnCurrentLobbyMetadataChanged -= GetUpdatedLobbyData;
         }
 
         public event Action<SteamLobbyService.Lobby> OnLobbyUpdated;
