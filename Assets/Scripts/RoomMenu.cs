@@ -55,14 +55,14 @@ public class RoomMenu : MonoBehaviour {
         _gameNetworkManager = FindObjectOfType<GameNetworkManager>();
         _gameNetworkManager.RoomServerPlayersReadyAction += ShowStartButton;
         _gameNetworkManager.RoomServerPlayersNotReadyAction += HideStartButton;
-        GameNetworkPlayer.PlayerSteamInfoDetermined += UpdatePlayerSlots;
-        GameNetworkPlayer.PlayerExitedRoom += UpdatePlayerSlots;
-        // steamLobbyService.OnCurrentLobbyMetadataChanged += UpdatePlayerSlots;    // TODO do we listen to this, or maybe to one of the GameNetworkPlayer methods, or maybe to the GameNetworkManager updatelobby event.
+        GameNetworkPlayer.PlayerSteamInfoDetermined += AddUnassignedPlayers;
+        GameNetworkPlayer.PlayerExitedRoom += UnassignPlayer;
+        // steamLobbyService.OnCurrentLobbyMetadataChanged += AddUnassignedPlayers;    // TODO do we listen to this, or maybe to one of the GameNetworkPlayer methods, or maybe to the GameNetworkManager updatelobby event.
     }
 
     private void OnDestroy() {
-        GameNetworkPlayer.PlayerSteamInfoDetermined -= UpdatePlayerSlots;
-        GameNetworkPlayer.PlayerExitedRoom -= UpdatePlayerSlots;
+        GameNetworkPlayer.PlayerSteamInfoDetermined -= AddUnassignedPlayers;
+        GameNetworkPlayer.PlayerExitedRoom -= UnassignPlayer;
         if (_gameNetworkManager != null) {
             _gameNetworkManager.RoomServerPlayersReadyAction -= ShowStartButton;
             _gameNetworkManager.RoomServerPlayersNotReadyAction -= HideStartButton;
@@ -85,17 +85,9 @@ public class RoomMenu : MonoBehaviour {
         StartButton.gameObject.SetActive(false);
     }
 
-    private void UpdatePlayerSlots() {
+    private void AddUnassignedPlayers() {
         // List<GameNetworkPlayer> players = _gameNetworkManager.roomSlots.ConvertAll(player => (GameNetworkPlayer)player);
         List<GameNetworkPlayer> players = FindObjectsOfType<GameNetworkPlayer>().ToList();
-
-        // Unassign any players who left
-        if (PlayerSlot1.AssignedPlayer != null && !players.Contains(PlayerSlot1.AssignedPlayer)) {
-            PlayerSlot1.UnassignPlayer();
-        }
-        if (PlayerSlot2.AssignedPlayer != null && !players.Contains(PlayerSlot2.AssignedPlayer)) {
-            PlayerSlot2.UnassignPlayer();
-        }
         
         // Assign any unassigned players
         foreach (GameNetworkPlayer player in players) {
@@ -111,6 +103,18 @@ public class RoomMenu : MonoBehaviour {
         }
 
         // TODO: If players can update their info for their slots, do so here
+    }
+
+    private void UnassignPlayer() {
+        List<GameNetworkPlayer> players = _gameNetworkManager.roomSlots.ConvertAll(player => (GameNetworkPlayer)player);
+
+        // Unassign any players who have disconnected
+        if (PlayerSlot1.AssignedPlayer != null && !players.Contains(PlayerSlot1.AssignedPlayer)) {
+            PlayerSlot1.UnassignPlayer();
+        }
+        if (PlayerSlot2.AssignedPlayer != null && !players.Contains(PlayerSlot2.AssignedPlayer)) {
+            PlayerSlot2.UnassignPlayer();
+        }
     }
 
     public void ToggleReady() {
