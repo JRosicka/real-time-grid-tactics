@@ -16,6 +16,7 @@ public class LobbyListMenu : MonoBehaviour {
     }
 
     public void LeaveMenu() {
+        SteamLobbyService.Instance.OnLobbyEntryConstructed -= DisplayLobby;
         // TODO Cancel any lobby join attempts
 
         // Clear out the old list if there are entries in it
