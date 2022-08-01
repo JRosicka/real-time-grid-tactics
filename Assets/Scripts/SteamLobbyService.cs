@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using Game.Network;
 using Mirror;
 using Sirenix.Utilities;
@@ -47,7 +48,7 @@ public class SteamLobbyService : MonoBehaviour {
 
     private const string ArbitraryStaticID = "ArbitraryStaticID";
     private const string HostAddressKey = "HostAddress";
-    private const string LobbyUIDKey = "LobbyUID";
+    public const string LobbyUIDKey = "LobbyUID";
     public const string LobbyIsOpenKey = "LobbyIsOpen";
     public const string LobbyOwnerKey = "LobbyOwner";
 
@@ -186,7 +187,8 @@ public class SteamLobbyService : MonoBehaviour {
             .Replace('+', '_')
             .Replace('/', '-')
             .TrimEnd('=');
-
+        uid = uid.Substring(0, 8);
+        uid = uid.Substring(0, 4) + "-" + uid.Substring(4, 4);
         Debug.Log($"Generated unique ID: {uid}");
         return uid;
     }

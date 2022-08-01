@@ -15,9 +15,13 @@ public class RoomMenu : MonoBehaviour {
     public Button StartButton;
     public Button ToggleReadyButton;
     public TMP_Text ToggleReadyButtonText;
+    public TMP_Text JoinCodeText;
+
+    public Animator CopiedToClipboardAnimator;
     
     private GameNetworkManager _gameNetworkManager;
     private SteamLobbyService steamLobbyService => SteamLobbyService.Instance;
+    private string _joinCode;
     private GameNetworkPlayer _cachedGameNetworkPlayer;
     private GameNetworkPlayer _localPlayer {
         get {
@@ -58,6 +62,11 @@ public class RoomMenu : MonoBehaviour {
         _gameNetworkManager.RoomServerPlayersNotReadyAction += HideStartButton;
         GameNetworkPlayer.PlayerSteamInfoDetermined += AddUnassignedPlayers;
         GameNetworkPlayer.PlayerExitedRoom += UnassignPlayer;
+
+        SteamLobbyService.Lobby lobby =
+            SteamLobbyService.Instance.GetLobbyData(SteamLobbyService.Instance.CurrentLobbyID, null);
+        _joinCode = lobby[SteamLobbyService.LobbyUIDKey];
+        JoinCodeText.text = _joinCode;
         // steamLobbyService.OnCurrentLobbyMetadataChanged += AddUnassignedPlayers;    // TODO do we listen to this, or maybe to one of the GameNetworkPlayer methods, or maybe to the GameNetworkManager updatelobby event.
     }
 
@@ -86,6 +95,11 @@ public class RoomMenu : MonoBehaviour {
             // We're just a little baby client, so just stop the client
             _gameNetworkManager.StopClient();
         }
+    }
+
+    public void CopyJoinCode() {
+        GUIUtility.systemCopyBuffer = _joinCode;
+        CopiedToClipboardAnimator.Play("Copy Join Code");
     }
 
     private void ShowStartButton() {
@@ -139,7 +153,6 @@ public class RoomMenu : MonoBehaviour {
             ToggleReadyButtonText.text = "Cancel";
             _localPlayer.CmdChangeReadyState(true);
         }
-
     }
 
     public void StartGame() {
