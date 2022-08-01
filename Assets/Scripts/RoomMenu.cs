@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Game.Network;
 using kcp2k;
+using Mirror;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -75,6 +76,16 @@ public class RoomMenu : MonoBehaviour {
 
     public void SetRandomPlayerMetadata() {
         steamLobbyService.UpdateCurrentLobbyPlayerMetadata("color", "very red");
+    }
+
+    public void ExitRoom() {
+        if (NetworkServer.active) {
+            // We're the host, so stop the whole server
+            _gameNetworkManager.StopHost();
+        } else {
+            // We're just a little baby client, so just stop the client
+            _gameNetworkManager.StopClient();
+        }
     }
 
     private void ShowStartButton() {
