@@ -101,12 +101,15 @@ public class RoomMenu : MonoBehaviour {
         List<GameNetworkPlayer> players = FindObjectsOfType<GameNetworkPlayer>().ToList();
         
         // Assign any unassigned players
+        bool isHosting = _gameNetworkManager.IsHosting();
         foreach (GameNetworkPlayer player in players) {
             if (PlayerSlot1.AssignedPlayer != player && PlayerSlot2.AssignedPlayer != player) {
                 if (PlayerSlot1.AssignedPlayer == null) {
-                    PlayerSlot1.AssignPlayer(player);
+                    bool kickable = !player.isLocalPlayer && isHosting;
+                    PlayerSlot1.AssignPlayer(player, kickable);
                 } else if (PlayerSlot2.AssignedPlayer == null) {
-                    PlayerSlot2.AssignPlayer(player);
+                    bool kickable = !player.isLocalPlayer && isHosting;
+                    PlayerSlot2.AssignPlayer(player, kickable);
                 } else {
                     Log.Error("A new player joined, but we don't have any slots for them!");
                 }

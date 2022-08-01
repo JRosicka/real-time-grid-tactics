@@ -1,7 +1,9 @@
 using System;
+using System.Linq;
 using Game.Gameplay;
 using Mirror;
 using Mirror.Examples.NetworkRoom;
+using Unity.VisualScripting;
 using UnityEngine;
 
 /*
@@ -34,6 +36,16 @@ namespace Game.Network
             SteamLobbyService.Instance.OnCurrentLobbyMetadataChanged -= GetUpdatedLobbyData;
         }
 
+        // TODO: What to do when there are no players assigned yet?
+        // public GameNetworkPlayer GetLocalPlayer() {
+        //     return (GameNetworkPlayer)(roomSlots.First(p => p.isLocalPlayer));
+        // }
+
+        private bool _isHosting;
+        public bool IsHosting() {
+            return _isHosting;
+        }
+
         public event Action<SteamLobbyService.Lobby> OnLobbyUpdated;
         private void GetUpdatedLobbyData() {
             SteamLobbyService.Lobby updatedLobby = SteamLobbyService.Instance.GetLobbyData(
@@ -49,6 +61,7 @@ namespace Game.Network
         public override void OnRoomStartHost() {
             DebugLog(nameof(OnRoomStartHost));
             RoomStartHostAction.SafeInvoke();
+            _isHosting = true;
             base.OnRoomStartHost();
         }
 
@@ -63,6 +76,7 @@ namespace Game.Network
         public override void OnRoomStopHost() {
             DebugLog(nameof(OnRoomStopHost));
             RoomStopHostAction.SafeInvoke();
+            _isHosting = false;
             base.OnRoomStopHost();
         }
         

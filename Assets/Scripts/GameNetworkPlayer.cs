@@ -31,6 +31,10 @@ namespace Game.Network
             PlayerSteamInfoDetermined.SafeInvoke();
         }
 
+        public void Kick() {
+            netIdentity.connectionToClient.Disconnect();
+        }
+
         public override void OnStartClient()
         {
             Debug.Log($"OnStartClient {gameObject}");
