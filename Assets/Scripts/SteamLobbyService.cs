@@ -45,6 +45,7 @@ public class SteamLobbyService : MonoBehaviour {
     public Transport SteamTransport;
     [SerializeField] private GameNetworkManager _networkManager;
 
+    private const string ArbitraryStaticID = "ArbitraryStaticID";
     private const string HostAddressKey = "HostAddress";
     private const string LobbyUIDKey = "LobbyUID";
     public const string LobbyIsOpenKey = "LobbyIsOpen";
@@ -168,6 +169,9 @@ public class SteamLobbyService : MonoBehaviour {
         // Assign lobby owner (us)
         SteamMatchmaking.SetLobbyData(CurrentLobbyID, LobbyOwnerKey, SteamFriends.GetPersonaName());
 
+        // Assign the arbitrary ID so that we can identify lobbies we create
+        SteamMatchmaking.SetLobbyData(CurrentLobbyID, ArbitraryStaticID, ArbitraryStaticID);
+
         // TODO can assign any other metadata like the map it's on, description, password
         
         _isCurrentlyCreatingLobby = false;
@@ -238,6 +242,9 @@ public class SteamLobbyService : MonoBehaviour {
 
         _onLobbiesReturned = onLobbiesReturned;
 
+        // Only return lobbies with our arbitrary ID that we assign to all lobbies. This prevents lobbies from other developers to be returned (in the case of using the test Steam app).
+        SteamMatchmaking.AddRequestLobbyListStringFilter(ArbitraryStaticID, ArbitraryStaticID, ELobbyComparison.k_ELobbyComparisonEqual);
+        // Worldwide search
         SteamMatchmaking.AddRequestLobbyListDistanceFilter(ELobbyDistanceFilter.k_ELobbyDistanceFilterWorldwide);
         _lobbyMatchList.Set(SteamMatchmaking.RequestLobbyList());
     }
