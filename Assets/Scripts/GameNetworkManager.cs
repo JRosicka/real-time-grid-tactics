@@ -83,6 +83,7 @@ namespace Game.Network
         public event Action RoomStopServerAction;
         public override void OnRoomStopServer() {
             DebugLog(nameof(OnRoomStopServer));
+            SteamLobbyService.Instance.ExitLobby();
             RoomStopServerAction.SafeInvoke();
             base.OnRoomStopServer();
         }
@@ -235,6 +236,7 @@ namespace Game.Network
         public event Action RoomClientExitAction;
         public override void OnRoomClientExit() {
             DebugLog(nameof(OnRoomClientExit));
+            SteamLobbyService.Instance.ExitLobby();
             RoomClientExitAction.SafeInvoke();
             base.OnRoomClientExit();
         }

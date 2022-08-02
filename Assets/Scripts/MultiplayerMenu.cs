@@ -148,10 +148,12 @@ public class MultiplayerMenu : MonoBehaviour {
                 FailedToJoinLobbyDialog.SetActive(true);
                 _onClickedOkayOnFailedToJoinLobbyDialog += () => JoinByIDMenu.SetActive(true);
                 JoinByIDMenu.SetActive(false);
+                _joinCodeForLobbyWeAreAttemptingToJoin = null;
                 return;
             }
 
             SteamLobbyService.Instance.JoinLobby(lobby.SteamID);
+            _joinCodeForLobbyWeAreAttemptingToJoin = null;
         });
     }
     
