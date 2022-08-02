@@ -22,8 +22,8 @@ public class LobbyListEntry : MonoBehaviour {
     
     public void PopulateEntry(SteamLobbyService.Lobby lobby) {
         LobbyNameField.text = $"{lobby[SteamLobbyService.LobbyOwnerKey]}'s lobby";
-        _privateLobby = !lobby[SteamLobbyService.LobbyIsOpenKey].IsNullOrWhitespace();
-        RequiresJoinCodeField.text = _privateLobby ? "No" : "Yes";
+        _privateLobby = !Convert.ToBoolean(lobby[SteamLobbyService.LobbyIsOpenKey]);
+        RequiresJoinCodeField.text = _privateLobby ? "Yes" : "No";
         if (_privateLobby) {
             _joinCode = lobby[SteamLobbyService.LobbyUIDKey];
         }
