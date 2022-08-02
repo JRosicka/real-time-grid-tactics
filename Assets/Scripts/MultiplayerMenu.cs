@@ -1,5 +1,6 @@
 using System;
 using Game.Network;
+using Steamworks;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -28,12 +29,14 @@ public class MultiplayerMenu : MonoBehaviour {
 
     private void Start() {
         SteamLobbyService.Instance.OnLobbyJoinComplete += OnLobbyJoinComplete;
+        LobbyListEntry.LobbyJoinAttemptStarted += PromptJoinIDForLobby;
     }
 
     private void OnDestroy() {
         SteamLobbyService.Instance.OnLobbyJoinComplete -= OnLobbyJoinComplete;
+        LobbyListEntry.LobbyJoinAttemptStarted -= PromptJoinIDForLobby;
     }
-
+    
     private void OnLobbyJoinComplete(bool success) {
         if (!success) {
             ResetMultiplayerMenu();
@@ -124,9 +127,20 @@ public class MultiplayerMenu : MonoBehaviour {
         _onClickedOkayOnFailedToJoinLobbyDialog.SafeInvoke();
         _onClickedOkayOnFailedToJoinLobbyDialog = null;
     }
-    
+
+    private string _joinCodeForLobbyWeAreAttemptingToJoin;
     public void OnSubmitLobbyJoinIDClicked() {
         string id = JoinByIDField.text;
+
+        // If we have a join code stored here, then we are expecting the user to input the correct join ID.
+        if (_joinCodeForLobbyWeAreAttemptingToJoin != null) {
+            if (id != _joinCodeForLobbyWeAreAttemptingToJoin) {
+                // TODO present a "ya dun goofed, try again" toast
+                Debug.Log("Incorrect lobby ID");
+                return;
+            }
+            // Otherwise, the player put in the correct join code, so just continue and join like normal
+        }
         
         SteamLobbyService.Instance.RequestLobbyByID(id, (lobby, success) => {
             if (!success) {
@@ -164,5 +178,19 @@ public class MultiplayerMenu : MonoBehaviour {
 
     private void HideLobbyMenu() {
         LobbyListMenu.LeaveMenu();
+    }
+
+    private void PromptJoinIDForLobby(CSteamID id, string joinCode) {
+        _joinCodeForLobbyWeAreAttemptingToJoin = joinCode;
+        
+        ResetMultiplayerMenu();
+        JoinByIDMenu.gameObject.SetActive(true);
+    }
+
+    public void OnEndEditLobbyIDField() {
+        // Check to see if we left by hitting the enter key    // TODO switch to use rewired once that's set up
+        if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.KeypadEnter)) {
+            OnSubmitLobbyJoinIDClicked();
+        }
     }
 }
