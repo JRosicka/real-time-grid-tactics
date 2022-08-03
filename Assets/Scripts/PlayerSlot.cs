@@ -59,6 +59,7 @@ public class PlayerSlot : MonoBehaviour {
         }
 
         AssignedPlayer.Kick();
+        // TODO the kicked player probably should not be let back in. We could add a blocklist of steam IDs as metadata to the lobby and filter blocked IDs out when searching for lobbies, and then also deny entry if they try to join directly through steam. 
     }
 
     /// <summary>
