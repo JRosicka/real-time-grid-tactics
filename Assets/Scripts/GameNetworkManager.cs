@@ -288,7 +288,7 @@ namespace Game.Network
         #endregion
         
         private void DebugLog(string message) {
-            // Debug.Log(message);
+            Debug.Log(message);
         }
 
         public override void OnGUI()
