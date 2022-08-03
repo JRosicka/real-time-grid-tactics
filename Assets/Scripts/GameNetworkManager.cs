@@ -204,6 +204,10 @@ namespace Game.Network
         public event Action RoomStopClientAction;
         public override void OnRoomStopClient() {
             DebugLog(nameof(OnRoomStopClient));
+            
+            // This is us leaving a lobby, so leave the steam lobby
+            SteamLobbyService.Instance.ExitLobby();
+            
             RoomStopClientAction.SafeInvoke();
             base.OnRoomStopClient();
         }
@@ -236,7 +240,8 @@ namespace Game.Network
         public override void OnRoomClientExit() {
             DebugLog(nameof(OnRoomClientExit));
             
-            // See if the local player is still in the lobby. If not, then this is us leaving, so let's leave the steam lobby as well
+            // See if the local player is still in the lobby. If not, then this is us as the lobby host leaving,
+            // so let's leave the steam lobby as well
             if (!roomSlots.Any(p => p.isLocalPlayer)) {
                 SteamLobbyService.Instance.ExitLobby();
             }
