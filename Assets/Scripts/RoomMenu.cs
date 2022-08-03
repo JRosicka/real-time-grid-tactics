@@ -60,6 +60,7 @@ public class RoomMenu : MonoBehaviour {
         _gameNetworkManager = FindObjectOfType<GameNetworkManager>();
         _gameNetworkManager.RoomServerPlayersReadyAction += ShowStartButton;
         _gameNetworkManager.RoomServerPlayersNotReadyAction += HideStartButton;
+        _gameNetworkManager.RoomClientSceneChangedAction += AddUnassignedPlayers;
         GameNetworkPlayer.PlayerSteamInfoDetermined += AddUnassignedPlayers;
         GameNetworkPlayer.PlayerExitedRoom += UnassignPlayer;
 
@@ -76,6 +77,7 @@ public class RoomMenu : MonoBehaviour {
         if (_gameNetworkManager != null) {
             _gameNetworkManager.RoomServerPlayersReadyAction -= ShowStartButton;
             _gameNetworkManager.RoomServerPlayersNotReadyAction -= HideStartButton;
+            _gameNetworkManager.RoomClientSceneChangedAction -= AddUnassignedPlayers;
         }
     }
 
