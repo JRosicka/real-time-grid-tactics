@@ -118,7 +118,6 @@ public class MultiplayerMenu : MonoBehaviour {
         CancelButton.gameObject.SetActive(false);
         
         // TODO cancel logic
-        SteamLobbyService.Instance.ExitLobby();
     }
 
     private event Action _onClickedOkayOnFailedToJoinLobbyDialog;
