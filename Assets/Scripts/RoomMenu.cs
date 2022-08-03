@@ -63,6 +63,7 @@ public class RoomMenu : MonoBehaviour {
         _gameNetworkManager.RoomClientSceneChangedAction += AddUnassignedPlayers;
         GameNetworkPlayer.PlayerSteamInfoDetermined += AddUnassignedPlayers;
         GameNetworkPlayer.PlayerExitedRoom += UnassignPlayer;
+        GameNetworkPlayer.PlayerExitedRoom += ResetReadyButton;
 
         SteamLobbyService.Lobby lobby =
             SteamLobbyService.Instance.GetLobbyData(SteamLobbyService.Instance.CurrentLobbyID, null);
@@ -74,6 +75,7 @@ public class RoomMenu : MonoBehaviour {
     private void OnDestroy() {
         GameNetworkPlayer.PlayerSteamInfoDetermined -= AddUnassignedPlayers;
         GameNetworkPlayer.PlayerExitedRoom -= UnassignPlayer;
+        GameNetworkPlayer.PlayerExitedRoom -= ResetReadyButton;
         if (_gameNetworkManager != null) {
             _gameNetworkManager.RoomServerPlayersReadyAction -= ShowStartButton;
             _gameNetworkManager.RoomServerPlayersNotReadyAction -= HideStartButton;
@@ -154,6 +156,18 @@ public class RoomMenu : MonoBehaviour {
         } else {
             ToggleReadyButtonText.text = "Cancel";
             _localPlayer.CmdChangeReadyState(true);
+        }
+    }
+
+    /// <summary>
+    /// If the ready state changes from some way other than clicking the button, such as when another player leaves the
+    /// room, then call this to reset the text on the ready button to reflect the actual ready state
+    /// </summary>
+    private void ResetReadyButton() {
+        if (_localPlayer.readyToBegin) {
+            ToggleReadyButtonText.text = "Cancel";
+        } else {
+            ToggleReadyButtonText.text = "Ready";
         }
     }
 
