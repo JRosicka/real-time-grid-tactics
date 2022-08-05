@@ -316,20 +316,22 @@ public class SteamLobbyService : MonoBehaviour {
         
         CurrentLobbyID = new CSteamID(callback.m_ulSteamIDLobby);
 
-        Lobby lobby = GetLobbyData(CurrentLobbyID, null);
-        if (lobby.Members.Length >= lobby.MemberLimit) {
-            Debug.LogError("Trying to join a lobby that is currently full, aborting");
-            _isCurrentlyJoiningLobby = false;
-            OnLobbyJoinComplete.SafeInvoke(false);
-            return;
-        }        
+        // TODO: We need to call SteamMatchmaking.RequestLobbyData(CSteamID lobbyID) and wait for the LobbyDataUpdate_t callback
+        // before calling GetLobbyData, if we really care about doing this check
+        // Lobby lobby = GetLobbyData(CurrentLobbyID, null);
+        // if (lobby.Members.Length >= lobby.MemberLimit) {
+        //     Debug.LogError("Trying to join a lobby that is currently full, aborting");
+        //     _isCurrentlyJoiningLobby = false;
+        //     OnLobbyJoinComplete.SafeInvoke(false);
+        //     return;
+        // }        
         
         // Tell Mirror to connect to the host
         string hostAddress = SteamMatchmaking.GetLobbyData(
             CurrentLobbyID,
             HostAddressKey);
         if (hostAddress.IsNullOrWhitespace()) {
-            Debug.LogError("No host address data found when trying to enter lobby, aborting");
+            Debug.LogError("No host address data found when trying to enter lobby (perhaps the lobby was full), aborting");
             _isCurrentlyJoiningLobby = false;
             OnLobbyJoinComplete.SafeInvoke(false);
             return;
