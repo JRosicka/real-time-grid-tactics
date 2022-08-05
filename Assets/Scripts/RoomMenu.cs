@@ -60,6 +60,7 @@ public class RoomMenu : MonoBehaviour {
         _gameNetworkManager = FindObjectOfType<GameNetworkManager>();
         _gameNetworkManager.RoomServerPlayersReadyAction += ShowStartButton;
         _gameNetworkManager.RoomServerPlayersNotReadyAction += HideStartButton;
+        _gameNetworkManager.RoomServerSceneChangedAction += UpdateLobbyOpenStatus;
         _gameNetworkManager.RoomClientSceneChangedAction += AddUnassignedPlayers;
         GameNetworkPlayer.PlayerSteamInfoDetermined += AddUnassignedPlayers;
         GameNetworkPlayer.PlayerExitedRoom += UnassignPlayer;
@@ -71,7 +72,7 @@ public class RoomMenu : MonoBehaviour {
         JoinCodeText.text = _joinCode;
         // steamLobbyService.OnCurrentLobbyMetadataChanged += AddUnassignedPlayers;    // TODO do we listen to this, or maybe to one of the GameNetworkPlayer methods, or maybe to the GameNetworkManager updatelobby event.
     }
-
+    
     private void OnDestroy() {
         GameNetworkPlayer.PlayerSteamInfoDetermined -= AddUnassignedPlayers;
         GameNetworkPlayer.PlayerExitedRoom -= UnassignPlayer;
@@ -79,6 +80,7 @@ public class RoomMenu : MonoBehaviour {
         if (_gameNetworkManager != null) {
             _gameNetworkManager.RoomServerPlayersReadyAction -= ShowStartButton;
             _gameNetworkManager.RoomServerPlayersNotReadyAction -= HideStartButton;
+            _gameNetworkManager.RoomServerSceneChangedAction -= UpdateLobbyOpenStatus;
             _gameNetworkManager.RoomClientSceneChangedAction -= AddUnassignedPlayers;
         }
     }
@@ -169,6 +171,16 @@ public class RoomMenu : MonoBehaviour {
         } else {
             ToggleReadyButtonText.text = "Ready";
         }
+    }
+    
+    /// <summary>
+    /// Check to see if we should open/close the lobby. If we just came back to the room scene, then we should open it.
+    /// If we just came to the GamePlay scene, then we should close it.
+    /// This should be done only on the server. 
+    /// </summary>
+    private void UpdateLobbyOpenStatus() {
+        bool isInGameScene = NetworkManager.IsSceneActive(_gameNetworkManager.GameplayScene);
+        steamLobbyService.UpdateCurrentLobbyMetadata(SteamLobbyService.LobbyGameActiveKey, isInGameScene.ToString());
     }
 
     public void StartGame() {

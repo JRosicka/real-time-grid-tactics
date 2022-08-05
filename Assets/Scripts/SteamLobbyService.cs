@@ -50,6 +50,7 @@ public class SteamLobbyService : MonoBehaviour {
     private const string HostAddressKey = "HostAddress";
     public const string LobbyUIDKey = "LobbyUID";
     public const string LobbyIsOpenKey = "LobbyIsOpen";
+    public const string LobbyGameActiveKey = "LobbyIsOpen";
     public const string LobbyOwnerKey = "LobbyOwner";
 
     public static readonly string[] LobbyMemberDataKeys = { "faction", "playerType", "color" };
@@ -173,6 +174,9 @@ public class SteamLobbyService : MonoBehaviour {
         // Assign the arbitrary ID so that we can identify lobbies we create
         SteamMatchmaking.SetLobbyData(CurrentLobbyID, ArbitraryStaticID, ArbitraryStaticID);
 
+        // Assign the game-active status (false since we just started this lobby)
+        SteamMatchmaking.SetLobbyData(CurrentLobbyID, LobbyGameActiveKey, false.ToString());
+        
         // TODO can assign any other metadata like the map it's on, description, password
         
         _isCurrentlyCreatingLobby = false;
@@ -246,6 +250,8 @@ public class SteamLobbyService : MonoBehaviour {
 
         // Only return lobbies with our arbitrary ID that we assign to all lobbies. This prevents lobbies from other developers to be returned (in the case of using the test Steam app).
         SteamMatchmaking.AddRequestLobbyListStringFilter(ArbitraryStaticID, ArbitraryStaticID, ELobbyComparison.k_ELobbyComparisonEqual);
+        // Only return lobbies that are not actively playing in a game. 
+        SteamMatchmaking.AddRequestLobbyListStringFilter(LobbyGameActiveKey, false.ToString(), ELobbyComparison.k_ELobbyComparisonEqual);
         // Worldwide search
         SteamMatchmaking.AddRequestLobbyListDistanceFilter(ELobbyDistanceFilter.k_ELobbyDistanceFilterWorldwide);
         _lobbyMatchList.Set(SteamMatchmaking.RequestLobbyList());
