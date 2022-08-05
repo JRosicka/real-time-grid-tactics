@@ -306,7 +306,7 @@ public class SteamLobbyService : MonoBehaviour {
             OnLobbyJoinComplete.SafeInvoke(false);
             return;
         }
-
+        
         if (NetworkServer.active) {
             // We are hosting and just joined ourself - no need to do anything
             _isCurrentlyJoiningLobby = false;
@@ -314,8 +314,17 @@ public class SteamLobbyService : MonoBehaviour {
             return;
         }
         
-        // Tell Mirror to connect to the host
         CurrentLobbyID = new CSteamID(callback.m_ulSteamIDLobby);
+
+        Lobby lobby = GetLobbyData(CurrentLobbyID, null);
+        if (lobby.Members.Length >= lobby.MemberLimit) {
+            Debug.LogError("Trying to join a lobby that is currently full, aborting");
+            _isCurrentlyJoiningLobby = false;
+            OnLobbyJoinComplete.SafeInvoke(false);
+            return;
+        }        
+        
+        // Tell Mirror to connect to the host
         string hostAddress = SteamMatchmaking.GetLobbyData(
             CurrentLobbyID,
             HostAddressKey);
