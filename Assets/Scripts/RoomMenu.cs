@@ -175,7 +175,6 @@ public class RoomMenu : MonoBehaviour {
     
     /// <summary>
     /// Check to see if we should open/close the lobby. If we just came back to the room scene, then we should open it.
-    /// If we just came to the GamePlay scene, then we should close it.
     /// This should be done only on the server. 
     /// </summary>
     private void UpdateLobbyOpenStatus() {
@@ -184,6 +183,7 @@ public class RoomMenu : MonoBehaviour {
     }
 
     public void StartGame() {
+        steamLobbyService.UpdateCurrentLobbyMetadata(SteamLobbyService.LobbyGameActiveKey, true.ToString());
         _gameNetworkManager.ServerChangeScene(_gameNetworkManager.GameplayScene);
     }
 }
