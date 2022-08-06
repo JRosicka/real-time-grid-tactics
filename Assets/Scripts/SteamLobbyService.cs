@@ -57,11 +57,12 @@ public class SteamLobbyService : MonoBehaviour {
 
     private CallResult<LobbyCreated_t> _lobbyCreated;                      // When creating a lobby
     private CallResult<LobbyMatchList_t> _lobbyMatchList;                  // When getting a list of lobbies
-    private Callback<GameLobbyJoinRequested_t> _gameLobbyJoinRequested;    // When a player direct joins a lobby (not a game)
+    private Callback<GameLobbyJoinRequested_t> _lobbyJoinRequested;        // When a player direct joins a lobby (not a game) // TODO when does this trigger compared to GameRichPresenceJoinRequested_t ?
+    private Callback<GameRichPresenceJoinRequested_t> _gameJoinRequested;   // When a player direct joins a game (not a lobby)
     private CallResult<LobbyEnter_t> _lobbyEntered;                        // At the entrance to the lobby
     // private CallResult<LobbyChatMsg_t> _lobbyChatMessage;               // When you receive a message in the lobby
     // private CallResult<LobbyChatUpdate_t> _lobbyChatUpdate;             // When changing the list of players in the lobby
-    private Callback<LobbyDataUpdate_t> _lobbyDataUpdate;             // When you update metadata in the lobby
+    private Callback<LobbyDataUpdate_t> _lobbyDataUpdate;                  // When you update metadata in the lobby
 
     private bool _isCurrentlyCreatingLobby;
     private bool _lobbyOpenToEveryone;
@@ -120,7 +121,8 @@ public class SteamLobbyService : MonoBehaviour {
     private void SetupCallbacks() {
         _lobbyCreated = CallResult<LobbyCreated_t>.Create(OnLobbyCreated);
         _lobbyMatchList = CallResult<LobbyMatchList_t>.Create(OnLobbyMatchListReturned);
-        _gameLobbyJoinRequested = Callback<GameLobbyJoinRequested_t>.Create(OnGameLobbyJoinRequested);
+        _lobbyJoinRequested = Callback<GameLobbyJoinRequested_t>.Create(OnLobbyJoinRequested);
+        _gameJoinRequested = Callback<GameRichPresenceJoinRequested_t>.Create(OnGameJoinRequested);
         _lobbyEntered = CallResult<LobbyEnter_t>.Create(OnLobbyEntered);
         _lobbyDataUpdate = Callback<LobbyDataUpdate_t>.Create(OnMetadataUpdated);
     }
@@ -295,14 +297,25 @@ public class SteamLobbyService : MonoBehaviour {
     /// <summary>
     /// When joining a lobby (not a game) directly through Steam
     /// </summary>
-    private void OnGameLobbyJoinRequested(GameLobbyJoinRequested_t callback) {
+    private void OnLobbyJoinRequested(GameLobbyJoinRequested_t callback) {
         // if (bIoFailure) {
         //     Debug.LogError("Error requesting to join lobby");
         //     OnLobbyJoinComplete.SafeInvoke(false);
         //     return;
         // }    // TODO I don't think I can really do any error handling with this one
-
+        Debug.Log($"{nameof(OnLobbyJoinRequested)} - joining lobby");
         _lobbyEntered.Set(SteamMatchmaking.JoinLobby(callback.m_steamIDLobby));
+    }
+
+    /// <summary>
+    /// When joining a lobby (not a game) directly through Steam
+    /// </summary>
+    private void OnGameJoinRequested(GameRichPresenceJoinRequested_t callback) {
+        // TODO I don't think I can really do any error handling with this one
+
+        Debug.Log($"{nameof(OnGameJoinRequested)} - joining game");
+
+        // _lobbyEntered.Set(SteamMatchmaking.JoinLobby(callback.m_steamIDLobby));
     }
 
     private void OnLobbyEntered(LobbyEnter_t callback, bool bIoFailure) {
