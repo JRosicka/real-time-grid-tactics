@@ -291,7 +291,16 @@ public class SteamLobbyService : MonoBehaviour {
         }
 
         _isCurrentlyJoiningLobby = true;
-        _lobbyEntered.Set(SteamMatchmaking.JoinLobby(lobbyID));
+        // Check to see if the lobby is actually joinable
+        RequestLobbyData(CurrentLobbyID, lobby => {
+            // TODO pass fail string to some error message visible to the user
+            bool canJoin = DetermineIfLobbyIsJoinable(lobby, failMessage => OnLobbyJoinComplete.SafeInvoke(false));
+            if (!canJoin) {
+                return;
+            }
+
+            _lobbyEntered.Set(SteamMatchmaking.JoinLobby(lobbyID));
+        });
     }
     
     /// <summary>
@@ -304,7 +313,34 @@ public class SteamLobbyService : MonoBehaviour {
         //     return;
         // }    // TODO I don't think I can really do any error handling with this one
         Debug.Log($"{nameof(OnLobbyJoinRequested)} - joining lobby");
-        _lobbyEntered.Set(SteamMatchmaking.JoinLobby(callback.m_steamIDLobby));
+        
+        // Check to see if the lobby is actually joinable
+        RequestLobbyData(callback.m_steamIDLobby, lobby => {
+            // TODO pass fail string to some error message visible to the user
+            bool canJoin = DetermineIfLobbyIsJoinable(lobby, failMessage => OnLobbyJoinComplete.SafeInvoke(false));
+            if (canJoin) {
+                _lobbyEntered.Set(SteamMatchmaking.JoinLobby(callback.m_steamIDLobby));
+            }
+        });
+    }
+
+    private bool DetermineIfLobbyIsJoinable(Lobby lobby, Action<string> onFailedToJoinLobby) {
+        // Check to see if the lobby is full
+        if (lobby.Members.Length >= lobby.MemberLimit) {
+            Debug.LogError("Trying to join a lobby that is currently full, aborting");
+            _isCurrentlyJoiningLobby = false;
+            onFailedToJoinLobby.SafeInvoke("Lobby is full.");
+            return false;
+        }
+        // Check to see if the lobby's game has started
+        if (Convert.ToBoolean(lobby[LobbyGameActiveKey])) {
+            Debug.LogError("Trying to join a lobby that is currently in a game, aborting");
+            _isCurrentlyJoiningLobby = false;
+            onFailedToJoinLobby.SafeInvoke("Lobby is in the middle of a game.");
+            return false;
+        }
+
+        return true;
     }
 
     /// <summary>
@@ -334,23 +370,13 @@ public class SteamLobbyService : MonoBehaviour {
         }
         
         CurrentLobbyID = new CSteamID(callback.m_ulSteamIDLobby);
-
-        // TODO: We need to call SteamMatchmaking.RequestLobbyData(CSteamID lobbyID) and wait for the LobbyDataUpdate_t callback
-        // before calling GetLobbyData, if we really care about doing this check
-        // Lobby lobby = GetLobbyData(CurrentLobbyID, null);
-        // if (lobby.Members.Length >= lobby.MemberLimit) {
-        //     Debug.LogError("Trying to join a lobby that is currently full, aborting");
-        //     _isCurrentlyJoiningLobby = false;
-        //     OnLobbyJoinComplete.SafeInvoke(false);
-        //     return;
-        // }        
         
         // Tell Mirror to connect to the host
         string hostAddress = SteamMatchmaking.GetLobbyData(
             CurrentLobbyID,
             HostAddressKey);
         if (hostAddress.IsNullOrWhitespace()) {
-            Debug.LogError("No host address data found when trying to enter lobby (perhaps the lobby was full), aborting");
+            Debug.LogError("No host address data found when trying to enter lobby, aborting");
             _isCurrentlyJoiningLobby = false;
             OnLobbyJoinComplete.SafeInvoke(false);
             return;
@@ -366,6 +392,12 @@ public class SteamLobbyService : MonoBehaviour {
 
     #endregion
 
+    private event Action<Lobby> _onLobbyDataReceived;
+    private void RequestLobbyData(CSteamID lobbyID, Action<Lobby> onLobbyDataReceived) {
+        _onLobbyDataReceived = onLobbyDataReceived;
+        SteamMatchmaking.RequestLobbyData(lobbyID);
+    }
+    
     #region Process Returned Lobbies
     
     public void ProcessReturnedLobbies(uint lobbyCount, bool success) {
@@ -450,6 +482,12 @@ public class SteamLobbyService : MonoBehaviour {
         // TODO error handling
         if (Convert.ToBoolean(callback.m_bSuccess) == false) {
             
+        }
+
+        if (_onLobbyDataReceived != null) {
+            Lobby lobby = GetLobbyData(new CSteamID(callback.m_ulSteamIDLobby), null);
+            _onLobbyDataReceived.SafeInvoke(lobby);
+            _onLobbyDataReceived = null;
         }
         
         OnCurrentLobbyMetadataChanged.SafeInvoke();
