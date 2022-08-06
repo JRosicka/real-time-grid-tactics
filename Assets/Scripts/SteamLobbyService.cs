@@ -292,7 +292,7 @@ public class SteamLobbyService : MonoBehaviour {
 
         _isCurrentlyJoiningLobby = true;
         // Check to see if the lobby is actually joinable
-        RequestLobbyData(CurrentLobbyID, lobby => {
+        RequestLobbyData(lobbyID, lobby => {
             // TODO pass fail string to some error message visible to the user
             bool canJoin = DetermineIfLobbyIsJoinable(lobby, failMessage => OnLobbyJoinComplete.SafeInvoke(false));
             if (!canJoin) {
@@ -327,14 +327,14 @@ public class SteamLobbyService : MonoBehaviour {
     private bool DetermineIfLobbyIsJoinable(Lobby lobby, Action<string> onFailedToJoinLobby) {
         // Check to see if the lobby is full
         if (lobby.Members.Length >= lobby.MemberLimit) {
-            Debug.LogError("Trying to join a lobby that is currently full, aborting");
+            Debug.Log("Trying to join a lobby that is currently full, aborting");
             _isCurrentlyJoiningLobby = false;
             onFailedToJoinLobby.SafeInvoke("Lobby is full.");
             return false;
         }
         // Check to see if the lobby's game has started
         if (Convert.ToBoolean(lobby[LobbyGameActiveKey])) {
-            Debug.LogError("Trying to join a lobby that is currently in a game, aborting");
+            Debug.Log("Trying to join a lobby that is currently in a game, aborting");
             _isCurrentlyJoiningLobby = false;
             onFailedToJoinLobby.SafeInvoke("Lobby is in the middle of a game.");
             return false;
@@ -394,7 +394,7 @@ public class SteamLobbyService : MonoBehaviour {
 
     private event Action<Lobby> _onLobbyDataReceived;
     private void RequestLobbyData(CSteamID lobbyID, Action<Lobby> onLobbyDataReceived) {
-        _onLobbyDataReceived = onLobbyDataReceived;
+        _onLobbyDataReceived += onLobbyDataReceived;
         SteamMatchmaking.RequestLobbyData(lobbyID);
     }
     
