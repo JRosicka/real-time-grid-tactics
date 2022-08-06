@@ -50,7 +50,7 @@ public class SteamLobbyService : MonoBehaviour {
     private const string HostAddressKey = "HostAddress";
     public const string LobbyUIDKey = "LobbyUID";
     public const string LobbyIsOpenKey = "LobbyIsOpen";
-    public const string LobbyGameActiveKey = "LobbyIsOpen";
+    public const string LobbyGameActiveKey = "GameIsActive";
     public const string LobbyOwnerKey = "LobbyOwner";
 
     public static readonly string[] LobbyMemberDataKeys = { "faction", "playerType", "color" };
