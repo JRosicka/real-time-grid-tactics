@@ -69,8 +69,8 @@ public class PlayerSlot : MonoBehaviour {
             return;
         }
         
-        ReadyText.gameObject.SetActive(AssignedPlayer.ReadyToPlay);
-        NotReadyText.gameObject.SetActive(!AssignedPlayer.ReadyToPlay);
+        ReadyText.gameObject.SetActive(AssignedPlayer.readyToBegin);
+        NotReadyText.gameObject.SetActive(!AssignedPlayer.readyToBegin);
     }
 
     /// <summary>

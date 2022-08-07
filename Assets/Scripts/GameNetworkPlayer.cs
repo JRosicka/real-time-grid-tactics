@@ -18,8 +18,6 @@ namespace Game.Network
         public string DisplayName;
         [SyncVar]
         private CSteamID _steamID;
-        [SyncVar(hook = nameof(OnReadyStatusChanged))]
-        public bool ReadyToPlay;
 
         public static event Action PlayerReadyStatusChanged;
         public static event Action PlayerSteamInfoDetermined;
@@ -29,16 +27,7 @@ namespace Game.Network
             _steamID = newSteamID;
             DisplayName = newDisplayName;
         }
-
-        [Command]
-        public void CmdUpdateReadyStatus(bool newReadyStatus) {
-            ReadyToPlay = newReadyStatus;
-        }
-
-        private void OnReadyStatusChanged(bool oldValue, bool newValue) {
-            PlayerReadyStatusChanged.SafeInvoke();
-        }
-
+        
         private void OnDisplayNameSet(string oldName, string newName) {
             PlayerSteamInfoDetermined.SafeInvoke();
         }
@@ -75,6 +64,7 @@ namespace Game.Network
         public override void ReadyStateChanged(bool oldReadyState, bool newReadyState)
         {
             Debug.Log($"ReadyStateChanged {newReadyState}");
+            PlayerReadyStatusChanged.SafeInvoke();
         }
 
         public override void OnGUI()
