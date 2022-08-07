@@ -35,12 +35,12 @@ namespace Game.Network
         [Server]
         public void Kick() {
             TargetKick(netIdentity.connectionToClient);
+            netIdentity.connectionToClient.Disconnect();
         }
 
         [TargetRpc]
         private void TargetKick(NetworkConnection target) {
             DisconnectFeedbackService.SetDisconnectReason(DisconnectFeedbackService.DisconnectReason.Kicked);
-            netIdentity.connectionToServer.Disconnect();
         }
 
         public override void OnStartClient()
