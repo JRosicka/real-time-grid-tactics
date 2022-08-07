@@ -63,6 +63,7 @@ public class RoomMenu : MonoBehaviour {
         _gameNetworkManager.RoomServerSceneChangedAction += UpdateLobbyOpenStatus;
         _gameNetworkManager.RoomClientSceneChangedAction += AddUnassignedPlayers;
         GameNetworkPlayer.PlayerSteamInfoDetermined += AddUnassignedPlayers;
+        GameNetworkPlayer.PlayerReadyStatusChanged += UpdatePlayerReadyStatus;
         GameNetworkPlayer.PlayerExitedRoom += UnassignPlayer;
         GameNetworkPlayer.PlayerExitedRoom += ResetReadyButton;
 
@@ -75,6 +76,7 @@ public class RoomMenu : MonoBehaviour {
     
     private void OnDestroy() {
         GameNetworkPlayer.PlayerSteamInfoDetermined -= AddUnassignedPlayers;
+        GameNetworkPlayer.PlayerReadyStatusChanged -= UpdatePlayerReadyStatus;
         GameNetworkPlayer.PlayerExitedRoom -= UnassignPlayer;
         GameNetworkPlayer.PlayerExitedRoom -= ResetReadyButton;
         if (_gameNetworkManager != null) {
@@ -136,7 +138,16 @@ public class RoomMenu : MonoBehaviour {
             }
         }
 
+        UpdatePlayerReadyStatus();
         // TODO: If players can update their info for their slots, do so here
+    }
+
+    private void UpdatePlayerReadyStatus() {
+        List<GameNetworkPlayer> players = _gameNetworkManager.roomSlots.ConvertAll(player => (GameNetworkPlayer)player);
+
+        foreach (PlayerSlot slot in new [] {PlayerSlot1, PlayerSlot2}) {
+            slot.UpdateReadyStatus();
+        }
     }
 
     private void UnassignPlayer() {

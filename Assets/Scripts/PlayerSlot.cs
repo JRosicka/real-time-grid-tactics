@@ -14,7 +14,9 @@ public class PlayerSlot : MonoBehaviour {
     public Image Color;
     public TMP_Text EmptyLabel;
     public Button KickButton;
-
+    public TMP_Text ReadyText;
+    public TMP_Text NotReadyText;
+    
     [Header("Config")]
     public Color PlayerColor;
     public int PlayerIndex;
@@ -62,6 +64,15 @@ public class PlayerSlot : MonoBehaviour {
         // TODO the kicked player probably should not be let back in. We could add a blocklist of steam IDs as metadata to the lobby and filter blocked IDs out when searching for lobbies, and then also deny entry if they try to join directly through steam. 
     }
 
+    public void UpdateReadyStatus() {
+        if (AssignedPlayer == null) {
+            return;
+        }
+        
+        ReadyText.gameObject.SetActive(AssignedPlayer.ReadyToPlay);
+        NotReadyText.gameObject.SetActive(!AssignedPlayer.ReadyToPlay);
+    }
+
     /// <summary>
     /// Either display the slot in its active or inactive state
     /// </summary>
@@ -71,5 +82,10 @@ public class PlayerSlot : MonoBehaviour {
         Color.gameObject.SetActive(active);
         EmptyLabel.gameObject.SetActive(!active);
         KickButton.gameObject.SetActive(false);
+        ReadyText.gameObject.SetActive(false);
+        NotReadyText.gameObject.SetActive(active);
+        if (active) {
+            UpdateReadyStatus();
+        }
     }
 }
