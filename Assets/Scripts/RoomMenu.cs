@@ -118,7 +118,7 @@ public class RoomMenu : MonoBehaviour {
 
     private void AddUnassignedPlayers() {
         // List<GameNetworkPlayer> players = _gameNetworkManager.roomSlots.ConvertAll(player => (GameNetworkPlayer)player);
-        List<GameNetworkPlayer> players = FindObjectsOfType<GameNetworkPlayer>().ToList();
+        List<GameNetworkPlayer> players = FindObjectsOfType<GameNetworkPlayer>().OrderBy(p => p.index).ToList();
         
         // Assign any unassigned players
         bool isHosting = _gameNetworkManager.IsHosting();
