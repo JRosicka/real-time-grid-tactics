@@ -19,6 +19,7 @@ public class MultiplayerMenu : MonoBehaviour {
     public GameObject JoinByIDMenu;
     public TMP_InputField JoinByIDField;
     public GameObject FailedToJoinLobbyDialog;
+    public TMP_Text FailedToJoinLobbyText;
 
     public TMP_Text LobbyStatusText;
 
@@ -37,9 +38,10 @@ public class MultiplayerMenu : MonoBehaviour {
         LobbyListEntry.LobbyJoinAttemptStarted -= PromptJoinIDForLobby;
     }
     
-    private void OnLobbyJoinComplete(bool success) {
+    private void OnLobbyJoinComplete(bool success, string failureMessage) {
         if (!success) {
             ResetMultiplayerMenu();
+            FailedToJoinLobbyText.text = $"Failed to join lobby: {failureMessage}";
             FailedToJoinLobbyDialog.SetActive(true);
         } else {
             // TODO I don't think we need to do anything here since we're about to be whisked away to the room scene. 
@@ -141,9 +143,10 @@ public class MultiplayerMenu : MonoBehaviour {
             // Otherwise, the player put in the correct join code, so just continue and join like normal
         }
         
-        SteamLobbyService.Instance.RequestLobbyByID(id, (lobby, success) => {
+        SteamLobbyService.Instance.RequestLobbyByID(id, (lobby, success, failureMessage) => {
             if (!success) {
                 Debug.Log("Failed to join lobby by ID");
+                FailedToJoinLobbyText.text = $"Failed to join lobby: {failureMessage}";
                 FailedToJoinLobbyDialog.SetActive(true);
                 _onClickedOkayOnFailedToJoinLobbyDialog += () => JoinByIDMenu.SetActive(true);
                 JoinByIDMenu.SetActive(false);
