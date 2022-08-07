@@ -32,8 +32,15 @@ namespace Game.Network
             PlayerSteamInfoDetermined.SafeInvoke();
         }
 
+        [Server]
         public void Kick() {
-            netIdentity.connectionToClient.Disconnect();
+            TargetKick(netIdentity.connectionToClient);
+        }
+
+        [TargetRpc]
+        private void TargetKick(NetworkConnection target) {
+            DisconnectFeedbackService.SetDisconnectReason(DisconnectFeedbackService.DisconnectReason.Kicked);
+            netIdentity.connectionToServer.Disconnect();
         }
 
         public override void OnStartClient()

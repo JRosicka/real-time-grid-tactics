@@ -18,8 +18,8 @@ public class MultiplayerMenu : MonoBehaviour {
     public LobbyListMenu LobbyListMenu;
     public GameObject JoinByIDMenu;
     public TMP_InputField JoinByIDField;
-    public GameObject FailedToJoinLobbyDialog;
-    public TMP_Text FailedToJoinLobbyText;
+    public GameObject FailureFeedbackDialog;
+    public TMP_Text FailureFeedbackText;
 
     public TMP_Text LobbyStatusText;
 
@@ -31,18 +31,43 @@ public class MultiplayerMenu : MonoBehaviour {
     private void Start() {
         SteamLobbyService.Instance.OnLobbyJoinComplete += OnLobbyJoinComplete;
         LobbyListEntry.LobbyJoinAttemptStarted += PromptJoinIDForLobby;
+        
+        ShowDisconnectMessageIfAppropriate();
     }
 
     private void OnDestroy() {
         SteamLobbyService.Instance.OnLobbyJoinComplete -= OnLobbyJoinComplete;
         LobbyListEntry.LobbyJoinAttemptStarted -= PromptJoinIDForLobby;
     }
+
+    private void ShowDisconnectMessageIfAppropriate() {
+        switch (DisconnectFeedbackService.ProcessLastDisconnect()) {
+            case DisconnectFeedbackService.DisconnectReason.NotDisconnected:
+                // This is the first time we reached the main menu, no disconnect. Nothing to do. 
+                break;
+            case DisconnectFeedbackService.DisconnectReason.Unknown:
+                ShowFailureFeedback("Disconnected from game: lost connection to server.");
+                break;
+            case DisconnectFeedbackService.DisconnectReason.ClientDisconnect:
+                // The client voluntarily left, so nothing to display here.
+                break;
+            case DisconnectFeedbackService.DisconnectReason.Kicked:
+                ShowFailureFeedback("Disconnected from game: kicked.");
+                break;
+            default:
+                throw new ArgumentOutOfRangeException();
+        }
+    }
+
+    private void ShowFailureFeedback(string message) {
+        FailureFeedbackText.text = message;
+        FailureFeedbackDialog.SetActive(true);
+    }
     
     private void OnLobbyJoinComplete(bool success, string failureMessage) {
         if (!success) {
             ResetMultiplayerMenu();
-            FailedToJoinLobbyText.text = $"Failed to join lobby: {failureMessage}";
-            FailedToJoinLobbyDialog.SetActive(true);
+            ShowFailureFeedback($"Failed to join lobby: {failureMessage}");
         } else {
             // TODO I don't think we need to do anything here since we're about to be whisked away to the room scene. 
         }
@@ -122,11 +147,11 @@ public class MultiplayerMenu : MonoBehaviour {
         // TODO cancel logic
     }
 
-    private event Action _onClickedOkayOnFailedToJoinLobbyDialog;
-    public void OnClickedOkOnFailedToJoinLobbyDialog() {
-        FailedToJoinLobbyDialog.SetActive(false);
-        _onClickedOkayOnFailedToJoinLobbyDialog.SafeInvoke();
-        _onClickedOkayOnFailedToJoinLobbyDialog = null;
+    private event Action _onClickedOkayOnFailureDialog;
+    public void OnClickedOkOnFailureDialog() {
+        FailureFeedbackDialog.SetActive(false);
+        _onClickedOkayOnFailureDialog.SafeInvoke();
+        _onClickedOkayOnFailureDialog = null;
     }
 
     private string _joinCodeForLobbyWeAreAttemptingToJoin;
@@ -146,9 +171,8 @@ public class MultiplayerMenu : MonoBehaviour {
         SteamLobbyService.Instance.RequestLobbyByID(id, (lobby, success, failureMessage) => {
             if (!success) {
                 Debug.Log("Failed to join lobby by ID");
-                FailedToJoinLobbyText.text = $"Failed to join lobby: {failureMessage}";
-                FailedToJoinLobbyDialog.SetActive(true);
-                _onClickedOkayOnFailedToJoinLobbyDialog += () => JoinByIDMenu.SetActive(true);
+                ShowFailureFeedback($"Failed to join lobby: {failureMessage}");
+                _onClickedOkayOnFailureDialog += () => JoinByIDMenu.SetActive(true);
                 JoinByIDMenu.SetActive(false);
                 _joinCodeForLobbyWeAreAttemptingToJoin = null;
                 return;

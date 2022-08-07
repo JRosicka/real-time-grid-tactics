@@ -227,6 +227,8 @@ namespace Game.Network
         public event Action RoomClientExitAction;
         public override void OnRoomClientExit() {
             DebugLog(nameof(OnRoomClientExit));
+
+            DisconnectFeedbackService.SetDisconnected();
             
             // See if the local player is still in the lobby. If not, then this is us as the lobby host leaving,
             // so let's leave the steam lobby as well

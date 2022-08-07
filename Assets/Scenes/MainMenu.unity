@@ -2439,7 +2439,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 764379207}
         m_TargetAssemblyTypeName: MultiplayerMenu, Assembly-CSharp
-        m_MethodName: OnClickedOkOnFailedToJoinLobbyDialog
+        m_MethodName: OnClickedOkOnFailureDialog
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

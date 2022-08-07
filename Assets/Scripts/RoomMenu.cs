@@ -96,6 +96,7 @@ public class RoomMenu : MonoBehaviour {
     }
 
     public void ExitRoom() {
+        DisconnectFeedbackService.SetDisconnectReason(DisconnectFeedbackService.DisconnectReason.ClientDisconnect);
         if (NetworkServer.active) {
             // We're the host, so stop the whole server
             _gameNetworkManager.StopHost();
