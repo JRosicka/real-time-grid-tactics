@@ -7,11 +7,16 @@ using Object = System.Object;
 public class LobbyListMenu : MonoBehaviour {
     public LobbyListEntry LobbyListEntryPrefab;
     public GameObject ScrollViewContent;
+    public GameObject LoadingIcon;
     
     private List<LobbyListEntry> _lobbyEntries = new List<LobbyListEntry>();
 
     public void ShowMenu() {
         gameObject.SetActive(true);
+        
+        // Get ready to display lobbies when we find them
+        SteamLobbyService.Instance.OnLobbyEntryConstructed += DisplayLobby;
+
         RefreshLobbyList();
     }
 
@@ -30,14 +35,17 @@ public class LobbyListMenu : MonoBehaviour {
         _lobbyEntries.ForEach(e => Destroy(e.gameObject));
         _lobbyEntries.Clear();
         
-        // Get ready to display lobbies when we find them
-        SteamLobbyService.Instance.OnLobbyEntryConstructed += DisplayLobby;
-
+        // Show loading animation
+        LoadingIcon.SetActive(true);
+        
         // Search for lobbies
         SteamLobbyService.Instance.GetAllOpenLobbies(SteamLobbyService.Instance.ProcessReturnedLobbies);
     }
 
     private void DisplayLobby(SteamLobbyService.Lobby lobby) {
+        // Hide the loading animation if it is being displayed
+        LoadingIcon.SetActive(false);
+        
         LobbyListEntry newEntry = Instantiate(LobbyListEntryPrefab, ScrollViewContent.transform);
         newEntry.PopulateEntry(lobby);
         _lobbyEntries.Add(newEntry);
