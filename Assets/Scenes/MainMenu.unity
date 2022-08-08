@@ -573,7 +573,7 @@ GameObject:
   - component: {fileID: 290823806}
   - component: {fileID: 290823805}
   m_Layer: 5
-  m_Name: Failed to Join Lobby Dialog
+  m_Name: Failure dialog
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1798,8 +1798,8 @@ MonoBehaviour:
   LobbyListMenu: {fileID: 1324623174}
   JoinByIDMenu: {fileID: 625439146}
   JoinByIDField: {fileID: 355398398}
-  FailedToJoinLobbyDialog: {fileID: 290823803}
-  FailedToJoinLobbyText: {fileID: 359896409}
+  FailureFeedbackDialog: {fileID: 290823803}
+  FailureFeedbackText: {fileID: 359896409}
   LobbyStatusText: {fileID: 1910855630}
   NetworkManager: {fileID: 751459968}
   DisabledTextColor: {r: 0.4811321, g: 0.4811321, b: 0.4811321, a: 0.6862745}
