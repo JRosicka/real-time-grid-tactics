@@ -67,7 +67,8 @@ public class SteamLobbyService : MonoBehaviour {
     private bool _isCurrentlyCreatingLobby;
     private bool _lobbyOpenToEveryone;
     private bool _isCurrentlyRequestingLobbies;
-    private bool _isCurrentlyJoiningLobby;
+    private CSteamID _currentIDForLobbyBeingJoined;
+    private bool _isConnectingToLobby;
 
     private Action<uint, bool, string> _onLobbiesReturned;
     public CSteamID CurrentLobbyID;
@@ -112,7 +113,8 @@ public class SteamLobbyService : MonoBehaviour {
         _networkManager = newManager;
         CurrentLobbyID = CSteamID.Nil;
         _isCurrentlyCreatingLobby = false;
-        _isCurrentlyJoiningLobby = false;
+        _currentIDForLobbyBeingJoined = CSteamID.Nil;
+        _isConnectingToLobby = false;
         _isCurrentlyRequestingLobbies = false;
 
         Transport.activeTransport = SteamTransport;
@@ -285,21 +287,23 @@ public class SteamLobbyService : MonoBehaviour {
     /// </summary>
     /// <param name="lobbyID"></param>
     public void JoinLobby(CSteamID lobbyID) {
-        if (_isCurrentlyJoiningLobby) {
-            Debug.LogError("Failed to join lobby because we are already trying to join another lobby!");
+        if (_currentIDForLobbyBeingJoined != CSteamID.Nil || _isConnectingToLobby || _isCurrentlyCreatingLobby) {
+            Debug.LogError("Failed to join lobby because we are already trying to join another lobby (or creating one)!");
             return;
         }
 
-        _isCurrentlyJoiningLobby = true;
+        _currentIDForLobbyBeingJoined = lobbyID;
+        
         // Check to see if the lobby is actually joinable
         RequestLobbyData(lobbyID, lobby => {
             // TODO pass fail string to some error message visible to the user
-            bool canJoin = DetermineIfLobbyIsJoinable(lobby, failMessage => OnLobbyJoinComplete.SafeInvoke(false, failMessage));
-            if (!canJoin) {
-                return;
-            }
-
-            _lobbyEntered.Set(SteamMatchmaking.JoinLobby(lobbyID));
+            DetermineIfLobbyIsJoinable(lobby, (success, failMessage) => {
+                if (success) {
+                    _lobbyEntered.Set(SteamMatchmaking.JoinLobby(lobbyID));
+                }
+                
+                OnLobbyJoinComplete.SafeInvoke(success, failMessage);
+            });
         });
     }
     
@@ -317,30 +321,39 @@ public class SteamLobbyService : MonoBehaviour {
         // Check to see if the lobby is actually joinable
         RequestLobbyData(callback.m_steamIDLobby, lobby => {
             // TODO pass fail string to some error message visible to the user
-            bool canJoin = DetermineIfLobbyIsJoinable(lobby, failMessage => OnLobbyJoinComplete.SafeInvoke(false, failMessage));
-            if (canJoin) {
-                _lobbyEntered.Set(SteamMatchmaking.JoinLobby(callback.m_steamIDLobby));
-            }
+            DetermineIfLobbyIsJoinable(lobby, (success, failMessage) => {
+                if (success) {
+                    _lobbyEntered.Set(SteamMatchmaking.JoinLobby(callback.m_steamIDLobby));
+                }
+                OnLobbyJoinComplete.SafeInvoke(success, failMessage);
+            });
         });
     }
 
-    private bool DetermineIfLobbyIsJoinable(Lobby lobby, Action<string> onFailedToJoinLobby) {
+    private void DetermineIfLobbyIsJoinable(Lobby lobby, Action<bool, string> onComplete) {
         // Check to see if the lobby is full
         if (lobby.Members.Length >= lobby.MemberLimit) {
             Debug.Log("Trying to join a lobby that is currently full, aborting");
-            _isCurrentlyJoiningLobby = false;
-            onFailedToJoinLobby.SafeInvoke("Lobby is full.");
-            return false;
+            _currentIDForLobbyBeingJoined = CSteamID.Nil;
+            onComplete.SafeInvoke(false, "Lobby is full.");
         }
         // Check to see if the lobby's game has started
         if (Convert.ToBoolean(lobby[LobbyGameActiveKey])) {
             Debug.Log("Trying to join a lobby that is currently in a game, aborting");
-            _isCurrentlyJoiningLobby = false;
-            onFailedToJoinLobby.SafeInvoke("Lobby is in the middle of a game.");
-            return false;
+            _currentIDForLobbyBeingJoined = CSteamID.Nil;
+            onComplete.SafeInvoke(false, "Lobby is in the middle of a game.");
         }
-
-        return true;
+        // Look up the lobby by join ID to see if it is still retrievable - if not, it probably doesn't exist
+        RequestLobbyByID(lobby[LobbyUIDKey], (newLobby, success, failureString) => {
+            if (!success) {
+                Debug.Log("Trying to join a lobby that is no longer valid, aborting");
+                _currentIDForLobbyBeingJoined = CSteamID.Nil;
+                onComplete.SafeInvoke(false, "Lobby no longer exists");
+            } else {
+                // Success!
+                onComplete.SafeInvoke(true, "");
+            }
+        });
     }
 
     /// <summary>
@@ -357,14 +370,14 @@ public class SteamLobbyService : MonoBehaviour {
     private void OnLobbyEntered(LobbyEnter_t callback, bool bIoFailure) {
         if (bIoFailure) {
             Debug.LogError("Error requesting to join lobby");
-            _isCurrentlyJoiningLobby = false;
+            _currentIDForLobbyBeingJoined = CSteamID.Nil;
             OnLobbyJoinComplete.SafeInvoke(false, "Unknown error when attempting to join.");
             return;
         }
         
         if (NetworkServer.active) {
             // We are hosting and just joined ourself - no need to do anything
-            _isCurrentlyJoiningLobby = false;
+            _currentIDForLobbyBeingJoined = CSteamID.Nil;
             OnLobbyJoinComplete.SafeInvoke(true, null);
             return;
         }
@@ -377,19 +390,21 @@ public class SteamLobbyService : MonoBehaviour {
             HostAddressKey);
         if (hostAddress.IsNullOrWhitespace()) {
             Debug.LogError("No host address data found when trying to enter lobby, aborting");
-            _isCurrentlyJoiningLobby = false;
+            _currentIDForLobbyBeingJoined = CSteamID.Nil;
             OnLobbyJoinComplete.SafeInvoke(false, "No host address found when attempting to enter lobby.");
             return;
         }
         
-        _isCurrentlyJoiningLobby = false;
+        _currentIDForLobbyBeingJoined = CSteamID.Nil;
+        _isConnectingToLobby = true;
+        // TODO: Maybe trigger an event that the menu is subscribed to so that we can put up a "joining lobby" screen
 
         _networkManager.networkAddress = hostAddress;
         _networkManager.StartClient();
         
         OnLobbyJoinComplete.SafeInvoke(true, null);
     }
-
+    
     #endregion
 
     private event Action<Lobby> _onLobbyDataReceived;
