@@ -1,15 +1,15 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using Sirenix.Utilities;
 using Steamworks;
 using TMPro;
 using UnityEngine;
 
+/// <summary>
+/// View for displaying info about an available Steam room and allowing the player to join the room.
+/// </summary>
 public class LobbyListEntry : MonoBehaviour {
+    private const int PlayerDisplayNameLimit = 20;
+    
     public TMP_Text LobbyNameField;
-    public TMP_Text HostField;
     public TMP_Text RequiresJoinCodeField;
     public TMP_Text PlayerCountField;
     public TMP_Text PingField;
@@ -21,7 +21,8 @@ public class LobbyListEntry : MonoBehaviour {
     private string _joinCode;
     
     public void PopulateEntry(SteamLobbyService.Lobby lobby) {
-        LobbyNameField.text = $"{lobby[SteamLobbyService.LobbyOwnerKey]}'s lobby";
+        string hostName = ProcessName(lobby[SteamLobbyService.LobbyOwnerKey]);
+        LobbyNameField.text = $"{hostName}'s lobby";
         _privateLobby = !Convert.ToBoolean(lobby[SteamLobbyService.LobbyIsOpenKey]);
         RequiresJoinCodeField.text = _privateLobby ? "Yes" : "No";
         if (_privateLobby) {
@@ -39,5 +40,17 @@ public class LobbyListEntry : MonoBehaviour {
         } else {
             SteamLobbyService.Instance.JoinLobby(_lobbyID);
         }
+    }
+
+    /// <summary>
+    /// Process the name if it is too long to display
+    /// </summary>
+    private static string ProcessName(string fullName) {
+        string filteredName = fullName.Substring(0, Mathf.Min(fullName.Length, PlayerDisplayNameLimit));
+        if (filteredName.Length < fullName.Length) {
+            filteredName += "...";
+        }
+
+        return filteredName;
     }
 }

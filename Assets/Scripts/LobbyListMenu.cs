@@ -65,6 +65,9 @@ public class LobbyListMenu : MonoBehaviour {
         });
     }
 
+    /// <summary>
+    /// Construct a new lobby entry view in the list and populate it with the data from the retrieved lobby
+    /// </summary>
     private void DisplayLobby(SteamLobbyService.Lobby lobby) {
         // Hide the loading animation if it is being displayed
         LoadingIcon.SetActive(false);
