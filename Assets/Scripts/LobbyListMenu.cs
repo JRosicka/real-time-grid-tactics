@@ -1,15 +1,17 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Object = System.Object;
 
+/// <summary>
+/// View for retrieving and displaying available Steam rooms
+/// </summary>
 public class LobbyListMenu : MonoBehaviour {
     public LobbyListEntry LobbyListEntryPrefab;
     public GameObject ScrollViewContent;
     public GameObject LoadingIcon;
+    public GameObject NoLobbiesFoundMessage;
     
     private List<LobbyListEntry> _lobbyEntries = new List<LobbyListEntry>();
+    private bool _retrievingLobbies;
 
     public void ShowMenu() {
         gameObject.SetActive(true);
@@ -19,10 +21,15 @@ public class LobbyListMenu : MonoBehaviour {
 
         RefreshLobbyList();
     }
+    
+    private void OnDestroy() {
+        SteamLobbyService.Instance.OnLobbyEntryConstructed -= DisplayLobby;
+    }
 
     public void LeaveMenu() {
         SteamLobbyService.Instance.OnLobbyEntryConstructed -= DisplayLobby;
-        // TODO Cancel any lobby join attempts
+        _retrievingLobbies = false;
+        NoLobbiesFoundMessage.SetActive(false);
 
         // Clear out the old list if there are entries in it
         _lobbyEntries.ForEach(e => Destroy(e.gameObject));
@@ -31,6 +38,13 @@ public class LobbyListMenu : MonoBehaviour {
     }
 
     public void RefreshLobbyList() {
+        if (_retrievingLobbies) {
+            return;
+        }
+
+        _retrievingLobbies = true;
+        NoLobbiesFoundMessage.SetActive(false);
+
         // Clear out the old list if there are entries in it
         _lobbyEntries.ForEach(e => Destroy(e.gameObject));
         _lobbyEntries.Clear();
@@ -39,7 +53,16 @@ public class LobbyListMenu : MonoBehaviour {
         LoadingIcon.SetActive(true);
         
         // Search for lobbies
-        SteamLobbyService.Instance.GetAllOpenLobbies(SteamLobbyService.Instance.ProcessReturnedLobbies);
+        SteamLobbyService.Instance.GetAllOpenLobbies((lobbyCount, success, failureMessage) => {
+            _retrievingLobbies = false;
+
+            // Hide the loading animation if it is being displayed
+            LoadingIcon.SetActive(false);
+            // If no lobbies were found, display that to the user
+            NoLobbiesFoundMessage.SetActive(lobbyCount == 0);
+            
+            SteamLobbyService.Instance.ProcessReturnedLobbies(lobbyCount, success, failureMessage);
+        });
     }
 
     private void DisplayLobby(SteamLobbyService.Lobby lobby) {
@@ -49,9 +72,5 @@ public class LobbyListMenu : MonoBehaviour {
         LobbyListEntry newEntry = Instantiate(LobbyListEntryPrefab, ScrollViewContent.transform);
         newEntry.PopulateEntry(lobby);
         _lobbyEntries.Add(newEntry);
-    }
-
-    private void OnDestroy() {
-        SteamLobbyService.Instance.OnLobbyEntryConstructed -= DisplayLobby;
     }
 }
