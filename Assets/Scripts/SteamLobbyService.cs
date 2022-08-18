@@ -1,17 +1,14 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
-using System.Security.Cryptography;
 using Game.Network;
 using Mirror;
 using Sirenix.Utilities;
 using Steamworks;
-using Unity.VisualScripting;
 using UnityEngine;
 
 /// <summary>
-/// Interface to work with SteamWorks.NET to host, join, and search for lobbies
+/// Interface to work with SteamWorks.NET to interface with Steam lobbies. This includes hosting, joining, searching,
+/// and updating metadata. 
 /// </summary>
 public class SteamLobbyService : MonoBehaviour {
     /// <summary>
@@ -23,7 +20,7 @@ public class SteamLobbyService : MonoBehaviour {
     }
 
     /// <summary>
-    /// Represents a steam user inside of a lobby
+    /// Represents a steam user inside of a <see cref="Lobby"/>
     /// </summary>
     public struct LobbyMember {
         public CSteamID SteamID;
@@ -35,11 +32,13 @@ public class SteamLobbyService : MonoBehaviour {
     /// </summary>
     public struct Lobby {
         public CSteamID SteamID;
-        // public CSteamID Owner;
-        public LobbyMember[] Members;
         public int MemberLimit;
+        public LobbyMember[] Members;
         public LobbyMetaData[] Data;
 
+        /// <summary>
+        /// Retrieves the metadata for the given key, if that metadata exists
+        /// </summary>
         public string this[string key] => Data.FirstOrDefault(data => data.Key.Equals(key)).Value;
     }
 
@@ -53,11 +52,18 @@ public class SteamLobbyService : MonoBehaviour {
     public const string LobbyGameActiveKey = "GameIsActive";
     public const string LobbyOwnerKey = "LobbyOwner";
 
-    public static readonly string[] LobbyMemberDataKeys = { "faction", "playerType", "color" };
-
+    /// <summary>
+    /// Metadata keys for <see cref="LobbyMember"/>s in a <see cref="Lobby"/>
+    /// </summary>
+    public enum LobbyMemberData {
+        Faction,
+        PlayerType,
+        Color
+    }
+    
     private CallResult<LobbyCreated_t> _lobbyCreated;                      // When creating a lobby
     private CallResult<LobbyMatchList_t> _lobbyMatchList;                  // When getting a list of lobbies
-    private Callback<GameLobbyJoinRequested_t> _lobbyJoinRequested;        // When a player direct joins a lobby (not a game) // TODO when does this trigger compared to GameRichPresenceJoinRequested_t ?
+    // private Callback<GameLobbyJoinRequested_t> _lobbyJoinRequested;        // When a player direct joins a lobby (not a game) // TODO when does this trigger compared to GameRichPresenceJoinRequested_t ?
     private Callback<GameRichPresenceJoinRequested_t> _gameJoinRequested;   // When a player direct joins a game (not a lobby)
     private CallResult<LobbyEnter_t> _lobbyEntered;                        // At the entrance to the lobby
     // private CallResult<LobbyChatMsg_t> _lobbyChatMessage;               // When you receive a message in the lobby
@@ -123,8 +129,6 @@ public class SteamLobbyService : MonoBehaviour {
     private void SetupCallbacks() {
         _lobbyCreated = CallResult<LobbyCreated_t>.Create(OnLobbyCreated);
         _lobbyMatchList = CallResult<LobbyMatchList_t>.Create(OnLobbyMatchListReturned);
-        _lobbyJoinRequested = Callback<GameLobbyJoinRequested_t>.Create(OnLobbyJoinRequested);
-        _gameJoinRequested = Callback<GameRichPresenceJoinRequested_t>.Create(OnGameJoinRequested);
         _lobbyEntered = CallResult<LobbyEnter_t>.Create(OnLobbyEntered);
         _lobbyDataUpdate = Callback<LobbyDataUpdate_t>.Create(OnMetadataUpdated);
     }
@@ -162,9 +166,9 @@ public class SteamLobbyService : MonoBehaviour {
 
         // Give Steam our lobby info
         SteamMatchmaking.SetLobbyData(
-            CurrentLobbyID,                            // The lobby
-            HostAddressKey,                     // Key
-            SteamUser.GetSteamID().ToString()); // Our Steam ID
+            CurrentLobbyID,                                 // The lobby
+            HostAddressKey,                                 // Key
+            SteamUser.GetSteamID().ToString());     // Our Steam ID
         
         // Assign a UID
         SteamMatchmaking.SetLobbyData(CurrentLobbyID, LobbyUIDKey, GenerateUniqueID());
@@ -181,19 +185,22 @@ public class SteamLobbyService : MonoBehaviour {
         // Assign the game-active status (false since we just started this lobby)
         SteamMatchmaking.SetLobbyData(CurrentLobbyID, LobbyGameActiveKey, false.ToString());
         
-        // TODO can assign any other metadata like the map it's on, description, password
-        
         _isCurrentlyCreatingLobby = false;
         _lobbyOpenToEveryone = false;
         OnLobbyCreationComplete.SafeInvoke(true);
     }
     
-    private string GenerateUniqueID() {
+    /// <summary>
+    /// Create and pretty-fy a unique string ID
+    /// </summary>
+    private static string GenerateUniqueID() {
+        // TODO: If two users create lobbies at the exact same tick, then they will have the same IDs. Probably won't happen, but this definitely isn't ideal.
         long ticks = DateTime.Now.Ticks;
         byte[] bytes = BitConverter.GetBytes(ticks);
         string uid = Convert.ToBase64String(bytes)
-            .Replace('+', '_')
-            .Replace('/', '-')
+            .Replace('+', '0')    // Bad
+            .Replace('/', '1')    // Also bad
+            .Replace('-', '2')    // Yup, also bad
             .TrimEnd('=');
         uid = uid.Substring(0, 8);
         uid = uid.Substring(0, 4) + "-" + uid.Substring(4, 4);
@@ -208,6 +215,7 @@ public class SteamLobbyService : MonoBehaviour {
     /// <summary>
     /// Request a particular lobby by filtering lobbies for one with the specified joinID in its metadata.
     /// Can fail.
+    /// Takes a while to complete - listen for the passed-in action for completion.
     /// </summary>
     public void RequestLobbyByID(string joinID, Action<Lobby, bool, string> onLobbyProcessed = null) {
         if (_isCurrentlyRequestingLobbies) {
@@ -217,6 +225,7 @@ public class SteamLobbyService : MonoBehaviour {
 
         _isCurrentlyRequestingLobbies = true;
         
+        // Only allow the lobby with the specified ID to be retrieved
         SteamMatchmaking.AddRequestLobbyListResultCountFilter(1);
         SteamMatchmaking.AddRequestLobbyListStringFilter(LobbyUIDKey, joinID, ELobbyComparison.k_ELobbyComparisonEqual);
         
@@ -242,6 +251,7 @@ public class SteamLobbyService : MonoBehaviour {
     /// <summary>
     /// Requests all public lobbies. If filters should be applied, then do so before calling this method.
     /// Can fail.
+    /// Takes a while to complete - listen for the passed-in action for completion.
     /// </summary>
     public void GetAllOpenLobbies(Action<uint, bool, string> onLobbiesReturned) {
         if (SteamMatchmakingServers.IsRefreshing(_currentServerListRequest)) {
@@ -283,7 +293,8 @@ public class SteamLobbyService : MonoBehaviour {
     #region Join Lobby
     
     /// <summary>
-    /// Joins a lobby, looking it up by CSteamID. Listen for <see cref="OnLobbyJoinComplete"/> for result. 
+    /// Joins a lobby, looking it up by CSteamID.
+    /// Takes a while to complete - listen for <see cref="OnLobbyJoinComplete"/> for result. 
     /// </summary>
     /// <param name="lobbyID"></param>
     public void JoinLobby(CSteamID lobbyID) {
@@ -294,15 +305,14 @@ public class SteamLobbyService : MonoBehaviour {
 
         _currentIDForLobbyBeingJoined = lobbyID;
         
-        // Check to see if the lobby is actually joinable
         RequestLobbyData(lobbyID, lobby => {
-            // TODO pass fail string to some error message visible to the user
-            DetermineIfLobbyIsJoinable(lobby, (success, failMessage) => {
-                if (success) {
+            // Check to see if the lobby is actually joinable
+            VerifyLobby(lobby, (isJoinable, failMessage) => {
+                if (isJoinable) {
                     _lobbyEntered.Set(SteamMatchmaking.JoinLobby(lobbyID));
                 }
                 
-                OnLobbyJoinComplete.SafeInvoke(success, failMessage);
+                OnLobbyJoinComplete.SafeInvoke(isJoinable, failMessage);
             });
         });
     }
@@ -310,27 +320,16 @@ public class SteamLobbyService : MonoBehaviour {
     /// <summary>
     /// When joining a lobby (not a game) directly through Steam
     /// </summary>
-    private void OnLobbyJoinRequested(GameLobbyJoinRequested_t callback) {
-        // if (bIoFailure) {
-        //     Debug.LogError("Error requesting to join lobby");
-        //     OnLobbyJoinComplete.SafeInvoke(false);
-        //     return;
-        // }    // TODO I don't think I can really do any error handling with this one
-        Debug.Log($"{nameof(OnLobbyJoinRequested)} - joining lobby");
-        
-        // Check to see if the lobby is actually joinable
-        RequestLobbyData(callback.m_steamIDLobby, lobby => {
-            // TODO pass fail string to some error message visible to the user
-            DetermineIfLobbyIsJoinable(lobby, (success, failMessage) => {
-                if (success) {
-                    _lobbyEntered.Set(SteamMatchmaking.JoinLobby(callback.m_steamIDLobby));
-                }
-                OnLobbyJoinComplete.SafeInvoke(success, failMessage);
-            });
-        });
+    private void OnLobbyJoinRequestedThroughSteamAPI(GameLobbyJoinRequested_t callback) {
+        Debug.Log($"{nameof(OnLobbyJoinRequestedThroughSteamAPI)} - attempting to join lobby");
+        JoinLobby(callback.m_steamIDLobby);
     }
 
-    private void DetermineIfLobbyIsJoinable(Lobby lobby, Action<bool, string> onComplete) {
+    /// <summary>
+    /// Determine whether the passed-in lobby is actually eligible to be joined.
+    /// This takes a while to complete - listen for the passed in action to be triggered.
+    /// </summary>
+    private void VerifyLobby(Lobby lobby, Action<bool, string> onComplete) {
         // Check to see if the lobby is full
         if (lobby.Members.Length >= lobby.MemberLimit) {
             Debug.Log("Trying to join a lobby that is currently full, aborting");
@@ -356,17 +355,6 @@ public class SteamLobbyService : MonoBehaviour {
         });
     }
 
-    /// <summary>
-    /// When joining a lobby (not a game) directly through Steam
-    /// </summary>
-    private void OnGameJoinRequested(GameRichPresenceJoinRequested_t callback) {
-        // TODO I don't think I can really do any error handling with this one
-
-        Debug.Log($"{nameof(OnGameJoinRequested)} - joining game");
-
-        // _lobbyEntered.Set(SteamMatchmaking.JoinLobby(callback.m_steamIDLobby));
-    }
-
     private void OnLobbyEntered(LobbyEnter_t callback, bool bIoFailure) {
         if (bIoFailure) {
             Debug.LogError("Error requesting to join lobby");
@@ -384,7 +372,7 @@ public class SteamLobbyService : MonoBehaviour {
         
         CurrentLobbyID = new CSteamID(callback.m_ulSteamIDLobby);
         
-        // Tell Mirror to connect to the host
+        // Get the host address key
         string hostAddress = SteamMatchmaking.GetLobbyData(
             CurrentLobbyID,
             HostAddressKey);
@@ -395,19 +383,27 @@ public class SteamLobbyService : MonoBehaviour {
             return;
         }
         
-        _currentIDForLobbyBeingJoined = CSteamID.Nil;
-        _isConnectingToLobby = true;
         // TODO: Maybe trigger an event that the menu is subscribed to so that we can put up a "joining lobby" screen
 
+        // Tell Mirror to connect to the host
         _networkManager.networkAddress = hostAddress;
         _networkManager.StartClient();
         
+        _currentIDForLobbyBeingJoined = CSteamID.Nil;
+        _isConnectingToLobby = true;
         OnLobbyJoinComplete.SafeInvoke(true, null);
     }
     
     #endregion
 
     private event Action<Lobby> _onLobbyDataReceived;
+    // TODO I left off refactoring here
+    /// <summary>
+    /// Get info for the passed-in lobby.
+    /// Takes a while to complete - listen for the passed-in action to trigger.
+    /// </summary>
+    /// <param name="lobbyID"></param>
+    /// <param name="onLobbyDataReceived"></param>
     private void RequestLobbyData(CSteamID lobbyID, Action<Lobby> onLobbyDataReceived) {
         _onLobbyDataReceived += onLobbyDataReceived;
         SteamMatchmaking.RequestLobbyData(lobbyID);
@@ -435,7 +431,6 @@ public class SteamLobbyService : MonoBehaviour {
         int memberCount = SteamMatchmaking.GetNumLobbyMembers(lobbyID);
         Lobby lobby = new Lobby {
             SteamID = lobbyID,
-            // Owner = SteamMatchmaking.GetLobbyOwner(lobbyID),
             Members = new LobbyMember[memberCount],
             MemberLimit = SteamMatchmaking.GetLobbyMemberLimit(lobbyID),
             Data = new LobbyMetaData[dataCount]
@@ -455,6 +450,8 @@ public class SteamLobbyService : MonoBehaviour {
                 continue;
             }
         }
+
+        int metaDataKeyCount = Enum.GetValues(typeof(LobbyMemberData)).Length;
         
         // Get lobby member IDs and metadata
         for (int i = 0; i < memberCount; i++) {
@@ -462,12 +459,13 @@ public class SteamLobbyService : MonoBehaviour {
             CSteamID lobbyMember = SteamMatchmaking.GetLobbyMemberByIndex(lobbyID, i);
             lobby.Members[i] = new LobbyMember {
                 SteamID = lobbyMember,
-                Data = new LobbyMetaData[LobbyMemberDataKeys.Length]
+                Data = new LobbyMetaData[metaDataKeyCount]
             };
-            for (int j = 0; j < LobbyMemberDataKeys.Length; j++) {
+            for (int j = 0; j < metaDataKeyCount; j++) {
+                string metadataKey = ((LobbyMemberData) j).ToString();
                 lobby.Members[i].Data[j] = new LobbyMetaData {
-                    Key = LobbyMemberDataKeys[j],
-                    Value = SteamMatchmaking.GetLobbyMemberData(lobbyID, lobbyMember, LobbyMemberDataKeys[j])
+                    Key = metadataKey,
+                    Value = SteamMatchmaking.GetLobbyMemberData(lobbyID, lobbyMember, metadataKey)
                 };
             }
         }
