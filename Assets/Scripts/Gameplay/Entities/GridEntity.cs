@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -18,13 +19,17 @@ public abstract class GridEntity : MonoBehaviour, IPointerUpHandler {
     public Sprite MainImage;
     public Sprite TeamColorImage;
     
+    [DoNotSerialize]
+    public bool Registered;
     protected IInteractBehavior InteractBehavior;
 
     private void Awake() {
         _mainSprite.sprite = MainImage;
         _teamColorSprite.sprite = TeamColorImage;
+        
+        GameManager.Instance.EntityManager.RegisterEntity(this);
     }
-
+    
     void Start()
     {
         
@@ -40,7 +45,7 @@ public abstract class GridEntity : MonoBehaviour, IPointerUpHandler {
     public void ReceiveAttackFromEntity(GridEntity sourceEntity) {
         Debug.Log($"Attacked!!!! And from a {sourceEntity.UnitName} no less! OW");
     }
-
+    
     public void OnPointerUp(PointerEventData eventData) {
         switch (eventData.button) {
             case PointerEventData.InputButton.Left:

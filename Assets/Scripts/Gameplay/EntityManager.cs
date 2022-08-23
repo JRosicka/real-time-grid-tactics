@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Sirenix.OdinInspector;
@@ -43,10 +44,29 @@ public class EntityManager : MonoBehaviour {
         }
 
         GridEntity entityInstance = Instantiate(entityPrefab, SpawnBucket);
-        _entitiesOnGrid[spawnLocation] = entityInstance;
+        RegisterEntity(entityInstance, spawnLocation);
         SnapEntityToCell(entityInstance, spawnLocation);
 
         return true;
+    }
+
+    public void RegisterEntity(GridEntity entity) {
+        if (entity.Registered)
+            return;
+
+        RegisterEntity(entity, gridController.GetCellPosition(entity.transform.position));
+    }
+    
+    public void RegisterEntity(GridEntity entity, Vector3Int position) {
+        if (entity.Registered)
+            return;
+        if (_entitiesOnGrid.ContainsKey(position) && _entitiesOnGrid[position] != null) {
+            throw new IllegalEntityRegistryException(position, entity, _entitiesOnGrid[position]);
+        }
+        
+        _entitiesOnGrid[position] = entity;
+        entity.Registered = true;
+        Debug.Log($"Registered new entity {entity.UnitName} at position {position}");
     }
 
     /// <summary>
@@ -54,5 +74,13 @@ public class EntityManager : MonoBehaviour {
     /// </summary>
     public void SnapEntityToCell(GridEntity entity, Vector3Int destination) {
         entity.transform.position = gridController.GetWorldPosition(destination);
+    }
+
+    private class IllegalEntityRegistryException : Exception {
+        public IllegalEntityRegistryException(Vector3Int location, 
+                GridEntity attemptedRegistryEntity, 
+                GridEntity entityAtLocation) 
+            : base($"Failed to register {nameof(GridEntity)} ({attemptedRegistryEntity.UnitName}) at location {location}"
+                   + $" because another {nameof(GridEntity)} ({entityAtLocation.UnitName}) already exists there") { }
     }
 }
