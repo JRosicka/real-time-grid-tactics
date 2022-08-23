@@ -3,6 +3,7 @@ using Game.Network;
 using Steamworks;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 using UnityEngine.UI;
 
 public class MultiplayerMenu : MonoBehaviour {
@@ -177,6 +178,14 @@ public class MultiplayerMenu : MonoBehaviour {
                 _joinCodeForLobbyWeAreAttemptingToJoin = null;
                 return;
             }
+
+            Tilemap map = new Tilemap();
+            TileBase tile = map.GetTile(new Vector3Int(0, 1));
+            TileData data;
+            GameObject spawnedObject = map.GetInstantiatedObject(new Vector3Int(0, 1));
+            GameplayTile gameTile = (GameplayTile)tile;
+            Grid grid;
+            
 
             SteamLobbyService.Instance.JoinLobby(lobby.SteamID);
             _joinCodeForLobbyWeAreAttemptingToJoin = null;
