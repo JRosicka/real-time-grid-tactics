@@ -1274,6 +1274,7 @@ MonoBehaviour:
   SpawnLocationUnit2: {x: 2, y: 6, z: 0}
   Unit2: {fileID: 4361409182630671206, guid: 96bef6f8906dd8040aea69c5ec77d0e2, type: 3}
   SpawnBucket: {fileID: 715509370}
+  SelectedEntity: {fileID: 0}
 --- !u!4 &1022532179
 Transform:
   m_ObjectHideFlags: 0
@@ -1579,7 +1580,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _grid: {fileID: 1769013660}
   _gameplayTilemap: {fileID: 1986325198}
-  SelectedEntity: {fileID: 0}
 --- !u!1 &1770630897
 GameObject:
   m_ObjectHideFlags: 0

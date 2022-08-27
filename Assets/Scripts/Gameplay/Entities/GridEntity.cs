@@ -9,7 +9,7 @@ using UnityEngine.EventSystems;
 /// Represents an entity that exists at a specific position on the gameplay grid.
 /// Has an <see cref="IInteractBehavior"/> field to handle player input. 
 /// </summary>
-public abstract class GridEntity : MonoBehaviour, IPointerUpHandler {
+public abstract class GridEntity : MonoBehaviour {
     [Header("References")]
     [SerializeField] private SpriteRenderer _mainSprite;
     [SerializeField] private SpriteRenderer _teamColorSprite;
@@ -18,8 +18,9 @@ public abstract class GridEntity : MonoBehaviour, IPointerUpHandler {
     public string UnitName;
     public Sprite MainImage;
     public Sprite TeamColorImage;
+    public bool IsFriendly;
     
-    [DoNotSerialize]
+    [HideInInspector]
     public bool Registered;
     protected IInteractBehavior InteractBehavior;
 
@@ -27,12 +28,15 @@ public abstract class GridEntity : MonoBehaviour, IPointerUpHandler {
         _mainSprite.sprite = MainImage;
         _teamColorSprite.sprite = TeamColorImage;
         
-        GameManager.Instance.EntityManager.RegisterEntity(this);
+        if (IsFriendly) {
+            InteractBehavior = new OwnerInteractBehavior();
+        } else {
+            InteractBehavior = new EnemyInteractBehavior();
+        } // TODO neutral
     }
     
-    void Start()
-    {
-        
+    void Start() {
+        GameManager.Instance.EntityManager.RegisterEntity(this);
     }
 
     void Update()
@@ -40,25 +44,26 @@ public abstract class GridEntity : MonoBehaviour, IPointerUpHandler {
         
     }
 
-    public abstract bool CanTargetEntities();
+    public abstract bool CanTargetThings();
+    public abstract bool CanMove();
+    
+    public void Select() {
+        Debug.Log($"Selecting {UnitName}");
+        InteractBehavior.Select(this);
+    }
+    /// <summary>
+    /// Try to move or use an ability on the indicated location
+    /// </summary>
+    public void InteractWithCell(Vector3Int location) {
+        InteractBehavior.TargetCellWithUnit(this, location);
+    }
 
-    public void ReceiveAttackFromEntity(GridEntity sourceEntity) {
-        Debug.Log($"Attacked!!!! And from a {sourceEntity.UnitName} no less! OW");
+    public void MoveToCell(Vector3Int targetCell) {
+        Debug.Log($"Moving {UnitName} to {targetCell}");
+        GameManager.Instance.EntityManager.MoveEntityToPosition(this, targetCell);
     }
     
-    public void OnPointerUp(PointerEventData eventData) {
-        switch (eventData.button) {
-            case PointerEventData.InputButton.Left:
-                InteractBehavior.Select(this);
-                break;
-            case PointerEventData.InputButton.Right:
-                InteractBehavior.TargetWithSelectedUnit(this);
-                break;
-            case PointerEventData.InputButton.Middle:
-                // Do nothing
-                break;
-            default:
-                throw new ArgumentOutOfRangeException();
-        }
+    public void ReceiveAttackFromEntity(GridEntity sourceEntity) {
+        Debug.Log($"Attacked!!!! And from a {sourceEntity.UnitName} no less! OW");
     }
 }

@@ -7,7 +7,7 @@ public class NeutralInteractBehavior : IInteractBehavior {
         // Do nothing
     }
 
-    public void TargetWithSelectedUnit(GridEntity targetEntity) {
+    public void TargetCellWithUnit(GridEntity thisEntity, Vector3Int targetCell) {
         // Do nothing
     }
 }

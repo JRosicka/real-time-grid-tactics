@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
@@ -23,7 +24,9 @@ public class EntityManager : MonoBehaviour {
     }
 
     public Transform SpawnBucket;
-    
+    [HideInInspector]
+    public GridEntity SelectedEntity;
+
     private GridController gridController => GameManager.Instance.GridController;
     private Dictionary<Vector3Int, GridEntity> _entitiesOnGrid = new Dictionary<Vector3Int, GridEntity>();
     
@@ -61,7 +64,7 @@ public class EntityManager : MonoBehaviour {
         if (entity.Registered)
             return;
         if (_entitiesOnGrid.ContainsKey(position) && _entitiesOnGrid[position] != null) {
-            throw new IllegalEntityRegistryException(position, entity, _entitiesOnGrid[position]);
+            throw new IllegalEntityPlacementException(position, entity, _entitiesOnGrid[position]);
         }
         
         _entitiesOnGrid[position] = entity;
@@ -76,11 +79,35 @@ public class EntityManager : MonoBehaviour {
         entity.transform.position = gridController.GetWorldPosition(destination);
     }
 
-    private class IllegalEntityRegistryException : Exception {
-        public IllegalEntityRegistryException(Vector3Int location, 
+    public void MoveEntityToPosition(GridEntity entity, Vector3Int destination) {
+        if (_entitiesOnGrid.ContainsKey(destination) && _entitiesOnGrid[destination] != null) {
+            throw new IllegalEntityPlacementException(destination, entity, _entitiesOnGrid[destination]);
+        }
+
+        // Remove the entity from its previous position
+        if (_entitiesOnGrid.ContainsValue(entity)) {
+            // TODO Perhaps a dictionary isn't the best data structure for this, or I should switch the keys and values
+            KeyValuePair<Vector3Int, GridEntity> item = _entitiesOnGrid.First(kvp => kvp.Value == entity);
+            _entitiesOnGrid.Remove(item.Key);
+        }
+        
+        // Record the location of the entity
+        _entitiesOnGrid[destination] = entity;
+        
+        // Perform the move
+        SnapEntityToCell(entity, destination);
+    }
+
+    public GridEntity GetEntityAtLocation(Vector3Int location) {
+        _entitiesOnGrid.TryGetValue(location, out GridEntity ret);
+        return ret;
+    }
+
+    private class IllegalEntityPlacementException : Exception {
+        public IllegalEntityPlacementException(Vector3Int location, 
                 GridEntity attemptedRegistryEntity, 
                 GridEntity entityAtLocation) 
-            : base($"Failed to register {nameof(GridEntity)} ({attemptedRegistryEntity.UnitName}) at location {location}"
+            : base($"Failed to place {nameof(GridEntity)} ({attemptedRegistryEntity.UnitName}) at location {location}"
                    + $" because another {nameof(GridEntity)} ({entityAtLocation.UnitName}) already exists there") { }
     }
 }

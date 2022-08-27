@@ -7,11 +7,7 @@ public class EnemyInteractBehavior : IInteractBehavior {
         // Do nothing - can't select enemy units
     }
 
-    public void TargetWithSelectedUnit(GridEntity targetEntity) {
-        GridEntity selectedEntity = GameManager.Instance.GridController.SelectedEntity;
-        if (selectedEntity == null || !selectedEntity.CanTargetEntities())
-            return;
-
-        targetEntity.ReceiveAttackFromEntity(selectedEntity);
+    public void TargetCellWithUnit(GridEntity thisEntity, Vector3Int targetCell) {
+        // Do nothing - can't use enemy units to do stuff
     }
 }

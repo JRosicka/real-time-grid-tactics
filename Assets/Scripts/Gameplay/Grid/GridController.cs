@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -14,8 +15,13 @@ public class GridController : MonoBehaviour {
     // [SerializeField] private Tilemap _interactiveTilemap;
     // [SerializeField] private Tile _hoverTile;
     // private Vector3Int _previousMousePos = new Vector3Int();
-    
-    public GridEntity SelectedEntity;    // TODO move this to some manager
+
+    public enum MouseClick {
+        None = -1,
+        Left = 0,
+        Middle = 1,
+        Right = 2
+    }
     
     void Update() {
         Vector3Int mousePos = GetMousePosition();
@@ -27,9 +33,49 @@ public class GridController : MonoBehaviour {
         //     _previousMousePos = mousePos;
         // }
 
+        MouseClick click = MouseClick.None;
         if (Input.GetMouseButtonUp(0)) {
             // Left mouse button click
             Debug.Log("Click on grid at " + mousePos);
+            click = MouseClick.Left;
+        } else if (Input.GetMouseButtonUp(1)) {
+            Debug.Log("Right click at " + mousePos);
+            click = MouseClick.Right;
+        } else if (Input.GetMouseButtonUp(2)) {
+            Debug.Log("Middle mouse click at " + mousePos);
+            click = MouseClick.Middle;
+        }
+
+        TryClickOnCell(click, mousePos);
+    }
+
+    private void TryClickOnCell(MouseClick clickType, Vector3Int clickPosition) {
+        GridEntity selectedEntity = GameManager.Instance.EntityManager.SelectedEntity;
+        GridEntity entityAtMouseLocation = GameManager.Instance.EntityManager.GetEntityAtLocation(clickPosition);
+        
+        // Always do the "Mouse hovering over" action
+        // TODO mouse hovering over action. Depends on which unit is there, what the player is selecting, if they can move there, etc
+
+        switch (clickType) {
+            case MouseClick.Left:
+                if (entityAtMouseLocation != null) {
+                    entityAtMouseLocation.Select();
+                }
+                break;
+            case MouseClick.Middle:
+                // Don't do anything with this
+                break;
+            case MouseClick.Right:
+                if (selectedEntity == null)
+                    break;
+                
+                selectedEntity.InteractWithCell(clickPosition);
+                break;
+            case MouseClick.None:
+                // We have already done the hover action, so nothing else to do
+                break;
+            default:
+                throw new ArgumentOutOfRangeException(nameof(clickType), clickType, null);
         }
     }
 

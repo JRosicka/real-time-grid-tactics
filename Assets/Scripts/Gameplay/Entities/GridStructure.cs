@@ -19,7 +19,11 @@ public class GridStructure : GridEntity
         
     }
 
-    public override bool CanTargetEntities() {
+    public override bool CanTargetThings() {
+        return false;
+    }
+
+    public override bool CanMove() {
         return false;
     }
 }

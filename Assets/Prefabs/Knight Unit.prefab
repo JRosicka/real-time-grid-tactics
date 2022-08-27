@@ -251,3 +251,5 @@ MonoBehaviour:
   UnitName: Knight
   MainImage: {fileID: 21300000, guid: 8a0b09c5c94b13a4d94d9851998762db, type: 3}
   TeamColorImage: {fileID: 21300000, guid: 244bb6413a5a3e845bc7016a88fbd132, type: 3}
+  IsFriendly: 1
+  Registered: 0

@@ -20,7 +20,11 @@ public class GridUnit : GridEntity {
         
     }
 
-    public override bool CanTargetEntities() {
+    public override bool CanTargetThings() {
+        return true;
+    }
+
+    public override bool CanMove() {
         return true;
     }
 }
