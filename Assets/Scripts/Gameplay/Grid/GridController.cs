@@ -60,6 +60,9 @@ public class GridController : MonoBehaviour {
             case MouseClick.Left:
                 if (entityAtMouseLocation != null) {
                     entityAtMouseLocation.Select();
+                } else {
+                    // We clicked on an empty cell - deselect whatever we selected previously
+                    GameManager.Instance.EntityManager.SelectedEntity = null;
                 }
                 break;
             case MouseClick.Middle:

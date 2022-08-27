@@ -16,11 +16,22 @@ public class OwnerInteractBehavior : IInteractBehavior {
         
         // See if we should move this entity
         if (targetEntity == null) {
-            if (thisEntity.CanMove()) {
-                thisEntity.MoveToCell(targetCell);
-            }
-        } else if (thisEntity.CanTargetThings()) {
-            targetEntity.ReceiveAttackFromEntity(thisEntity);
+            TryMoveEntity(thisEntity, targetCell);
+        } else {
+            TryTargetEntity(thisEntity, targetEntity, targetCell);
         }
+    }
+
+    private void TryMoveEntity(GridEntity thisEntity, Vector3Int targetCell) {
+        if (thisEntity.CanMove()) {
+            thisEntity.MoveToCell(targetCell);
+        }
+    }
+
+    private void TryTargetEntity(GridEntity thisEntity, GridEntity targetEntity, Vector3Int targetCell) {
+        if (!thisEntity.CanTargetThings())
+            return;
+
+        thisEntity.TryTargetEntity(targetEntity, targetCell);
     }
 }
