@@ -165,8 +165,10 @@ namespace Game.Network
         public override bool OnRoomServerSceneLoadedForPlayer(NetworkConnectionToClient conn, GameObject roomPlayer, GameObject gamePlayer) {
             DebugLog(nameof(OnRoomServerSceneLoadedForPlayer));
             RoomServerSceneLoadedForPlayerAction.SafeInvoke();
-            PlayerScore playerScore = gamePlayer.GetComponent<PlayerScore>();
-            playerScore.index = roomPlayer.GetComponent<NetworkRoomPlayer>().index;
+            GamePlayerController gamePlayerController = gamePlayer.GetComponent<GamePlayerController>();
+            NetworkRoomPlayer networkRoomPlayer = roomPlayer.GetComponent<NetworkRoomPlayer>();
+            gamePlayerController.Index = networkRoomPlayer.index;
+            // TODO set color
             return true;
         }
         

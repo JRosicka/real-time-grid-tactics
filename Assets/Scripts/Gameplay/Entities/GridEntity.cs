@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Mirror;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -9,7 +10,7 @@ using UnityEngine.EventSystems;
 /// Represents an entity that exists at a specific position on the gameplay grid.
 /// Has an <see cref="IInteractBehavior"/> field to handle player input. 
 /// </summary>
-public abstract class GridEntity : MonoBehaviour {
+public abstract class GridEntity : NetworkBehaviour {
     public enum Team {
         Neutral = -1,
         One = 1,

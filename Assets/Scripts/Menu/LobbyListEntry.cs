@@ -29,7 +29,7 @@ public class LobbyListEntry : MonoBehaviour {
             _joinCode = lobby[SteamLobbyService.LobbyUIDKey];
         }
         PlayerCountField.text = $"{lobby.Members.Length.ToString()}/{lobby.MemberLimit}";
-        // PingField.text = TODO
+        // PingField.text = TODO the only way I see to do this is NetworkTime.rtt, but I believe we need to actually be connected to a server for that
 
         _lobbyID = lobby.SteamID;
     }

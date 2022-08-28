@@ -94,6 +94,8 @@ GameObject:
   m_Component:
   - component: {fileID: 4361409182630671205}
   - component: {fileID: 4361409182630671206}
+  - component: {fileID: 3706615928121943782}
+  - component: {fileID: 97079038475830243}
   m_Layer: 0
   m_Name: Spoder Unit
   m_TagString: Untagged
@@ -129,6 +131,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 07f6d8e4e3c8dc2448e7e8aa3f82aa72, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
   _mainSprite: {fileID: 4361409183463974517}
   _teamColorSprite: {fileID: 4361409182006262246}
   UnitName: Spoder
@@ -136,6 +140,57 @@ MonoBehaviour:
   TeamColorImage: {fileID: 0}
   MyTeam: 2
   Registered: 0
+--- !u!114 &3706615928121943782
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4361409182630671204}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b91ecbcc199f4492b9a91e820070131, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sceneId: 0
+  serverOnly: 0
+  visible: 0
+  m_AssetId: 96bef6f8906dd8040aea69c5ec77d0e2
+  hasSpawned: 0
+--- !u!114 &97079038475830243
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4361409182630671204}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f74aedd71d9a4f55b3ce499326d45fb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
+  clientAuthority: 0
+  sendInterval: 0.05
+  syncPosition: 1
+  syncRotation: 1
+  syncScale: 0
+  interpolatePosition: 1
+  interpolateRotation: 1
+  interpolateScale: 0
+  bufferTimeMultiplier: 1
+  bufferSizeLimit: 64
+  catchupThreshold: 4
+  catchupMultiplier: 0.1
+  onlySyncOnChange: 1
+  bufferResetMultiplier: 5
+  positionSensitivity: 0.01
+  rotationSensitivity: 0.01
+  scaleSensitivity: 0.01
+  showGizmos: 0
+  showOverlay: 0
+  overlayColor: {r: 0, g: 0, b: 0, a: 0.5}
 --- !u!1 &4361409182858119010
 GameObject:
   m_ObjectHideFlags: 0
