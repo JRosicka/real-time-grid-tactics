@@ -78,7 +78,7 @@ public abstract class GridEntity : NetworkBehaviour {
 
     public void MoveToCell(Vector3Int targetCell) {
         Debug.Log($"Moving {UnitName} to {targetCell}");
-        GameManager.Instance.EntityManager.MoveEntityToPosition(this, targetCell);
+        GameManager.Instance.EntityManager.CmdMoveEntityToPosition(this, targetCell);
     }
 
     public void TryTargetEntity(GridEntity targetEntity, Vector3Int targetCell) {
