@@ -16,10 +16,10 @@ namespace Game.Gameplay
 
         public static void SpawnReward()
         {
-            if (!NetworkServer.active) return;
-
-            Vector3 spawnPosition = new Vector3(Random.Range(-19, 20), 1, Random.Range(-19, 20));
-            NetworkServer.Spawn(Object.Instantiate(((GameNetworkManager)NetworkManager.singleton).rewardPrefab, spawnPosition, Quaternion.identity));
+            // if (!NetworkServer.active) return;
+            //
+            // Vector3 spawnPosition = new Vector3(Random.Range(-19, 20), 1, Random.Range(-19, 20));
+            // NetworkServer.Spawn(Object.Instantiate(((GameNetworkManager)NetworkManager.singleton).rewardPrefab, spawnPosition, Quaternion.identity));
         }
     }
 }

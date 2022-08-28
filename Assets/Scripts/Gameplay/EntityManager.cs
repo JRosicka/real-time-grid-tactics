@@ -2,25 +2,26 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Mirror;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
 /// <summary>
 /// Handles spawning, updating positions, and generally keeping track of <see cref="GridEntity"/>s on the grid
 /// </summary>
-public class EntityManager : MonoBehaviour {
+public class EntityManager : NetworkBehaviour {
     [Header("Unit 1")] 
     public Vector3Int SpawnLocationUnit1;
     public GridUnit Unit1;
     public void SpawnUnit1() {
-        SpawnEntity(Unit1, SpawnLocationUnit1);
+        CmdSpawnEntity(Unit1, SpawnLocationUnit1);
     }
 
     [Header("Unit 2")] 
     public Vector3Int SpawnLocationUnit2;
     public GridUnit Unit2;
     public void SpawnUnit2() {
-        SpawnEntity(Unit2, SpawnLocationUnit2);
+        CmdSpawnEntity(Unit2, SpawnLocationUnit2);
     }
 
     public Transform SpawnBucket;
@@ -32,8 +33,8 @@ public class EntityManager : MonoBehaviour {
     
     
     void Start() {
-        SpawnEntity(Unit1, SpawnLocationUnit1);
-        SpawnEntity(Unit2, SpawnLocationUnit2);
+        // SpawnEntity(Unit1, SpawnLocationUnit1);
+        // SpawnEntity(Unit2, SpawnLocationUnit2);
     }
 
     /// <summary>
@@ -41,16 +42,16 @@ public class EntityManager : MonoBehaviour {
     /// grid. No-op if another entity already exists in the specified location. 
     /// </summary>
     /// <returns>True if the spawn was successful, otherwise false if no entity was created</returns>
-    public bool SpawnEntity(GridEntity entityPrefab, Vector3Int spawnLocation) {
+    [Command]
+    public void CmdSpawnEntity(GridEntity entityPrefab, Vector3Int spawnLocation) {
         if (_entitiesOnGrid.ContainsKey(spawnLocation) && _entitiesOnGrid[spawnLocation] != null) {
-            return false;
+            return;
         }
 
         GridEntity entityInstance = Instantiate(entityPrefab, SpawnBucket);
+        NetworkServer.Spawn(entityInstance.gameObject);
         RegisterEntity(entityInstance, spawnLocation);
         SnapEntityToCell(entityInstance, spawnLocation);
-
-        return true;
     }
 
     public void RegisterEntity(GridEntity entity) {
