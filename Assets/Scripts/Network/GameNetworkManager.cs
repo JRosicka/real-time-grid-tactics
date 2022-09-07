@@ -165,6 +165,7 @@ namespace Game.Network
         public override bool OnRoomServerSceneLoadedForPlayer(NetworkConnectionToClient conn, GameObject roomPlayer, GameObject gamePlayer) {
             DebugLog(nameof(OnRoomServerSceneLoadedForPlayer));
             RoomServerSceneLoadedForPlayerAction.SafeInvoke();
+            GameManager gameManager = FindObjectOfType<GameManager>();
             GamePlayerController gamePlayerController = gamePlayer.GetComponent<GamePlayerController>();
             NetworkRoomPlayer networkRoomPlayer = roomPlayer.GetComponent<NetworkRoomPlayer>();
             gamePlayerController.Index = networkRoomPlayer.index;

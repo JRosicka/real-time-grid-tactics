@@ -2060,6 +2060,7 @@ MonoBehaviour:
   autoCreatePlayer: 1
   playerSpawnMethod: 1
   spawnPrefabs:
+  - {fileID: 3596866830610511478, guid: a96b27fb42ce1f942b78aa1e1b407640, type: 3}
   - {fileID: 7704076996890880823, guid: 5b983b0e253197b488e50ee522767142, type: 3}
   - {fileID: 4361409182630671204, guid: 96bef6f8906dd8040aea69c5ec77d0e2, type: 3}
   showRoomGUI: 0
