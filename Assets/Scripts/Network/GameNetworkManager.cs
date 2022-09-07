@@ -166,10 +166,9 @@ namespace Game.Network
             DebugLog(nameof(OnRoomServerSceneLoadedForPlayer));
             RoomServerSceneLoadedForPlayerAction.SafeInvoke();
             GameManager gameManager = FindObjectOfType<GameManager>();
-            GamePlayerController gamePlayerController = gamePlayer.GetComponent<GamePlayerController>();
-            NetworkRoomPlayer networkRoomPlayer = roomPlayer.GetComponent<NetworkRoomPlayer>();
-            gamePlayerController.Index = networkRoomPlayer.index;
-            // TODO set color
+            MPGamePlayer mpGamePlayer = gamePlayer.GetComponent<MPGamePlayer>();
+            GameNetworkPlayer gameNetworkPlayer = roomPlayer.GetComponent<GameNetworkPlayer>();
+            gameManager.SetupMPGame(gameNetworkPlayer, mpGamePlayer);
             return true;
         }
         

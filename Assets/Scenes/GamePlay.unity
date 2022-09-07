@@ -1220,6 +1220,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bd3b396bd1d20894a83b655fa8825784, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  SPGamePlayerPrefab: {fileID: 8195557163812692593, guid: c33bd22bbff2db8479bf24a64400fd19, type: 3}
   GridController: {fileID: 1769013663}
   EntityManager: {fileID: 1022532178}
 --- !u!4 &1548131395

@@ -35,10 +35,6 @@ public class EntityManager : MonoBehaviour {
     private GridController gridController => GameManager.Instance.GridController;
 
     private AbstractCommandController _gameNetworkController;
-    
-    void Start() {
-        SetupCommandController(true);
-    }
 
     public void SetupCommandController(bool multiplayer) {
         if (multiplayer) {
