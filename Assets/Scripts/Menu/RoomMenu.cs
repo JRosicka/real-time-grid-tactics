@@ -22,28 +22,28 @@ public class RoomMenu : MonoBehaviour {
     private GameNetworkManager _gameNetworkManager;
     private SteamLobbyService steamLobbyService => SteamLobbyService.Instance;
     private string _joinCode;
-    private MPGamePlayer _cachedMPGamePlayer;
-    private MPGamePlayer _localPlayer {
+    private GameNetworkPlayer _cachedGameNetworkPlayer;
+    private GameNetworkPlayer _localPlayer {
         get {
-            if (_cachedMPGamePlayer == null) {
-                _cachedMPGamePlayer = FindObjectsOfType<MPGamePlayer>().First(player => player.isLocalPlayer);
+            if (_cachedGameNetworkPlayer == null) {
+                _cachedGameNetworkPlayer = FindObjectsOfType<GameNetworkPlayer>().First(player => player.isLocalPlayer);
             }
 
-            return _cachedMPGamePlayer;
+            return _cachedGameNetworkPlayer;
         }
     }
     
     // Do not cache because other players can leave/join later
-    private MPGamePlayer _opponentPlayer {
+    private GameNetworkPlayer _opponentPlayer {
         get {
-            return FindObjectsOfType<MPGamePlayer>().First(player => !player.isLocalPlayer);
+            return FindObjectsOfType<GameNetworkPlayer>().First(player => !player.isLocalPlayer);
         }
     }
 
     private PlayerSlot localPlayerSlot => PlayerSlot1.AssignedPlayer.isLocalPlayer ? PlayerSlot1 : PlayerSlot2;
     private PlayerSlot opponentPlayerSlot => PlayerSlot1.AssignedPlayer.isLocalPlayer ? PlayerSlot2 : PlayerSlot1;
 
-    private PlayerSlot GetSlotForPlayer(MPGamePlayer player) {
+    private PlayerSlot GetSlotForPlayer(GameNetworkPlayer player) {
         if (PlayerSlot1.AssignedPlayer == player) {
             return PlayerSlot1;
         }
@@ -62,10 +62,10 @@ public class RoomMenu : MonoBehaviour {
         _gameNetworkManager.RoomServerPlayersNotReadyAction += HideStartButton;
         _gameNetworkManager.RoomServerSceneChangedAction += UpdateLobbyOpenStatus;
         _gameNetworkManager.RoomClientSceneChangedAction += AddUnassignedPlayers;
-        MPGamePlayer.PlayerSteamInfoDetermined += AddUnassignedPlayers;
-        MPGamePlayer.PlayerReadyStatusChanged += UpdatePlayerReadyStatus;
-        MPGamePlayer.PlayerExitedRoom += UnassignPlayer;
-        MPGamePlayer.PlayerExitedRoom += ResetReadyButton;
+        GameNetworkPlayer.PlayerSteamInfoDetermined += AddUnassignedPlayers;
+        GameNetworkPlayer.PlayerReadyStatusChanged += UpdatePlayerReadyStatus;
+        GameNetworkPlayer.PlayerExitedRoom += UnassignPlayer;
+        GameNetworkPlayer.PlayerExitedRoom += ResetReadyButton;
 
         SteamLobbyService.Lobby lobby =
             SteamLobbyService.Instance.GetLobbyData(SteamLobbyService.Instance.CurrentLobbyID, null);
@@ -75,10 +75,10 @@ public class RoomMenu : MonoBehaviour {
     }
     
     private void OnDestroy() {
-        MPGamePlayer.PlayerSteamInfoDetermined -= AddUnassignedPlayers;
-        MPGamePlayer.PlayerReadyStatusChanged -= UpdatePlayerReadyStatus;
-        MPGamePlayer.PlayerExitedRoom -= UnassignPlayer;
-        MPGamePlayer.PlayerExitedRoom -= ResetReadyButton;
+        GameNetworkPlayer.PlayerSteamInfoDetermined -= AddUnassignedPlayers;
+        GameNetworkPlayer.PlayerReadyStatusChanged -= UpdatePlayerReadyStatus;
+        GameNetworkPlayer.PlayerExitedRoom -= UnassignPlayer;
+        GameNetworkPlayer.PlayerExitedRoom -= ResetReadyButton;
         if (_gameNetworkManager != null) {
             _gameNetworkManager.RoomServerPlayersReadyAction -= ShowStartButton;
             _gameNetworkManager.RoomServerPlayersNotReadyAction -= HideStartButton;
@@ -121,11 +121,11 @@ public class RoomMenu : MonoBehaviour {
 
     private void AddUnassignedPlayers() {
         // List<GameNetworkPlayer> players = _gameNetworkManager.roomSlots.ConvertAll(player => (GameNetworkPlayer)player);
-        List<MPGamePlayer> players = FindObjectsOfType<MPGamePlayer>().OrderBy(p => p.index).ToList();
+        List<GameNetworkPlayer> players = FindObjectsOfType<GameNetworkPlayer>().OrderBy(p => p.index).ToList();
         
         // Assign any unassigned players
         bool isHosting = _gameNetworkManager.IsHosting();
-        foreach (MPGamePlayer player in players) {
+        foreach (GameNetworkPlayer player in players) {
             if (PlayerSlot1.AssignedPlayer != player && PlayerSlot2.AssignedPlayer != player) {
                 if (PlayerSlot1.AssignedPlayer == null) {
                     bool kickable = !player.isLocalPlayer && isHosting;
@@ -144,7 +144,7 @@ public class RoomMenu : MonoBehaviour {
     }
 
     private void UpdatePlayerReadyStatus() {
-        List<MPGamePlayer> players = _gameNetworkManager.roomSlots.ConvertAll(player => (MPGamePlayer)player);
+        List<GameNetworkPlayer> players = _gameNetworkManager.roomSlots.ConvertAll(player => (GameNetworkPlayer)player);
 
         foreach (PlayerSlot slot in new [] {PlayerSlot1, PlayerSlot2}) {
             slot.UpdateReadyStatus();
@@ -152,7 +152,7 @@ public class RoomMenu : MonoBehaviour {
     }
 
     private void UnassignPlayer() {
-        List<MPGamePlayer> players = _gameNetworkManager.roomSlots.ConvertAll(player => (MPGamePlayer)player);
+        List<GameNetworkPlayer> players = _gameNetworkManager.roomSlots.ConvertAll(player => (GameNetworkPlayer)player);
 
         // Unassign any players who have disconnected
         if (PlayerSlot1.AssignedPlayer != null && !players.Contains(PlayerSlot1.AssignedPlayer)) {
