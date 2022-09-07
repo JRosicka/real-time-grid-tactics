@@ -20,7 +20,7 @@ public class PlayerSlot : MonoBehaviour {
     [Header("Config")]
     public Color PlayerColor;
     public int PlayerIndex;
-    public GameNetworkPlayer AssignedPlayer;
+    public MPGamePlayer AssignedPlayer;
 
     public void Start() {
         // Configure
@@ -31,7 +31,7 @@ public class PlayerSlot : MonoBehaviour {
         DisplayActive(false);
     }
 
-    public void AssignPlayer(GameNetworkPlayer player, bool kickable) {
+    public void AssignPlayer(MPGamePlayer player, bool kickable) {
         AssignedPlayer = player;
         
         string displayName = player.DisplayName;

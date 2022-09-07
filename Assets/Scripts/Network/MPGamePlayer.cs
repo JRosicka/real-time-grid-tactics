@@ -7,7 +7,7 @@ using UnityEngine.SceneManagement;
 namespace Game.Network
 {
     // [AddComponentMenu("")]
-    public class GameNetworkPlayer : NetworkRoomPlayer
+    public class MPGamePlayer : NetworkRoomPlayer
     {
         // Assume that we are using Steam for lobbying
         private SteamLobbyService steamLobbyService => SteamLobbyService.Instance;
