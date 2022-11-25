@@ -21,6 +21,11 @@ public class SPCommandController : AbstractCommandController {
         DoRegisterEntity(entity, position);
     }
 
+    public override void UnRegisterAndDestroyEntity(GridEntity entity) {
+        DoUnRegisterEntity(entity);
+        Destroy(entity.gameObject);
+    }
+
     public override void MoveEntityToCell(GridEntity entity, Vector3Int destination) {
         DoMoveEntityToCell(entity, destination);
     }

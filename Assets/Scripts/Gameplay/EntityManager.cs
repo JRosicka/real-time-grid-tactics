@@ -65,6 +65,10 @@ public class EntityManager : MonoBehaviour {
         _gameNetworkController.RegisterEntity(entity, position);
     }
 
+    public void UnRegisterAndDestroyEntity(GridEntity entity) {
+        _gameNetworkController.UnRegisterAndDestroyEntity(entity);
+    }
+
     /// <summary>
     /// Immediately moves the specified entity's location to the specified cell destination
     /// </summary>

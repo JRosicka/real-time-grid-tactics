@@ -19,6 +19,10 @@ public class MPCommandController : AbstractCommandController {
         CmdRegisterEntity(entity, position);
     }
 
+    public override void UnRegisterAndDestroyEntity(GridEntity entity) {
+        CmdUnRegisterEntity(entity);
+    }
+
     public override void MoveEntityToCell(GridEntity entity, Vector3Int destination) {
         CmdMoveEntityToCell(entity, destination);
     }
@@ -40,6 +44,12 @@ public class MPCommandController : AbstractCommandController {
     [Command(requiresAuthority = false)]
     private void CmdRegisterEntity(GridEntity entity, Vector3Int position) {
         DoRegisterEntity(entity, position);
+    }
+
+    [Command(requiresAuthority = false)]
+    private void CmdUnRegisterEntity(GridEntity entity) {
+        DoUnRegisterEntity(entity);
+        NetworkServer.Destroy(entity.gameObject);
     }
 
     [Command(requiresAuthority = false)]

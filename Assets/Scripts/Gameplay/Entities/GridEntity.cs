@@ -1,10 +1,6 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using Mirror;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.EventSystems;
 
 /// <summary>
 /// Represents an entity that exists at a specific position on the gameplay grid.
@@ -102,5 +98,11 @@ public abstract class GridEntity : NetworkBehaviour {
     
     public void ReceiveAttackFromEntity(GridEntity sourceEntity) {
         Debug.Log($"Attacked!!!! And from a {sourceEntity.UnitName} no less! OW");
+        // For now, any attack just kills this
+        Kill();
+    }
+
+    private void Kill() {
+        GameManager.Instance.EntityManager.UnRegisterAndDestroyEntity(this);
     }
 }

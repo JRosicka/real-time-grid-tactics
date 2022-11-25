@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace Mirror.Examples.NetworkRoom
 {
-    public class RandomColor : NetworkBehaviour
+    public class RandomColor : NetworkBehaviour    // TODO use this for determining player colors
     {
         public override void OnStartServer()
         {

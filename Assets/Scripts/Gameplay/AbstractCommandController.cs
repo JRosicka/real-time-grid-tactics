@@ -29,6 +29,8 @@ public abstract class AbstractCommandController : NetworkBehaviour {
 
         RegisterEntity(entity, GridController.GetCellPosition(entity.transform.position));
     }
+
+    public abstract void UnRegisterAndDestroyEntity(GridEntity entity);
     
     public abstract void MoveEntityToCell(GridEntity entity, Vector3Int destination);
 
@@ -61,6 +63,17 @@ public abstract class AbstractCommandController : NetworkBehaviour {
         EntitiesOnGrid()[position] = entity;
         entity.Registered = true;
         Debug.Log($"Registered new entity {entity.UnitName} at position {position}");
+    }
+
+    protected void DoUnRegisterEntity(GridEntity entity) {
+        if (!EntitiesOnGrid().Values.Contains(entity)) {
+            Debug.LogWarning("Attempted to unregister an entity that is not registered");
+            return;
+        }
+        
+        KeyValuePair<Vector3Int, GridEntity> item = EntitiesOnGrid().First(kvp => kvp.Value == entity);
+
+        EntitiesOnGrid().Remove(item);
     }
 
     protected void DoMoveEntityToCell(GridEntity entity, Vector3Int destination) {
