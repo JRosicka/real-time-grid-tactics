@@ -50,8 +50,8 @@ public class GridController : MonoBehaviour {
     }
 
     private void TryClickOnCell(MouseClick clickType, Vector3Int clickPosition) {
-        GridEntity selectedEntity = GameManager.Instance.EntityManager.SelectedEntity;
-        GridEntity entityAtMouseLocation = GameManager.Instance.EntityManager.GetEntityAtLocation(clickPosition);
+        GridEntity selectedEntity = GameManager.Instance.SelectedEntity;
+        GridEntity entityAtMouseLocation = GameManager.Instance.GetEntityAtLocation(clickPosition);
         
         // Always do the "Mouse hovering over" action
         // TODO mouse hovering over action. Depends on which unit is there, what the player is selecting, if they can move there, etc
@@ -62,7 +62,7 @@ public class GridController : MonoBehaviour {
                     entityAtMouseLocation.Select();
                 } else {
                     // We clicked on an empty cell - deselect whatever we selected previously
-                    GameManager.Instance.EntityManager.SelectedEntity = null;
+                    GameManager.Instance.SelectedEntity = null;
                 }
                 break;
             case MouseClick.Middle:

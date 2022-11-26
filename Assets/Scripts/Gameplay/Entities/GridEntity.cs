@@ -48,7 +48,7 @@ public abstract class GridEntity : NetworkBehaviour {
     }
     
     void Start() {
-        GameManager.Instance.EntityManager.RegisterEntity(this);
+        GameManager.Instance.CommandController.RegisterEntity(this);
     }
 
     void Update()
@@ -62,7 +62,7 @@ public abstract class GridEntity : NetworkBehaviour {
     public void Select() {
         Debug.Log($"Selecting {UnitName}");
         // Deselect the currently selected entity
-        GameManager.Instance.EntityManager.SelectedEntity = null;
+        GameManager.Instance.SelectedEntity = null;
         InteractBehavior.Select(this);
     }
     /// <summary>
@@ -74,7 +74,7 @@ public abstract class GridEntity : NetworkBehaviour {
 
     public void MoveToCell(Vector3Int targetCell) {
         Debug.Log($"Moving {UnitName} to {targetCell}");
-        GameManager.Instance.EntityManager.MoveEntityToCell(this, targetCell);
+        GameManager.Instance.CommandController.MoveEntityToCell(this, targetCell);
     }
 
     public void TryTargetEntity(GridEntity targetEntity, Vector3Int targetCell) {
@@ -103,6 +103,6 @@ public abstract class GridEntity : NetworkBehaviour {
     }
 
     private void Kill() {
-        GameManager.Instance.EntityManager.UnRegisterAndDestroyEntity(this);
+        GameManager.Instance.CommandController.UnRegisterAndDestroyEntity(this);
     }
 }

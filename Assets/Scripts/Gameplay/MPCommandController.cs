@@ -4,13 +4,11 @@ using Mirror;
 using UnityEngine;
 
 public class MPCommandController : AbstractCommandController {
-    protected override IDictionary<Vector3Int, GridEntity> EntitiesOnGrid() {
-        return EntitiesOnGrid_Impl;
-    }
-
     public readonly SyncDictionary<Vector3Int, GridEntity> EntitiesOnGrid_Impl = new SyncDictionary<Vector3Int, GridEntity>();
     
     // TODO this is where I could add some "is this player allowed to call this on the entity" checks
+    public override IDictionary<Vector3Int, GridEntity> EntitiesOnGrid => EntitiesOnGrid_Impl;
+
     public override void SpawnEntity(int entityID, Vector3Int spawnLocation) {
         CmdSpawnEntity(entityID, spawnLocation);
     }

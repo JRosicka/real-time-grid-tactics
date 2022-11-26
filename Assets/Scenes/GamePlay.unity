@@ -342,8 +342,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1022532178}
-        m_TargetAssemblyTypeName: EntityManager, Assembly-CSharp
+      - m_Target: {fileID: 1548131394}
+        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
         m_MethodName: SpawnUnit1
         m_Mode: 1
         m_Arguments:
@@ -1064,58 +1064,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1022532177
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1022532179}
-  - component: {fileID: 1022532178}
-  m_Layer: 0
-  m_Name: EntityManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1022532178
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1022532177}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 29654b9d1851a304daa4e225426d5740, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  SpawnLocationUnit1: {x: 0, y: 4, z: 0}
-  Unit1: {fileID: 7704076996890880821, guid: 5b983b0e253197b488e50ee522767142, type: 3}
-  SpawnLocationUnit2: {x: 2, y: 6, z: 0}
-  Unit2: {fileID: 4361409182630671206, guid: 96bef6f8906dd8040aea69c5ec77d0e2, type: 3}
-  SpawnBucket: {fileID: 715509370}
-  MPCommandControllerPrefab: {fileID: 5189142770249109527, guid: a96b27fb42ce1f942b78aa1e1b407640, type: 3}
-  SPCommandControllerPrefab: {fileID: 1915109481469686083, guid: 51021b11e3159ad4ba95364f5dac7e44, type: 3}
-  SelectedEntity: {fileID: 0}
---- !u!4 &1022532179
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1022532177}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1548131395}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1050066542
 GameObject:
   m_ObjectHideFlags: 0
@@ -1222,7 +1170,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   SPGamePlayerPrefab: {fileID: 8195557163812692593, guid: c33bd22bbff2db8479bf24a64400fd19, type: 3}
   GridController: {fileID: 1769013663}
-  EntityManager: {fileID: 1022532178}
+  SpawnLocationUnit1: {x: 2, y: 1, z: 0}
+  Unit1: {fileID: 7704076996890880821, guid: 5b983b0e253197b488e50ee522767142, type: 3}
+  SpawnLocationUnit2: {x: 0, y: 0, z: 0}
+  Unit2: {fileID: 4361409182630671206, guid: 96bef6f8906dd8040aea69c5ec77d0e2, type: 3}
+  SpawnBucket: {fileID: 715509370}
+  MPCommandControllerPrefab: {fileID: 5189142770249109527, guid: a96b27fb42ce1f942b78aa1e1b407640, type: 3}
+  SPCommandControllerPrefab: {fileID: 1915109481469686083, guid: 51021b11e3159ad4ba95364f5dac7e44, type: 3}
+  SelectedEntity: {fileID: 0}
 --- !u!4 &1548131395
 Transform:
   m_ObjectHideFlags: 0
@@ -1234,8 +1189,7 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 1022532179}
+  m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1408,8 +1362,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1022532178}
-        m_TargetAssemblyTypeName: EntityManager, Assembly-CSharp
+      - m_Target: {fileID: 1548131394}
+        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
         m_MethodName: SpawnUnit2
         m_Mode: 1
         m_Arguments:

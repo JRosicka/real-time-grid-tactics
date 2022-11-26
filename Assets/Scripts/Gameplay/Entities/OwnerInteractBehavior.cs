@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class OwnerInteractBehavior : IInteractBehavior {
     public void Select(GridEntity entity) {
-        GameManager.Instance.EntityManager.SelectedEntity = entity;
+        GameManager.Instance.SelectedEntity = entity;
     }
 
     public void TargetCellWithUnit(GridEntity thisEntity, Vector3Int targetCell) {
@@ -12,7 +12,7 @@ public class OwnerInteractBehavior : IInteractBehavior {
             return;
         } 
         
-        GridEntity targetEntity = GameManager.Instance.EntityManager.GetEntityAtLocation(targetCell);
+        GridEntity targetEntity = GameManager.Instance.GetEntityAtLocation(targetCell);
         
         // See if we should move this entity
         if (targetEntity == null) {

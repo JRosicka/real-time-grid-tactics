@@ -4,14 +4,20 @@ using System.Linq;
 using Mirror;
 using UnityEngine;
 
-public abstract class AbstractCommandController : NetworkBehaviour {
+public abstract class AbstractCommandController : NetworkBehaviour, ICommandController {
     public Transform SpawnBucket;
     public GridEntity Unit1; // TODO
     public GridEntity Unit2;
 
     protected GridController GridController => GameManager.Instance.GridController;
+    
+    public abstract IDictionary<Vector3Int, GridEntity> EntitiesOnGrid { get; }
 
-    protected abstract IDictionary<Vector3Int, GridEntity> EntitiesOnGrid();
+    public void Initialize(GridUnit unit1, GridUnit unit2, Transform spawnBucket) {
+        Unit1 = unit1;
+        Unit2 = unit2;
+        SpawnBucket = spawnBucket;
+    }
     
     /// <summary>
     /// Attempts to spawn a new instance of the provided <see cref="GridEntity"/> at the specified location on the game
@@ -37,14 +43,14 @@ public abstract class AbstractCommandController : NetworkBehaviour {
     public abstract void SnapEntityToCell(GridEntity entity, Vector3Int destination);
 
     public GridEntity GetEntityAtCell(Vector3Int location) {
-        EntitiesOnGrid().TryGetValue(location, out GridEntity ret);
+        EntitiesOnGrid.TryGetValue(location, out GridEntity ret);
         return ret;
     }
 
     
 
     protected void DoSpawnEntity(int entityID, Vector3Int spawnLocation, Func<GridEntity> spawnFunc) {
-        if (EntitiesOnGrid().ContainsKey(spawnLocation) && EntitiesOnGrid()[spawnLocation] != null) {
+        if (EntitiesOnGrid.ContainsKey(spawnLocation) && EntitiesOnGrid[spawnLocation] != null) {
             return;
         }
 
@@ -56,40 +62,40 @@ public abstract class AbstractCommandController : NetworkBehaviour {
     protected void DoRegisterEntity(GridEntity entity, Vector3Int position) {
         if (entity.Registered)
             return;
-        if (EntitiesOnGrid().ContainsKey(position) && EntitiesOnGrid()[position] != null) {
-            throw new IllegalEntityPlacementException(position, entity, EntitiesOnGrid()[position]);
+        if (EntitiesOnGrid.ContainsKey(position) && EntitiesOnGrid[position] != null) {
+            throw new IllegalEntityPlacementException(position, entity, EntitiesOnGrid[position]);
         }
         
-        EntitiesOnGrid()[position] = entity;
+        EntitiesOnGrid[position] = entity;
         entity.Registered = true;
         Debug.Log($"Registered new entity {entity.UnitName} at position {position}");
     }
 
     protected void DoUnRegisterEntity(GridEntity entity) {
-        if (!EntitiesOnGrid().Values.Contains(entity)) {
+        if (!EntitiesOnGrid.Values.Contains(entity)) {
             Debug.LogWarning("Attempted to unregister an entity that is not registered");
             return;
         }
         
-        KeyValuePair<Vector3Int, GridEntity> item = EntitiesOnGrid().First(kvp => kvp.Value == entity);
+        KeyValuePair<Vector3Int, GridEntity> item = EntitiesOnGrid.First(kvp => kvp.Value == entity);
 
-        EntitiesOnGrid().Remove(item);
+        EntitiesOnGrid.Remove(item);
     }
 
     protected void DoMoveEntityToCell(GridEntity entity, Vector3Int destination) {
-        if (EntitiesOnGrid().ContainsKey(destination) && EntitiesOnGrid()[destination] != null) {
-            throw new IllegalEntityPlacementException(destination, entity, EntitiesOnGrid()[destination]);
+        if (EntitiesOnGrid.ContainsKey(destination) && EntitiesOnGrid[destination] != null) {
+            throw new IllegalEntityPlacementException(destination, entity, EntitiesOnGrid[destination]);
         }
 
         // Remove the entity from its previous position
-        if (EntitiesOnGrid().Values.Contains(entity)) {
+        if (EntitiesOnGrid.Values.Contains(entity)) {
             // TODO Perhaps a dictionary isn't the best data structure for this, or I should switch the keys and values
-            KeyValuePair<Vector3Int, GridEntity> item = EntitiesOnGrid().First(kvp => kvp.Value == entity);
-            EntitiesOnGrid().Remove(item.Key);
+            KeyValuePair<Vector3Int, GridEntity> item = EntitiesOnGrid.First(kvp => kvp.Value == entity);
+            EntitiesOnGrid.Remove(item.Key);
         }
         
         // Record the location of the entity
-        EntitiesOnGrid()[destination] = entity;
+        EntitiesOnGrid[destination] = entity;
         
         // Perform the move
         SnapEntityToCell(entity, destination);

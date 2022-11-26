@@ -4,12 +4,10 @@ using Mirror;
 using UnityEngine;
 
 public class SPCommandController : AbstractCommandController {
-    protected override IDictionary<Vector3Int, GridEntity> EntitiesOnGrid() {
-        return EntitiesOnGrid_Impl;
-    }
-
     public readonly Dictionary<Vector3Int, GridEntity> EntitiesOnGrid_Impl = new Dictionary<Vector3Int, GridEntity>();
-    
+
+    public override IDictionary<Vector3Int, GridEntity> EntitiesOnGrid => EntitiesOnGrid_Impl;
+
     public override void SpawnEntity(int entityID, Vector3Int spawnLocation) {
         DoSpawnEntity(entityID, spawnLocation, () => {
             GridEntity entityInstance = Instantiate(entityID == 1 ? Unit1 : Unit2, SpawnBucket);
