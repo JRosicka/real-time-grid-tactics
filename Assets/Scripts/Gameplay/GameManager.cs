@@ -130,7 +130,7 @@ public class GameManager : NetworkBehaviour {
                 // The server will handle this
                 return;
             } 
-            MPCommandController newController = Instantiate(MPCommandControllerPrefab, transform);    // TODO make sure we instantiate this correctly so it syncs to all clients, see point dot example from sample scene
+            MPCommandController newController = Instantiate(MPCommandControllerPrefab, transform);
             NetworkServer.Spawn(newController.gameObject);
             CommandController = newController;
         } else {
