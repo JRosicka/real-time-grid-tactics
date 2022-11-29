@@ -5,8 +5,11 @@ using Mirror;
 using UnityEngine;
 
 public abstract class AbstractCommandController : NetworkBehaviour, ICommandController {
+    [SyncVar]
     public Transform SpawnBucket;
+    [SyncVar]
     public GridEntity Unit1; // TODO
+    [SyncVar]
     public GridEntity Unit2;
 
     protected GridController GridController => GameManager.Instance.GridController;
