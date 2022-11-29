@@ -168,7 +168,7 @@ namespace Game.Network
             GameManager gameManager = FindObjectOfType<GameManager>();
             MPGamePlayer mpGamePlayer = gamePlayer.GetComponent<MPGamePlayer>();
             GameNetworkPlayer gameNetworkPlayer = roomPlayer.GetComponent<GameNetworkPlayer>();
-            gameManager.SetupMPPlayer(gameNetworkPlayer, mpGamePlayer);
+            gameManager.SetupMPPlayer(gameNetworkPlayer, mpGamePlayer, numPlayers);
             return true;
         }
         

@@ -9,16 +9,22 @@ using UnityEngine;
 // 2. Configure team colors and indices, figure out flow of information for that, have it determine spawns and team colors and which units are which
 // 3. Pass a GridEntity prefab (eventually a ScriptableObject) to AbstractCommandController.SpawnEntity(...) instead of an int
 
-public class GameManager : NetworkBehaviour {
+public class GameManager : MonoBehaviour {
     public static GameManager Instance;
 
     public SPGamePlayer SPGamePlayerPrefab;
     
     [Header("References")] 
     public GridController GridController;
+    public MultiplayerGameSetupHandler MPSetupHandler;
 
     private IGamePlayer _localPlayer;
     private IGamePlayer _opponentPlayer;
+    
+    // The total number of players in this game, including players who have not yet arrived in the game scene
+    private int _playerCount = -1;
+    // The total number of players in this game who have arrived in the game scene
+    private int _readyPlayerCount;
     
     private bool _gameInitialized;
     public ICommandController CommandController;
@@ -56,7 +62,6 @@ public class GameManager : NetworkBehaviour {
     private void Start() {
         // If we are not connected in a multiplayer session, then we must be playing singleplayer. Set up the game now. 
         // Otherwise, wait for the network manager to set up the multiplayer game. 
-        // TODO Also probably set a flag in some script that we can access here so that we know whether to start a SP game.
         if (!NetworkClient.active) {
             SetupSPGame();
         }
@@ -71,38 +76,37 @@ public class GameManager : NetworkBehaviour {
         
         // Make sure that the command controller only gets set up once
         SetupCommandController(true);
-        DetectPlayers();
+        MPSetupHandler.RpcDetectPlayers();
         _gameInitialized = true;
     }
-
-    [ClientRpc]
-    private void DetectPlayers() {
-        // TODO Do I need to do anything to get this rpc call to run on clients? Since this isn't a NetworkBehavior object.
-        List<MPGamePlayer> players = FindObjectsOfType<MPGamePlayer>().ToList();
-        _localPlayer = players.First(p => p.isLocalPlayer);
-        _opponentPlayer = players.First(p => !p.isLocalPlayer);
-        CommandController = FindObjectOfType<MPCommandController>();
-    }
-
+    
     [Server]
-    public void SetupMPPlayer(GameNetworkPlayer networkPlayer, MPGamePlayer gamePlayer) {
+    public void SetupMPPlayer(GameNetworkPlayer networkPlayer, MPGamePlayer gamePlayer, int playerCount) {
         if ((MPGamePlayer) _localPlayer == gamePlayer || (MPGamePlayer) _opponentPlayer == gamePlayer) {
             Debug.LogError($"Game scene loaded for player {networkPlayer.DisplayName}, but we already detected the game scene loading for them.");
             return;
         }
-        if (networkPlayer.isLocalPlayer) {
-            _localPlayer = gamePlayer;
-        } else {
-            _opponentPlayer = gamePlayer;
+        if (_playerCount > -1 && playerCount != _playerCount) {
+            Debug.LogError($"{nameof(playerCount)} ({playerCount}) is a different value than what we previously recorded ({_playerCount})!");
+            return;
         }
+
+        _playerCount = playerCount;
+        _readyPlayerCount++;
 
         gamePlayer.SetIndex(networkPlayer.index);
         // TODO set color
 
-        // Set up the game once both players have connected
-        if (_localPlayer != null && _opponentPlayer != null) {
+        // Set up the game once all players have connected
+        if (_playerCount == _readyPlayerCount) {
             SetupMPGame();
         }
+    }
+
+    public void SetPlayers(MPGamePlayer localPlayer, MPGamePlayer opponentPlayer, ICommandController commandController) {
+        _localPlayer = localPlayer;
+        _opponentPlayer = opponentPlayer;
+        CommandController = commandController;
     }
 
     private void SetupSPGame() {
