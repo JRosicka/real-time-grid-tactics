@@ -7,9 +7,12 @@ using UnityEngine;
 public abstract class AbstractCommandController : NetworkBehaviour, ICommandController {
     [SyncVar]
     public Transform SpawnBucket;
-    [SyncVar]
+        // TODO so I think that SyncVars can not have prefab (uninstantiated) values set to them, they need to be instantiated instances.
+                 // Now, I don't think I actually need to sync these since only the server needs to spawn stuff, but still. If I DO want to do this,
+                 // I think it would make more sense to store a reference to a unit-type-specific scriptableobject and use that to configure a
+                 // generic GridEntry or GridUnit prefab to spawn. That's probably the better direction to go anyway.
+                 // For now, we'll just have the server get these references applied, and the clients won't have them. 
     public GridEntity Unit1; // TODO
-    [SyncVar]
     public GridEntity Unit2;
 
     protected GridController GridController => GameManager.Instance.GridController;
