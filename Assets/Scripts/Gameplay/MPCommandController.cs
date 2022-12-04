@@ -9,8 +9,8 @@ public class MPCommandController : AbstractCommandController {
     // TODO this is where I could add some "is this player allowed to call this on the entity" checks
     public override IDictionary<Vector3Int, GridEntity> EntitiesOnGrid => EntitiesOnGrid_Impl;
 
-    public override void SpawnEntity(int entityID, Vector3Int spawnLocation) {
-        CmdSpawnEntity(entityID, spawnLocation);
+    public override void SpawnEntity(int entityID, Vector3Int spawnLocation, GridEntity.Team team) {
+        CmdSpawnEntity(entityID, spawnLocation, team);
     }
 
     public override void RegisterEntity(GridEntity entity, Vector3Int position) {
@@ -32,12 +32,12 @@ public class MPCommandController : AbstractCommandController {
     
     
     [Command(requiresAuthority = false)] // TODO this should definitely require authority
-    private void CmdSpawnEntity(int entityID, Vector3Int spawnLocation) {
+    private void CmdSpawnEntity(int entityID, Vector3Int spawnLocation, GridEntity.Team team) {
         DoSpawnEntity(entityID, spawnLocation, () => {
             GridEntity entityInstance = Instantiate(entityID == 1 ? Unit1 : Unit2, GridController.GetWorldPosition(spawnLocation), Quaternion.identity, SpawnBucket);
             NetworkServer.Spawn(entityInstance.gameObject);
             return entityInstance;
-        });
+        }, team);
     }
     [Command(requiresAuthority = false)]
     private void CmdRegisterEntity(GridEntity entity, Vector3Int position) {

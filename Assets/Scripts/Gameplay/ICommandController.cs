@@ -4,7 +4,7 @@ using UnityEngine;
 public interface ICommandController {
     IDictionary<Vector3Int, GridEntity> EntitiesOnGrid { get; }
     void Initialize(GridUnit unit1, GridUnit unit2, Transform spawnBucket);
-    void SpawnEntity(int entityID, Vector3Int spawnLocation);
+    void SpawnEntity(int entityID, Vector3Int spawnLocation, GridEntity.Team team);
     void RegisterEntity(GridEntity entity);
     void UnRegisterAndDestroyEntity(GridEntity entity);
     void MoveEntityToCell(GridEntity entity, Vector3Int destination);

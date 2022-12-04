@@ -8,11 +8,11 @@ public class SPCommandController : AbstractCommandController {
 
     public override IDictionary<Vector3Int, GridEntity> EntitiesOnGrid => EntitiesOnGrid_Impl;
 
-    public override void SpawnEntity(int entityID, Vector3Int spawnLocation) {
+    public override void SpawnEntity(int entityID, Vector3Int spawnLocation, GridEntity.Team team) {
         DoSpawnEntity(entityID, spawnLocation, () => {
             GridEntity entityInstance = Instantiate(entityID == 1 ? Unit1 : Unit2, GridController.GetWorldPosition(spawnLocation), Quaternion.identity, SpawnBucket);
             return entityInstance;
-        });
+        }, team);
     }
 
     public override void RegisterEntity(GridEntity entity, Vector3Int position) {

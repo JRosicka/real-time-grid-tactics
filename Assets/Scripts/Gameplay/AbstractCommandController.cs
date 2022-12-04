@@ -30,7 +30,7 @@ public abstract class AbstractCommandController : NetworkBehaviour, ICommandCont
     /// grid. No-op if another entity already exists in the specified location. 
     /// </summary>
     /// <returns>True if the spawn was successful, otherwise false if no entity was created</returns>
-    public abstract void SpawnEntity(int entityID, Vector3Int spawnLocation);
+    public abstract void SpawnEntity(int entityID, Vector3Int spawnLocation, GridEntity.Team team);
     // TODO need to have some way of verifying that these commands are legal for the client to do - especially doing stuff with GridEntites, we gotta own em
     // Maybe we can just make these abstract methods virtual, include a check at the beginning, and then have the overrides call base() at the start
     public abstract void RegisterEntity(GridEntity entity, Vector3Int position);
@@ -55,12 +55,13 @@ public abstract class AbstractCommandController : NetworkBehaviour, ICommandCont
 
     
 
-    protected void DoSpawnEntity(int entityID, Vector3Int spawnLocation, Func<GridEntity> spawnFunc) {
+    protected void DoSpawnEntity(int entityID, Vector3Int spawnLocation, Func<GridEntity> spawnFunc, GridEntity.Team team) {
         if (EntitiesOnGrid.ContainsKey(spawnLocation) && EntitiesOnGrid[spawnLocation] != null) {
             return;
         }
 
         GridEntity entityInstance = spawnFunc();
+        entityInstance.Initialize(team);
         RegisterEntity(entityInstance, spawnLocation);
     }
     

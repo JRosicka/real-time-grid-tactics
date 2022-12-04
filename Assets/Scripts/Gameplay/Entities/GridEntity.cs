@@ -9,8 +9,8 @@ using UnityEngine;
 public abstract class GridEntity : NetworkBehaviour {
     public enum Team {
         Neutral = -1,
-        One = 1,
-        Two = 2
+        Player1 = 1,
+        Player2 = 2
     }
     
     [Header("References")]
@@ -32,28 +32,21 @@ public abstract class GridEntity : NetworkBehaviour {
         Ally = 2,
         Neutral = 3
     }
-    
-    private void Awake() {
+
+    public void Initialize(Team team) {
+        MyTeam = team;
+
         _mainSprite.sprite = MainImage;
-        _teamColorSprite.sprite = TeamColorImage;
+        _teamColorSprite.color = GameManager.Instance.GetPlayer(team).Data.TeamColor;
 
         InteractBehavior = MyTeam switch {
-            // TODO actually check MyTeam against the team in some manager
-            Team.One => new OwnerInteractBehavior(),
-            Team.Two => new EnemyInteractBehavior(),
+            Team.Player1 => new OwnerInteractBehavior(),
+            Team.Player2 => new EnemyInteractBehavior(),
             Team.Neutral => new NeutralInteractBehavior(),
             _ => throw new Exception($"Unexpected team ({MyTeam}) for entity ({UnitName})")
         };
-        ;
-    }
-    
-    void Start() {
-        GameManager.Instance.CommandController.RegisterEntity(this);
-    }
 
-    void Update()
-    {
-        
+        GameManager.Instance.CommandController.RegisterEntity(this);
     }
 
     public abstract bool CanTargetThings();

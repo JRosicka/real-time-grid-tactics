@@ -1,23 +1,24 @@
-using System.Collections.Generic;
-using System.Linq;
+using System;
 using Game.Network;
 using Mirror;
 using UnityEngine;
 
-// TODO for lobby + basic network + basic gameplay milestone: 
-// 1. Make it so that units kill other units when they click on them
-// 2. Configure team colors and indices, figure out flow of information for that, have it determine spawns and team colors and which units are which
-// 3. Pass a GridEntity prefab (eventually a ScriptableObject) to AbstractCommandController.SpawnEntity(...) instead of an int
-
 public class GameManager : MonoBehaviour {
     public static GameManager Instance;
 
-    public SPGamePlayer SPGamePlayerPrefab;
-    
     [Header("References")] 
     public GridController GridController;
     public MultiplayerGameSetupHandler MPSetupHandler;
-
+    public Transform SpawnBucket; 
+    public ICommandController CommandController;
+    public PlayerData Player1Data;
+    public PlayerData Player2Data;
+    
+    [Header("Prefabs")]
+    public SPGamePlayer SPGamePlayerPrefab;
+    public MPCommandController MPCommandControllerPrefab;
+    public SPCommandController SPCommandControllerPrefab;
+    
     private IGamePlayer _localPlayer;
     private IGamePlayer _opponentPlayer;
     
@@ -25,29 +26,24 @@ public class GameManager : MonoBehaviour {
     private int _playerCount = -1;
     // The total number of players in this game who have arrived in the game scene
     private int _readyPlayerCount;
-    
     private bool _gameInitialized;
-    public ICommandController CommandController;
     
     [Header("Unit 1")] 
-    public Vector3Int SpawnLocationUnit1;
+    public bool Unit1_LocalTeam;
     public GridUnit Unit1;
     public void SpawnUnit1() {
-        CommandController.SpawnEntity(1, SpawnLocationUnit1);
+        IGamePlayer player = Unit1_LocalTeam ? _localPlayer : _opponentPlayer;
+        CommandController.SpawnEntity(1, player.Data.SpawnLocation, player.Data.Team);
     }
 
     [Header("Unit 2")] 
-    public Vector3Int SpawnLocationUnit2;
+    public bool Unit2_LocalTeam;
     public GridUnit Unit2;
     public void SpawnUnit2() {
-        CommandController.SpawnEntity(2, SpawnLocationUnit2);
+        IGamePlayer player = Unit2_LocalTeam ? _localPlayer : _opponentPlayer;
+        CommandController.SpawnEntity(2, player.Data.SpawnLocation, player.Data.Team);
     }
 
-    [Header("Config")]
-    public Transform SpawnBucket;
-    public MPCommandController MPCommandControllerPrefab;
-    public SPCommandController SPCommandControllerPrefab;
-    
     [HideInInspector]
     public GridEntity SelectedEntity;
 
@@ -94,8 +90,12 @@ public class GameManager : MonoBehaviour {
         _playerCount = playerCount;
         _readyPlayerCount++;
 
-        gamePlayer.SetIndex(networkPlayer.index);
-        // TODO set color
+        gamePlayer.Data = networkPlayer.index switch {
+            0 => Player1Data,
+            1 => Player2Data,
+            _ => throw new IndexOutOfRangeException(
+                $"Tried to set up network player with invalid index ({networkPlayer.index})")
+        };
 
         // Set up the game once all players have connected
         if (_playerCount == _readyPlayerCount) {
@@ -118,12 +118,9 @@ public class GameManager : MonoBehaviour {
         SetupCommandController(false);
 
         _localPlayer = Instantiate(SPGamePlayerPrefab);
-        _localPlayer.SetIndex(0);
-        // TODO set color
-
+        _localPlayer.Data = Player1Data;
         _opponentPlayer = Instantiate(SPGamePlayerPrefab);
-        _opponentPlayer.SetIndex(1);
-        // TODO set color
+        _opponentPlayer.Data = Player2Data;
         
         _gameInitialized = true;
     }
@@ -146,5 +143,15 @@ public class GameManager : MonoBehaviour {
 
     public GridEntity GetEntityAtLocation(Vector3Int location) {
         return CommandController?.GetEntityAtCell(location);
+    }
+
+    public IGamePlayer GetPlayer(GridEntity.Team team) {
+        if (_localPlayer.Data.Team == team) {
+            return _localPlayer;
+        } else if (_opponentPlayer.Data.Team == team) {
+            return _opponentPlayer;
+        } else {
+            throw new ArgumentException($"Invalid team ({team}");
+        }
     }
 }

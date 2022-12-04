@@ -1232,16 +1232,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bd3b396bd1d20894a83b655fa8825784, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SPGamePlayerPrefab: {fileID: 8195557163812692593, guid: c33bd22bbff2db8479bf24a64400fd19, type: 3}
   GridController: {fileID: 1769013663}
   MPSetupHandler: {fileID: 550799286}
-  SpawnLocationUnit1: {x: 2, y: 1, z: 0}
-  Unit1: {fileID: 7704076996890880821, guid: 5b983b0e253197b488e50ee522767142, type: 3}
-  SpawnLocationUnit2: {x: 0, y: 0, z: 0}
-  Unit2: {fileID: 4361409182630671206, guid: 96bef6f8906dd8040aea69c5ec77d0e2, type: 3}
   SpawnBucket: {fileID: 715509370}
+  Player1Data: {fileID: 11400000, guid: db81b6365297c4740954a5fc43742225, type: 2}
+  Player2Data: {fileID: 11400000, guid: 62144f0ee704e3f49830997baa308b81, type: 2}
+  SPGamePlayerPrefab: {fileID: 8195557163812692593, guid: c33bd22bbff2db8479bf24a64400fd19, type: 3}
   MPCommandControllerPrefab: {fileID: 5189142770249109527, guid: a96b27fb42ce1f942b78aa1e1b407640, type: 3}
   SPCommandControllerPrefab: {fileID: 1915109481469686083, guid: 51021b11e3159ad4ba95364f5dac7e44, type: 3}
+  Unit1_LocalTeam: 1
+  Unit1: {fileID: 7704076996890880821, guid: 5b983b0e253197b488e50ee522767142, type: 3}
+  Unit2_LocalTeam: 1
+  Unit2: {fileID: 4361409182630671206, guid: 96bef6f8906dd8040aea69c5ec77d0e2, type: 3}
   SelectedEntity: {fileID: 0}
 --- !u!4 &1548131395
 Transform:
