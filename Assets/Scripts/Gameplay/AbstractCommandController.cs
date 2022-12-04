@@ -62,7 +62,6 @@ public abstract class AbstractCommandController : NetworkBehaviour, ICommandCont
 
         GridEntity entityInstance = spawnFunc();
         RegisterEntity(entityInstance, spawnLocation);
-        SnapEntityToCell(entityInstance, spawnLocation);
     }
     
     protected void DoRegisterEntity(GridEntity entity, Vector3Int position) {

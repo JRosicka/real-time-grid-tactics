@@ -10,7 +10,7 @@ public class SPCommandController : AbstractCommandController {
 
     public override void SpawnEntity(int entityID, Vector3Int spawnLocation) {
         DoSpawnEntity(entityID, spawnLocation, () => {
-            GridEntity entityInstance = Instantiate(entityID == 1 ? Unit1 : Unit2, SpawnBucket);
+            GridEntity entityInstance = Instantiate(entityID == 1 ? Unit1 : Unit2, GridController.GetWorldPosition(spawnLocation), Quaternion.identity, SpawnBucket);
             return entityInstance;
         });
     }
