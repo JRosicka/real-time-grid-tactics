@@ -73,6 +73,7 @@ public class GameManager : MonoBehaviour {
             // The server does not yet know the player count. Try again in a bit
             yield return new WaitForSeconds(.1f);
             StartCoroutine(ListenForPlayersConnected());
+            yield break;
         }
         
         List<MPGamePlayer> players = FindObjectsOfType<MPGamePlayer>().ToList();
