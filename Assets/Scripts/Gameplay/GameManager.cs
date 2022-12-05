@@ -1,4 +1,7 @@
 using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using Game.Network;
 using Mirror;
 using UnityEngine;
@@ -60,6 +63,23 @@ public class GameManager : MonoBehaviour {
         // Otherwise, wait for the network manager to set up the multiplayer game. 
         if (!NetworkClient.active) {
             SetupSPGame();
+        } else if (!NetworkServer.active) {
+            // This is a client and not the host. Listen for all player objects getting created so that we can tell the server that we are ready.
+            StartCoroutine(ListenForPlayersConnected());
+        }
+    }
+
+    [Client]
+    private IEnumerator ListenForPlayersConnected() {
+        List<MPGamePlayer> players = FindObjectsOfType<MPGamePlayer>().ToList();
+        if (players.Count == _playerCount) {
+            MPSetupHandler.CmdNotifyPlayerReady(players.First(p => p.isLocalPlayer).DisplayName);
+        } else if (players.Count > _playerCount) {
+            throw new Exception($"Detected more player objects than the recorded player count! Expected: {_playerCount}. Actual: {players.Count}");
+        } else {
+            // Try again in a bit
+            yield return new WaitForSeconds(.1f);
+            StartCoroutine(ListenForPlayersConnected());
         }
     }
     
@@ -72,7 +92,7 @@ public class GameManager : MonoBehaviour {
         
         // Make sure that the command controller only gets set up once
         SetupCommandController(true);
-        MPSetupHandler.RpcDetectPlayers();
+        MPSetupHandler.RpcAssignPlayers();
         _gameInitialized = true;
     }
     
@@ -88,7 +108,6 @@ public class GameManager : MonoBehaviour {
         }
 
         _playerCount = playerCount;
-        _readyPlayerCount++;
 
         gamePlayer.Data = networkPlayer.index switch {
             0 => Player1Data,
@@ -96,6 +115,14 @@ public class GameManager : MonoBehaviour {
             _ => throw new IndexOutOfRangeException(
                 $"Tried to set up network player with invalid index ({networkPlayer.index})")
         };
+
+        gamePlayer.DisplayName = networkPlayer.DisplayName;
+    }
+
+    [Server]
+    public void MarkPlayerReady(string displayName) {
+        Debug.Log($"Player ({displayName}) connected");
+        _readyPlayerCount++;
 
         // Set up the game once all players have connected
         if (_playerCount == _readyPlayerCount) {

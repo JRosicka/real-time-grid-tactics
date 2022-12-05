@@ -4,4 +4,5 @@ using UnityEngine;
 
 public interface IGamePlayer {
     PlayerData Data { get; set; }
+    string DisplayName { get; set; }
 }

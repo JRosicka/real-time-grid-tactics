@@ -36,6 +36,7 @@ public class MPCommandController : AbstractCommandController {
         DoSpawnEntity(entityID, spawnLocation, () => {
             GridEntity entityInstance = Instantiate(entityID == 1 ? Unit1 : Unit2, GridController.GetWorldPosition(spawnLocation), Quaternion.identity, SpawnBucket);
             NetworkServer.Spawn(entityInstance.gameObject);
+            entityInstance.RpcInitialize(team);
             return entityInstance;
         }, team);
     }

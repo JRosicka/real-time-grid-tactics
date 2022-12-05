@@ -35,6 +35,10 @@ public abstract class GridEntity : NetworkBehaviour {
 
     [ClientRpc]
     public void RpcInitialize(Team team) {
+        DoInitialize(team);
+    }
+
+    public void DoInitialize(Team team) {
         MyTeam = team;
 
         _mainSprite.sprite = MainImage;
@@ -46,7 +50,7 @@ public abstract class GridEntity : NetworkBehaviour {
             Team.Neutral => new NeutralInteractBehavior(),
             _ => throw new Exception($"Unexpected team ({MyTeam}) for entity ({UnitName})")
         };
-
+        
         GameManager.Instance.CommandController.RegisterEntity(this);    // TODO we check for the registered flag on the entity, so it probably won't get registered twice (once from each client). But, there might be a better way to do this with authority
     }
 

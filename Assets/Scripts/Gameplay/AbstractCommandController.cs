@@ -61,7 +61,6 @@ public abstract class AbstractCommandController : NetworkBehaviour, ICommandCont
         }
 
         GridEntity entityInstance = spawnFunc();
-        entityInstance.RpcInitialize(team);
         RegisterEntity(entityInstance, spawnLocation);
     }
     
