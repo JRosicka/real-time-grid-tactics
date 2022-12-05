@@ -25,8 +25,6 @@ public class GameManager : MonoBehaviour {
     private IGamePlayer _localPlayer;
     private IGamePlayer _opponentPlayer;
     
-    // The total number of players in this game, including players who have not yet arrived in the game scene
-    private int _playerCount = -1;
     // The total number of players in this game who have arrived in the game scene
     private int _readyPlayerCount;
     private bool _gameInitialized;
@@ -71,11 +69,17 @@ public class GameManager : MonoBehaviour {
 
     [Client]
     private IEnumerator ListenForPlayersConnected() {
+        if (MPSetupHandler.PlayerCount < 0) {
+            // The server does not yet know the player count. Try again in a bit
+            yield return new WaitForSeconds(.1f);
+            StartCoroutine(ListenForPlayersConnected());
+        }
+        
         List<MPGamePlayer> players = FindObjectsOfType<MPGamePlayer>().ToList();
-        if (players.Count == _playerCount) {
+        if (players.Count == MPSetupHandler.PlayerCount) {
             MPSetupHandler.CmdNotifyPlayerReady(players.First(p => p.isLocalPlayer).DisplayName);
-        } else if (players.Count > _playerCount) {
-            throw new Exception($"Detected more player objects than the recorded player count! Expected: {_playerCount}. Actual: {players.Count}");
+        } else if (players.Count > MPSetupHandler.PlayerCount) {
+            throw new Exception($"Detected more player objects than the recorded player count! Expected: {MPSetupHandler.PlayerCount}. Actual: {players.Count}");
         } else {
             // Try again in a bit
             yield return new WaitForSeconds(.1f);
@@ -102,12 +106,12 @@ public class GameManager : MonoBehaviour {
             Debug.LogError($"Game scene loaded for player {networkPlayer.DisplayName}, but we already detected the game scene loading for them.");
             return;
         }
-        if (_playerCount > -1 && playerCount != _playerCount) {
-            Debug.LogError($"{nameof(playerCount)} ({playerCount}) is a different value than what we previously recorded ({_playerCount})!");
+        if (MPSetupHandler.PlayerCount > -1 && playerCount != MPSetupHandler.PlayerCount) {
+            Debug.LogError($"{nameof(playerCount)} ({playerCount}) is a different value than what we previously recorded ({MPSetupHandler.PlayerCount})!");
             return;
         }
 
-        _playerCount = playerCount;
+        MPSetupHandler.PlayerCount = playerCount;
 
         gamePlayer.Data = networkPlayer.index switch {
             0 => Player1Data,
@@ -125,7 +129,7 @@ public class GameManager : MonoBehaviour {
         _readyPlayerCount++;
 
         // Set up the game once all players have connected
-        if (_playerCount == _readyPlayerCount) {
+        if (MPSetupHandler.PlayerCount == _readyPlayerCount) {
             SetupMPGame();
         }
     }
