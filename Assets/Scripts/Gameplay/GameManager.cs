@@ -121,6 +121,11 @@ public class GameManager : MonoBehaviour {
         };
 
         gamePlayer.DisplayName = networkPlayer.DisplayName;
+
+        if (networkPlayer.isLocalPlayer) {
+            // This is the server's local player. Since no other clients will notify us that this player joined, we should do it here
+            MarkPlayerReady(networkPlayer.DisplayName + " (host)");
+        }
     }
 
     [Server]
