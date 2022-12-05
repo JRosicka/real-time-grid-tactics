@@ -38,19 +38,21 @@ public abstract class GridEntity : NetworkBehaviour {
         DoInitialize(team);
     }
 
-    public void DoInitialize(Team team) {
+    public void DoInitialize(Team team) { 
         MyTeam = team;
+        Team playerTeam = GameManager.Instance.GetLocalPlayer().Data.Team;
 
         _mainSprite.sprite = MainImage;
         _teamColorSprite.color = GameManager.Instance.GetPlayer(team).Data.TeamColor;
 
-        InteractBehavior = MyTeam switch {
-            Team.Player1 => new OwnerInteractBehavior(),
-            Team.Player2 => new EnemyInteractBehavior(),
-            Team.Neutral => new NeutralInteractBehavior(),
-            _ => throw new Exception($"Unexpected team ({MyTeam}) for entity ({UnitName})")
-        };
-        
+        if (MyTeam == Team.Neutral) {
+            InteractBehavior = new NeutralInteractBehavior();
+        } else if (MyTeam == playerTeam) {
+            InteractBehavior = new OwnerInteractBehavior();
+        } else {
+            InteractBehavior = new EnemyInteractBehavior();
+        }
+
         GameManager.Instance.CommandController.RegisterEntity(this);    // TODO we check for the registered flag on the entity, so it probably won't get registered twice (once from each client). But, there might be a better way to do this with authority
     }
 

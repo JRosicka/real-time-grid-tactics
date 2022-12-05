@@ -191,4 +191,12 @@ public class GameManager : MonoBehaviour {
             throw new ArgumentException($"Invalid team ({team}");
         }
     }
+
+    public IGamePlayer GetLocalPlayer() {
+        return _localPlayer;
+    }
+
+    public IGamePlayer GetOpponentPlayer() {
+        return _opponentPlayer;
+    }
 }
