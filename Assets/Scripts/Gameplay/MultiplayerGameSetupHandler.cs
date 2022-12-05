@@ -11,7 +11,7 @@ public class MultiplayerGameSetupHandler : NetworkBehaviour {
     [SyncVar]
     public int PlayerCount = -1;
     
-    [Command]
+    [Command(requiresAuthority = false)]    // TODO
     public void CmdNotifyPlayerReady(string displayName) {
         GameManager.Instance.MarkPlayerReady(displayName);
     }
