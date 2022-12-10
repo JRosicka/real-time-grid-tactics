@@ -28,7 +28,7 @@ public class GameSetupManager : MonoBehaviour {
     // Whether the game was initialized on the server
     private bool _gameInitialized;
     
-    private void Start() {
+    public void Initialize() {
         // If we are not connected in a multiplayer session, then we must be playing singleplayer. Set up the game now. 
         // Otherwise, wait for the network manager to set up the multiplayer game. 
         if (!NetworkClient.active) {

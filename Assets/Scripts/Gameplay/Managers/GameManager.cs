@@ -42,6 +42,10 @@ public class GameManager : MonoBehaviour {
         
         Instance = this;
     }
+
+    private void Start() {
+        GameSetupManager.Initialize();
+    }
     
     public GridEntity GetEntityAtLocation(Vector3Int location) {
         return CommandController?.GetEntityAtCell(location);
