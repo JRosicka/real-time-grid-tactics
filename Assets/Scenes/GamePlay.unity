@@ -652,6 +652,57 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 162026966}
   m_CullTransparentMesh: 1
+--- !u!1 &527040124
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 527040126}
+  - component: {fileID: 527040125}
+  m_Layer: 0
+  m_Name: GameSetupManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &527040125
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 527040124}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a96a602f05d2439792e3b90e248b61e4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MPSetupHandler: {fileID: 550799286}
+  SPGamePlayerPrefab: {fileID: 8195557163812692593, guid: c33bd22bbff2db8479bf24a64400fd19, type: 3}
+  MPCommandControllerPrefab: {fileID: 5189142770249109527, guid: a96b27fb42ce1f942b78aa1e1b407640, type: 3}
+  SPCommandControllerPrefab: {fileID: 1915109481469686083, guid: 51021b11e3159ad4ba95364f5dac7e44, type: 3}
+  Player1Data: {fileID: 11400000, guid: db81b6365297c4740954a5fc43742225, type: 2}
+  Player2Data: {fileID: 11400000, guid: 62144f0ee704e3f49830997baa308b81, type: 2}
+--- !u!4 &527040126
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 527040124}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 550799285}
+  m_Father: {fileID: 1548131395}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &550799284
 GameObject:
   m_ObjectHideFlags: 0
@@ -677,12 +728,12 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 550799284}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1548131395}
+  m_Father: {fileID: 527040126}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &550799286
@@ -699,6 +750,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
+  GameSetupManager: {fileID: 527040125}
+  PlayerCount: -1
 --- !u!114 &550799287
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1232,14 +1285,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bd3b396bd1d20894a83b655fa8825784, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GridController: {fileID: 1769013663}
-  MPSetupHandler: {fileID: 550799286}
   SpawnBucket: {fileID: 715509370}
-  Player1Data: {fileID: 11400000, guid: db81b6365297c4740954a5fc43742225, type: 2}
-  Player2Data: {fileID: 11400000, guid: 62144f0ee704e3f49830997baa308b81, type: 2}
-  SPGamePlayerPrefab: {fileID: 8195557163812692593, guid: c33bd22bbff2db8479bf24a64400fd19, type: 3}
-  MPCommandControllerPrefab: {fileID: 5189142770249109527, guid: a96b27fb42ce1f942b78aa1e1b407640, type: 3}
-  SPCommandControllerPrefab: {fileID: 1915109481469686083, guid: 51021b11e3159ad4ba95364f5dac7e44, type: 3}
+  GridController: {fileID: 1769013663}
+  GameSetupManager: {fileID: 527040125}
   Unit1_LocalTeam: 1
   Unit1: {fileID: 7704076996890880821, guid: 5b983b0e253197b488e50ee522767142, type: 3}
   Unit2_LocalTeam: 1
@@ -1257,7 +1305,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 550799285}
+  - {fileID: 527040126}
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

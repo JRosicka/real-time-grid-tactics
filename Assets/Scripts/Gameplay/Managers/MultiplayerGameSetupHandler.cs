@@ -3,17 +3,19 @@ using System.Linq;
 using Mirror;
 
 /// <summary>
-/// Object for <see cref="GameManager"/> to delegate any multiplayer initialization. This way, <see cref="GameManager"/>
-/// can be a MonoBehavior instead of a NetworkBehavior, so it can work for SP games too. 
+/// Object for <see cref="GameSetupManager"/> to delegate any NetworkBehaviour-specific multiplayer initialization. This way, 
+/// <see cref="GameSetupManager"/> can be a MonoBehavior instead of a NetworkBehavior, so it can work for SP games too. 
 /// </summary>
 public class MultiplayerGameSetupHandler : NetworkBehaviour {
+    public GameSetupManager GameSetupManager;
+    
     // The total number of players in this game, including players who have not yet arrived in the game scene
     [SyncVar]
     public int PlayerCount = -1;
     
     [Command(requiresAuthority = false)]    // TODO
     public void CmdNotifyPlayerReady(string displayName) {
-        GameManager.Instance.MarkPlayerReady(displayName);
+        GameSetupManager.MarkPlayerReady(displayName);
     }
     
     [ClientRpc]
@@ -23,6 +25,7 @@ public class MultiplayerGameSetupHandler : NetworkBehaviour {
         MPGamePlayer opponentPlayer = players.FirstOrDefault(p => !p.isLocalPlayer);
         ICommandController commandController = FindObjectOfType<MPCommandController>();
         
-        GameManager.Instance.SetPlayers(localPlayer, opponentPlayer, commandController);
+        GameManager.Instance.CommandController = commandController;
+        GameManager.Instance.SetPlayers(localPlayer, opponentPlayer);
     }
 }

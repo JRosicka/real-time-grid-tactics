@@ -40,10 +40,10 @@ public abstract class GridEntity : NetworkBehaviour {
 
     public void DoInitialize(Team team) { 
         MyTeam = team;
-        Team playerTeam = GameManager.Instance.GetLocalPlayer().Data.Team;
+        Team playerTeam = GameManager.Instance.LocalPlayer.Data.Team;
 
         _mainSprite.sprite = MainImage;
-        _teamColorSprite.color = GameManager.Instance.GetPlayer(team).Data.TeamColor;
+        _teamColorSprite.color = GameManager.Instance.GetPlayerForTeam(team).Data.TeamColor;
 
         if (MyTeam == Team.Neutral) {
             InteractBehavior = new NeutralInteractBehavior();
