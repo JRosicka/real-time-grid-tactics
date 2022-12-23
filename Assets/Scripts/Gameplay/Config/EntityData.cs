@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using Gameplay.Config.Abilities;
 using Gameplay.Entities;
 using GamePlay.Entities;
+using Mirror;
 using UnityEngine;
 
 namespace Gameplay.Config {
@@ -31,5 +32,15 @@ namespace Gameplay.Config {
         [Space] 
         public List<EntityTag> Tags;
         public List<AbilityDataScriptableObject> Abilities;
+    }
+
+    public static class EntityDataSerializer {
+        public static void WriteEntityData(this NetworkWriter writer, EntityData data) {
+            writer.WriteString(data.name);
+        }
+
+        public static EntityData ReadEntityData(this NetworkReader reader) {
+            return Resources.Load<EntityData>(reader.ReadString());
+        }
     }
 }
