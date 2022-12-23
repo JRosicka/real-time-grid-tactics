@@ -27,10 +27,6 @@ public class MPCommandController : AbstractCommandController {
         CmdMoveEntityToCell(entity, destination);
     }
 
-    public override void SnapEntityToCell(GridEntity entity, Vector2Int destination) {
-        CmdSnapEntityToCell(entity, destination);
-    }
-
     public override void PerformAbility(IAbility ability, GridEntity performer) {
         CmdPerformAbility(ability, performer);
     }
@@ -59,11 +55,12 @@ public class MPCommandController : AbstractCommandController {
     [Command(requiresAuthority = false)]
     private void CmdMoveEntityToCell(GridEntity entity, Vector2Int destination) {
         DoMoveEntityToCell(entity, destination);
+        RpcEntityMoved(entity, destination);
     }
 
-    [Command(requiresAuthority = false)]
-    private void CmdSnapEntityToCell(GridEntity entity, Vector2Int destination) {
-        DoSnapEntityToCell(entity, destination);
+    [ClientRpc]
+    private void RpcEntityMoved(GridEntity entity, Vector2Int destination) {
+        DoEntityMoved(entity, destination);
     }
 
     [Command(requiresAuthority = false)]

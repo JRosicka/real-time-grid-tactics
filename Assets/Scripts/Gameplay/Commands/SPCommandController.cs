@@ -28,10 +28,7 @@ public class SPCommandController : AbstractCommandController {
 
     public override void MoveEntityToCell(GridEntity entity, Vector2Int destination) {
         DoMoveEntityToCell(entity, destination);
-    }
-
-    public override void SnapEntityToCell(GridEntity entity, Vector2Int destination) {
-        DoSnapEntityToCell(entity, destination);
+        DoEntityMoved(entity, destination);
     }
 
     public override void PerformAbility(IAbility ability, GridEntity performer) {

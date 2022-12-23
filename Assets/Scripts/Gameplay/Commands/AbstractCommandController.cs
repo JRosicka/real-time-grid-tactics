@@ -46,9 +46,7 @@ public abstract class AbstractCommandController : NetworkBehaviour, ICommandCont
     public abstract void UnRegisterAndDestroyEntity(GridEntity entity);
     
     public abstract void MoveEntityToCell(GridEntity entity, Vector2Int destination);
-
-    public abstract void SnapEntityToCell(GridEntity entity, Vector2Int destination);
-
+    
     public GridEntity GetEntityAtCell(Vector2Int location) {
         EntitiesOnGrid.TryGetValue(location, out GridEntity ret);
         return ret;
@@ -112,14 +110,11 @@ public abstract class AbstractCommandController : NetworkBehaviour, ICommandCont
         
         // Record the location of the entity
         EntitiesOnGrid[destination] = entity;
-        
-        // Perform the move
-        SnapEntityToCell(entity, destination);
     }
     
-    protected void DoSnapEntityToCell(GridEntity entity, Vector2Int destination) {
+    protected void DoEntityMoved(GridEntity entity, Vector2Int destination) {
         entity.transform.position = GridController.GetWorldPosition(destination);
-        entity.OnMoveCompleted(destination);
+        entity.MovedCompleted(destination);
     }
 
     protected void DoPerformAbility(IAbility abilityInstance, GridEntity performer) {

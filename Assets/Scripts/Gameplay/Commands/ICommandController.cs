@@ -11,7 +11,6 @@ public interface ICommandController {
     void RegisterEntity(GridEntity entity);
     void UnRegisterAndDestroyEntity(GridEntity entity);
     void MoveEntityToCell(GridEntity entity, Vector2Int destination);
-    void SnapEntityToCell(GridEntity entity, Vector2Int destination);
     GridEntity GetEntityAtCell(Vector2Int location);
     Vector2Int GetLocationForEntity(GridEntity entity);
     void PerformAbility(IAbility ability, GridEntity performer);

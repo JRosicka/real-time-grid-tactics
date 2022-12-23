@@ -107,7 +107,7 @@ namespace GamePlay.Entities {
             GameManager.Instance.CommandController.MoveEntityToCell(this, targetCell);
         }
 
-        public void OnMoveCompleted(Vector2Int targetCell) {
+        public void MovedCompleted(Vector2Int targetCell) {
             MovedEvent?.Invoke(targetCell);
         }
 
