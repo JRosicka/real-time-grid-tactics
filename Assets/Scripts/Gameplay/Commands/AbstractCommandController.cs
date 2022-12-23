@@ -1,6 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Gameplay.Config;
+using GamePlay.Entities;
+using Gameplay.Entities.Abilities;
 using Mirror;
 using UnityEngine;
 
@@ -12,16 +15,14 @@ public abstract class AbstractCommandController : NetworkBehaviour, ICommandCont
                  // I think it would make more sense to store a reference to a unit-type-specific scriptableobject and use that to configure a
                  // generic GridEntry or GridUnit prefab to spawn. That's probably the better direction to go anyway.
                  // For now, we'll just have the server get these references applied, and the clients won't have them. 
-    public GridEntity Unit1; // TODO
-    public GridEntity Unit2;
+    protected GridEntity GridEntityPrefab; // TODO
 
     protected GridController GridController => GameManager.Instance.GridController;
     
-    public abstract IDictionary<Vector3Int, GridEntity> EntitiesOnGrid { get; }
+    public abstract IDictionary<Vector2Int, GridEntity> EntitiesOnGrid { get; }
 
-    public void Initialize(GridUnit unit1, GridUnit unit2, Transform spawnBucket) {
-        Unit1 = unit1;
-        Unit2 = unit2;
+    public void Initialize(GridEntity gridEntityPrefab, Transform spawnBucket) {
+        GridEntityPrefab = gridEntityPrefab;
         SpawnBucket = spawnBucket;
     }
     
@@ -30,10 +31,10 @@ public abstract class AbstractCommandController : NetworkBehaviour, ICommandCont
     /// grid. No-op if another entity already exists in the specified location. 
     /// </summary>
     /// <returns>True if the spawn was successful, otherwise false if no entity was created</returns>
-    public abstract void SpawnEntity(int entityID, Vector3Int spawnLocation, GridEntity.Team team);
+    public abstract void SpawnEntity(EntityData data, Vector2Int spawnLocation, GridEntity.Team team);
     // TODO need to have some way of verifying that these commands are legal for the client to do - especially doing stuff with GridEntites, we gotta own em
     // Maybe we can just make these abstract methods virtual, include a check at the beginning, and then have the overrides call base() at the start
-    public abstract void RegisterEntity(GridEntity entity, Vector3Int position);
+    public abstract void RegisterEntity(GridEntity entity, Vector2Int position);
     
     public void RegisterEntity(GridEntity entity) {
         if (entity.Registered)
@@ -44,18 +45,28 @@ public abstract class AbstractCommandController : NetworkBehaviour, ICommandCont
 
     public abstract void UnRegisterAndDestroyEntity(GridEntity entity);
     
-    public abstract void MoveEntityToCell(GridEntity entity, Vector3Int destination);
+    public abstract void MoveEntityToCell(GridEntity entity, Vector2Int destination);
 
-    public abstract void SnapEntityToCell(GridEntity entity, Vector3Int destination);
+    public abstract void SnapEntityToCell(GridEntity entity, Vector2Int destination);
 
-    public GridEntity GetEntityAtCell(Vector3Int location) {
+    public GridEntity GetEntityAtCell(Vector2Int location) {
         EntitiesOnGrid.TryGetValue(location, out GridEntity ret);
         return ret;
     }
 
-    
+    public Vector2Int GetLocationForEntity(GridEntity entity) {
+        if (EntitiesOnGrid.Values.Contains(entity)) {
+            // TODO Perhaps a dictionary isn't the best data structure for this, or I should switch the keys and values
+            KeyValuePair<Vector2Int, GridEntity> item = EntitiesOnGrid.First(kvp => kvp.Value == entity);
+            return item.Key;
+        } else {
+            throw new Exception($"{nameof(GetLocationForEntity)} failed: entity {entity} not found");
+        }
+    }
 
-    protected void DoSpawnEntity(int entityID, Vector3Int spawnLocation, Func<GridEntity> spawnFunc, GridEntity.Team team) {
+    public abstract void PerformAbility(IAbility ability, GridEntity performer);
+
+    protected void DoSpawnEntity(EntityData data, Vector2Int spawnLocation, Func<GridEntity> spawnFunc, GridEntity.Team team) {
         if (EntitiesOnGrid.ContainsKey(spawnLocation) && EntitiesOnGrid[spawnLocation] != null) {
             return;
         }
@@ -64,7 +75,7 @@ public abstract class AbstractCommandController : NetworkBehaviour, ICommandCont
         RegisterEntity(entityInstance, spawnLocation);
     }
     
-    protected void DoRegisterEntity(GridEntity entity, Vector3Int position) {
+    protected void DoRegisterEntity(GridEntity entity, Vector2Int position) {
         if (entity.Registered)
             return;
         if (EntitiesOnGrid.ContainsKey(position) && EntitiesOnGrid[position] != null) {
@@ -82,12 +93,12 @@ public abstract class AbstractCommandController : NetworkBehaviour, ICommandCont
             return;
         }
         
-        KeyValuePair<Vector3Int, GridEntity> item = EntitiesOnGrid.First(kvp => kvp.Value == entity);
+        KeyValuePair<Vector2Int, GridEntity> item = EntitiesOnGrid.First(kvp => kvp.Value == entity);
 
         EntitiesOnGrid.Remove(item);
     }
 
-    protected void DoMoveEntityToCell(GridEntity entity, Vector3Int destination) {
+    protected void DoMoveEntityToCell(GridEntity entity, Vector2Int destination) {
         if (EntitiesOnGrid.ContainsKey(destination) && EntitiesOnGrid[destination] != null) {
             throw new IllegalEntityPlacementException(destination, entity, EntitiesOnGrid[destination]);
         }
@@ -95,7 +106,7 @@ public abstract class AbstractCommandController : NetworkBehaviour, ICommandCont
         // Remove the entity from its previous position
         if (EntitiesOnGrid.Values.Contains(entity)) {
             // TODO Perhaps a dictionary isn't the best data structure for this, or I should switch the keys and values
-            KeyValuePair<Vector3Int, GridEntity> item = EntitiesOnGrid.First(kvp => kvp.Value == entity);
+            KeyValuePair<Vector2Int, GridEntity> item = EntitiesOnGrid.First(kvp => kvp.Value == entity);
             EntitiesOnGrid.Remove(item.Key);
         }
         
@@ -106,12 +117,21 @@ public abstract class AbstractCommandController : NetworkBehaviour, ICommandCont
         SnapEntityToCell(entity, destination);
     }
     
-    protected void DoSnapEntityToCell(GridEntity entity, Vector3Int destination) {
+    protected void DoSnapEntityToCell(GridEntity entity, Vector2Int destination) {
         entity.transform.position = GridController.GetWorldPosition(destination);
+        entity.OnMoveCompleted(destination);
+    }
+
+    protected void DoPerformAbility(IAbility abilityInstance, GridEntity performer) {
+        abilityInstance.PerformAbility();
+    }
+
+    protected void DoAbilityPerformed(IAbility abilityInstance, GridEntity performer) {
+        performer.AbilityPerformed(abilityInstance);
     }
     
     private class IllegalEntityPlacementException : Exception {
-        public IllegalEntityPlacementException(Vector3Int location, 
+        public IllegalEntityPlacementException(Vector2Int location, 
             GridEntity attemptedRegistryEntity, 
             GridEntity entityAtLocation) 
             : base($"Failed to place {nameof(GridEntity)} ({attemptedRegistryEntity.UnitName}) at location {location}"

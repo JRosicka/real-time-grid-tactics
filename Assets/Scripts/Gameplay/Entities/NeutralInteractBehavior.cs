@@ -1,13 +1,13 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class NeutralInteractBehavior : IInteractBehavior {
-    public void Select(GridEntity entity) {
-        // Do nothing
-    }
+namespace GamePlay.Entities {
+    public class NeutralInteractBehavior : IInteractBehavior {
+        public void Select(GridEntity entity) {
+            // Do nothing
+        }
 
-    public void TargetCellWithUnit(GridEntity thisEntity, Vector3Int targetCell) {
-        // Do nothing
+        public void TargetCellWithUnit(GridEntity thisEntity, Vector2Int targetCell) {
+            // Do nothing
+        }
     }
 }

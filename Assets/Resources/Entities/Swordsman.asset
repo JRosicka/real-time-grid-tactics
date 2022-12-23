@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fafa440752424124be5b9cbee86f1e06, type: 3}
+  m_Name: Swordsman
+  m_EditorClassIdentifier: 
+  Cost:
+    Basic: 4
+    Rare: 4
+  Requirements: []
+  BuildTime: 1
+  BaseSprite: {fileID: 21300000, guid: 8a0b09c5c94b13a4d94d9851998762db, type: 3}
+  TeamColorSprite: {fileID: 21300000, guid: 244bb6413a5a3e845bc7016a88fbd132, type: 3}
+  _viewPrefab: {fileID: 968706840322671709, guid: 5b983b0e253197b488e50ee522767142, type: 3}
+  HP: 5
+  MaxMove: 4
+  Range: 3
+  Damage: 2
+  Tags: 00000000
+  Abilities:
+  - {fileID: 11400000, guid: 3d5a32e773a380042aa9f61a544e48f2, type: 2}
+  - {fileID: 11400000, guid: 0918ae4f6b3b09a42a15b2ea44c2bdf8, type: 2}

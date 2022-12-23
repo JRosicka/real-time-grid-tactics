@@ -1,3 +1,4 @@
+using GamePlay.Entities;
 using UnityEngine;
 
 /// <summary>
@@ -7,5 +8,5 @@ using UnityEngine;
 public class PlayerData : ScriptableObject {
     public GridEntity.Team Team;
     public Color TeamColor;
-    public Vector3Int SpawnLocation;
+    public Vector2Int SpawnLocation;
 }

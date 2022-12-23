@@ -1,4 +1,6 @@
 using System;
+using Gameplay.Config;
+using GamePlay.Entities;
 using UnityEngine;
 
 /// <summary>
@@ -12,24 +14,25 @@ public class GameManager : MonoBehaviour {
     public GridController GridController;
     public ICommandController CommandController;
     public GameSetupManager GameSetupManager;
+    public GridEntity GridEntityPrefab;
     
     public IGamePlayer LocalPlayer { get; private set; }
     public IGamePlayer OpponentPlayer { get; private set; }
 
     [Header("Unit 1")] 
     public bool Unit1_LocalTeam;
-    public GridUnit Unit1;
+    public EntityData Unit1;
     public void SpawnUnit1() {
         IGamePlayer player = Unit1_LocalTeam ? LocalPlayer : OpponentPlayer;
-        CommandController.SpawnEntity(1, player.Data.SpawnLocation, player.Data.Team);
+        CommandController.SpawnEntity(Unit1, player.Data.SpawnLocation, player.Data.Team);
     }
 
     [Header("Unit 2")] 
     public bool Unit2_LocalTeam;
-    public GridUnit Unit2;
+    public EntityData Unit2;
     public void SpawnUnit2() {
         IGamePlayer player = Unit2_LocalTeam ? LocalPlayer : OpponentPlayer;
-        CommandController.SpawnEntity(2, player.Data.SpawnLocation, player.Data.Team);
+        CommandController.SpawnEntity(Unit2, player.Data.SpawnLocation, player.Data.Team);
     }
 
     [HideInInspector]
@@ -47,8 +50,15 @@ public class GameManager : MonoBehaviour {
         GameSetupManager.Initialize();
     }
     
-    public GridEntity GetEntityAtLocation(Vector3Int location) {
+    public GridEntity GetEntityAtLocation(Vector2Int location) {
         return CommandController?.GetEntityAtCell(location);
+    }
+
+    public Vector2Int GetLocationForEntity(GridEntity entity) {
+        if (CommandController == null) {
+            throw new Exception($"{nameof(GetLocationForEntity)} failed: Command controller not yet initialized");
+        }
+        return CommandController.GetLocationForEntity(entity);
     }
 
     public IGamePlayer GetPlayerForTeam(GridEntity.Team team) {
@@ -70,7 +80,7 @@ public class GameManager : MonoBehaviour {
 
     public void SetupCommandController(ICommandController commandController) {
         CommandController = commandController;
-        CommandController.Initialize(Unit1, Unit2, SpawnBucket);
+        CommandController.Initialize(GridEntityPrefab, SpawnBucket);
     }
 
     #endregion

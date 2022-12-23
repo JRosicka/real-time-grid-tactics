@@ -1,13 +1,18 @@
 using System.Collections.Generic;
+using Gameplay.Config;
+using GamePlay.Entities;
+using Gameplay.Entities.Abilities;
 using UnityEngine;
 
 public interface ICommandController {
-    IDictionary<Vector3Int, GridEntity> EntitiesOnGrid { get; }
-    void Initialize(GridUnit unit1, GridUnit unit2, Transform spawnBucket);
-    void SpawnEntity(int entityID, Vector3Int spawnLocation, GridEntity.Team team);
+    IDictionary<Vector2Int, GridEntity> EntitiesOnGrid { get; }
+    void Initialize(GridEntity gridEntityPrefab, Transform spawnBucket);
+    void SpawnEntity(EntityData data, Vector2Int spawnLocation, GridEntity.Team team);
     void RegisterEntity(GridEntity entity);
     void UnRegisterAndDestroyEntity(GridEntity entity);
-    void MoveEntityToCell(GridEntity entity, Vector3Int destination);
-    void SnapEntityToCell(GridEntity entity, Vector3Int destination);
-    GridEntity GetEntityAtCell(Vector3Int location);
+    void MoveEntityToCell(GridEntity entity, Vector2Int destination);
+    void SnapEntityToCell(GridEntity entity, Vector2Int destination);
+    GridEntity GetEntityAtCell(Vector2Int location);
+    Vector2Int GetLocationForEntity(GridEntity entity);
+    void PerformAbility(IAbility ability, GridEntity performer);
 }

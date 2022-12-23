@@ -1,6 +1,5 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
+using GamePlay.Entities;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
@@ -24,7 +23,7 @@ public class GridController : MonoBehaviour {
     }
     
     void Update() {
-        Vector3Int mousePos = GetMousePosition();
+        Vector2Int mousePos = GetMousePosition();
         
         // If I ever want to do anything with mousing over - a selecting reticule, simulating attacking an enemy, etc
         // if (!mousePos.Equals(_previousMousePos)) {
@@ -49,7 +48,7 @@ public class GridController : MonoBehaviour {
         TryClickOnCell(click, mousePos);
     }
 
-    private void TryClickOnCell(MouseClick clickType, Vector3Int clickPosition) {
+    private void TryClickOnCell(MouseClick clickType, Vector2Int clickPosition) {
         GridEntity selectedEntity = GameManager.Instance.SelectedEntity;
         GridEntity entityAtMouseLocation = GameManager.Instance.GetEntityAtLocation(clickPosition);
         
@@ -82,17 +81,16 @@ public class GridController : MonoBehaviour {
         }
     }
 
-    public Vector3Int GetCellPosition(Vector3 worldPosition) {
-        Vector3Int cellPosition = _grid.WorldToCell(worldPosition);
-        cellPosition.z = 0;
+    public Vector2Int GetCellPosition(Vector2 worldPosition) {
+        Vector2Int cellPosition = (Vector2Int) _grid.WorldToCell(worldPosition);
         return cellPosition;
     }
 
-    public Vector3 GetWorldPosition(Vector3Int cellPosition) {
-        return _grid.CellToWorld(cellPosition);
+    public Vector2 GetWorldPosition(Vector2Int cellPosition) {
+        return _grid.CellToWorld((Vector3Int) cellPosition);
     }
 
-    private Vector3Int GetMousePosition() {
+    private Vector2Int GetMousePosition() {
         Vector3 mouseWorldPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         return GetCellPosition(mouseWorldPosition);
     }

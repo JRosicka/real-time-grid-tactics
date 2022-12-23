@@ -1,22 +1,23 @@
-using System;
 using System.Collections.Generic;
-using Mirror;
+using Gameplay.Config;
+using GamePlay.Entities;
+using Gameplay.Entities.Abilities;
 using UnityEngine;
 
 public class SPCommandController : AbstractCommandController {
-    public readonly Dictionary<Vector3Int, GridEntity> EntitiesOnGrid_Impl = new Dictionary<Vector3Int, GridEntity>();
+    public readonly Dictionary<Vector2Int, GridEntity> EntitiesOnGrid_Impl = new Dictionary<Vector2Int, GridEntity>();
 
-    public override IDictionary<Vector3Int, GridEntity> EntitiesOnGrid => EntitiesOnGrid_Impl;
+    public override IDictionary<Vector2Int, GridEntity> EntitiesOnGrid => EntitiesOnGrid_Impl;
 
-    public override void SpawnEntity(int entityID, Vector3Int spawnLocation, GridEntity.Team team) {
-        DoSpawnEntity(entityID, spawnLocation, () => {
-            GridEntity entityInstance = Instantiate(entityID == 1 ? Unit1 : Unit2, GridController.GetWorldPosition(spawnLocation), Quaternion.identity, SpawnBucket);
-            entityInstance.DoInitialize(team);
+    public override void SpawnEntity(EntityData data, Vector2Int spawnLocation, GridEntity.Team team) {
+        DoSpawnEntity(data, spawnLocation, () => {
+            GridEntity entityInstance = Instantiate(GridEntityPrefab, GridController.GetWorldPosition(spawnLocation), Quaternion.identity, SpawnBucket);
+            entityInstance.DoInitialize(data, team);
             return entityInstance;
         }, team);
     }
 
-    public override void RegisterEntity(GridEntity entity, Vector3Int position) {
+    public override void RegisterEntity(GridEntity entity, Vector2Int position) {
         DoRegisterEntity(entity, position);
     }
 
@@ -25,11 +26,16 @@ public class SPCommandController : AbstractCommandController {
         Destroy(entity.gameObject);
     }
 
-    public override void MoveEntityToCell(GridEntity entity, Vector3Int destination) {
+    public override void MoveEntityToCell(GridEntity entity, Vector2Int destination) {
         DoMoveEntityToCell(entity, destination);
     }
 
-    public override void SnapEntityToCell(GridEntity entity, Vector3Int destination) {
+    public override void SnapEntityToCell(GridEntity entity, Vector2Int destination) {
         DoSnapEntityToCell(entity, destination);
+    }
+
+    public override void PerformAbility(IAbility ability, GridEntity performer) {
+        DoPerformAbility(ability, performer);
+        DoAbilityPerformed(ability, performer);
     }
 }
