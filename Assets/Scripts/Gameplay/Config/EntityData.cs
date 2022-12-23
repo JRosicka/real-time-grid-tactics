@@ -35,12 +35,14 @@ namespace Gameplay.Config {
     }
 
     public static class EntityDataSerializer {
-        public static void WriteEntityData(this NetworkWriter writer, EntityData data) {
+        public static void WriteEntityData(this NetworkWriter writer, EntityData data) {    // TODO currently the asset needs to be stored at the root of a Resources folder for this to work. Would be nice to record the path somewhere so that we could nest these. 
             writer.WriteString(data.name);
         }
 
-        public static EntityData ReadEntityData(this NetworkReader reader) {
-            return Resources.Load<EntityData>(reader.ReadString());
+        public static EntityData ReadEntityData(this NetworkReader reader) {    // TODO cache the loaded resource here and everywhere else
+            string id = reader.ReadString();
+            EntityData data = (EntityData)Resources.Load(id);
+            return data;
         }
     }
 }
