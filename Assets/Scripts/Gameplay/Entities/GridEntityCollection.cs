@@ -119,4 +119,22 @@ namespace Gameplay.Entities {
             };
         }
     }
+
+    public static class PositionedGridEntityListSerializer {
+        public static void WritePositionedGridEntityList(this NetworkWriter writer,
+            List<GridEntityCollection.PositionedGridEntity> list) {
+            foreach (GridEntityCollection.PositionedGridEntity entity in list) {
+                writer.Write(entity);
+            }
+        }
+
+        public static List<GridEntityCollection.PositionedGridEntity> ReadPositionedGridEntityList(this NetworkReader reader) {
+            List<GridEntityCollection.PositionedGridEntity> ret = new List<GridEntityCollection.PositionedGridEntity>();
+            while (reader.Remaining > 0) {
+                ret.Add(reader.Read<GridEntityCollection.PositionedGridEntity>());
+            }
+
+            return ret;
+        }
+    }
 }
