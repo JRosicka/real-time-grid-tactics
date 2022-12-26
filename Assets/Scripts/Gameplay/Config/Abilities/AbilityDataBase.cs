@@ -20,11 +20,13 @@ namespace Gameplay.Config.Abilities {
         public float PerformDuration;
         public float CooldownDuration;
 
+        [SerializeField] [HideInInspector]
+        private string _contentResourceID; 
         /// <summary>
         /// This gets set automatically in an editor script to match the name of the <see cref="BaseAbilityDataAsset{T,P}"/>
         /// where this comes from. Necessary for writing/reading over network. 
         /// </summary>
-        public string ContentResourceID { get; set; }
+        public string ContentResourceID { get => _contentResourceID; set => _contentResourceID = value; }
         
         /// <summary>
         /// Respond to the user input intending to use this ability. Do not actually perform the ability (unless there is
