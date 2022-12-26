@@ -1,16 +1,11 @@
 using System.Collections.Generic;
 using Gameplay.Config;
-using GamePlay.Entities;
+using Gameplay.Entities;
 using Gameplay.Entities.Abilities;
 using Mirror;
 using UnityEngine;
 
-public class MPCommandController : AbstractCommandController {
-    public readonly SyncDictionary<Vector2Int, GridEntity> EntitiesOnGrid_Impl = new SyncDictionary<Vector2Int, GridEntity>();
-    
-    // TODO this is where I could add some "is this player allowed to call this on the entity" checks
-    public override IDictionary<Vector2Int, GridEntity> EntitiesOnGrid => EntitiesOnGrid_Impl;
-
+public class MPCommandManager : AbstractCommandManager {
     public override void SpawnEntity(EntityData data, Vector2Int spawnLocation, GridEntity.Team team) {
         CmdSpawnEntity(data, spawnLocation, team);
     }

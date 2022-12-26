@@ -23,9 +23,9 @@ public class MultiplayerGameSetupHandler : NetworkBehaviour {
         List<MPGamePlayer> players = FindObjectsOfType<MPGamePlayer>().ToList();
         MPGamePlayer localPlayer = players.FirstOrDefault(p => p.isLocalPlayer);
         MPGamePlayer opponentPlayer = players.FirstOrDefault(p => !p.isLocalPlayer);
-        ICommandController commandController = FindObjectOfType<MPCommandController>();
+        ICommandManager commandManager = FindObjectOfType<MPCommandManager>();
         
-        GameManager.Instance.CommandController = commandController;
+        GameManager.Instance.CommandManager = commandManager;
         GameManager.Instance.SetPlayers(localPlayer, opponentPlayer);
     }
 }

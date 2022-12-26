@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
-using Gameplay.Config.Abilities;
-using GamePlay.Entities;
+using Gameplay.Entities;
 using Mirror;
 using UnityEngine;
 

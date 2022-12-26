@@ -65,5 +65,4 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0.1
   SpawnBucket: {fileID: 0}
-  Unit1: {fileID: 0}
-  Unit2: {fileID: 0}
+  GridEntityPrefab: {fileID: 2463344900879472794, guid: e0151de0c262b334689a2122049e71c8, type: 3}

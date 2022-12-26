@@ -1,5 +1,5 @@
 using System;
-using GamePlay.Entities;
+using Gameplay.Entities;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 

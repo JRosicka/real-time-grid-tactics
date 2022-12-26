@@ -6,10 +6,9 @@ using Gameplay.Config.Abilities;
 using Gameplay.Entities;
 using Gameplay.Entities.Abilities;
 using Mirror;
-using Sirenix.OdinInspector;
 using UnityEngine;
 
-namespace GamePlay.Entities {
+namespace Gameplay.Entities {
     /// <summary>
     /// Represents an entity that exists at a specific position on the gameplay grid.
     /// Has an <see cref="IInteractBehavior"/> field to handle player input. 
@@ -73,7 +72,7 @@ namespace GamePlay.Entities {
             SetupView();
 
             // TODO we check for the registered flag on the entity, so it probably won't get registered twice (once from each client). But, there might be a better way to do this with authority
-            GameManager.Instance.CommandController.RegisterEntity(this);
+            GameManager.Instance.CommandManager.RegisterEntity(this);
         }
 
         public bool CanTargetThings => true;
@@ -104,7 +103,7 @@ namespace GamePlay.Entities {
 
         public void MoveToCell(Vector2Int targetCell) {
             Debug.Log($"Moving {UnitName} to {targetCell}");
-            GameManager.Instance.CommandController.MoveEntityToCell(this, targetCell);
+            GameManager.Instance.CommandManager.MoveEntityToCell(this, targetCell);
         }
 
         public void MovedCompleted(Vector2Int targetCell) {
@@ -134,7 +133,7 @@ namespace GamePlay.Entities {
 
         public void CreateAbility(IAbilityData abilityData, IAbilityParameters parameters) {
             IAbility abilityInstance = abilityData.CreateAbility(parameters);
-            GameManager.Instance.CommandController.PerformAbility(abilityInstance, this);
+            GameManager.Instance.CommandManager.PerformAbility(abilityInstance, this);
         }
 
         /// <summary>
@@ -173,7 +172,7 @@ namespace GamePlay.Entities {
         }
 
         private void Kill() {
-            GameManager.Instance.CommandController.UnRegisterAndDestroyEntity(this);    // TODO this should actually wait to destroy until all of the kill animations are done. So unregister now, kill later. 
+            GameManager.Instance.CommandManager.UnRegisterAndDestroyEntity(this);    // TODO this should actually wait to destroy until all of the kill animations are done. So unregister now, kill later. 
         }
     }
 }

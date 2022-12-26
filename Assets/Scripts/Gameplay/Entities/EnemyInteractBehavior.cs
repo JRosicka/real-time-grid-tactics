@@ -2,7 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace GamePlay.Entities {
+namespace Gameplay.Entities {
+    /// <summary>
+    /// <see cref="IInteractBehavior"/> for clicking on an enemy entity
+    /// </summary>
     public class EnemyInteractBehavior : IInteractBehavior {
         public void Select(GridEntity entity) {
             // Do nothing - can't select enemy units

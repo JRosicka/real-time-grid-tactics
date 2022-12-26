@@ -1,14 +1,10 @@
 using System.Collections.Generic;
 using Gameplay.Config;
-using GamePlay.Entities;
+using Gameplay.Entities;
 using Gameplay.Entities.Abilities;
 using UnityEngine;
 
-public class SPCommandController : AbstractCommandController {
-    public readonly Dictionary<Vector2Int, GridEntity> EntitiesOnGrid_Impl = new Dictionary<Vector2Int, GridEntity>();
-
-    public override IDictionary<Vector2Int, GridEntity> EntitiesOnGrid => EntitiesOnGrid_Impl;
-
+public class SPCommandManager : AbstractCommandManager {
     public override void SpawnEntity(EntityData data, Vector2Int spawnLocation, GridEntity.Team team) {
         DoSpawnEntity(data, spawnLocation, () => {
             GridEntity entityInstance = Instantiate(GridEntityPrefab, GridController.GetWorldPosition(spawnLocation), Quaternion.identity, SpawnBucket);

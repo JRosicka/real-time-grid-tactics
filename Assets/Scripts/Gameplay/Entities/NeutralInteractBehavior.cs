@@ -1,6 +1,9 @@
 using UnityEngine;
 
-namespace GamePlay.Entities {
+namespace Gameplay.Entities {
+    /// <summary>
+    /// <see cref="IInteractBehavior"/> for clicking on a neutral entity under no player's control
+    /// </summary>
     public class NeutralInteractBehavior : IInteractBehavior {
         public void Select(GridEntity entity) {
             // Do nothing
