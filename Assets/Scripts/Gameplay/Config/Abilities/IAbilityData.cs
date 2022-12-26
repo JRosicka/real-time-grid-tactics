@@ -1,5 +1,6 @@
 using GamePlay.Entities;
 using Gameplay.Entities.Abilities;
+using Mirror;
 
 namespace Gameplay.Config.Abilities {
     /// <summary>
@@ -26,5 +27,10 @@ namespace Gameplay.Config.Abilities {
         /// do the ability so that the client knows the ability was canceled. Ye. 
         /// </summary>
         IAbility CreateAbility(IAbilityParameters parameters);
+
+        /// <summary>
+        /// Re-creates the <see cref="IAbility"/> by first deserializing the parameters from the provided reader
+        /// </summary>
+        IAbility DeserializeAbility(NetworkReader reader);
     }
 }

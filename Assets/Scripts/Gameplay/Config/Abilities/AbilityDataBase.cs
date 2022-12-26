@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using GamePlay.Entities;
 using Gameplay.Entities.Abilities;
+using Mirror;
 using UnityEngine;
 
 namespace Gameplay.Config.Abilities {
@@ -11,7 +12,7 @@ namespace Gameplay.Config.Abilities {
     /// handles the actual performing of the ability which is the part that needs to be sent to the server. 
     /// </summary>
     [Serializable]
-    public abstract class AbilityDataBase<T> : IAbilityData where T : IAbilityParameters {
+    public abstract class AbilityDataBase<T> : IAbilityData where T : IAbilityParameters, new() {
         /// <summary>
         /// All of these must be owned in order to perform the ability
         /// </summary>
@@ -42,5 +43,14 @@ namespace Gameplay.Config.Abilities {
         /// server. 
         /// </summary>
         public IAbility CreateAbility(IAbilityParameters parameters) => CreateAbilityImpl((T) parameters);
+
+        /// <summary>
+        /// Re-creates the <see cref="IAbility"/> by first deserializing the parameters from the provided reader
+        /// </summary>
+        public IAbility DeserializeAbility(NetworkReader reader) {
+            T parameters = new T();
+            parameters.Deserialize(reader);
+            return CreateAbilityImpl(parameters);
+        }
     }
 }

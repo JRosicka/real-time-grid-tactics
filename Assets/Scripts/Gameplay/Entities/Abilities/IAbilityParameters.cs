@@ -1,8 +1,26 @@
+using Mirror;
+
 namespace Gameplay.Entities.Abilities {
     /// <summary>
     /// Arbitrary set of ability-instance-specific parameters
     /// </summary>
-    public interface IAbilityParameters {}    // TODO I don't think this is going to be networked properly... required during read/write of IAbility
+    public interface IAbilityParameters {
+        void Serialize(NetworkWriter writer);
+        void Deserialize(NetworkReader reader);
+    }
     
-    public class NullAbilityParameters : IAbilityParameters {}
+    public abstract class BaseAbilityParameters : IAbilityParameters {
+        public abstract void Serialize(NetworkWriter writer);
+        public abstract void Deserialize(NetworkReader reader);
+    }
+
+    public class NullAbilityParameters : BaseAbilityParameters {
+        public override void Serialize(NetworkWriter writer) {
+            // Nothing to do
+        }
+
+        public override void Deserialize(NetworkReader reader) {
+            // Nothing to do
+        }
+    }
 }

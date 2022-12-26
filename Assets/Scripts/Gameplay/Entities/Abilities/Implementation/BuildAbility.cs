@@ -1,5 +1,6 @@
 using Gameplay.Config;
 using Gameplay.Config.Abilities;
+using Mirror;
 using UnityEngine;
 
 namespace Gameplay.Entities.Abilities {
@@ -21,5 +22,14 @@ namespace Gameplay.Entities.Abilities {
     public class BuildAbilityParameters : IAbilityParameters {
         public PurchasableData Buildable;
         public Vector2Int BuildLocation;
+        public void Serialize(NetworkWriter writer) {
+            writer.WriteString(Buildable.name);
+            writer.Write(BuildLocation);
+        }
+
+        public void Deserialize(NetworkReader reader) {
+            Buildable = Resources.Load<PurchasableData>(reader.ReadString());
+            BuildLocation = reader.Read<Vector2Int>();
+        }
     }
 }

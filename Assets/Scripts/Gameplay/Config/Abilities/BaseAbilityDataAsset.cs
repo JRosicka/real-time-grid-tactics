@@ -7,7 +7,7 @@ namespace Gameplay.Config.Abilities {
     /// <summary>
     /// A base asset that holds the configured content for a particular <see cref="IAbility"/>.
     /// </summary>
-    public abstract class BaseAbilityDataAsset<T, P> : AbilityDataScriptableObject where T : AbilityDataBase<P> where P : IAbilityParameters {
+    public abstract class BaseAbilityDataAsset<T, P> : AbilityDataScriptableObject where T : AbilityDataBase<P> where P : IAbilityParameters, new() {
         public T Data;
         public override IAbilityData Content => Data;
     }
