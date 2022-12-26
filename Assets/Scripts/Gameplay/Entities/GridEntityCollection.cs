@@ -16,7 +16,7 @@ namespace Gameplay.Entities {
         public class PositionedGridEntity {
             public GridEntity Entity;
             public Vector2Int Location;
-        }
+        } 
 
         public readonly List<PositionedGridEntity> Entities = new List<PositionedGridEntity>();
 
