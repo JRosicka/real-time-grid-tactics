@@ -71,15 +71,18 @@ public abstract class AbstractCommandManager : NetworkBehaviour, ICommandManager
         
         EntitiesOnGrid.RegisterEntity(entity, position);
         entity.Registered = true;
+        SyncEntityCollection();
         Debug.Log($"Registered new entity {entity.UnitName} at position {position}");
     }
 
     protected void DoUnRegisterEntity(GridEntity entity) {
         EntitiesOnGrid.UnRegisterEntity(entity);
+        SyncEntityCollection();
     }
 
     protected void DoMoveEntityToCell(GridEntity entity, Vector2Int destination) {
         EntitiesOnGrid.MoveEntity(entity, destination);
+        SyncEntityCollection();
     }
     
     protected void DoEntityMoved(GridEntity entity, Vector2Int destination) {
@@ -93,5 +96,13 @@ public abstract class AbstractCommandManager : NetworkBehaviour, ICommandManager
 
     protected void DoAbilityPerformed(IAbility abilityInstance, GridEntity performer) {
         performer.AbilityPerformed(abilityInstance);
+    }
+
+    /// <summary>
+    /// Reset the reference for <see cref="EntitiesOnGrid"/> to force a sync across clients. Just updating fields in the class
+    /// is not enough to get the sync to occur. 
+    /// </summary>
+    private void SyncEntityCollection() {
+        EntitiesOnGrid = new GridEntityCollection(EntitiesOnGrid.Entities);
     }
 }
