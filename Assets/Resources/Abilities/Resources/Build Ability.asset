@@ -16,5 +16,6 @@ MonoBehaviour:
     Requirements: []
     PerformDuration: 0
     CooldownDuration: 0
+    _contentResourceID: Build Ability
     Buildables:
     - {fileID: 11400000, guid: 991ad2a1d6801ee40b831e7850e0ff35, type: 2}

@@ -20,8 +20,8 @@ namespace Gameplay.Config.Abilities {
         public float PerformDuration;
         public float CooldownDuration;
 
-        [SerializeField] [HideInInspector]
-        private string _contentResourceID; 
+        [SerializeField]
+        private string _contentResourceID;
         /// <summary>
         /// This gets set automatically in an editor script to match the name of the <see cref="BaseAbilityDataAsset{T,P}"/>
         /// where this comes from. Necessary for writing/reading over network. 

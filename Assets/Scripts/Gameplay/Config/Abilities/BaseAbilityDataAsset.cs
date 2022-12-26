@@ -29,7 +29,8 @@ namespace Gameplay.Config.Abilities {
             // Set the data content ID to be the name of the ScriptableObject asset.
             AbilityDataScriptableObject abilityData = (AbilityDataScriptableObject) target;
             abilityData.Content.ContentResourceID = abilityData.name;
-
+            
+            EditorUtility.SetDirty(abilityData);
         }
     }
 

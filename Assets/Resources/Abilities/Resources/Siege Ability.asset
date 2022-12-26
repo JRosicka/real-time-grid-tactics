@@ -16,4 +16,4 @@ MonoBehaviour:
     Requirements: []
     PerformDuration: 0
     CooldownDuration: 0
-    testContentResourceID: New Siege Ability Data Asset
+    _contentResourceID: Siege Ability
