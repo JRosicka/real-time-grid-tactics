@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Mirror;
 using UnityEngine;
 
 namespace Gameplay.Entities {
@@ -16,9 +17,15 @@ namespace Gameplay.Entities {
         public class PositionedGridEntity {
             public GridEntity Entity;
             public Vector2Int Location;
-        } 
+        }
 
-        public readonly List<PositionedGridEntity> Entities = new List<PositionedGridEntity>();
+        public readonly List<PositionedGridEntity> Entities;
+
+        public GridEntityCollection() : this(new List<PositionedGridEntity>()) { }
+
+        public GridEntityCollection(List<PositionedGridEntity> entities) {
+            Entities = entities;
+        }
 
         public void RegisterEntity(GridEntity entity, Vector2Int location) {
             if (Entities.Any(e => e.Entity == entity)) return;
@@ -86,6 +93,30 @@ namespace Gameplay.Entities {
                 : base($"Failed to place {nameof(GridEntity)} ({moveAttemptEntity.UnitName}) at location {location}"
                        + $" because another {nameof(GridEntity)} ({entityAtLocation.UnitName}) already exists there") { }
         }
+    }
 
+    public static class GridEntityCollectionSerializer {
+        public static void WriteGridEntityCollection(this NetworkWriter writer, GridEntityCollection collection) {
+            writer.Write(collection.Entities);
+        }
+
+        public static GridEntityCollection ReadGridEntityCollection(this NetworkReader reader) {
+            return new GridEntityCollection(reader.Read<List<GridEntityCollection.PositionedGridEntity>>());
+        }
+    }
+
+    public static class PositionedGridEntitySerializer {
+        public static void WritePositionedGridEntity(this NetworkWriter writer,
+            GridEntityCollection.PositionedGridEntity entity) {
+            writer.Write(entity.Entity);
+            writer.Write(entity.Location);
+        }
+        
+        public static GridEntityCollection.PositionedGridEntity ReadPositionedGridEntity(this NetworkReader reader) {
+            return new GridEntityCollection.PositionedGridEntity {
+                Entity = reader.Read<GridEntity>(),
+                Location = reader.Read<Vector2Int>()
+            };
+        }
     }
 }

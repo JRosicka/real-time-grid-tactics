@@ -19,7 +19,8 @@ public abstract class AbstractCommandManager : NetworkBehaviour, ICommandManager
     protected GridController GridController => GameManager.Instance.GridController;
     
     // TODO this is where I could add some "is this player allowed to call this on the entity" checks
-    public GridEntityCollection EntitiesOnGrid { get; } = new GridEntityCollection();
+    [SyncVar]
+    public GridEntityCollection EntitiesOnGrid = new GridEntityCollection();
 
     public void Initialize(Transform spawnBucket) {
         SpawnBucket = spawnBucket;
