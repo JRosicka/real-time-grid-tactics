@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.37311953, g: 0.38074014, b: 0.3587274, a: 1}
+  m_IndirectSpecularColor: {r: 0.3731193, g: 0.38073996, b: 0.35872698, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -683,8 +683,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MPSetupHandler: {fileID: 550799286}
   SPGamePlayerPrefab: {fileID: 8195557163812692593, guid: c33bd22bbff2db8479bf24a64400fd19, type: 3}
-  MPCommandControllerPrefab: {fileID: 5189142770249109527, guid: a96b27fb42ce1f942b78aa1e1b407640, type: 3}
-  SPCommandControllerPrefab: {fileID: 1915109481469686083, guid: 51021b11e3159ad4ba95364f5dac7e44, type: 3}
+  MPCommandManagerPrefab: {fileID: 5189142770249109527, guid: a96b27fb42ce1f942b78aa1e1b407640, type: 3}
+  SPCommandManagerPrefab: {fileID: 1915109481469686083, guid: 51021b11e3159ad4ba95364f5dac7e44, type: 3}
   Player1Data: {fileID: 11400000, guid: db81b6365297c4740954a5fc43742225, type: 2}
   Player2Data: {fileID: 11400000, guid: 62144f0ee704e3f49830997baa308b81, type: 2}
 --- !u!4 &527040126

@@ -1,4 +1,4 @@
-using GamePlay.Entities;
+using Gameplay.Entities;
 using UnityEngine;
 
 /// <summary>

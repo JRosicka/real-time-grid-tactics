@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace GamePlay.Entities {
+namespace Gameplay.Entities {
     /// <summary>
     /// Handles input for a <see cref="GridEntity"/>
     /// </summary>

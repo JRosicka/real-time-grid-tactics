@@ -14,8 +14,8 @@ public class GameSetupManager : MonoBehaviour {
 
     [Header("Prefabs")]
     public SPGamePlayer SPGamePlayerPrefab;
-    public MPCommandController MPCommandControllerPrefab;
-    public SPCommandController SPCommandControllerPrefab;
+    public MPCommandManager MPCommandManagerPrefab;
+    public SPCommandManager SPCommandManagerPrefab;
 
     [Header("Data")]
     public PlayerData Player1Data;
@@ -47,8 +47,8 @@ public class GameSetupManager : MonoBehaviour {
             return;
         }
         
-        ICommandController commandController = Instantiate(SPCommandControllerPrefab, transform);
-        GameManager.SetupCommandController(commandController);
+        ICommandManager commandManager = Instantiate(SPCommandManagerPrefab, transform);
+        GameManager.SetupCommandManager(commandManager);
 
         SPGamePlayer localPlayer = Instantiate(SPGamePlayerPrefab);
         localPlayer.Data = Player1Data;
@@ -144,9 +144,9 @@ public class GameSetupManager : MonoBehaviour {
         }
         
         // Set up the command controller - only done on the server
-        MPCommandController newController = Instantiate(MPCommandControllerPrefab, transform);
-        NetworkServer.Spawn(newController.gameObject);
-        GameManager.SetupCommandController(newController);
+        MPCommandManager newManager = Instantiate(MPCommandManagerPrefab, transform);
+        NetworkServer.Spawn(newManager.gameObject);
+        GameManager.SetupCommandManager(newManager);
 
         // Tell clients to look for the command controller and player GameObjects
         MPSetupHandler.RpcAssignPlayers();

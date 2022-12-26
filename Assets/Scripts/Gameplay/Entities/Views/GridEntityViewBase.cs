@@ -1,6 +1,5 @@
 using System;
 using Gameplay.Config.Abilities;
-using GamePlay.Entities;
 using Gameplay.Entities.Abilities;
 using UnityEngine;
 

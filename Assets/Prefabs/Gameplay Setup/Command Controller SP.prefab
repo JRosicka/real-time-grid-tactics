@@ -48,7 +48,7 @@ MonoBehaviour:
   sceneId: 0
   serverOnly: 0
   visible: 0
-  m_AssetId: 
+  m_AssetId: 51021b11e3159ad4ba95364f5dac7e44
   hasSpawned: 0
 --- !u!114 &1915109481469686083
 MonoBehaviour:
@@ -65,5 +65,4 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0.1
   SpawnBucket: {fileID: 0}
-  Unit1: {fileID: 0}
-  Unit2: {fileID: 0}
+  GridEntityPrefab: {fileID: 2463344900879472794, guid: e0151de0c262b334689a2122049e71c8, type: 3}
