@@ -16,8 +16,8 @@ namespace Gameplay.Config.Abilities {
             // TODO check requirements, cooldown timer, etc. If valid, call CreateAbility and send it to the command controller
         }
 
-        protected override IAbility CreateAbilityImpl(NullAbilityParameters parameters) {
-            return new SiegeAbility(this, parameters);
+        protected override IAbility CreateAbilityImpl(NullAbilityParameters parameters, GridEntity performer) {
+            return new SiegeAbility(this, parameters, performer);
         }
     }
 }

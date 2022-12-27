@@ -22,5 +22,5 @@ public interface ICommandManager {
     void MoveEntityToCell(GridEntity entity, Vector2Int destination);
     GridEntity GetEntityAtCell(Vector2Int location);
     Vector2Int GetLocationForEntity(GridEntity entity);
-    void PerformAbility(IAbility ability, GridEntity performer);
+    void PerformAbility(IAbility ability);
 }

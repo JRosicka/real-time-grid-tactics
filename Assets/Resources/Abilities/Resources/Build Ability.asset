@@ -13,9 +13,12 @@ MonoBehaviour:
   m_Name: Build Ability
   m_EditorClassIdentifier: 
   Data:
-    Requirements: []
-    PerformDuration: 0
-    CooldownDuration: 0
     _contentResourceID: Build Ability
+    _requirements: []
+    _performDuration: 0
+    _cooldownDuration: 5
+    _channel: {fileID: 11400000, guid: a2bb18c2ded749a4e902028c24c166d0, type: 2}
+    _channelBlockers:
+    - {fileID: 11400000, guid: a2bb18c2ded749a4e902028c24c166d0, type: 2}
     Buildables:
     - {fileID: 11400000, guid: 991ad2a1d6801ee40b831e7850e0ff35, type: 2}

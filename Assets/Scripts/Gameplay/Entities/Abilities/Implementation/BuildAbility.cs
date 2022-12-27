@@ -10,11 +10,16 @@ namespace Gameplay.Entities.Abilities {
     public class BuildAbility : AbilityBase<BuildAbilityData, BuildAbilityParameters> {
         private BuildAbilityParameters AbilityParameters => (BuildAbilityParameters) BaseParameters;
 
-        public BuildAbility(BuildAbilityData data, BuildAbilityParameters parameters) : base(data, parameters) {
+        public BuildAbility(BuildAbilityData data, BuildAbilityParameters parameters, GridEntity performer) : base(data, parameters, performer) {
             
         }
         
-        public override void PerformAbility() {
+        protected override void PayCost() {
+            // TODO pay AbilityParameters.Buildable.Cost
+            base.PayCost();
+        }
+        
+        public override void DoPerformAbility() {
             Debug.Log($"Did build ability for {AbilityParameters.Buildable.ID} at cell {AbilityParameters.BuildLocation}, cool");
         }
     }

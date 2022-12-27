@@ -27,8 +27,8 @@ public class SPCommandManager : AbstractCommandManager {
         DoEntityMoved(entity, destination);
     }
 
-    public override void PerformAbility(IAbility ability, GridEntity performer) {
-        DoPerformAbility(ability, performer);
-        DoAbilityPerformed(ability, performer);
+    public override void PerformAbility(IAbility ability) {
+        DoPerformAbility(ability);
+        DoAbilityPerformed(ability);
     }
 }

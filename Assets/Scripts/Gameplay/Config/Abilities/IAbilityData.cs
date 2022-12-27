@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Gameplay.Entities;
 using Gameplay.Entities.Abilities;
 using Mirror;
@@ -10,6 +11,11 @@ namespace Gameplay.Config.Abilities {
     /// </summary>
     public interface IAbilityData {
         string ContentResourceID { get; set; }
+        List<PurchasableData> Requirements { get; }
+        float PerformDuration { get; }
+        float CooldownDuration { get; }
+        AbilityChannel Channel { get; }
+        List<AbilityChannel> ChannelBlockers { get; }
         /// <summary>
         /// Respond to the user input intending to use this ability. Do not actually perform the ability (unless there is
         /// nothing else to do first) - rather, handle any client-side stuff by sending events to prompt for further input. 
@@ -17,16 +23,18 @@ namespace Gameplay.Config.Abilities {
         void SelectAbility(GridEntity selector);
 
         /// <summary>
+        /// Whether the ability is legal to be used with the given parameters (valid target, player has enough money, cooldowns, etc).
+        ///
+        /// Should be checked on the client before creating the ability, and checked again on the server before performing
+        /// the ability. If the server check fails, let the client know. 
+        /// </summary>
+        bool AbilityLegal(IAbilityParameters parameters, GridEntity entity);
+        
+        /// <summary>
         /// Create an instance of this ability, passing in any user input. This created instance should be passed to the
         /// server.
-        /// 
-        /// TODO should add another method to check to see if the ability is legal (valid target, player has enough money, cooldowns, etc),
-        /// and check that before creating the ability. Then that should be checked AGAIN on the server before performing the ability since
-        /// things might have changed. Then the IAbility itself should have a method to handle paying the cost which is called at the beginning
-        /// of IAbility.PerformAbility(). And if the server check for viability fails, we do an RPC call targeting the client who tried to
-        /// do the ability so that the client knows the ability was canceled. Ye. 
         /// </summary>
-        IAbility CreateAbility(IAbilityParameters parameters);
+        IAbility CreateAbility(IAbilityParameters parameters, GridEntity performer);
 
         /// <summary>
         /// Re-creates the <see cref="IAbility"/> by first deserializing the parameters from the provided reader

@@ -5,12 +5,14 @@ using Gameplay.Config;
 using Gameplay.Config.Abilities;
 using Gameplay.Entities.Abilities;
 using Mirror;
+using Sirenix.Utilities;
 using UnityEngine;
 
 namespace Gameplay.Entities {
     /// <summary>
     /// Represents an entity that exists at a specific position on the gameplay grid.
-    /// Has an <see cref="IInteractBehavior"/> field to handle player input. 
+    /// Has an <see cref="IInteractBehavior"/> field to handle player input.
+    /// TODO this is disorganized, would be good to update
     /// </summary>
     public class GridEntity : NetworkBehaviour {
         public enum Team {
@@ -26,6 +28,7 @@ namespace Gameplay.Entities {
         
 
         private GridEntityViewBase _view;
+        public Canvas ViewCanvas;
 
         [Header("Config")] 
         public string UnitName;
@@ -48,6 +51,7 @@ namespace Gameplay.Entities {
 
         [Header("Current")]
         public int CurrentHP;
+        public List<AbilityTimer> ActiveTimers = new List<AbilityTimer>();
 
         [ClientRpc]
         public void RpcInitialize(EntityData data, Team team) {
@@ -78,7 +82,7 @@ namespace Gameplay.Entities {
         public bool CanMove => true; // todo
         public Vector2Int Location => GameManager.Instance.GetLocationForEntity(this);
 
-        public event Action<IAbility> AbilityPerformedEvent;
+        public event Action<IAbility, AbilityTimer> AbilityPerformedEvent;
         public event Action SelectedEvent;
         public event Action<Vector2Int> MovedEvent;
         public event Action<Vector2Int> AttackPerformedEvent;
@@ -130,25 +134,76 @@ namespace Gameplay.Entities {
             return originEntity.MyTeam == targetEntity.MyTeam ? TargetType.Ally : TargetType.Enemy;
         }
 
-        public void CreateAbility(IAbilityData abilityData, IAbilityParameters parameters) {
-            IAbility abilityInstance = abilityData.CreateAbility(parameters);
-            GameManager.Instance.CommandManager.PerformAbility(abilityInstance, this);
+        public bool CanUseAbility(IAbilityData data) {
+            // Is this entity set up to use this ability?
+            if (Abilities.All(a => a.Content != data)) {
+                Debug.Log($"Can not use ability {data.ContentResourceID} because this entity was not configured to use it!");
+                return false;
+            }
+
+            // Do we own the requirements for this ability?
+            List<PurchasableData> ownedPurchasables = GameManager.Instance.GetPlayerForTeam(MyTeam).OwnedPurchasables;
+            if (data.Requirements.Any(r => !ownedPurchasables.Contains(r))) {
+                Debug.Log($"Can not use ability {data.ContentResourceID} because the player does not own all of the required purchasables");
+                return false;
+            }
+            
+            // Are there any active timers blocking this ability?
+            if (ActiveTimers.Any(t => t.ChannelBlockers.Contains(data.Channel) && !t.Elapsed)) {
+                Debug.Log($"Can not use ability {data.ContentResourceID} because it is blocked by an active timer");
+                return false;
+            }
+
+            return true;
+        }
+
+        public void CreateAbilityTimer(IAbility ability) {
+            AbilityTimer newTimer = new AbilityTimer(ability);
+            ActiveTimers.Add(newTimer);
+            newTimer.CompletedEvent += OnTimerExpired;
+        }
+
+        private void OnTimerExpired(AbilityTimer timer) {
+            ActiveTimers.Remove(timer);
+        }
+
+        private void Update() {
+            List<AbilityTimer> activeTimersCopy = new List<AbilityTimer>(ActiveTimers);
+            activeTimersCopy.ForEach(t => t.UpdateTimer(Time.deltaTime));
+        }
+
+        public void DoAbility(IAbilityData abilityData, IAbilityParameters parameters) {
+            if (!abilityData.AbilityLegal(parameters, this)) {
+                AbilityFailed(abilityData);
+                return;
+            }
+            IAbility abilityInstance = abilityData.CreateAbility(parameters, this);
+            GameManager.Instance.CommandManager.PerformAbility(abilityInstance);
         }
 
         /// <summary>
         /// Responds with any client-specific user-facing events for an ability being performed
         /// </summary>
         public void AbilityPerformed(IAbility abilityInstance) {
-            AbilityPerformedEvent?.Invoke(abilityInstance);
+            AbilityTimer timer = ActiveTimers.FirstOrDefault(t => t.Ability == abilityInstance);    // TODO if this is networked, then will these instances be the same?
+            AbilityPerformedEvent?.Invoke(abilityInstance, timer);
+        }
+
+        /// <summary>
+        /// Responds with any client-specific user-facing events for an ability failing to be performed. Occurs if
+        /// ability validation check failed. 
+        /// </summary>
+        public void AbilityFailed(IAbilityData ability) {
+            // TODO
         }
 
         public void TestSiege() {
-            CreateAbility(Data.Abilities.First(a => a.Content.GetType() == typeof(SiegeAbilityData)).Content, new NullAbilityParameters());
+            DoAbility(Data.Abilities.First(a => a.Content.GetType() == typeof(SiegeAbilityData)).Content, new NullAbilityParameters());
         }
         
         public void TestBuild() {
             BuildAbilityData data = (BuildAbilityData) Data.Abilities.First(a => a.Content.GetType() == typeof(BuildAbilityData)).Content;
-            CreateAbility(data, new BuildAbilityParameters{Buildable = data.Buildables[0], BuildLocation = Location});
+            DoAbility(data, new BuildAbilityParameters{Buildable = data.Buildables[0], BuildLocation = Location});
         }
 
         private void SetupStats() {
@@ -160,7 +215,7 @@ namespace Gameplay.Entities {
         }
 
         private void SetupView() {
-            _view = Instantiate(Data.ViewPrefab, transform);
+            _view = Instantiate(Data.ViewPrefab, ViewCanvas.transform);
             _view.Initialize(this);
         }
 

@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.3731193, g: 0.38073996, b: 0.35872698, a: 1}
+  m_IndirectSpecularColor: {r: 0.37311953, g: 0.38074014, b: 0.3587274, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1288,7 +1288,6 @@ MonoBehaviour:
   SpawnBucket: {fileID: 715509370}
   GridController: {fileID: 1769013663}
   GameSetupManager: {fileID: 527040125}
-  GridEntityPrefab: {fileID: 2463344900879472794, guid: e0151de0c262b334689a2122049e71c8, type: 3}
   Unit1_LocalTeam: 1
   Unit1: {fileID: 11400000, guid: 991ad2a1d6801ee40b831e7850e0ff35, type: 2}
   Unit2_LocalTeam: 1

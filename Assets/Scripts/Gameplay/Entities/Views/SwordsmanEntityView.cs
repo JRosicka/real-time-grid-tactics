@@ -4,13 +4,15 @@ using UnityEngine;
 
 namespace Gameplay.Entities {
     public class SwordsmanEntityView : GridEntityViewBase {
-        public override void DoAbilityAnimation(IAbility ability) {
-            Debug.Log($"{nameof(DoAbilityAnimation)}: {ability}");
+        public override void DoAbility(IAbility ability, AbilityTimer timer) {
+            Debug.Log($"{nameof(DoAbility)}: {ability}");
             switch (ability.AbilityData) {
                 case SiegeAbilityData _:
+                    CreateTimerView(timer);
                     DoSiegeAnimation();
                     break;
                 case BuildAbilityData buildAbility:
+                    CreateTimerView(timer);
                     DoBuildAnimation();
                     break;
                 default:

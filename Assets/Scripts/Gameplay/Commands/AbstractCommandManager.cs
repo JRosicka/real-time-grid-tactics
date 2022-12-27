@@ -54,7 +54,7 @@ public abstract class AbstractCommandManager : NetworkBehaviour, ICommandManager
         return EntitiesOnGrid.LocationOfEntity(entity);
     }
 
-    public abstract void PerformAbility(IAbility ability, GridEntity performer);
+    public abstract void PerformAbility(IAbility ability);
 
     protected void DoSpawnEntity(EntityData data, Vector2Int spawnLocation, Func<GridEntity> spawnFunc, GridEntity.Team team) {
         if (EntitiesOnGrid.EntityAtLocation(spawnLocation) != null) {
@@ -90,12 +90,12 @@ public abstract class AbstractCommandManager : NetworkBehaviour, ICommandManager
         entity.MovedCompleted(destination);
     }
 
-    protected void DoPerformAbility(IAbility abilityInstance, GridEntity performer) {
-        abilityInstance.PerformAbility();
+    protected bool DoPerformAbility(IAbility abilityInstance) {
+        return abilityInstance.PerformAbility();
     }
 
-    protected void DoAbilityPerformed(IAbility abilityInstance, GridEntity performer) {
-        performer.AbilityPerformed(abilityInstance);
+    protected void DoAbilityPerformed(IAbility abilityInstance) {
+        abilityInstance.Performer.AbilityPerformed(abilityInstance);
     }
 
     /// <summary>

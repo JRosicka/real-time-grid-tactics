@@ -3,8 +3,8 @@ using UnityEngine;
 
 namespace Gameplay.Entities {
     public class ArcherEntityView : GridEntityViewBase {
-        public override void DoAbilityAnimation(IAbility ability) {
-            Debug.Log(nameof(DoAbilityAnimation));
+        public override void DoAbility(IAbility ability, AbilityTimer timer) {
+            Debug.Log(nameof(DoAbility));
         }
 
         public override void Move(Vector2Int targetCell) {

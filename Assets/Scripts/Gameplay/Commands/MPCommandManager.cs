@@ -22,8 +22,8 @@ public class MPCommandManager : AbstractCommandManager {
         CmdMoveEntityToCell(entity, destination);
     }
 
-    public override void PerformAbility(IAbility ability, GridEntity performer) {
-        CmdPerformAbility(ability, performer);
+    public override void PerformAbility(IAbility ability) {
+        CmdPerformAbility(ability);
     }
 
 
@@ -59,13 +59,22 @@ public class MPCommandManager : AbstractCommandManager {
     }
 
     [Command(requiresAuthority = false)]
-    private void CmdPerformAbility(IAbility abilityInstance, GridEntity performer) {
-        DoPerformAbility(abilityInstance, performer);
-        RpcAbilityPerformed(abilityInstance, performer);
+    private void CmdPerformAbility(IAbility abilityInstance) {
+        bool success = DoPerformAbility(abilityInstance);
+        if (success) {
+            RpcAbilityPerformed(abilityInstance);
+        } else {
+            RpcAbilityFailed(abilityInstance);
+        }
     }
 
     [ClientRpc]
-    private void RpcAbilityPerformed(IAbility abilityInstance, GridEntity performer) {
-        DoAbilityPerformed(abilityInstance, performer);
+    private void RpcAbilityPerformed(IAbility abilityInstance) {
+        DoAbilityPerformed(abilityInstance);
+    }
+
+    [ClientRpc]    // TODO probably just target the client of the player who tried to do the ability
+    private void RpcAbilityFailed(IAbility abilityInstance) {
+        abilityInstance.Performer.AbilityFailed(abilityInstance.AbilityData);
     }
 }

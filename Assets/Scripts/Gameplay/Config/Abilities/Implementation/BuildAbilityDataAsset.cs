@@ -25,11 +25,16 @@ namespace Gameplay.Config.Abilities {
         }
         
         public override void SelectAbility(GridEntity selector) {
-            Debug.Log(nameof(SelectAbility)); // TODO
+            Debug.Log(nameof(SelectAbility)); // TODO for building, this should send the data to the selector interface thing (whatever that looks like) and the selector interface thing will handle disallowing build choices that they player cannot afford. 
         }
 
-        protected override IAbility CreateAbilityImpl(BuildAbilityParameters parameters) {
-            return new BuildAbility(this, parameters);
+        public override bool AbilityLegalImpl(BuildAbilityParameters parameters, GridEntity entity) {
+            // if (parameters.Buildable.Cost is too damn high) return false;    // TODO
+            return base.AbilityLegalImpl(parameters, entity);
+        }
+
+        protected override IAbility CreateAbilityImpl(BuildAbilityParameters parameters, GridEntity performer) {
+            return new BuildAbility(this, parameters, performer);
         }
     }
 }

@@ -7,8 +7,12 @@ namespace Gameplay.Entities.Abilities {
     /// An instance of an ability being used. Gets its data from a corresponding <see cref="AbilityDataBase{T}"/>.
     /// </summary>
     public interface IAbility {
-        void PerformAbility();
+        /// <summary>
+        /// Actually perform the ability. Returns false if we were not able to do so (<see cref="IAbilityData.AbilityLegal"/> false).
+        /// </summary>
+        bool PerformAbility();
         IAbilityData AbilityData { get; }
+        GridEntity Performer { get; }
         /// <summary>
         /// Write the <see cref="IAbility"/>'s parameters to the provided writer so that it can be properly networked. Other than the data
         /// which is retrieved by loading the asset from Resources, the parameters are the only thing holding the state of

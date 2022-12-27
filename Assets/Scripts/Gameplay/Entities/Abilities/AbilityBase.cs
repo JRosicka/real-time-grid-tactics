@@ -1,6 +1,5 @@
 using Gameplay.Config.Abilities;
 using Mirror;
-using UnityEngine;
 
 namespace Gameplay.Entities.Abilities {
     /// <summary>
@@ -10,15 +9,35 @@ namespace Gameplay.Entities.Abilities {
         protected readonly T Data;
         public IAbilityData AbilityData => Data;
         public IAbilityParameters BaseParameters { get; }
-        public void SerializeParameters(NetworkWriter writer) {
-            BaseParameters.Serialize(writer);
-        }
+        public GridEntity Performer { get; }
         
-        protected AbilityBase(T data, IAbilityParameters abilityParameters) {
+        protected AbilityBase(T data, IAbilityParameters abilityParameters, GridEntity performer) {
             Data = data;
             BaseParameters = abilityParameters;
+            Performer = performer;
         }
-    
-        public abstract void PerformAbility();
+        
+        public void SerializeParameters(NetworkWriter writer) {
+            writer.Write(Performer);
+            BaseParameters.Serialize(writer);
+        }
+
+        /// <summary>
+        /// Pay any costs required for the ability. By default, this just creates a new timer for the performing <see cref="GridEntity"/>,
+        /// but this can be overridden to do other things too. 
+        /// </summary>
+        protected virtual void PayCost() {
+            Performer.CreateAbilityTimer(this);
+        }
+
+        public bool PerformAbility() {
+            if (!Data.AbilityLegal(BaseParameters, Performer)) return false;
+            
+            PayCost();
+            DoPerformAbility();
+            return true;
+        }
+        
+        public abstract void DoPerformAbility();
     }
 }

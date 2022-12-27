@@ -13,13 +13,6 @@ namespace Gameplay.Config.Abilities {
     /// </summary>
     [Serializable]
     public abstract class AbilityDataBase<T> : IAbilityData where T : IAbilityParameters, new() {
-        /// <summary>
-        /// All of these must be owned in order to perform the ability
-        /// </summary>
-        public List<PurchasableData> Requirements;
-        public float PerformDuration;
-        public float CooldownDuration;
-
         [SerializeField] [HideInInspector]
         private string _contentResourceID;
         /// <summary>
@@ -29,30 +22,71 @@ namespace Gameplay.Config.Abilities {
         public string ContentResourceID { get => _contentResourceID; set => _contentResourceID = value; }
         
         /// <summary>
+        /// All of these must be owned in order to perform the ability
+        /// </summary>
+        [SerializeField]
+        private List<PurchasableData> _requirements;
+        public List<PurchasableData> Requirements => _requirements;
+        
+        [SerializeField]
+        private float _performDuration;
+        public float PerformDuration => _performDuration;
+        
+        [SerializeField]
+        private float _cooldownDuration;
+        public float CooldownDuration => _cooldownDuration;
+
+        [SerializeField]
+        private AbilityChannel _channel;
+        public AbilityChannel Channel => _channel;
+        
+        /// <summary>
+        /// Collection of any <see cref="AbilityChannel"/>s that usage of this ability blocks. 
+        /// </summary>
+        [SerializeField]
+        private List<AbilityChannel> _channelBlockers = new List<AbilityChannel>();
+        public List<AbilityChannel> ChannelBlockers => _channelBlockers;
+
+        /// <summary>
         /// Respond to the user input intending to use this ability. Do not actually perform the ability (unless there is
         /// nothing else to do first) - rather, handle any client-side stuff by sending events to prompt for further input. 
         /// </summary>
         public abstract void SelectAbility(GridEntity selector);
+        
+        public virtual bool AbilityLegalImpl(T parameters, GridEntity entity) {
+            return entity.CanUseAbility(this);
+        }
+
+        /// <summary>
+        /// Whether the ability is legal to be used with the given parameters (valid target, player has enough money, cooldowns, etc).
+        ///
+        /// Should be checked on the client before creating the ability, and checked again on the server before performing
+        /// the ability. If the server check fails, let the client know. 
+        /// </summary>
+        public bool AbilityLegal(IAbilityParameters parameters, GridEntity entity) {
+            return AbilityLegalImpl((T) parameters, entity);
+        }
 
         /// <summary>
         /// Create an instance of this ability, passing in any user input. This created instance should be passed to the
         /// server. 
         /// </summary>
-        protected abstract IAbility CreateAbilityImpl(T parameters);
+        protected abstract IAbility CreateAbilityImpl(T parameters, GridEntity performer);
         
         /// <summary>
         /// Create an instance of this ability, passing in any user input. This created instance should be passed to the
         /// server. 
         /// </summary>
-        public IAbility CreateAbility(IAbilityParameters parameters) => CreateAbilityImpl((T) parameters);
+        public IAbility CreateAbility(IAbilityParameters parameters, GridEntity performer) => CreateAbilityImpl((T) parameters, performer);
 
         /// <summary>
         /// Re-creates the <see cref="IAbility"/> by first deserializing the parameters from the provided reader
         /// </summary>
         public IAbility DeserializeAbility(NetworkReader reader) {
+            GridEntity performer = reader.Read<GridEntity>();
             T parameters = new T();
             parameters.Deserialize(reader);
-            return CreateAbilityImpl(parameters);
+            return CreateAbilityImpl(parameters, performer);
         }
     }
 }
