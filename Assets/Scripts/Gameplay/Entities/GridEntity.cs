@@ -149,7 +149,7 @@ namespace Gameplay.Entities {
             }
             
             // Are there any active timers blocking this ability?
-            if (ActiveTimers.Any(t => t.ChannelBlockers.Contains(data.Channel) && !t.Elapsed)) {
+            if (ActiveTimers.Any(t => t.ChannelBlockers.Contains(data.Channel) && !t.Expired)) {
                 Debug.Log($"Can not use ability {data.ContentResourceID} because it is blocked by an active timer");
                 return false;
             }
@@ -158,12 +158,51 @@ namespace Gameplay.Entities {
         }
 
         public void CreateAbilityTimer(IAbility ability) {
+            if (!NetworkClient.active) {
+                // SP
+                DoCreateAbilityTimer(ability);
+            } else if (NetworkServer.active) {
+                // MP server
+                RpcCreateAbilityTimer(ability);
+            }
+            // Else MP client, do nothing
+        }
+
+        [ClientRpc]
+        private void RpcCreateAbilityTimer(IAbility ability) {
+            DoCreateAbilityTimer(ability);
+        }
+
+        private void DoCreateAbilityTimer(IAbility ability) {
             AbilityTimer newTimer = new AbilityTimer(ability);
             ActiveTimers.Add(newTimer);
             newTimer.CompletedEvent += OnTimerExpired;
         }
 
         private void OnTimerExpired(AbilityTimer timer) {
+            if (!NetworkClient.active) {
+                // SP
+                DoRemoveTimer(timer.Ability);
+            } else if (NetworkServer.active) {
+                // MP server
+                RpcRemoveTimer(timer.Ability);
+            }
+            // Else MP client, do nothing
+        }
+
+        [ClientRpc]
+        private void RpcRemoveTimer(IAbility ability) {
+            DoRemoveTimer(ability);
+        }
+
+        private void DoRemoveTimer(IAbility ability) {
+            AbilityTimer timer = ActiveTimers.FirstOrDefault(t => t.Ability == ability);    // TODO if this is networked, then will these instances be the same?
+            if (timer == null) {
+                Debug.LogError($"Timer for ability {ability.AbilityData.ContentResourceID} was not found");
+                return;
+            }
+
+            timer.Expire();
             ActiveTimers.Remove(timer);
         }
 
@@ -186,6 +225,10 @@ namespace Gameplay.Entities {
         /// </summary>
         public void AbilityPerformed(IAbility abilityInstance) {
             AbilityTimer timer = ActiveTimers.FirstOrDefault(t => t.Ability == abilityInstance);    // TODO if this is networked, then will these instances be the same?
+            if (timer == null) {
+                Debug.LogError($"Timer for ability {abilityInstance.AbilityData.ContentResourceID} was not found");
+                return;
+            }
             AbilityPerformedEvent?.Invoke(abilityInstance, timer);
         }
 
