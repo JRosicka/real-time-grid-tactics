@@ -102,7 +102,7 @@ public abstract class AbstractCommandManager : NetworkBehaviour, ICommandManager
     /// Reset the reference for <see cref="EntitiesOnGrid"/> to force a sync across clients. Just updating fields in the class
     /// is not enough to get the sync to occur. 
     /// </summary>
-    private void SyncEntityCollection() {
+    private void SyncEntityCollection() {    // TODO: If networking is horribly slow when there are a lot of GridEntities in the game... this is probably why. Kinda yucky. 
         EntitiesOnGrid = new GridEntityCollection(EntitiesOnGrid.Entities);
     }
 }
