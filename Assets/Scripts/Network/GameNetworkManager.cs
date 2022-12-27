@@ -1,21 +1,10 @@
 using System;
 using System.Linq;
-using Game.Gameplay;
 using Mirror;
-using Mirror.Examples.NetworkRoom;
-using Unity.VisualScripting;
 using UnityEngine;
 
-/*
-	Documentation: https://mirror-networking.gitbook.io/docs/components/network-manager
-	API Reference: https://mirror-networking.com/docs/api/Mirror.NetworkManager.html
-*/
-
-namespace Game.Network
-{
-    // [AddComponentMenu("")]
-    public class GameNetworkManager : NetworkRoomManager
-    {
+namespace Game.Network {
+    public class GameNetworkManager : NetworkRoomManager {
         [Header("Spawner Setup")]
         [Tooltip("Reward Prefab for the Spawner")]
         public GameObject rewardPrefab;
@@ -35,11 +24,6 @@ namespace Game.Network
         public override void OnDestroy() {
             SteamLobbyService.Instance.OnCurrentLobbyMetadataChanged -= GetUpdatedLobbyData;
         }
-
-        // TODO: What to do when there are no players assigned yet?
-        // public GameNetworkPlayer GetLocalPlayer() {
-        //     return (GameNetworkPlayer)(roomSlots.First(p => p.isLocalPlayer));
-        // }
 
         private bool _isHosting;
         public bool IsHosting() {
@@ -148,9 +132,6 @@ namespace Game.Network
         public override void OnRoomServerSceneChanged(string sceneName) {
             DebugLog(nameof(OnRoomServerSceneChanged));
             RoomServerSceneChangedAction.SafeInvoke();
-            // spawn the initial batch of Rewards
-            if (sceneName == GameplayScene)
-                TempSpawner.InitialSpawn();
         }
 
         public event Action RoomServerSceneLoadedForPlayerAction;
