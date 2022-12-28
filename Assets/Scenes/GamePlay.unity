@@ -1288,6 +1288,7 @@ MonoBehaviour:
   SpawnBucket: {fileID: 715509370}
   GridController: {fileID: 1769013663}
   GameSetupManager: {fileID: 527040125}
+  Configuration: {fileID: 11400000, guid: 039c03c459bdcb44a97810fd135982a3, type: 2}
   Unit1_LocalTeam: 1
   Unit1: {fileID: 11400000, guid: 991ad2a1d6801ee40b831e7850e0ff35, type: 2}
   Unit2_LocalTeam: 1

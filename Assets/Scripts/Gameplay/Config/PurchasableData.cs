@@ -37,7 +37,7 @@ namespace Gameplay.Config {
         }
 
         public static PurchasableData ReadPurchasableData(this NetworkReader reader) {
-            return Resources.Load<PurchasableData>(reader.ReadString());
+            return GameManager.Instance.Configuration.GetPurchasable(reader.ReadString());
         }
     }
 }

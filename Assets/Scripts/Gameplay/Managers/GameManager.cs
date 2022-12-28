@@ -14,6 +14,7 @@ public class GameManager : MonoBehaviour {
     public GridController GridController;
     public ICommandManager CommandManager;
     public GameSetupManager GameSetupManager;
+    public GameConfiguration Configuration;
     
     public IGamePlayer LocalPlayer { get; private set; }
     public IGamePlayer OpponentPlayer { get; private set; }

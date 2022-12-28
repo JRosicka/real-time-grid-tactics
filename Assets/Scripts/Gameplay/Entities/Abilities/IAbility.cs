@@ -31,7 +31,7 @@ namespace Gameplay.Entities.Abilities {
         }
 
         public static IAbility ReadAbility(this NetworkReader reader) {
-            AbilityDataScriptableObject dataAsset = Resources.Load<AbilityDataScriptableObject>(reader.ReadString());
+            AbilityDataScriptableObject dataAsset = GameManager.Instance.Configuration.GetAbility(reader.ReadString());
             int uid = reader.ReadInt();
             // Re-create the ability instance using the data asset we loaded
             IAbility abilityInstance = dataAsset.Content.DeserializeAbility(reader);

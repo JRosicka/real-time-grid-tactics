@@ -33,7 +33,7 @@ namespace Gameplay.Entities.Abilities {
         }
 
         public void Deserialize(NetworkReader reader) {
-            Buildable = Resources.Load<PurchasableData>(reader.ReadString());
+            Buildable = GameManager.Instance.Configuration.GetPurchasable(reader.ReadString());
             BuildLocation = reader.Read<Vector2Int>();
         }
     }

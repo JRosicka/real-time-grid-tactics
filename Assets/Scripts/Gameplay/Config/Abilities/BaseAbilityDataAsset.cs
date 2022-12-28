@@ -40,8 +40,7 @@ namespace Gameplay.Config.Abilities {
         }
 
         public static AbilityDataScriptableObject ReadAbilityDataScriptableObject(this NetworkReader reader) {
-            // Load the asset by name. The data will come from the asset in Resources folder.
-            return Resources.Load<AbilityDataScriptableObject>(reader.ReadString());
+            return GameManager.Instance.Configuration.GetAbility(reader.ReadString());
         }
     }
 }

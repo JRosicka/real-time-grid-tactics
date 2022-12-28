@@ -17,7 +17,7 @@ namespace Gameplay.Config {
         }
 
         public static UpgradeData ReadUpgradeData(this NetworkReader reader) {
-            return Resources.Load<UpgradeData>(reader.ReadString());
+            return (UpgradeData) GameManager.Instance.Configuration.GetPurchasable(reader.ReadString());
         }
     }
 }
