@@ -91,6 +91,8 @@ public abstract class AbstractCommandManager : NetworkBehaviour, ICommandManager
     }
 
     protected bool DoPerformAbility(IAbility abilityInstance) {
+        // Assign a UID here since this is guaranteed to be on the server (if MP)
+        abilityInstance.UID = IDUtil.GenerateUID();
         return abilityInstance.PerformAbility();
     }
 

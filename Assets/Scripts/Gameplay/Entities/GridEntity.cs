@@ -196,7 +196,7 @@ namespace Gameplay.Entities {
         }
 
         private void DoRemoveTimer(IAbility ability) {
-            AbilityTimer timer = ActiveTimers.FirstOrDefault(t => t.Ability == ability);    // TODO if this is networked, then will these instances be the same?
+            AbilityTimer timer = ActiveTimers.FirstOrDefault(t => t.Ability.UID == ability.UID);
             if (timer == null) {
                 Debug.LogError($"Timer for ability {ability.AbilityData.ContentResourceID} was not found");
                 return;
@@ -224,7 +224,7 @@ namespace Gameplay.Entities {
         /// Responds with any client-specific user-facing events for an ability being performed
         /// </summary>
         public void AbilityPerformed(IAbility abilityInstance) {
-            AbilityTimer timer = ActiveTimers.FirstOrDefault(t => t.Ability == abilityInstance);    // TODO if this is networked, then will these instances be the same?
+            AbilityTimer timer = ActiveTimers.FirstOrDefault(t => t.Ability.UID == abilityInstance.UID);
             if (timer == null) {
                 Debug.LogError($"Timer for ability {abilityInstance.AbilityData.ContentResourceID} was not found");
                 return;

@@ -8,6 +8,7 @@ namespace Gameplay.Entities.Abilities {
     public abstract class AbilityBase<T, P> : IAbility where T : AbilityDataBase<P> where P : IAbilityParameters, new() {
         protected readonly T Data;
         public IAbilityData AbilityData => Data;
+        public int UID { get; set; }
         public IAbilityParameters BaseParameters { get; }
         public GridEntity Performer { get; }
         
