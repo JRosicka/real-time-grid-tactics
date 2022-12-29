@@ -271,11 +271,20 @@ namespace Gameplay.Entities {
 
         public void ReceiveAttackFromEntity(GridEntity sourceEntity) {
             Debug.Log($"Attacked!!!! And from a {sourceEntity.UnitName} no less! OW");
-            // For now, any attack just kills this
-            Kill();
+
+            AttackReceivedEvent?.Invoke();
+            
+            CurrentHP -= sourceEntity.Damage;
+
+            HPChangedEvent?.Invoke();
+            
+            if (CurrentHP <= 0) {
+                Kill();
+            }
         }
 
         private void Kill() {
+            KilledEvent?.Invoke();
             GameManager.Instance.CommandManager.UnRegisterAndDestroyEntity(this);    // TODO this should actually wait to destroy until all of the kill animations are done. So unregister now, kill later. 
         }
     }
