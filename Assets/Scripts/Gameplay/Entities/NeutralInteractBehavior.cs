@@ -6,7 +6,7 @@ namespace Gameplay.Entities {
     /// </summary>
     public class NeutralInteractBehavior : IInteractBehavior {
         public void Select(GridEntity entity) {
-            // Do nothing
+            GameManager.Instance.SelectionInterface.SelectEntity(entity);
         }
 
         public void TargetCellWithUnit(GridEntity thisEntity, Vector2Int targetCell) {

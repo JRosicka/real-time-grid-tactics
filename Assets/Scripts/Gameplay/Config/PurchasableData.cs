@@ -16,6 +16,7 @@ namespace Gameplay.Config {
         }
 
         public string ID => name;
+        public string Description;
 
         [Header("Build Requirements")]
         public ResourceAmount Cost;

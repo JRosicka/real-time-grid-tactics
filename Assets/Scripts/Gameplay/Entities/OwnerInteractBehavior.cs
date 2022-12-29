@@ -6,7 +6,7 @@ namespace Gameplay.Entities {
     /// </summary>
     public class OwnerInteractBehavior : IInteractBehavior {
         public void Select(GridEntity entity) {
-            GameManager.Instance.SelectedEntity = entity;
+            GameManager.Instance.SelectionInterface.SelectEntity(entity);
         }
 
         public void TargetCellWithUnit(GridEntity thisEntity, Vector2Int targetCell) {

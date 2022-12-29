@@ -1,0 +1,118 @@
+using Gameplay.Config.Abilities;
+using Gameplay.Entities;
+using Gameplay.Entities.Abilities;
+using TMPro;
+using UnityEngine;
+using UnityEngine.UI;
+
+namespace Gameplay.UI {
+    /// <summary>
+    /// Handles displaying information about selected <see cref="GridEntity"/>s and <see cref="IAbility"/>s
+    /// </summary>
+    public class SelectionInterface : MonoBehaviour {
+        [SerializeField] private AbilityChannel MoveChannel;
+
+        [Header("References")] 
+        [SerializeField] private GameObject View;
+        
+        [SerializeField] private Image EntityIcon;
+        [SerializeField] private Image EntityColorsIcon;
+        [SerializeField] private TMP_Text NameField;
+        [SerializeField] private TMP_Text DescriptionField;
+        [SerializeField] private TMP_Text TagsField;
+        
+        [SerializeField] private HealthBar HealthBar;
+        [SerializeField] private TMP_Text MovesField;
+        [SerializeField] private AbilityTimerCooldownView MoveTimer;    // TODO I'll probably want to try out using a move meter instead of a timer for movement. 
+        [SerializeField] private TMP_Text AttackField;
+        
+        // TODO Row of icons representing upgrades? Hoverable to get info about them?
+        
+        // TODO Player name at bottom, text color == team color
+
+        [SerializeField] private AbilityInterface AbilityInterface;
+
+        [HideInInspector]
+        public GridEntity SelectedEntity;
+        
+        private AbilityCooldownTimer _activeMoveCooldownTimer;
+        
+        public void Initialize() {
+            ToggleViews(false);
+        }
+
+        public void SelectEntity(GridEntity entity) {
+            DeselectCurrentEntity();
+            if (entity == null) return;
+            
+            SelectedEntity = entity;
+            HealthBar.SetTarget(entity);
+
+            UpdateEntityInfo();
+            
+            AbilityInterface.Initialize(entity);
+
+            entity.AbilityPerformedEvent += OnEntityAbilityPerformed;
+            entity.KilledEvent += OnEntityKilled;
+            
+            ToggleViews(true);
+        }
+
+        private void DeselectCurrentEntity() {
+            if (SelectedEntity == null) return;
+
+            SelectedEntity.AbilityPerformedEvent += OnEntityAbilityPerformed;
+            SelectedEntity.KilledEvent += OnEntityKilled;
+
+            if (_activeMoveCooldownTimer != null) {
+                _activeMoveCooldownTimer.CompletedEvent -= OnMoveTimerCompleted;
+            }
+            _activeMoveCooldownTimer = null;
+            SelectedEntity = null;
+            
+            // Hide everything
+            ToggleViews(false);
+        }
+
+        private void ToggleViews(bool active) {
+            View.SetActive(active);
+
+            AbilityInterface.ToggleActive(active);
+        }
+
+        private void OnEntityAbilityPerformed(IAbility iAbility, AbilityCooldownTimer abilityCooldownTimer) {
+            UpdateEntityInfo();
+        }
+        
+        private void OnEntityKilled() {
+            DeselectCurrentEntity();
+        } 
+
+        private void OnMoveTimerCompleted(AbilityCooldownTimer cooldownTimer) {
+            UpdateEntityInfo();
+        }
+
+        private void UpdateEntityInfo() {
+            if (SelectedEntity == null) return;
+            
+            EntityIcon.sprite = SelectedEntity.Data.BaseSprite;
+            EntityColorsIcon.sprite = SelectedEntity.Data.TeamColorSprite;
+            EntityColorsIcon.color = GameManager.Instance.GetPlayerForTeam(SelectedEntity.MyTeam).Data.TeamColor;
+
+            NameField.text = SelectedEntity.DisplayName;
+            DescriptionField.text = SelectedEntity.Data.Description;
+            TagsField.text = string.Join(", ", SelectedEntity.Data.Tags);
+
+            if (SelectedEntity.IsAbilityChannelOnCooldown(MoveChannel, out _activeMoveCooldownTimer)) {
+                MovesField.text = $"{SelectedEntity.CurrentMoves} / {SelectedEntity.MaxMove}";
+                MoveTimer.gameObject.SetActive(true);
+                MoveTimer.Initialize(_activeMoveCooldownTimer, false);
+                _activeMoveCooldownTimer.CompletedEvent += OnMoveTimerCompleted;
+            } else {
+                MovesField.text = $"{SelectedEntity.MaxMove} / {SelectedEntity.MaxMove}";
+                MoveTimer.gameObject.SetActive(false);
+            }
+            AttackField.text = SelectedEntity.Damage.ToString();
+        }
+    }
+}

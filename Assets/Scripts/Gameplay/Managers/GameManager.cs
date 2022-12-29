@@ -39,9 +39,6 @@ public class GameManager : MonoBehaviour {
         CommandManager.SpawnEntity(Unit2, player.Data.SpawnLocation, player.Data.Team);
     }
 
-    [HideInInspector]
-    public GridEntity SelectedEntity;
-
     private void Awake() {
         if (Instance != null) {
             Debug.LogError("GameManager instance is not null!!");

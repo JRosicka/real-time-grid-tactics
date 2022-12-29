@@ -8,7 +8,7 @@ namespace Gameplay.Entities {
     /// </summary>
     public class EnemyInteractBehavior : IInteractBehavior {
         public void Select(GridEntity entity) {
-            // Do nothing - can't select enemy units
+            GameManager.Instance.SelectionInterface.SelectEntity(entity);
         }
 
         public void TargetCellWithUnit(GridEntity thisEntity, Vector2Int targetCell) {
