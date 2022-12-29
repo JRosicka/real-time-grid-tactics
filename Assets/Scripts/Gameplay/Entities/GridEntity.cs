@@ -50,7 +50,9 @@ namespace Gameplay.Entities {
         public List<AbilityDataScriptableObject> Abilities => Data.Abilities; // TODO maybe I do want these to be interfaces after all?
 
         [Header("Current")]
+        [SyncVar]
         public int CurrentHP;
+        [SyncVar]
         public int CurrentMoves;
         public List<AbilityCooldownTimer> ActiveTimers = new List<AbilityCooldownTimer>();
 
