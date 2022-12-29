@@ -13,6 +13,7 @@ namespace Gameplay.Entities.Abilities {
         /// </summary>
         bool PerformAbility();
         IAbilityData AbilityData { get; }
+        IAbilityParameters BaseParameters { get; }
         int UID { get; set; }
         GridEntity Performer { get; }
         void CompleteCooldown();
