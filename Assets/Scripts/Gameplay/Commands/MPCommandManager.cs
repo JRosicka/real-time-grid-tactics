@@ -17,11 +17,7 @@ public class MPCommandManager : AbstractCommandManager {
     public override void UnRegisterAndDestroyEntity(GridEntity entity) {
         CmdUnRegisterEntity(entity);
     }
-
-    public override void MoveEntityToCell(GridEntity entity, Vector2Int destination) {
-        CmdMoveEntityToCell(entity, destination);
-    }
-
+    
     public override void PerformAbility(IAbility ability) {
         CmdPerformAbility(ability);
     }
@@ -46,18 +42,7 @@ public class MPCommandManager : AbstractCommandManager {
         DoUnRegisterEntity(entity);
         NetworkServer.Destroy(entity.gameObject);
     }
-
-    [Command(requiresAuthority = false)]
-    private void CmdMoveEntityToCell(GridEntity entity, Vector2Int destination) {
-        DoMoveEntityToCell(entity, destination);
-        RpcEntityMoved(entity, destination);
-    }
-
-    [ClientRpc]
-    private void RpcEntityMoved(GridEntity entity, Vector2Int destination) {
-        DoEntityMoved(entity, destination);
-    }
-
+    
     [Command(requiresAuthority = false)]
     private void CmdPerformAbility(IAbility abilityInstance) {
         bool success = DoPerformAbility(abilityInstance);

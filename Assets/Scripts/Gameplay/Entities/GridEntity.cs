@@ -51,7 +51,9 @@ namespace Gameplay.Entities {
 
         [Header("Current")]
         public int CurrentHP;
-        public List<AbilityTimer> ActiveTimers = new List<AbilityTimer>();
+        public int CurrentMoves;
+        public List<AbilityCooldownTimer> ActiveTimers = new List<AbilityCooldownTimer>();
+
 
         [ClientRpc]
         public void RpcInitialize(EntityData data, Team team) {
@@ -82,17 +84,15 @@ namespace Gameplay.Entities {
         public bool CanMove => true; // todo
         public Vector2Int Location => GameManager.Instance.GetLocationForEntity(this);
 
-        public event Action<IAbility, AbilityTimer> AbilityPerformedEvent;
+        public event Action<IAbility, AbilityCooldownTimer> AbilityPerformedEvent;
         public event Action SelectedEvent;
-        public event Action<Vector2Int> MovedEvent;
         public event Action<Vector2Int> AttackPerformedEvent;
         public event Action AttackReceivedEvent;
         public event Action KilledEvent;
+        public event Action HPChangedEvent;
 
         public void Select() {
             Debug.Log($"Selecting {UnitName}");
-            // Deselect the currently selected entity
-            GameManager.Instance.SelectedEntity = null;
             _interactBehavior.Select(this);
             SelectedEvent?.Invoke();
         }
@@ -105,12 +105,9 @@ namespace Gameplay.Entities {
         }
 
         public void MoveToCell(Vector2Int targetCell) {
-            Debug.Log($"Moving {UnitName} to {targetCell}");
-            GameManager.Instance.CommandManager.MoveEntityToCell(this, targetCell);
-        }
-
-        public void MovedCompleted(Vector2Int targetCell) {
-            MovedEvent?.Invoke(targetCell);
+            Debug.Log($"Attempting to move {UnitName} to {targetCell}");
+            MoveAbilityData data = (MoveAbilityData) Data.Abilities.First(a => a.Content.GetType() == typeof(MoveAbilityData)).Content;
+            DoAbility(data, new MoveAbilityParameters { Destination = targetCell });
         }
 
         public void TryTargetEntity(GridEntity targetEntity, Vector2Int targetCell) {
@@ -157,6 +154,11 @@ namespace Gameplay.Entities {
             return true;
         }
 
+        public bool IsAbilityChannelOnCooldown(AbilityChannel channel, out AbilityCooldownTimer timer) {
+            timer = ActiveTimers.FirstOrDefault(t => t.Ability.AbilityData.Channel == channel);
+            return timer != null;
+        }
+        
         public void CreateAbilityTimer(IAbility ability) {
             if (!NetworkClient.active) {
                 // SP
@@ -174,18 +176,18 @@ namespace Gameplay.Entities {
         }
 
         private void DoCreateAbilityTimer(IAbility ability) {
-            AbilityTimer newTimer = new AbilityTimer(ability);
-            ActiveTimers.Add(newTimer);
-            newTimer.CompletedEvent += OnTimerExpired;
+            AbilityCooldownTimer newCooldownTimer = new AbilityCooldownTimer(ability);
+            ActiveTimers.Add(newCooldownTimer);
+            newCooldownTimer.CompletedEvent += OnTimerExpired;
         }
 
-        private void OnTimerExpired(AbilityTimer timer) {
+        private void OnTimerExpired(AbilityCooldownTimer cooldownTimer) {
             if (!NetworkClient.active) {
                 // SP
-                DoRemoveTimer(timer.Ability);
+                DoRemoveTimer(cooldownTimer.Ability);
             } else if (NetworkServer.active) {
                 // MP server
-                RpcRemoveTimer(timer.Ability);
+                RpcRemoveTimer(cooldownTimer.Ability);
             }
             // Else MP client, do nothing
         }
@@ -196,18 +198,18 @@ namespace Gameplay.Entities {
         }
 
         private void DoRemoveTimer(IAbility ability) {
-            AbilityTimer timer = ActiveTimers.FirstOrDefault(t => t.Ability.UID == ability.UID);
-            if (timer == null) {
+            AbilityCooldownTimer cooldownTimer = ActiveTimers.FirstOrDefault(t => t.Ability.UID == ability.UID);
+            if (cooldownTimer == null) {
                 Debug.LogError($"Timer for ability {ability.AbilityData.ContentResourceID} was not found");
                 return;
             }
 
-            timer.Expire();
-            ActiveTimers.Remove(timer);
+            cooldownTimer.Expire();
+            ActiveTimers.Remove(cooldownTimer);
         }
 
         private void Update() {
-            List<AbilityTimer> activeTimersCopy = new List<AbilityTimer>(ActiveTimers);
+            List<AbilityCooldownTimer> activeTimersCopy = new List<AbilityCooldownTimer>(ActiveTimers);
             activeTimersCopy.ForEach(t => t.UpdateTimer(Time.deltaTime));
         }
 
@@ -224,12 +226,16 @@ namespace Gameplay.Entities {
         /// Responds with any client-specific user-facing events for an ability being performed
         /// </summary>
         public void AbilityPerformed(IAbility abilityInstance) {
-            AbilityTimer timer = ActiveTimers.FirstOrDefault(t => t.Ability.UID == abilityInstance.UID);
-            if (timer == null) {
+            AbilityCooldownTimer cooldownTimer = ActiveTimers.FirstOrDefault(t => t.Ability.UID == abilityInstance.UID);
+            if (cooldownTimer == null) {
                 Debug.LogError($"Timer for ability {abilityInstance.AbilityData.ContentResourceID} was not found");
                 return;
             }
-            AbilityPerformedEvent?.Invoke(abilityInstance, timer);
+
+            if (abilityInstance.GetType() == typeof(MoveAbility)) {    // TODO Grooooooss. Really it would be good if the view could handle this. Or if necessary, we could set up handling of abilities as necessary similar to how the view does it, but only for special abilities that affect the GridEntity like this one.
+                transform.position = GameManager.Instance.GridController.GetWorldPosition(Location);
+            }
+            AbilityPerformedEvent?.Invoke(abilityInstance, cooldownTimer);
         }
 
         /// <summary>
@@ -253,6 +259,7 @@ namespace Gameplay.Entities {
             MaxHP = Data.HP;
             CurrentHP = Data.HP;
             MaxMove = Data.MaxMove;
+            CurrentMoves = Data.MaxMove;
             Range = Data.Range;
             Damage = Data.Damage;
         }

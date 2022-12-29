@@ -10,7 +10,7 @@ namespace Gameplay.Entities {
     /// </summary>
     public abstract class GridEntityViewBase : MonoBehaviour {
         [SerializeField]
-        private AbilityTimerView _timerViewPrefab;
+        private AbilityTimerCooldownView TimerCooldownViewPrefab;
         [SerializeField]
         private Transform _timerLocation;
         
@@ -29,7 +29,6 @@ namespace Gameplay.Entities {
             _teamColorImage.color = GameManager.Instance.GetPlayerForTeam(entity.MyTeam).Data.TeamColor;
             
             entity.AbilityPerformedEvent += DoAbility;
-            entity.MovedEvent += Move;
             entity.SelectedEvent += Selected;
             entity.AttackPerformedEvent += Attack;
             entity.AttackReceivedEvent += AttackReceived;
@@ -37,13 +36,12 @@ namespace Gameplay.Entities {
         }
 
         // TODO can pass in things like color and timer location (maybe use a set of transform references) and stuff
-        protected void CreateTimerView(AbilityTimer timer) {
-            AbilityTimerView view = Instantiate(_timerViewPrefab, _timerLocation);
-            view.Instantiate(timer);
+        protected void CreateTimerView(AbilityCooldownTimer cooldownTimer) {
+            AbilityTimerCooldownView cooldownView = Instantiate(TimerCooldownViewPrefab, _timerLocation);
+            cooldownView.Initialize(cooldownTimer, true);
         }
 
-        public abstract void DoAbility(IAbility ability, AbilityTimer timer);
-        public abstract void Move(Vector2Int targetCell);
+        public abstract void DoAbility(IAbility ability, AbilityCooldownTimer cooldownTimer);
         public abstract void Selected();
         public abstract void Attack(Vector2Int targetCell);
         public abstract void AttackReceived();

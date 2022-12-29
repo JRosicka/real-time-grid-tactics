@@ -10,6 +10,10 @@ namespace Gameplay.Entities.Abilities {
             Debug.Log("Created ability, cool");
         }
 
+        public override void CompleteCooldown() {
+            // Nothing to do
+        }
+
         public override void DoPerformAbility() {
             Debug.Log("Did siege ability, cool");
         }

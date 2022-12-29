@@ -1,3 +1,4 @@
+using System;
 using Gameplay.Config.Abilities;
 using Mirror;
 using UnityEngine;
@@ -14,6 +15,7 @@ namespace Gameplay.Entities.Abilities {
         IAbilityData AbilityData { get; }
         int UID { get; set; }
         GridEntity Performer { get; }
+        void CompleteCooldown();
         /// <summary>
         /// Write the <see cref="IAbility"/>'s parameters to the provided writer so that it can be properly networked. Other than the data
         /// which is retrieved by loading the asset from Resources, the parameters are the only thing holding the state of

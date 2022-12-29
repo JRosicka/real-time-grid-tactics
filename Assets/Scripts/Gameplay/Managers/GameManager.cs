@@ -1,6 +1,7 @@
 using System;
 using Gameplay.Config;
 using Gameplay.Entities;
+using Gameplay.UI;
 using UnityEngine;
 
 /// <summary>
@@ -15,6 +16,9 @@ public class GameManager : MonoBehaviour {
     public ICommandManager CommandManager;
     public GameSetupManager GameSetupManager;
     public GameConfiguration Configuration;
+    public SelectionInterface SelectionInterface;
+    
+    public PathfinderService PathfinderService;
     
     public IGamePlayer LocalPlayer { get; private set; }
     public IGamePlayer OpponentPlayer { get; private set; }
@@ -48,8 +52,10 @@ public class GameManager : MonoBehaviour {
 
     private void Start() {
         GameSetupManager.Initialize();
+        SelectionInterface.Initialize();
+        PathfinderService = new PathfinderService();
     }
-    
+
     public GridEntity GetEntityAtLocation(Vector2Int location) {
         return CommandManager?.GetEntityAtCell(location);
     }

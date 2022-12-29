@@ -43,8 +43,11 @@ public abstract class AbstractCommandManager : NetworkBehaviour, ICommandManager
     }
 
     public abstract void UnRegisterAndDestroyEntity(GridEntity entity);
-    
-    public abstract void MoveEntityToCell(GridEntity entity, Vector2Int destination);
+
+    public void MoveEntityToCell(GridEntity entity, Vector2Int destination) {
+        EntitiesOnGrid.MoveEntity(entity, destination);
+        SyncEntityCollection();
+    }
     
     public GridEntity GetEntityAtCell(Vector2Int location) {
         return EntitiesOnGrid.EntityAtLocation(location);
@@ -79,17 +82,7 @@ public abstract class AbstractCommandManager : NetworkBehaviour, ICommandManager
         EntitiesOnGrid.UnRegisterEntity(entity);
         SyncEntityCollection();
     }
-
-    protected void DoMoveEntityToCell(GridEntity entity, Vector2Int destination) {
-        EntitiesOnGrid.MoveEntity(entity, destination);
-        SyncEntityCollection();
-    }
     
-    protected void DoEntityMoved(GridEntity entity, Vector2Int destination) {
-        entity.transform.position = GridController.GetWorldPosition(destination);
-        entity.MovedCompleted(destination);
-    }
-
     protected bool DoPerformAbility(IAbility abilityInstance) {
         // Assign a UID here since this is guaranteed to be on the server (if MP)
         abilityInstance.UID = IDUtil.GenerateUID();

@@ -13,7 +13,11 @@ namespace Gameplay.Entities.Abilities {
         public BuildAbility(BuildAbilityData data, BuildAbilityParameters parameters, GridEntity performer) : base(data, parameters, performer) {
             
         }
-        
+
+        public override void CompleteCooldown() {
+            // Nothing to do
+        }
+
         protected override void PayCost() {
             // TODO pay AbilityParameters.Buildable.Cost
             base.PayCost();

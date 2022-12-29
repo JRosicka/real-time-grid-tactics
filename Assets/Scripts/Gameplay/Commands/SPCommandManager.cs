@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using Gameplay.Config;
 using Gameplay.Entities;
 using Gameplay.Entities.Abilities;
@@ -21,12 +20,7 @@ public class SPCommandManager : AbstractCommandManager {
         DoUnRegisterEntity(entity);
         Destroy(entity.gameObject);
     }
-
-    public override void MoveEntityToCell(GridEntity entity, Vector2Int destination) {
-        DoMoveEntityToCell(entity, destination);
-        DoEntityMoved(entity, destination);
-    }
-
+    
     public override void PerformAbility(IAbility ability) {
         DoPerformAbility(ability);
         DoAbilityPerformed(ability);

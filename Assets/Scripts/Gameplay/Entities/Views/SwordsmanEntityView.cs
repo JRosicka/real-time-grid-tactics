@@ -4,26 +4,26 @@ using UnityEngine;
 
 namespace Gameplay.Entities {
     public class SwordsmanEntityView : GridEntityViewBase {
-        public override void DoAbility(IAbility ability, AbilityTimer timer) {
+        public override void DoAbility(IAbility ability, AbilityCooldownTimer cooldownTimer) {
             Debug.Log($"{nameof(DoAbility)}: {ability}");
             switch (ability.AbilityData) {
                 case SiegeAbilityData _:
-                    CreateTimerView(timer);
+                    CreateTimerView(cooldownTimer);
                     DoSiegeAnimation();
                     break;
                 case BuildAbilityData buildAbility:
-                    CreateTimerView(timer);
+                    CreateTimerView(cooldownTimer);
                     DoBuildAnimation();
+                    break;
+                case MoveAbilityData moveAbility:
+                    CreateTimerView(cooldownTimer);
+                    DoMoveAnimation();
                     break;
                 default:
                     throw new UnexpectedEntityAbilityException(ability.AbilityData);
             }
         }
-
-        public override void Move(Vector2Int targetCell) {
-            Debug.Log(nameof(Move));
-        }
-
+        
         public override void Selected() {
             Debug.Log(nameof(Selected));
         }
@@ -46,6 +46,9 @@ namespace Gameplay.Entities {
         }
         private void DoBuildAnimation() {
             Debug.Log(nameof(DoBuildAnimation));
+        }
+        private void DoMoveAnimation() {
+            Debug.Log(nameof(DoMoveAnimation));
         }
     }
 }

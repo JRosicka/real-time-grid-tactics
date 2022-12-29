@@ -3,14 +3,10 @@ using UnityEngine;
 
 namespace Gameplay.Entities {
     public class ArcherEntityView : GridEntityViewBase {
-        public override void DoAbility(IAbility ability, AbilityTimer timer) {
+        public override void DoAbility(IAbility ability, AbilityCooldownTimer cooldownTimer) {
             Debug.Log(nameof(DoAbility));
         }
-
-        public override void Move(Vector2Int targetCell) {
-            Debug.Log(nameof(Move));
-        }
-
+        
         public override void Selected() {
             Debug.Log(nameof(Selected));
         }

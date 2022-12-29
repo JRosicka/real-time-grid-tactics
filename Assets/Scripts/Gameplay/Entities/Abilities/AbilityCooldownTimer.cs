@@ -12,8 +12,8 @@ namespace Gameplay.Entities.Abilities {
     /// timers instead of being given updates by the server. Only the expiration and list adding/removal are networked.
     /// This may need to be changed if ability timers are too out of sync across different clients. 
     /// </summary>
-    public class AbilityTimer {
-        public event Action<AbilityTimer> CompletedEvent;
+    public class AbilityCooldownTimer {
+        public event Action<AbilityCooldownTimer> CompletedEvent;
         public List<AbilityChannel> ChannelBlockers => Ability.AbilityData.ChannelBlockers;
         public readonly IAbility Ability;
         
@@ -23,7 +23,7 @@ namespace Gameplay.Entities.Abilities {
         private float _timeRemaining;
         private float _initialTimeRemaining;
 
-        public AbilityTimer(IAbility ability) {
+        public AbilityCooldownTimer(IAbility ability) {
             Ability = ability;
             _timeRemaining = _initialTimeRemaining = ability.AbilityData.CooldownDuration;
         }
@@ -34,6 +34,7 @@ namespace Gameplay.Entities.Abilities {
             _timeRemaining = Mathf.Max(_timeRemaining - deltaTime, 0);
             if (_timeRemaining <= 0) {
                 Debug.Log("Ability timer completed, DING");
+                Ability.CompleteCooldown();
                 CompletedEvent?.Invoke(this);
             }
         }

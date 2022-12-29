@@ -1,3 +1,4 @@
+using System;
 using Gameplay.Config.Abilities;
 using Mirror;
 
@@ -11,13 +12,14 @@ namespace Gameplay.Entities.Abilities {
         public int UID { get; set; }
         public IAbilityParameters BaseParameters { get; }
         public GridEntity Performer { get; }
-        
         protected AbilityBase(T data, IAbilityParameters abilityParameters, GridEntity performer) {
             Data = data;
             BaseParameters = abilityParameters;
             Performer = performer;
         }
-        
+
+        public abstract void CompleteCooldown();
+
         public void SerializeParameters(NetworkWriter writer) {
             writer.Write(Performer);
             BaseParameters.Serialize(writer);
