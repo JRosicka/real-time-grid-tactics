@@ -11,7 +11,12 @@ namespace Gameplay.UI {
         public RectTransform Bar;
 
         private GridEntity _target;
-        
+        private float _maxWidth;
+
+        public void Start() {
+            _maxWidth = Bar.sizeDelta.x;
+        }
+
         public void SetTarget(GridEntity entity) {
             if (_target != null) {
                 // Remove event listener from old target if assigned
@@ -25,7 +30,7 @@ namespace Gameplay.UI {
 
         private void UpdateHealth() {
             HealthField.text = $"{_target.CurrentHP} / {_target.MaxHP}";
-            Bar.sizeDelta = new Vector2((float)_target.CurrentHP / _target.MaxHP, 1);
+            Bar.sizeDelta = new Vector2((float)_target.CurrentHP / _target.MaxHP * _maxWidth, Bar.sizeDelta.y);
         }
     }
 }
