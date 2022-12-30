@@ -24,6 +24,7 @@ namespace Gameplay.Entities.Abilities {
         /// </summary>
         /// <param name="writer"></param>
         void SerializeParameters(NetworkWriter writer);
+        void DeserializeImpl(NetworkReader reader);
     }
  
     public static class AbilitySerializer {

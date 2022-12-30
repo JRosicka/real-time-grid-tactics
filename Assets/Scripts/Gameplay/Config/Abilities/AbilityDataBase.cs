@@ -85,8 +85,12 @@ namespace Gameplay.Config.Abilities {
         public IAbility DeserializeAbility(NetworkReader reader) {
             GridEntity performer = reader.Read<GridEntity>();
             T parameters = new T();
+            
             parameters.Deserialize(reader);
-            return CreateAbilityImpl(parameters, performer);
+            IAbility ability = CreateAbilityImpl(parameters, performer);
+            ability.DeserializeImpl(reader);
+            
+            return ability;
         }
     }
 }

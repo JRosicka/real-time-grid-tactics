@@ -14,7 +14,7 @@ namespace Gameplay.Entities.Abilities {
             
         }
 
-        public override void CompleteCooldown() {    // TODO This is sort of just ran wherever, but I should really restrict this to be run on the server. This would mean that the server's copy of an AbilityCooldownTimer runs the cooldown completed command which calls this. 
+        public override void CompleteCooldown() {
             // TODO on a somewhat related note, I should really have these ability and CommandManager methods be more clear about which are run on the server and which are run on clients. Can't do Cmd everywhere because that would break SP. 
             Performer.CurrentMoves = Mathf.Min(Performer.CurrentMoves + _moveCost, Performer.MaxMove);
         }
@@ -34,6 +34,16 @@ namespace Gameplay.Entities.Abilities {
         public override void DoPerformAbility() {
             Debug.Log($"Did move ability to {AbilityParameters.Destination}, cool");
             GameManager.Instance.CommandManager.MoveEntityToCell(Performer, AbilityParameters.Destination);
+        }
+
+        public override void SerializeParameters(NetworkWriter writer) {
+            base.SerializeParameters(writer);
+            writer.Write(_moveCost);
+        }
+
+        public override void DeserializeImpl(NetworkReader reader) {
+            base.DeserializeImpl(reader);
+            _moveCost = reader.ReadInt();
         }
     }
 

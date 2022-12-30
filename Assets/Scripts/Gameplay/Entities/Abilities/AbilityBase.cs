@@ -20,9 +20,13 @@ namespace Gameplay.Entities.Abilities {
 
         public abstract void CompleteCooldown();
 
-        public void SerializeParameters(NetworkWriter writer) {
+        public virtual void SerializeParameters(NetworkWriter writer) {
             writer.Write(Performer);
             BaseParameters.Serialize(writer);
+        }
+
+        public virtual void DeserializeImpl(NetworkReader reader) {
+            // Nothing else to do by default
         }
 
         /// <summary>
