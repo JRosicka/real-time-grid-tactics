@@ -58,6 +58,7 @@ public abstract class AbstractCommandManager : NetworkBehaviour, ICommandManager
     }
 
     public abstract void PerformAbility(IAbility ability);
+    public abstract void MarkAbilityCooldownExpired(IAbility ability);
 
     protected void DoSpawnEntity(EntityData data, Vector2Int spawnLocation, Func<GridEntity> spawnFunc, GridEntity.Team team) {
         if (EntitiesOnGrid.EntityAtLocation(spawnLocation) != null) {
@@ -91,6 +92,10 @@ public abstract class AbstractCommandManager : NetworkBehaviour, ICommandManager
 
     protected void DoAbilityPerformed(IAbility abilityInstance) {
         abilityInstance.Performer.AbilityPerformed(abilityInstance);
+    }
+
+    protected void DoMarkAbilityCooldownExpired(IAbility ability) {
+        ability.Performer.ExpireTimerForAbility(ability);
     }
 
     /// <summary>

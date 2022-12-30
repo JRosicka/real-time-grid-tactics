@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using Gameplay.Config;
 using Gameplay.Entities;
 using Gameplay.Entities.Abilities;
@@ -20,6 +19,10 @@ public class MPCommandManager : AbstractCommandManager {
     
     public override void PerformAbility(IAbility ability) {
         CmdPerformAbility(ability);
+    }
+
+    public override void MarkAbilityCooldownExpired(IAbility ability) {
+        CmdMarkAbilityCooldownExpired(ability);
     }
 
 
@@ -56,6 +59,16 @@ public class MPCommandManager : AbstractCommandManager {
     [ClientRpc]
     private void RpcAbilityPerformed(IAbility abilityInstance) {
         DoAbilityPerformed(abilityInstance);
+    }
+
+    [Command(requiresAuthority = false)]
+    private void CmdMarkAbilityCooldownExpired(IAbility ability) {
+        RpcMarkAbilityCooldownExpired(ability);
+    }
+
+    [ClientRpc]
+    private void RpcMarkAbilityCooldownExpired(IAbility ability) {
+        DoMarkAbilityCooldownExpired(ability);
     }
 
     [ClientRpc]    // TODO probably just target the client of the player who tried to do the ability

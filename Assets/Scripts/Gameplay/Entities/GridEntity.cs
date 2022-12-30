@@ -49,11 +49,39 @@ namespace Gameplay.Entities {
         public List<EntityData.EntityTag> Tags => Data.Tags;
         public List<AbilityDataScriptableObject> Abilities => Data.Abilities; // TODO maybe I do want these to be interfaces after all?
 
-        [Header("Current")]
-        [SyncVar]
-        public int CurrentHP;
-        [SyncVar]
-        public int CurrentMoves;
+        [Header("Current")] 
+        [SyncVar(hook = nameof(OnHPChanged))] 
+        private int _currentHP;
+        public int CurrentHP {
+            get => _currentHP;
+            set {
+                _currentHP = value;
+                if (!NetworkClient.active) {
+                    // SP, so syncvars won't work... Trigger manually.
+                    HPChangedEvent?.Invoke();
+                }
+            }
+        }
+        private void OnHPChanged(int oldValue, int newValue) {
+            HPChangedEvent?.Invoke();
+        }
+
+        [SyncVar(hook = nameof(OnMovesChanged))]
+        private int _currentMoves;
+        public int CurrentMoves {
+            get => _currentMoves;
+            set {
+                _currentMoves = value;
+                if (!NetworkClient.active) {
+                    // SP, so syncvars won't work... Trigger manually.
+                    MovesChangedEvent?.Invoke();
+                }
+            }
+        }
+        private void OnMovesChanged(int oldValue, int newValue) {
+            MovesChangedEvent?.Invoke();
+        }
+
         public List<AbilityCooldownTimer> ActiveTimers = new List<AbilityCooldownTimer>();
 
 
@@ -92,6 +120,7 @@ namespace Gameplay.Entities {
         public event Action AttackReceivedEvent;
         public event Action KilledEvent;
         public event Action HPChangedEvent;
+        public event Action MovesChangedEvent;
 
         public void Select() {
             Debug.Log($"Selecting {UnitName}");
@@ -180,26 +209,10 @@ namespace Gameplay.Entities {
         private void DoCreateAbilityTimer(IAbility ability) {
             AbilityCooldownTimer newCooldownTimer = new AbilityCooldownTimer(ability);
             ActiveTimers.Add(newCooldownTimer);
-            newCooldownTimer.CompletedEvent += OnTimerExpired;
         }
 
-        private void OnTimerExpired(AbilityCooldownTimer cooldownTimer) {
-            if (!NetworkClient.active) {
-                // SP
-                DoRemoveTimer(cooldownTimer.Ability);
-            } else if (NetworkServer.active) {
-                // MP server
-                RpcRemoveTimer(cooldownTimer.Ability);
-            }
-            // Else MP client, do nothing
-        }
-
-        [ClientRpc]
-        private void RpcRemoveTimer(IAbility ability) {
-            DoRemoveTimer(ability);
-        }
-
-        private void DoRemoveTimer(IAbility ability) {
+        public void ExpireTimerForAbility(IAbility ability) {
+            // Find the timer with the indicated ability. The timers themselves are not synchronized, but since their abilities are we can use those. 
             AbilityCooldownTimer cooldownTimer = ActiveTimers.FirstOrDefault(t => t.Ability.UID == ability.UID);
             if (cooldownTimer == null) {
                 Debug.LogError($"Timer for ability {ability.AbilityData.ContentResourceID} was not found");

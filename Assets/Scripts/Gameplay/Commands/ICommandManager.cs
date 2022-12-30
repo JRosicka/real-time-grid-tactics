@@ -23,4 +23,5 @@ public interface ICommandManager {
     GridEntity GetEntityAtCell(Vector2Int location);
     Vector2Int GetLocationForEntity(GridEntity entity);
     void PerformAbility(IAbility ability);
+    void MarkAbilityCooldownExpired(IAbility ability);
 }

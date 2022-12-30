@@ -52,6 +52,8 @@ namespace Gameplay.UI {
             
             AbilityInterface.Initialize(entity);
 
+            entity.MovesChangedEvent += UpdateEntityInfo;
+            entity.HPChangedEvent += UpdateEntityInfo;
             entity.AbilityPerformedEvent += OnEntityAbilityPerformed;
             entity.KilledEvent += OnEntityKilled;
             
@@ -60,13 +62,12 @@ namespace Gameplay.UI {
 
         private void DeselectCurrentEntity() {
             if (SelectedEntity == null) return;
+            
+            SelectedEntity.MovesChangedEvent -= UpdateEntityInfo;
+            SelectedEntity.HPChangedEvent -= UpdateEntityInfo;
+            SelectedEntity.AbilityPerformedEvent -= OnEntityAbilityPerformed;
+            SelectedEntity.KilledEvent -= OnEntityKilled;
 
-            SelectedEntity.AbilityPerformedEvent += OnEntityAbilityPerformed;
-            SelectedEntity.KilledEvent += OnEntityKilled;
-
-            if (_activeMoveCooldownTimer != null) {
-                _activeMoveCooldownTimer.CompletedEvent -= OnMoveTimerCompleted;
-            }
             _activeMoveCooldownTimer = null;
             SelectedEntity = null;
             
@@ -88,10 +89,6 @@ namespace Gameplay.UI {
             DeselectCurrentEntity();
         } 
 
-        private void OnMoveTimerCompleted(AbilityCooldownTimer cooldownTimer) {
-            UpdateEntityInfo();
-        }
-
         private void UpdateEntityInfo() {
             if (SelectedEntity == null) return;
             
@@ -107,7 +104,6 @@ namespace Gameplay.UI {
                 MovesField.text = $"{SelectedEntity.CurrentMoves} / {SelectedEntity.MaxMove}";
                 MoveTimer.gameObject.SetActive(true);
                 MoveTimer.Initialize(_activeMoveCooldownTimer, false);
-                _activeMoveCooldownTimer.CompletedEvent += OnMoveTimerCompleted;
             } else {
                 MovesField.text = $"{SelectedEntity.MaxMove} / {SelectedEntity.MaxMove}";
                 MoveTimer.gameObject.SetActive(false);
