@@ -41,10 +41,10 @@ namespace Gameplay.Entities.Abilities {
             if (!Data.AbilityLegal(BaseParameters, Performer)) return false;
             
             PayCost();
-            DoPerformAbility();
+            DoAbilityEffect();
             return true;
         }
         
-        public abstract void DoPerformAbility();
+        public abstract void DoAbilityEffect();
     }
 }

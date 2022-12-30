@@ -14,7 +14,7 @@ namespace Gameplay.Entities.Abilities {
             // Nothing to do
         }
 
-        public override void DoPerformAbility() {
+        public override void DoAbilityEffect() {
             Debug.Log("Did siege ability, cool");
         }
     }

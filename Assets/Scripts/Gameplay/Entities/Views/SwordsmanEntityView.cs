@@ -19,6 +19,10 @@ namespace Gameplay.Entities {
                     CreateTimerView(cooldownTimer);
                     DoMoveAnimation();
                     break;
+                case AttackAbilityData attackAbility:
+                    CreateTimerView(cooldownTimer);
+                    AttackReceived();
+                    break;
                 default:
                     throw new UnexpectedEntityAbilityException(ability.AbilityData);
             }

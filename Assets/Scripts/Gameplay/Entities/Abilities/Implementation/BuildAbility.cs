@@ -23,7 +23,7 @@ namespace Gameplay.Entities.Abilities {
             base.PayCost();
         }
         
-        public override void DoPerformAbility() {
+        public override void DoAbilityEffect() {
             Debug.Log($"Did build ability for {AbilityParameters.Buildable.ID} at cell {AbilityParameters.BuildLocation}, cool");
         }
     }

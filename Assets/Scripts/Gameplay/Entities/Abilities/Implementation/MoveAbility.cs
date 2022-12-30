@@ -31,7 +31,7 @@ namespace Gameplay.Entities.Abilities {
             base.PayCost();
         }
         
-        public override void DoPerformAbility() {
+        public override void DoAbilityEffect() {
             Debug.Log($"Did move ability to {AbilityParameters.Destination}, cool");
             GameManager.Instance.CommandManager.MoveEntityToCell(Performer, AbilityParameters.Destination);
         }

@@ -147,7 +147,9 @@ namespace Gameplay.Entities {
             // TODO figure out if target is in range
 
             if (targetType == TargetType.Enemy) {
-                targetEntity.ReceiveAttackFromEntity(this);
+                AttackAbilityData data = (AttackAbilityData) Data.Abilities
+                    .First(a => a.Content.GetType() == typeof(AttackAbilityData)).Content;
+                DoAbility(data, new AttackAbilityParameters { Target = targetEntity, Attacker = this });
             } else {
                 // TODO remove after done testing. The grid entity selected itself or an ally or a neutral. Test the ability. 
                 TestBuild();
@@ -287,7 +289,7 @@ namespace Gameplay.Entities {
         public void ReceiveAttackFromEntity(GridEntity sourceEntity) {
             Debug.Log($"Attacked!!!! And from a {sourceEntity.UnitName} no less! OW");
 
-            AttackReceivedEvent?.Invoke();
+            AttackReceivedEvent?.Invoke();    // TODO have to call on all clients
             
             CurrentHP -= sourceEntity.Damage;
 
