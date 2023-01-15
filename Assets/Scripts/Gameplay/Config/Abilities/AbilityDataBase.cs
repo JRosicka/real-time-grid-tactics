@@ -53,7 +53,9 @@ namespace Gameplay.Config.Abilities {
 
         /// <summary>
         /// Respond to the user input intending to use this ability. Do not actually perform the ability (unless there is
-        /// nothing else to do first) - rather, handle any client-side stuff by sending events to prompt for further input. 
+        /// nothing else to do first) - rather, handle any client-side stuff by sending events to prompt for further input.
+        ///
+        /// This method can assume that the selector entity can legally select the ability (no cooldown, etc)
         /// </summary>
         public abstract void SelectAbility(GridEntity selector);
         

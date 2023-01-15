@@ -3,6 +3,7 @@ using System.Linq;
 using Gameplay.Config.Abilities;
 using Gameplay.Entities;
 using Gameplay.Entities.Abilities;
+using Sirenix.Utilities;
 using UnityEngine;
 
 namespace Gameplay.UI {
@@ -12,6 +13,8 @@ namespace Gameplay.UI {
     public class AbilityInterface : MonoBehaviour {
         public List<AbilitySlot> AbilitySlots;
 
+        private IAbilityData _selectedAbility;
+        
         public void SetUpForEntity(GridEntity entity) {
             ClearInfo();
             
@@ -32,6 +35,23 @@ namespace Gameplay.UI {
 
         public void HandleHotkey(string input) {
             AbilitySlots.First(s => s.Hotkey == input).SelectAbility();
+        }
+
+        public void SelectTargetableAbility(ITargetableAbilityData abilityData) {
+            _selectedAbility = abilityData;
+            SelectAbility(abilityData);
+            GameManager.Instance.GridController.SelectTargetableAbility(abilityData);
+        }
+
+        private void SelectAbility(IAbilityData abilityData) {
+            AbilitySlot selectedSlot = null;
+            if (abilityData != null) {
+                selectedSlot = AbilitySlots.First(s => s.Channel == abilityData.Channel);
+                selectedSlot.MarkSelected(true);
+            }
+
+            // Deselect other slots
+            AbilitySlots.Where(a => a != selectedSlot).ForEach(s => s.MarkSelected(false));
         }
     }
 }

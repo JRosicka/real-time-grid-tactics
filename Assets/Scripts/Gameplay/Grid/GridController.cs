@@ -1,4 +1,5 @@
 using System;
+using Gameplay.Config.Abilities;
 using Gameplay.Entities;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -21,6 +22,11 @@ public class GridController : MonoBehaviour {
         Left = 0,
         Middle = 1,
         Right = 2
+    }
+
+    private ITargetableAbilityData _selectedTargetableAbility;
+    public void SelectTargetableAbility(ITargetableAbilityData abilityData) {
+        _selectedTargetableAbility = abilityData;
     }
 
     public void ProcessClick(PointerEventData eventData) {
@@ -58,6 +64,18 @@ public class GridController : MonoBehaviour {
 
         switch (clickType) {
             case MouseClick.Left:
+                // See if we have a targetable ability we want to use. If so, use it.
+                if (_selectedTargetableAbility != null) {
+                    if (_selectedTargetableAbility.CanTargetCell(clickPosition, selectedEntity, entityAtMouseLocation)) {
+                        _selectedTargetableAbility.CreateAbility(clickPosition, selectedEntity, entityAtMouseLocation);
+                        GameManager.Instance.SelectionInterface.SelectTargetableAbility(null);
+                        return;
+                    } else {
+                        // We clicked on a cell that the ability cannot be used on. Deselect the ability and click on the cell normally. 
+                        GameManager.Instance.SelectionInterface.SelectTargetableAbility(null);
+                    }
+                } 
+                
                 if (entityAtMouseLocation != null) {
                     entityAtMouseLocation.Select();
                 } else {

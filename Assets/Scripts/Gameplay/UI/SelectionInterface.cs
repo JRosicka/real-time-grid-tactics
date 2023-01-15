@@ -64,6 +64,10 @@ namespace Gameplay.UI {
             AbilityInterface.HandleHotkey(input);
         }
 
+        public void SelectTargetableAbility(ITargetableAbilityData abilityData) {
+            AbilityInterface.SelectTargetableAbility(abilityData);
+        }
+
         private void DeselectCurrentEntity() {
             if (SelectedEntity == null) return;
             

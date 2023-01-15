@@ -17,9 +17,11 @@ namespace Gameplay.UI {
         public string Hotkey;
         public Color SelectableColor;
         public Color UnselectableColor;
+        public Color SelectedColor;
 
         [Header("References")]
         public Image AbilityImage;
+        public Image SlotFrame;
         public TMP_Text HotkeyText;
 
         private IAbilityData _currentAbility;
@@ -32,7 +34,7 @@ namespace Gameplay.UI {
             _selectedEntity = selectedEntity;
 
             AbilityImage.sprite = _currentAbility.Icon;
-            HotkeyText.text = Hotkey.ToString();
+            HotkeyText.text = Hotkey;
 
             CheckAvailability();
             // TODO listen for stuff
@@ -50,6 +52,15 @@ namespace Gameplay.UI {
             _currentAbility?.SelectAbility(_selectedEntity);
         }
 
+        public void MarkSelected(bool selected) {
+            if (selected) {
+                SlotFrame.color = SelectedColor;
+            } else {
+                // Resets the color
+                CheckAvailability();
+            }
+        }
+
         /// <summary>
         /// Shows additional info about an ability when hovering over slot
         /// </summary>
@@ -61,10 +72,10 @@ namespace Gameplay.UI {
             if (_currentAbility == null || _selectedEntity == null) return;
             
             if (_selectedEntity.CanUseAbility(_currentAbility)) {
-                AbilityImage.color = SelectableColor;
+                SlotFrame.color = SelectableColor;
                 _selectable = true;
             } else {
-                AbilityImage.color = UnselectableColor;
+                SlotFrame.color = UnselectableColor;
                 _selectable = false;
             }
         }

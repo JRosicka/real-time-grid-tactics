@@ -12,10 +12,10 @@ namespace Gameplay.Config.Abilities {
     /// A <see cref="AbilityDataBase{T}"/> configuration for attacking an entity
     /// </summary>
     [Serializable]
-    public class AttackAbilityData : AbilityDataBase<AttackAbilityParameters> {
+    public class AttackAbilityData : AbilityDataBase<AttackAbilityParameters>, ITargetableAbilityData {
 
         public override void SelectAbility(GridEntity selector) {
-            Debug.Log(nameof(SelectAbility)); // TODO actually make this do anything
+            GameManager.Instance.SelectionInterface.SelectTargetableAbility(this);
         }
 
         public override bool AbilityLegalImpl(AttackAbilityParameters parameters, GridEntity entity) {
@@ -25,6 +25,15 @@ namespace Gameplay.Config.Abilities {
 
         protected override IAbility CreateAbilityImpl(AttackAbilityParameters parameters, GridEntity performer) {
             return new AttackAbility(this, parameters, performer);
+        }
+
+        public bool CanTargetCell(Vector2Int cellPosition, GridEntity selector, GridEntity target) {
+            // TODO range
+            return target != null && selector != null && target.MyTeam != GridEntity.Team.Neutral && target.MyTeam != selector.MyTeam;
+        }
+
+        public void CreateAbility(Vector2Int cellPosition, GridEntity selector, GridEntity target) {
+            selector.DoAbility(this, new AttackAbilityParameters {Attacker = selector, Target = target});
         }
     }
 }

@@ -269,9 +269,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Channel: {fileID: 0}
   Hotkey: 0
-  SelectableColor: {r: 1, g: 1, b: 1, a: 1}
-  UnselectableColor: {r: 0.3773585, g: 0.3773585, b: 0.3773585, a: 1}
+  SelectableColor: {r: 0.4056604, g: 0.4056604, b: 0.4056604, a: 1}
+  UnselectableColor: {r: 0.3018868, g: 0.3018868, b: 0.3018868, a: 1}
+  SelectedColor: {r: 0.7075472, g: 0.7075472, b: 0.7075472, a: 1}
   AbilityImage: {fileID: 9165943905807092847}
+  SlotFrame: {fileID: 7746809697624659004}
   HotkeyText: {fileID: 6493543593206636211}
 --- !u!222 &8941894723556131554
 CanvasRenderer:
