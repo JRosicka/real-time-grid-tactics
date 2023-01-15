@@ -50,7 +50,7 @@ namespace Gameplay.UI {
 
             UpdateEntityInfo();
             
-            AbilityInterface.Initialize(entity);
+            AbilityInterface.SetUpForEntity(entity);
 
             entity.MovesChangedEvent += UpdateEntityInfo;
             entity.HPChangedEvent += UpdateEntityInfo;
@@ -58,6 +58,10 @@ namespace Gameplay.UI {
             entity.KilledEvent += OnEntityKilled;
             
             ToggleViews(true);
+        }
+
+        public void HandleAbilityHotkey(string input) {
+            AbilityInterface.HandleHotkey(input);
         }
 
         private void DeselectCurrentEntity() {
@@ -78,7 +82,9 @@ namespace Gameplay.UI {
         private void ToggleViews(bool active) {
             View.SetActive(active);
 
-            AbilityInterface.ToggleActive(active);
+            if (!active) {
+                AbilityInterface.ClearInfo();
+            }
         }
 
         private void OnEntityAbilityPerformed(IAbility iAbility, AbilityCooldownTimer abilityCooldownTimer) {

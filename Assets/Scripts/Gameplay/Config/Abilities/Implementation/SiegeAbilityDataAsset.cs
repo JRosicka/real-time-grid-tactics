@@ -13,7 +13,7 @@ namespace Gameplay.Config.Abilities {
     [Serializable]
     public class SiegeAbilityData : AbilityDataBase<NullAbilityParameters> {
         public override void SelectAbility(GridEntity selector) {
-            // TODO check requirements, cooldown timer, etc. If valid, call CreateAbility and send it to the command controller
+            selector.DoAbility(this, new NullAbilityParameters());
         }
 
         protected override IAbility CreateAbilityImpl(NullAbilityParameters parameters, GridEntity performer) {

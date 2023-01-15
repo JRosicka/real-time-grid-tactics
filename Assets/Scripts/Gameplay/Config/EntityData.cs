@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gameplay.Config.Abilities;
 using Gameplay.Entities;
 using Mirror;
@@ -31,6 +33,12 @@ namespace Gameplay.Config {
         [Space] 
         public List<EntityTag> Tags;
         public List<AbilityDataScriptableObject> Abilities;
+
+        private void OnValidate() {
+            if (Abilities.Select(a => a.Content.Channel).Distinct().ToList().Count < Abilities.Count) {
+                Debug.LogError("Detected abilities with the same channel, don't do that!");
+            }
+        }
     }
 
     public static class EntityDataSerializer {

@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using Gameplay.Entities;
 using Gameplay.Entities.Abilities;
 using Mirror;
+using UnityEngine;
 
 namespace Gameplay.Config.Abilities {
     /// <summary>
@@ -11,6 +12,7 @@ namespace Gameplay.Config.Abilities {
     /// </summary>
     public interface IAbilityData {
         string ContentResourceID { get; set; }
+        Sprite Icon { get; }
         List<PurchasableData> Requirements { get; }
         float PerformDuration { get; }
         float CooldownDuration { get; }

@@ -1,6 +1,7 @@
 using System;
 using Gameplay.Entities;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.Tilemaps;
 
 /// <summary>
@@ -21,9 +22,9 @@ public class GridController : MonoBehaviour {
         Middle = 1,
         Right = 2
     }
-    
-    void Update() {
-        Vector2Int mousePos = GetMousePosition();
+
+    public void ProcessClick(PointerEventData eventData) {
+        Vector2Int mousePos = GetMousePosition(eventData);
         
         // If I ever want to do anything with mousing over - a selecting reticule, simulating attacking an enemy, etc
         // if (!mousePos.Equals(_previousMousePos)) {
@@ -33,14 +34,14 @@ public class GridController : MonoBehaviour {
         // }
 
         MouseClick click = MouseClick.None;
-        if (Input.GetMouseButtonUp(0)) {
+        if (eventData.button == PointerEventData.InputButton.Left) {
             // Left mouse button click
             Debug.Log("Click on grid at " + mousePos);
             click = MouseClick.Left;
-        } else if (Input.GetMouseButtonUp(1)) {
+        } else if (eventData.button == PointerEventData.InputButton.Right) {
             Debug.Log("Right click at " + mousePos);
             click = MouseClick.Right;
-        } else if (Input.GetMouseButtonUp(2)) {
+        } else if (eventData.button == PointerEventData.InputButton.Middle) {
             Debug.Log("Middle mouse click at " + mousePos);
             click = MouseClick.Middle;
         }
@@ -90,8 +91,8 @@ public class GridController : MonoBehaviour {
         return _grid.CellToWorld((Vector3Int) cellPosition);
     }
 
-    private Vector2Int GetMousePosition() {
-        Vector3 mouseWorldPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+    private Vector2Int GetMousePosition(PointerEventData eventData) {
+        Vector3 mouseWorldPosition = eventData.pointerPressRaycast.worldPosition;
         return GetCellPosition(mouseWorldPosition);
     }
 }

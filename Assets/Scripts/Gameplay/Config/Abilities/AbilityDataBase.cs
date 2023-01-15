@@ -20,7 +20,11 @@ namespace Gameplay.Config.Abilities {
         /// where this comes from. Necessary for writing/reading over network. 
         /// </summary>
         public string ContentResourceID { get => _contentResourceID; set => _contentResourceID = value; }
-        
+
+        [SerializeField] 
+        private Sprite _icon;
+        public Sprite Icon => _icon;
+
         /// <summary>
         /// All of these must be owned in order to perform the ability
         /// </summary>

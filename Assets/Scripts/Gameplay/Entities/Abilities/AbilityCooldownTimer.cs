@@ -16,11 +16,20 @@ namespace Gameplay.Entities.Abilities {
         public List<AbilityChannel> ChannelBlockers => Ability.AbilityData.ChannelBlockers;
         public readonly IAbility Ability;
         
-        public float TimeRemaining01 => _timeRemaining / _initialTimeRemaining;
+        public float TimeRemaining01 {
+            get {
+                // ReSharper disable once CompareOfFloatsByEqualityOperator
+                if (_initialTimeRemaining == 0f) {
+                    return 0;
+                }
+                return _timeRemaining / _initialTimeRemaining;
+            }
+        }
         public bool Expired;
         
         private float _timeRemaining;
         private float _initialTimeRemaining;
+        private bool _markedCompletedLocally;
 
         public AbilityCooldownTimer(IAbility ability) {
             Ability = ability;
@@ -28,7 +37,7 @@ namespace Gameplay.Entities.Abilities {
         }
 
         public void UpdateTimer(float deltaTime) {
-            if (_timeRemaining <= 0f) return;
+            if (_markedCompletedLocally) return;
             
             _timeRemaining = Mathf.Max(_timeRemaining - deltaTime, 0);
             if (_timeRemaining <= 0) {
@@ -37,6 +46,7 @@ namespace Gameplay.Entities.Abilities {
         }
 
         private void HandleTimerCompleted() {
+            _markedCompletedLocally = true;
             if (!NetworkClient.active) {
                 // SP
                 Debug.Log("Ability timer completed, DING");
