@@ -1390,7 +1390,7 @@ MonoBehaviour:
   SelectionInterface: {fileID: 5915743770835495769}
   Unit1_LocalTeam: 1
   Unit1: {fileID: 11400000, guid: 991ad2a1d6801ee40b831e7850e0ff35, type: 2}
-  Unit2_LocalTeam: 1
+  Unit2_LocalTeam: 0
   Unit2: {fileID: 11400000, guid: 991ad2a1d6801ee40b831e7850e0ff35, type: 2}
 --- !u!4 &1548131395
 Transform:

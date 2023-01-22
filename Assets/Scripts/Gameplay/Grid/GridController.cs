@@ -69,10 +69,12 @@ public class GridController : MonoBehaviour {
                     if (_selectedTargetableAbility.CanTargetCell(clickPosition, selectedEntity, entityAtMouseLocation)) {
                         _selectedTargetableAbility.CreateAbility(clickPosition, selectedEntity, entityAtMouseLocation);
                         GameManager.Instance.SelectionInterface.DeselectActiveAbility();
+                        SelectTargetableAbility(null);
                         return;
                     } else {
                         // We clicked on a cell that the ability cannot be used on. Deselect the ability and click on the cell normally. 
                         GameManager.Instance.SelectionInterface.DeselectActiveAbility();
+                        SelectTargetableAbility(null);
                     }
                 } 
                 
@@ -91,6 +93,7 @@ public class GridController : MonoBehaviour {
                     break;
                 
                 selectedEntity.InteractWithCell(clickPosition);
+                SelectTargetableAbility(null);
                 break;
             case MouseClick.None:
                 // We have already done the hover action, so nothing else to do

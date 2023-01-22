@@ -28,7 +28,7 @@ namespace Gameplay.Config.Abilities {
 
         public bool CanTargetCell(Vector2Int cellPosition, GridEntity selector, GridEntity target) {
             // TODO pathfinding stuff
-            return target == null && selector != null;
+            return target == null && selector != null && selector.MyTeam == GameManager.Instance.LocalPlayer.Data.Team;
         }
 
         public void CreateAbility(Vector2Int cellPosition, GridEntity selector, GridEntity target) {
