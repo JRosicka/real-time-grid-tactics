@@ -359,7 +359,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 8182987531277296321}
         m_TargetAssemblyTypeName: Gameplay.UI.AbilitySlot, Assembly-CSharp
-        m_MethodName: SelectAbility
+        m_MethodName: OnButtonClick
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

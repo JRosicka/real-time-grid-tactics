@@ -15,7 +15,7 @@ namespace Gameplay.Config.Abilities {
     public class AttackAbilityData : AbilityDataBase<AttackAbilityParameters>, ITargetableAbilityData {
 
         public override void SelectAbility(GridEntity selector) {
-            GameManager.Instance.SelectionInterface.SelectTargetableAbility(this);
+            GameManager.Instance.GridController.SelectTargetableAbility(this);
         }
 
         public override bool AbilityLegalImpl(AttackAbilityParameters parameters, GridEntity entity) {

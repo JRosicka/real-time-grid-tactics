@@ -68,11 +68,11 @@ public class GridController : MonoBehaviour {
                 if (_selectedTargetableAbility != null) {
                     if (_selectedTargetableAbility.CanTargetCell(clickPosition, selectedEntity, entityAtMouseLocation)) {
                         _selectedTargetableAbility.CreateAbility(clickPosition, selectedEntity, entityAtMouseLocation);
-                        GameManager.Instance.SelectionInterface.SelectTargetableAbility(null);
+                        GameManager.Instance.SelectionInterface.DeselectActiveAbility();
                         return;
                     } else {
                         // We clicked on a cell that the ability cannot be used on. Deselect the ability and click on the cell normally. 
-                        GameManager.Instance.SelectionInterface.SelectTargetableAbility(null);
+                        GameManager.Instance.SelectionInterface.DeselectActiveAbility();
                     }
                 } 
                 

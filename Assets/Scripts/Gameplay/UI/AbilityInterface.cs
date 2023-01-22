@@ -13,7 +13,7 @@ namespace Gameplay.UI {
     public class AbilityInterface : MonoBehaviour {
         public List<AbilitySlot> AbilitySlots;
 
-        private IAbilityData _selectedAbility;
+        private AbilitySlot _selectedSlot;
         
         public void SetUpForEntity(GridEntity entity) {
             ClearInfo();
@@ -34,24 +34,25 @@ namespace Gameplay.UI {
         }
 
         public void HandleHotkey(string input) {
-            AbilitySlots.First(s => s.Hotkey == input).SelectAbility();
+            SelectAbility(AbilitySlots.First(s => s.Hotkey == input));
         }
-
-        public void SelectTargetableAbility(ITargetableAbilityData abilityData) {
-            _selectedAbility = abilityData;
-            SelectAbility(abilityData);
-            GameManager.Instance.GridController.SelectTargetableAbility(abilityData);
+        
+        public void DeselectActiveAbility() {
+            _selectedSlot = null;
+            DeselectUnselectedSlots();
         }
-
-        private void SelectAbility(IAbilityData abilityData) {
-            AbilitySlot selectedSlot = null;
-            if (abilityData != null) {
-                selectedSlot = AbilitySlots.First(s => s.Channel == abilityData.Channel);
-                selectedSlot.MarkSelected(true);
+        
+        public void SelectAbility(AbilitySlot slot) {
+            _selectedSlot = slot;
+            if (!_selectedSlot.SelectAbility()) {
+                _selectedSlot = null;
             }
+            DeselectUnselectedSlots();
+        }
 
+        private void DeselectUnselectedSlots() {
             // Deselect other slots
-            AbilitySlots.Where(a => a != selectedSlot).ForEach(s => s.MarkSelected(false));
+            AbilitySlots.Where(a => a != _selectedSlot).ForEach(s => s.MarkSelected(false));
         }
     }
 }

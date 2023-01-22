@@ -14,7 +14,7 @@ namespace Gameplay.Config.Abilities {
     public class MoveAbilityData : AbilityDataBase<MoveAbilityParameters>, ITargetableAbilityData {
 
         public override void SelectAbility(GridEntity selector) {
-            GameManager.Instance.SelectionInterface.SelectTargetableAbility(this);
+            GameManager.Instance.GridController.SelectTargetableAbility(this);
         }
 
         public override bool AbilityLegalImpl(MoveAbilityParameters parameters, GridEntity entity) {

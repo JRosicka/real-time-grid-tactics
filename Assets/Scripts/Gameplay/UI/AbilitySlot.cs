@@ -23,6 +23,7 @@ namespace Gameplay.UI {
         public Image AbilityImage;
         public Image SlotFrame;
         public TMP_Text HotkeyText;
+        public AbilityInterface AbilityInterface;
 
         private IAbilityData _currentAbility;
         private GridEntity _selectedEntity;
@@ -37,19 +38,27 @@ namespace Gameplay.UI {
             HotkeyText.text = Hotkey;
 
             CheckAvailability();
-            // TODO listen for stuff
+            AddListeners();
         }
 
         public void Clear() {
+            RemoveListeners();
             _currentAbility = null;
             _selectedEntity = null;
             gameObject.SetActive(false);
-            // TODO stop listening for stuff
         }
         
-        public void SelectAbility() {
+        public void OnButtonClick() {
             if (!_selectable) return;
+            AbilityInterface.SelectAbility(this);
+        }
+
+        public bool SelectAbility() {
+            if (!_selectable) return false;
+            
+            MarkSelected(true);
             _currentAbility?.SelectAbility(_selectedEntity);
+            return true;
         }
 
         public void MarkSelected(bool selected) {
@@ -79,11 +88,27 @@ namespace Gameplay.UI {
                 _selectable = false;
             }
         }
+        
+        #region Listeners
 
-        private void OnAbilityTimersChanged() {
-            
+        private void AddListeners() {
+            _selectedEntity.CooldownTimerExpiredEvent += OnAbilityTimersChanged;
+            _selectedEntity.AbilityPerformedEvent += OnAbilityTimersChanged;
         }
 
+        private void RemoveListeners() {
+            if (_selectedEntity == null) return;
+            
+            _selectedEntity.CooldownTimerExpiredEvent -= OnAbilityTimersChanged;
+            _selectedEntity.AbilityPerformedEvent -= OnAbilityTimersChanged;
+        }
+
+        private void OnAbilityTimersChanged(IAbility ability, AbilityCooldownTimer timer) {
+            if (timer.ChannelBlockers.Contains(Channel)) {
+                CheckAvailability();
+            }
+        }
+        
         private void OnPlayerPurchasedSomething() {
             
         }
@@ -91,5 +116,7 @@ namespace Gameplay.UI {
         private void OnSomethingThatThePlayerOwnedDied() {
             
         }
+        
+        #endregion
     }
 }

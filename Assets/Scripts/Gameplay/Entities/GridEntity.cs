@@ -115,6 +115,7 @@ namespace Gameplay.Entities {
         public Vector2Int Location => GameManager.Instance.GetLocationForEntity(this);
 
         public event Action<IAbility, AbilityCooldownTimer> AbilityPerformedEvent;
+        public event Action<IAbility, AbilityCooldownTimer> CooldownTimerExpiredEvent;
         public event Action SelectedEvent;
         public event Action<Vector2Int> AttackPerformedEvent;
         public event Action AttackReceivedEvent;
@@ -223,6 +224,7 @@ namespace Gameplay.Entities {
 
             cooldownTimer.Expire();
             ActiveTimers.Remove(cooldownTimer);
+            CooldownTimerExpiredEvent?.Invoke(ability, cooldownTimer);
         }
 
         private void Update() {
