@@ -30,8 +30,7 @@ namespace Gameplay.Entities {
             
             entity.AbilityPerformedEvent += DoAbility;
             entity.SelectedEvent += Selected;
-            entity.AttackPerformedEvent += Attack;
-            entity.AttackReceivedEvent += AttackReceived;
+            entity.HPChangedEvent += AttackReceived;
             entity.KilledEvent += Killed;
         }
 
@@ -43,7 +42,6 @@ namespace Gameplay.Entities {
 
         public abstract void DoAbility(IAbility ability, AbilityCooldownTimer cooldownTimer);
         public abstract void Selected();
-        public abstract void Attack(Vector2Int targetCell);
         public abstract void AttackReceived();
         public abstract void Killed();
 

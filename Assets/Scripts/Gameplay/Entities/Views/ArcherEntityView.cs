@@ -10,11 +10,7 @@ namespace Gameplay.Entities {
         public override void Selected() {
             Debug.Log(nameof(Selected));
         }
-
-        public override void Attack(Vector2Int targetCell) {
-            Debug.Log(nameof(Attack));
-        }
-
+        
         public override void AttackReceived() {
             Debug.Log(nameof(AttackReceived));
         }

@@ -117,10 +117,8 @@ namespace Gameplay.Entities {
         public event Action<IAbility, AbilityCooldownTimer> AbilityPerformedEvent;
         public event Action<IAbility, AbilityCooldownTimer> CooldownTimerExpiredEvent;
         public event Action SelectedEvent;
-        public event Action<Vector2Int> AttackPerformedEvent;
-        public event Action AttackReceivedEvent;
-        public event Action KilledEvent;
         public event Action HPChangedEvent;
+        public event Action KilledEvent;
         public event Action MovesChangedEvent;
 
         public void Select() {
@@ -265,10 +263,6 @@ namespace Gameplay.Entities {
             // TODO
         }
 
-        public void TestSiege() {
-            DoAbility(Data.Abilities.First(a => a.Content.GetType() == typeof(SiegeAbilityData)).Content, new NullAbilityParameters());
-        }
-        
         public void TestBuild() {
             BuildAbilityData data = (BuildAbilityData) Data.Abilities.First(a => a.Content.GetType() == typeof(BuildAbilityData)).Content;
             DoAbility(data, new BuildAbilityParameters{Buildable = data.Buildables[0], BuildLocation = Location});
@@ -290,21 +284,49 @@ namespace Gameplay.Entities {
 
         public void ReceiveAttackFromEntity(GridEntity sourceEntity) {
             Debug.Log($"Attacked!!!! And from a {sourceEntity.UnitName} no less! OW");
-
-            AttackReceivedEvent?.Invoke();    // TODO have to call on all clients
             
             CurrentHP -= sourceEntity.Damage;
 
-            HPChangedEvent?.Invoke();
+            if (!NetworkClient.active) {
+                // SP
+                OnHPChanged();
+            } else if (NetworkServer.active) {
+                // MP server
+                RpcOnHPChanged();
+            }
             
             if (CurrentHP <= 0) {
                 Kill();
             }
         }
 
+        [ClientRpc]
+        private void RpcOnHPChanged() {
+            OnHPChanged();
+        }
+
+        private void OnHPChanged() {
+            HPChangedEvent?.Invoke();
+        }
+
         private void Kill() {
-            KilledEvent?.Invoke();
+            if (!NetworkClient.active) {
+                // SP
+                OnKilled();
+            } else if (NetworkServer.active) {
+                // MP server
+                RpcOnKilled();
+            }
             GameManager.Instance.CommandManager.UnRegisterAndDestroyEntity(this);    // TODO this should actually wait to destroy until all of the kill animations are done. So unregister now, kill later. 
+        }
+
+        [ClientRpc]
+        private void RpcOnKilled() {
+            OnKilled();
+        }
+
+        private void OnKilled() {
+            KilledEvent?.Invoke();
         }
     }
 }

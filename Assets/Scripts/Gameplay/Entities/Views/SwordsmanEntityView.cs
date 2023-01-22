@@ -31,20 +31,12 @@ namespace Gameplay.Entities {
         public override void Selected() {
             Debug.Log(nameof(Selected));
         }
-
-        public override void Attack(Vector2Int targetCell) {
-            Debug.Log(nameof(Attack));
-        }
-
         public override void AttackReceived() {
             Debug.Log(nameof(AttackReceived));
-
         }
-
         public override void Killed() {
             Debug.Log(nameof(Killed));
         }
-
         private void DoSiegeAnimation() {
             Debug.Log(nameof(DoSiegeAnimation));
         }
