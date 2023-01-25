@@ -30,6 +30,8 @@ namespace Gameplay.Entities {
         private GridEntityViewBase _view;
         public Canvas ViewCanvas;
 
+        public ClientsStatusHandler DeathStatusHandler;
+
         [Header("Config")] 
         public string UnitName;
         public Team MyTeam;
@@ -108,6 +110,8 @@ namespace Gameplay.Entities {
 
             // TODO we check for the registered flag on the entity, so it probably won't get registered twice (once from each client). But, there might be a better way to do this with authority
             GameManager.Instance.CommandManager.RegisterEntity(this);
+            
+            DeathStatusHandler.Initialize(OnEntityReadyToDie);
         }
 
         public bool CanTargetThings => true;
@@ -310,23 +314,57 @@ namespace Gameplay.Entities {
         }
 
         private void Kill() {
-            if (!NetworkClient.active) {
+            // if (!NetworkClient.active) {
+            //     // SP
+            //     OnKilled();
+            // } else if (NetworkServer.active) {
+            //     // MP server
+            //     RpcOnKilled();
+            // }
+            GameManager.Instance.CommandManager.UnRegisterEntity(this);
+        }
+
+        // [ClientRpc]
+        // private void RpcOnKilled() {
+        //     OnKilled();
+        // }
+
+        /// <summary>
+        /// Client event letting us know that we have finished being unregistered.
+        ///
+        /// There might be other clients that need this to be around still.
+        /// So instead of destroying this, just disallow interaction.
+        /// </summary>
+        public void OnUnregistered() {
+            if (!NetworkClient.active) {   
                 // SP
-                OnKilled();
-            } else if (NetworkServer.active) {
-                // MP server
-                RpcOnKilled();
+                // TODO Instead of destroying immediately, tell the view to do destroy animations and give the view a callback to destroy the entity when done. (and also, you know, make it so that this can't be interacted with by this client anymore)
+            } else {
+                // MP client
+
+                // TODO Do the stop-interaction and view destroy logic outlined above, but as the callback to the view
+                // destroy logic we should acknowledge to the server that we are ready to be destroyed. The server
+                // listens for all clients to send this ready status (on a per-entity basis, so maybe the GridEntity itself keeps
+                // track or has a new NetworkBehaviour subclass that handles this), and once all clients have sent the ready status
+                // then it calls the destroy CommandManager command.  
+                
             }
-            GameManager.Instance.CommandManager.UnRegisterAndDestroyEntity(this);    // TODO this should actually wait to destroy until all of the kill animations are done. So unregister now, kill later. 
-        }
-
-        [ClientRpc]
-        private void RpcOnKilled() {
-            OnKilled();
-        }
-
-        private void OnKilled() {
+            
+            DisallowInteraction();
+            // When the view is done animating death, mark this client as ready to die so that the server knows when it can destroy this entity
+            _view.KillAnimationFinishedEvent += DeathStatusHandler.SetLocalClientReady;
             KilledEvent?.Invoke();
+        }
+
+        private void DisallowInteraction() {
+            // Huh, actually I don't think there's anything to do here
+        }
+
+        /// <summary>
+        /// We have just detected that all clients are ready for this entity to be destroyed. Do that. 
+        /// </summary>
+        private void OnEntityReadyToDie() {
+            GameManager.Instance.CommandManager.DestroyEntity(this);
         }
     }
 }

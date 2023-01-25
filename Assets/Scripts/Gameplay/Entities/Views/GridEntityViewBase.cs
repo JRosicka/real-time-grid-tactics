@@ -20,6 +20,8 @@ namespace Gameplay.Entities {
         [SerializeField] 
         private Image _teamColorImage;
 
+        public event Action KillAnimationFinishedEvent;
+        
         protected GridEntity Entity;
         public void Initialize(GridEntity entity) {
             Entity = entity;
@@ -44,6 +46,10 @@ namespace Gameplay.Entities {
         public abstract void Selected();
         public abstract void AttackReceived();
         public abstract void Killed();
+
+        protected void KillAnimationFinished() {
+            KillAnimationFinishedEvent?.Invoke();
+        }
 
         public class UnexpectedEntityAbilityException : Exception {
             public UnexpectedEntityAbilityException(IAbilityData data) : base($"Unexpected entity ability: {data}") { }

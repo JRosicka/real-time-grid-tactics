@@ -36,6 +36,7 @@ namespace Gameplay.Entities {
         }
         public override void Killed() {
             Debug.Log(nameof(Killed));
+            KillAnimationFinished();
         }
         private void DoSiegeAnimation() {
             Debug.Log(nameof(DoSiegeAnimation));

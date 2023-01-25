@@ -16,11 +16,15 @@ public class SPCommandManager : AbstractCommandManager {
         DoRegisterEntity(entity, position);
     }
 
-    public override void UnRegisterAndDestroyEntity(GridEntity entity) {
+    public override void UnRegisterEntity(GridEntity entity) {
         DoUnRegisterEntity(entity);
+        DoMarkEntityUnregistered(entity);
+    }
+
+    public override void DestroyEntity(GridEntity entity) {
         Destroy(entity.gameObject);
     }
-    
+
     public override void PerformAbility(IAbility ability) {
         DoPerformAbility(ability);
         DoAbilityPerformed(ability);

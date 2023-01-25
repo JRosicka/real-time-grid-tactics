@@ -13,10 +13,14 @@ public class MPCommandManager : AbstractCommandManager {
         CmdRegisterEntity(entity, position);
     }
 
-    public override void UnRegisterAndDestroyEntity(GridEntity entity) {
+    public override void UnRegisterEntity(GridEntity entity) {
         CmdUnRegisterEntity(entity);
     }
-    
+
+    public override void DestroyEntity(GridEntity entity) {
+        CmdDestroyEntity(entity);
+    }
+
     public override void PerformAbility(IAbility ability) {
         CmdPerformAbility(ability);
     }
@@ -43,7 +47,17 @@ public class MPCommandManager : AbstractCommandManager {
     [Command(requiresAuthority = false)]
     private void CmdUnRegisterEntity(GridEntity entity) {
         DoUnRegisterEntity(entity);
+        RpcEntityUnregistered(entity);
+    }
+
+    [Command(requiresAuthority = false)]
+    private void CmdDestroyEntity(GridEntity entity) {
         NetworkServer.Destroy(entity.gameObject);
+    }
+
+    [ClientRpc]
+    private void RpcEntityUnregistered(GridEntity entity) {
+        DoMarkEntityUnregistered(entity);
     }
     
     [Command(requiresAuthority = false)]

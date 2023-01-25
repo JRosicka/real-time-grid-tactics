@@ -18,7 +18,8 @@ public interface ICommandManager {
     /// Stop keeping track of an entity and also destroy it
     /// </summary>
     /// <param name="entity"></param>
-    void UnRegisterAndDestroyEntity(GridEntity entity);
+    void UnRegisterEntity(GridEntity entity);
+    void DestroyEntity(GridEntity entity);
     void MoveEntityToCell(GridEntity entity, Vector2Int destination);
     GridEntity GetEntityAtCell(Vector2Int location);
     Vector2Int GetLocationForEntity(GridEntity entity);
