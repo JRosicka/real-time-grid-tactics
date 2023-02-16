@@ -22,4 +22,5 @@ MonoBehaviour:
     _channelBlockers:
     - {fileID: 11400000, guid: a2bb18c2ded749a4e902028c24c166d0, type: 2}
     Buildables:
-    - {fileID: 11400000, guid: 991ad2a1d6801ee40b831e7850e0ff35, type: 2}
+    - data: {fileID: 11400000, guid: 991ad2a1d6801ee40b831e7850e0ff35, type: 2}
+      selectionKey: e

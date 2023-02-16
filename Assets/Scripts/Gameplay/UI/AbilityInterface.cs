@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Gameplay.Config.Abilities;
@@ -34,7 +35,7 @@ namespace Gameplay.UI {
         }
 
         public void HandleHotkey(string input) {
-            SelectAbility(AbilitySlots.First(s => s.Hotkey == input));
+            SelectAbility(AbilitySlots.First(s => string.Equals(s.Hotkey, input, StringComparison.CurrentCultureIgnoreCase)));
         }
         
         public void DeselectActiveAbility() {
@@ -48,6 +49,19 @@ namespace Gameplay.UI {
                 _selectedSlot = null;
             }
             DeselectUnselectedSlots();
+        }
+
+        public void SelectBuildAbility(BuildAbilityData buildData, GridEntity selectedEntity) {
+            ClearInfo();
+
+            foreach (BuildAbilityData.PurchasableDataWithSelectionKey purchasableDataWithSelectionKey in buildData.Buildables) {
+                AbilitySlot slot = AbilitySlots.FirstOrDefault(s => string.Equals(s.Hotkey, purchasableDataWithSelectionKey.selectionKey, StringComparison.CurrentCultureIgnoreCase));
+                if (slot == null) {
+                    throw new Exception("Found build ability with an invalid selection key");
+                }
+                
+                slot.SetUpForBuildTarget(buildData, purchasableDataWithSelectionKey.data, selectedEntity);
+            }
         }
 
         private void DeselectUnselectedSlots() {

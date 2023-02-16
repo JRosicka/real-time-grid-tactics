@@ -68,6 +68,10 @@ namespace Gameplay.UI {
             AbilityInterface.DeselectActiveAbility();
         }
 
+        public void SelectBuildAbility(BuildAbilityData buildData) {
+            AbilityInterface.SelectBuildAbility(buildData, SelectedEntity);
+        }
+
         private void DeselectCurrentEntity() {
             if (SelectedEntity == null) return;
             

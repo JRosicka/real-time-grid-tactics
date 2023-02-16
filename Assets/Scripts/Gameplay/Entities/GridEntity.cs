@@ -269,7 +269,7 @@ namespace Gameplay.Entities {
 
         public void TestBuild() {
             BuildAbilityData data = (BuildAbilityData) Data.Abilities.First(a => a.Content.GetType() == typeof(BuildAbilityData)).Content;
-            DoAbility(data, new BuildAbilityParameters{Buildable = data.Buildables[0], BuildLocation = Location});
+            DoAbility(data, new BuildAbilityParameters{Buildable = data.Buildables[0].data, BuildLocation = Location});
         }
 
         private void SetupStats() {

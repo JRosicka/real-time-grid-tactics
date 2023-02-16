@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gameplay.Entities;
 using Gameplay.Entities.Abilities;
 using UnityEngine;
@@ -13,19 +14,17 @@ namespace Gameplay.Config.Abilities {
     /// </summary>
     [Serializable]
     public class BuildAbilityData : AbilityDataBase<BuildAbilityParameters> {
-        public List<PurchasableData> Buildables;
+        public List<PurchasableDataWithSelectionKey> Buildables;
 
-        public void Build(PurchasableData itemToBuild) {
-            if (!Buildables.Contains(itemToBuild)) {
-                Debug.LogError($"Attempted to build item that is not configured to be buildable by this entity: {itemToBuild}");
-                return;
-            }
-            
-            Debug.Log(nameof(Build));    // TODO
+        [Serializable]
+        public struct PurchasableDataWithSelectionKey {
+            public PurchasableData data;
+            public string selectionKey;
         }
-        
+
         public override void SelectAbility(GridEntity selector) {
-            Debug.Log(nameof(SelectAbility)); // TODO for building, this should send the data to the selector interface thing (whatever that looks like) and the selector interface thing will handle disallowing build choices that they player cannot afford. 
+            Debug.Log(nameof(SelectAbility)); 
+            GameManager.Instance.SelectionInterface.SelectBuildAbility(this);
         }
 
         public override bool AbilityLegalImpl(BuildAbilityParameters parameters, GridEntity entity) {

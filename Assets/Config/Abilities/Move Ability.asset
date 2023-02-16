@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Data:
     _contentResourceID: Move Ability
+    _icon: {fileID: 0}
     _requirements: []
     _performDuration: 0
     _cooldownDuration: 5
