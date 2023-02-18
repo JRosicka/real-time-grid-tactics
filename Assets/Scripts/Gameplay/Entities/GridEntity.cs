@@ -114,8 +114,8 @@ namespace Gameplay.Entities {
             DeathStatusHandler.Initialize(OnEntityReadyToDie);
         }
 
-        public bool CanTargetThings => true;
-        public bool CanMove => true; // todo
+        public bool CanTargetThings => Range > 0;
+        public bool CanMove => MaxMove > 0;
         public Vector2Int Location => GameManager.Instance.GetLocationForEntity(this);
 
         public event Action<IAbility, AbilityCooldownTimer> AbilityPerformedEvent;
@@ -153,9 +153,6 @@ namespace Gameplay.Entities {
                 AttackAbilityData data = (AttackAbilityData) Data.Abilities
                     .First(a => a.Content.GetType() == typeof(AttackAbilityData)).Content;
                 DoAbility(data, new AttackAbilityParameters { Target = targetEntity, Attacker = this });
-            } else {
-                // TODO remove after done testing. The grid entity selected itself or an ally or a neutral. Test the ability. 
-                TestBuild();
             }
         }
 
@@ -241,6 +238,12 @@ namespace Gameplay.Entities {
             }
             IAbility abilityInstance = abilityData.CreateAbility(parameters, this);
             GameManager.Instance.CommandManager.PerformAbility(abilityInstance);
+        }
+
+        public void PerformOnStartAbilities() {
+            foreach (IAbilityData abilityData in Abilities.Select(a => a.Content).Where(a => a.PerformOnStart)) {
+                DoAbility(abilityData, new NullAbilityParameters());
+            }
         }
 
         /// <summary>

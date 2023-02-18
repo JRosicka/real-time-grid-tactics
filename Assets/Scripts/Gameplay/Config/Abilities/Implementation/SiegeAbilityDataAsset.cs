@@ -16,6 +16,10 @@ namespace Gameplay.Config.Abilities {
             selector.DoAbility(this, new NullAbilityParameters());
         }
 
+        protected override bool AbilityLegalImpl(NullAbilityParameters parameters, GridEntity entity) {
+            return true;
+        }
+
         protected override IAbility CreateAbilityImpl(NullAbilityParameters parameters, GridEntity performer) {
             return new SiegeAbility(this, parameters, performer);
         }

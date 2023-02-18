@@ -19,6 +19,15 @@ namespace Gameplay.Config.Abilities {
         AbilityChannel Channel { get; }
         List<AbilityChannel> ChannelBlockers { get; }
         /// <summary>
+        /// Whether to do the ability immediately after the associated <see cref="GridEntity"/> spawns. Note that
+        /// <see cref="NullAbilityParameters"/> will be sent as the parameters. 
+        /// </summary>
+        bool PerformOnStart { get; }
+        /// <summary>
+        /// Whether this is an active ability that should be selectable via the ability interface or hotkeys
+        /// </summary>
+        bool Selectable { get; }
+        /// <summary>
         /// Respond to the user input intending to use this ability. Do not actually perform the ability (unless there is
         /// nothing else to do first) - rather, handle any client-side stuff by sending events to prompt for further input. 
         /// </summary>

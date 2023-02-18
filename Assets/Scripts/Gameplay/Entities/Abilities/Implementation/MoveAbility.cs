@@ -14,12 +14,12 @@ namespace Gameplay.Entities.Abilities {
             
         }
 
-        public override void CompleteCooldown() {
+        protected override void CompleteCooldownImpl() {
             // TODO on a somewhat related note, I should really have these ability and CommandManager methods be more clear about which are run on the server and which are run on clients. Can't do Cmd everywhere because that would break SP. 
             Performer.CurrentMoves = Mathf.Min(Performer.CurrentMoves + _moveCost, Performer.MaxMove);
         }
 
-        protected override void PayCost() {
+        protected override void PayCostImpl() {
             _moveCost = GameManager.Instance.PathfinderService.RequiredMoves(Performer, Performer.Location,
                     AbilityParameters.Destination);
             if (_moveCost > Performer.CurrentMoves) {
@@ -28,7 +28,6 @@ namespace Gameplay.Entities.Abilities {
             }
 
             Performer.CurrentMoves -= _moveCost;
-            base.PayCost();
         }
         
         public override void DoAbilityEffect() {

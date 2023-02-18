@@ -17,6 +17,7 @@ namespace Gameplay.UI {
         private AbilitySlot _selectedSlot;
         
         public void SetUpForEntity(GridEntity entity) {
+            // TODO if all this entity does is build stuff (i.e. is a building), then immediately select its build ability here instead of normal setup. 
             ClearInfo();
             
             if (entity.MyTeam != GameManager.Instance.LocalPlayer.Data.Team) {
@@ -25,7 +26,7 @@ namespace Gameplay.UI {
             }
 
             // Set up each ability slot
-            foreach (IAbilityData abilityData in entity.Abilities.Select(a => a.Content)) {
+            foreach (IAbilityData abilityData in entity.Abilities.Select(a => a.Content).Where(a => a.Selectable)) {
                 AbilitySlots.First(s => s.Channel == abilityData.Channel).SetUpForAbility(abilityData, entity);
             }
         }

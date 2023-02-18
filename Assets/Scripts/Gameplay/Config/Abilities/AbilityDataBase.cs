@@ -51,6 +51,17 @@ namespace Gameplay.Config.Abilities {
         private List<AbilityChannel> _channelBlockers = new List<AbilityChannel>();
         public List<AbilityChannel> ChannelBlockers => _channelBlockers;
 
+        [SerializeField] 
+        private bool _performOnStart;
+        public bool PerformOnStart => _performOnStart;
+        [SerializeField]
+        private bool _repeatWhenCooldownFinishes;
+        public bool RepeatWhenCooldownFinishes => _repeatWhenCooldownFinishes;
+
+        [SerializeField] 
+        private bool _selectable;
+        public bool Selectable => _selectable;
+
         /// <summary>
         /// Respond to the user input intending to use this ability. Do not actually perform the ability (unless there is
         /// nothing else to do first) - rather, handle any client-side stuff by sending events to prompt for further input.
@@ -59,10 +70,6 @@ namespace Gameplay.Config.Abilities {
         /// </summary>
         public abstract void SelectAbility(GridEntity selector);
         
-        public virtual bool AbilityLegalImpl(T parameters, GridEntity entity) {
-            return entity.CanUseAbility(this);
-        }
-
         /// <summary>
         /// Whether the ability is legal to be used with the given parameters (valid target, player has enough money, cooldowns, etc).
         ///
@@ -70,20 +77,22 @@ namespace Gameplay.Config.Abilities {
         /// the ability. If the server check fails, let the client know. 
         /// </summary>
         public bool AbilityLegal(IAbilityParameters parameters, GridEntity entity) {
-            return AbilityLegalImpl((T) parameters, entity);
+            return entity.CanUseAbility(this) && AbilityLegalImpl((T) parameters, entity);
         }
+        
+        protected abstract bool AbilityLegalImpl(T parameters, GridEntity entity);
 
         /// <summary>
         /// Create an instance of this ability, passing in any user input. This created instance should be passed to the
         /// server. 
         /// </summary>
-        protected abstract IAbility CreateAbilityImpl(T parameters, GridEntity performer);
+        public IAbility CreateAbility(IAbilityParameters parameters, GridEntity performer) => CreateAbilityImpl((T) parameters, performer);
         
         /// <summary>
         /// Create an instance of this ability, passing in any user input. This created instance should be passed to the
         /// server. 
         /// </summary>
-        public IAbility CreateAbility(IAbilityParameters parameters, GridEntity performer) => CreateAbilityImpl((T) parameters, performer);
+        protected abstract IAbility CreateAbilityImpl(T parameters, GridEntity performer);
 
         /// <summary>
         /// Re-creates the <see cref="IAbility"/> by first deserializing the parameters from the provided reader

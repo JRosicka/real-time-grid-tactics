@@ -50,13 +50,13 @@ namespace Gameplay.Entities.Abilities {
             if (!NetworkClient.active) {
                 // SP
                 Debug.Log("Ability timer completed, DING");
-                Ability.CompleteCooldown();
                 GameManager.Instance.CommandManager.MarkAbilityCooldownExpired(Ability);
+                Ability.CompleteCooldown();
             } else if (NetworkServer.active) {
                 // MP and we are the server
                 Debug.Log("Server: Ability timer completed, DING");
-                Ability.CompleteCooldown();
                 GameManager.Instance.CommandManager.MarkAbilityCooldownExpired(Ability);
+                Ability.CompleteCooldown();
             } else {
                 // MP and we are a client. Only handle client-specific stuff. 
                 Debug.Log("Client: Ability timer completed, DING");

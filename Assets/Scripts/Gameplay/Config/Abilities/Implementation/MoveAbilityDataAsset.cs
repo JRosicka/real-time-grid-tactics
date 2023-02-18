@@ -17,9 +17,9 @@ namespace Gameplay.Config.Abilities {
             GameManager.Instance.GridController.SelectTargetableAbility(this);
         }
 
-        public override bool AbilityLegalImpl(MoveAbilityParameters parameters, GridEntity entity) {
+        protected override bool AbilityLegalImpl(MoveAbilityParameters parameters, GridEntity entity) {
             // TODO Pathfinding stuff
-            return base.AbilityLegalImpl(parameters, entity);
+            return true;
         }
 
         protected override IAbility CreateAbilityImpl(MoveAbilityParameters parameters, GridEntity performer) {

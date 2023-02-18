@@ -18,9 +18,8 @@ namespace Gameplay.Config.Abilities {
             GameManager.Instance.GridController.SelectTargetableAbility(this);
         }
 
-        public override bool AbilityLegalImpl(AttackAbilityParameters parameters, GridEntity entity) {
-            // TODO
-            return base.AbilityLegalImpl(parameters, entity);
+        protected override bool AbilityLegalImpl(AttackAbilityParameters parameters, GridEntity entity) {
+            return true;
         }
 
         protected override IAbility CreateAbilityImpl(AttackAbilityParameters parameters, GridEntity performer) {

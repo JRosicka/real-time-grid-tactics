@@ -18,7 +18,14 @@ namespace Gameplay.Entities.Abilities {
             Performer = performer;
         }
 
-        public abstract void CompleteCooldown();
+        public void CompleteCooldown() {
+            CompleteCooldownImpl();
+            if (Data.RepeatWhenCooldownFinishes) {
+                Performer.DoAbility(AbilityData, BaseParameters);
+            }
+        }
+
+        protected abstract void CompleteCooldownImpl();
 
         public virtual void SerializeParameters(NetworkWriter writer) {
             writer.Write(Performer);
@@ -31,11 +38,14 @@ namespace Gameplay.Entities.Abilities {
 
         /// <summary>
         /// Pay any costs required for the ability. By default, this just creates a new timer for the performing <see cref="GridEntity"/>,
-        /// but this can be overridden to do other things too. 
+        /// but the impl method can be overridden to do other things too. 
         /// </summary>
-        protected virtual void PayCost() {
+        private void PayCost() {
+            PayCostImpl();
             Performer.CreateAbilityTimer(this);
         }
+
+        protected abstract void PayCostImpl();
 
         public bool PerformAbility() {
             if (!Data.AbilityLegal(BaseParameters, Performer)) return false;

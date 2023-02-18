@@ -14,9 +14,13 @@ namespace Gameplay.Entities.Abilities {
             
         }
 
-        public override void CompleteCooldown() {
+        protected override void CompleteCooldownImpl() {
             // Nothing to do
             // TODO some of these are abstract and have empty overrides, and other methods are virtual with the option of overriding. Would be nice to pick one and use that consistently, otherwise it seems like it would be easy to forget some of these when implementing new abilities. 
+        }
+
+        protected override void PayCostImpl() {
+            // Nothing to do
         }
 
         public override void DoAbilityEffect() {
