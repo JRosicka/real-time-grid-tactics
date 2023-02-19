@@ -23,11 +23,11 @@ namespace Gameplay.Config {
         }
 
         public PurchasableData GetPurchasable(string id) {
-            return Purchasables.FirstOrDefault(d => d.ID == id);
+            return Purchasables.First(d => d.ID == id);
         }
 
         public AbilityDataScriptableObject GetAbility(string id) {
-            return Abilities.FirstOrDefault(d => d.name == id);
+            return Abilities.First(d => d.name == id); 
         }
     }
 }

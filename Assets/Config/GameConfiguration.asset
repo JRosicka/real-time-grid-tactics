@@ -14,8 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Purchasables:
   - {fileID: 11400000, guid: 991ad2a1d6801ee40b831e7850e0ff35, type: 2}
+  - {fileID: 11400000, guid: 13a02f740ff7d294ca02fe7f547820c0, type: 2}
   Abilities:
   - {fileID: 11400000, guid: 0918ae4f6b3b09a42a15b2ea44c2bdf8, type: 2}
   - {fileID: 11400000, guid: 3d5a32e773a380042aa9f61a544e48f2, type: 2}
   - {fileID: 11400000, guid: ec15a049dabc53b4d92ab14b2871752c, type: 2}
   - {fileID: 11400000, guid: a5c4aba93e508274894c2c6bfc4b751e, type: 2}
+  - {fileID: 11400000, guid: bdf047dc1be4f44418a904a085034a1e, type: 2}
