@@ -9,7 +9,7 @@ public class MPCommandManager : AbstractCommandManager {
         CmdSpawnEntity(data, spawnLocation, team);
     }
 
-    public override void RegisterEntity(GridEntity entity, Vector2Int position) {
+    protected override void RegisterEntity(GridEntity entity, Vector2Int position) {
         CmdRegisterEntity(entity, position);
     }
 

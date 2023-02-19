@@ -92,6 +92,9 @@ namespace Gameplay.Entities {
             DoInitialize(data, team);
         }
 
+        /// <summary>
+        /// Initialization that runs on each client
+        /// </summary>
         public void DoInitialize(EntityData data, Team team) {
             Data = data;
             MyTeam = team;
@@ -107,9 +110,6 @@ namespace Gameplay.Entities {
 
             SetupStats();
             SetupView();
-
-            // TODO we check for the registered flag on the entity, so it probably won't get registered twice (once from each client). But, there might be a better way to do this with authority
-            GameManager.Instance.CommandManager.RegisterEntity(this);
             
             DeathStatusHandler.Initialize(OnEntityReadyToDie);
         }

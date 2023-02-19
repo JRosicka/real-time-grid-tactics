@@ -12,7 +12,7 @@ public class SPCommandManager : AbstractCommandManager {
         }, team);
     }
 
-    public override void RegisterEntity(GridEntity entity, Vector2Int position) {
+    protected override void RegisterEntity(GridEntity entity, Vector2Int position) {
         DoRegisterEntity(entity, position);
     }
 

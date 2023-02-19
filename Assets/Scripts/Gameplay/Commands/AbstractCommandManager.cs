@@ -33,15 +33,8 @@ public abstract class AbstractCommandManager : NetworkBehaviour, ICommandManager
     public abstract void SpawnEntity(EntityData data, Vector2Int spawnLocation, GridEntity.Team team);
     // TODO need to have some way of verifying that these commands are legal for the client to do - especially doing stuff with GridEntites, we gotta own em
     // Maybe we can just make these abstract methods virtual, include a check at the beginning, and then have the overrides call base() at the start
-    public abstract void RegisterEntity(GridEntity entity, Vector2Int position);
+    protected abstract void RegisterEntity(GridEntity entity, Vector2Int position);
     
-    public void RegisterEntity(GridEntity entity) {
-        if (entity.Registered)
-            return;
-
-        RegisterEntity(entity, GridController.GetCellPosition(entity.transform.position));
-    }
-
     public abstract void UnRegisterEntity(GridEntity entity);
     public abstract void DestroyEntity(GridEntity entity);
 

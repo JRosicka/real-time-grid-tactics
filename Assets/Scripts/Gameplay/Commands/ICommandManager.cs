@@ -11,10 +11,6 @@ public interface ICommandManager {
     void Initialize(Transform spawnBucket);
     void SpawnEntity(EntityData data, Vector2Int spawnLocation, GridEntity.Team team);
     /// <summary>
-    /// Start keeping track of this entity and its location
-    /// </summary>
-    void RegisterEntity(GridEntity entity);
-    /// <summary>
     /// Stop keeping track of an entity and also destroy it
     /// </summary>
     /// <param name="entity"></param>
