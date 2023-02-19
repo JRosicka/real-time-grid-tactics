@@ -181,7 +181,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Spawn Spoder
+  m_text: Spawn income building
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -208,8 +208,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 24
-  m_fontSizeBase: 24
+  m_fontSize: 16.66
+  m_fontSizeBase: 16.66
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -1390,8 +1390,8 @@ MonoBehaviour:
   SelectionInterface: {fileID: 5915743770835495769}
   Unit1_LocalTeam: 1
   Unit1: {fileID: 11400000, guid: 991ad2a1d6801ee40b831e7850e0ff35, type: 2}
-  Unit2_LocalTeam: 0
-  Unit2: {fileID: 11400000, guid: 991ad2a1d6801ee40b831e7850e0ff35, type: 2}
+  Unit2_LocalTeam: 1
+  Unit2: {fileID: 11400000, guid: 13a02f740ff7d294ca02fe7f547820c0, type: 2}
 --- !u!4 &1548131395
 Transform:
   m_ObjectHideFlags: 0

@@ -7,6 +7,7 @@ using Gameplay.Config;
 public interface IGamePlayer {
     PlayerData Data { get; set; }
     string DisplayName { get; set; }
+    PlayerResourcesController ResourcesController { get; }
     /// <summary>
     /// Complete set of all <see cref="PurchasableData"/> (upgrades, units, structures) that are owned by the player and
     /// currently active in the game (not destroyed).

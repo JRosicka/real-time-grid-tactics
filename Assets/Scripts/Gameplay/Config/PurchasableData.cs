@@ -9,17 +9,12 @@ namespace Gameplay.Config {
     /// Base configurable data class for a purchasable thing in the game, like a unit or an upgrade. 
     /// </summary>
     public abstract class PurchasableData : ScriptableObject {
-        [Serializable]
-        public struct ResourceAmount {
-            public int Basic;
-            public int Rare;
-        }
 
         public string ID => name;
         public string Description;
 
         [Header("Build Requirements")]
-        public ResourceAmount Cost;
+        public List<ResourceAmount> Cost;
         /// <summary>
         /// At least one of each of these must be completed in order to build this. An empty list means no requirements.
         /// Note that this is distinct from the build source for this. These required items must exist somewhere, and additionally

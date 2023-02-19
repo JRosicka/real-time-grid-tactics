@@ -27,9 +27,8 @@ namespace Gameplay.Config.Abilities {
             GameManager.Instance.SelectionInterface.SelectBuildAbility(this);
         }
 
-        public override bool AbilityLegalImpl(BuildAbilityParameters parameters, GridEntity entity) {
-            // if (parameters.Buildable.Cost is too damn high) return false;    // TODO
-            return base.AbilityLegalImpl(parameters, entity);
+        protected override bool AbilityLegalImpl(BuildAbilityParameters parameters, GridEntity entity) {
+            return GameManager.Instance.GetPlayerForTeam(entity.MyTeam).ResourcesController.CanAfford(parameters.Buildable.Cost);
         }
 
         protected override IAbility CreateAbilityImpl(BuildAbilityParameters parameters, GridEntity performer) {

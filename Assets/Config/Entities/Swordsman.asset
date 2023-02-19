@@ -14,8 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Description: Standard melee unit
   Cost:
-    Basic: 4
-    Rare: 4
+  - Type: 0
+    Amount: 20
+  - Type: 0
+    Amount: 0
   Requirements: []
   BuildTime: 1
   BaseSprite: {fileID: 21300000, guid: 8a0b09c5c94b13a4d94d9851998762db, type: 3}

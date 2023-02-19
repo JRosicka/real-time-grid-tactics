@@ -19,7 +19,7 @@ namespace Gameplay.Entities.Abilities {
             
         }
 
-        public override void CompleteCooldown() {
+        protected override void CompleteCooldownImpl() {
             switch (AbilityParameters.Buildable) {
                 case EntityData entityData:
                     // TODO: What if the build location is occupied? Currently does a no-op. Would be better to block building and queue the spawn to happen when the location opens up. 
@@ -34,9 +34,10 @@ namespace Gameplay.Entities.Abilities {
             }
         }
 
-        protected override void PayCost() {
-            // TODO pay AbilityParameters.Buildable.Cost
-            base.PayCost();
+
+        protected override void PayCostImpl() {
+            // Pay resource cost
+            GameManager.Instance.GetPlayerForTeam(Performer.MyTeam).ResourcesController.Spend(AbilityParameters.Buildable.Cost);
         }
         
         public override void DoAbilityEffect() {
