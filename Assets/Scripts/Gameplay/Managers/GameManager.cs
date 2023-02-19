@@ -17,6 +17,7 @@ public class GameManager : MonoBehaviour {
     public GameSetupManager GameSetupManager;
     public GameConfiguration Configuration;
     public SelectionInterface SelectionInterface;
+    public ResourcesInterface ResourcesInterface;
     
     public PathfinderService PathfinderService;
     
@@ -79,6 +80,7 @@ public class GameManager : MonoBehaviour {
     public void SetPlayers(IGamePlayer localPlayer, IGamePlayer opponentPlayer) {
         LocalPlayer = localPlayer;
         OpponentPlayer = opponentPlayer;
+        ResourcesInterface.Initialize(LocalPlayer.ResourcesController);
     }
 
     public void SetupCommandManager(ICommandManager commandManager) {
