@@ -61,7 +61,6 @@ public abstract class AbstractCommandManager : NetworkBehaviour, ICommandManager
 
         GridEntity entityInstance = spawnFunc();
         RegisterEntity(entityInstance, spawnLocation);
-        entityInstance.PerformOnStartAbilities();
     }
     
     protected void DoRegisterEntity(GridEntity entity, Vector2Int position) {

@@ -30,6 +30,7 @@ namespace Gameplay.Entities {
         private GridEntityViewBase _view;
         public Canvas ViewCanvas;
 
+        public ClientsStatusHandler InitializationStatusHandler;
         public ClientsStatusHandler DeathStatusHandler;
 
         [Header("Config")] 
@@ -111,7 +112,13 @@ namespace Gameplay.Entities {
             SetupStats();
             SetupView();
             
+            InitializationStatusHandler.Initialize(OnEntityInitializedAcrossAllClients);
+            InitializationStatusHandler.SetLocalClientReady();
             DeathStatusHandler.Initialize(OnEntityReadyToDie);
+        } 
+
+        private void OnEntityInitializedAcrossAllClients() {
+            PerformOnStartAbilities();
         }
 
         public bool CanTargetThings => Range > 0;
@@ -240,7 +247,7 @@ namespace Gameplay.Entities {
             GameManager.Instance.CommandManager.PerformAbility(abilityInstance);
         }
 
-        public void PerformOnStartAbilities() {
+        private void PerformOnStartAbilities() {
             foreach (IAbilityData abilityData in Abilities.Select(a => a.Content).Where(a => a.PerformOnStart)) {
                 DoAbility(abilityData, new NullAbilityParameters());
             }
