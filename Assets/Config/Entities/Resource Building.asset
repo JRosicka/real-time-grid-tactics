@@ -23,6 +23,7 @@ MonoBehaviour:
   MaxMove: 0
   Range: 0
   Damage: 0
-  Tags: 0000000001000000
+  Tags: 01000000
   Abilities:
   - {fileID: 11400000, guid: bdf047dc1be4f44418a904a085034a1e, type: 2}
+  FriendlyUnitsCanShareCell: 1

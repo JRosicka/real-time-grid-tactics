@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Mirror;
+using Sirenix.Utilities;
 using UnityEngine;
 
 namespace Gameplay.Entities {
@@ -11,62 +12,112 @@ namespace Gameplay.Entities {
     [Serializable]
     public class GridEntityCollection {
         /// <summary>
-        /// Represents a <see cref="GridEntity"/> and its location.
+        /// Represents a <see cref="GridEntity"/> and its order (relative to other entities at the same location)
         /// </summary>
         [Serializable]
-        public class PositionedGridEntity {
+        public class OrderedGridEntity {
             public GridEntity Entity;
+            public int Order;
+        }
+        
+        /// <summary>
+        /// Represents a set of <see cref="GridEntity"/>s at a particular location.
+        /// </summary>
+        [Serializable]
+        public class PositionedGridEntityCollection {
+            public List<OrderedGridEntity> Entities;
             public Vector2Int Location;
+
+            public OrderedGridEntity GetTopEntity() {
+                return Entities.IsNullOrEmpty() ? null : Entities.OrderBy(o => o.Order).ToArray()[0];
+            }
+
+            public OrderedGridEntity GetEntityAfter(OrderedGridEntity previousEntity) {
+                if (Entities.IsNullOrEmpty()) return null;
+                List<OrderedGridEntity> orderedList = Entities.OrderBy(o => o.Order).ToList();
+                OrderedGridEntity nextEntity = orderedList.FirstOrDefault(o => o.Order > previousEntity.Order);
+                if (nextEntity == null) {
+                    // We must have gone through the whole entity stack, so loop back around to the top
+                    return orderedList[0];
+                } else {
+                    return nextEntity;
+                }
+            }
         }
 
-        public readonly List<PositionedGridEntity> Entities;
+        public readonly List<PositionedGridEntityCollection> Entities;
 
-        public GridEntityCollection() : this(new List<PositionedGridEntity>()) { }
+        public GridEntityCollection() : this(new List<PositionedGridEntityCollection>()) { }
 
-        public GridEntityCollection(List<PositionedGridEntity> entities) {
+        public GridEntityCollection(List<PositionedGridEntityCollection> entities) {
             Entities = entities;
         }
 
-        public void RegisterEntity(GridEntity entity, Vector2Int location) {
-            if (Entities.Any(e => e.Entity == entity)) return;
-            GridEntity currentEntityAtLocation = EntityAtLocation(location);
-            if (currentEntityAtLocation != null) {
-                throw new IllegalEntityPlacementException(location, entity, currentEntityAtLocation);
+        public void RegisterEntity(GridEntity entity, Vector2Int location, int order) {
+            // Check to see if the entity is already registered
+            if (Entities.SelectMany(c => c.Entities.Select(o => o.Entity)).Contains(entity)) return;
+
+            PositionedGridEntityCollection collectionAtLocation = EntitiesAtLocation(location);
+            List<OrderedGridEntity> currentEntitiesAtLocation = collectionAtLocation?.Entities;
+            if (currentEntitiesAtLocation == null) {
+                // Make a new list since there are currently no entities at the location
+                Entities.Add(new PositionedGridEntityCollection {
+                    Entities = new List<OrderedGridEntity> {
+                        new OrderedGridEntity {
+                            Entity = entity,
+                            Order = order
+                        }
+                    },
+                    Location = location
+                });
+            } else if (CanEntityShareLocation(entity, collectionAtLocation)) {
+                if (currentEntitiesAtLocation.Any(o => o.Order == order)) {
+                    Debug.LogWarning("I see that you're registering an entity in a location that contains another entity with the same order value. Hmmmm this might not behave super well you know, be careful out there!");
+                }
+                currentEntitiesAtLocation.Add(new OrderedGridEntity {
+                    Entity = entity,
+                    Order = order
+                });
+            } else {
+                throw new IllegalEntityPlacementException(location, entity, currentEntitiesAtLocation);
             }
-            Entities.Add(new PositionedGridEntity {
-                Entity = entity,
-                Location = location
-            });
         }
 
         public void UnRegisterEntity(GridEntity entity) {
-            PositionedGridEntity entry = Entities.FirstOrDefault(e => e.Entity == entity);
-            if (entry == null) {
+            PositionedGridEntityCollection collection = Entities.FirstOrDefault(c => c.Entities.Any(o => o.Entity == entity));
+            if (collection == null) {
                 Debug.LogWarning("Attempted to unregister an entity that is not registered");
                 return;
             }
-            Entities.Remove(entry);
+
+            OrderedGridEntity orderedEntity = collection.Entities.FirstOrDefault(c => c.Entity == entity);
+            collection.Entities.Remove(orderedEntity);
+            
+            // If this was the last entity at its location, remove the positioned collection from the list
+            if (collection.Entities.Count == 0) {
+                Entities.Remove(collection);
+            }
         }
 
         public void MoveEntity(GridEntity entity, Vector2Int newLocation) {
-            GridEntity entityAtLocation = EntityAtLocation(newLocation);
-            if (entityAtLocation != null) {
-                throw new IllegalEntityPlacementException(newLocation, entity, entityAtLocation);
-            }
-            PositionedGridEntity entry = Entities.FirstOrDefault(e => e.Entity == entity);
-            if (entry == null) {
-                throw new GridEntityNotPresentException(entity);
-            }
+            int order = Entities.SelectMany(c => c.Entities).First(o => o.Entity == entity).Order;
+            PositionedGridEntityCollection destinationCollection = Entities.FirstOrDefault(c => c.Location == newLocation);
 
-            entry.Location = newLocation;
+            // Check to see if we can actually do this move
+            if (!CanEntityShareLocation(entity, destinationCollection)) {
+                throw new IllegalEntityPlacementException(newLocation, entity, destinationCollection?.Entities);
+            }
             
+            // Unregister and re-register
+            UnRegisterEntity(entity);
+            RegisterEntity(entity, newLocation, order);
         }
 
         /// <summary>
-        /// The <see cref="GridEntity"/> at the given location, or null if no entity exists there.
+        /// The <see cref="GridEntity"/>s at the given location, or null if no entity exists there.
         /// </summary>
-        public GridEntity EntityAtLocation(Vector2Int location) {
-            return Entities.FirstOrDefault(e => e.Location == location)?.Entity;
+        public PositionedGridEntityCollection EntitiesAtLocation(Vector2Int location) {
+            return Entities.FirstOrDefault(e => e.Location == location);
         }
 
         /// <summary>
@@ -74,12 +125,19 @@ namespace Gameplay.Entities {
         /// </summary>
         /// <exception cref="GridEntityNotPresentException">Thrown if the entity was not found in this collection</exception>
         public Vector2Int LocationOfEntity(GridEntity entity) {
-            PositionedGridEntity entry = Entities.FirstOrDefault(e => e.Entity == entity);
+            PositionedGridEntityCollection entry = Entities.FirstOrDefault(e => e.Entities.Any(o => o.Entity == entity));
             if (entry == null) {
                 throw new GridEntityNotPresentException(entity);
             }
             
             return entry.Location;
+        }
+
+        private bool CanEntityShareLocation(GridEntity entity, PositionedGridEntityCollection otherEntities) {
+            if (otherEntities == null) return true;
+            if (otherEntities.Entities.IsNullOrEmpty()) return true;
+            if (GameManager.Instance.GridController.CanEntityEnterCell(otherEntities.Location, entity.Data, entity.MyTeam)) return true;
+            return false;
         }
         
         private class GridEntityNotPresentException : Exception {
@@ -89,9 +147,9 @@ namespace Gameplay.Entities {
         private class IllegalEntityPlacementException : Exception {
             public IllegalEntityPlacementException(Vector2Int location, 
                 GridEntity moveAttemptEntity, 
-                GridEntity entityAtLocation) 
+                IEnumerable<OrderedGridEntity> entitiesAtLocation) 
                 : base($"Failed to place {nameof(GridEntity)} ({moveAttemptEntity.UnitName}) at location {location}"
-                       + $" because another {nameof(GridEntity)} ({entityAtLocation.UnitName}) already exists there") { }
+                       + $" because other {nameof(GridEntity)}s at that location conflict with this one. Other entities: {entitiesAtLocation.Select(o => o.Entity.UnitName)}") { }
         }
     }
 
@@ -101,20 +159,20 @@ namespace Gameplay.Entities {
         }
 
         public static GridEntityCollection ReadGridEntityCollection(this NetworkReader reader) {
-            return new GridEntityCollection(reader.Read<List<GridEntityCollection.PositionedGridEntity>>());
+            return new GridEntityCollection(reader.Read<List<GridEntityCollection.PositionedGridEntityCollection>>());
         }
     }
 
     public static class PositionedGridEntitySerializer {
         public static void WritePositionedGridEntity(this NetworkWriter writer,
-            GridEntityCollection.PositionedGridEntity entity) {
-            writer.Write(entity.Entity);
-            writer.Write(entity.Location);
+            GridEntityCollection.PositionedGridEntityCollection entityCollection) {
+            writer.Write(entityCollection.Entities);
+            writer.Write(entityCollection.Location);
         }
         
-        public static GridEntityCollection.PositionedGridEntity ReadPositionedGridEntity(this NetworkReader reader) {
-            return new GridEntityCollection.PositionedGridEntity {
-                Entity = reader.Read<GridEntity>(),
+        public static GridEntityCollection.PositionedGridEntityCollection ReadPositionedGridEntity(this NetworkReader reader) {
+            return new GridEntityCollection.PositionedGridEntityCollection {
+                Entities = reader.Read<List<GridEntityCollection.OrderedGridEntity>>(),
                 Location = reader.Read<Vector2Int>()
             };
         }
@@ -122,19 +180,51 @@ namespace Gameplay.Entities {
 
     public static class PositionedGridEntityListSerializer {
         public static void WritePositionedGridEntityList(this NetworkWriter writer,
-            List<GridEntityCollection.PositionedGridEntity> list) {
-            foreach (GridEntityCollection.PositionedGridEntity entity in list) {
+            List<GridEntityCollection.PositionedGridEntityCollection> list) {
+            foreach (GridEntityCollection.PositionedGridEntityCollection entity in list) {
                 writer.Write(entity);
             }
         }
 
-        public static List<GridEntityCollection.PositionedGridEntity> ReadPositionedGridEntityList(this NetworkReader reader) {
-            List<GridEntityCollection.PositionedGridEntity> ret = new List<GridEntityCollection.PositionedGridEntity>();
+        public static List<GridEntityCollection.PositionedGridEntityCollection> ReadPositionedGridEntityList(this NetworkReader reader) {
+            List<GridEntityCollection.PositionedGridEntityCollection> ret = new List<GridEntityCollection.PositionedGridEntityCollection>();
             while (reader.Remaining > 0) {
-                ret.Add(reader.Read<GridEntityCollection.PositionedGridEntity>());
+                ret.Add(reader.Read<GridEntityCollection.PositionedGridEntityCollection>());
             }
 
             return ret;
+        }
+    }
+
+    public static class OrderedGridEntityListSerializer {
+        public static void WriteOrderedGridEntityList(this NetworkWriter writer,
+            List<GridEntityCollection.OrderedGridEntity> list) {
+            foreach (GridEntityCollection.OrderedGridEntity entity in list) {
+                writer.Write(entity);
+            }
+        }
+
+        public static List<GridEntityCollection.OrderedGridEntity> ReadOrderedGridEntityList(this NetworkReader reader) {
+            List<GridEntityCollection.OrderedGridEntity> ret = new List<GridEntityCollection.OrderedGridEntity>();
+            while (reader.Remaining > 0) {
+                ret.Add(reader.Read<GridEntityCollection.OrderedGridEntity>());
+            }
+
+            return ret;
+        }
+    }
+
+    public static class OrderedGridEntitySerializer {
+        public static void WriteOrderedGridEntity(this NetworkWriter writer, GridEntityCollection.OrderedGridEntity orderedEntity) {
+            writer.Write(orderedEntity.Entity);
+            writer.Write(orderedEntity.Order);
+        }
+
+        public static GridEntityCollection.OrderedGridEntity ReadOrderedGridEntity(this NetworkReader reader) {
+            return new GridEntityCollection.OrderedGridEntity {
+                Entity = reader.Read<GridEntity>(),
+                Order = reader.ReadInt()
+            };
         }
     }
 }

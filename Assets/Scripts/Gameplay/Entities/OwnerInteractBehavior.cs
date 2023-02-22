@@ -14,10 +14,11 @@ namespace Gameplay.Entities {
                 return;
             }
 
-            GridEntity targetEntity = GameManager.Instance.GetEntityAtLocation(targetCell);
+            // Target the top entity
+            GridEntity targetEntity = GameManager.Instance.GetEntitiesAtLocation(targetCell)?.GetTopEntity()?.Entity;
 
             // See if we should move this entity
-            if (targetEntity == null) {
+            if (targetEntity == null || targetEntity.Data.FriendlyUnitsCanShareCell) {
                 TryMoveEntity(thisEntity, targetCell);
             } else {
                 TryTargetEntity(thisEntity, targetEntity, targetCell);

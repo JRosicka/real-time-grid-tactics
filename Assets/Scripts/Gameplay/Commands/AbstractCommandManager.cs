@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using Gameplay.Config;
 using Gameplay.Entities;
 using Gameplay.Entities.Abilities;
@@ -43,8 +45,8 @@ public abstract class AbstractCommandManager : NetworkBehaviour, ICommandManager
         SyncEntityCollection();
     }
     
-    public GridEntity GetEntityAtCell(Vector2Int location) {
-        return EntitiesOnGrid.EntityAtLocation(location);
+    public GridEntityCollection.PositionedGridEntityCollection GetEntitiesAtCell(Vector2Int location) {
+        return EntitiesOnGrid.EntitiesAtLocation(location);
     }
 
     public Vector2Int GetLocationForEntity(GridEntity entity) {
@@ -55,7 +57,7 @@ public abstract class AbstractCommandManager : NetworkBehaviour, ICommandManager
     public abstract void MarkAbilityCooldownExpired(IAbility ability);
 
     protected void DoSpawnEntity(EntityData data, Vector2Int spawnLocation, Func<GridEntity> spawnFunc, GridEntity.Team team) {
-        if (EntitiesOnGrid.EntityAtLocation(spawnLocation) != null) {
+        if (!GameManager.Instance.GridController.CanEntityEnterCell(spawnLocation, data, team)) {
             return;
         }
 
@@ -67,7 +69,7 @@ public abstract class AbstractCommandManager : NetworkBehaviour, ICommandManager
         if (entity.Registered)
             return;
         
-        EntitiesOnGrid.RegisterEntity(entity, position);
+        EntitiesOnGrid.RegisterEntity(entity, position, entity.GetStackOrder());
         entity.Registered = true;
         SyncEntityCollection();
         Debug.Log($"Registered new entity {entity.UnitName} at position {position}");

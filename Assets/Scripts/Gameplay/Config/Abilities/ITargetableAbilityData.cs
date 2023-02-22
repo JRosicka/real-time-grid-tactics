@@ -10,10 +10,10 @@ namespace Gameplay.Config.Abilities {
         /// <summary>
         /// Whether we can legally create a new <see cref="IAbility"/> targeting the specified cell. 
         /// </summary>
-        bool CanTargetCell(Vector2Int cellPosition, GridEntity selector, GridEntity target);
+        bool CanTargetCell(Vector2Int cellPosition, GridEntity selector);
         /// <summary>
         /// Create a new <see cref="IAbility"/> targeting the specified cell. Assumes that <see cref="CanTargetCell"/> is true.
         /// </summary>
-        void CreateAbility(Vector2Int cellPosition, GridEntity selector, GridEntity target);
+        void DoTargetableAbility(Vector2Int cellPosition, GridEntity selector);
     }
 }

@@ -1,4 +1,7 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using Gameplay.Config;
 using Gameplay.Config.Abilities;
 using Gameplay.Entities;
 using UnityEngine;
@@ -57,7 +60,6 @@ public class GridController : MonoBehaviour {
 
     private void TryClickOnCell(MouseClick clickType, Vector2Int clickPosition) {
         GridEntity selectedEntity = GameManager.Instance.SelectionInterface.SelectedEntity;
-        GridEntity entityAtMouseLocation = GameManager.Instance.GetEntityAtLocation(clickPosition);
         
         // Always do the "Mouse hovering over" action
         // TODO mouse hovering over action. Depends on which unit is there, what the player is selecting, if they can move there, etc
@@ -66,8 +68,8 @@ public class GridController : MonoBehaviour {
             case MouseClick.Left:
                 // See if we have a targetable ability we want to use. If so, use it.
                 if (_selectedTargetableAbility != null) {
-                    if (_selectedTargetableAbility.CanTargetCell(clickPosition, selectedEntity, entityAtMouseLocation)) {
-                        _selectedTargetableAbility.CreateAbility(clickPosition, selectedEntity, entityAtMouseLocation);
+                    if (_selectedTargetableAbility.CanTargetCell(clickPosition, selectedEntity)) {
+                        _selectedTargetableAbility.DoTargetableAbility(clickPosition, selectedEntity);
                         GameManager.Instance.SelectionInterface.DeselectActiveAbility();
                         SelectTargetableAbility(null);
                         return;
@@ -78,8 +80,15 @@ public class GridController : MonoBehaviour {
                     }
                 } 
                 
-                if (entityAtMouseLocation != null) {
-                    entityAtMouseLocation.Select();
+                GridEntityCollection.PositionedGridEntityCollection entitiesAtLocation = GameManager.Instance.GetEntitiesAtLocation(clickPosition);
+                if (entitiesAtLocation != null) {
+                    // Select the top entity, or the next entity if we are already selecting an entity at this location
+                    GridEntityCollection.OrderedGridEntity orderedEntity = entitiesAtLocation.Entities.FirstOrDefault(c => c.Entity == selectedEntity);
+                    if (orderedEntity == null) {
+                        entitiesAtLocation.GetTopEntity().Entity.Select();
+                    } else {
+                        entitiesAtLocation.GetEntityAfter(orderedEntity).Entity.Select();
+                    }
                 } else {
                     // We clicked on an empty cell - deselect whatever we selected previously
                     GameManager.Instance.SelectionInterface.SelectEntity(null);
@@ -103,9 +112,28 @@ public class GridController : MonoBehaviour {
         }
     }
 
-    public Vector2Int GetCellPosition(Vector2 worldPosition) {
-        Vector2Int cellPosition = (Vector2Int) _grid.WorldToCell(worldPosition);
-        return cellPosition;
+    public bool CanEntityEnterCell(Vector2Int cellPosition, EntityData entityData, GridEntity.Team entityTeam) {
+        List<GridEntity> entitiesAtLocation = GameManager.Instance.GetEntitiesAtLocation(cellPosition)?.Entities
+            .Select(o => o.Entity).ToList();
+        if (entitiesAtLocation == null) {
+            // No other entities are here
+            return true;
+        }
+        if (entitiesAtLocation.Any(e => e.MyTeam != entityTeam && e.MyTeam != GridEntity.Team.Neutral)) {
+            // There are enemies here
+            return false;
+        }
+        if (entitiesAtLocation.Any(e => !e.Data.FriendlyUnitsCanShareCell)) {
+            // Can only enter a friendly entity's cell if they are specifically configured to allow for that. 
+            // Note that this means that structures can not be built on cells that contain units! This is intentional. 
+            return false;
+        }
+        // So the only entities here do indeed allow for non-structures to share space with them. Still need to check if this is a structure. Can't put a structure on a structure!
+        if (entityData.Tags.Contains(EntityData.EntityTag.Structure)) {
+            return false;
+        }
+
+        return true;
     }
 
     public Vector2 GetWorldPosition(Vector2Int cellPosition) {
@@ -115,5 +143,10 @@ public class GridController : MonoBehaviour {
     private Vector2Int GetMousePosition(PointerEventData eventData) {
         Vector3 mouseWorldPosition = eventData.pointerPressRaycast.worldPosition;
         return GetCellPosition(mouseWorldPosition);
+    }
+    
+    private Vector2Int GetCellPosition(Vector2 worldPosition) {
+        Vector2Int cellPosition = (Vector2Int) _grid.WorldToCell(worldPosition);
+        return cellPosition;
     }
 }

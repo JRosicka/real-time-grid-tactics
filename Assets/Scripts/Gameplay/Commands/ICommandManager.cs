@@ -17,7 +17,7 @@ public interface ICommandManager {
     void UnRegisterEntity(GridEntity entity);
     void DestroyEntity(GridEntity entity);
     void MoveEntityToCell(GridEntity entity, Vector2Int destination);
-    GridEntity GetEntityAtCell(Vector2Int location);
+    GridEntityCollection.PositionedGridEntityCollection GetEntitiesAtCell(Vector2Int location);
     Vector2Int GetLocationForEntity(GridEntity entity);
     void PerformAbility(IAbility ability);
     void MarkAbilityCooldownExpired(IAbility ability);

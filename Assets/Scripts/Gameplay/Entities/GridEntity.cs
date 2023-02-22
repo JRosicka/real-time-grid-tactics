@@ -5,14 +5,13 @@ using Gameplay.Config;
 using Gameplay.Config.Abilities;
 using Gameplay.Entities.Abilities;
 using Mirror;
-using Sirenix.Utilities;
 using UnityEngine;
 
 namespace Gameplay.Entities {
     /// <summary>
     /// Represents an entity that exists at a specific position on the gameplay grid.
     /// Has an <see cref="IInteractBehavior"/> field to handle player input.
-    /// TODO this is disorganized, would be good to update
+    /// TODO There is a ton of stuff here, would be good to break this up in a refactor
     /// </summary>
     public class GridEntity : NetworkBehaviour {
         public enum Team {
@@ -169,6 +168,14 @@ namespace Gameplay.Entities {
             }
 
             return originEntity.MyTeam == targetEntity.MyTeam ? TargetType.Ally : TargetType.Enemy;
+        }
+
+        /// <summary>
+        /// The order that this should appear and be selectable compared to other entities at the same location.
+        /// Lower values appear on top of higher values and are selected first. 
+        /// </summary>
+        public int GetStackOrder() {
+            return Tags.Contains(EntityData.EntityTag.Structure) ? 2 : 1;
         }
 
         public bool CanUseAbility(IAbilityData data) {

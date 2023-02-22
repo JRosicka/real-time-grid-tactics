@@ -13,8 +13,9 @@ namespace Gameplay.Config {
     [CreateAssetMenu(menuName = "Grid Entities/EntityData", fileName = "EntityData", order = 0)]
     public class EntityData : PurchasableData {
         public enum EntityTag {
-            Cavalry, 
-            Flying
+            Structure = 1,
+            Cavalry = 2, 
+            Flying = 4,
         }
         
         public Sprite TeamColorSprite;
@@ -33,10 +34,16 @@ namespace Gameplay.Config {
         [Space] 
         public List<EntityTag> Tags;
         public List<AbilityDataScriptableObject> Abilities;
-
+        [Tooltip("Whether friendly (non-structure) entities can enter (spawn, move, etc) a cell with this entity")]
+        public bool FriendlyUnitsCanShareCell;
+        
         private void OnValidate() {
             if (Abilities.Select(a => a.Content.Channel).Distinct().ToList().Count < Abilities.Count) {
                 Debug.LogError("Detected abilities with the same channel, don't do that!");
+            }
+
+            if (FriendlyUnitsCanShareCell && !Tags.Contains(EntityTag.Structure)) {
+                Debug.LogError("Woah woah woah buddy, if you want this entity to be able to share a cell with other entities, then it's gotta be a structure!");
             }
         }
     }

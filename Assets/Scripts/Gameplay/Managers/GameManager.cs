@@ -54,8 +54,8 @@ public class GameManager : MonoBehaviour {
         PathfinderService = new PathfinderService();
     }
 
-    public GridEntity GetEntityAtLocation(Vector2Int location) {
-        return CommandManager?.GetEntityAtCell(location);
+    public GridEntityCollection.PositionedGridEntityCollection GetEntitiesAtLocation(Vector2Int location) {
+        return CommandManager?.GetEntitiesAtCell(location);
     }
 
     public Vector2Int GetLocationForEntity(GridEntity entity) {

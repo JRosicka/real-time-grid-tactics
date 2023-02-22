@@ -18,20 +18,26 @@ namespace Gameplay.Config.Abilities {
         }
 
         protected override bool AbilityLegalImpl(MoveAbilityParameters parameters, GridEntity entity) {
-            // TODO Pathfinding stuff
-            return true;
+            return CanTargetCell(parameters.Destination, entity);
         }
 
         protected override IAbility CreateAbilityImpl(MoveAbilityParameters parameters, GridEntity performer) {
             return new MoveAbility(this, parameters, performer);
         }
 
-        public bool CanTargetCell(Vector2Int cellPosition, GridEntity selector, GridEntity target) {
+        public bool CanTargetCell(Vector2Int cellPosition, GridEntity selector) {
             // TODO pathfinding stuff
-            return target == null && selector != null && selector.MyTeam == GameManager.Instance.LocalPlayer.Data.Team;
-        }
+            if (selector == null || selector.MyTeam != GameManager.Instance.LocalPlayer.Data.Team) return false;
 
-        public void CreateAbility(Vector2Int cellPosition, GridEntity selector, GridEntity target) {
+            if (selector.Location == cellPosition) {
+                // Bro you're already here
+                return false;
+            }
+
+            return GameManager.Instance.GridController.CanEntityEnterCell(cellPosition, selector.Data, selector.MyTeam);
+        }
+        
+        public void DoTargetableAbility(Vector2Int cellPosition, GridEntity selector) {
             selector.DoAbility(this, new MoveAbilityParameters {Destination = cellPosition});
         }
     }
