@@ -35,7 +35,11 @@ public abstract class AbstractCommandManager : NetworkBehaviour, ICommandManager
     public abstract void SpawnEntity(EntityData data, Vector2Int spawnLocation, GridEntity.Team team);
     // TODO need to have some way of verifying that these commands are legal for the client to do - especially doing stuff with GridEntites, we gotta own em
     // Maybe we can just make these abstract methods virtual, include a check at the beginning, and then have the overrides call base() at the start
-    protected abstract void RegisterEntity(GridEntity entity, Vector2Int position);
+    /// <summary>
+    /// Register a new <see cref="GridEntity"/> into the <see cref="GridEntityCollection"/> so that we can keep track of it.
+    /// We need to pass both the entity and its data separately because the entity might not have bee initialized with its data yet. 
+    /// </summary>
+    protected abstract void RegisterEntity(GridEntity entity, EntityData data, Vector2Int position);
     
     public abstract void UnRegisterEntity(GridEntity entity);
     public abstract void DestroyEntity(GridEntity entity);
@@ -62,14 +66,14 @@ public abstract class AbstractCommandManager : NetworkBehaviour, ICommandManager
         }
 
         GridEntity entityInstance = spawnFunc();
-        RegisterEntity(entityInstance, spawnLocation);
+        RegisterEntity(entityInstance, data, spawnLocation); 
     }
     
-    protected void DoRegisterEntity(GridEntity entity, Vector2Int position) {
+    protected void DoRegisterEntity(GridEntity entity, EntityData data, Vector2Int position) {
         if (entity.Registered)
             return;
         
-        EntitiesOnGrid.RegisterEntity(entity, position, entity.GetStackOrder());
+        EntitiesOnGrid.RegisterEntity(entity, position, data.GetStackOrder());
         entity.Registered = true;
         SyncEntityCollection();
         Debug.Log($"Registered new entity {entity.UnitName} at position {position}");

@@ -36,6 +36,14 @@ namespace Gameplay.Config {
         public List<AbilityDataScriptableObject> Abilities;
         [Tooltip("Whether friendly (non-structure) entities can enter (spawn, move, etc) a cell with this entity")]
         public bool FriendlyUnitsCanShareCell;
+
+        /// <summary>
+        /// The order that this should appear and be selectable compared to other entities at the same location.
+        /// Lower values appear on top of higher values and are selected first. 
+        /// </summary>
+        public int GetStackOrder() {
+            return Tags.Contains(EntityTag.Structure) ? 2 : 1;
+        }
         
         private void OnValidate() {
             if (Abilities.Select(a => a.Content.Channel).Distinct().ToList().Count < Abilities.Count) {

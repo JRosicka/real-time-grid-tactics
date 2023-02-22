@@ -9,8 +9,8 @@ public class MPCommandManager : AbstractCommandManager {
         CmdSpawnEntity(data, spawnLocation, team);
     }
 
-    protected override void RegisterEntity(GridEntity entity, Vector2Int position) {
-        CmdRegisterEntity(entity, position);
+    protected override void RegisterEntity(GridEntity entity, EntityData data, Vector2Int position) {
+        CmdRegisterEntity(entity, data, position);
     }
 
     public override void UnRegisterEntity(GridEntity entity) {
@@ -40,8 +40,8 @@ public class MPCommandManager : AbstractCommandManager {
         }, team);
     }
     [Command(requiresAuthority = false)]
-    private void CmdRegisterEntity(GridEntity entity, Vector2Int position) {
-        DoRegisterEntity(entity, position);
+    private void CmdRegisterEntity(GridEntity entity, EntityData data, Vector2Int position) {
+        DoRegisterEntity(entity, data, position);
     }
 
     [Command(requiresAuthority = false)]

@@ -170,14 +170,6 @@ namespace Gameplay.Entities {
             return originEntity.MyTeam == targetEntity.MyTeam ? TargetType.Ally : TargetType.Enemy;
         }
 
-        /// <summary>
-        /// The order that this should appear and be selectable compared to other entities at the same location.
-        /// Lower values appear on top of higher values and are selected first. 
-        /// </summary>
-        public int GetStackOrder() {
-            return Tags.Contains(EntityData.EntityTag.Structure) ? 2 : 1;
-        }
-
         public bool CanUseAbility(IAbilityData data) {
             // Is this entity set up to use this ability?
             if (Abilities.All(a => a.Content != data)) {
