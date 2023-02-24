@@ -181,6 +181,7 @@ namespace Gameplay.Entities {
     public static class PositionedGridEntityListSerializer {
         public static void WritePositionedGridEntityList(this NetworkWriter writer,
             List<GridEntityCollection.PositionedGridEntityCollection> list) {
+            writer.Write(list.Count);
             foreach (GridEntityCollection.PositionedGridEntityCollection entity in list) {
                 writer.Write(entity);
             }
@@ -188,7 +189,8 @@ namespace Gameplay.Entities {
 
         public static List<GridEntityCollection.PositionedGridEntityCollection> ReadPositionedGridEntityList(this NetworkReader reader) {
             List<GridEntityCollection.PositionedGridEntityCollection> ret = new List<GridEntityCollection.PositionedGridEntityCollection>();
-            while (reader.Remaining > 0) {
+            int collectionSize = reader.ReadInt();
+            for (int i = 0; i < collectionSize; i++) {
                 ret.Add(reader.Read<GridEntityCollection.PositionedGridEntityCollection>());
             }
 
@@ -199,6 +201,7 @@ namespace Gameplay.Entities {
     public static class OrderedGridEntityListSerializer {
         public static void WriteOrderedGridEntityList(this NetworkWriter writer,
             List<GridEntityCollection.OrderedGridEntity> list) {
+            writer.Write(list.Count); 
             foreach (GridEntityCollection.OrderedGridEntity entity in list) {
                 writer.Write(entity);
             }
@@ -206,7 +209,8 @@ namespace Gameplay.Entities {
 
         public static List<GridEntityCollection.OrderedGridEntity> ReadOrderedGridEntityList(this NetworkReader reader) {
             List<GridEntityCollection.OrderedGridEntity> ret = new List<GridEntityCollection.OrderedGridEntity>();
-            while (reader.Remaining > 0) {
+            int collectionSize = reader.ReadInt();
+            for (int i = 0; i < collectionSize; i++) {
                 ret.Add(reader.Read<GridEntityCollection.OrderedGridEntity>());
             }
 
