@@ -1,4 +1,5 @@
 using Gameplay.Entities.Abilities;
+using Gameplay.UI;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -9,11 +10,14 @@ namespace Gameplay.Entities {
     public class AbilityTimerCooldownView : MonoBehaviour {
         public Image TimerFill;
         public Gradient FillGradient;
+        public Canvas Canvas;
         
         private AbilityCooldownTimer _cooldownTimer;
         private bool _destroyWhenExpired;
 
         public void Initialize(AbilityCooldownTimer cooldownTimer, bool destroyWhenExpired) {
+            Canvas.overrideSorting = true;
+            Canvas.sortingOrder = CanvasSortingOrderMap.TimerView;
             gameObject.SetActive(true);
             _cooldownTimer = cooldownTimer;
             _destroyWhenExpired = destroyWhenExpired;

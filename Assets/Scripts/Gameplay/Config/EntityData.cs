@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Gameplay.Config.Abilities;
 using Gameplay.Entities;
+using Gameplay.UI;
 using Mirror;
 using UnityEngine;
 
@@ -42,7 +43,7 @@ namespace Gameplay.Config {
         /// Lower values appear on top of higher values and are selected first. 
         /// </summary>
         public int GetStackOrder() {
-            return Tags.Contains(EntityTag.Structure) ? 2 : 1;
+            return Tags.Contains(EntityTag.Structure) ? CanvasSortingOrderMap.GridEntity_Structure : CanvasSortingOrderMap.GridEntity_Unit;
         }
         
         private void OnValidate() {

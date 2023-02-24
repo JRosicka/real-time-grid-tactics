@@ -291,6 +291,7 @@ namespace Gameplay.Entities {
         }
 
         private void SetupView() {
+            ViewCanvas.sortingOrder = Data.GetStackOrder();
             _view = Instantiate(Data.ViewPrefab, ViewCanvas.transform);
             _view.Initialize(this);
         }

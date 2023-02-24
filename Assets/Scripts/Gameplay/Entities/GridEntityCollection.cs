@@ -29,13 +29,13 @@ namespace Gameplay.Entities {
             public Vector2Int Location;
 
             public OrderedGridEntity GetTopEntity() {
-                return Entities.IsNullOrEmpty() ? null : Entities.OrderBy(o => o.Order).ToArray()[0];
+                return Entities.IsNullOrEmpty() ? null : Entities.OrderByDescending(o => o.Order).ToArray()[0];
             }
 
             public OrderedGridEntity GetEntityAfter(OrderedGridEntity previousEntity) {
                 if (Entities.IsNullOrEmpty()) return null;
-                List<OrderedGridEntity> orderedList = Entities.OrderBy(o => o.Order).ToList();
-                OrderedGridEntity nextEntity = orderedList.FirstOrDefault(o => o.Order > previousEntity.Order);
+                List<OrderedGridEntity> orderedList = Entities.OrderByDescending(o => o.Order).ToList();
+                OrderedGridEntity nextEntity = orderedList.FirstOrDefault(o => o.Order < previousEntity.Order);
                 if (nextEntity == null) {
                     // We must have gone through the whole entity stack, so loop back around to the top
                     return orderedList[0];
