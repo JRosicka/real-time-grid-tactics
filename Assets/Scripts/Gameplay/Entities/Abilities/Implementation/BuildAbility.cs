@@ -10,7 +10,9 @@ namespace Gameplay.Entities.Abilities {
     ///
     /// TODO rename these build ability classes to specify that these are for an entity plopping out a new entity. Like a
     /// structure, not like a worker creating a new structure. Also specify this in comments. We will need a new set of
-    /// build classes for workers making stuff (targetable builds). 
+    /// build classes for workers making stuff (targetable builds, like castles). And ANOTHER set for workers capturing
+    /// neutral structures (like income structures) if those end up being capturable. Though that's sort of functionally
+    /// the same as building strucutres, maybe I just don't have neutral ones hmmmmmm.  
     /// </summary>
     public class BuildAbility : AbilityBase<BuildAbilityData, BuildAbilityParameters> {
         private BuildAbilityParameters AbilityParameters => (BuildAbilityParameters) BaseParameters;
@@ -22,9 +24,15 @@ namespace Gameplay.Entities.Abilities {
         protected override void CompleteCooldownImpl() {
             switch (AbilityParameters.Buildable) {
                 case EntityData entityData:
-                    // TODO: What if the build location is occupied? Currently does a no-op. Would be better to block building and queue the spawn to happen when the location opens up. 
-                    GameManager.Instance.CommandManager.SpawnEntity(entityData, AbilityParameters.BuildLocation,
-                        Performer.MyTeam);
+                    if (GameManager.Instance.GridController.CanEntityEnterCell(AbilityParameters.BuildLocation,
+                            entityData, Performer.MyTeam)) {
+                        // The location is open to put this entity, so go ahead and spawn it
+                        GameManager.Instance.CommandManager.SpawnEntity(entityData, AbilityParameters.BuildLocation,
+                            Performer.MyTeam);
+                    } else {
+                        // TODO: What if the build location is occupied? Currently does a no-op.
+                        // Would be better to block building and queue the spawn to happen when the location opens up. 
+                    }
                     break;
                 case UpgradeData upgradeData:
                     // TODO
