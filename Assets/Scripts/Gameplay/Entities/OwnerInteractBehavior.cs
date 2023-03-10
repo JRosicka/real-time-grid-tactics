@@ -17,11 +17,13 @@ namespace Gameplay.Entities {
             // Target the top entity
             GridEntity targetEntity = GameManager.Instance.GetEntitiesAtLocation(targetCell)?.GetTopEntity()?.Entity;
 
-            // See if we should move this entity
-            if (targetEntity == null || targetEntity.Data.FriendlyUnitsCanShareCell) {
+            // See if we should target this entity
+            if (targetEntity != null && thisEntity.MyTeam != targetEntity.MyTeam) {
+                TryTargetEntity(thisEntity, targetEntity, targetCell);
+            } else if (targetEntity == null || targetEntity.Data.FriendlyUnitsCanShareCell) {
                 TryMoveEntity(thisEntity, targetCell);
             } else {
-                TryTargetEntity(thisEntity, targetEntity, targetCell);
+                Debug.Log("Can not attack entity or move to cell, doing nothing");
             }
         }
 
