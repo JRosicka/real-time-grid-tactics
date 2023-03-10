@@ -48,11 +48,12 @@ namespace Gameplay.Config {
         
         private void OnValidate() {
             if (Abilities.Select(a => a.Content.Channel).Distinct().ToList().Count < Abilities.Count) {
-                Debug.LogError("Detected abilities with the same channel, don't do that!");
-            }
+                string channelNames = Abilities.Select(a => a.Content.Channel).Aggregate("", (current, channel) => current + channel.name + ", ");
+                Debug.LogError($"{name}: Detected abilities with the same channel, don't do that! {channelNames}");
+            } 
 
             if (FriendlyUnitsCanShareCell && !Tags.Contains(EntityTag.Structure)) {
-                Debug.LogError("Woah woah woah buddy, if you want this entity to be able to share a cell with other entities, then it's gotta be a structure!");
+                Debug.LogError($"{name}: Woah woah woah buddy, if you want this entity to be able to share a cell with other entities, then it's gotta be a structure!");
             }
         }
     }
