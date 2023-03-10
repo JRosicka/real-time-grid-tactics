@@ -3427,6 +3427,10 @@ PrefabInstance:
       propertyPath: Channel
       value: 
       objectReference: {fileID: 11400000, guid: 34e49ddc4511a404c9f63aec4466a3a5, type: 2}
+    - target: {fileID: 8182987531277296321, guid: 6dd1050f28a9d6e4a97253fd0afc4480, type: 3}
+      propertyPath: AbilityInterface
+      value: 
+      objectReference: {fileID: 1367829116564083173}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6dd1050f28a9d6e4a97253fd0afc4480, type: 3}
 --- !u!224 &5092604831899154576 stripped
@@ -3548,6 +3552,10 @@ PrefabInstance:
       propertyPath: Hotkey
       value: V
       objectReference: {fileID: 0}
+    - target: {fileID: 8182987531277296321, guid: 6dd1050f28a9d6e4a97253fd0afc4480, type: 3}
+      propertyPath: AbilityInterface
+      value: 
+      objectReference: {fileID: 1367829116564083173}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6dd1050f28a9d6e4a97253fd0afc4480, type: 3}
 --- !u!224 &6749074819620273478 stripped
@@ -3790,6 +3798,10 @@ PrefabInstance:
       propertyPath: Channel
       value: 
       objectReference: {fileID: 11400000, guid: 98e93cf2e89779d4494a08d38620b523, type: 2}
+    - target: {fileID: 8182987531277296321, guid: 6dd1050f28a9d6e4a97253fd0afc4480, type: 3}
+      propertyPath: AbilityInterface
+      value: 
+      objectReference: {fileID: 1367829116564083173}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6dd1050f28a9d6e4a97253fd0afc4480, type: 3}
 --- !u!114 &6274110925908427466 stripped
@@ -3911,6 +3923,10 @@ PrefabInstance:
       propertyPath: Hotkey
       value: C
       objectReference: {fileID: 0}
+    - target: {fileID: 8182987531277296321, guid: 6dd1050f28a9d6e4a97253fd0afc4480, type: 3}
+      propertyPath: AbilityInterface
+      value: 
+      objectReference: {fileID: 1367829116564083173}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6dd1050f28a9d6e4a97253fd0afc4480, type: 3}
 --- !u!114 &6704225526945255414 stripped
@@ -4036,6 +4052,10 @@ PrefabInstance:
       propertyPath: Channel
       value: 
       objectReference: {fileID: 11400000, guid: eacfc65ea85012e4c82589a51fd62ea8, type: 2}
+    - target: {fileID: 8182987531277296321, guid: 6dd1050f28a9d6e4a97253fd0afc4480, type: 3}
+      propertyPath: AbilityInterface
+      value: 
+      objectReference: {fileID: 1367829116564083173}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6dd1050f28a9d6e4a97253fd0afc4480, type: 3}
 --- !u!114 &5319506968509519012 stripped
@@ -4161,6 +4181,10 @@ PrefabInstance:
       propertyPath: Channel
       value: 
       objectReference: {fileID: 11400000, guid: 2b3dac029f6126240a9fb26ced930b91, type: 2}
+    - target: {fileID: 8182987531277296321, guid: 6dd1050f28a9d6e4a97253fd0afc4480, type: 3}
+      propertyPath: AbilityInterface
+      value: 
+      objectReference: {fileID: 1367829116564083173}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6dd1050f28a9d6e4a97253fd0afc4480, type: 3}
 --- !u!114 &5196456495554372472 stripped
@@ -4282,6 +4306,10 @@ PrefabInstance:
       propertyPath: Hotkey
       value: F
       objectReference: {fileID: 0}
+    - target: {fileID: 8182987531277296321, guid: 6dd1050f28a9d6e4a97253fd0afc4480, type: 3}
+      propertyPath: AbilityInterface
+      value: 
+      objectReference: {fileID: 1367829116564083173}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6dd1050f28a9d6e4a97253fd0afc4480, type: 3}
 --- !u!224 &616292193148065734 stripped
@@ -4407,6 +4435,10 @@ PrefabInstance:
       propertyPath: Channel
       value: 
       objectReference: {fileID: 11400000, guid: eacfc65ea85012e4c82589a51fd62ea8, type: 2}
+    - target: {fileID: 8182987531277296321, guid: 6dd1050f28a9d6e4a97253fd0afc4480, type: 3}
+      propertyPath: AbilityInterface
+      value: 
+      objectReference: {fileID: 1367829116564083173}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6dd1050f28a9d6e4a97253fd0afc4480, type: 3}
 --- !u!224 &703696640779442694 stripped
@@ -4532,6 +4564,10 @@ PrefabInstance:
       propertyPath: Channel
       value: 
       objectReference: {fileID: 11400000, guid: f0a973c5e8bb25644aa85baaa725a551, type: 2}
+    - target: {fileID: 8182987531277296321, guid: 6dd1050f28a9d6e4a97253fd0afc4480, type: 3}
+      propertyPath: AbilityInterface
+      value: 
+      objectReference: {fileID: 1367829116564083173}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6dd1050f28a9d6e4a97253fd0afc4480, type: 3}
 --- !u!224 &1891451208575633885 stripped
@@ -4657,6 +4693,10 @@ PrefabInstance:
       propertyPath: Channel
       value: 
       objectReference: {fileID: 11400000, guid: a2bb18c2ded749a4e902028c24c166d0, type: 2}
+    - target: {fileID: 8182987531277296321, guid: 6dd1050f28a9d6e4a97253fd0afc4480, type: 3}
+      propertyPath: AbilityInterface
+      value: 
+      objectReference: {fileID: 1367829116564083173}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6dd1050f28a9d6e4a97253fd0afc4480, type: 3}
 --- !u!114 &2199467491430291170 stripped
@@ -4778,6 +4818,10 @@ PrefabInstance:
       propertyPath: Hotkey
       value: X
       objectReference: {fileID: 0}
+    - target: {fileID: 8182987531277296321, guid: 6dd1050f28a9d6e4a97253fd0afc4480, type: 3}
+      propertyPath: AbilityInterface
+      value: 
+      objectReference: {fileID: 1367829116564083173}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6dd1050f28a9d6e4a97253fd0afc4480, type: 3}
 --- !u!114 &79625217251949361 stripped
@@ -4899,6 +4943,10 @@ PrefabInstance:
       propertyPath: Hotkey
       value: Z
       objectReference: {fileID: 0}
+    - target: {fileID: 8182987531277296321, guid: 6dd1050f28a9d6e4a97253fd0afc4480, type: 3}
+      propertyPath: AbilityInterface
+      value: 
+      objectReference: {fileID: 1367829116564083173}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6dd1050f28a9d6e4a97253fd0afc4480, type: 3}
 --- !u!114 &669492709417065426 stripped
