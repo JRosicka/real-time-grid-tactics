@@ -16,8 +16,6 @@ MonoBehaviour:
   Cost:
   - Type: 0
     Amount: 20
-  - Type: 0
-    Amount: 0
   Requirements: []
   BuildTime: 1
   BaseSprite: {fileID: 21300000, guid: 8a0b09c5c94b13a4d94d9851998762db, type: 3}
@@ -33,4 +31,4 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 0918ae4f6b3b09a42a15b2ea44c2bdf8, type: 2}
   - {fileID: 11400000, guid: ec15a049dabc53b4d92ab14b2871752c, type: 2}
   - {fileID: 11400000, guid: a5c4aba93e508274894c2c6bfc4b751e, type: 2}
-  FriendlyEntitiesCanShareCell: 0
+  FriendlyUnitsCanShareCell: 0
