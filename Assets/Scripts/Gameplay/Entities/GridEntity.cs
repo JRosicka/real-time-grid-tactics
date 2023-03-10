@@ -147,7 +147,7 @@ namespace Gameplay.Entities {
         public void MoveToCell(Vector2Int targetCell) {
             Debug.Log($"Attempting to move {UnitName} to {targetCell}");
             MoveAbilityData data = (MoveAbilityData) Data.Abilities.First(a => a.Content.GetType() == typeof(MoveAbilityData)).Content;
-            DoAbility(data, new MoveAbilityParameters { Destination = targetCell });
+            DoAbility(data, new MoveAbilityParameters { Destination = targetCell, SelectorTeam = MyTeam});
         }
 
         public void TryTargetEntity(GridEntity targetEntity, Vector2Int targetCell) {

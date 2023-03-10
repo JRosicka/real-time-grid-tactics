@@ -68,8 +68,8 @@ public class GridController : MonoBehaviour {
             case MouseClick.Left:
                 // See if we have a targetable ability we want to use. If so, use it.
                 if (_selectedTargetableAbility != null) {
-                    if (_selectedTargetableAbility.CanTargetCell(clickPosition, selectedEntity)) {
-                        _selectedTargetableAbility.DoTargetableAbility(clickPosition, selectedEntity);
+                    if (_selectedTargetableAbility.CanTargetCell(clickPosition, selectedEntity, GameManager.Instance.LocalPlayer.Data.Team)) {
+                        _selectedTargetableAbility.DoTargetableAbility(clickPosition, selectedEntity, GameManager.Instance.LocalPlayer.Data.Team);
                         GameManager.Instance.SelectionInterface.DeselectActiveAbility();
                         SelectTargetableAbility(null);
                         return;

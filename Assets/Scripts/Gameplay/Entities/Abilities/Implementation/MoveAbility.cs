@@ -48,12 +48,15 @@ namespace Gameplay.Entities.Abilities {
 
     public class MoveAbilityParameters : IAbilityParameters {
         public Vector2Int Destination;
+        public GridEntity.Team SelectorTeam;
         public void Serialize(NetworkWriter writer) {
             writer.Write(Destination);
+            writer.Write(SelectorTeam);
         }
 
         public void Deserialize(NetworkReader reader) {
             Destination = reader.Read<Vector2Int>();
+            SelectorTeam = reader.Read<GridEntity.Team>();
         }
     }
 }

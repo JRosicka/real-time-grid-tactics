@@ -18,27 +18,27 @@ namespace Gameplay.Config.Abilities {
         }
 
         protected override bool AbilityLegalImpl(MoveAbilityParameters parameters, GridEntity entity) {
-            return CanTargetCell(parameters.Destination, entity);
+            return CanTargetCell(parameters.Destination, entity, parameters.SelectorTeam);
         }
 
         protected override IAbility CreateAbilityImpl(MoveAbilityParameters parameters, GridEntity performer) {
             return new MoveAbility(this, parameters, performer);
         }
 
-        public bool CanTargetCell(Vector2Int cellPosition, GridEntity selector) {
+        public bool CanTargetCell(Vector2Int cellPosition, GridEntity entity, GridEntity.Team selectorTeam) {
             // TODO pathfinding stuff
-            if (selector == null || selector.MyTeam != GameManager.Instance.LocalPlayer.Data.Team) return false;
+            if (entity == null || entity.MyTeam != selectorTeam) return false;
 
-            if (selector.Location == cellPosition) {
+            if (entity.Location == cellPosition) {
                 // Bro you're already here
                 return false;
             }
 
-            return GameManager.Instance.GridController.CanEntityEnterCell(cellPosition, selector.Data, selector.MyTeam);
+            return GameManager.Instance.GridController.CanEntityEnterCell(cellPosition, entity.Data, entity.MyTeam);
         }
         
-        public void DoTargetableAbility(Vector2Int cellPosition, GridEntity selector) {
-            selector.DoAbility(this, new MoveAbilityParameters {Destination = cellPosition});
+        public void DoTargetableAbility(Vector2Int cellPosition, GridEntity entity, GridEntity.Team selectorTeam) {
+            entity.DoAbility(this, new MoveAbilityParameters {Destination = cellPosition, SelectorTeam = selectorTeam});
         }
     }
 }

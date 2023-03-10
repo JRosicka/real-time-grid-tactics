@@ -25,9 +25,9 @@ namespace Gameplay.Config.Abilities {
             return new AttackAbility(this, parameters, performer);
         }
 
-        public bool CanTargetCell(Vector2Int cellPosition, GridEntity selector) {
+        public bool CanTargetCell(Vector2Int cellPosition, GridEntity entity, GridEntity.Team selectorTeam) {
             GridEntity target = GameManager.Instance.GetEntitiesAtLocation(cellPosition).GetTopEntity().Entity;
-            return CanAttackTarget(target, selector);
+            return CanAttackTarget(target, entity);
         }
 
         private bool CanAttackTarget(GridEntity target, GridEntity selector) {
@@ -35,9 +35,9 @@ namespace Gameplay.Config.Abilities {
             return target != null && selector != null && target.MyTeam != GridEntity.Team.Neutral && target.MyTeam != selector.MyTeam;
         }
 
-        public void DoTargetableAbility(Vector2Int cellPosition, GridEntity selector) {
-            GridEntity target = GameManager.Instance.GetEntitiesAtLocation(cellPosition).GetTopEntity().Entity;
-            selector.DoAbility(this, new AttackAbilityParameters {Attacker = selector, Target = target});
+        public void DoTargetableAbility(Vector2Int cellPosition, GridEntity entity, GridEntity.Team selectorTeam) {
+            GridEntity target = GameManager.Instance.GetEntitiesAtLocation(cellPosition).GetTopEntity().Entity;    // Only able to target the top entity!
+            entity.DoAbility(this, new AttackAbilityParameters {Attacker = entity, Target = target});
         }
     }
 }
