@@ -25,6 +25,7 @@ namespace Gameplay.Config {
         
         [Header("References")]
         public Sprite BaseSprite;
+        public Sprite TeamColorSprite;
     }
     
     public static class PurchasableDataSerializer {

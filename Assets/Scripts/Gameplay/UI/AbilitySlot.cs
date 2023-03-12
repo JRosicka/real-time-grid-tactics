@@ -22,6 +22,7 @@ namespace Gameplay.UI {
 
         [Header("References")]
         public Image AbilityImage;
+        public Image SecondaryAbilityImage;    // For build target color icon
         public Image SlotFrame;
         public TMP_Text HotkeyText;
         public AbilityInterface AbilityInterface;
@@ -40,6 +41,8 @@ namespace Gameplay.UI {
             _displayingBuild = false;
 
             AbilityImage.sprite = _currentAbility.Icon;
+            SecondaryAbilityImage.sprite = null;
+            SecondaryAbilityImage.gameObject.SetActive(false);
             HotkeyText.text = Hotkey;
 
             CheckAvailability();
@@ -54,6 +57,11 @@ namespace Gameplay.UI {
             _displayingBuild = true;
 
             AbilityImage.sprite = entityToBuild.BaseSprite;
+            if (entityToBuild.TeamColorSprite != null) {
+                SecondaryAbilityImage.sprite = entityToBuild.TeamColorSprite;
+                SecondaryAbilityImage.color = GameManager.Instance.GetPlayerForTeam(selectedEntity.MyTeam).Data.TeamColor;
+                SecondaryAbilityImage.gameObject.SetActive(true);
+            }
             HotkeyText.text = Hotkey;
             
             CheckAvailability();

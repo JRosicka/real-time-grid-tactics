@@ -19,8 +19,6 @@ namespace Gameplay.Config {
             Flying = 4,
         }
         
-        public Sprite TeamColorSprite;
-        
         // Must be private so that Weaver does not try to make a reader and writer for this type. Mirror does this for all public fields, thanks Mirror. 
         [SerializeField]
         private GridEntityViewBase _viewPrefab;
