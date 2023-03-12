@@ -23,31 +23,7 @@ public class GameManager : MonoBehaviour {
     
     public IGamePlayer LocalPlayer { get; private set; }
     public IGamePlayer OpponentPlayer { get; private set; }
-
-    [Header("Unit 1")] 
-    public bool Unit1_LocalTeam;
-    public EntityData Unit1;
-    public void SpawnUnit1() {
-        IGamePlayer player = Unit1_LocalTeam ? LocalPlayer : OpponentPlayer;
-        CommandManager.SpawnEntity(Unit1, player.Data.SpawnLocation, player.Data.Team);
-    }
-
-    [Header("Unit 2")] 
-    public bool Unit2_LocalTeam;
-    public EntityData Unit2;
-    public void SpawnUnit2() {
-        IGamePlayer player = Unit2_LocalTeam ? LocalPlayer : OpponentPlayer;
-        CommandManager.SpawnEntity(Unit2, player.Data.SpawnLocation, player.Data.Team);
-    }
-
-    [Header("Unit 3")] 
-    public bool Unit3_LocalTeam;
-    public EntityData Unit3;
-    public void SpawnUnit3() { // TODO Give cheat to give lots of money
-        IGamePlayer player = Unit3_LocalTeam ? LocalPlayer : OpponentPlayer;
-        CommandManager.SpawnEntity(Unit3, player.Data.SpawnLocation, player.Data.Team);
-    }
-
+    
     private void Awake() {
         if (Instance != null) {
             Debug.LogError("GameManager instance is not null!!");
