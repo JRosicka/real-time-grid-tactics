@@ -3,21 +3,13 @@ using Gameplay.Entities.Abilities;
 using UnityEngine;
 
 namespace Gameplay.Entities {
-    public class SwordsmanEntityView : GridEntityViewBase {
+    public class ProductionBuildingView : GridEntityViewBase {
         public override void DoAbility(IAbility ability, AbilityCooldownTimer cooldownTimer) {
             Debug.Log($"{nameof(DoAbility)}: {ability}");
             switch (ability.AbilityData) {
-                case SiegeAbilityData _:
+                case BuildAbilityData _:
                     CreateTimerView(cooldownTimer);
-                    DoSiegeAnimation();
-                    break;
-                case MoveAbilityData moveAbility:
-                    CreateTimerView(cooldownTimer);
-                    DoMoveAnimation();
-                    break;
-                case AttackAbilityData attackAbility:
-                    CreateTimerView(cooldownTimer);
-                    AttackReceived();
+                    DoBuildAnimation();
                     break;
                 default:
                     throw new UnexpectedEntityAbilityException(ability.AbilityData);
@@ -34,11 +26,8 @@ namespace Gameplay.Entities {
             Debug.Log(nameof(Killed));
             KillAnimationFinished();
         }
-        private void DoSiegeAnimation() {
-            Debug.Log(nameof(DoSiegeAnimation));
-        }
-        private void DoMoveAnimation() {
-            Debug.Log(nameof(DoMoveAnimation));
+        private void DoBuildAnimation() {
+            Debug.Log(nameof(DoBuildAnimation));
         }
     }
 }

@@ -18,7 +18,7 @@ MonoBehaviour:
   BuildTime: 1
   BaseSprite: {fileID: 21300000, guid: 1debb6108b1563e4b8c4460723f95df0, type: 3}
   TeamColorSprite: {fileID: -2413806693520163455, guid: 9ae72e1845b0c38469b3fd8ca9fa42c6, type: 3}
-  _viewPrefab: {fileID: 5088879590884088445, guid: 7dc0a13730d5c56438a0306afc8a0823, type: 3}
+  _viewPrefab: {fileID: 2656981576115865338, guid: fe97602c9548e534eb21b66e57e65290, type: 3}
   HP: 5
   MaxMove: 0
   Range: 0
