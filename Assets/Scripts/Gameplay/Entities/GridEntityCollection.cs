@@ -149,7 +149,7 @@ namespace Gameplay.Entities {
                 GridEntity moveAttemptEntity, 
                 IEnumerable<OrderedGridEntity> entitiesAtLocation) 
                 : base($"Failed to place {nameof(GridEntity)} ({moveAttemptEntity.UnitName}) at location {location}"
-                       + $" because other {nameof(GridEntity)}s at that location conflict with this one. Other entities: {entitiesAtLocation.Select(o => o.Entity.UnitName)}") { }
+                       + $" because other {nameof(GridEntity)}s at that location conflict with this one. Other entities: {entitiesAtLocation.Aggregate("", (current, o) => current + o.Entity.DisplayName + ", ")}") { }
         }
     }
 
