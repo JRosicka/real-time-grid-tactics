@@ -24,3 +24,4 @@ MonoBehaviour:
     _performOnStart: 0
     _repeatWhenCooldownFinishes: 0
     _selectable: 1
+    _selectableWhenBlocked: 0

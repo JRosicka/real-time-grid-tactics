@@ -61,6 +61,9 @@ namespace Gameplay.Config.Abilities {
         [SerializeField] 
         private bool _selectable;
         public bool Selectable => _selectable;
+        [SerializeField] 
+        private bool _selectableWhenBlocked;
+        public bool SelectableWhenBlocked => _selectableWhenBlocked;
 
         /// <summary>
         /// Respond to the user input intending to use this ability. Do not actually perform the ability (unless there is
