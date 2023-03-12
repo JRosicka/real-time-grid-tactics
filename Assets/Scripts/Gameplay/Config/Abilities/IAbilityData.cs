@@ -33,6 +33,11 @@ namespace Gameplay.Config.Abilities {
         /// </summary>
         bool SelectableWhenBlocked { get; }
         /// <summary>
+        /// Whether this ability is automatically selected (but not performed) when selecting the performing entity.
+        /// Does nothing if <see cref="Selectable"/> is false. 
+        /// </summary>
+        bool AutoSelect { get; }
+        /// <summary>
         /// Respond to the user input intending to use this ability. Do not actually perform the ability (unless there is
         /// nothing else to do first) - rather, handle any client-side stuff by sending events to prompt for further input. 
         /// </summary>

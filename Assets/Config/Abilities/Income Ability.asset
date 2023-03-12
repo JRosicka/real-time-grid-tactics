@@ -24,6 +24,7 @@ MonoBehaviour:
     _repeatWhenCooldownFinishes: 1
     _selectable: 0
     _selectableWhenBlocked: 0
+    _autoSelect: 0
     ResourceAmountIncome:
       Type: 0
       Amount: 10

@@ -58,6 +58,8 @@ namespace Gameplay.UI {
             entity.KilledEvent += OnEntityKilled;
             
             ToggleViews(true);
+
+            entity.PerformAutoSelection();
         }
 
         public void HandleAbilityHotkey(string input) {

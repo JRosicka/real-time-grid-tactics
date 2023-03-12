@@ -25,6 +25,7 @@ MonoBehaviour:
     _repeatWhenCooldownFinishes: 0
     _selectable: 1
     _selectableWhenBlocked: 1
+    _autoSelect: 1
     Buildables:
     - data: {fileID: 11400000, guid: 991ad2a1d6801ee40b831e7850e0ff35, type: 2}
       selectionKey: e

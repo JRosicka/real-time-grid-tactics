@@ -246,6 +246,16 @@ namespace Gameplay.Entities {
             GameManager.Instance.CommandManager.PerformAbility(abilityInstance);
         }
 
+        /// <summary>
+        /// Auto-select any abilities that we have configured as auto-selectable.
+        /// This probably won't behave well if this entity has multiple abilities configured as auto-selectable... 
+        /// </summary>
+        public void PerformAutoSelection() {
+            foreach (IAbilityData abilityData in Abilities.Select(a => a.Content).Where(a => a.AutoSelect)) {
+                abilityData.SelectAbility(this);
+            }
+        }
+        
         private void PerformOnStartAbilities() {
             foreach (IAbilityData abilityData in Abilities.Select(a => a.Content).Where(a => a.PerformOnStart)) {
                 DoAbility(abilityData, new NullAbilityParameters());
