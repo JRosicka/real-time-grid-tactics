@@ -627,9 +627,9 @@ MonoBehaviour:
   Unit2: {fileID: 11400000, guid: 13a02f740ff7d294ca02fe7f547820c0, type: 2}
   Unit3_LocalTeam: 1
   Unit3: {fileID: 11400000, guid: 43174010eb096460f944f7aa4f3b1791, type: 2}
-  GiveMoney_LocalTeam: 1
-  GiveMoney_Amount: 10000
-  GiveMoney_ResourceType: 0
+  SetMoney_LocalTeam: 1
+  SetMoney_Amount: 10000
+  SetMoney_ResourceType: 0
 --- !u!1 &1769013659
 GameObject:
   m_ObjectHideFlags: 0

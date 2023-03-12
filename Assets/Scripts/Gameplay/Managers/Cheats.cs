@@ -1,4 +1,5 @@
 #if UNITY_EDITOR
+using System.Collections.Generic;
 using Game.Network;
 using Gameplay.Config;
 using Mirror;
@@ -55,18 +56,27 @@ namespace Gameplay.Managers {
             GameManagerInstance.CommandManager.SpawnEntity(Unit3, player.Data.SpawnLocation, player.Data.Team);
         }
         
-        [Header("Give money")] 
-        public bool GiveMoney_LocalTeam;
-        public int GiveMoney_Amount = 10000;
-        public ResourceType GiveMoney_ResourceType = ResourceType.Basic;
+        [Header("Set money")] 
+        public bool SetMoney_LocalTeam;
+        public int SetMoney_Amount = 10000;
+        public ResourceType SetMoney_ResourceType = ResourceType.Basic;
         [Button]
-        public void GiveMoney() {
-            IGamePlayer player = GiveMoney_LocalTeam ? GameManagerInstance.LocalPlayer : GameManagerInstance.OpponentPlayer;
-            ResourceAmount amountToGive = new ResourceAmount {
-                Amount = GiveMoney_Amount,
-                Type = GiveMoney_ResourceType
-            };
-            player.ResourcesController.Earn(amountToGive);
+        public void SetMoney() {
+            PlayerResourcesController resourcesController = SetMoney_LocalTeam ? GameManagerInstance.LocalPlayer.ResourcesController : GameManagerInstance.OpponentPlayer.ResourcesController;
+            int currentAmount = resourcesController.GetBalance(SetMoney_ResourceType).Amount;
+            if (currentAmount < SetMoney_Amount) {
+                ResourceAmount amountToGive = new ResourceAmount {
+                    Amount = SetMoney_Amount - currentAmount,
+                    Type = SetMoney_ResourceType
+                };
+                resourcesController.Earn(amountToGive);
+            } else if (currentAmount > SetMoney_Amount) {
+                ResourceAmount amountToLose = new ResourceAmount {
+                    Amount = currentAmount - SetMoney_Amount,
+                    Type = SetMoney_ResourceType
+                };
+                resourcesController.Spend(new List<ResourceAmount> {amountToLose});
+            }
         }
     }
 }

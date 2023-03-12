@@ -32,16 +32,8 @@ public class PlayerResourcesController : NetworkBehaviour {
         BalanceChangedEvent?.Invoke(newValue);
     }
 
-    private ResourceAmount GetBalance(ResourceType type) {
+    public ResourceAmount GetBalance(ResourceType type) {
         return _balances.First(b => b.Type == type);
-    }
-
-    private void SetBalance(ResourceAmount newBalance) {
-        ResourceAmount currentBalance = _balances.First(b => b.Type == newBalance.Type);
-        _balances.Remove(currentBalance);
-
-        currentBalance.Amount = newBalance.Amount;
-        _balances.Add(currentBalance);
     }
 
     public bool CanAfford(List<ResourceAmount> cost) {
@@ -82,6 +74,14 @@ public class PlayerResourcesController : NetworkBehaviour {
         }
         
         UpdateBalances();
+    }
+    
+    private void SetBalance(ResourceAmount newBalance) {
+        ResourceAmount currentBalance = _balances.First(b => b.Type == newBalance.Type);
+        _balances.Remove(currentBalance);
+
+        currentBalance.Amount = newBalance.Amount;
+        _balances.Add(currentBalance);
     }
 
     private void UpdateBalances() {
