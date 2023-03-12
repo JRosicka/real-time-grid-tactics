@@ -27,7 +27,7 @@ namespace Gameplay.UI {
         public TMP_Text HotkeyText;
         public AbilityInterface AbilityInterface;
 
-        private IAbilityData _currentAbility;
+        private IAbilityData _currentAbilityData;
         private GridEntity _selectedEntity;
         private BuildAbilityData _currentBuildData;
         private PurchasableData _currentEntityToBuild;
@@ -36,11 +36,11 @@ namespace Gameplay.UI {
         
         public void SetUpForAbility(IAbilityData data, GridEntity selectedEntity) {
             gameObject.SetActive(true);
-            _currentAbility = data;
+            _currentAbilityData = data;
             _selectedEntity = selectedEntity;
             _displayingBuild = false;
 
-            AbilityImage.sprite = _currentAbility.Icon;
+            AbilityImage.sprite = _currentAbilityData.Icon;
             SecondaryAbilityImage.sprite = null;
             SecondaryAbilityImage.gameObject.SetActive(false);
             HotkeyText.text = Hotkey;
@@ -52,6 +52,7 @@ namespace Gameplay.UI {
         public void SetUpForBuildTarget(BuildAbilityData buildData, PurchasableData entityToBuild, GridEntity selectedEntity) {
             gameObject.SetActive(true);
             _currentBuildData = buildData;
+            _currentAbilityData = _currentBuildData;
             _currentEntityToBuild = entityToBuild;
             _selectedEntity = selectedEntity;
             _displayingBuild = true;
@@ -70,7 +71,7 @@ namespace Gameplay.UI {
 
         public void Clear() {
             RemoveListeners();
-            _currentAbility = null;
+            _currentAbilityData = null;
             _currentBuildData = null;
             _currentEntityToBuild = null;
             _selectedEntity = null;
@@ -95,7 +96,7 @@ namespace Gameplay.UI {
                     BuildLocation = _selectedEntity.Location
                 });
             } else {
-                _currentAbility?.SelectAbility(_selectedEntity);
+                _currentAbilityData?.SelectAbility(_selectedEntity);
             }
             return true;
         }
@@ -118,20 +119,28 @@ namespace Gameplay.UI {
 
         private void CheckAvailability() {
             if (_displayingBuild) {
-                // TODO check if we can afford this and if the selected entity is currently building anything
-                SlotFrame.color = SelectableColor;
-                _selectable = true;
-            } else {
-                if (_currentAbility == null || _selectedEntity == null) return;
-
-                if (_selectedEntity.CanUseAbility(_currentAbility)) {
-                    SlotFrame.color = SelectableColor;
-                    _selectable = true;
+                // Check if this entity can build this and if we can afford this
+                if (_selectedEntity.CanUseAbility(_currentBuildData) 
+                    && GameManager.Instance.GetPlayerForTeam(_selectedEntity.MyTeam).ResourcesController
+                        .CanAfford(_currentEntityToBuild.Cost)) {
+                    MarkSelectable(true);
                 } else {
-                    SlotFrame.color = UnselectableColor;
-                    _selectable = false;
+                    MarkSelectable(false);
+                }
+            } else {
+                if (_currentAbilityData == null || _selectedEntity == null) return;
+
+                if (_currentAbilityData.SelectableWhenBlocked || _selectedEntity.CanUseAbility(_currentAbilityData)) {
+                    MarkSelectable(true);
+                } else {
+                    MarkSelectable(false);
                 }
             }
+        }
+
+        private void MarkSelectable(bool available) {
+            SlotFrame.color = available ? SelectableColor : UnselectableColor;
+            _selectable = available;
         }
         
         #region Listeners
