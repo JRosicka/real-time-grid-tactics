@@ -60,5 +60,26 @@ namespace Gameplay.Entities {
             return new UpgradesCollection(reader.Read<Dictionary<UpgradeData, bool>>());
         }
     }
+    
+    public static class UpgradeDictSerializer {
+        public static void WriteUpgradeDict(this NetworkWriter writer, Dictionary<UpgradeData, bool> dict) {
+            writer.Write(dict.Count);
+            foreach ((UpgradeData key, bool value) in dict) {
+                writer.Write(key);
+                writer.Write(value);
+            }
+        }
+
+        public static Dictionary<UpgradeData, bool> ReadUpgradeDict(this NetworkReader reader) {
+            Dictionary<UpgradeData, bool> ret = new Dictionary<UpgradeData, bool>();
+            int collectionSize = reader.ReadInt();
+            for (int i = 0; i < collectionSize; i++) {
+                ret[reader.Read<UpgradeData>()] = reader.ReadBool();
+            }
+
+            return ret;
+        }
+    }
+
 
 }

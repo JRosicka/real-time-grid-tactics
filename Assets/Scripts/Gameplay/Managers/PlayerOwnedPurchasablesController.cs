@@ -18,14 +18,13 @@ public class PlayerOwnedPurchasablesController : NetworkBehaviour {
     private GridEntity.Team _team;
 
     [SyncVar]
-    private UpgradesCollection _upgrades;
+    private UpgradesCollection _upgrades = new UpgradesCollection();
 
     /// <summary>
     /// Server call
     /// </summary>
     public void Initialize(GridEntity.Team team, List<UpgradeData> upgradesToRegister) {
         _team = team;
-        _upgrades = new UpgradesCollection();
         _upgrades.RegisterUpgrades(upgradesToRegister);
         GameManager.Instance.CommandManager.EntityRegisteredEvent += OwnedPurchasablesMayHaveChanged;
         GameManager.Instance.CommandManager.EntityUnregisteredEvent += OwnedPurchasablesMayHaveChanged;
