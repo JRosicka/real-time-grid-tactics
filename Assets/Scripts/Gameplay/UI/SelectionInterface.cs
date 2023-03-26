@@ -59,7 +59,9 @@ namespace Gameplay.UI {
             
             ToggleViews(true);
 
-            entity.PerformAutoSelection();
+            if (entity.MyTeam == GameManager.Instance.LocalPlayer.Data.Team) {
+                entity.PerformAutoSelection();
+            }
         }
 
         public void HandleAbilityHotkey(string input) {
