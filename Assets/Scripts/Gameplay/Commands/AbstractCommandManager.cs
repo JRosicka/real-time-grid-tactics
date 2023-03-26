@@ -22,7 +22,18 @@ public abstract class AbstractCommandManager : NetworkBehaviour, ICommandManager
     
     // TODO this is where I could add some "is this player allowed to call this on the entity" checks
     [SyncVar]
-    public GridEntityCollection EntitiesOnGrid = new GridEntityCollection();
+    private GridEntityCollection _entitiesOnGrid = new GridEntityCollection();
+
+    /// <summary>
+    /// An entity was just registered (spawned). Triggered on server. 
+    /// </summary>
+    public event Action<GridEntity.Team> EntityRegisteredEvent;
+    /// <summary>
+    /// An entity was just unregistered (killed). Triggered on server. 
+    /// </summary>
+    public event Action<GridEntity.Team> EntityUnregisteredEvent;
+
+    public GridEntityCollection EntitiesOnGrid => _entitiesOnGrid;
 
     public void Initialize(Transform spawnBucket) {
         SpawnBucket = spawnBucket;
@@ -33,6 +44,8 @@ public abstract class AbstractCommandManager : NetworkBehaviour, ICommandManager
     /// grid. No-op if another entity already exists in the specified location. 
     /// </summary>
     public abstract void SpawnEntity(EntityData data, Vector2Int spawnLocation, GridEntity.Team team);
+    public abstract void AddUpgrade(UpgradeData data, GridEntity.Team team);
+
     // TODO need to have some way of verifying that these commands are legal for the client to do - especially doing stuff with GridEntites, we gotta own em
     // Maybe we can just make these abstract methods virtual, include a check at the beginning, and then have the overrides call base() at the start
     /// <summary>
@@ -45,16 +58,16 @@ public abstract class AbstractCommandManager : NetworkBehaviour, ICommandManager
     public abstract void DestroyEntity(GridEntity entity);
 
     public void MoveEntityToCell(GridEntity entity, Vector2Int destination) {
-        EntitiesOnGrid.MoveEntity(entity, destination);
+        _entitiesOnGrid.MoveEntity(entity, destination);
         SyncEntityCollection();
     }
     
     public GridEntityCollection.PositionedGridEntityCollection GetEntitiesAtCell(Vector2Int location) {
-        return EntitiesOnGrid.EntitiesAtLocation(location);
+        return _entitiesOnGrid.EntitiesAtLocation(location);
     }
 
     public Vector2Int GetLocationForEntity(GridEntity entity) {
-        return EntitiesOnGrid.LocationOfEntity(entity);
+        return _entitiesOnGrid.LocationOfEntity(entity);
     }
 
     public abstract void PerformAbility(IAbility ability);
@@ -68,20 +81,26 @@ public abstract class AbstractCommandManager : NetworkBehaviour, ICommandManager
         GridEntity entityInstance = spawnFunc();
         RegisterEntity(entityInstance, data, spawnLocation); 
     }
+
+    protected void DoAddUpgrade(UpgradeData data, GridEntity.Team team) {
+        GameManager.Instance.GetPlayerForTeam(team).OwnedPurchasablesController.AddUpgrade(data);
+    }
     
     protected void DoRegisterEntity(GridEntity entity, EntityData data, Vector2Int position) {
         if (entity.Registered)
             return;
         
-        EntitiesOnGrid.RegisterEntity(entity, position, data.GetStackOrder());
+        _entitiesOnGrid.RegisterEntity(entity, position, data.GetStackOrder());
         entity.Registered = true;
         SyncEntityCollection();
         Debug.Log($"Registered new entity {entity.UnitName} at position {position}");
+        EntityRegisteredEvent?.Invoke(entity.MyTeam);
     }
 
     protected void DoUnRegisterEntity(GridEntity entity) {
-        EntitiesOnGrid.UnRegisterEntity(entity);
+        _entitiesOnGrid.UnRegisterEntity(entity);
         SyncEntityCollection();
+        EntityUnregisteredEvent?.Invoke(entity.MyTeam);
     }
 
     protected void DoMarkEntityUnregistered(GridEntity entity) {
@@ -103,10 +122,10 @@ public abstract class AbstractCommandManager : NetworkBehaviour, ICommandManager
     }
 
     /// <summary>
-    /// Reset the reference for <see cref="EntitiesOnGrid"/> to force a sync across clients. Just updating fields in the class
+    /// Reset the reference for <see cref="_entitiesOnGrid"/> to force a sync across clients. Just updating fields in the class
     /// is not enough to get the sync to occur. 
     /// </summary>
     private void SyncEntityCollection() {    // TODO: If networking is horribly slow when there are a lot of GridEntities in the game... this is probably why. Kinda yucky. 
-        EntitiesOnGrid = new GridEntityCollection(EntitiesOnGrid.Entities);
+        _entitiesOnGrid = new GridEntityCollection(_entitiesOnGrid.Entities);
     }
 }

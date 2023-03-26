@@ -50,11 +50,12 @@ public class GameSetupManager : MonoBehaviour {
         
         ICommandManager commandManager = Instantiate(SPCommandManagerPrefab, transform);
         GameManager.SetupCommandManager(commandManager);
-
+        
+        List<UpgradeData> upgrades = GameManager.Instance.Configuration.GetUpgrades();
         SPGamePlayer localPlayer = Instantiate(SPGamePlayerPrefab);
-        localPlayer.Data = Player1Data;
+        localPlayer.Initialize(Player1Data, upgrades);
         SPGamePlayer opponentPlayer = Instantiate(SPGamePlayerPrefab);
-        opponentPlayer.Data = Player2Data;
+        opponentPlayer.Initialize(Player2Data, upgrades);
         GameManager.SetPlayers(localPlayer, opponentPlayer);
         
         _gameInitialized = true;
@@ -105,13 +106,14 @@ public class GameSetupManager : MonoBehaviour {
 
         MPSetupHandler.PlayerCount = playerCount;
 
-        gamePlayer.Data = networkPlayer.index switch {
+        PlayerData data = networkPlayer.index switch {
             0 => Player1Data,
             1 => Player2Data,
             _ => throw new IndexOutOfRangeException(
                 $"Tried to set up network player with invalid index ({networkPlayer.index})")
         };
 
+        gamePlayer.Initialize(data, GameManager.Instance.Configuration.GetUpgrades());
         gamePlayer.DisplayName = networkPlayer.DisplayName;
 
         if (networkPlayer.isLocalPlayer) {

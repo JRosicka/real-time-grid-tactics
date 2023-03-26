@@ -123,7 +123,7 @@ public class GridController : MonoBehaviour {
             // There are enemies here
             return false;
         }
-        if (entitiesAtLocation.Any(e => !e.Data.FriendlyUnitsCanShareCell)) {
+        if (entitiesAtLocation.Any(e => !e.EntityData.FriendlyUnitsCanShareCell)) {
             // Can only enter a friendly entity's cell if they are specifically configured to allow for that. 
             // Note that this means that structures can not be built on cells that contain units! This is intentional. 
             return false;

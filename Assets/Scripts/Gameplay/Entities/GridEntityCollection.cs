@@ -52,7 +52,7 @@ namespace Gameplay.Entities {
         public GridEntityCollection(List<PositionedGridEntityCollection> entities) {
             Entities = entities;
         }
-
+        
         public void RegisterEntity(GridEntity entity, Vector2Int location, int order) {
             // Check to see if the entity is already registered
             if (Entities.SelectMany(c => c.Entities.Select(o => o.Entity)).Contains(entity)) return;
@@ -133,10 +133,17 @@ namespace Gameplay.Entities {
             return entry.Location;
         }
 
+        public List<GridEntity> ActiveEntitiesForTeam(GridEntity.Team team) {
+            return Entities.SelectMany(c => c.Entities)
+                .Select(o => o.Entity)
+                .Where(e => e.MyTeam == team)
+                .ToList();
+        }
+
         private bool CanEntityShareLocation(GridEntity entity, PositionedGridEntityCollection otherEntities) {
             if (otherEntities == null) return true;
             if (otherEntities.Entities.IsNullOrEmpty()) return true;
-            if (GameManager.Instance.GridController.CanEntityEnterCell(otherEntities.Location, entity.Data, entity.MyTeam)) return true;
+            if (GameManager.Instance.GridController.CanEntityEnterCell(otherEntities.Location, entity.EntityData, entity.MyTeam)) return true;
             return false;
         }
         
@@ -153,6 +160,8 @@ namespace Gameplay.Entities {
         }
     }
 
+    #region Serializers
+    
     public static class GridEntityCollectionSerializer {
         public static void WriteGridEntityCollection(this NetworkWriter writer, GridEntityCollection collection) {
             writer.Write(collection.Entities);
@@ -231,4 +240,6 @@ namespace Gameplay.Entities {
             };
         }
     }
+    
+    #endregion
 }

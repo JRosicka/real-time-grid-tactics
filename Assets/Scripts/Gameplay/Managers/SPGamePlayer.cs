@@ -3,10 +3,16 @@ using Gameplay.Config;
 using UnityEngine;
 
 public class SPGamePlayer : MonoBehaviour, IGamePlayer {
-    public PlayerData Data { get; set; }
+    public PlayerData Data { get; private set; }
     public string DisplayName { get; set; }
     [SerializeField]
     private PlayerResourcesController _resourcesController;
     public PlayerResourcesController ResourcesController => _resourcesController;
-    public List<PurchasableData> OwnedPurchasables { get; } = new List<PurchasableData>();
+    [SerializeField]
+    private PlayerOwnedPurchasablesController _ownedPurchasablesController;
+    public PlayerOwnedPurchasablesController OwnedPurchasablesController => _ownedPurchasablesController;
+    public void Initialize(PlayerData data, List<UpgradeData> upgradesToRegister) {
+        Data = data;
+        _ownedPurchasablesController.Initialize(Data.Team, upgradesToRegister);
+    }
 }

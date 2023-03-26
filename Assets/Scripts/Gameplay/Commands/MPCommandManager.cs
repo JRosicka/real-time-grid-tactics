@@ -9,6 +9,10 @@ public class MPCommandManager : AbstractCommandManager {
         CmdSpawnEntity(data, spawnLocation, team);
     }
 
+    public override void AddUpgrade(UpgradeData data, GridEntity.Team team) {
+        CmdAddUpgrade(data, team);
+    }
+
     protected override void RegisterEntity(GridEntity entity, EntityData data, Vector2Int position) {
         CmdRegisterEntity(entity, data, position);
     }
@@ -39,6 +43,12 @@ public class MPCommandManager : AbstractCommandManager {
             return entityInstance;
         }, team);
     }
+
+    [Command(requiresAuthority = false)]
+    private void CmdAddUpgrade(UpgradeData data, GridEntity.Team team) {
+        DoAddUpgrade(data, team);
+    }
+    
     [Command(requiresAuthority = false)]
     private void CmdRegisterEntity(GridEntity entity, EntityData data, Vector2Int position) {
         DoRegisterEntity(entity, data, position);

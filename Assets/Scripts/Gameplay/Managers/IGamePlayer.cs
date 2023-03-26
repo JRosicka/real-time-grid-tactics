@@ -5,12 +5,13 @@ using Gameplay.Config;
 /// Represents a player and its associated data and overall state
 /// </summary>
 public interface IGamePlayer {
-    PlayerData Data { get; set; }
+    PlayerData Data { get; }
     string DisplayName { get; set; }
     PlayerResourcesController ResourcesController { get; }
     /// <summary>
     /// Complete set of all <see cref="PurchasableData"/> (upgrades, units, structures) that are owned by the player and
     /// currently active in the game (not destroyed).
     /// </summary>
-    List<PurchasableData> OwnedPurchasables { get; }    // TODO actually handle adding/removing things from this
+    PlayerOwnedPurchasablesController OwnedPurchasablesController { get; }    // TODO actually handle adding/removing things from this
+    void Initialize(PlayerData data, List<UpgradeData> upgradesToRegister);
 }

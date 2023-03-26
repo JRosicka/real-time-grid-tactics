@@ -4,7 +4,9 @@ using UnityEngine;
 
 namespace Gameplay.Config {
     /// <summary>
-    /// Configuration for a <see cref="GridUpgrade"/>
+    /// Configuration for an upgrade, which is sort of like a <see cref="GridEntity"/> but does not have a location on
+    /// the grid. Upgrades are only tracked in this data class - see <see cref="PlayerOwnedPurchasablesController"/> for
+    /// keeping track of what upgrades are owned during a game. 
     /// </summary>
     [CreateAssetMenu(menuName = "Grid Entities/UpgradeData", fileName = "UpgradeData", order = 0)]
     public class UpgradeData : PurchasableData {

@@ -34,7 +34,7 @@ namespace Gameplay.Config.Abilities {
                 return false;
             }
 
-            return GameManager.Instance.GridController.CanEntityEnterCell(cellPosition, entity.Data, entity.MyTeam);
+            return GameManager.Instance.GridController.CanEntityEnterCell(cellPosition, entity.EntityData, entity.MyTeam);
         }
         
         public void DoTargetableAbility(Vector2Int cellPosition, GridEntity entity, GridEntity.Team selectorTeam) {

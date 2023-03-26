@@ -28,7 +28,19 @@ namespace Gameplay.Config.Abilities {
         }
 
         protected override bool AbilityLegalImpl(BuildAbilityParameters parameters, GridEntity entity) {
-            return GameManager.Instance.GetPlayerForTeam(entity.MyTeam).ResourcesController.CanAfford(parameters.Buildable.Cost);
+            IGamePlayer player = GameManager.Instance.GetPlayerForTeam(entity.MyTeam);
+            if (!player.ResourcesController.CanAfford(parameters.Buildable.Cost)) {
+                Debug.Log($"Not building ({parameters.Buildable.ID}) because we can't pay the cost");
+                return false;
+            }
+            
+            List<PurchasableData> ownedPurchasables = player.OwnedPurchasablesController.OwnedPurchasables;
+            if (parameters.Buildable.Requirements.Any(r => !ownedPurchasables.Contains(r))) {
+                Debug.Log($"Not building ({parameters.Buildable.ID}) because we don't have the proper requirements");
+                return false;
+            }
+
+            return true;
         }
 
         protected override IAbility CreateAbilityImpl(BuildAbilityParameters parameters, GridEntity performer) {

@@ -20,7 +20,7 @@ namespace Gameplay.Entities {
             // See if we should target this entity
             if (targetEntity != null && thisEntity.MyTeam != targetEntity.MyTeam) {
                 TryTargetEntity(thisEntity, targetEntity, targetCell);
-            } else if (targetEntity == null || targetEntity.Data.FriendlyUnitsCanShareCell) {
+            } else if (targetEntity == null || targetEntity.EntityData.FriendlyUnitsCanShareCell) {
                 TryMoveEntity(thisEntity, targetCell);
             } else {
                 Debug.Log("Can not attack entity or move to cell, doing nothing");

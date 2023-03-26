@@ -29,3 +29,5 @@ MonoBehaviour:
     Buildables:
     - data: {fileID: 11400000, guid: 991ad2a1d6801ee40b831e7850e0ff35, type: 2}
       selectionKey: e
+    - data: {fileID: 11400000, guid: 931d6c77c7ce144c999bc09078cf1784, type: 2}
+      selectionKey: d

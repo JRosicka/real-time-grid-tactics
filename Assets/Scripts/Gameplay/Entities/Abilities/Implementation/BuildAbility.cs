@@ -35,7 +35,7 @@ namespace Gameplay.Entities.Abilities {
                     }
                     break;
                 case UpgradeData upgradeData:
-                    // TODO
+                    GameManager.Instance.CommandManager.AddUpgrade(upgradeData, Performer.MyTeam);
                     break;
                 default:
                     throw new Exception("Unexpected purchasable data type: " + AbilityParameters.Buildable.GetType());

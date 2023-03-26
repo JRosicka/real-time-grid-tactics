@@ -1,3 +1,4 @@
+using System;
 using Gameplay.Config;
 using Gameplay.Entities;
 using Gameplay.Entities.Abilities;
@@ -10,6 +11,7 @@ using UnityEngine;
 public interface ICommandManager {
     void Initialize(Transform spawnBucket);
     void SpawnEntity(EntityData data, Vector2Int spawnLocation, GridEntity.Team team);
+    void AddUpgrade(UpgradeData data, GridEntity.Team team);
     /// <summary>
     /// Stop keeping track of an entity and also destroy it
     /// </summary>
@@ -21,4 +23,13 @@ public interface ICommandManager {
     Vector2Int GetLocationForEntity(GridEntity entity);
     void PerformAbility(IAbility ability);
     void MarkAbilityCooldownExpired(IAbility ability);
+    /// <summary>
+    /// An entity was just registered (spawned). Triggered on server. 
+    /// </summary>
+    event Action<GridEntity.Team> EntityRegisteredEvent;
+    /// <summary>
+    /// An entity was just unregistered (killed). Triggered on server. 
+    /// </summary>
+    event Action<GridEntity.Team> EntityUnregisteredEvent;
+    GridEntityCollection EntitiesOnGrid { get; }
 }

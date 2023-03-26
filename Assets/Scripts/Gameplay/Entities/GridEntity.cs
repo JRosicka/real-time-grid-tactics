@@ -6,6 +6,7 @@ using Gameplay.Config.Abilities;
 using Gameplay.Entities.Abilities;
 using Mirror;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Gameplay.Entities {
     /// <summary>
@@ -38,8 +39,8 @@ namespace Gameplay.Entities {
 
         [HideInInspector] 
         public bool Registered;
-        
-        public EntityData Data;
+
+        [FormerlySerializedAs("Data")] public EntityData EntityData;
         private IInteractBehavior _interactBehavior;
         
         [Header("Stats")]
@@ -47,9 +48,9 @@ namespace Gameplay.Entities {
         public int MaxMove;
         public int Range;
         public int Damage;
-        public string DisplayName => Data.ID;
-        public List<EntityData.EntityTag> Tags => Data.Tags;
-        public List<AbilityDataScriptableObject> Abilities => Data.Abilities; // TODO maybe I do want these to be interfaces after all?
+        public string DisplayName => EntityData.ID;
+        public List<EntityData.EntityTag> Tags => EntityData.Tags;
+        public List<AbilityDataScriptableObject> Abilities => EntityData.Abilities; // TODO maybe I do want these to be interfaces after all?
 
         [Header("Current")] 
         [SyncVar(hook = nameof(OnHPChanged))] 
@@ -96,7 +97,7 @@ namespace Gameplay.Entities {
         /// Initialization that runs on each client
         /// </summary>
         public void DoInitialize(EntityData data, Team team) {
-            Data = data;
+            EntityData = data;
             MyTeam = team;
             Team playerTeam = GameManager.Instance.LocalPlayer.Data.Team;
             
@@ -146,7 +147,7 @@ namespace Gameplay.Entities {
 
         public void MoveToCell(Vector2Int targetCell) {
             Debug.Log($"Attempting to move {UnitName} to {targetCell}");
-            MoveAbilityData data = (MoveAbilityData) Data.Abilities.First(a => a.Content.GetType() == typeof(MoveAbilityData)).Content;
+            MoveAbilityData data = (MoveAbilityData) EntityData.Abilities.First(a => a.Content.GetType() == typeof(MoveAbilityData)).Content;
             DoAbility(data, new MoveAbilityParameters { Destination = targetCell, SelectorTeam = MyTeam});
         }
 
@@ -156,7 +157,7 @@ namespace Gameplay.Entities {
             // TODO figure out if target is in range
 
             if (targetType == TargetType.Enemy) {
-                AttackAbilityData data = (AttackAbilityData) Data.Abilities
+                AttackAbilityData data = (AttackAbilityData) EntityData.Abilities
                     .First(a => a.Content.GetType() == typeof(AttackAbilityData)).Content;
                 DoAbility(data, new AttackAbilityParameters { Target = targetEntity, Attacker = this });
             }
@@ -178,7 +179,8 @@ namespace Gameplay.Entities {
             }
 
             // Do we own the requirements for this ability?
-            List<PurchasableData> ownedPurchasables = GameManager.Instance.GetPlayerForTeam(MyTeam).OwnedPurchasables;
+            List<PurchasableData> ownedPurchasables = GameManager.Instance.GetPlayerForTeam(MyTeam)
+                .OwnedPurchasablesController.OwnedPurchasables;
             if (data.Requirements.Any(r => !ownedPurchasables.Contains(r))) {
                 Debug.Log($"Can not use ability {data.ContentResourceID} because the player does not own all of the required purchasables");
                 return false;
@@ -287,22 +289,22 @@ namespace Gameplay.Entities {
         }
 
         public void TestBuild() {
-            BuildAbilityData data = (BuildAbilityData) Data.Abilities.First(a => a.Content.GetType() == typeof(BuildAbilityData)).Content;
+            BuildAbilityData data = (BuildAbilityData) EntityData.Abilities.First(a => a.Content.GetType() == typeof(BuildAbilityData)).Content;
             DoAbility(data, new BuildAbilityParameters{Buildable = data.Buildables[0].data, BuildLocation = Location});
         }
 
         private void SetupStats() {
-            MaxHP = Data.HP;
-            CurrentHP = Data.HP;
-            MaxMove = Data.MaxMove;
-            CurrentMoves = Data.MaxMove;
-            Range = Data.Range;
-            Damage = Data.Damage;
+            MaxHP = EntityData.HP;
+            CurrentHP = EntityData.HP;
+            MaxMove = EntityData.MaxMove;
+            CurrentMoves = EntityData.MaxMove;
+            Range = EntityData.Range;
+            Damage = EntityData.Damage;
         }
 
         private void SetupView() {
-            ViewCanvas.sortingOrder = Data.GetStackOrder();
-            _view = Instantiate(Data.ViewPrefab, ViewCanvas.transform);
+            ViewCanvas.sortingOrder = EntityData.GetStackOrder();
+            _view = Instantiate(EntityData.ViewPrefab, ViewCanvas.transform);
             _view.Initialize(this);
         }
 

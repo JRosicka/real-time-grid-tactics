@@ -26,8 +26,8 @@ namespace Gameplay.Entities {
         public void Initialize(GridEntity entity) {
             Entity = entity;
             
-            _mainImage.sprite = entity.Data.BaseSprite;
-            _teamColorImage.sprite = entity.Data.TeamColorSprite;
+            _mainImage.sprite = entity.EntityData.BaseSprite;
+            _teamColorImage.sprite = entity.EntityData.TeamColorSprite;
             _teamColorImage.color = GameManager.Instance.GetPlayerForTeam(entity.MyTeam).Data.TeamColor;
             
             entity.AbilityPerformedEvent += DoAbility;

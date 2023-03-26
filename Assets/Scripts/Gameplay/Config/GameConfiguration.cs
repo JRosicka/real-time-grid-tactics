@@ -26,6 +26,10 @@ namespace Gameplay.Config {
             return Purchasables.First(d => d.ID == id);
         }
 
+        public List<UpgradeData> GetUpgrades() {
+            return Purchasables.Where(p => p is UpgradeData).Cast<UpgradeData>().ToList();
+        }
+
         public AbilityDataScriptableObject GetAbility(string id) {
             return Abilities.First(d => d.name == id); 
         }

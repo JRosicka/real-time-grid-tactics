@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 8195557163812692593}
   - component: {fileID: 8947685216514300214}
   - component: {fileID: 1248678996792833214}
+  - component: {fileID: 4239723619030188051}
   m_Layer: 0
   m_Name: Game Player SP
   m_TagString: Player
@@ -47,6 +48,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _resourcesController: {fileID: 1248678996792833214}
+  _ownedPurchasablesController: {fileID: 4239723619030188051}
 --- !u!114 &8947685216514300214
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -74,6 +76,20 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f7f9dfdb2c6a4c05893434465099b7a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
+--- !u!114 &4239723619030188051
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1480027675339556}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cb9f869d8d9646b5a5a23356ded7c3f3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   syncMode: 0

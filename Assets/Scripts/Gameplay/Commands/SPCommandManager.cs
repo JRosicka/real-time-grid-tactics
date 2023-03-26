@@ -12,6 +12,10 @@ public class SPCommandManager : AbstractCommandManager {
         }, team);
     }
 
+    public override void AddUpgrade(UpgradeData data, GridEntity.Team team) {
+        DoAddUpgrade(data, team);
+    }
+
     protected override void RegisterEntity(GridEntity entity, EntityData data, Vector2Int position) {
         DoRegisterEntity(entity, data, position);
     }
