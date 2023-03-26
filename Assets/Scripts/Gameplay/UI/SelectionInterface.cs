@@ -108,13 +108,13 @@ namespace Gameplay.UI {
         private void UpdateEntityInfo() {
             if (SelectedEntity == null) return;
             
-            EntityIcon.sprite = SelectedEntity.Data.BaseSprite;
-            EntityColorsIcon.sprite = SelectedEntity.Data.TeamColorSprite;
+            EntityIcon.sprite = SelectedEntity.EntityData.BaseSprite;
+            EntityColorsIcon.sprite = SelectedEntity.EntityData.TeamColorSprite;
             EntityColorsIcon.color = GameManager.Instance.GetPlayerForTeam(SelectedEntity.MyTeam).Data.TeamColor;
 
             NameField.text = SelectedEntity.DisplayName;
-            DescriptionField.text = SelectedEntity.Data.Description;
-            TagsField.text = string.Join(", ", SelectedEntity.Data.Tags);
+            DescriptionField.text = SelectedEntity.EntityData.Description;
+            TagsField.text = string.Join(", ", SelectedEntity.EntityData.Tags);
 
             if (SelectedEntity.IsAbilityChannelOnCooldown(MoveChannel, out _activeMoveCooldownTimer)) {
                 MovesField.text = $"{SelectedEntity.CurrentMoves} / {SelectedEntity.MaxMove}";
