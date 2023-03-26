@@ -76,6 +76,21 @@ public class PlayerResourcesController : NetworkBehaviour {
     }
     
     private void SetBalance(ResourceAmount newBalance) {
+        if (!NetworkClient.active) {
+            // SP
+            DoSetBalance(newBalance);
+        } else {
+            // MP
+            CmdSetBalance(newBalance);
+        }
+    }
+
+    [Command(requiresAuthority = false)]
+    private void CmdSetBalance(ResourceAmount newBalance) {
+        DoSetBalance(newBalance);
+    }
+
+    private void DoSetBalance(ResourceAmount newBalance) {
         ResourceAmount currentBalance = _balances.First(b => b.Type == newBalance.Type);
         _balances.Remove(currentBalance);
 
@@ -88,13 +103,19 @@ public class PlayerResourcesController : NetworkBehaviour {
             // SP, so syncvars won't work... Trigger manually.
             BalanceChangedEvent?.Invoke(_balances.ToList());
         } else {
-            // MP. Reset the reference for <see cref="_balances"/> to force a sync across clients. Just updating fields in the class
-            // is not enough to get the sync to occur... 
-            _balances = new SyncList<ResourceAmount> {_balances[0], _balances[1]};
+            // MP host.  
+            CmdUpdateBalances();
         }
 
         foreach (ResourceAmount resourceAmount in _balances) {
             Debug.Log($"Balance for {resourceAmount.Type}: {resourceAmount.Amount}");
         }
+    }
+    
+    [Command(requiresAuthority = false)]
+    private void CmdUpdateBalances() {
+        // Reset the reference for <see cref="_balances"/> to force a sync across clients. Just updating fields in the class
+        // is not enough to get the sync to occur...
+        _balances = new SyncList<ResourceAmount> {_balances[0], _balances[1]};
     }
 }
