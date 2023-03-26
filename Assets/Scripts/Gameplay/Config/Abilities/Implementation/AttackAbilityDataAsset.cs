@@ -26,13 +26,15 @@ namespace Gameplay.Config.Abilities {
         }
 
         public bool CanTargetCell(Vector2Int cellPosition, GridEntity entity, GridEntity.Team selectorTeam) {
-            GridEntity target = GameManager.Instance.GetEntitiesAtLocation(cellPosition).GetTopEntity().Entity;
+            GridEntity target = GameManager.Instance.GetEntitiesAtLocation(cellPosition)?.GetTopEntity()?.Entity;
             return CanAttackTarget(target, entity);
         }
 
         private bool CanAttackTarget(GridEntity target, GridEntity selector) {
+            if (target == null || selector == null) return false;
+            
             // TODO range
-            return target != null && selector != null && target.MyTeam != GridEntity.Team.Neutral && target.MyTeam != selector.MyTeam;
+            return target.MyTeam != GridEntity.Team.Neutral && target.MyTeam != selector.MyTeam;
         }
 
         public void DoTargetableAbility(Vector2Int cellPosition, GridEntity entity, GridEntity.Team selectorTeam) {
