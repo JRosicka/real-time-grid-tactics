@@ -22,7 +22,7 @@ public class PlayerResourcesController : NetworkBehaviour {
     public event Action<List<ResourceAmount>> BalanceChangedEvent;
     
     [SyncVar(hook = nameof(OnBalanceChanged))]
-    private SyncList<ResourceAmount> _balances = new SyncList<ResourceAmount> {
+    private List<ResourceAmount> _balances = new List<ResourceAmount> {
         new ResourceAmount {Type = ResourceType.Basic, Amount = 0},
         new ResourceAmount {Type = ResourceType.Advanced, Amount = 0}
     };
@@ -116,6 +116,6 @@ public class PlayerResourcesController : NetworkBehaviour {
     private void CmdUpdateBalances() {
         // Reset the reference for <see cref="_balances"/> to force a sync across clients. Just updating fields in the class
         // is not enough to get the sync to occur...
-        _balances = new SyncList<ResourceAmount> {_balances[0], _balances[1]};
+        _balances = new List<ResourceAmount> {_balances[0], _balances[1]};
     }
 }
