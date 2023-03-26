@@ -41,10 +41,17 @@ namespace Gameplay.UI {
         
         public void DeselectActiveAbility() {
             _selectedSlot = null;
+            
+            // Deselect current targetable ability
+            GameManager.Instance.GridController.SelectTargetableAbility(null);
+            
             DeselectUnselectedSlots();
         }
         
         public void SelectAbility(AbilitySlot slot) {
+            // Deselect current targetable ability
+            GameManager.Instance.GridController.SelectTargetableAbility(null);
+
             _selectedSlot = slot;
             if (!_selectedSlot.SelectAbility()) {
                 _selectedSlot = null;

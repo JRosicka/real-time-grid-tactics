@@ -13,7 +13,9 @@ namespace Gameplay.Entities {
             if (thisEntity == null) {
                 return;
             }
-
+            
+            GameManager.Instance.SelectionInterface.DeselectActiveAbility();
+            
             // Target the top entity
             GridEntity targetEntity = GameManager.Instance.GetEntitiesAtLocation(targetCell)?.GetTopEntity()?.Entity;
 

@@ -89,6 +89,8 @@ namespace Gameplay.UI {
             
             // Hide everything
             ToggleViews(false);
+            
+            AbilityInterface.DeselectActiveAbility();
         }
 
         private void ToggleViews(bool active) {
