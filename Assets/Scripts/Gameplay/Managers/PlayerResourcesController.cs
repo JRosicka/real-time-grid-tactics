@@ -21,9 +21,8 @@ public struct ResourceAmount {
 public class PlayerResourcesController : NetworkBehaviour {
     public event Action<List<ResourceAmount>> BalanceChangedEvent;
     
-    // TODO I think I'll need to move this out to a new NetworkBehaviour class that just has a syncvar of these. Or if I can have this class inherit from NetworkBehaviour without SP issues then I could just keep this here and make it a syncvar. 
     [SyncVar(hook = nameof(OnBalanceChanged))]
-    private List<ResourceAmount> _balances = new List<ResourceAmount> {
+    private SyncList<ResourceAmount> _balances = new SyncList<ResourceAmount> {
         new ResourceAmount {Type = ResourceType.Basic, Amount = 0},
         new ResourceAmount {Type = ResourceType.Advanced, Amount = 0}
     };
@@ -87,11 +86,11 @@ public class PlayerResourcesController : NetworkBehaviour {
     private void UpdateBalances() {
         if (!NetworkClient.active) {
             // SP, so syncvars won't work... Trigger manually.
-            BalanceChangedEvent?.Invoke(_balances);
+            BalanceChangedEvent?.Invoke(_balances.ToList());
         } else {
-            // Reset the reference for <see cref="_balances"/> to force a sync across clients. Just updating fields in the class
+            // MP. Reset the reference for <see cref="_balances"/> to force a sync across clients. Just updating fields in the class
             // is not enough to get the sync to occur... 
-            _balances = new List<ResourceAmount> {_balances[0], _balances[1]};
+            _balances = new SyncList<ResourceAmount> {_balances[0], _balances[1]};
         }
 
         foreach (ResourceAmount resourceAmount in _balances) {
