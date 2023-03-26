@@ -51,9 +51,10 @@ public class GameSetupManager : MonoBehaviour {
         ICommandManager commandManager = Instantiate(SPCommandManagerPrefab, transform);
         GameManager.SetupCommandManager(commandManager);
         
-        List<UpgradeData> upgrades = GameManager.Instance.Configuration.GetUpgrades();
         SPGamePlayer localPlayer = Instantiate(SPGamePlayerPrefab);
+        localPlayer.Data = Player1Data;
         SPGamePlayer opponentPlayer = Instantiate(SPGamePlayerPrefab);
+        opponentPlayer.Data = Player2Data;
         GameManager.SetPlayers(localPlayer, opponentPlayer);
         
         _gameInitialized = true;
