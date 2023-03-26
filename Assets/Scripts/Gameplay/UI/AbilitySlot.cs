@@ -128,10 +128,13 @@ namespace Gameplay.UI {
                 IGamePlayer player = GameManager.Instance.GetPlayerForTeam(_selectedEntity.MyTeam);
                 List<PurchasableData> ownedPurchasables = player.OwnedPurchasablesController.OwnedPurchasables;
 
-                // Check if this entity can build this and if we can afford this
-                if (_selectedEntity.CanUseAbility(_currentBuildData) 
-                    && GameManager.Instance.GetPlayerForTeam(_selectedEntity.MyTeam).ResourcesController.CanAfford(_currentEntityToBuild.Cost)
-                    && _currentEntityToBuild.Requirements.All(r => ownedPurchasables.Contains(r))) {
+                if (_currentEntityToBuild is UpgradeData && ownedPurchasables.Contains(_currentEntityToBuild)) {
+                    // Upgrade that we already own
+                    Clear();
+                } else if (_selectedEntity.CanUseAbility(_currentBuildData) 
+                           && GameManager.Instance.GetPlayerForTeam(_selectedEntity.MyTeam).ResourcesController.CanAfford(_currentEntityToBuild.Cost)
+                           && _currentEntityToBuild.Requirements.All(r => ownedPurchasables.Contains(r))) {
+                    // This entity can build this and we can afford this
                     MarkSelectable(true);
                 } else {
                     MarkSelectable(false);
@@ -160,6 +163,8 @@ namespace Gameplay.UI {
         #region Listeners
 
         private void AddListeners() {
+            if (_selectedEntity == null) return;
+            
             _selectedEntity.CooldownTimerExpiredEvent += OnAbilityTimersChanged;
             _selectedEntity.AbilityPerformedEvent += OnAbilityTimersChanged;
             LocalResourcesController.BalanceChangedEvent += OnPlayerResourcesBalanceChanged;
