@@ -39,7 +39,11 @@ public class MPCommandManager : AbstractCommandManager {
         DoSpawnEntity(data, spawnLocation, () => {
             GridEntity entityInstance = Instantiate(GridEntityPrefab, GridController.GetWorldPosition(spawnLocation), Quaternion.identity, SpawnBucket);
             NetworkServer.Spawn(entityInstance.gameObject);
+            
+            // Set the items that we can't wait until client initialization for
             entityInstance.EntityData = data;
+            entityInstance.MyTeam = team;
+
             entityInstance.RpcInitialize(data, team);
             return entityInstance;
         }, team);
