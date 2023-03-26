@@ -7,6 +7,7 @@ public class SPCommandManager : AbstractCommandManager {
     public override void SpawnEntity(EntityData data, Vector2Int spawnLocation, GridEntity.Team team) {
         DoSpawnEntity(data, spawnLocation, () => {
             GridEntity entityInstance = Instantiate(GridEntityPrefab, GridController.GetWorldPosition(spawnLocation), Quaternion.identity, SpawnBucket);
+            entityInstance.EntityData = data;
             entityInstance.DoInitialize(data, team);
             return entityInstance;
         }, team);
