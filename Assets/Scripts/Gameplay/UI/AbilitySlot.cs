@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Linq;
 using Gameplay.Config;
 using Gameplay.Config.Abilities;
 using Gameplay.Entities;
@@ -33,7 +35,10 @@ namespace Gameplay.UI {
         private PurchasableData _currentEntityToBuild;
         private bool _selectable;
         private bool _displayingBuild;
-        
+        private bool _selected;
+
+        private PlayerResourcesController LocalResourcesController => GameManager.Instance.LocalPlayer.ResourcesController;
+
         public void SetUpForAbility(IAbilityData data, GridEntity selectedEntity) {
             gameObject.SetActive(true);
             _currentAbilityData = data;
@@ -102,6 +107,7 @@ namespace Gameplay.UI {
         }
 
         public void MarkSelected(bool selected) {
+            _selected = selected;
             if (selected) {
                 SlotFrame.color = SelectedColor;
             } else {
@@ -119,10 +125,13 @@ namespace Gameplay.UI {
 
         private void CheckAvailability() {
             if (_displayingBuild) {
+                IGamePlayer player = GameManager.Instance.GetPlayerForTeam(_selectedEntity.MyTeam);
+                List<PurchasableData> ownedPurchasables = player.OwnedPurchasablesController.OwnedPurchasables;
+
                 // Check if this entity can build this and if we can afford this
                 if (_selectedEntity.CanUseAbility(_currentBuildData) 
-                    && GameManager.Instance.GetPlayerForTeam(_selectedEntity.MyTeam).ResourcesController
-                        .CanAfford(_currentEntityToBuild.Cost)) {
+                    && GameManager.Instance.GetPlayerForTeam(_selectedEntity.MyTeam).ResourcesController.CanAfford(_currentEntityToBuild.Cost)
+                    && _currentEntityToBuild.Requirements.All(r => ownedPurchasables.Contains(r))) {
                     MarkSelectable(true);
                 } else {
                     MarkSelectable(false);
@@ -136,6 +145,11 @@ namespace Gameplay.UI {
                     MarkSelectable(false);
                 }
             }
+            
+            if (_selected && _selectable) {
+                // Re-set the appearance to "selected" if we were selected and still can be
+                SlotFrame.color = SelectedColor;
+            }
         }
 
         private void MarkSelectable(bool available) {
@@ -148,6 +162,8 @@ namespace Gameplay.UI {
         private void AddListeners() {
             _selectedEntity.CooldownTimerExpiredEvent += OnAbilityTimersChanged;
             _selectedEntity.AbilityPerformedEvent += OnAbilityTimersChanged;
+            LocalResourcesController.BalanceChangedEvent += OnPlayerResourcesBalanceChanged;
+            GameManager.Instance.LocalPlayer.OwnedPurchasablesController.OwnedPurchasablesChangedEvent += OnPlayerOwnedEntitiesChanged;
         }
 
         private void RemoveListeners() {
@@ -155,6 +171,8 @@ namespace Gameplay.UI {
             
             _selectedEntity.CooldownTimerExpiredEvent -= OnAbilityTimersChanged;
             _selectedEntity.AbilityPerformedEvent -= OnAbilityTimersChanged;
+            LocalResourcesController.BalanceChangedEvent -= OnPlayerResourcesBalanceChanged;
+            GameManager.Instance.LocalPlayer.OwnedPurchasablesController.OwnedPurchasablesChangedEvent -= OnPlayerOwnedEntitiesChanged;
         }
 
         private void OnAbilityTimersChanged(IAbility ability, AbilityCooldownTimer timer) {
@@ -165,12 +183,20 @@ namespace Gameplay.UI {
             }
         }
         
-        private void OnPlayerPurchasedSomething() {
-            
+        /// <summary>
+        /// When the player gains or spends resources
+        /// </summary>
+        private void OnPlayerResourcesBalanceChanged(List<ResourceAmount> resourceAmounts) {
+            if (_displayingBuild) {
+                CheckAvailability();
+            }
         }
-
-        private void OnSomethingThatThePlayerOwnedDied() {
-            
+        
+        /// <summary>
+        /// When the player gains a new entity or an entity of theirs dies
+        /// </summary>
+        private void OnPlayerOwnedEntitiesChanged() {
+            CheckAvailability();
         }
         
         #endregion
