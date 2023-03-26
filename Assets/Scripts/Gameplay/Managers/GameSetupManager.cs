@@ -53,13 +53,11 @@ public class GameSetupManager : MonoBehaviour {
         
         List<UpgradeData> upgrades = GameManager.Instance.Configuration.GetUpgrades();
         SPGamePlayer localPlayer = Instantiate(SPGamePlayerPrefab);
-        localPlayer.Initialize(Player1Data, upgrades);
         SPGamePlayer opponentPlayer = Instantiate(SPGamePlayerPrefab);
-        opponentPlayer.Initialize(Player2Data, upgrades);
         GameManager.SetPlayers(localPlayer, opponentPlayer);
         
         _gameInitialized = true;
-    }
+    } 
 
     #endregion
     
@@ -113,7 +111,7 @@ public class GameSetupManager : MonoBehaviour {
                 $"Tried to set up network player with invalid index ({networkPlayer.index})")
         };
 
-        gamePlayer.Initialize(data, GameManager.Instance.Configuration.GetUpgrades());
+        gamePlayer.Data = data;
         gamePlayer.DisplayName = networkPlayer.DisplayName;
 
         if (networkPlayer.isLocalPlayer) {

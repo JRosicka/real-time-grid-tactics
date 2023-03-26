@@ -5,7 +5,7 @@ using Gameplay.Config;
 /// Represents a player and its associated data and overall state
 /// </summary>
 public interface IGamePlayer {
-    PlayerData Data { get; }
+    PlayerData Data { get; set; }
     string DisplayName { get; set; }
     PlayerResourcesController ResourcesController { get; }
     /// <summary>
@@ -13,5 +13,5 @@ public interface IGamePlayer {
     /// currently active in the game (not destroyed).
     /// </summary>
     PlayerOwnedPurchasablesController OwnedPurchasablesController { get; }    // TODO actually handle adding/removing things from this
-    void Initialize(PlayerData data, List<UpgradeData> upgradesToRegister);
+    void Initialize(List<UpgradeData> upgradesToRegister);
 }

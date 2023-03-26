@@ -3,7 +3,7 @@ using Gameplay.Config;
 using UnityEngine;
 
 public class SPGamePlayer : MonoBehaviour, IGamePlayer {
-    public PlayerData Data { get; private set; }
+    public PlayerData Data { get; set; }
     public string DisplayName { get; set; }
     [SerializeField]
     private PlayerResourcesController _resourcesController;
@@ -11,8 +11,7 @@ public class SPGamePlayer : MonoBehaviour, IGamePlayer {
     [SerializeField]
     private PlayerOwnedPurchasablesController _ownedPurchasablesController;
     public PlayerOwnedPurchasablesController OwnedPurchasablesController => _ownedPurchasablesController;
-    public void Initialize(PlayerData data, List<UpgradeData> upgradesToRegister) {
-        Data = data;
+    public void Initialize(List<UpgradeData> upgradesToRegister) {
         _ownedPurchasablesController.Initialize(Data.Team, upgradesToRegister);
     }
 }

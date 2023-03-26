@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class MPGamePlayer : NetworkBehaviour, IGamePlayer {
     [field: SyncVar]
-    public PlayerData Data { get; private set; }
+    public PlayerData Data { get; set; }
     public string DisplayName { get; set; }
     [SerializeField]
     private PlayerResourcesController _resourcesController;
@@ -13,8 +13,7 @@ public class MPGamePlayer : NetworkBehaviour, IGamePlayer {
     [SerializeField]
     private PlayerOwnedPurchasablesController _ownedPurchasablesController;
     public PlayerOwnedPurchasablesController OwnedPurchasablesController => _ownedPurchasablesController;
-    public void Initialize(PlayerData data, List<UpgradeData> upgradesToRegister) {
-        Data = data;
+    public void Initialize(List<UpgradeData> upgradesToRegister) {
         _ownedPurchasablesController.Initialize(Data.Team, upgradesToRegister);
     }
 
