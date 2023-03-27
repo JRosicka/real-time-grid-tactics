@@ -14,8 +14,8 @@ using UnityEngine;
 /// Also keeps a collection of all the currently active <see cref="GridEntity"/>s and their locations on the grid. 
 /// </summary>
 public abstract class AbstractCommandManager : NetworkBehaviour, ICommandManager {
-    [SyncVar]
-    public Transform SpawnBucket;
+    [field:SyncVar]
+    public Transform SpawnBucket { get; protected set; }
     public GridEntity GridEntityPrefab;
 
     protected GridController GridController => GameManager.Instance.GridController;

@@ -32,4 +32,5 @@ public interface ICommandManager {
     /// </summary>
     event Action<GridEntity.Team> EntityUnregisteredEvent;
     GridEntityCollection EntitiesOnGrid { get; }
+    Transform SpawnBucket { get; }
 }

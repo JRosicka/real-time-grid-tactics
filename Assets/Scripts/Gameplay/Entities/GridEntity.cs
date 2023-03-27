@@ -90,6 +90,7 @@ namespace Gameplay.Entities {
 
         [ClientRpc]
         public void RpcInitialize(EntityData data, Team team) {
+            transform.parent = GameManager.Instance.CommandManager.SpawnBucket;
             DoInitialize(data, team);
         }
 
