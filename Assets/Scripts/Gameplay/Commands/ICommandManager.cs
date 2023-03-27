@@ -9,7 +9,7 @@ using UnityEngine;
 /// In multiplayer games, these commands are networked to the server.
 /// </summary>
 public interface ICommandManager {
-    void Initialize(Transform spawnBucket);
+    void Initialize(Transform spawnBucketPrefab);
     void SpawnEntity(EntityData data, Vector2Int spawnLocation, GridEntity.Team team);
     void AddUpgrade(UpgradeData data, GridEntity.Team team);
     /// <summary>

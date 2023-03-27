@@ -5,6 +5,11 @@ using Mirror;
 using UnityEngine;
 
 public class MPCommandManager : AbstractCommandManager {
+    public override void Initialize(Transform spawnBucketPrefab) {
+        SpawnBucket = Instantiate(spawnBucketPrefab);
+        NetworkServer.Spawn(SpawnBucket.gameObject);
+    }
+
     public override void SpawnEntity(EntityData data, Vector2Int spawnLocation, GridEntity.Team team) {
         CmdSpawnEntity(data, spawnLocation, team);
     }
