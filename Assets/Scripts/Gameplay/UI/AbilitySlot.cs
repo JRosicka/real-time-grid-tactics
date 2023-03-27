@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Gameplay.Config;
@@ -21,7 +22,8 @@ namespace Gameplay.UI {
         public Color SelectableColor;
         public Color UnselectableColor;
         public Color SelectedColor;
-
+        public float ButtonDeselectDelay = .5f;
+        
         [Header("References")]
         public Image AbilityImage;
         public Image SecondaryAbilityImage;    // For build target color icon
@@ -36,6 +38,7 @@ namespace Gameplay.UI {
         private bool _selectable;
         private bool _displayingBuild;
         private bool _selected;
+        private bool _shouldDeselectWhenTimerElapses;
 
         private PlayerResourcesController LocalResourcesController => GameManager.Instance.LocalPlayer.ResourcesController;
 
@@ -76,6 +79,8 @@ namespace Gameplay.UI {
 
         public void Clear() {
             RemoveListeners();
+            _shouldDeselectWhenTimerElapses = false;
+
             _currentAbilityData = null;
             _currentBuildData = null;
             _currentEntityToBuild = null;
@@ -108,11 +113,34 @@ namespace Gameplay.UI {
 
         public void MarkSelected(bool selected) {
             _selected = selected;
+            _shouldDeselectWhenTimerElapses = false;
             if (selected) {
                 SlotFrame.color = SelectedColor;
+                if (_currentAbilityData is ITargetableAbilityData) {
+                    // We want this slot to keep appearing as selected until we do something else, so don't auto-unmark it.
+                } else {
+                    StartCoroutine(DeselectLater());
+                }
+
             } else {
                 // Resets the color
                 CheckAvailability();
+            }
+        }
+
+        /// <summary>
+        /// Deselect this slot in a bit so that there is an active "this is selected" look right after selecting.
+        /// TODO: This doesn't really do anything right now since MarkSelectable(false) is called immediately after due to the ability being performed. If we care about this, then might be best to do some sort of animation or no-op the MarkSelectable(false) when this is active or something. 
+        /// </summary>
+        /// <returns></returns>
+        private IEnumerator DeselectLater() {
+            _shouldDeselectWhenTimerElapses = true;
+            
+            yield return new WaitForSeconds(ButtonDeselectDelay);
+
+            // Only deselect if we have not done anything else meaningful with this slot while waiting
+            if (_shouldDeselectWhenTimerElapses) {
+                MarkSelectable(false);
             }
         }
 
