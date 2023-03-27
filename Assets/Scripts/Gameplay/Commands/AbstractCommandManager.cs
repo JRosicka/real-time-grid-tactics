@@ -35,8 +35,8 @@ public abstract class AbstractCommandManager : NetworkBehaviour, ICommandManager
 
     public GridEntityCollection EntitiesOnGrid => _entitiesOnGrid;
 
-    public void Initialize(Transform spawnBucket) {
-        SpawnBucket = spawnBucket;
+    public void Initialize(Transform spawnBucketPrefab) {
+        SpawnBucket = Instantiate(spawnBucketPrefab);
     }
     
     /// <summary>

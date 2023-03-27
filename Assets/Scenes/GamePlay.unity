@@ -278,37 +278,6 @@ MonoBehaviour:
   visible: 0
   m_AssetId: 
   hasSpawned: 0
---- !u!1 &715509369
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 715509370}
-  m_Layer: 0
-  m_Name: Spawned Entities
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &715509370
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 715509369}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 5
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &733367779
 GameObject:
   m_ObjectHideFlags: 0
@@ -586,7 +555,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bd3b396bd1d20894a83b655fa8825784, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SpawnBucket: {fileID: 715509370}
+  SpawnBucketPrefab: {fileID: 8358905128234154871, guid: 4a9a831e37d10b7489f112c3d665e6d4, type: 3}
   GridController: {fileID: 1769013663}
   GameSetupManager: {fileID: 527040125}
   Configuration: {fileID: 11400000, guid: 039c03c459bdcb44a97810fd135982a3, type: 2}
@@ -675,7 +644,7 @@ Transform:
   m_Children:
   - {fileID: 1986325195}
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1769013662
 MonoBehaviour:
@@ -5875,7 +5844,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9110487611848024507, guid: 311ea1f28851470499dfeb80252ee59f, type: 3}
       propertyPath: m_RootOrder
-      value: 7
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 9110487611848024507, guid: 311ea1f28851470499dfeb80252ee59f, type: 3}
       propertyPath: m_LocalPosition.x

@@ -11,7 +11,7 @@ public class GameManager : MonoBehaviour {
     public static GameManager Instance;
 
     [Header("References")] 
-    public Transform SpawnBucket;
+    public Transform SpawnBucketPrefab;
     public GridController GridController;
     public ICommandManager CommandManager;
     public GameSetupManager GameSetupManager;
@@ -73,7 +73,7 @@ public class GameManager : MonoBehaviour {
 
     public void SetupCommandManager(ICommandManager commandManager) {
         CommandManager = commandManager;
-        CommandManager.Initialize(SpawnBucket);
+        CommandManager.Initialize(SpawnBucketPrefab);
     }
 
     #endregion
