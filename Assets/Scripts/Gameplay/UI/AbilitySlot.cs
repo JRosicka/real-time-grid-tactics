@@ -141,6 +141,7 @@ namespace Gameplay.UI {
             // Only deselect if we have not done anything else meaningful with this slot while waiting
             if (_shouldDeselectWhenTimerElapses) {
                 MarkSelectable(false);
+                MarkSelected(false);
             }
         }
 
@@ -209,10 +210,14 @@ namespace Gameplay.UI {
         }
 
         private void OnAbilityTimersChanged(IAbility ability, AbilityCooldownTimer timer) {
-            if (_displayingBuild) return;
-            
-            if (timer.ChannelBlockers.Contains(Channel)) {
+            if (_displayingBuild) {
+                // Displaying build
                 CheckAvailability();
+            } else {
+                // Displaying abilities
+                if (timer.ChannelBlockers.Contains(Channel)) {
+                    CheckAvailability();
+                }
             }
         }
         
