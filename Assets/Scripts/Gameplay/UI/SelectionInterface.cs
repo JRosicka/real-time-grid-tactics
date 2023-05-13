@@ -52,9 +52,8 @@ namespace Gameplay.UI {
             
             AbilityInterface.SetUpForEntity(entity);
 
-            entity.MovesChangedEvent += UpdateEntityInfo;
-            entity.HPChangedEvent += UpdateEntityInfo;
             entity.AbilityPerformedEvent += OnEntityAbilityPerformed;
+            entity.CooldownTimerExpiredEvent += OnEntityAbilityCooldownExpired;
             entity.KilledEvent += OnEntityKilled;
             
             ToggleViews(true);
@@ -79,13 +78,15 @@ namespace Gameplay.UI {
         private void DeselectCurrentEntity() {
             if (SelectedEntity == null) return;
             
-            SelectedEntity.MovesChangedEvent -= UpdateEntityInfo;
-            SelectedEntity.HPChangedEvent -= UpdateEntityInfo;
             SelectedEntity.AbilityPerformedEvent -= OnEntityAbilityPerformed;
+            SelectedEntity.CooldownTimerExpiredEvent -= OnEntityAbilityCooldownExpired;
             SelectedEntity.KilledEvent -= OnEntityKilled;
 
             _activeMoveCooldownTimer = null;
             SelectedEntity = null;
+            if (MoveTimer != null) {
+                MoveTimer.UnsubscribeFromTimers();
+            }
             
             // Hide everything
             ToggleViews(false);
@@ -102,6 +103,10 @@ namespace Gameplay.UI {
         }
 
         private void OnEntityAbilityPerformed(IAbility iAbility, AbilityCooldownTimer abilityCooldownTimer) {
+            UpdateEntityInfo();
+        }
+
+        private void OnEntityAbilityCooldownExpired(IAbility ability, AbilityCooldownTimer abilityCooldownTimer) {
             UpdateEntityInfo();
         }
         
@@ -123,7 +128,7 @@ namespace Gameplay.UI {
             if (SelectedEntity.IsAbilityChannelOnCooldown(MoveChannel, out _activeMoveCooldownTimer)) {
                 MovesField.text = $"{SelectedEntity.CurrentMoves} / {SelectedEntity.MaxMove}";
                 MoveTimer.gameObject.SetActive(true);
-                MoveTimer.Initialize(_activeMoveCooldownTimer, false);
+                MoveTimer.Initialize(_activeMoveCooldownTimer, false, true);
             } else {
                 MovesField.text = $"{SelectedEntity.MaxMove} / {SelectedEntity.MaxMove}";
                 MoveTimer.gameObject.SetActive(false);

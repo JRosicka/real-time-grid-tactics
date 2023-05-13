@@ -18,14 +18,19 @@ namespace Gameplay.Entities.Abilities {
             Performer = performer;
         }
 
-        public void CompleteCooldown() {
-            CompleteCooldownImpl();
+        public bool CompleteCooldown() {
+            if (!CompleteCooldownImpl()) {
+                return false;
+            }
+            
             if (Data.RepeatWhenCooldownFinishes) {
                 Performer.DoAbility(AbilityData, BaseParameters);
             }
+
+            return true;
         }
 
-        protected abstract void CompleteCooldownImpl();
+        protected abstract bool CompleteCooldownImpl();
 
         public virtual void SerializeParameters(NetworkWriter writer) {
             writer.Write(Performer);

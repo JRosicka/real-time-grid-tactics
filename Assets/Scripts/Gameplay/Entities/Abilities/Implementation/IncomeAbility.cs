@@ -8,9 +8,10 @@ namespace Gameplay.Entities.Abilities {
     public class IncomeAbility : AbilityBase<IncomeAbilityData, NullAbilityParameters> {
         public IncomeAbility(IncomeAbilityData data, NullAbilityParameters parameters, GridEntity performer) : base(data, parameters, performer) { }
 
-        protected override void CompleteCooldownImpl() {
+        protected override bool CompleteCooldownImpl() {
             PlayerResourcesController resourcesController = GameManager.Instance.GetPlayerForTeam(Performer.MyTeam).ResourcesController;
             resourcesController.Earn(Data.ResourceAmountIncome);
+            return true;
         }
 
         protected override void PayCostImpl() {

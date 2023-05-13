@@ -1,4 +1,7 @@
+using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Gameplay.Config.Abilities;
 using Mirror;
 using UnityEngine;
@@ -13,6 +16,11 @@ namespace Gameplay.Entities.Abilities {
     /// This may need to be changed if ability timers are too out of sync across different clients. 
     /// </summary>
     public class AbilityCooldownTimer {
+        /// <summary>
+        /// The amount of time to wait between attempts to complete the ability cooldown after the timer elapses
+        /// </summary>
+        private const int CooldownCheckMillis = 200;
+        
         public List<AbilityChannel> ChannelBlockers => Ability.AbilityData.ChannelBlockers;
         public readonly IAbility Ability;
         
@@ -25,7 +33,9 @@ namespace Gameplay.Entities.Abilities {
                 return _timeRemaining / _initialTimeRemaining;
             }
         }
+        
         public bool Expired;
+        public event Action ExpiredEvent;
         
         private float _timeRemaining;
         private float _initialTimeRemaining;
@@ -50,17 +60,21 @@ namespace Gameplay.Entities.Abilities {
             if (!NetworkClient.active) {
                 // SP
                 Debug.Log("Ability timer completed, DING");
-                GameManager.Instance.CommandManager.MarkAbilityCooldownExpired(Ability);
-                Ability.CompleteCooldown();
+                TryCompleteAbilityCooldownAsync().FireAndForget();
             } else if (NetworkServer.active) {
                 // MP and we are the server
                 Debug.Log("Server: Ability timer completed, DING");
-                GameManager.Instance.CommandManager.MarkAbilityCooldownExpired(Ability);
-                Ability.CompleteCooldown();
+                TryCompleteAbilityCooldownAsync().FireAndForget();
             } else {
                 // MP and we are a client. Only handle client-specific stuff. 
                 Debug.Log("Client: Ability timer completed, DING");
             }
+        }
+
+        // TODO: I probably should use a different name than cooldown since there are abilities that do their specific actions after the ability time elapses. Kinda a misnomer to call that a cooldown. 
+        private async Task TryCompleteAbilityCooldownAsync() {
+            await AsyncUtil.WaitUntilOnCallerThread(Ability.CompleteCooldown, CooldownCheckMillis);
+            GameManager.Instance.CommandManager.MarkAbilityCooldownExpired(Ability);
         }
         
         /// <summary>
@@ -70,6 +84,7 @@ namespace Gameplay.Entities.Abilities {
         public void Expire() {
             _timeRemaining = 0f;
             Expired = true;
+            ExpiredEvent?.Invoke();
         }
     }
 }

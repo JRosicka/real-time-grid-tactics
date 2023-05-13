@@ -39,7 +39,7 @@ namespace Gameplay.Entities {
         // TODO can pass in things like color and timer location (maybe use a set of transform references) and stuff
         protected void CreateTimerView(AbilityCooldownTimer cooldownTimer) {
             AbilityTimerCooldownView cooldownView = Instantiate(TimerCooldownViewPrefab, _timerLocation);
-            cooldownView.Initialize(cooldownTimer, true);
+            cooldownView.Initialize(cooldownTimer, true, true);
         }
 
         public abstract void DoAbility(IAbility ability, AbilityCooldownTimer cooldownTimer);

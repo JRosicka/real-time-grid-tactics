@@ -14,9 +14,10 @@ namespace Gameplay.Entities.Abilities {
             
         }
 
-        protected override void CompleteCooldownImpl() {
+        protected override bool CompleteCooldownImpl() {
             // TODO on a somewhat related note, I should really have these ability and CommandManager methods be more clear about which are run on the server and which are run on clients. Can't do Cmd everywhere because that would break SP. 
             Performer.CurrentMoves = Mathf.Min(Performer.CurrentMoves + _moveCost, Performer.MaxMove);
+            return true;
         }
 
         protected override void PayCostImpl() {

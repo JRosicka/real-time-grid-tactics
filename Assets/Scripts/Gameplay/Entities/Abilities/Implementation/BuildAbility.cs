@@ -21,7 +21,7 @@ namespace Gameplay.Entities.Abilities {
             
         }
 
-        protected override void CompleteCooldownImpl() {
+        protected override bool CompleteCooldownImpl() {
             switch (AbilityParameters.Buildable) {
                 case EntityData entityData:
                     if (GameManager.Instance.GridController.CanEntityEnterCell(AbilityParameters.BuildLocation,
@@ -29,14 +29,14 @@ namespace Gameplay.Entities.Abilities {
                         // The location is open to put this entity, so go ahead and spawn it
                         GameManager.Instance.CommandManager.SpawnEntity(entityData, AbilityParameters.BuildLocation,
                             Performer.MyTeam);
+                        return true;
                     } else {
-                        // TODO: What if the build location is occupied? Currently does a no-op.
-                        // Would be better to block building and queue the spawn to happen when the location opens up. 
+                        // The build location is occupied, so we can not yet complete the ability
+                        return false;
                     }
-                    break;
                 case UpgradeData upgradeData:
                     GameManager.Instance.CommandManager.AddUpgrade(upgradeData, Performer.MyTeam);
-                    break;
+                    return true;
                 default:
                     throw new Exception("Unexpected purchasable data type: " + AbilityParameters.Buildable.GetType());
             }
