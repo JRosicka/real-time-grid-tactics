@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Gameplay.Config;
 using Gameplay.Config.Abilities;
 using Mirror;
@@ -24,9 +25,12 @@ namespace Gameplay.Entities.Abilities {
         protected override bool CompleteCooldownImpl() {
             switch (AbilityParameters.Buildable) {
                 case EntityData entityData:
-                    if (GameManager.Instance.GridController.CanEntityEnterCell(AbilityParameters.BuildLocation,
-                            entityData, Performer.MyTeam)) {
+                    if (GameManager.Instance.GridController.CanEntityEnterCell(AbilityParameters.BuildLocation, entityData, Performer.MyTeam, new List<GridEntity>{Performer})) {
                         // The location is open to put this entity, so go ahead and spawn it
+                        if (entityData.IsStructure) {
+                            // Destroy the builder first. TODO Is this guaranteed to happen before the below spawn command? If not then the server recheck of CanEntityEnterCell will fail because the builder still exists at the entity location. 
+                            GameManager.Instance.CommandManager.DestroyEntity(Performer, true);
+                        }
                         GameManager.Instance.CommandManager.SpawnEntity(entityData, AbilityParameters.BuildLocation,
                             Performer.MyTeam);
                         return true;

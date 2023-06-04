@@ -38,6 +38,10 @@ namespace Gameplay.Config.Abilities {
         /// </summary>
         bool AutoSelect { get; }
         /// <summary>
+        /// Whether this ability requires a cell to be targeted when using it
+        /// </summary>
+        bool Targeted { get; }
+        /// <summary>
         /// Respond to the user input intending to use this ability. Do not actually perform the ability (unless there is
         /// nothing else to do first) - rather, handle any client-side stuff by sending events to prompt for further input. 
         /// </summary>

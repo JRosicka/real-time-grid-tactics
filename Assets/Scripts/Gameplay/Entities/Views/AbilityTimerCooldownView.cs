@@ -67,7 +67,9 @@ namespace Gameplay.Entities {
         /// The timer has been expired on the server, so handle completion locally
         /// </summary>
         private void OnTimerExpired() {
-            _cooldownTimer.ExpiredEvent -= OnTimerExpired;
+            if (_cooldownTimer != null) {
+                _cooldownTimer.ExpiredEvent -= OnTimerExpired;
+            }
             HandleTimerCompleted();
         }
 

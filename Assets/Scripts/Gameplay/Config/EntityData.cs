@@ -36,12 +36,14 @@ namespace Gameplay.Config {
         [Tooltip("Whether friendly (non-structure) entities can enter (spawn, move, etc) a cell with this entity")]
         public bool FriendlyUnitsCanShareCell;
 
+        public bool IsStructure => Tags.Contains(EntityTag.Structure);
+        
         /// <summary>
         /// The order that this should appear and be selectable compared to other entities at the same location.
         /// Lower values appear on top of higher values and are selected first. 
         /// </summary>
         public int GetStackOrder() {
-            return Tags.Contains(EntityTag.Structure) ? CanvasSortingOrderMap.GridEntity_Structure : CanvasSortingOrderMap.GridEntity_Unit;
+            return IsStructure ? CanvasSortingOrderMap.GridEntity_Structure : CanvasSortingOrderMap.GridEntity_Unit;
         }
         
         private void OnValidate() {
@@ -50,7 +52,7 @@ namespace Gameplay.Config {
                 Debug.LogError($"{name}: Detected abilities with the same channel, don't do that! {channelNames}");
             } 
 
-            if (FriendlyUnitsCanShareCell && !Tags.Contains(EntityTag.Structure)) {
+            if (FriendlyUnitsCanShareCell && !IsStructure) {
                 Debug.LogError($"{name}: Woah woah woah buddy, if you want this entity to be able to share a cell with other entities, then it's gotta be a structure!");
             }
         }

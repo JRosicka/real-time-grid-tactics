@@ -86,6 +86,8 @@ namespace Gameplay.UI {
             _currentEntityToBuild = null;
             _selectedEntity = null;
             _displayingBuild = false;
+            _selected = false;
+            _selectable = false;
             gameObject.SetActive(false);
         }
         
@@ -100,11 +102,15 @@ namespace Gameplay.UI {
             MarkSelected(true);
 
             if (_displayingBuild) {
-                // Try to perform the build ability
-                _selectedEntity.DoAbility(_currentBuildData, new BuildAbilityParameters {
-                    Buildable = _currentEntityToBuild, 
-                    BuildLocation = _selectedEntity.Location
-                });
+                if (_currentBuildData.Targetable) {
+                    GameManager.Instance.GridController.SelectTargetableAbility(_currentBuildData, _currentEntityToBuild);
+                } else {
+                    // Try to perform the build ability
+                    _selectedEntity.DoAbility(_currentBuildData, new BuildAbilityParameters {
+                        Buildable = _currentEntityToBuild, 
+                        BuildLocation = _selectedEntity.Location
+                    });
+                }
             } else {
                 _currentAbilityData?.SelectAbility(_selectedEntity);
             }
@@ -116,7 +122,7 @@ namespace Gameplay.UI {
             _shouldDeselectWhenTimerElapses = false;
             if (selected) {
                 SlotFrame.color = SelectedColor;
-                if (_currentAbilityData is ITargetableAbilityData) {
+                if (_currentAbilityData.Targeted) {
                     // We want this slot to keep appearing as selected until we do something else, so don't auto-unmark it.
                 } else {
                     StartCoroutine(DeselectLater());

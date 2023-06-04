@@ -14,7 +14,7 @@ namespace Gameplay.Config.Abilities {
     public class AttackAbilityData : AbilityDataBase<AttackAbilityParameters>, ITargetableAbilityData {
 
         public override void SelectAbility(GridEntity selector) {
-            GameManager.Instance.GridController.SelectTargetableAbility(this);
+            GameManager.Instance.GridController.SelectTargetableAbility(this, null);
         }
 
         protected override bool AbilityLegalImpl(AttackAbilityParameters parameters, GridEntity entity) {
@@ -25,9 +25,9 @@ namespace Gameplay.Config.Abilities {
             return new AttackAbility(this, parameters, performer);
         }
 
-        public bool CanTargetCell(Vector2Int cellPosition, GridEntity entity, GridEntity.Team selectorTeam) {
+        public bool CanTargetCell(Vector2Int cellPosition, GridEntity selectedEntity, GridEntity.Team selectorTeam, System.Object targetData) {
             GridEntity target = GameManager.Instance.GetEntitiesAtLocation(cellPosition)?.GetTopEntity()?.Entity;
-            return CanAttackTarget(target, entity);
+            return CanAttackTarget(target, selectedEntity);
         }
 
         private bool CanAttackTarget(GridEntity target, GridEntity selector) {
@@ -37,9 +37,9 @@ namespace Gameplay.Config.Abilities {
             return target.MyTeam != GridEntity.Team.Neutral && target.MyTeam != selector.MyTeam;
         }
 
-        public void DoTargetableAbility(Vector2Int cellPosition, GridEntity entity, GridEntity.Team selectorTeam) {
+        public void DoTargetableAbility(Vector2Int cellPosition, GridEntity selectedEntity, GridEntity.Team selectorTeam, System.Object targetData) {
             GridEntity target = GameManager.Instance.GetEntitiesAtLocation(cellPosition).GetTopEntity().Entity;    // Only able to target the top entity!
-            entity.DoAbility(this, new AttackAbilityParameters {Attacker = entity, Target = target});
+            selectedEntity.DoAbility(this, new AttackAbilityParameters {Attacker = selectedEntity, Target = target});
         }
     }
 }

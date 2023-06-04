@@ -20,7 +20,8 @@ namespace Gameplay.Entities {
                     AttackReceived();
                     break;
                 default:
-                    throw new UnexpectedEntityAbilityException(ability.AbilityData);
+                    Debug.LogWarning($"Unexpected entity ability: {ability.AbilityData}");
+                    break;
             }
         }
         

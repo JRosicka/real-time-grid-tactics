@@ -52,8 +52,8 @@ public abstract class AbstractCommandManager : NetworkBehaviour, ICommandManager
     /// </summary>
     protected abstract void RegisterEntity(GridEntity entity, EntityData data, Vector2Int position);
     
-    public abstract void UnRegisterEntity(GridEntity entity);
-    public abstract void DestroyEntity(GridEntity entity);
+    public abstract void UnRegisterEntity(GridEntity entity, bool animateDeath);
+    public abstract void DestroyEntity(GridEntity entity, bool unregisterFirst);
 
     public void MoveEntityToCell(GridEntity entity, Vector2Int destination) {
         _entitiesOnGrid.MoveEntity(entity, destination);
@@ -99,10 +99,11 @@ public abstract class AbstractCommandManager : NetworkBehaviour, ICommandManager
         _entitiesOnGrid.UnRegisterEntity(entity);
         SyncEntityCollection();
         EntityUnregisteredEvent?.Invoke(entity.MyTeam);
+        entity.OnUnregistered();
     }
 
-    protected void DoMarkEntityUnregistered(GridEntity entity) {
-        entity.OnUnregistered();
+    protected void DoMarkEntityDead(GridEntity entity) {
+        entity.OnDead();
     }
     
     protected bool DoPerformAbility(IAbility abilityInstance) {

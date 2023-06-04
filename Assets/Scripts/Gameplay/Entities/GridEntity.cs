@@ -131,6 +131,7 @@ namespace Gameplay.Entities {
         public event Action SelectedEvent;
         public event Action HPChangedEvent;
         public event Action KilledEvent;
+        public event Action UnregisteredEvent;
         public event Action MovesChangedEvent;
 
         public void Select() {
@@ -175,7 +176,6 @@ namespace Gameplay.Entities {
         public bool CanUseAbility(IAbilityData data) {
             // Is this entity set up to use this ability?
             if (Abilities.All(a => a.Content != data)) {
-                Debug.Log($"Can not use ability {data.ContentResourceID} because this entity was not configured to use it!");
                 return false;
             }
 
@@ -183,13 +183,11 @@ namespace Gameplay.Entities {
             List<PurchasableData> ownedPurchasables = GameManager.Instance.GetPlayerForTeam(MyTeam)
                 .OwnedPurchasablesController.OwnedPurchasables;
             if (data.Requirements.Any(r => !ownedPurchasables.Contains(r))) {
-                Debug.Log($"Can not use ability {data.ContentResourceID} because the player does not own all of the required purchasables");
                 return false;
             }
             
             // Are there any active timers blocking this ability?
             if (ActiveTimers.Any(t => t.ChannelBlockers.Contains(data.Channel) && !t.Expired)) {
-                Debug.Log($"Can not use ability {data.ContentResourceID} because it is blocked by an active timer");
                 return false;
             }
 
@@ -344,7 +342,7 @@ namespace Gameplay.Entities {
             //     // MP server
             //     RpcOnKilled();
             // }
-            GameManager.Instance.CommandManager.UnRegisterEntity(this);
+            GameManager.Instance.CommandManager.UnRegisterEntity(this, true);
         }
 
         // [ClientRpc]
@@ -353,12 +351,12 @@ namespace Gameplay.Entities {
         // }
 
         /// <summary>
-        /// Client event letting us know that we have finished being unregistered.
+        /// Client event letting us know that we have finished being unregistered and are dying.
         ///
         /// There might be other clients that need this to be around still.
         /// So instead of destroying this, just disallow interaction.
         /// </summary>
-        public void OnUnregistered() {
+        public void OnDead() {
             if (!NetworkClient.active) {   
                 // SP
                 // TODO Instead of destroying immediately, tell the view to do destroy animations and give the view a callback to destroy the entity when done. (and also, you know, make it so that this can't be interacted with by this client anymore)
@@ -379,6 +377,10 @@ namespace Gameplay.Entities {
             KilledEvent?.Invoke();
         }
 
+        public void OnUnregistered() {
+            UnregisteredEvent?.Invoke();
+        }
+
         private void DisallowInteraction() {
             // Huh, actually I don't think there's anything to do here
         }
@@ -387,7 +389,7 @@ namespace Gameplay.Entities {
         /// We have just detected that all clients are ready for this entity to be destroyed. Do that. 
         /// </summary>
         private void OnEntityReadyToDie() {
-            GameManager.Instance.CommandManager.DestroyEntity(this);
+            GameManager.Instance.CommandManager.DestroyEntity(this, false);
         }
     }
 }

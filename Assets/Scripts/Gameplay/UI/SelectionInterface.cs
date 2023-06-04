@@ -54,7 +54,7 @@ namespace Gameplay.UI {
 
             entity.AbilityPerformedEvent += OnEntityAbilityPerformed;
             entity.CooldownTimerExpiredEvent += OnEntityAbilityCooldownExpired;
-            entity.KilledEvent += OnEntityKilled;
+            entity.UnregisteredEvent += OnEntityUnregistered;
             
             ToggleViews(true);
 
@@ -80,7 +80,7 @@ namespace Gameplay.UI {
             
             SelectedEntity.AbilityPerformedEvent -= OnEntityAbilityPerformed;
             SelectedEntity.CooldownTimerExpiredEvent -= OnEntityAbilityCooldownExpired;
-            SelectedEntity.KilledEvent -= OnEntityKilled;
+            SelectedEntity.UnregisteredEvent -= OnEntityUnregistered;
 
             _activeMoveCooldownTimer = null;
             SelectedEntity = null;
@@ -110,7 +110,7 @@ namespace Gameplay.UI {
             UpdateEntityInfo();
         }
         
-        private void OnEntityKilled() {
+        private void OnEntityUnregistered() {
             DeselectCurrentEntity();
         } 
 

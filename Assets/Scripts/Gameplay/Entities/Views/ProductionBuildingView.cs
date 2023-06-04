@@ -12,7 +12,8 @@ namespace Gameplay.Entities {
                     DoBuildAnimation();
                     break;
                 default:
-                    throw new UnexpectedEntityAbilityException(ability.AbilityData);
+                    Debug.LogWarning($"Unexpected entity ability: {ability.AbilityData}");
+                    break;
             }
         }
         

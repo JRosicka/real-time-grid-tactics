@@ -14,31 +14,31 @@ namespace Gameplay.Config.Abilities {
     public class MoveAbilityData : AbilityDataBase<MoveAbilityParameters>, ITargetableAbilityData {
 
         public override void SelectAbility(GridEntity selector) {
-            GameManager.Instance.GridController.SelectTargetableAbility(this);
+            GameManager.Instance.GridController.SelectTargetableAbility(this, null);
         }
 
         protected override bool AbilityLegalImpl(MoveAbilityParameters parameters, GridEntity entity) {
-            return CanTargetCell(parameters.Destination, entity, parameters.SelectorTeam);
+            return CanTargetCell(parameters.Destination, entity, parameters.SelectorTeam, null);
         }
 
         protected override IAbility CreateAbilityImpl(MoveAbilityParameters parameters, GridEntity performer) {
             return new MoveAbility(this, parameters, performer);
         }
 
-        public bool CanTargetCell(Vector2Int cellPosition, GridEntity entity, GridEntity.Team selectorTeam) {
+        public bool CanTargetCell(Vector2Int cellPosition, GridEntity selectedEntity, GridEntity.Team selectorTeam, System.Object targetData) {
             // TODO pathfinding stuff
-            if (entity == null || entity.MyTeam != selectorTeam) return false;
+            if (selectedEntity == null || selectedEntity.MyTeam != selectorTeam) return false;
 
-            if (entity.Location == cellPosition) {
+            if (selectedEntity.Location == cellPosition) {
                 // Bro you're already here
                 return false;
             }
 
-            return GameManager.Instance.GridController.CanEntityEnterCell(cellPosition, entity.EntityData, entity.MyTeam);
+            return GameManager.Instance.GridController.CanEntityEnterCell(cellPosition, selectedEntity.EntityData, selectedEntity.MyTeam);
         }
         
-        public void DoTargetableAbility(Vector2Int cellPosition, GridEntity entity, GridEntity.Team selectorTeam) {
-            entity.DoAbility(this, new MoveAbilityParameters {Destination = cellPosition, SelectorTeam = selectorTeam});
+        public void DoTargetableAbility(Vector2Int cellPosition, GridEntity selectedEntity, GridEntity.Team selectorTeam, System.Object targetData) {
+            selectedEntity.DoAbility(this, new MoveAbilityParameters {Destination = cellPosition, SelectorTeam = selectorTeam});
         }
     }
 }

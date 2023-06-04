@@ -13,7 +13,8 @@ namespace Gameplay.Config.Abilities {
     /// A <see cref="AbilityDataBase{T}"/> configuration for the ability to build stuff
     /// </summary>
     [Serializable]
-    public class BuildAbilityData : AbilityDataBase<BuildAbilityParameters> {
+    public class BuildAbilityData : AbilityDataBase<BuildAbilityParameters>, ITargetableAbilityData {
+        public bool Targetable;
         public List<PurchasableDataWithSelectionKey> Buildables;
 
         [Serializable]
@@ -21,6 +22,8 @@ namespace Gameplay.Config.Abilities {
             public PurchasableData data;
             public string selectionKey;
         }
+
+        public override bool Targeted => Targetable;
 
         public override void SelectAbility(GridEntity selector) {
             Debug.Log(nameof(SelectAbility)); 
@@ -45,6 +48,23 @@ namespace Gameplay.Config.Abilities {
 
         protected override IAbility CreateAbilityImpl(BuildAbilityParameters parameters, GridEntity performer) {
             return new BuildAbility(this, parameters, performer);
+        }
+
+        public bool CanTargetCell(Vector2Int cellPosition, GridEntity selectedEntity, GridEntity.Team selectorTeam, System.Object targetData) {
+            return GameManager.Instance.GridController.CanEntityEnterCell(cellPosition, (EntityData)targetData, selectorTeam, new List<GridEntity>{selectedEntity});
+        }
+
+        public void DoTargetableAbility(Vector2Int cellPosition, GridEntity selectedEntity, GridEntity.Team selectorTeam, System.Object targetData) {
+            BuildAbilityParameters parameters = new BuildAbilityParameters {Buildable = (PurchasableData) targetData, BuildLocation = cellPosition};
+            
+            if (selectedEntity.Location == cellPosition) {
+                selectedEntity.DoAbility(this, parameters);
+            } else {
+                // TODO First, start moving the selected entity there if it is not already there
+                Debug.Log("Can't target build ability on a tile that is not the builder's current location. TODO.");
+
+                // TODO Add the build to the entity's action queue
+            }
         }
     }
 }

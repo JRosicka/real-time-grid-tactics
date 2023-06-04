@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 575c0f3cd9a64c78aaf8481f645c83a4, type: 3}
+  m_Name: Worker Build Ability
+  m_EditorClassIdentifier: 
+  Data:
+    _contentResourceID: Worker Build Ability
+    _icon: {fileID: 21300000, guid: b1af90ce03a007349aa9428d646a0939, type: 3}
+    _requirements: []
+    _performDuration: 0
+    _cooldownDuration: 5
+    _channel: {fileID: 11400000, guid: a2bb18c2ded749a4e902028c24c166d0, type: 2}
+    _channelBlockers:
+    - {fileID: 11400000, guid: a2bb18c2ded749a4e902028c24c166d0, type: 2}
+    _performOnStart: 0
+    _repeatWhenCooldownFinishes: 0
+    _selectable: 1
+    _selectableWhenBlocked: 1
+    _autoSelect: 0
+    Targetable: 1
+    Buildables:
+    - data: {fileID: 11400000, guid: 43174010eb096460f944f7aa4f3b1791, type: 2}
+      selectionKey: q
+    - data: {fileID: 11400000, guid: 13a02f740ff7d294ca02fe7f547820c0, type: 2}
+      selectionKey: w

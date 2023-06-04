@@ -28,8 +28,13 @@ public class GridController : MonoBehaviour {
     }
 
     private ITargetableAbilityData _selectedTargetableAbility;
-    public void SelectTargetableAbility(ITargetableAbilityData abilityData) {
+    /// <summary>
+    /// Arbitrary data passed along when an <see cref="ITargetableAbilityData"/> is selected
+    /// </summary>
+    private System.Object _targetData;
+    public void SelectTargetableAbility(ITargetableAbilityData abilityData, System.Object data) {
         _selectedTargetableAbility = abilityData;
+        _targetData = data;
     }
 
     public void ProcessClick(PointerEventData eventData) {
@@ -68,8 +73,8 @@ public class GridController : MonoBehaviour {
             case MouseClick.Left:
                 // See if we have a targetable ability we want to use. If so, use it.
                 if (_selectedTargetableAbility != null) {
-                    if (_selectedTargetableAbility.CanTargetCell(clickPosition, selectedEntity, GameManager.Instance.LocalPlayer.Data.Team)) {
-                        _selectedTargetableAbility.DoTargetableAbility(clickPosition, selectedEntity, GameManager.Instance.LocalPlayer.Data.Team);
+                    if (_selectedTargetableAbility.CanTargetCell(clickPosition, selectedEntity, GameManager.Instance.LocalPlayer.Data.Team, _targetData)) {
+                        _selectedTargetableAbility.DoTargetableAbility(clickPosition, selectedEntity, GameManager.Instance.LocalPlayer.Data.Team, _targetData);
                         GameManager.Instance.SelectionInterface.DeselectActiveAbility();
                         return;
                     } else {
@@ -109,26 +114,31 @@ public class GridController : MonoBehaviour {
         }
     }
 
-    public bool CanEntityEnterCell(Vector2Int cellPosition, EntityData entityData, GridEntity.Team entityTeam) {
+    public bool CanEntityEnterCell(Vector2Int cellPosition, EntityData entityData, GridEntity.Team entityTeam, List<GridEntity> entitiesToIgnore = null) {
+        entitiesToIgnore ??= new List<GridEntity>();
         List<GridEntity> entitiesAtLocation = GameManager.Instance.GetEntitiesAtLocation(cellPosition)?.Entities
             .Select(o => o.Entity).ToList();
         if (entitiesAtLocation == null) {
             // No other entities are here
+            // TODO Check to see if tile type allows for this entity
             return true;
         }
         if (entitiesAtLocation.Any(e => e.MyTeam != entityTeam && e.MyTeam != GridEntity.Team.Neutral)) {
             // There are enemies here
             return false;
         }
-        if (entitiesAtLocation.Any(e => !e.EntityData.FriendlyUnitsCanShareCell)) {
-            // Can only enter a friendly entity's cell if they are specifically configured to allow for that. 
+        if (entitiesAtLocation.Any(e => !e.EntityData.FriendlyUnitsCanShareCell && !entitiesToIgnore.Contains(e))) {
+            // Can only enter a friendly entity's cell if they are specifically configured to allow for that
+            // or if we are set to ignore that entity.
             // Note that this means that structures can not be built on cells that contain units! This is intentional. 
             return false;
         }
         // So the only entities here do indeed allow for non-structures to share space with them. Still need to check if this is a structure. Can't put a structure on a structure!
-        if (entityData.Tags.Contains(EntityData.EntityTag.Structure)) {
+        if (entityData.IsStructure && entitiesAtLocation.Any(e => e.EntityData.IsStructure)) {
             return false;
         }
+        
+        // TODO Check to see if tile type allows for this entity
 
         return true;
     }
