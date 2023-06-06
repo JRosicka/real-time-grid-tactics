@@ -21,6 +21,7 @@ namespace Gameplay.Config.Abilities {
         public abstract IAbilityData Content { get; }
     }
     
+#if UNITY_EDITOR
     [CustomEditor(typeof(AbilityDataScriptableObject), true)]
     public class NetworkBehaviourInspector : Editor {
         public override void OnInspectorGUI() {
@@ -33,6 +34,7 @@ namespace Gameplay.Config.Abilities {
             EditorUtility.SetDirty(abilityData);
         }
     }
+#endif
 
     public static class AbilityDataSerializer {
         public static void WriteAbilityDataScriptableObject(this NetworkWriter writer, AbilityDataScriptableObject abilityData) {
