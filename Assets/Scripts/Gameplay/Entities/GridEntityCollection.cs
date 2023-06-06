@@ -53,7 +53,7 @@ namespace Gameplay.Entities {
             Entities = entities;
         }
         
-        public void RegisterEntity(GridEntity entity, Vector2Int location, int order) {
+        public void RegisterEntity(GridEntity entity, Vector2Int location, int order, GridEntity entityToIgnore = null) {
             // Check to see if the entity is already registered
             if (Entities.SelectMany(c => c.Entities.Select(o => o.Entity)).Contains(entity)) return;
 
@@ -70,7 +70,7 @@ namespace Gameplay.Entities {
                     },
                     Location = location
                 });
-            } else if (CanEntityShareLocation(entity, collectionAtLocation)) {
+            } else if (CanEntityShareLocation(entity, collectionAtLocation, entityToIgnore)) {
                 if (currentEntitiesAtLocation.Any(o => o.Order == order)) {
                     Debug.LogWarning("I see that you're registering an entity in a location that contains another entity with the same order value. Hmmmm this might not behave super well you know, be careful out there!");
                 }
@@ -140,10 +140,11 @@ namespace Gameplay.Entities {
                 .ToList();
         }
 
-        private bool CanEntityShareLocation(GridEntity entity, PositionedGridEntityCollection otherEntities) {
+        private bool CanEntityShareLocation(GridEntity entity, PositionedGridEntityCollection otherEntities, GridEntity entityToIgnore = null) {
             if (otherEntities == null) return true;
             if (otherEntities.Entities.IsNullOrEmpty()) return true;
-            if (GameManager.Instance.GridController.CanEntityEnterCell(otherEntities.Location, entity.EntityData, entity.MyTeam)) return true;
+            List<GridEntity> entitiesToIgnore = entityToIgnore != null ? new List<GridEntity> {entityToIgnore} : null;
+            if (GameManager.Instance.GridController.CanEntityEnterCell(otherEntities.Location, entity.EntityData, entity.MyTeam, entitiesToIgnore)) return true;
             return false;
         }
         

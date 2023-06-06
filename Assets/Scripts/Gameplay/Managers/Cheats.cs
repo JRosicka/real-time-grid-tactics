@@ -35,7 +35,7 @@ namespace Gameplay.Managers {
         [Button]
         public void SpawnUnit1() {
             IGamePlayer player = Unit1_LocalTeam ? GameManagerInstance.LocalPlayer : GameManagerInstance.OpponentPlayer;
-            GameManagerInstance.CommandManager.SpawnEntity(Unit1, player.Data.SpawnLocation, player.Data.Team);
+            GameManagerInstance.CommandManager.SpawnEntity(Unit1, player.Data.SpawnLocation, player.Data.Team, null);
         }
 
         [Header("Spawn Unit 2")] 
@@ -44,7 +44,7 @@ namespace Gameplay.Managers {
         [Button]
         public void SpawnUnit2() {
             IGamePlayer player = Unit2_LocalTeam ? GameManagerInstance.LocalPlayer : GameManagerInstance.OpponentPlayer;
-            GameManagerInstance.CommandManager.SpawnEntity(Unit2, player.Data.SpawnLocation, player.Data.Team);
+            GameManagerInstance.CommandManager.SpawnEntity(Unit2, player.Data.SpawnLocation, player.Data.Team, null);
         }
 
         [Header("Spawn Unit 3")] 
@@ -53,7 +53,7 @@ namespace Gameplay.Managers {
         [Button]
         public void SpawnUnit3() {
             IGamePlayer player = Unit3_LocalTeam ? GameManagerInstance.LocalPlayer : GameManagerInstance.OpponentPlayer;
-            GameManagerInstance.CommandManager.SpawnEntity(Unit3, player.Data.SpawnLocation, player.Data.Team);
+            GameManagerInstance.CommandManager.SpawnEntity(Unit3, player.Data.SpawnLocation, player.Data.Team, null);
         }
         
         [Header("Set money")] 

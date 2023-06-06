@@ -10,16 +10,16 @@ public class MPCommandManager : AbstractCommandManager {
         NetworkServer.Spawn(SpawnBucket.gameObject);
     }
 
-    public override void SpawnEntity(EntityData data, Vector2Int spawnLocation, GridEntity.Team team) {
-        CmdSpawnEntity(data, spawnLocation, team);
+    public override void SpawnEntity(EntityData data, Vector2Int spawnLocation, GridEntity.Team team, GridEntity entityToIgnore) {
+        CmdSpawnEntity(data, spawnLocation, team, entityToIgnore);
     }
 
     public override void AddUpgrade(UpgradeData data, GridEntity.Team team) {
         CmdAddUpgrade(data, team);
     }
 
-    protected override void RegisterEntity(GridEntity entity, EntityData data, Vector2Int position) {
-        CmdRegisterEntity(entity, data, position);
+    protected override void RegisterEntity(GridEntity entity, EntityData data, Vector2Int position, GridEntity entityToIgnore) {
+        CmdRegisterEntity(entity, data, position, entityToIgnore);
     }
 
     public override void UnRegisterEntity(GridEntity entity, bool showDeathAnimation) {
@@ -40,7 +40,7 @@ public class MPCommandManager : AbstractCommandManager {
 
 
     [Command(requiresAuthority = false)] // TODO this should definitely require authority
-    private void CmdSpawnEntity(EntityData data, Vector2Int spawnLocation, GridEntity.Team team) {
+    private void CmdSpawnEntity(EntityData data, Vector2Int spawnLocation, GridEntity.Team team, GridEntity entityToIgnore) {
         DoSpawnEntity(data, spawnLocation, () => {
             GridEntity entityInstance = Instantiate(GridEntityPrefab, GridController.GetWorldPosition(spawnLocation), Quaternion.identity, SpawnBucket);
             NetworkServer.Spawn(entityInstance.gameObject);
@@ -51,7 +51,7 @@ public class MPCommandManager : AbstractCommandManager {
 
             entityInstance.RpcInitialize(data, team);
             return entityInstance;
-        }, team);
+        }, team, entityToIgnore);
     }
 
     [Command(requiresAuthority = false)]
@@ -60,8 +60,8 @@ public class MPCommandManager : AbstractCommandManager {
     }
     
     [Command(requiresAuthority = false)]
-    private void CmdRegisterEntity(GridEntity entity, EntityData data, Vector2Int position) {
-        DoRegisterEntity(entity, data, position);
+    private void CmdRegisterEntity(GridEntity entity, EntityData data, Vector2Int position, GridEntity entityToIgnore) {
+        DoRegisterEntity(entity, data, position, entityToIgnore);
     }
 
     [Command(requiresAuthority = false)]

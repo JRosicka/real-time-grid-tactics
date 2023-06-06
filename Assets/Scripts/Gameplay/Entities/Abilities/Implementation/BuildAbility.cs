@@ -7,13 +7,8 @@ using UnityEngine;
 
 namespace Gameplay.Entities.Abilities {
     /// <summary>
-    /// <see cref="IAbility"/> for building a new <see cref="PurchasableData"/>
-    ///
-    /// TODO rename these build ability classes to specify that these are for an entity plopping out a new entity. Like a
-    /// structure, not like a worker creating a new structure. Also specify this in comments. We will need a new set of
-    /// build classes for workers making stuff (targetable builds, like castles). And ANOTHER set for workers capturing
-    /// neutral structures (like income structures) if those end up being capturable. Though that's sort of functionally
-    /// the same as building strucutres, maybe I just don't have neutral ones hmmmmmm.  
+    /// <see cref="IAbility"/> for building a new <see cref="PurchasableData"/>.
+    /// Note that this ability covers both structure builds (a structure building a unit) and worker builds (worker building a structure).
     /// </summary>
     public class BuildAbility : AbilityBase<BuildAbilityData, BuildAbilityParameters> {
         private BuildAbilityParameters AbilityParameters => (BuildAbilityParameters) BaseParameters;
@@ -26,13 +21,14 @@ namespace Gameplay.Entities.Abilities {
             switch (AbilityParameters.Buildable) {
                 case EntityData entityData:
                     if (GameManager.Instance.GridController.CanEntityEnterCell(AbilityParameters.BuildLocation, entityData, Performer.MyTeam, new List<GridEntity>{Performer})) {
-                        // The location is open to put this entity, so go ahead and spawn it
+                        // The location is open to put this entity, so go ahead and spawn it.
+                        // Note that we mark the performer entity as being ignorable since it will probably not be unregistered via
+                        // the below command before we check if it's legal to spawn this new one. 
+                        GameManager.Instance.CommandManager.SpawnEntity(entityData, AbilityParameters.BuildLocation, Performer.MyTeam, Performer);
                         if (entityData.IsStructure) {
-                            // Destroy the builder first. TODO Is this guaranteed to happen before the below spawn command? If not then the server recheck of CanEntityEnterCell will fail because the builder still exists at the entity location. 
+                            // Destroy the builder.
                             GameManager.Instance.CommandManager.UnRegisterEntity(Performer, false);
                         }
-                        GameManager.Instance.CommandManager.SpawnEntity(entityData, AbilityParameters.BuildLocation,
-                            Performer.MyTeam);
                         return true;
                     } else {
                         // The build location is occupied, so we can not yet complete the ability

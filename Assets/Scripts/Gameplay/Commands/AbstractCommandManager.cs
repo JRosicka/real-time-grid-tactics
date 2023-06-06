@@ -41,7 +41,7 @@ public abstract class AbstractCommandManager : NetworkBehaviour, ICommandManager
     /// Attempts to spawn a new instance of the provided <see cref="GridEntity"/> at the specified location on the game
     /// grid. No-op if another entity already exists in the specified location. 
     /// </summary>
-    public abstract void SpawnEntity(EntityData data, Vector2Int spawnLocation, GridEntity.Team team);
+    public abstract void SpawnEntity(EntityData data, Vector2Int spawnLocation, GridEntity.Team team, GridEntity entityToIgnore);
     public abstract void AddUpgrade(UpgradeData data, GridEntity.Team team);
 
     // TODO need to have some way of verifying that these commands are legal for the client to do - especially doing stuff with GridEntites, we gotta own em
@@ -50,7 +50,7 @@ public abstract class AbstractCommandManager : NetworkBehaviour, ICommandManager
     /// Register a new <see cref="GridEntity"/> into the <see cref="GridEntityCollection"/> so that we can keep track of it.
     /// We need to pass both the entity and its data separately because the entity might not have bee initialized with its data yet. 
     /// </summary>
-    protected abstract void RegisterEntity(GridEntity entity, EntityData data, Vector2Int position);
+    protected abstract void RegisterEntity(GridEntity entity, EntityData data, Vector2Int position, GridEntity entityToIgnore);
     
     public abstract void UnRegisterEntity(GridEntity entity, bool showDeathAnimation);
     public abstract void DestroyEntity(GridEntity entity);
@@ -71,24 +71,25 @@ public abstract class AbstractCommandManager : NetworkBehaviour, ICommandManager
     public abstract void PerformAbility(IAbility ability);
     public abstract void MarkAbilityCooldownExpired(IAbility ability);
 
-    protected void DoSpawnEntity(EntityData data, Vector2Int spawnLocation, Func<GridEntity> spawnFunc, GridEntity.Team team) {
-        if (!GameManager.Instance.GridController.CanEntityEnterCell(spawnLocation, data, team)) {
+    protected void DoSpawnEntity(EntityData data, Vector2Int spawnLocation, Func<GridEntity> spawnFunc, GridEntity.Team team, GridEntity entityToIgnore) {
+        List<GridEntity> entitiesToIgnore = entityToIgnore != null ? new List<GridEntity> {entityToIgnore} : null;
+        if (!GameManager.Instance.GridController.CanEntityEnterCell(spawnLocation, data, team, entitiesToIgnore)) {
             return;
         }
 
         GridEntity entityInstance = spawnFunc();
-        RegisterEntity(entityInstance, data, spawnLocation); 
+        RegisterEntity(entityInstance, data, spawnLocation, entityToIgnore); 
     }
 
     protected void DoAddUpgrade(UpgradeData data, GridEntity.Team team) {
         GameManager.Instance.GetPlayerForTeam(team).OwnedPurchasablesController.AddUpgrade(data);
     }
     
-    protected void DoRegisterEntity(GridEntity entity, EntityData data, Vector2Int position) {
+    protected void DoRegisterEntity(GridEntity entity, EntityData data, Vector2Int position, GridEntity entityToIgnore) {
         if (entity.Registered)
             return;
         
-        _entitiesOnGrid.RegisterEntity(entity, position, data.GetStackOrder());
+        _entitiesOnGrid.RegisterEntity(entity, position, data.GetStackOrder(), entityToIgnore);
         entity.Registered = true;
         SyncEntityCollection();
         Debug.Log($"Registered new entity {entity.UnitName} at position {position}");

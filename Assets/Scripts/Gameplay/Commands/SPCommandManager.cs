@@ -8,7 +8,7 @@ public class SPCommandManager : AbstractCommandManager {
         SpawnBucket = Instantiate(spawnBucketPrefab);
     }
 
-    public override void SpawnEntity(EntityData data, Vector2Int spawnLocation, GridEntity.Team team) {
+    public override void SpawnEntity(EntityData data, Vector2Int spawnLocation, GridEntity.Team team, GridEntity entityToIgnore) {
         DoSpawnEntity(data, spawnLocation, () => {
             GridEntity entityInstance = Instantiate(GridEntityPrefab, GridController.GetWorldPosition(spawnLocation), Quaternion.identity, SpawnBucket);
             
@@ -18,15 +18,15 @@ public class SPCommandManager : AbstractCommandManager {
             
             entityInstance.DoInitialize(data, team);
             return entityInstance;
-        }, team);
+        }, team, entityToIgnore); 
     }
  
     public override void AddUpgrade(UpgradeData data, GridEntity.Team team) {
         DoAddUpgrade(data, team);
     }
 
-    protected override void RegisterEntity(GridEntity entity, EntityData data, Vector2Int position) {
-        DoRegisterEntity(entity, data, position);
+    protected override void RegisterEntity(GridEntity entity, EntityData data, Vector2Int position, GridEntity entityToIgnore) {
+        DoRegisterEntity(entity, data, position, entityToIgnore);
     }
 
     public override void UnRegisterEntity(GridEntity entity, bool showDeathAnimation) {
