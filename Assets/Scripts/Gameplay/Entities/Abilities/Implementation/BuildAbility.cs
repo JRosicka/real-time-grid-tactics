@@ -29,7 +29,7 @@ namespace Gameplay.Entities.Abilities {
                         // The location is open to put this entity, so go ahead and spawn it
                         if (entityData.IsStructure) {
                             // Destroy the builder first. TODO Is this guaranteed to happen before the below spawn command? If not then the server recheck of CanEntityEnterCell will fail because the builder still exists at the entity location. 
-                            GameManager.Instance.CommandManager.DestroyEntity(Performer, true);
+                            GameManager.Instance.CommandManager.UnRegisterEntity(Performer, false);
                         }
                         GameManager.Instance.CommandManager.SpawnEntity(entityData, AbilityParameters.BuildLocation,
                             Performer.MyTeam);

@@ -29,19 +29,12 @@ public class SPCommandManager : AbstractCommandManager {
         DoRegisterEntity(entity, data, position);
     }
 
-    public override void UnRegisterEntity(GridEntity entity, bool animateDeath) {
+    public override void UnRegisterEntity(GridEntity entity, bool showDeathAnimation) {
         DoUnRegisterEntity(entity);
-        DoMarkEntityUnregistered(entity);
-        if (animateDeath) {
-            DoMarkEntityDead(entity);
-        }
+        DoMarkEntityUnregistered(entity, showDeathAnimation);
     }
 
-    public override void DestroyEntity(GridEntity entity, bool unregisterFirst) {
-        if (unregisterFirst) {
-            DoUnRegisterEntity(entity);
-            DoMarkEntityUnregistered(entity);
-        }
+    public override void DestroyEntity(GridEntity entity) {
         Destroy(entity.gameObject);
     }
 

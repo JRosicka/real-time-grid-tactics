@@ -15,8 +15,8 @@ public interface ICommandManager {
     /// <summary>
     /// Stop keeping track of an entity and also destroy it
     /// </summary>
-    void UnRegisterEntity(GridEntity entity, bool animateDeath);
-    void DestroyEntity(GridEntity entity, bool unregisterFirst);
+    void UnRegisterEntity(GridEntity entity, bool showDeathAnimation);
+    void DestroyEntity(GridEntity entity);
     void MoveEntityToCell(GridEntity entity, Vector2Int destination);
     GridEntityCollection.PositionedGridEntityCollection GetEntitiesAtCell(Vector2Int location);
     Vector2Int GetLocationForEntity(GridEntity entity);

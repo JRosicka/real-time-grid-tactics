@@ -356,7 +356,7 @@ namespace Gameplay.Entities {
         /// There might be other clients that need this to be around still.
         /// So instead of destroying this, just disallow interaction.
         /// </summary>
-        public void OnDead() {
+        public void OnUnregistered(bool showDeathAnimation) {
             if (!NetworkClient.active) {   
                 // SP
                 // TODO Instead of destroying immediately, tell the view to do destroy animations and give the view a callback to destroy the entity when done. (and also, you know, make it so that this can't be interacted with by this client anymore)
@@ -372,15 +372,19 @@ namespace Gameplay.Entities {
             }
             
             DisallowInteraction();
-            // When the view is done animating death, mark this client as ready to die so that the server knows when it can destroy this entity
-            _view.KillAnimationFinishedEvent += DeathStatusHandler.SetLocalClientReady;
-            KilledEvent?.Invoke();
-        }
 
-        public void OnUnregistered() {
             UnregisteredEvent?.Invoke();
+            KilledEvent?.Invoke();
+            
+            if (showDeathAnimation) {
+                // When the view is done animating death, mark this client as ready to die so that the server knows when it can destroy this entity
+                _view.KillAnimationFinishedEvent += DeathStatusHandler.SetLocalClientReady;
+            } else {
+                // Skip animation, immediately mark as ready to die
+                DeathStatusHandler.SetLocalClientReady();
+            }
         }
-
+        
         private void DisallowInteraction() {
             // Huh, actually I don't think there's anything to do here
         }
@@ -389,7 +393,7 @@ namespace Gameplay.Entities {
         /// We have just detected that all clients are ready for this entity to be destroyed. Do that. 
         /// </summary>
         private void OnEntityReadyToDie() {
-            GameManager.Instance.CommandManager.DestroyEntity(this, false);
+            GameManager.Instance.CommandManager.DestroyEntity(this);
         }
     }
 }

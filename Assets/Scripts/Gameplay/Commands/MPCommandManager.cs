@@ -22,12 +22,12 @@ public class MPCommandManager : AbstractCommandManager {
         CmdRegisterEntity(entity, data, position);
     }
 
-    public override void UnRegisterEntity(GridEntity entity, bool animateDeath) {
-        CmdUnRegisterEntity(entity, animateDeath);
+    public override void UnRegisterEntity(GridEntity entity, bool showDeathAnimation) {
+        CmdUnRegisterEntity(entity, showDeathAnimation);
     }
 
-    public override void DestroyEntity(GridEntity entity, bool unregisterFirst) {
-        CmdDestroyEntity(entity, unregisterFirst);
+    public override void DestroyEntity(GridEntity entity) {
+        CmdDestroyEntity(entity);
     }
 
     public override void PerformAbility(IAbility ability) {
@@ -65,31 +65,19 @@ public class MPCommandManager : AbstractCommandManager {
     }
 
     [Command(requiresAuthority = false)]
-    private void CmdUnRegisterEntity(GridEntity entity, bool animateDeath) {
+    private void CmdUnRegisterEntity(GridEntity entity, bool showDeathAnimation) {
         DoUnRegisterEntity(entity);
-        RpcEntityUnregistered(entity);
-        if (animateDeath) {
-            RpcEntityDead(entity);
-        }
+        RpcEntityUnregistered(entity, showDeathAnimation);
     }
 
     [Command(requiresAuthority = false)]
-    private void CmdDestroyEntity(GridEntity entity, bool unregisterFirst) {
-        if (unregisterFirst) {
-            DoUnRegisterEntity(entity);
-            RpcEntityUnregistered(entity);
-        }
+    private void CmdDestroyEntity(GridEntity entity) {
         NetworkServer.Destroy(entity.gameObject);
     }
 
     [ClientRpc]
-    private void RpcEntityUnregistered(GridEntity entity) {
-        DoMarkEntityUnregistered(entity);
-    }
-
-    [ClientRpc]
-    private void RpcEntityDead(GridEntity entity) {
-        DoMarkEntityDead(entity);
+    private void RpcEntityUnregistered(GridEntity entity, bool showDeathAnimation) {
+        DoMarkEntityUnregistered(entity, showDeathAnimation);
     }
     
     [Command(requiresAuthority = false)]
