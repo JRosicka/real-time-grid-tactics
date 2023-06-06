@@ -117,7 +117,10 @@ public abstract class AbstractCommandManager : NetworkBehaviour, ICommandManager
     }
 
     protected void DoMarkAbilityCooldownExpired(IAbility ability) {
-        ability.Performer.ExpireTimerForAbility(ability);
+        // Check to make sure that the entity performing the ability is still around
+        if (ability.Performer != null) {
+            ability.Performer.ExpireTimerForAbility(ability);
+        } 
     }
 
     /// <summary>
