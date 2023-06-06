@@ -99,6 +99,9 @@ public abstract class AbstractCommandManager : NetworkBehaviour, ICommandManager
         _entitiesOnGrid.UnRegisterEntity(entity);
         SyncEntityCollection();
         EntityUnregisteredEvent?.Invoke(entity.MyTeam);
+    }
+
+    protected void DoMarkEntityUnregistered(GridEntity entity) {
         entity.OnUnregistered();
     }
 

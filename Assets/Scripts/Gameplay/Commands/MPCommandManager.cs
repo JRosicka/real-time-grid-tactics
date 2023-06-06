@@ -67,8 +67,9 @@ public class MPCommandManager : AbstractCommandManager {
     [Command(requiresAuthority = false)]
     private void CmdUnRegisterEntity(GridEntity entity, bool animateDeath) {
         DoUnRegisterEntity(entity);
+        RpcEntityUnregistered(entity);
         if (animateDeath) {
-            RpcEntityUnregistered(entity);
+            RpcEntityDead(entity);
         }
     }
 
@@ -76,12 +77,18 @@ public class MPCommandManager : AbstractCommandManager {
     private void CmdDestroyEntity(GridEntity entity, bool unregisterFirst) {
         if (unregisterFirst) {
             DoUnRegisterEntity(entity);
+            RpcEntityUnregistered(entity);
         }
         NetworkServer.Destroy(entity.gameObject);
     }
 
     [ClientRpc]
     private void RpcEntityUnregistered(GridEntity entity) {
+        DoMarkEntityUnregistered(entity);
+    }
+
+    [ClientRpc]
+    private void RpcEntityDead(GridEntity entity) {
         DoMarkEntityDead(entity);
     }
     
