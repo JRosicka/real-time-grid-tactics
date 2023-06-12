@@ -78,6 +78,13 @@ namespace Gameplay.Managers {
                 resourcesController.Spend(new List<ResourceAmount> {amountToLose});
             }
         }
+
+        public void SwapTeamTarget() {
+            Unit1_LocalTeam = !Unit1_LocalTeam;
+            Unit2_LocalTeam = !Unit2_LocalTeam;
+            Unit3_LocalTeam = !Unit3_LocalTeam;
+            SetMoney_LocalTeam = !SetMoney_LocalTeam;
+        }
     }
 }
 #endif
