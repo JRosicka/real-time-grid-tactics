@@ -372,9 +372,6 @@ namespace Gameplay.Entities {
             }
             
             DisallowInteraction();
-
-            UnregisteredEvent?.Invoke();
-            KilledEvent?.Invoke();
             
             if (showDeathAnimation) {
                 // When the view is done animating death, mark this client as ready to die so that the server knows when it can destroy this entity
@@ -383,6 +380,9 @@ namespace Gameplay.Entities {
                 // Skip animation, immediately mark as ready to die
                 DeathStatusHandler.SetLocalClientReady();
             }
+            
+            UnregisteredEvent?.Invoke(); 
+            KilledEvent?.Invoke();
         }
         
         private void DisallowInteraction() {
