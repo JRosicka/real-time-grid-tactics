@@ -13,11 +13,7 @@ namespace Gameplay.Managers {
     public class Cheats : MonoBehaviour {
         private GameManager GameManagerInstance => GameManager.Instance;
         private GameNetworkManager _gameNetworkManager;
-        
-        private void Awake() {
-            _gameNetworkManager = FindObjectOfType<GameNetworkManager>(); // TODO better way to get this
-        }
-        
+
         [Button]
         public void ReturnToLobby() {
             // Make the return to lobby button available only for the server host
@@ -25,7 +21,10 @@ namespace Gameplay.Managers {
                 Debug.LogWarning("Can only return to the lobby on the host");
                 return;
             }
-            
+
+            if (_gameNetworkManager == null) {
+                _gameNetworkManager = FindObjectOfType<GameNetworkManager>(); // TODO better way to get this
+            }
             _gameNetworkManager.ServerChangeScene(_gameNetworkManager.RoomScene);
         }
 
