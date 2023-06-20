@@ -20,6 +20,8 @@ namespace Gameplay.Managers {
         
         [Button]
         public void ReturnToLobby() {
+            Debug.Log("Cheat: return to lobby");
+
             // Make the return to lobby button available only for the server host
             if (!NetworkServer.active) {
                 Debug.LogWarning("Can only return to the lobby on the host");
@@ -34,6 +36,7 @@ namespace Gameplay.Managers {
         public EntityData Unit1;
         [Button]
         public void SpawnUnit1() {
+            Debug.Log("Cheat 1: start");
             IGamePlayer player = Unit1_LocalTeam ? GameManagerInstance.LocalPlayer : GameManagerInstance.OpponentPlayer;
             GameManagerInstance.CommandManager.SpawnEntity(Unit1, player.Data.SpawnLocation, player.Data.Team, null);
         }
@@ -43,6 +46,7 @@ namespace Gameplay.Managers {
         public EntityData Unit2;
         [Button]
         public void SpawnUnit2() {
+            Debug.Log("Cheat 2: start");
             IGamePlayer player = Unit2_LocalTeam ? GameManagerInstance.LocalPlayer : GameManagerInstance.OpponentPlayer;
             GameManagerInstance.CommandManager.SpawnEntity(Unit2, player.Data.SpawnLocation, player.Data.Team, null);
         }
@@ -52,6 +56,7 @@ namespace Gameplay.Managers {
         public EntityData Unit3;
         [Button]
         public void SpawnUnit3() {
+            Debug.Log("Cheat 3: start");
             IGamePlayer player = Unit3_LocalTeam ? GameManagerInstance.LocalPlayer : GameManagerInstance.OpponentPlayer;
             GameManagerInstance.CommandManager.SpawnEntity(Unit3, player.Data.SpawnLocation, player.Data.Team, null);
         }
@@ -62,6 +67,7 @@ namespace Gameplay.Managers {
         public ResourceType SetMoney_ResourceType = ResourceType.Basic;
         [Button]
         public void SetMoney() {
+            Debug.Log("Cheat 4: start");
             PlayerResourcesController resourcesController = SetMoney_LocalTeam ? GameManagerInstance.LocalPlayer.ResourcesController : GameManagerInstance.OpponentPlayer.ResourcesController;
             int currentAmount = resourcesController.GetBalance(SetMoney_ResourceType).Amount;
             if (currentAmount < SetMoney_Amount) {
@@ -80,6 +86,7 @@ namespace Gameplay.Managers {
         }
 
         public void SwapTeamTarget() {
+            Debug.Log("Cheat 5: start");
             Unit1_LocalTeam = !Unit1_LocalTeam;
             Unit2_LocalTeam = !Unit2_LocalTeam;
             Unit3_LocalTeam = !Unit3_LocalTeam;
