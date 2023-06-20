@@ -51,8 +51,29 @@ namespace Gameplay.Entities {
             KillAnimationFinishedEvent?.Invoke();
         }
 
-        public class UnexpectedEntityAbilityException : Exception {
-            public UnexpectedEntityAbilityException(IAbilityData data) : base($"Unexpected entity ability: {data}") { }
+        /// <summary>
+        /// Catch-all for generic ability view behavior. Subclasses should call this in their default cases for their
+        /// <see cref="DoAbility"/> overrides.
+        /// </summary>
+        protected void DoGenericAbility(IAbility ability, AbilityCooldownTimer cooldownTimer) {
+            switch (ability.AbilityData) {
+                case MoveAbilityData moveAbility:
+                    CreateTimerView(cooldownTimer);
+                    DoGenericMoveAnimation((MoveAbility)ability);
+                    break;
+                case AttackAbilityData attackAbility:
+                    CreateTimerView(cooldownTimer);
+                    // TODO generic attack animation
+                    break;
+                default:
+                    Debug.LogWarning($"Unexpected entity ability: {ability.AbilityData}");
+                    break;
+            }
+        }
+
+        private void DoGenericMoveAnimation(MoveAbility moveAbility) {
+            // Just instantly move the entity to the destination
+            Entity.transform.position = GameManager.Instance.GridController.GetWorldPosition(((MoveAbilityParameters)moveAbility.BaseParameters).Destination);
         }
     }
 }

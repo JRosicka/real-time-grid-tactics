@@ -273,9 +273,6 @@ namespace Gameplay.Entities {
                 return;
             }
 
-            if (abilityInstance.GetType() == typeof(MoveAbility)) {    // TODO Grooooooss. Really it would be good if the view could handle this. Or if necessary, we could set up handling of abilities as necessary similar to how the view does it, but only for special abilities that affect the GridEntity like this one.
-                transform.position = GameManager.Instance.GridController.GetWorldPosition(((MoveAbilityParameters)abilityInstance.BaseParameters).Destination);
-            }
             AbilityPerformedEvent?.Invoke(abilityInstance, cooldownTimer);
         }
 
@@ -286,12 +283,7 @@ namespace Gameplay.Entities {
         public void AbilityFailed(IAbilityData ability) {
             // TODO
         }
-
-        public void TestBuild() {
-            BuildAbilityData data = (BuildAbilityData) EntityData.Abilities.First(a => a.Content.GetType() == typeof(BuildAbilityData)).Content;
-            DoAbility(data, new BuildAbilityParameters{Buildable = data.Buildables[0].data, BuildLocation = Location});
-        }
-
+        
         private void SetupStats() {
             MaxHP = EntityData.HP;
             CurrentHP = EntityData.HP;
@@ -335,21 +327,9 @@ namespace Gameplay.Entities {
         }
 
         private void Kill() {
-            // if (!NetworkClient.active) {
-            //     // SP
-            //     OnKilled();
-            // } else if (NetworkServer.active) {
-            //     // MP server
-            //     RpcOnKilled();
-            // }
             GameManager.Instance.CommandManager.UnRegisterEntity(this, true);
         }
-
-        // [ClientRpc]
-        // private void RpcOnKilled() {
-        //     OnKilled();
-        // }
-
+        
         /// <summary>
         /// Client event letting us know that we have finished being unregistered and are dying.
         ///
@@ -357,20 +337,6 @@ namespace Gameplay.Entities {
         /// So instead of destroying this, just disallow interaction.
         /// </summary>
         public void OnUnregistered(bool showDeathAnimation) {
-            if (!NetworkClient.active) {   
-                // SP
-                // TODO Instead of destroying immediately, tell the view to do destroy animations and give the view a callback to destroy the entity when done. (and also, you know, make it so that this can't be interacted with by this client anymore)
-            } else {
-                // MP client
-
-                // TODO Do the stop-interaction and view destroy logic outlined above, but as the callback to the view
-                // destroy logic we should acknowledge to the server that we are ready to be destroyed. The server
-                // listens for all clients to send this ready status (on a per-entity basis, so maybe the GridEntity itself keeps
-                // track or has a new NetworkBehaviour subclass that handles this), and once all clients have sent the ready status
-                // then it calls the destroy CommandManager command.  
-                
-            }
-            
             DisallowInteraction();
             
             if (showDeathAnimation) {

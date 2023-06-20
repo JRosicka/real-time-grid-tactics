@@ -5,6 +5,7 @@ namespace Gameplay.Entities {
     public class ArcherEntityView : GridEntityViewBase {
         public override void DoAbility(IAbility ability, AbilityCooldownTimer cooldownTimer) {
             Debug.Log(nameof(DoAbility));
+            DoGenericAbility(ability, cooldownTimer);
         }
         
         public override void Selected() {

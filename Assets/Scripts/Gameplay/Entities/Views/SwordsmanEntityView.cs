@@ -11,16 +11,8 @@ namespace Gameplay.Entities {
                     CreateTimerView(cooldownTimer);
                     DoSiegeAnimation();
                     break;
-                case MoveAbilityData moveAbility:
-                    CreateTimerView(cooldownTimer);
-                    DoMoveAnimation();
-                    break;
-                case AttackAbilityData attackAbility:
-                    CreateTimerView(cooldownTimer);
-                    AttackReceived();
-                    break;
                 default:
-                    Debug.LogWarning($"Unexpected entity ability: {ability.AbilityData}");
+                    DoGenericAbility(ability, cooldownTimer);
                     break;
             }
         }
@@ -37,9 +29,6 @@ namespace Gameplay.Entities {
         }
         private void DoSiegeAnimation() {
             Debug.Log(nameof(DoSiegeAnimation));
-        }
-        private void DoMoveAnimation() {
-            Debug.Log(nameof(DoMoveAnimation));
         }
     }
 }

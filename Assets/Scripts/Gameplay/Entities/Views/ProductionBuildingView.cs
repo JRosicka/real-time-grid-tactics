@@ -12,7 +12,7 @@ namespace Gameplay.Entities {
                     DoBuildAnimation();
                     break;
                 default:
-                    Debug.LogWarning($"Unexpected entity ability: {ability.AbilityData}");
+                    DoGenericAbility(ability, cooldownTimer);
                     break;
             }
         }
