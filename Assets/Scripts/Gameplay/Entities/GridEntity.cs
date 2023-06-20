@@ -273,9 +273,6 @@ namespace Gameplay.Entities {
                 return;
             }
 
-            if (abilityInstance.GetType() == typeof(MoveAbility)) {    // TODO Grooooooss. Really it would be good if the view could handle this. Or if necessary, we could set up handling of abilities as necessary similar to how the view does it, but only for special abilities that affect the GridEntity like this one.
-                transform.position = GameManager.Instance.GridController.GetWorldPosition(((MoveAbilityParameters)abilityInstance.BaseParameters).Destination);
-            }
             AbilityPerformedEvent?.Invoke(abilityInstance, cooldownTimer);
         }
 
