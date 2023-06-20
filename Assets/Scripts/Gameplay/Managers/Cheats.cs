@@ -1,4 +1,3 @@
-#if UNITY_EDITOR
 using System.Collections.Generic;
 using Game.Network;
 using Gameplay.Config;
@@ -93,4 +92,3 @@ namespace Gameplay.Managers {
         }
     }
 }
-#endif
