@@ -58,7 +58,7 @@ namespace Gameplay.Config.Abilities {
             BuildAbilityParameters parameters = new BuildAbilityParameters {Buildable = (PurchasableData) targetData, BuildLocation = cellPosition};
             
             if (selectedEntity.Location == cellPosition) {
-                selectedEntity.DoAbility(this, parameters);
+                selectedEntity.PerformAbility(this, parameters);
             } else {
                 // TODO First, start moving the selected entity there if it is not already there
                 Debug.Log("Can't target build ability on a tile that is not the builder's current location. TODO.");

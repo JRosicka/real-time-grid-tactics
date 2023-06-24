@@ -6,6 +6,7 @@ using UnityEngine;
 public class SPCommandManager : AbstractCommandManager {
     public override void Initialize(Transform spawnBucketPrefab) {
         SpawnBucket = Instantiate(spawnBucketPrefab);
+        AbilityQueueExecutor.Initialize(this);
     }
 
     public override void SpawnEntity(EntityData data, Vector2Int spawnLocation, GridEntity.Team team, GridEntity entityToIgnore) {

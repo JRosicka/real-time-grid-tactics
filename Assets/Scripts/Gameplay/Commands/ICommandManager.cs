@@ -21,6 +21,7 @@ public interface ICommandManager {
     GridEntityCollection.PositionedGridEntityCollection GetEntitiesAtCell(Vector2Int location);
     Vector2Int GetLocationForEntity(GridEntity entity);
     void PerformAbility(IAbility ability);
+    void QueueAbility(IAbility ability);
     void MarkAbilityCooldownExpired(IAbility ability);
     /// <summary>
     /// An entity was just registered (spawned). Triggered on server. 

@@ -13,7 +13,7 @@ namespace Gameplay.Config.Abilities {
     [Serializable]
     public class SiegeAbilityData : AbilityDataBase<NullAbilityParameters> {
         public override void SelectAbility(GridEntity selector) {
-            selector.DoAbility(this, new NullAbilityParameters());
+            selector.PerformAbility(this, new NullAbilityParameters());
         }
 
         protected override bool AbilityLegalImpl(NullAbilityParameters parameters, GridEntity entity) {

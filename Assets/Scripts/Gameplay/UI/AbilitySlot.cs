@@ -106,7 +106,7 @@ namespace Gameplay.UI {
                     GameManager.Instance.GridController.SelectTargetableAbility(_currentBuildData, _currentEntityToBuild);
                 } else {
                     // Try to perform the build ability
-                    _selectedEntity.DoAbility(_currentBuildData, new BuildAbilityParameters {
+                    _selectedEntity.PerformAbility(_currentBuildData, new BuildAbilityParameters {
                         Buildable = _currentEntityToBuild, 
                         BuildLocation = _selectedEntity.Location
                     });

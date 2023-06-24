@@ -38,7 +38,7 @@ namespace Gameplay.Config.Abilities {
         }
         
         public void DoTargetableAbility(Vector2Int cellPosition, GridEntity selectedEntity, GridEntity.Team selectorTeam, System.Object targetData) {
-            selectedEntity.DoAbility(this, new MoveAbilityParameters {Destination = cellPosition, SelectorTeam = selectorTeam});
+            selectedEntity.PerformAbility(this, new MoveAbilityParameters {Destination = cellPosition, SelectorTeam = selectorTeam});
         }
     }
 }

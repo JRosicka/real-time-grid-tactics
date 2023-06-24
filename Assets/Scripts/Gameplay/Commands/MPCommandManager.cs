@@ -8,6 +8,9 @@ public class MPCommandManager : AbstractCommandManager {
     public override void Initialize(Transform spawnBucketPrefab) {
         SpawnBucket = Instantiate(spawnBucketPrefab);
         NetworkServer.Spawn(SpawnBucket.gameObject);
+        
+        // Only initialize this on the server. Clients do not need to handle an ability queue.
+        AbilityQueueExecutor.Initialize(this);
     }
 
     public override void SpawnEntity(EntityData data, Vector2Int spawnLocation, GridEntity.Team team, GridEntity entityToIgnore) {

@@ -24,6 +24,8 @@ public abstract class AbstractCommandManager : NetworkBehaviour, ICommandManager
     [SyncVar]
     private GridEntityCollection _entitiesOnGrid = new GridEntityCollection();
 
+    protected AbilityQueueExecutor AbilityQueueExecutor;
+
     /// <summary>
     /// An entity was just registered (spawned). Triggered on server. 
     /// </summary>
@@ -107,6 +109,8 @@ public abstract class AbstractCommandManager : NetworkBehaviour, ICommandManager
     }
     
     protected bool DoPerformAbility(IAbility abilityInstance) {
+        // Clear the queue
+        abilityInstance.Performer.ClearAbilityQueue();
         // Assign a UID here since this is guaranteed to be on the server (if MP)
         abilityInstance.UID = IDUtil.GenerateUID();
         return abilityInstance.PerformAbility();
