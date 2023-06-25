@@ -71,7 +71,7 @@ public abstract class AbstractCommandManager : NetworkBehaviour, ICommandManager
     }
 
     public abstract void PerformAbility(IAbility ability, bool clearQueueFirst);
-    public abstract void QueueAbility(IAbility ability);
+    public abstract void QueueAbility(IAbility ability, bool clearQueueFirst);
 
     public abstract void MarkAbilityCooldownExpired(IAbility ability);
 
@@ -121,13 +121,16 @@ public abstract class AbstractCommandManager : NetworkBehaviour, ICommandManager
         }
 
         if (ability.WaitUntilLegal) {
-            DoQueueAbility(ability);
+            DoQueueAbility(ability, false);
         }
 
         return false;
     }
 
-    protected void DoQueueAbility(IAbility ability) {
+    protected void DoQueueAbility(IAbility ability, bool clearQueueFirst) {
+        if (clearQueueFirst) {
+            ability.Performer.ClearAbilityQueue();
+        }
         ability.Performer.QueuedAbilities.Add(ability);
     }
 

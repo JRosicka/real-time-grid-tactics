@@ -61,7 +61,7 @@ namespace Gameplay.Config.Abilities {
                 selectedEntity.PerformAbility(this, buildParameters, true);
             } else {
                 selectedEntity.MoveToCell(cellPosition);
-                selectedEntity.QueueAbility(this, buildParameters, true);
+                selectedEntity.QueueAbility(this, buildParameters, true, false);
             }
         }
     }

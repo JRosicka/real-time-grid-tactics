@@ -243,11 +243,11 @@ namespace Gameplay.Entities {
             activeTimersCopy.ForEach(t => t.UpdateTimer(Time.deltaTime));
         }
 
-        public bool PerformAbility(IAbilityData abilityData, IAbilityParameters parameters, bool waitUntilLegal) {
+        public bool PerformAbility(IAbilityData abilityData, IAbilityParameters parameters, bool queueIfNotLegal) {
             if (!abilityData.AbilityLegal(parameters, this)) {
-                if (waitUntilLegal) {
+                if (queueIfNotLegal) {
                     // We specified to perform the ability now, but we can't legally do that. So queue it. 
-                    QueueAbility(abilityData, parameters, waitUntilLegal);
+                    QueueAbility(abilityData, parameters, true, true);
                     return true;
                 } else {
                     AbilityFailed(abilityData);
@@ -255,12 +255,12 @@ namespace Gameplay.Entities {
                 }
             }
             IAbility abilityInstance = abilityData.CreateAbility(parameters, this);
-            abilityInstance.WaitUntilLegal = waitUntilLegal;
+            abilityInstance.WaitUntilLegal = queueIfNotLegal;
             GameManager.Instance.CommandManager.PerformAbility(abilityInstance, true);
             return true;
         }
 
-        public bool PerformAbility(IAbility ability) {
+        public bool PerformQueuedAbility(IAbility ability) {
             if (!ability.AbilityData.AbilityLegal(ability.BaseParameters, ability.Performer)) {
                 AbilityFailed(ability.AbilityData);
                 return false;
@@ -270,10 +270,10 @@ namespace Gameplay.Entities {
             return true;
         }
 
-        public void QueueAbility(IAbilityData abilityData, IAbilityParameters parameters, bool waitUntilLegal) {
+        public void QueueAbility(IAbilityData abilityData, IAbilityParameters parameters, bool waitUntilLegal, bool clearQueueFirst) {
             IAbility abilityInstance = abilityData.CreateAbility(parameters, this);
             abilityInstance.WaitUntilLegal = waitUntilLegal;
-            GameManager.Instance.CommandManager.QueueAbility(abilityInstance);
+            GameManager.Instance.CommandManager.QueueAbility(abilityInstance, clearQueueFirst);
         }
 
         public void ClearAbilityQueue() {

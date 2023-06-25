@@ -47,8 +47,8 @@ public class SPCommandManager : AbstractCommandManager {
         }
     }
 
-    public override void QueueAbility(IAbility ability) {
-        DoQueueAbility(ability);
+    public override void QueueAbility(IAbility ability, bool clearQueueFirst) {
+        DoQueueAbility(ability, clearQueueFirst);
     }
 
     public override void MarkAbilityCooldownExpired(IAbility ability) {

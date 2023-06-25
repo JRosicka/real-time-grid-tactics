@@ -37,8 +37,8 @@ public class MPCommandManager : AbstractCommandManager {
         CmdPerformAbility(ability, clearQueueFirst);
     }
 
-    public override void QueueAbility(IAbility ability) {
-        CmdQueueAbility(ability);
+    public override void QueueAbility(IAbility ability, bool clearQueueFirst) {
+        CmdQueueAbility(ability, clearQueueFirst);
     }
 
     public override void MarkAbilityCooldownExpired(IAbility ability) {
@@ -103,8 +103,8 @@ public class MPCommandManager : AbstractCommandManager {
     }
 
     [Command(requiresAuthority = false)]
-    private void CmdQueueAbility(IAbility ability) {
-        DoQueueAbility(ability);
+    private void CmdQueueAbility(IAbility ability, bool clearQueueFirst) {
+        DoQueueAbility(ability, clearQueueFirst);
     }
 
     [Command(requiresAuthority = false)]
