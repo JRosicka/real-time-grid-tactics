@@ -134,9 +134,12 @@ namespace Gameplay.Entities {
         }
 
         public List<GridEntity> ActiveEntitiesForTeam(GridEntity.Team team) {
+            return AllEntities().Where(e => e.MyTeam == team).ToList();
+        }
+
+        public List<GridEntity> AllEntities() {
             return Entities.SelectMany(c => c.Entities)
                 .Select(o => o.Entity)
-                .Where(e => e.MyTeam == team)
                 .ToList();
         }
 

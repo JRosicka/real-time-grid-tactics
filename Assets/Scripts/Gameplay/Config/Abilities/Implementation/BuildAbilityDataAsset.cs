@@ -55,15 +55,13 @@ namespace Gameplay.Config.Abilities {
         }
 
         public void DoTargetableAbility(Vector2Int cellPosition, GridEntity selectedEntity, GridEntity.Team selectorTeam, System.Object targetData) {
-            BuildAbilityParameters parameters = new BuildAbilityParameters {Buildable = (PurchasableData) targetData, BuildLocation = cellPosition};
+            BuildAbilityParameters buildParameters = new BuildAbilityParameters {Buildable = (PurchasableData) targetData, BuildLocation = cellPosition};
             
             if (selectedEntity.Location == cellPosition) {
-                selectedEntity.DoAbility(this, parameters);
+                selectedEntity.PerformAbility(this, buildParameters, true);
             } else {
-                // TODO First, start moving the selected entity there if it is not already there
-                Debug.Log("Can't target build ability on a tile that is not the builder's current location. TODO.");
-
-                // TODO Add the build to the entity's action queue
+                selectedEntity.MoveToCell(cellPosition);
+                selectedEntity.QueueAbility(this, buildParameters, true);
             }
         }
     }

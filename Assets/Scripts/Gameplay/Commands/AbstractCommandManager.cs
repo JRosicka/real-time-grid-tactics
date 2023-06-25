@@ -16,6 +16,8 @@ using UnityEngine;
 public abstract class AbstractCommandManager : NetworkBehaviour, ICommandManager {
     [field:SyncVar]
     public Transform SpawnBucket { get; protected set; }
+    public AbilityQueueExecutor AbilityQueueExecutor;
+
     public GridEntity GridEntityPrefab;
 
     protected GridController GridController => GameManager.Instance.GridController;
@@ -68,7 +70,9 @@ public abstract class AbstractCommandManager : NetworkBehaviour, ICommandManager
         return _entitiesOnGrid.LocationOfEntity(entity);
     }
 
-    public abstract void PerformAbility(IAbility ability);
+    public abstract void PerformAbility(IAbility ability, bool clearQueueFirst);
+    public abstract void QueueAbility(IAbility ability);
+
     public abstract void MarkAbilityCooldownExpired(IAbility ability);
 
     protected void DoSpawnEntity(EntityData data, Vector2Int spawnLocation, Func<GridEntity> spawnFunc, GridEntity.Team team, GridEntity entityToIgnore) {
@@ -106,14 +110,29 @@ public abstract class AbstractCommandManager : NetworkBehaviour, ICommandManager
         entity.OnUnregistered(showDeathAnimation);
     }
     
-    protected bool DoPerformAbility(IAbility abilityInstance) {
+    protected bool DoPerformAbility(IAbility ability, bool clearQueueFirst) {
+        if (clearQueueFirst) {
+            ability.Performer.ClearAbilityQueue();
+        }
         // Assign a UID here since this is guaranteed to be on the server (if MP)
-        abilityInstance.UID = IDUtil.GenerateUID();
-        return abilityInstance.PerformAbility();
+        ability.UID = IDUtil.GenerateUID();
+        if (ability.PerformAbility()) {
+            return true;
+        }
+
+        if (ability.WaitUntilLegal) {
+            DoQueueAbility(ability);
+        }
+
+        return false;
     }
 
-    protected void DoAbilityPerformed(IAbility abilityInstance) {
-        abilityInstance.Performer.AbilityPerformed(abilityInstance);
+    protected void DoQueueAbility(IAbility ability) {
+        ability.Performer.QueuedAbilities.Add(ability);
+    }
+
+    protected void DoAbilityPerformed(IAbility ability) {
+        ability.Performer.AbilityPerformed(ability);
     }
 
     protected void DoMarkAbilityCooldownExpired(IAbility ability) {
@@ -121,6 +140,10 @@ public abstract class AbstractCommandManager : NetworkBehaviour, ICommandManager
         if (ability.Performer != null) {
             ability.Performer.ExpireTimerForAbility(ability);
         } 
+    }
+
+    protected void DoAbilityFailed(IAbility ability) {
+        ability.Performer.AbilityFailed(ability.AbilityData);
     }
 
     /// <summary>

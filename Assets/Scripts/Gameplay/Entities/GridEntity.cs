@@ -86,7 +86,12 @@ namespace Gameplay.Entities {
         }
 
         public List<AbilityCooldownTimer> ActiveTimers = new List<AbilityCooldownTimer>();
-
+        
+        /// <summary>
+        /// This entity's current ability queue.
+        /// TODO if this gets complicated then we should extract this out into a new AbilityQueue class. 
+        /// </summary>
+        public List<IAbility> QueuedAbilities = new List<IAbility>();
 
         [ClientRpc]
         public void RpcInitialize(EntityData data, Team team) {
@@ -150,7 +155,7 @@ namespace Gameplay.Entities {
         public void MoveToCell(Vector2Int targetCell) {
             Debug.Log($"Attempting to move {UnitName} to {targetCell}");
             MoveAbilityData data = (MoveAbilityData) EntityData.Abilities.First(a => a.Content.GetType() == typeof(MoveAbilityData)).Content;
-            DoAbility(data, new MoveAbilityParameters { Destination = targetCell, SelectorTeam = MyTeam});
+            PerformAbility(data, new MoveAbilityParameters { Destination = targetCell, SelectorTeam = MyTeam}, true);
         }
 
         public void TryTargetEntity(GridEntity targetEntity, Vector2Int targetCell) {
@@ -161,7 +166,7 @@ namespace Gameplay.Entities {
             if (targetType == TargetType.Enemy) {
                 AttackAbilityData data = (AttackAbilityData) EntityData.Abilities
                     .First(a => a.Content.GetType() == typeof(AttackAbilityData)).Content;
-                DoAbility(data, new AttackAbilityParameters { Target = targetEntity, Attacker = this });
+                PerformAbility(data, new AttackAbilityParameters { Target = targetEntity, Attacker = this }, false);
             }
         }
 
@@ -238,13 +243,41 @@ namespace Gameplay.Entities {
             activeTimersCopy.ForEach(t => t.UpdateTimer(Time.deltaTime));
         }
 
-        public void DoAbility(IAbilityData abilityData, IAbilityParameters parameters) {
+        public bool PerformAbility(IAbilityData abilityData, IAbilityParameters parameters, bool waitUntilLegal) {
             if (!abilityData.AbilityLegal(parameters, this)) {
-                AbilityFailed(abilityData);
-                return;
+                if (waitUntilLegal) {
+                    // We specified to perform the ability now, but we can't legally do that. So queue it. 
+                    QueueAbility(abilityData, parameters, waitUntilLegal);
+                    return true;
+                } else {
+                    AbilityFailed(abilityData);
+                    return false;
+                }
             }
             IAbility abilityInstance = abilityData.CreateAbility(parameters, this);
-            GameManager.Instance.CommandManager.PerformAbility(abilityInstance);
+            abilityInstance.WaitUntilLegal = waitUntilLegal;
+            GameManager.Instance.CommandManager.PerformAbility(abilityInstance, true);
+            return true;
+        }
+
+        public bool PerformAbility(IAbility ability) {
+            if (!ability.AbilityData.AbilityLegal(ability.BaseParameters, ability.Performer)) {
+                AbilityFailed(ability.AbilityData);
+                return false;
+            }
+            
+            GameManager.Instance.CommandManager.PerformAbility(ability, false);
+            return true;
+        }
+
+        public void QueueAbility(IAbilityData abilityData, IAbilityParameters parameters, bool waitUntilLegal) {
+            IAbility abilityInstance = abilityData.CreateAbility(parameters, this);
+            abilityInstance.WaitUntilLegal = waitUntilLegal;
+            GameManager.Instance.CommandManager.QueueAbility(abilityInstance);
+        }
+
+        public void ClearAbilityQueue() {
+            QueuedAbilities.Clear();
         }
 
         /// <summary>
@@ -259,7 +292,7 @@ namespace Gameplay.Entities {
         
         private void PerformOnStartAbilities() {
             foreach (IAbilityData abilityData in Abilities.Select(a => a.Content).Where(a => a.PerformOnStart)) {
-                DoAbility(abilityData, new NullAbilityParameters());
+                PerformAbility(abilityData, new NullAbilityParameters(), false);
             }
         }
 

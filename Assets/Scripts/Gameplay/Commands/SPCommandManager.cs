@@ -6,6 +6,7 @@ using UnityEngine;
 public class SPCommandManager : AbstractCommandManager {
     public override void Initialize(Transform spawnBucketPrefab) {
         SpawnBucket = Instantiate(spawnBucketPrefab);
+        AbilityQueueExecutor.Initialize(this);
     }
 
     public override void SpawnEntity(EntityData data, Vector2Int spawnLocation, GridEntity.Team team, GridEntity entityToIgnore) {
@@ -38,9 +39,16 @@ public class SPCommandManager : AbstractCommandManager {
         Destroy(entity.gameObject);
     }
 
-    public override void PerformAbility(IAbility ability) {
-        DoPerformAbility(ability);
-        DoAbilityPerformed(ability);
+    public override void PerformAbility(IAbility ability, bool clearQueueFirst) {
+        if (DoPerformAbility(ability, clearQueueFirst)) {
+            DoAbilityPerformed(ability);
+        } else if (!ability.WaitUntilLegal) {
+            DoAbilityFailed(ability);
+        }
+    }
+
+    public override void QueueAbility(IAbility ability) {
+        DoQueueAbility(ability);
     }
 
     public override void MarkAbilityCooldownExpired(IAbility ability) {

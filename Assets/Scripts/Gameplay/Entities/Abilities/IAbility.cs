@@ -16,6 +16,13 @@ namespace Gameplay.Entities.Abilities {
         IAbilityParameters BaseParameters { get; }
         int UID { get; set; }
         GridEntity Performer { get; }
+        /// <summary>
+        /// Whether we should wait until the ability is legal before executing. If false, discards the ability when attempting
+        /// to execute.
+        ///
+        /// By "wait", I mean "keep the ability queued, blocking other queued abilities from executing". 
+        /// </summary>
+        bool WaitUntilLegal { get; set; }
         bool CompleteCooldown();
         /// <summary>
         /// Write the <see cref="IAbility"/>'s parameters to the provided writer so that it can be properly networked. Other than the data

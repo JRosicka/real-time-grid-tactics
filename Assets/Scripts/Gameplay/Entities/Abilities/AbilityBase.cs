@@ -12,6 +12,8 @@ namespace Gameplay.Entities.Abilities {
         public int UID { get; set; }
         public IAbilityParameters BaseParameters { get; }
         public GridEntity Performer { get; }
+        public bool WaitUntilLegal { get; set; }
+
         protected AbilityBase(T data, IAbilityParameters abilityParameters, GridEntity performer) {
             Data = data;
             BaseParameters = abilityParameters;
@@ -24,7 +26,7 @@ namespace Gameplay.Entities.Abilities {
             }
             
             if (Data.RepeatWhenCooldownFinishes) {
-                Performer.DoAbility(AbilityData, BaseParameters);
+                Performer.PerformAbility(AbilityData, BaseParameters, WaitUntilLegal);
             }
 
             return true;
