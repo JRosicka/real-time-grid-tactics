@@ -38,15 +38,19 @@ namespace Gameplay.Entities.Abilities {
         public static void WriteAbility(this NetworkWriter writer, IAbility ability) {
             writer.WriteString(ability.AbilityData.ContentResourceID);
             writer.WriteInt(ability.UID);
+            writer.WriteBool(ability.WaitUntilLegal);
             ability.SerializeParameters(writer);
         }
 
         public static IAbility ReadAbility(this NetworkReader reader) {
             AbilityDataScriptableObject dataAsset = GameManager.Instance.Configuration.GetAbility(reader.ReadString());
             int uid = reader.ReadInt();
+            bool waitUntilLegal = reader.ReadBool();
+
             // Re-create the ability instance using the data asset we loaded
             IAbility abilityInstance = dataAsset.Content.DeserializeAbility(reader);
             abilityInstance.UID = uid;
+            abilityInstance.WaitUntilLegal = waitUntilLegal;
             return abilityInstance;
         }
     }
