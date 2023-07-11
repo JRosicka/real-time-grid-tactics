@@ -4,6 +4,7 @@ using System.Linq;
 using Gameplay.Config;
 using Gameplay.Config.Abilities;
 using Gameplay.Entities;
+using Gameplay.UI;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.Tilemaps;
@@ -15,12 +16,16 @@ public class GridController : MonoBehaviour {
     [SerializeField] private Grid _grid;
     [SerializeField] private Tilemap _gameplayTilemap;
 
-    // If I ever want to do anything with mousing over - a selecting reticule, simulating attacking an enemy, etc
-    // [SerializeField] private Tilemap _interactiveTilemap;
-    // [SerializeField] private Tile _hoverTile;
-    // private Vector3Int _previousMousePos = new Vector3Int();
+    // The overlay tilemap for highlighting particular tiles
+    [SerializeField] private Tilemap _overlayTilemap;
+    [SerializeField] private Tile _inaccessibleTile;
+    [SerializeField] private Tile _slowMovementTile;
+    
+    // Selection reticle stuff
+    [SerializeField] private SelectionReticle _reticle;
+    private Vector2Int _previousMousePos = new Vector2Int();
 
-    public enum MouseClick {
+    private enum MouseClick {
         None = -1,
         Left = 0,
         Middle = 1,
@@ -38,15 +43,9 @@ public class GridController : MonoBehaviour {
     }
 
     public void ProcessClick(PointerEventData eventData) {
-        Vector2Int mousePos = GetMousePosition(eventData);
+        ProcessMouseMove(eventData);
+        Vector2Int mousePos = GetCellPosition(eventData.pointerPressRaycast.worldPosition);
         
-        // If I ever want to do anything with mousing over - a selecting reticule, simulating attacking an enemy, etc
-        // if (!mousePos.Equals(_previousMousePos)) {
-        //     _interactiveTilemap.SetTile(_previousMousePos, null);    // Remove old hovertile
-        //     _interactiveTilemap.SetTile(mousePos, _hoverTile);
-        //     _previousMousePos = mousePos;
-        // }
-
         MouseClick click = MouseClick.None;
         if (eventData.button == PointerEventData.InputButton.Left) {
             // Left mouse button click
@@ -63,12 +62,29 @@ public class GridController : MonoBehaviour {
         TryClickOnCell(click, mousePos);
     }
 
+    public void ProcessMouseMove(PointerEventData eventData) {
+        // TODO I probably don't need this anymore, BUT I will want it for highlighting tiles based on whether a selected unit can go there
+        // If I ever want to do anything with mousing over - particularly with showing how tiles affect movement
+        // if (!mousePos.Equals(_previousMousePos)) {
+        //     _interactiveTilemap.SetTile(_previousMousePos, null);    // Remove old hovertile
+        //     _interactiveTilemap.SetTile(mousePos, _hoverTile);
+        //     _previousMousePos = mousePos;
+        // }
+
+        Vector2Int mousePos = GetCellPosition(eventData.pointerCurrentRaycast.worldPosition);
+        if (mousePos == _previousMousePos) return;
+
+        _previousMousePos = mousePos;
+        _reticle.SelectTile(mousePos, GameManager.Instance.GetTopEntityAtLocation(mousePos));
+    }
+
+    public void ProcessMouseExit(PointerEventData eventData) {
+        _reticle.Hide();
+    }
+
     private void TryClickOnCell(MouseClick clickType, Vector2Int clickPosition) {
         GridEntity selectedEntity = GameManager.Instance.SelectionInterface.SelectedEntity;
         
-        // Always do the "Mouse hovering over" action
-        // TODO mouse hovering over action. Depends on which unit is there, what the player is selecting, if they can move there, etc
-
         switch (clickType) {
             case MouseClick.Left:
                 // See if we have a targetable ability we want to use. If so, use it.
@@ -145,11 +161,6 @@ public class GridController : MonoBehaviour {
 
     public Vector2 GetWorldPosition(Vector2Int cellPosition) {
         return _grid.CellToWorld((Vector3Int) cellPosition);
-    }
-
-    private Vector2Int GetMousePosition(PointerEventData eventData) {
-        Vector3 mouseWorldPosition = eventData.pointerPressRaycast.worldPosition;
-        return GetCellPosition(mouseWorldPosition);
     }
     
     private Vector2Int GetCellPosition(Vector2 worldPosition) {

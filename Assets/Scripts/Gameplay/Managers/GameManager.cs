@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using Gameplay.Config;
 using Gameplay.Entities;
 using Gameplay.UI;
@@ -40,6 +41,10 @@ public class GameManager : MonoBehaviour {
 
     public GridEntityCollection.PositionedGridEntityCollection GetEntitiesAtLocation(Vector2Int location) {
         return CommandManager?.GetEntitiesAtCell(location);
+    }
+
+    public GridEntity GetTopEntityAtLocation(Vector2Int location) {
+        return GetEntitiesAtLocation(location)?.Entities.Select(o => o.Entity).First();
     }
 
     public Vector2Int GetLocationForEntity(GridEntity entity) {

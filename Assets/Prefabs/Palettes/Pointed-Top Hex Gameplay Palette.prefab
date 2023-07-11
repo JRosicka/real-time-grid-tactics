@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 6668805984258907747}
   - component: {fileID: 5441255491825336596}
   m_Layer: 0
-  m_Name: Pointed-Top Hex Palette
+  m_Name: Pointed-Top Hex Gameplay Palette
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

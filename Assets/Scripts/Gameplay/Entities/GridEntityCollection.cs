@@ -47,6 +47,12 @@ namespace Gameplay.Entities {
 
         public readonly List<PositionedGridEntityCollection> Entities;
 
+        /// <summary>
+        /// Event that triggers when an entity is register or unregistered at a particular location.
+        /// Static since <see cref="GridEntityCollection"/> constantly gets recreated. 
+        /// </summary>
+        public static event Action<Vector2Int, GridEntity> EntityUpdatedEvent;
+
         public GridEntityCollection() : this(new List<PositionedGridEntityCollection>()) { }
 
         public GridEntityCollection(List<PositionedGridEntityCollection> entities) {
@@ -70,6 +76,7 @@ namespace Gameplay.Entities {
                     },
                     Location = location
                 });
+                EntityUpdatedEvent?.Invoke(location, entity);
             } else if (CanEntityShareLocation(entity, collectionAtLocation, entityToIgnore)) {
                 if (currentEntitiesAtLocation.Any(o => o.Order == order)) {
                     Debug.LogWarning("I see that you're registering an entity in a location that contains another entity with the same order value. Hmmmm this might not behave super well you know, be careful out there!");
@@ -78,6 +85,7 @@ namespace Gameplay.Entities {
                     Entity = entity,
                     Order = order
                 });
+                EntityUpdatedEvent?.Invoke(location, entity);
             } else {
                 throw new IllegalEntityPlacementException(location, entity, currentEntitiesAtLocation);
             }
@@ -97,6 +105,9 @@ namespace Gameplay.Entities {
             if (collection.Entities.Count == 0) {
                 Entities.Remove(collection);
             }
+            
+            // Send the event with whatever is left over here, if anything
+            EntityUpdatedEvent?.Invoke(collection.Location, collection.Entities.Count == 0 ? null : collection.Entities[0].Entity);
         }
 
         public void MoveEntity(GridEntity entity, Vector2Int newLocation) {
