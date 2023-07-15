@@ -5,6 +5,10 @@
 .idea/**/dictionaries
 .idea/**/shelf
 
+# .idea stuff that changes from computer to computer - probably fine to ignore?
+.idea/.idea.**/.idea
+.idea/idea.real-time-grid-tactics
+
 # Generated files
 .idea/**/contentModel.xml
 
