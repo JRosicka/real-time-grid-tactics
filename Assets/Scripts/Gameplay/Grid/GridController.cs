@@ -5,6 +5,7 @@ using Gameplay.Config;
 using Gameplay.Config.Abilities;
 using Gameplay.Entities;
 using Gameplay.UI;
+using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.Tilemaps;
@@ -15,6 +16,7 @@ using UnityEngine.Tilemaps;
 public class GridController : MonoBehaviour {
     [SerializeField] private Grid _grid;
     [SerializeField] private Tilemap _gameplayTilemap;
+    [SerializeField] private PathVisualizer _pathVisualizer;
 
     // The overlay tilemap for highlighting particular tiles
     [SerializeField] private Tilemap _overlayTilemap;
@@ -37,6 +39,11 @@ public class GridController : MonoBehaviour {
     /// Arbitrary data passed along when an <see cref="ITargetableAbilityData"/> is selected
     /// </summary>
     private System.Object _targetData;
+
+    public void Initialize() {
+        _pathVisualizer.Initialize();
+    }
+    
     public void SelectTargetableAbility(ITargetableAbilityData abilityData, System.Object data) {
         _selectedTargetableAbility = abilityData;
         _targetData = data;
@@ -166,5 +173,48 @@ public class GridController : MonoBehaviour {
     private Vector2Int GetCellPosition(Vector2 worldPosition) {
         Vector2Int cellPosition = (Vector2Int) _grid.WorldToCell(worldPosition);
         return cellPosition;
+    }
+
+    [Button]
+    private void VisualizePath1() {
+        _pathVisualizer.Visualize(new PathVisualizer.GridPath {
+            Cells = new List<Vector2Int> {
+                new(0, 0),
+                new(1, 0),
+                new(1, 1),
+                new(2, 1),
+                new(2, 0),
+            }
+        });
+    }
+    
+    [Button]
+    private void VisualizePath2() {
+        _pathVisualizer.Visualize(new PathVisualizer.GridPath {
+            Cells = new List<Vector2Int> {
+                new(-4, -4),
+                new(-4, -5),
+                new(-3, -5),
+            }
+        });
+    }
+
+    [Button]
+    private void VisualizePath3() {
+        _pathVisualizer.Visualize(new PathVisualizer.GridPath {
+            Cells = new List<Vector2Int> {
+                new(0, 4),
+                new(0, 3),
+                new(-1, 3),
+                new(-1, 4),
+                new(-1, 5),
+                new(0, 5),
+                new(1, 5),
+                new(2, 4),
+                new(2, 3),
+                new(2, 2),
+
+            }
+        });
     }
 }

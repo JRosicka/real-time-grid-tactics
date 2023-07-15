@@ -155,7 +155,7 @@ public class SteamLobbyService : MonoBehaviour {
             Debug.LogError("Lobby failed to get created! Error: " + callback.m_eResult);
             _isCurrentlyCreatingLobby = false;
             _lobbyOpenToEveryone = false;
-            OnLobbyCreationComplete.SafeInvoke(false);
+            OnLobbyCreationComplete?.Invoke(false);
             return;
         }
 
@@ -187,7 +187,7 @@ public class SteamLobbyService : MonoBehaviour {
         
         _isCurrentlyCreatingLobby = false;
         _lobbyOpenToEveryone = false;
-        OnLobbyCreationComplete.SafeInvoke(true);
+        OnLobbyCreationComplete?.Invoke(true);
     }
     
     /// <summary>
@@ -232,18 +232,18 @@ public class SteamLobbyService : MonoBehaviour {
         GetAllOpenLobbies((lobbyCount, success, failureMessage) => {
             if (!success) {
                 Debug.LogError("Failed to request lobby by ID!");
-                onLobbyProcessed.SafeInvoke(new Lobby(), false, failureMessage);
+                onLobbyProcessed?.Invoke(new Lobby(), false, failureMessage);
                 return;
             } 
             if (lobbyCount == 0) {
                 Debug.Log("Failed to find a lobby");
-                onLobbyProcessed.SafeInvoke(new Lobby(), false, "Lobby with given ID is not joinable or does not exist.");
+                onLobbyProcessed?.Invoke(new Lobby(), false, "Lobby with given ID is not joinable or does not exist.");
                 return;
             } 
             Debug.Log($"Retrieved {lobbyCount} lobbies when searching via direct join with ID {joinID}");
             GetLobbyData(SteamMatchmaking.GetLobbyByIndex(0), lobby => {
                 Debug.Log($"Processed lobby for id {joinID}. Joining...");
-                onLobbyProcessed.SafeInvoke(lobby, true, null);
+                onLobbyProcessed?.Invoke(lobby, true, null);
             });
         });
     }
@@ -275,7 +275,7 @@ public class SteamLobbyService : MonoBehaviour {
         if (bIoFailure) {
             Debug.LogError("Error getting lobby list");
             _isCurrentlyRequestingLobbies = false;
-            _onLobbiesReturned.SafeInvoke((uint)0, false, "Error retrieving lobby list from Steam.");
+            _onLobbiesReturned?.Invoke((uint)0, false, "Error retrieving lobby list from Steam.");
             _onLobbiesReturned = null;
             return;
         }
@@ -284,7 +284,7 @@ public class SteamLobbyService : MonoBehaviour {
         
         _isCurrentlyRequestingLobbies = false;
 
-        _onLobbiesReturned.SafeInvoke(lobbyCount, true, null);
+        _onLobbiesReturned?.Invoke(lobbyCount, true, null);
         _onLobbiesReturned = null;
     }
 
@@ -312,7 +312,7 @@ public class SteamLobbyService : MonoBehaviour {
                     _lobbyEntered.Set(SteamMatchmaking.JoinLobby(lobbyID));
                 }
                 
-                OnLobbyJoinComplete.SafeInvoke(isJoinable, failMessage);
+                OnLobbyJoinComplete?.Invoke(isJoinable, failMessage);
             });
         });
     }
@@ -334,23 +334,23 @@ public class SteamLobbyService : MonoBehaviour {
         if (lobby.Members.Length >= lobby.MemberLimit) {
             Debug.Log("Trying to join a lobby that is currently full, aborting");
             _currentIDForLobbyBeingJoined = CSteamID.Nil;
-            onComplete.SafeInvoke(false, "Lobby is full.");
+            onComplete?.Invoke(false, "Lobby is full.");
         }
         // Check to see if the lobby's game has started
         if (Convert.ToBoolean(lobby[LobbyGameActiveKey])) {
             Debug.Log("Trying to join a lobby that is currently in a game, aborting");
             _currentIDForLobbyBeingJoined = CSteamID.Nil;
-            onComplete.SafeInvoke(false, "Lobby is in the middle of a game.");
+            onComplete?.Invoke(false, "Lobby is in the middle of a game.");
         }
         // Look up the lobby by join ID to see if it is still retrievable - if not, it probably doesn't exist
         RequestLobbyByID(lobby[LobbyUIDKey], (newLobby, success, failureString) => {
             if (!success) {
                 Debug.Log("Trying to join a lobby that is no longer valid, aborting");
                 _currentIDForLobbyBeingJoined = CSteamID.Nil;
-                onComplete.SafeInvoke(false, "Lobby no longer exists");
+                onComplete?.Invoke(false, "Lobby no longer exists");
             } else {
                 // Success!
-                onComplete.SafeInvoke(true, "");
+                onComplete?.Invoke(true, "");
             }
         });
     }
@@ -359,14 +359,14 @@ public class SteamLobbyService : MonoBehaviour {
         if (bIoFailure) {
             Debug.LogError("Error requesting to join lobby");
             _currentIDForLobbyBeingJoined = CSteamID.Nil;
-            OnLobbyJoinComplete.SafeInvoke(false, "Unknown error when attempting to join.");
+            OnLobbyJoinComplete?.Invoke(false, "Unknown error when attempting to join.");
             return;
         }
         
         if (NetworkServer.active) {
             // We are hosting and just joined ourself - no need to do anything
             _currentIDForLobbyBeingJoined = CSteamID.Nil;
-            OnLobbyJoinComplete.SafeInvoke(true, null);
+            OnLobbyJoinComplete?.Invoke(true, null);
             return;
         }
         
@@ -379,7 +379,7 @@ public class SteamLobbyService : MonoBehaviour {
         if (hostAddress.IsNullOrWhitespace()) {
             Debug.LogError("No host address data found when trying to enter lobby, aborting");
             _currentIDForLobbyBeingJoined = CSteamID.Nil;
-            OnLobbyJoinComplete.SafeInvoke(false, "No host address found when attempting to enter lobby.");
+            OnLobbyJoinComplete?.Invoke(false, "No host address found when attempting to enter lobby.");
             return;
         }
         
@@ -391,7 +391,7 @@ public class SteamLobbyService : MonoBehaviour {
         
         _currentIDForLobbyBeingJoined = CSteamID.Nil;
         _isConnectingToLobby = true;
-        OnLobbyJoinComplete.SafeInvoke(true, null);
+        OnLobbyJoinComplete?.Invoke(true, null);
     }
     
     #endregion
@@ -418,7 +418,7 @@ public class SteamLobbyService : MonoBehaviour {
         // We use the lobbyCount to iterate through the list of lobbies that just got cached in SteamMatchmaking. 
         // A maximum of 50 lobbies can be returned from this. That's probably fine. Probably. TODO I should really address that with filters or something
         for (int i = 0; i < lobbyCount; i++) {
-            GetLobbyData(SteamMatchmaking.GetLobbyByIndex(i), lobby => OnLobbyEntryConstructed.SafeInvoke(lobby));
+            GetLobbyData(SteamMatchmaking.GetLobbyByIndex(i), lobby => OnLobbyEntryConstructed?.Invoke(lobby));
         }
     }
 
@@ -470,7 +470,7 @@ public class SteamLobbyService : MonoBehaviour {
             }
         }
         
-        onLobbyProcessed.SafeInvoke(lobby);
+        onLobbyProcessed?.Invoke(lobby);
         return lobby;
     }
     
@@ -499,11 +499,11 @@ public class SteamLobbyService : MonoBehaviour {
 
         if (_onLobbyDataReceived != null) {
             Lobby lobby = GetLobbyData(new CSteamID(callback.m_ulSteamIDLobby), null);
-            _onLobbyDataReceived.SafeInvoke(lobby);
+            _onLobbyDataReceived?.Invoke(lobby);
             _onLobbyDataReceived = null;
         }
         
-        OnCurrentLobbyMetadataChanged.SafeInvoke();
+        OnCurrentLobbyMetadataChanged?.Invoke();
     }
     
     #endregion

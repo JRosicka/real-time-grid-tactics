@@ -29,7 +29,7 @@ namespace Game.Network
         }
         
         private void OnDisplayNameSet(string oldName, string newName) {
-            PlayerSteamInfoDetermined.SafeInvoke();
+            PlayerSteamInfoDetermined?.Invoke();
         }
 
         [Server]
@@ -65,7 +65,7 @@ namespace Game.Network
         public override void OnClientExitRoom()
         {
             Debug.Log($"OnClientExitRoom {SceneManager.GetActiveScene().path}");
-            PlayerExitedRoom.SafeInvoke();
+            PlayerExitedRoom?.Invoke();
         }
 
         public override void IndexChanged(int oldIndex, int newIndex)
@@ -76,7 +76,7 @@ namespace Game.Network
         public override void ReadyStateChanged(bool oldReadyState, bool newReadyState)
         {
             Debug.Log($"ReadyStateChanged {newReadyState}");
-            PlayerReadyStatusChanged.SafeInvoke();
+            PlayerReadyStatusChanged?.Invoke();
         }
 
         public override void OnGUI()

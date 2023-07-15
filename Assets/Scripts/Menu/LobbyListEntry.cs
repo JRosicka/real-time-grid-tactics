@@ -36,7 +36,7 @@ public class LobbyListEntry : MonoBehaviour {
 
     public void JoinLobby() {
         if (_privateLobby) {
-            LobbyJoinAttemptStarted.SafeInvoke(_lobbyID, _joinCode);
+            LobbyJoinAttemptStarted?.Invoke(_lobbyID, _joinCode);
         } else {
             SteamLobbyService.Instance.JoinLobby(_lobbyID);
         }

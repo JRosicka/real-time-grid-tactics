@@ -13,16 +13,18 @@ namespace Gameplay.UI {
         public Color NeutralSelectionColor;
         
         public List<Image> ReticleComponents;
-
-        private CanvasGroup _canvasGroup;
+        [SerializeField] private CanvasGroup _canvasGroup;
+        
         private Vector2Int _currentLocation;
+        private bool _hidden;
         
         private void Start() {
-            _canvasGroup = GetComponent<CanvasGroup>();
             GridEntityCollection.EntityUpdatedEvent += OnTileUpdated;
         }
 
         public void SelectTile(Vector2Int location, GridEntity entityAtLocation) {
+            _hidden = false;
+
             _canvasGroup.alpha = 1;
 
             // Set position
@@ -33,6 +35,7 @@ namespace Gameplay.UI {
         }
 
         public void Hide() {
+            _hidden = true;
             _canvasGroup.alpha = 0;
             // Set the location to be very far away
             _currentLocation = new Vector2Int(10000, 10000);
@@ -51,6 +54,7 @@ namespace Gameplay.UI {
         }
 
         private void OnTileUpdated(Vector2Int location, GridEntity entity) {
+            if (_hidden) return;
             // We only care about the current location getting updated
             if (_currentLocation != location) return;
             

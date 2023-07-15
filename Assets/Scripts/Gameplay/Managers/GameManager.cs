@@ -37,6 +37,7 @@ public class GameManager : MonoBehaviour {
         GameSetupManager.Initialize();
         SelectionInterface.Initialize();
         PathfinderService = new PathfinderService();
+        GridController.Initialize();
     }
 
     public GridEntityCollection.PositionedGridEntityCollection GetEntitiesAtLocation(Vector2Int location) {

@@ -151,7 +151,7 @@ public class MultiplayerMenu : MonoBehaviour {
     private event Action _onClickedOkayOnFailureDialog;
     public void OnClickedOkOnFailureDialog() {
         FailureFeedbackDialog.SetActive(false);
-        _onClickedOkayOnFailureDialog.SafeInvoke();
+        _onClickedOkayOnFailureDialog?.Invoke();
         _onClickedOkayOnFailureDialog = null;
     }
 

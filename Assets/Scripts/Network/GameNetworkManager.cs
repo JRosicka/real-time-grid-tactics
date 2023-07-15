@@ -35,7 +35,7 @@ namespace Game.Network {
             SteamLobbyService.Lobby updatedLobby = SteamLobbyService.Instance.GetLobbyData(
                 SteamLobbyService.Instance.CurrentLobbyID, null);
             // TODO update room with update lobby info
-            OnLobbyUpdated.SafeInvoke(updatedLobby);
+            OnLobbyUpdated?.Invoke(updatedLobby);
         }
         
         // Events invoked if this is the server
@@ -44,7 +44,7 @@ namespace Game.Network {
         public event Action RoomStartHostAction;
         public override void OnRoomStartHost() {
             DebugLog(nameof(OnRoomStartHost));
-            RoomStartHostAction.SafeInvoke();
+            RoomStartHostAction?.Invoke();
             _isHosting = true;
             base.OnRoomStartHost();
         }
@@ -52,14 +52,14 @@ namespace Game.Network {
         public event Action RoomStartServerAction;
         public override void OnRoomStartServer() {
             DebugLog(nameof(OnRoomStartServer));
-            RoomStartServerAction.SafeInvoke();
+            RoomStartServerAction?.Invoke();
             base.OnRoomStartServer();
         }
 
         public event Action RoomStopHostAction;
         public override void OnRoomStopHost() {
             DebugLog(nameof(OnRoomStopHost));
-            RoomStopHostAction.SafeInvoke();
+            RoomStopHostAction?.Invoke();
             _isHosting = false;
             base.OnRoomStopHost();
         }
@@ -67,49 +67,49 @@ namespace Game.Network {
         public event Action RoomStopServerAction;
         public override void OnRoomStopServer() {
             DebugLog(nameof(OnRoomStopServer));
-            RoomStopServerAction.SafeInvoke();
+            RoomStopServerAction?.Invoke();
             base.OnRoomStopServer();
         }
 
         public event Action ServerReadyAction;
         public override void OnServerReady(NetworkConnectionToClient conn) {
             DebugLog(nameof(OnServerReady));
-            ServerReadyAction.SafeInvoke();
+            ServerReadyAction?.Invoke();
             base.OnServerReady(conn);
         }
         
         public event Action RoomServerAddPlayerAction;
         public override void OnRoomServerAddPlayer(NetworkConnectionToClient conn) {
             DebugLog(nameof(OnRoomServerAddPlayer));
-            RoomServerAddPlayerAction.SafeInvoke();
+            RoomServerAddPlayerAction?.Invoke();
             base.OnRoomServerAddPlayer(conn);
         }
 
         public event Action RoomServerConnectAction;
         public override void OnRoomServerConnect(NetworkConnectionToClient conn) {
             DebugLog(nameof(OnRoomServerConnect));
-            RoomServerConnectAction.SafeInvoke();
+            RoomServerConnectAction?.Invoke();
             base.OnRoomServerConnect(conn);
         }
 
         public event Action RoomServerDisconnectAction;
         public override void OnRoomServerDisconnect(NetworkConnectionToClient conn) {
             DebugLog(nameof(OnRoomServerDisconnect));
-            RoomServerDisconnectAction.SafeInvoke();
+            RoomServerDisconnectAction?.Invoke();
             base.OnRoomServerDisconnect(conn);
         }
         
         public event Action RoomServerPlayersNotReadyAction;
         public override void OnRoomServerPlayersNotReady() {
             DebugLog(nameof(OnRoomServerPlayersNotReady));
-            RoomServerPlayersNotReadyAction.SafeInvoke();
+            RoomServerPlayersNotReadyAction?.Invoke();
             base.OnRoomServerPlayersNotReady();
         }
         
         public event Action RoomServerPlayersReadyAction;
         public override void OnRoomServerPlayersReady() {
             DebugLog(nameof(OnRoomServerPlayersReady));
-            RoomServerPlayersReadyAction.SafeInvoke();
+            RoomServerPlayersReadyAction?.Invoke();
 
             // calling the base method calls ServerChangeScene as soon as all players are in Ready state.
 #if UNITY_SERVER
@@ -120,7 +120,7 @@ namespace Game.Network {
         public event Action ServerChangeSceneAction;
         public override void OnServerChangeScene(string newSceneName) {
             DebugLog(nameof(OnServerChangeScene));
-            ServerChangeSceneAction.SafeInvoke();
+            ServerChangeSceneAction?.Invoke();
             base.OnServerChangeScene(newSceneName);
         }
 
@@ -131,7 +131,7 @@ namespace Game.Network {
         /// <param name="sceneName">Name of the new scene.</param>
         public override void OnRoomServerSceneChanged(string sceneName) {
             DebugLog(nameof(OnRoomServerSceneChanged));
-            RoomServerSceneChangedAction.SafeInvoke();
+            RoomServerSceneChangedAction?.Invoke();
         }
 
         public event Action RoomServerSceneLoadedForPlayerAction;
@@ -145,7 +145,7 @@ namespace Game.Network {
         /// <returns>true unless some code in here decides it needs to abort the replacement</returns>
         public override bool OnRoomServerSceneLoadedForPlayer(NetworkConnectionToClient conn, GameObject roomPlayer, GameObject gamePlayer) {
             DebugLog(nameof(OnRoomServerSceneLoadedForPlayer));
-            RoomServerSceneLoadedForPlayerAction.SafeInvoke();
+            RoomServerSceneLoadedForPlayerAction?.Invoke();
             GameManager gameManager = FindObjectOfType<GameManager>();
             MPGamePlayer mpGamePlayer = gamePlayer.GetComponent<MPGamePlayer>();
             GameNetworkPlayer gameNetworkPlayer = roomPlayer.GetComponent<GameNetworkPlayer>();
@@ -156,7 +156,7 @@ namespace Game.Network {
         public event Action ServerErrorAction;
         public override void OnServerError(NetworkConnectionToClient conn, Exception exception) {
             DebugLog($"{nameof(OnServerError)}: Exception: {exception}");
-            ServerErrorAction.SafeInvoke();
+            ServerErrorAction?.Invoke();
             base.OnServerError(conn, exception);
         }
         
@@ -168,7 +168,7 @@ namespace Game.Network {
         public event Action RoomStartClientAction;
         public override void OnRoomStartClient() {
             DebugLog(nameof(OnRoomStartClient));
-            RoomStartClientAction.SafeInvoke();
+            RoomStartClientAction?.Invoke();
             base.OnRoomStartClient();
         }
 
@@ -179,28 +179,28 @@ namespace Game.Network {
             // This is us leaving a lobby, so leave the steam lobby
             SteamLobbyService.Instance.ExitLobby();
             
-            RoomStopClientAction.SafeInvoke();
+            RoomStopClientAction?.Invoke();
             base.OnRoomStopClient();
         }
         
         public event Action RoomClientConnectAction;
         public override void OnRoomClientConnect() {
             DebugLog(nameof(OnRoomClientConnect));
-            RoomClientConnectAction.SafeInvoke();
+            RoomClientConnectAction?.Invoke();
             base.OnRoomClientConnect();
         }
 
         public event Action RoomClientDisconnectAction;
         public override void OnRoomClientDisconnect() {
             DebugLog(nameof(OnRoomClientDisconnect));
-            RoomClientDisconnectAction.SafeInvoke();
+            RoomClientDisconnectAction?.Invoke();
             base.OnRoomClientDisconnect();
         }
 
         public event Action RoomClientEnterAction;
         public override void OnRoomClientEnter() {
             DebugLog(nameof(OnRoomClientEnter));
-            RoomClientEnterAction.SafeInvoke();
+            RoomClientEnterAction?.Invoke();
             base.OnRoomClientEnter();
             
             // Get whatever lobby data is there when we first join the room
@@ -219,42 +219,42 @@ namespace Game.Network {
                 SteamLobbyService.Instance.ExitLobby();
             }
 
-            RoomClientExitAction.SafeInvoke();
+            RoomClientExitAction?.Invoke();
             base.OnRoomClientExit();
         }
 
         public event Action ClientNotReadyAction;
         public override void OnClientNotReady() {
             DebugLog(nameof(OnClientNotReady));
-            ClientNotReadyAction.SafeInvoke();
+            ClientNotReadyAction?.Invoke();
             base.OnClientNotReady();
         }
 
         public event Action ClientChangeSceneAction;
         public override void OnClientChangeScene(string newSceneName, SceneOperation sceneOperation, bool customHandling) {
             DebugLog(nameof(OnClientChangeScene));
-            ClientChangeSceneAction.SafeInvoke();
+            ClientChangeSceneAction?.Invoke();
             base.OnClientChangeScene(newSceneName, sceneOperation, customHandling);
         }
 
         public event Action RoomClientSceneChangedAction;
         public override void OnRoomClientSceneChanged() {
             DebugLog(nameof(OnRoomClientSceneChanged));
-            RoomClientSceneChangedAction.SafeInvoke();
+            RoomClientSceneChangedAction?.Invoke();
             base.OnRoomClientSceneChanged();
         }
         
         public event Action RoomClientAddPlayerFailedAction;
         public override void OnRoomClientAddPlayerFailed() {
             DebugLog(nameof(OnRoomClientAddPlayerFailed));
-            RoomClientAddPlayerFailedAction.SafeInvoke();
+            RoomClientAddPlayerFailedAction?.Invoke();
             base.OnRoomClientAddPlayerFailed();
         }
 
         public event Action ClientErrorAction;
         public override void OnClientError(Exception exception) {
             DebugLog($"{nameof(OnClientError)}: Exception: {exception}");
-            ClientErrorAction.SafeInvoke();
+            ClientErrorAction?.Invoke();
             base.OnClientError(exception);
         }
 
