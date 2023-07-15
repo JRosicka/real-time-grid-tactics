@@ -14,6 +14,8 @@ using UnityEngine.Tilemaps;
 /// Handles input for interacting with the grid and the tilemaps that live on it
 /// </summary>
 public class GridController : MonoBehaviour {
+    public const float CellWidth = 0.8659766f;
+    
     [SerializeField] private Grid _grid;
     [SerializeField] private Tilemap _gameplayTilemap;
     [SerializeField] private PathVisualizer _pathVisualizer;

@@ -36,6 +36,7 @@ namespace Gameplay.UI {
             if (path.Cells.Count < 3) return;
             
             // No need to visualise for the final cell
+            float currentAngle = -1f;
             for (int i = 0; i < path.Cells.Count - 1; i++) {
                 DirectionalLine line = _linePool.GetObject();
                 _currentlyDisplayedLines.Add(line);
@@ -45,16 +46,21 @@ namespace Gameplay.UI {
                 line.transform.position = GridController.GetWorldPosition(path.Cells[i]);
                 
                 // Rotate the line to link to the next cell in the path
-                float angle = PathfinderService.AngleBetweenCells(path.Cells[i], path.Cells[i + 1]);
-                line.transform.rotation = Quaternion.Euler(0, 0, angle);
+                var previousAngle = currentAngle;
+                currentAngle = PathfinderService.AngleBetweenCells(path.Cells[i], path.Cells[i + 1]);
+                line.transform.rotation = Quaternion.Euler(0, 0, currentAngle);
                 
-                // Hide/adjust parts of the line if this is the first or last cell in the path
+                // Hide/adjust parts of the line if this is the first or last cell in the path. 
                 if (i == 0) {
                     line.SetMask(DirectionalLine.LineType.StartHalf);
                 } else if (i == path.Cells.Count - 2) {
                     line.SetMask(DirectionalLine.LineType.EndHalf);
+                    // Hide/show the previous line's dot if it has a different angle than this one.
+                    _currentlyDisplayedLines[i-1].ToggleEndDot(!Mathf.Approximately(currentAngle, previousAngle));
                 } else {
                     line.SetMask(DirectionalLine.LineType.Full);
+                    // Hide/show the previous line's dot if it has a different angle than this one.
+                    _currentlyDisplayedLines[i-1].ToggleEndDot(!Mathf.Approximately(currentAngle, previousAngle));
                 }
             }
         }

@@ -1,6 +1,6 @@
 using System;
-using Sirenix.Utilities;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Gameplay.UI {
     /// <summary>
@@ -15,27 +15,33 @@ namespace Gameplay.UI {
         }
         
         public RectTransform MaskTransform;
+        public Image EndDot;
 
         public void SetMask(LineType lineType) {
             switch (lineType) {
                 case LineType.Full:
                     MaskTransform.anchorMin = new Vector2(.5f, .5f);
                     MaskTransform.anchorMax = new Vector2(.5f, .5f);
-                    MaskTransform.sizeDelta = new Vector2(.88f, MaskTransform.rect.height);
+                    MaskTransform.sizeDelta = new Vector2(GridController.CellWidth, MaskTransform.rect.height);
                     break;
                 case LineType.StartHalf:
                     MaskTransform.anchorMin = new Vector2(1f, .5f);
                     MaskTransform.anchorMax = new Vector2(1f, .5f);
-                    MaskTransform.sizeDelta = new Vector2(.44f, MaskTransform.rect.height);
+                    MaskTransform.sizeDelta = new Vector2(GridController.CellWidth / 2f, MaskTransform.rect.height);
                     break;
                 case LineType.EndHalf:
                     MaskTransform.anchorMin = new Vector2(.5f, .5f);
                     MaskTransform.anchorMax = new Vector2(.5f, .5f);
-                    MaskTransform.sizeDelta = new Vector2(.44f, MaskTransform.rect.height);
+                    MaskTransform.sizeDelta = new Vector2(GridController.CellWidth / 2f, MaskTransform.rect.height);
+                    ToggleEndDot(false);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(lineType), lineType, null);
             }
+        }
+
+        public void ToggleEndDot(bool toggle) {
+            EndDot.gameObject.SetActive(toggle);
         }
     }
 }
