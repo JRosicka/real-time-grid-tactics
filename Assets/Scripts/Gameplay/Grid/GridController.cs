@@ -29,7 +29,7 @@ public class GridController : MonoBehaviour {
     [SerializeField] private SelectionReticle _reticle;
     private Vector2Int _previousMousePos = new Vector2Int();
 
-    private enum MouseClick {
+    private enum MouseClick { 
         None = -1,
         Left = 0,
         Middle = 1,
@@ -181,11 +181,11 @@ public class GridController : MonoBehaviour {
     private void VisualizePath1() {
         _pathVisualizer.Visualize(new PathVisualizer.GridPath {
             Cells = new List<Vector2Int> {
-                new(0, 0),
-                new(1, 0),
-                new(1, 1),
-                new(2, 1),
-                new(2, 0),
+                new Vector2Int(0, 0),
+                new Vector2Int(1, 0),
+                new Vector2Int(1, 1),
+                new Vector2Int(2, 1),
+                new Vector2Int(2, 0),
             }
         });
     }
@@ -194,9 +194,9 @@ public class GridController : MonoBehaviour {
     private void VisualizePath2() {
         _pathVisualizer.Visualize(new PathVisualizer.GridPath {
             Cells = new List<Vector2Int> {
-                new(-4, -4),
-                new(-4, -5),
-                new(-3, -5),
+                new Vector2Int(-4, -4),
+                new Vector2Int(-4, -5),
+                new Vector2Int(-3, -5),
             }
         });
     }
@@ -205,16 +205,16 @@ public class GridController : MonoBehaviour {
     private void VisualizePath3() {
         _pathVisualizer.Visualize(new PathVisualizer.GridPath {
             Cells = new List<Vector2Int> {
-                new(0, 4),
-                new(0, 3),
-                new(-1, 3),
-                new(-1, 4),
-                new(-1, 5),
-                new(0, 5),
-                new(1, 5),
-                new(2, 4),
-                new(2, 3),
-                new(2, 2),
+                new Vector2Int(0, 4),
+                new Vector2Int(0, 3),
+                new Vector2Int(-1, 3),
+                new Vector2Int(-1, 4),
+                new Vector2Int(-1, 5),
+                new Vector2Int(0, 5),
+                new Vector2Int(1, 5),
+                new Vector2Int(2, 4),
+                new Vector2Int(2, 3),
+                new Vector2Int(2, 2),
 
             }
         });
