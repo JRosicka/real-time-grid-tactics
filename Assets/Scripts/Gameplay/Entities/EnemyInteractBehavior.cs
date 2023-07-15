@@ -9,6 +9,7 @@ namespace Gameplay.Entities {
     public class EnemyInteractBehavior : IInteractBehavior {
         public void Select(GridEntity entity) {
             GameManager.Instance.SelectionInterface.SelectEntity(entity);
+            GameManager.Instance.GridController.TrackEntity(entity);
         }
 
         public void TargetCellWithUnit(GridEntity thisEntity, Vector2Int targetCell) {

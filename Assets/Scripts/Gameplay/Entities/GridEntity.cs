@@ -92,6 +92,8 @@ namespace Gameplay.Entities {
         /// TODO if this gets complicated then we should extract this out into a new AbilityQueue class. 
         /// </summary>
         public List<IAbility> QueuedAbilities = new List<IAbility>();
+        
+        public bool Interactable { get; private set; }
 
         [ClientRpc]
         public void RpcInitialize(EntityData data, Team team) {
@@ -121,6 +123,8 @@ namespace Gameplay.Entities {
             InitializationStatusHandler.Initialize(OnEntityInitializedAcrossAllClients);
             InitializationStatusHandler.SetLocalClientReady();
             DeathStatusHandler.Initialize(OnEntityReadyToDie);
+            
+            Interactable = true;
         } 
 
         private void OnEntityInitializedAcrossAllClients() {
@@ -140,6 +144,7 @@ namespace Gameplay.Entities {
         public event Action MovesChangedEvent;
 
         public void Select() {
+            if (!Interactable) return;
             Debug.Log($"Selecting {UnitName}");
             _interactBehavior.Select(this);
             SelectedEvent?.Invoke();
@@ -149,6 +154,7 @@ namespace Gameplay.Entities {
         /// Try to move or use an ability on the indicated location
         /// </summary>
         public void InteractWithCell(Vector2Int location) {
+            if (!Interactable) return;
             _interactBehavior.TargetCellWithUnit(this, location);
         }
 
@@ -386,6 +392,7 @@ namespace Gameplay.Entities {
         
         private void DisallowInteraction() {
             // Huh, actually I don't think there's anything to do here
+            Interactable = false;
         }
 
         /// <summary>

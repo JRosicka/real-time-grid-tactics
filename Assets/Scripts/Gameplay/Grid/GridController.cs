@@ -8,10 +8,12 @@ using Gameplay.UI;
 using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.Serialization;
 using UnityEngine.Tilemaps;
 
 /// <summary>
 /// Handles input for interacting with the grid and the tilemaps that live on it
+/// TODO this class has a lot of different responsibilities now, would be good to extract some of those to new classes
 /// </summary>
 public class GridController : MonoBehaviour {
     public const float CellWidth = 0.8659766f;
@@ -25,10 +27,17 @@ public class GridController : MonoBehaviour {
     [SerializeField] private Tile _inaccessibleTile;
     [SerializeField] private Tile _slowMovementTile;
     
-    // Selection reticle stuff
-    [SerializeField] private SelectionReticle _reticle;
+    // Reticle for where the mouse is currently hovering
+    [FormerlySerializedAs("_reticle")] 
+    [SerializeField] private SelectionReticle _mouseReticle;
     private Vector2Int _previousMousePos = new Vector2Int();
-
+    // Reticle for the selected unit
+    [SerializeField] private SelectionReticle _selectedUnitReticle;
+    private SelectionReticleEntityTracker _selectedUnitTracker = new SelectionReticleEntityTracker();
+    // Reticle for the target unit (The place where the selected unit is moving towards or attacking)
+    [SerializeField] private SelectionReticle _targetUnitReticle;    // TODO not currently doing anything with this. Call associated method in this class when we move or attack.
+    private SelectionReticleEntityTracker _targetUnitTracker = new SelectionReticleEntityTracker();
+    
     private enum MouseClick { 
         None = -1,
         Left = 0,
@@ -44,6 +53,8 @@ public class GridController : MonoBehaviour {
 
     public void Initialize() {
         _pathVisualizer.Initialize();
+        _selectedUnitTracker.Initialize(_selectedUnitReticle);
+        _targetUnitTracker.Initialize(_targetUnitReticle);
     }
     
     public void SelectTargetableAbility(ITargetableAbilityData abilityData, System.Object data) {
@@ -84,11 +95,19 @@ public class GridController : MonoBehaviour {
         if (mousePos == _previousMousePos) return;
 
         _previousMousePos = mousePos;
-        _reticle.SelectTile(mousePos, GameManager.Instance.GetTopEntityAtLocation(mousePos));
+        _mouseReticle.SelectTile(mousePos, GameManager.Instance.GetTopEntityAtLocation(mousePos));
     }
 
     public void ProcessMouseExit(PointerEventData eventData) {
-        _reticle.Hide();
+        _mouseReticle.Hide();
+    }
+
+    public void TrackEntity(GridEntity entity) {
+        _selectedUnitTracker.TrackEntity(entity);
+    }
+
+    public void TargetEntity(GridEntity entity) {
+        _targetUnitTracker.TrackEntity(entity);
     }
 
     private void TryClickOnCell(MouseClick clickType, Vector2Int clickPosition) {
@@ -120,6 +139,7 @@ public class GridController : MonoBehaviour {
                 } else {
                     // We clicked on an empty cell - deselect whatever we selected previously
                     GameManager.Instance.SelectionInterface.SelectEntity(null);
+                    _selectedUnitTracker.TrackEntity(null);
                 }
                 break;
             case MouseClick.Middle:
