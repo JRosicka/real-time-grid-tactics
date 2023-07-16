@@ -14,12 +14,15 @@ namespace Gameplay.UI {
         
         public List<Image> ReticleComponents;
         [SerializeField] private CanvasGroup _canvasGroup;
+        [SerializeField] private bool _listenForEntityUpdates = true;
         
         private Vector2Int _currentLocation;
         private bool _hidden;
         
         private void Start() {
-            GridEntityCollection.EntityUpdatedEvent += OnTileUpdated;
+            if (_listenForEntityUpdates) {
+                GridEntityCollection.EntityUpdatedEvent += OnTileUpdated;
+            }
         }
 
         public void SelectTile(Vector2Int location, GridEntity entityAtLocation) {
@@ -54,7 +57,7 @@ namespace Gameplay.UI {
         }
 
         private void OnTileUpdated(Vector2Int location, GridEntity entity) {
-            if (_hidden) return;
+            if (!this || _hidden) return;
             // We only care about the current location getting updated
             if (_currentLocation != location) return;
             

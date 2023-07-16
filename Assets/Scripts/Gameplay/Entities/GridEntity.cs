@@ -51,6 +51,8 @@ namespace Gameplay.Entities {
         public string DisplayName => EntityData.ID;
         public List<EntityData.EntityTag> Tags => EntityData.Tags;
         public List<AbilityDataScriptableObject> Abilities => EntityData.Abilities; // TODO maybe I do want these to be interfaces after all?
+        public List<GameplayTile> SlowTiles;
+        public List<GameplayTile> InaccessibleTiles;
 
         [Header("Current")] 
         [SyncVar(hook = nameof(OnHPChanged))] 
@@ -330,6 +332,14 @@ namespace Gameplay.Entities {
             CurrentMoves = EntityData.MaxMove;
             Range = EntityData.Range;
             Damage = EntityData.Damage;
+
+            List<GameplayTile> tiles = GameManager.Instance.Configuration.Tiles;
+            // Add any tiles that have at least one of our tags in its inaccessible tags list
+            InaccessibleTiles = tiles.Where(t => t.InaccessibleTags.Intersect(Tags).Any()).ToList();
+            // Add any tiles that have at least one of our tags in its slow tags list, and is not an inaccessible tile
+            SlowTiles = tiles.Where(t => t.SlowTags.Intersect(Tags).Any())
+                .Where(t => !InaccessibleTiles.Contains(t))
+                .ToList();
         }
 
         private void SetupView() {

@@ -4,6 +4,7 @@ using System.Linq;
 using Gameplay.Config;
 using Gameplay.Config.Abilities;
 using Gameplay.Entities;
+using Gameplay.Grid;
 using Gameplay.UI;
 using Sirenix.OdinInspector;
 using UnityEngine;
@@ -23,7 +24,8 @@ public class GridController : MonoBehaviour {
     [SerializeField] private PathVisualizer _pathVisualizer;
 
     // The overlay tilemap for highlighting particular tiles
-    [SerializeField] private Tilemap _overlayTilemap;
+    private OverlayTilemap _overlayTilemap;
+    [SerializeField] private Tilemap _overlayMap;
     [SerializeField] private Tile _inaccessibleTile;
     [SerializeField] private Tile _slowMovementTile;
     
@@ -51,10 +53,14 @@ public class GridController : MonoBehaviour {
     /// </summary>
     private System.Object _targetData;
 
+    private GridData _gridData;
+
     public void Initialize() {
         _pathVisualizer.Initialize();
         _selectedUnitTracker.Initialize(_selectedUnitReticle);
         _targetUnitTracker.Initialize(_targetUnitReticle);
+        _gridData = new GridData(_gameplayTilemap);
+        _overlayTilemap = new OverlayTilemap(_overlayMap, _gridData, _inaccessibleTile, _slowMovementTile);
     }
     
     public void SelectTargetableAbility(ITargetableAbilityData abilityData, System.Object data) {
@@ -104,6 +110,7 @@ public class GridController : MonoBehaviour {
 
     public void TrackEntity(GridEntity entity) {
         _selectedUnitTracker.TrackEntity(entity);
+        _overlayTilemap.SelectEntity(entity);
     }
 
     public void TargetEntity(GridEntity entity) {
@@ -140,6 +147,8 @@ public class GridController : MonoBehaviour {
                     // We clicked on an empty cell - deselect whatever we selected previously
                     GameManager.Instance.SelectionInterface.SelectEntity(null);
                     _selectedUnitTracker.TrackEntity(null);
+                    _overlayTilemap.SelectEntity(null);
+                    // TODO combine these all into a method since they are all used in a few places. Maybe repurpose this class into a GridSelectionController or something.
                 }
                 break;
             case MouseClick.Middle:

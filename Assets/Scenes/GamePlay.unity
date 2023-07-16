@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.37311953, g: 0.38074014, b: 0.3587274, a: 1}
+  m_IndirectSpecularColor: {r: 0.3731193, g: 0.38073996, b: 0.35872698, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -5326,6 +5326,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4916619601353602856, guid: 698b701e93e40e2449cdd7d956d84efa, type: 3}
+      propertyPath: _listenForEntityUpdates
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5184380827349900275, guid: 698b701e93e40e2449cdd7d956d84efa, type: 3}
       propertyPath: m_Pivot.x
       value: 0
@@ -7385,6 +7389,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4916619601353602856, guid: 698b701e93e40e2449cdd7d956d84efa, type: 3}
+      propertyPath: _listenForEntityUpdates
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5184380827349900275, guid: 698b701e93e40e2449cdd7d956d84efa, type: 3}
       propertyPath: m_Pivot.x
       value: 0
@@ -7941,7 +7949,7 @@ MonoBehaviour:
   _grid: {fileID: 1769013660}
   _gameplayTilemap: {fileID: 1986325198}
   _pathVisualizer: {fileID: 1932547287}
-  _overlayTilemap: {fileID: 17099766}
+  _overlayMap: {fileID: 17099766}
   _inaccessibleTile: {fileID: 11400000, guid: ed4cbd438df4d6447aa91854257d15d0, type: 2}
   _slowMovementTile: {fileID: 11400000, guid: dda43804f0513384d9023e941df94235, type: 2}
   _mouseReticle: {fileID: 636985548}
@@ -7964,7 +7972,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1848933315
 Transform:
   m_ObjectHideFlags: 0

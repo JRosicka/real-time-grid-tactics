@@ -42,7 +42,10 @@ namespace Gameplay.UI {
         }
 
         private void OnAbilityPerformed(IAbility ability, AbilityCooldownTimer timer) {
-            UpdateReticle();
+            // We only care about the entity moving
+            if (ability is MoveAbility) {
+                UpdateReticle();
+            }
         }
 
         private void OnEntityUnregistered() {

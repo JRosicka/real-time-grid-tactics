@@ -11,6 +11,7 @@ namespace Gameplay.Config {
     public class GameConfiguration : ScriptableObject {
         public List<PurchasableData> Purchasables;
         public List<AbilityDataScriptableObject> Abilities;
+        public List<GameplayTile> Tiles;
 
         private void OnValidate() {
             if (Purchasables.Select(d => d.ID).Distinct().ToList().Count < Purchasables.Count) {
@@ -19,6 +20,10 @@ namespace Gameplay.Config {
             
             if (Abilities.Select(d => d.name).Distinct().ToList().Count < Abilities.Count) {
                 Debug.LogError($"Detected entries with duplicate IDs in {Abilities}. Don't do that!");
+            }
+            
+            if (Tiles.Distinct().ToList().Count < Tiles.Count) {
+                Debug.LogError($"Detected duplicate entries in {Tiles}. Don't do that!");
             }
         }
 

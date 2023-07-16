@@ -586,6 +586,7 @@ MonoBehaviour:
   - {fileID: 2481409920986594384}
   - {fileID: 3469179031135076454}
   _canvasGroup: {fileID: 3189758920112339681}
+  _listenForEntityUpdates: 1
 --- !u!225 &3189758920112339681
 CanvasGroup:
   m_ObjectHideFlags: 0
