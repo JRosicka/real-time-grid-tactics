@@ -103,7 +103,7 @@ namespace Gameplay.UI {
 
             if (_displayingBuild) {
                 if (_currentBuildData.Targetable) {
-                    GameManager.Instance.GridController.SelectTargetableAbility(_currentBuildData, _currentEntityToBuild);
+                    GameManager.Instance.EntitySelectionManager.SelectTargetableAbility(_currentBuildData, _currentEntityToBuild);
                 } else {
                     // Try to perform the build ability
                     _selectedEntity.PerformAbility(_currentBuildData, new BuildAbilityParameters {

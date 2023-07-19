@@ -20,7 +20,7 @@ namespace Gameplay.Entities.Abilities {
         protected override bool CompleteCooldownImpl() {
             switch (AbilityParameters.Buildable) {
                 case EntityData entityData:
-                    if (GameManager.Instance.GridController.CanEntityEnterCell(AbilityParameters.BuildLocation, entityData, Performer.MyTeam, new List<GridEntity>{Performer})) {
+                    if (PathfinderService.CanEntityEnterCell(AbilityParameters.BuildLocation, entityData, Performer.MyTeam, new List<GridEntity>{Performer})) {
                         // The location is open to put this entity, so go ahead and spawn it.
                         // Note that we mark the performer entity as being ignorable since it will probably not be unregistered via
                         // the below command before we check if it's legal to spawn this new one. 

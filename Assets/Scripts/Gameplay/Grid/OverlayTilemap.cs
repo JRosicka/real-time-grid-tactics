@@ -24,7 +24,7 @@ namespace Gameplay.Grid {
             _slowMovementTile = slowMovementTile;
         }
 
-        public void SelectEntity(GridEntity entity) {
+        public void UpdateCellOverlaysForEntity(GridEntity entity) {
             if (_entity) {
                 _entity.UnregisteredEvent -= OnEntityUnregistered;
             }

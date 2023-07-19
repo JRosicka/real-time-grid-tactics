@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using Gameplay.Grid;
+using Sirenix.OdinInspector;
 using UnityEngine;
 using Util;
 
@@ -7,11 +9,6 @@ namespace Gameplay.UI {
     /// Handles creating (from a pool) a bunch of directional arrows pointing from tile to tile to visualize a path
     /// </summary>
     public class PathVisualizer : MonoBehaviour {
-        // TODO Move to PathfinderService or something
-        public struct GridPath {
-            public List<Vector2Int> Cells;
-        }
-
         [SerializeField] private DirectionalLine _directionalLinePrefab;
         [SerializeField] private Transform _lineBucket;
         [SerializeField] private int _poolSize;
@@ -29,7 +26,7 @@ namespace Gameplay.UI {
         /// <summary>
         /// Lay out a set of <see cref="DirectionalLine"/>s along a path
         /// </summary>
-        public void Visualize(GridPath path) {
+        public void Visualize(PathfinderService.GridPath path) {
             ClearPath();
             
             // If the path is only 2 cells, then no need to place any lines
@@ -70,6 +67,49 @@ namespace Gameplay.UI {
                 _linePool.AddAndHideObject(line);
             }
             _currentlyDisplayedLines.Clear();
+        }
+        
+        [Button]
+        private void VisualizePath1() {
+            Visualize(new PathfinderService.GridPath {
+                Cells = new List<Vector2Int> {
+                    new Vector2Int(0, 0),
+                    new Vector2Int(1, 0),
+                    new Vector2Int(1, 1),
+                    new Vector2Int(2, 1),
+                    new Vector2Int(2, 0),
+                }
+            });
+        }
+    
+        [Button]
+        private void VisualizePath2() {
+            Visualize(new PathfinderService.GridPath {
+                Cells = new List<Vector2Int> {
+                    new Vector2Int(-4, -4),
+                    new Vector2Int(-4, -5),
+                    new Vector2Int(-3, -5),
+                }
+            });
+        }
+
+        [Button]
+        private void VisualizePath3() {
+            Visualize(new PathfinderService.GridPath {
+                Cells = new List<Vector2Int> {
+                    new Vector2Int(0, 4),
+                    new Vector2Int(0, 3),
+                    new Vector2Int(-1, 3),
+                    new Vector2Int(-1, 4),
+                    new Vector2Int(-1, 5),
+                    new Vector2Int(0, 5),
+                    new Vector2Int(1, 5),
+                    new Vector2Int(2, 4),
+                    new Vector2Int(2, 3),
+                    new Vector2Int(2, 2),
+
+                }
+            });
         }
     }
 }

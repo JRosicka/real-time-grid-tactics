@@ -158,7 +158,7 @@ namespace Gameplay.Entities {
             if (otherEntities == null) return true;
             if (otherEntities.Entities.IsNullOrEmpty()) return true;
             List<GridEntity> entitiesToIgnore = entityToIgnore != null ? new List<GridEntity> {entityToIgnore} : null;
-            if (GameManager.Instance.GridController.CanEntityEnterCell(otherEntities.Location, entity.EntityData, entity.MyTeam, entitiesToIgnore)) return true;
+            if (PathfinderService.CanEntityEnterCell(otherEntities.Location, entity.EntityData, entity.MyTeam, entitiesToIgnore)) return true;
             return false;
         }
         

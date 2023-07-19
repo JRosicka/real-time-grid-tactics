@@ -51,7 +51,7 @@ namespace Gameplay.Config.Abilities {
         }
 
         public bool CanTargetCell(Vector2Int cellPosition, GridEntity selectedEntity, GridEntity.Team selectorTeam, System.Object targetData) {
-            return GameManager.Instance.GridController.CanEntityEnterCell(cellPosition, (EntityData)targetData, selectorTeam, new List<GridEntity>{selectedEntity});
+            return PathfinderService.CanEntityEnterCell(cellPosition, (EntityData)targetData, selectorTeam, new List<GridEntity>{selectedEntity});
         }
 
         public void DoTargetableAbility(Vector2Int cellPosition, GridEntity selectedEntity, GridEntity.Team selectorTeam, System.Object targetData) {

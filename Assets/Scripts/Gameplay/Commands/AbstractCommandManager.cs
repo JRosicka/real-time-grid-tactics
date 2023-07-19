@@ -4,6 +4,7 @@ using System.Linq;
 using Gameplay.Config;
 using Gameplay.Entities;
 using Gameplay.Entities.Abilities;
+using Gameplay.Grid;
 using Mirror;
 using UnityEngine;
 using Util;
@@ -78,7 +79,7 @@ public abstract class AbstractCommandManager : NetworkBehaviour, ICommandManager
 
     protected void DoSpawnEntity(EntityData data, Vector2Int spawnLocation, Func<GridEntity> spawnFunc, GridEntity.Team team, GridEntity entityToIgnore) {
         List<GridEntity> entitiesToIgnore = entityToIgnore != null ? new List<GridEntity> {entityToIgnore} : null;
-        if (!GameManager.Instance.GridController.CanEntityEnterCell(spawnLocation, data, team, entitiesToIgnore)) {
+        if (!PathfinderService.CanEntityEnterCell(spawnLocation, data, team, entitiesToIgnore)) {
             return;
         }
 

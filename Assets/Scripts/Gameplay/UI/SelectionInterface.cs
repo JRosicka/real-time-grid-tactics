@@ -32,20 +32,21 @@ namespace Gameplay.UI {
 
         [SerializeField] private AbilityInterface AbilityInterface;
 
-        [HideInInspector]
-        public GridEntity SelectedEntity;
-        
+        private GridEntity _displayedEntity;
         private AbilityCooldownTimer _activeMoveCooldownTimer;
         
         public void Initialize() {
             ToggleViews(false);
         }
 
-        public void SelectEntity(GridEntity entity) {
+        /// <summary>
+        /// Update the view to display the new selected entity
+        /// </summary>
+        public void UpdateSelectedEntity(GridEntity entity) {
             DeselectCurrentEntity();
             if (entity == null) return;
             
-            SelectedEntity = entity;
+            _displayedEntity = entity;
             HealthBar.SetTarget(entity);
 
             UpdateEntityInfo();
@@ -54,7 +55,6 @@ namespace Gameplay.UI {
 
             entity.AbilityPerformedEvent += OnEntityAbilityPerformed;
             entity.CooldownTimerExpiredEvent += OnEntityAbilityCooldownExpired;
-            entity.UnregisteredEvent += OnEntityUnregistered;
             
             ToggleViews(true);
 
@@ -72,18 +72,17 @@ namespace Gameplay.UI {
         }
 
         public void SelectBuildAbility(BuildAbilityData buildData) {
-            AbilityInterface.SelectBuildAbility(buildData, SelectedEntity);
+            AbilityInterface.SelectBuildAbility(buildData, _displayedEntity);
         }
 
-        private void DeselectCurrentEntity() {
-            if (SelectedEntity == null) return;
+        public void DeselectCurrentEntity() {
+            if (_displayedEntity == null) return;
             
-            SelectedEntity.AbilityPerformedEvent -= OnEntityAbilityPerformed;
-            SelectedEntity.CooldownTimerExpiredEvent -= OnEntityAbilityCooldownExpired;
-            SelectedEntity.UnregisteredEvent -= OnEntityUnregistered;
+            _displayedEntity.AbilityPerformedEvent -= OnEntityAbilityPerformed;
+            _displayedEntity.CooldownTimerExpiredEvent -= OnEntityAbilityCooldownExpired;
 
             _activeMoveCooldownTimer = null;
-            SelectedEntity = null;
+            _displayedEntity = null;
             if (MoveTimer != null) {
                 MoveTimer.UnsubscribeFromTimers();
             }
@@ -109,31 +108,27 @@ namespace Gameplay.UI {
         private void OnEntityAbilityCooldownExpired(IAbility ability, AbilityCooldownTimer abilityCooldownTimer) {
             UpdateEntityInfo();
         }
-        
-        private void OnEntityUnregistered() {
-            DeselectCurrentEntity();
-        } 
 
         private void UpdateEntityInfo() {
-            if (SelectedEntity == null) return;
+            if (_displayedEntity == null) return;
             
-            EntityIcon.sprite = SelectedEntity.EntityData.BaseSprite;
-            EntityColorsIcon.sprite = SelectedEntity.EntityData.TeamColorSprite;
-            EntityColorsIcon.color = GameManager.Instance.GetPlayerForTeam(SelectedEntity.MyTeam).Data.TeamColor;
+            EntityIcon.sprite = _displayedEntity.EntityData.BaseSprite;
+            EntityColorsIcon.sprite = _displayedEntity.EntityData.TeamColorSprite;
+            EntityColorsIcon.color = GameManager.Instance.GetPlayerForTeam(_displayedEntity.MyTeam).Data.TeamColor;
 
-            NameField.text = SelectedEntity.DisplayName;
-            DescriptionField.text = SelectedEntity.EntityData.Description;
-            TagsField.text = string.Join(", ", SelectedEntity.EntityData.Tags);
+            NameField.text = _displayedEntity.DisplayName;
+            DescriptionField.text = _displayedEntity.EntityData.Description;
+            TagsField.text = string.Join(", ", _displayedEntity.EntityData.Tags);
 
-            if (SelectedEntity.IsAbilityChannelOnCooldown(MoveChannel, out _activeMoveCooldownTimer)) {
-                MovesField.text = $"{SelectedEntity.CurrentMoves} / {SelectedEntity.MaxMove}";
+            if (_displayedEntity.IsAbilityChannelOnCooldown(MoveChannel, out _activeMoveCooldownTimer)) {
+                MovesField.text = $"{_displayedEntity.CurrentMoves} / {_displayedEntity.MaxMove}";
                 MoveTimer.gameObject.SetActive(true);
                 MoveTimer.Initialize(_activeMoveCooldownTimer, false, true);
             } else {
-                MovesField.text = $"{SelectedEntity.MaxMove} / {SelectedEntity.MaxMove}";
+                MovesField.text = $"{_displayedEntity.MaxMove} / {_displayedEntity.MaxMove}";
                 MoveTimer.gameObject.SetActive(false);
             }
-            AttackField.text = SelectedEntity.Damage.ToString();
+            AttackField.text = _displayedEntity.Damage.ToString();
         }
     }
 }

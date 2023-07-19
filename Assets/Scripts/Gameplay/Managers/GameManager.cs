@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using Gameplay.Config;
 using Gameplay.Entities;
+using Gameplay.Grid;
 using Gameplay.UI;
 using UnityEngine;
 
@@ -14,6 +15,7 @@ public class GameManager : MonoBehaviour {
     [Header("References")] 
     public Transform SpawnBucketPrefab;
     public GridController GridController;
+    public GridInputController GridInputController;
     public ICommandManager CommandManager;
     public GameSetupManager GameSetupManager;
     public GameConfiguration Configuration;
@@ -21,6 +23,7 @@ public class GameManager : MonoBehaviour {
     public ResourcesInterface ResourcesInterface;
     
     public PathfinderService PathfinderService;
+    public EntitySelectionManager EntitySelectionManager;
     
     public IGamePlayer LocalPlayer { get; private set; }
     public IGamePlayer OpponentPlayer { get; private set; }
@@ -38,6 +41,8 @@ public class GameManager : MonoBehaviour {
         SelectionInterface.Initialize();
         PathfinderService = new PathfinderService();
         GridController.Initialize();
+        EntitySelectionManager = new EntitySelectionManager();
+        GridInputController.Initialize(EntitySelectionManager);
     }
 
     public GridEntityCollection.PositionedGridEntityCollection GetEntitiesAtLocation(Vector2Int location) {

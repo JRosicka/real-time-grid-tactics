@@ -14,7 +14,7 @@ namespace Gameplay.Config.Abilities {
     public class MoveAbilityData : AbilityDataBase<MoveAbilityParameters>, ITargetableAbilityData {
 
         public override void SelectAbility(GridEntity selector) {
-            GameManager.Instance.GridController.SelectTargetableAbility(this, null);
+            GameManager.Instance.EntitySelectionManager.SelectTargetableAbility(this, null);
         }
 
         protected override bool AbilityLegalImpl(MoveAbilityParameters parameters, GridEntity entity) {
@@ -34,7 +34,7 @@ namespace Gameplay.Config.Abilities {
                 return false;
             }
 
-            return GameManager.Instance.GridController.CanEntityEnterCell(cellPosition, selectedEntity.EntityData, selectedEntity.MyTeam);
+            return PathfinderService.CanEntityEnterCell(cellPosition, selectedEntity.EntityData, selectedEntity.MyTeam);
         }
         
         public void DoTargetableAbility(Vector2Int cellPosition, GridEntity selectedEntity, GridEntity.Team selectorTeam, System.Object targetData) {

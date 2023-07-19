@@ -6,21 +6,22 @@ namespace Gameplay.Grid {
     /// Captures mouse inputs and reports them to the <see cref="GridController"/>
     /// </summary>
     public class GridMouseInputCapturer : MonoBehaviour, IPointerClickHandler, IPointerMoveHandler, IPointerEnterHandler, IPointerExitHandler {
+        [SerializeField] private GridInputController _gridInputController;
         public void OnPointerClick(PointerEventData eventData) {
-            GameManager.Instance.GridController.ProcessClick(eventData);
+            _gridInputController.ProcessClick(eventData);
         }
 
 
         public void OnPointerMove(PointerEventData eventData) {
-            GameManager.Instance.GridController.ProcessMouseMove(eventData);
+            _gridInputController.ProcessMouseMove(eventData);
         }
         
         public void OnPointerEnter(PointerEventData eventData) {
-            GameManager.Instance.GridController.ProcessMouseMove(eventData);
+            _gridInputController.ProcessMouseMove(eventData);
         }
 
         public void OnPointerExit(PointerEventData eventData) {
-            GameManager.Instance.GridController.ProcessMouseExit(eventData);
+            _gridInputController.ProcessMouseExit();
         }
     }
 }
