@@ -47,6 +47,9 @@ namespace Gameplay.Grid {
                 case PointerEventData.InputButton.Left:
                     // Left mouse button click
                     Debug.Log("Click on grid at " + mousePos);
+                    string neighbors = "";
+                    _gridController.GridData.GetAdjacentCells(mousePos).ForEach(n => neighbors += $"{n.Location} ");
+                    Debug.Log("Cell neighbors: " + neighbors);
                     click = MouseClick.Left;
                     break;
                 case PointerEventData.InputButton.Right:

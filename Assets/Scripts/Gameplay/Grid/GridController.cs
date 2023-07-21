@@ -35,12 +35,12 @@ namespace Gameplay.Grid {
         [SerializeField] private SelectionReticle _targetUnitReticle;    // TODO not currently doing anything with this. Call associated method in this class when we move or attack.
         private SelectionReticleEntityTracker _targetUnitTracker = new SelectionReticleEntityTracker();
         
-        private GridData _gridData;
+        public GridData GridData { get; private set; }
 
         public void Initialize() {
             _pathVisualizer.Initialize();
-            _gridData = new GridData(_gameplayTilemap);
-            _overlayTilemap = new OverlayTilemap(_overlayMap, _gridData, _inaccessibleTile, _slowMovementTile);
+            GridData = new GridData(_gameplayTilemap);
+            _overlayTilemap = new OverlayTilemap(_overlayMap, GridData, _inaccessibleTile, _slowMovementTile);
             _selectedUnitTracker.Initialize(_selectedUnitReticle);
             _targetUnitTracker.Initialize(_targetUnitReticle);
         }

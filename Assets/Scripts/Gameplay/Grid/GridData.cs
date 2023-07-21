@@ -14,35 +14,68 @@ namespace Gameplay.Grid {
     public class GridData {
         public class CellData {
             public GameplayTile Tile;
-            public Vector3Int Location;
+            public Vector2Int Location;
+            public List<CellData> Neighbors = new List<CellData>();
         }
 
-        private List<CellData> _cells = new List<CellData>();
-        private Dictionary<GameplayTile, List<CellData>> _tilesByTypeCache = new Dictionary<GameplayTile, List<CellData>>(); 
+        private readonly Dictionary<Vector2Int, CellData> _cells = new Dictionary<Vector2Int, CellData>();
+        private readonly Dictionary<GameplayTile, List<CellData>> _tilesByTypeCache = new Dictionary<GameplayTile, List<CellData>>(); 
 
         public GridData(Tilemap tilemap) {
             BoundsInt bounds = tilemap.cellBounds;
-            for (int i = bounds.xMin; i < bounds.xMax; i++) {
-                for (int j = bounds.yMin; j < bounds.yMax; j++) {
-                    GameplayTile tile = tilemap.GetTile<GameplayTile>(new Vector3Int(i, j));
-                    if (tile != null) {
-                        _cells.Add(new CellData {
-                            Tile = tile,
-                            Location = new Vector3Int(i, j)
-                        });
-                    }
+            
+            // Create each cell data object
+            for (int x = bounds.xMin; x < bounds.xMax; x++) {
+                for (int y = bounds.yMin; y < bounds.yMax; y++) {
+                    GameplayTile tile = tilemap.GetTile<GameplayTile>(new Vector3Int(x, y));
+                    if (tile == null) continue;
+                    
+                    Vector2Int location = new Vector2Int(x, y);
+                    _cells.Add(location, new CellData {
+                        Tile = tile,
+                        Location = location
+                    });
+                }
+            }
+            
+            // Now that we have all of the cells created, determine adjacency for each
+            foreach (CellData cell in _cells.Values) {
+                // Get all of the valid locations
+                List<Vector2Int> neighborLocations = CellAdjacencyLogic.Neighbors(cell.Location)
+                                                        .Where(l => _cells.Keys.Contains(l))
+                                                        .ToList();
+                // Add each neighboring cell to the current cell
+                foreach (Vector2Int location in neighborLocations) {
+                    cell.Neighbors.Add(_cells[location]);
                 }
             }
         }
 
+        /// <summary>
+        /// Gets all cells of the given tile type
+        /// </summary>
         public List<CellData> GetCells(GameplayTile tileType) {
             if (_tilesByTypeCache.ContainsKey(tileType)) {
                 return _tilesByTypeCache[tileType];
             }
             
-            List<CellData> cells = _cells.Where(c => c.Tile == tileType).ToList();
+            List<CellData> cells = _cells.Values.Where(c => c.Tile == tileType).ToList();
             _tilesByTypeCache.Add(tileType, cells);
             return cells;
+        }
+
+        /// <summary>
+        /// Gets all of the cells adjacent to the passed-in cell
+        /// </summary>
+        public CellData GetCell(Vector2Int location) {
+            return _cells.TryGetValue(location, out CellData cell) ? cell : null;
+        }
+        
+        /// <summary>
+        /// Gets all of the cells adjacent to the passed-in location
+        /// </summary>
+        public List<CellData> GetAdjacentCells(Vector2Int location) {
+            return GetCell(location)?.Neighbors;
         }
     }
 }
