@@ -9,7 +9,7 @@ namespace Gameplay.Grid {
     /// for getting locations of particular tiles and keeping track of the state of specific tiles.
     ///
     /// No need for any networking for this since it is handled independently for each client, though
-    /// TODO some networking would be needed if we ever want cell states to be mutable. 
+    /// TODO some networking would be needed if we ever want cell states to be mutable. Well, probably better to just have that stuff be in GridEntityCollection and have them be GridEntities. Resources might be a little tricky though. 
     /// </summary>
     public class GridData {
         public class CellData {

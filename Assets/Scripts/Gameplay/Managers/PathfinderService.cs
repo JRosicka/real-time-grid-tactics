@@ -5,6 +5,10 @@ using Gameplay.Entities;
 using Gameplay.Grid;
 using UnityEngine;
 
+
+// TODO So I'm thinking that for pathfinding, I will want a different mutable set of nodes that serves as a wrapper
+// around cells. In that case, we can generate new node objects as the pathfinding algorithm executes. Stores
+// a reference to cells which it uses to get distance/travel time and neighbors. 
 public class PathfinderService {
     public struct GridPath {
         public List<Vector2Int> Cells;
