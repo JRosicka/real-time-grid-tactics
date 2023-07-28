@@ -1,20 +1,93 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Gameplay.Config;
 using Gameplay.Entities;
 using Gameplay.Grid;
+using Gameplay.Pathfinding;
 using UnityEngine;
 
-
-// TODO So I'm thinking that for pathfinding, I will want a different mutable set of nodes that serves as a wrapper
-// around cells. In that case, we can generate new node objects as the pathfinding algorithm executes. Stores
-// a reference to cells which it uses to get distance/travel time and neighbors. 
+/// <summary>
+/// Service for finding paths, and also for finding movement costs and restrictions between tiles on the grid
+/// </summary>
 public class PathfinderService {
-    public struct GridPath {
-        public List<Vector2Int> Cells;
-    }
-
     private GridController GridController => GameManager.Instance.GridController;
+
+    // TODO we need a failsafe in case a path is not possible
+    /// <summary>
+    /// Find the shortest path between an entity and a destination. Uses a basic A* algorithm. Factors in movement costs
+    /// per tile.
+    /// </summary>
+    /// <param name="entity">The entity to traverse the path. Matters for determining movement costs per tile. Also uses
+    /// its current location as the path start.</param>
+    /// <param name="destination">The location to make a path to</param>
+    /// <returns>A path of nodes from the entity's location to the destination</returns>
+    /// <exception cref="Exception">If the generated path is too long</exception>
+    public List<GridNode> FindPath(GridEntity entity, Vector2Int destination) {
+        if (!entity.CanEnterTile(GridController.GridData.GetCell(destination).Tile)) {
+            // Can't go to destination, so no path
+            return null;
+        }
+        
+        GridNode startNode = new GridNode(entity, GridController.GridData.GetCell(entity.Location));
+
+        List<GridNode> toSearch = new List<GridNode> { startNode };
+        List<GridNode> processed = new List<GridNode>();
+
+        while (toSearch.Any()) {
+            GridNode current = toSearch[0];
+            
+            // Try to add the node with the lowest F cost, or the lowest H cost in the case of ties
+            // TODO Replace this with a hashmap
+            foreach (GridNode node in toSearch) {
+                if (node.F < current.F || Mathf.Approximately(node.F, current.F) && node.H < current.H) {
+                    current = node;
+                }
+            }
+            
+            processed.Add(current);
+            toSearch.Remove(current);
+            if (current.Location == destination) {
+                // We have reached the end, so now construct and return the path
+                GridNode currentPathNode = current;
+                List<GridNode> path = new List<GridNode>();
+                while (currentPathNode != startNode) {
+                    path.Add(currentPathNode);
+                    currentPathNode = currentPathNode.Connection;
+
+                    if (path.Count > 500) {
+                        throw new Exception("Frig bro, the path is too long");
+                    }
+                }
+                path.Add(startNode);
+                
+                // Reverse the path so that it is in the correct order
+                path.Reverse();
+                return path;
+            }
+
+            // Search through all the current node's neighbors
+            foreach (GridNode neighbor in current.Neighbors.Where(n => n.Walkable && processed.All(node => node.Location != n.Location))) {
+                bool inSearch = toSearch.Any(node => node.Location == neighbor.Location);    // TODO this and above search seem inefficient
+                float costToNeighbor = current.G + neighbor.CostToEnter();
+
+                if (!inSearch || costToNeighbor < neighbor.G) {
+                    // This neighbor has not been processed yet or the current path to it is better than a previously found path
+                    neighbor.SetG(costToNeighbor);
+                    neighbor.SetConnection(current);
+
+                    if (!inSearch) {
+                        // This is the first time we have taken a look at this node, so do some basic one-time setup
+                        neighbor.SetH(neighbor.GetDistance(destination));
+                        toSearch.Add(neighbor);
+                    }
+                }
+            }
+        }
+        
+        // We ran out of nodes to search without finding a way to the destination, so no path exists
+        return null;
+    }
 
     public int RequiredMoves(GridEntity entity, Vector2Int origin, Vector2Int destination) {
         Vector2Int pathVector = destination - origin;

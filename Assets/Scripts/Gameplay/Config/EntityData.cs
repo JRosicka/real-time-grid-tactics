@@ -30,6 +30,11 @@ namespace Gameplay.Config {
         public int Range;
         public int Damage;
 
+        [Header("Movement")]
+        // NOTE: if we add faster movement times here, then update GridNode._fastestEnterTime calculation accordingly
+        public float NormalMoveTime;
+        public float SlowMoveTime;
+
         [Space] 
         public List<EntityTag> Tags;
         public List<AbilityDataScriptableObject> Abilities;

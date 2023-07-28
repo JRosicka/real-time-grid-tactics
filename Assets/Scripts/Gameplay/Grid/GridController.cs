@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Gameplay.Config;
 using Gameplay.Entities;
+using Gameplay.Pathfinding;
 using Gameplay.UI;
 using Sirenix.OdinInspector;
 using UnityEngine;
@@ -56,13 +57,14 @@ namespace Gameplay.Grid {
 
         public void HoverOverCell(Vector2Int cell) {
             _mouseReticle.SelectTile(cell, GameManager.Instance.GetTopEntityAtLocation(cell));
+            GameManager.Instance.EntitySelectionManager.TryFindPath(cell);
         }
 
         public void StopHovering() {
             _mouseReticle.Hide();
         }
 
-        public void VisualizePath(PathfinderService.GridPath path) {
+        public void VisualizePath(List<GridNode> path) {
             _pathVisualizer.Visualize(path);
         }
 

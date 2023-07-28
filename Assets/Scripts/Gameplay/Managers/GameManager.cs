@@ -41,7 +41,7 @@ public class GameManager : MonoBehaviour {
         SelectionInterface.Initialize();
         PathfinderService = new PathfinderService();
         GridController.Initialize();
-        EntitySelectionManager = new EntitySelectionManager();
+        EntitySelectionManager = new EntitySelectionManager(this);
         GridInputController.Initialize(EntitySelectionManager);
     }
 

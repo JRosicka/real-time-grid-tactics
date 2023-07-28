@@ -1,6 +1,10 @@
+using System.Collections.Generic;
 using System.Linq;
 using Gameplay.Config.Abilities;
 using Gameplay.Entities;
+using Gameplay.Grid;
+using Gameplay.Pathfinding;
+using Gameplay.UI;
 using UnityEngine;
 
 /// <summary>
@@ -10,7 +14,7 @@ public class EntitySelectionManager {
     /// <summary>
     /// The central location where we store which entity is selected
     /// </summary>
-    private GridEntity SelectedEntity { get; set; }
+    public GridEntity SelectedEntity { get; private set; }
     
     private ITargetableAbilityData _selectedTargetableAbility;
     /// <summary>
@@ -18,6 +22,17 @@ public class EntitySelectionManager {
     /// </summary>
     private System.Object _targetData;
 
+    private readonly GameManager _gameManager;
+    private SelectionInterface SelectionInterface => _gameManager.SelectionInterface;
+    private GridController GridController => _gameManager.GridController;
+    private PathfinderService PathfinderService => _gameManager.PathfinderService;
+
+    public EntitySelectionManager(GameManager gameManager) {
+        _gameManager = gameManager;
+    }
+
+    #region Entity Selection
+    
     public void SelectEntity(GridEntity entity) {
         if (SelectedEntity != null) {
             // Unregister the un-registration event for the previously selected entity
@@ -25,8 +40,8 @@ public class EntitySelectionManager {
         }
         
         SelectedEntity = entity;
-        GameManager.Instance.SelectionInterface.UpdateSelectedEntity(entity);
-        GameManager.Instance.GridController.TrackEntity(entity);
+        SelectionInterface.UpdateSelectedEntity(entity);
+        GridController.TrackEntity(entity);
 
         if (entity != null) {
             entity.UnregisteredEvent += DeselectEntity;
@@ -38,7 +53,7 @@ public class EntitySelectionManager {
     /// subsequent calls.
     /// </summary>
     public void SelectEntityAtCell(Vector2Int cell) {
-        GridEntityCollection.PositionedGridEntityCollection entitiesAtLocation = GameManager.Instance.GetEntitiesAtLocation(cell);
+        GridEntityCollection.PositionedGridEntityCollection entitiesAtLocation = _gameManager.GetEntitiesAtLocation(cell);
         if (entitiesAtLocation != null) {
             // Select the top entity, or the next entity if we are already selecting an entity at this location
             GridEntityCollection.OrderedGridEntity orderedEntity = entitiesAtLocation.Entities.FirstOrDefault(c => c.Entity == SelectedEntity);
@@ -63,6 +78,8 @@ public class EntitySelectionManager {
         SelectEntity(null);
     }
 
+    #endregion
+    
     #region Targetable Abilities
     
     public void SelectTargetableAbility(ITargetableAbilityData abilityData, object data) {
@@ -73,7 +90,7 @@ public class EntitySelectionManager {
     public void DeselectTargetableAbility() {
         _selectedTargetableAbility = null;
         _targetData = null;
-        GameManager.Instance.SelectionInterface.DeselectActiveAbility();
+        SelectionInterface.DeselectActiveAbility();
     }
 
     /// <summary>
@@ -82,8 +99,8 @@ public class EntitySelectionManager {
     /// </summary>
     public bool TryUseTargetableAbility(Vector2Int clickedCell) {
         if (_selectedTargetableAbility != null) {
-            if (_selectedTargetableAbility.CanTargetCell(clickedCell, SelectedEntity, GameManager.Instance.LocalPlayer.Data.Team, _targetData)) {
-                _selectedTargetableAbility.DoTargetableAbility(clickedCell, SelectedEntity, GameManager.Instance.LocalPlayer.Data.Team, _targetData);
+            if (_selectedTargetableAbility.CanTargetCell(clickedCell, SelectedEntity, _gameManager.LocalPlayer.Data.Team, _targetData)) {
+                _selectedTargetableAbility.DoTargetableAbility(clickedCell, SelectedEntity, _gameManager.LocalPlayer.Data.Team, _targetData);
                 DeselectTargetableAbility();
                 return true;
             }
@@ -98,4 +115,11 @@ public class EntitySelectionManager {
     }
     
     #endregion
+
+    public void TryFindPath(Vector2Int cell) {
+        if (SelectedEntity == null || !SelectedEntity.CanMove) return;
+
+        List<GridNode> path = PathfinderService.FindPath(SelectedEntity, cell);
+        GridController.VisualizePath(path);
+    }
 }

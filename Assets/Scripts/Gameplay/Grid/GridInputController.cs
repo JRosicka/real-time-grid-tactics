@@ -26,8 +26,8 @@ namespace Gameplay.Grid {
         public void ProcessMouseMove(PointerEventData eventData) {
             Vector2Int mousePos = _gridController.GetCellPosition(eventData.pointerCurrentRaycast.worldPosition);
             if (mousePos == _previousMousePos) return;
-
             _previousMousePos = mousePos;
+            
             _gridController.HoverOverCell(mousePos);
         }
 
@@ -47,9 +47,6 @@ namespace Gameplay.Grid {
                 case PointerEventData.InputButton.Left:
                     // Left mouse button click
                     Debug.Log("Click on grid at " + mousePos);
-                    string neighbors = "";
-                    _gridController.GridData.GetAdjacentCells(mousePos).ForEach(n => neighbors += $"{n.Location} ");
-                    Debug.Log("Cell neighbors: " + neighbors);
                     click = MouseClick.Left;
                     break;
                 case PointerEventData.InputButton.Right:

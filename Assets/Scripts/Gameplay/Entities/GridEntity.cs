@@ -4,6 +4,7 @@ using System.Linq;
 using Gameplay.Config;
 using Gameplay.Config.Abilities;
 using Gameplay.Entities.Abilities;
+using Gameplay.Grid;
 using Mirror;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -323,6 +324,30 @@ namespace Gameplay.Entities {
         /// </summary>
         public void AbilityFailed(IAbilityData ability) {
             // TODO
+        }
+
+        /// <summary>
+        /// Whether this entity can move to a cell with the given tile, assuming it starts adjacent to it.
+        /// </summary>
+        public bool CanEnterTile(GameplayTile tile) {
+            if (!CanMove) return false;
+            return !InaccessibleTiles.Contains(tile);
+        }
+        
+        /// <summary>
+        /// The total amount of time it takes for this entity to move to a cell with the given tile, assuming it starts
+        /// adjacent to it.
+        /// </summary>
+        public float MoveTimeToTile(GameplayTile tile) {
+            if (!CanEnterTile(tile)) {
+                return -1;
+            }
+
+            if (SlowTiles.Contains(tile)) {
+                return EntityData.SlowMoveTime;
+            }
+
+            return EntityData.NormalMoveTime;
         }
         
         private void SetupStats() {

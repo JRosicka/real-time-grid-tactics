@@ -41,7 +41,7 @@ namespace Gameplay.Grid {
             // Now that we have all of the cells created, determine adjacency for each
             foreach (CellData cell in _cells.Values) {
                 // Get all of the valid locations
-                List<Vector2Int> neighborLocations = CellAdjacencyLogic.Neighbors(cell.Location)
+                List<Vector2Int> neighborLocations = CellDistanceLogic.Neighbors(cell.Location)
                                                         .Where(l => _cells.Keys.Contains(l))
                                                         .ToList();
                 // Add each neighboring cell to the current cell
