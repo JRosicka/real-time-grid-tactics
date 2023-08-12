@@ -6,14 +6,17 @@ using Gameplay.Entities;
 using Gameplay.Grid;
 using Gameplay.Pathfinding;
 using UnityEngine;
+using Util;
 
 /// <summary>
 /// Service for finding paths, and also for finding movement costs and restrictions between tiles on the grid
 /// </summary>
 public class PathfinderService {
+    // I would really hope that my maps aren't so big that a viable path can be found after searching through this many...
+    private const int MaxCellsToSearch = 5000;
+    
     private GridController GridController => GameManager.Instance.GridController;
 
-    // TODO we need a failsafe in case a path is not possible
     /// <summary>
     /// Find the shortest path between an entity and a destination. Uses a basic A* algorithm. Factors in movement costs
     /// per tile.
@@ -35,40 +38,27 @@ public class PathfinderService {
         List<GridNode> processed = new List<GridNode>();
 
         while (toSearch.Any()) {
+            // We always add new items sorted by F cost then H cost, so the first element in the list will be the best 
+            // choice for what to search next
             GridNode current = toSearch[0];
-            
-            // Try to add the node with the lowest F cost, or the lowest H cost in the case of ties
-            // TODO Replace this with a hashmap
-            foreach (GridNode node in toSearch) {
-                if (node.F < current.F || Mathf.Approximately(node.F, current.F) && node.H < current.H) {
-                    current = node;
-                }
-            }
             
             processed.Add(current);
             toSearch.Remove(current);
+            
             if (current.Location == destination) {
-                // We have reached the end, so now construct and return the path
-                GridNode currentPathNode = current;
-                List<GridNode> path = new List<GridNode>();
-                while (currentPathNode != startNode) {
-                    path.Add(currentPathNode);
-                    currentPathNode = currentPathNode.Connection;
-
-                    if (path.Count > 500) {
-                        throw new Exception("Frig bro, the path is too long");
-                    }
-                }
-                path.Add(startNode);
-                
-                // Reverse the path so that it is in the correct order
-                path.Reverse();
-                return path;
+                // We have reached the end
+                return ConstructPath(startNode, current);
+            }
+            
+            if (processed.Count > MaxCellsToSearch) {
+                // We have not yet found a path after searching for a while, and we have not yet exhausted all of the tiles 
+                // to search. Fail early so we don't take too long.
+                return null;
             }
 
             // Search through all the current node's neighbors
             foreach (GridNode neighbor in current.Neighbors.Where(n => n.Walkable && processed.All(node => node.Location != n.Location))) {
-                bool inSearch = toSearch.Any(node => node.Location == neighbor.Location);    // TODO this and above search seem inefficient
+                bool inSearch = toSearch.Contains(neighbor);    // Searches via GridComparer to see if the locations match
                 float costToNeighbor = current.G + neighbor.CostToEnter();
 
                 if (!inSearch || costToNeighbor < neighbor.G) {
@@ -79,7 +69,7 @@ public class PathfinderService {
                     if (!inSearch) {
                         // This is the first time we have taken a look at this node, so do some basic one-time setup
                         neighbor.SetH(neighbor.GetDistance(destination));
-                        toSearch.Add(neighbor);
+                        toSearch.AddSorted(neighbor);
                     }
                 }
             }
@@ -87,6 +77,25 @@ public class PathfinderService {
         
         // We ran out of nodes to search without finding a way to the destination, so no path exists
         return null;
+    }
+
+    private List<GridNode> ConstructPath(GridNode startNode, GridNode current) {
+        GridNode currentPathNode = current;
+        List<GridNode> path = new List<GridNode>();
+        while (currentPathNode != startNode) {
+            path.Add(currentPathNode);
+            currentPathNode = currentPathNode.Connection;
+
+            if (path.Count > 500) {
+                throw new Exception("Frig bro, the path is too long");
+            }
+        }
+        path.Add(startNode);
+                
+        // Reverse the path so that it is in the correct order
+        path.Reverse();
+        return path;
+
     }
 
     public int RequiredMoves(GridEntity entity, Vector2Int origin, Vector2Int destination) {

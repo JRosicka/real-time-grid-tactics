@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Gameplay.Entities;
 using Gameplay.Grid;
@@ -7,7 +8,7 @@ namespace Gameplay.Pathfinding {
     /// <summary>
     /// Represents a single node in the grid and the related pathfinding components. A set of these represents a path. 
     /// </summary>
-    public class GridNode {
+    public class GridNode : IComparable<GridNode>, IEqualityComparer<GridNode> {
         /// <summary>
         /// The cell this represents
         /// </summary>
@@ -74,7 +75,32 @@ namespace Gameplay.Pathfinding {
             H = h;
         }
         public float F => G + H;
-        
-        
+
+        /// <summary>
+        /// Compare using F cost, then H cost
+        /// </summary>
+        public int CompareTo(GridNode other) {
+            if (ReferenceEquals(this, other)) return 0;
+            if (ReferenceEquals(null, other)) return 1;
+            var fComparison = F.CompareTo(other.F);
+            if (fComparison != 0) return fComparison;
+            return H.CompareTo(other.H);
+        }
+
+        /// <summary>
+        /// Compare equality using location
+        /// </summary>
+        public bool Equals(GridNode x, GridNode y) {
+            if (ReferenceEquals(x, y)) return true;
+            if (ReferenceEquals(x, null)) return false;
+            if (ReferenceEquals(y, null)) return false;
+            if (x.GetType() != y.GetType()) return false;
+            // We only really care about the locations - if the locations match, the rest of the nodes should have been set up in the same way
+            return x.Location == y.Location;
+        }
+
+        public int GetHashCode(GridNode obj) {
+            return obj.Location.GetHashCode();
+        }
     }
 }
