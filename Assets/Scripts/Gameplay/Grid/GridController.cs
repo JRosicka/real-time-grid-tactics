@@ -62,6 +62,7 @@ namespace Gameplay.Grid {
 
         public void StopHovering() {
             _mouseReticle.Hide();
+            _pathVisualizer.ClearPath();
         }
 
         public void VisualizePath(List<GridNode> path) {

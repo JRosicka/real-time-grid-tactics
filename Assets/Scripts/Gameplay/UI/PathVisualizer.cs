@@ -64,7 +64,7 @@ namespace Gameplay.UI {
             }
         }
 
-        private void ClearPath() {
+        public void ClearPath() {
             foreach (DirectionalLine line in _currentlyDisplayedLines) {
                 _linePool.AddAndHideObject(line);
             }
