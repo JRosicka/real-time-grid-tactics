@@ -17,22 +17,29 @@ namespace Gameplay.Grid {
         [SerializeField] private GridController _gridController;
 
         private EntitySelectionManager _entitySelectionManager;
-        private Vector2Int _previousMousePos;
+        private Vector2Int? _currentHoveredCell;
 
         public void Initialize(EntitySelectionManager entitySelectionManager) {
             _entitySelectionManager = entitySelectionManager;
+            _entitySelectionManager.SelectedEntityMoved += UpdateSelectedEntityPath;
         }
         
         public void ProcessMouseMove(PointerEventData eventData) {
             Vector2Int mousePos = _gridController.GetCellPosition(eventData.pointerCurrentRaycast.worldPosition);
-            if (mousePos == _previousMousePos) return;
-            _previousMousePos = mousePos;
+            if (mousePos == _currentHoveredCell) return;
+            _currentHoveredCell = mousePos;
             
             _gridController.HoverOverCell(mousePos);
         }
 
         public void ProcessMouseExit() {
+            _currentHoveredCell = null;
             _gridController.StopHovering();
+        }
+        
+        private void UpdateSelectedEntityPath() {
+            if (_currentHoveredCell == null) return;
+            _gridController.HoverOverCell((Vector2Int)_currentHoveredCell);
         }
         
         /// <summary>

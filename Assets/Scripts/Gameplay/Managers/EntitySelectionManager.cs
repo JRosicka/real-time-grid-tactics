@@ -1,7 +1,9 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Gameplay.Config.Abilities;
 using Gameplay.Entities;
+using Gameplay.Entities.Abilities;
 using Gameplay.Grid;
 using Gameplay.Pathfinding;
 using Gameplay.UI;
@@ -15,6 +17,7 @@ public class EntitySelectionManager {
     /// The central location where we store which entity is selected
     /// </summary>
     public GridEntity SelectedEntity { get; private set; }
+    public event Action SelectedEntityMoved;
     
     private ITargetableAbilityData _selectedTargetableAbility;
     /// <summary>
@@ -37,6 +40,7 @@ public class EntitySelectionManager {
         if (SelectedEntity != null) {
             // Unregister the un-registration event for the previously selected entity
             SelectedEntity.UnregisteredEvent -= DeselectEntity;
+            SelectedEntity.AbilityPerformedEvent -= EntityAbilityUsed;
         }
         
         SelectedEntity = entity;
@@ -45,6 +49,7 @@ public class EntitySelectionManager {
 
         if (entity != null) {
             entity.UnregisteredEvent += DeselectEntity;
+            entity.AbilityPerformedEvent += EntityAbilityUsed;
         }
     }
 
@@ -76,6 +81,13 @@ public class EntitySelectionManager {
     private void DeselectEntity() {
         if (SelectedEntity == null) return;
         SelectEntity(null);
+    }
+
+    private void EntityAbilityUsed(IAbility ability, AbilityCooldownTimer abilityCooldownTimer) {
+        // We only care about the entity moving
+        if (ability is MoveAbility) {
+            SelectedEntityMoved?.Invoke();
+        }
     }
 
     #endregion
