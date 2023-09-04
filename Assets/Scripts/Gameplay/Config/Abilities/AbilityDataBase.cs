@@ -25,17 +25,18 @@ namespace Gameplay.Config.Abilities {
         private Sprite _icon;
         public Sprite Icon => _icon;
 
-        /// <summary>
-        /// All of these must be owned in order to perform the ability
-        /// </summary>
+        [Tooltip("All of these must be owned in order to perform the ability")]
         [SerializeField]
         private List<PurchasableData> _requirements;
         public List<PurchasableData> Requirements => _requirements;
         
+        // TODO no functionality for this yet
+        [Range(0f, 10f)]
         [SerializeField]
         private float _performDuration;
         public float PerformDuration => _performDuration;
         
+        [Range(0f, 20f)]
         [SerializeField]
         private float _cooldownDuration;
         public float CooldownDuration => _cooldownDuration;
@@ -44,12 +45,18 @@ namespace Gameplay.Config.Abilities {
         private AbilityChannel _channel;
         public AbilityChannel Channel => _channel;
         
-        /// <summary>
-        /// Collection of any <see cref="AbilityChannel"/>s that usage of this ability blocks. 
-        /// </summary>
+        [Tooltip("Collection of any AbilityChannels that usage of this ability blocks")]
         [SerializeField]
         private List<AbilityChannel> _channelBlockers = new List<AbilityChannel>();
         public List<AbilityChannel> ChannelBlockers => _channelBlockers;
+
+        [Tooltip("How much time is added to the entity's movement cooldown timer after performing this ability. " +
+                 "If there is an active cooldown timer for movement when this ability is performed, then this amount " +
+                 "is added to that timer. Otherwise, a new cooldown timer is added with this amount.")]
+        [Range(0f, 5f)]
+        [SerializeField] 
+        private float _addedMovementTime;
+        public float AddedMovementTime => _addedMovementTime;
 
         [SerializeField] 
         private bool _performOnStart;

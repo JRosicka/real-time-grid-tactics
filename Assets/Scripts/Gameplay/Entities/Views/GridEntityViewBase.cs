@@ -12,7 +12,9 @@ namespace Gameplay.Entities {
         [SerializeField]
         private AbilityTimerCooldownView TimerCooldownViewPrefab;
         [SerializeField]
-        private Transform _timerLocation;
+        private Transform _moveTimerLocation;
+        [SerializeField]
+        private Transform _attackTimerLocation;
         
         [Header("References")] 
         [SerializeField]
@@ -31,17 +33,12 @@ namespace Gameplay.Entities {
             _teamColorImage.color = GameManager.Instance.GetPlayerForTeam(entity.MyTeam).Data.TeamColor;
             
             entity.AbilityPerformedEvent += DoAbility;
+            entity.CooldownTimerStartedEvent += CreateTimerView;
             entity.SelectedEvent += Selected;
             entity.HPChangedEvent += AttackReceived;
             entity.KilledEvent += Killed;
         }
-
-        // TODO can pass in things like color and timer location (maybe use a set of transform references) and stuff
-        protected void CreateTimerView(AbilityCooldownTimer cooldownTimer) {
-            AbilityTimerCooldownView cooldownView = Instantiate(TimerCooldownViewPrefab, _timerLocation);
-            cooldownView.Initialize(cooldownTimer, true, true);
-        }
-
+        
         public abstract void DoAbility(IAbility ability, AbilityCooldownTimer cooldownTimer);
         public abstract void Selected();
         public abstract void AttackReceived();
@@ -55,14 +52,12 @@ namespace Gameplay.Entities {
         /// Catch-all for generic ability view behavior. Subclasses should call this in their default cases for their
         /// <see cref="DoAbility"/> overrides.
         /// </summary>
-        protected void DoGenericAbility(IAbility ability, AbilityCooldownTimer cooldownTimer) {
+        protected void DoGenericAbility(IAbility ability) {
             switch (ability.AbilityData) {
                 case MoveAbilityData moveAbility:
-                    CreateTimerView(cooldownTimer);
                     DoGenericMoveAnimation((MoveAbility)ability);
                     break;
                 case AttackAbilityData attackAbility:
-                    CreateTimerView(cooldownTimer);
                     // TODO generic attack animation
                     break;
                 default:
@@ -74,6 +69,16 @@ namespace Gameplay.Entities {
         private void DoGenericMoveAnimation(MoveAbility moveAbility) {
             // Just instantly move the entity to the destination
             Entity.transform.position = GameManager.Instance.GridController.GetWorldPosition(((MoveAbilityParameters)moveAbility.BaseParameters).Destination);
+        }
+        
+        // TODO can pass in things like color and timer location (maybe use a set of transform references) and stuff
+        private void CreateTimerView(IAbility ability, AbilityCooldownTimer cooldownTimer) {
+            Transform timerLocation = _moveTimerLocation;
+            if (cooldownTimer.Ability is AttackAbility) {
+                timerLocation = _attackTimerLocation;
+            }
+            AbilityTimerCooldownView cooldownView = Instantiate(TimerCooldownViewPrefab, timerLocation);
+            cooldownView.Initialize(cooldownTimer, true, true);
         }
     }
 }

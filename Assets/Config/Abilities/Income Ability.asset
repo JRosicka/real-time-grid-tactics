@@ -20,6 +20,7 @@ MonoBehaviour:
     _cooldownDuration: 5
     _channel: {fileID: 11400000, guid: e53d1693004b22b4aaf5ee5caa8e749d, type: 2}
     _channelBlockers: []
+    _addedMovementTime: 0
     _performOnStart: 1
     _repeatWhenCooldownFinishes: 1
     _selectable: 0

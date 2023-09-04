@@ -19,6 +19,12 @@ namespace Gameplay.Config.Abilities {
         AbilityChannel Channel { get; }
         List<AbilityChannel> ChannelBlockers { get; }
         /// <summary>
+        /// How much time is added to the entity's movement cooldown timer after performing this ability.
+        /// If there is an active cooldown timer for movement when this ability is performed, then this amount
+        /// is added to that timer. Otherwise, a new cooldown timer is added with this amount.
+        /// </summary>
+        float AddedMovementTime { get; }
+        /// <summary>
         /// Whether to do the ability immediately after the associated <see cref="GridEntity"/> spawns. Note that
         /// <see cref="NullAbilityParameters"/> will be sent as the parameters. 
         /// </summary>

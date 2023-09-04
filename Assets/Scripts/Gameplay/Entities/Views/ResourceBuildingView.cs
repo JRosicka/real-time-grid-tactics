@@ -8,11 +8,10 @@ namespace Gameplay.Entities {
             Debug.Log($"{nameof(DoAbility)}: {ability}");
             switch (ability.AbilityData) {
                 case IncomeAbilityData _:
-                    CreateTimerView(cooldownTimer);
                     DoIncomeAnimation();
                     break;
                 default:
-                    DoGenericAbility(ability, cooldownTimer);
+                    DoGenericAbility(ability);
                     break;
             }
         }

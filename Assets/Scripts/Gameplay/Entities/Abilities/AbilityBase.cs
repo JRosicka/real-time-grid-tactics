@@ -50,6 +50,9 @@ namespace Gameplay.Entities.Abilities {
         private void PayCost() {
             PayCostImpl();
             Performer.CreateAbilityTimer(this);
+            if (Data.AddedMovementTime > 0) {
+                Performer.AddMovementTime(Data.AddedMovementTime);
+            }
         }
 
         protected abstract void PayCostImpl();

@@ -139,6 +139,7 @@ namespace Gameplay.Entities {
         public Vector2Int Location => GameManager.Instance.GetLocationForEntity(this);
 
         public event Action<IAbility, AbilityCooldownTimer> AbilityPerformedEvent;
+        public event Action<IAbility, AbilityCooldownTimer> CooldownTimerStartedEvent;
         public event Action<IAbility, AbilityCooldownTimer> CooldownTimerExpiredEvent;
         public event Action SelectedEvent;
         public event Action HPChangedEvent;
@@ -213,25 +214,26 @@ namespace Gameplay.Entities {
             return timer != null;
         }
         
-        public void CreateAbilityTimer(IAbility ability) {
+        public void CreateAbilityTimer(IAbility ability, float overrideCooldownDuration = -1) {
             if (!NetworkClient.active) {
                 // SP
-                DoCreateAbilityTimer(ability);
+                DoCreateAbilityTimer(ability, overrideCooldownDuration);
             } else if (NetworkServer.active) {
                 // MP server
-                RpcCreateAbilityTimer(ability);
+                RpcCreateAbilityTimer(ability, overrideCooldownDuration);
             }
             // Else MP client, do nothing
         }
 
         [ClientRpc]
-        private void RpcCreateAbilityTimer(IAbility ability) {
-            DoCreateAbilityTimer(ability);
+        private void RpcCreateAbilityTimer(IAbility ability, float overrideCooldownDuration) {
+            DoCreateAbilityTimer(ability, overrideCooldownDuration);
         }
 
-        private void DoCreateAbilityTimer(IAbility ability) {
-            AbilityCooldownTimer newCooldownTimer = new AbilityCooldownTimer(ability);
+        private void DoCreateAbilityTimer(IAbility ability, float overrideCooldownDuration) {
+            AbilityCooldownTimer newCooldownTimer = new AbilityCooldownTimer(ability, overrideCooldownDuration);
             ActiveTimers.Add(newCooldownTimer);
+            CooldownTimerStartedEvent?.Invoke(ability, newCooldownTimer);
         }
 
         public void ExpireTimerForAbility(IAbility ability) {
@@ -245,6 +247,36 @@ namespace Gameplay.Entities {
             cooldownTimer.Expire();
             ActiveTimers.Remove(cooldownTimer);
             CooldownTimerExpiredEvent?.Invoke(ability, cooldownTimer);
+        }
+
+        /// <summary>
+        /// Add time to the movement cooldown timer due to another ability being performed.
+        /// If there is an active cooldown timer, then this amount is added to that timer.
+        /// Otherwise, a new cooldown timer is added with this amount.
+        /// </summary>
+        public void AddMovementTime(float timeToAdd) {
+            AbilityDataScriptableObject moveAbilityScriptable = Abilities.FirstOrDefault(a => a.Content is MoveAbilityData);
+            if (moveAbilityScriptable == null) return;
+            
+            List<AbilityCooldownTimer> activeTimersCopy = new List<AbilityCooldownTimer>(ActiveTimers);
+            AbilityCooldownTimer movementTimer = activeTimersCopy.FirstOrDefault(t => t.Ability is MoveAbility);
+            if (movementTimer != null) {
+                if (movementTimer.Expired) {
+                    Debug.LogWarning("Tried to add movement cooldown timer time from another ability, but that " +
+                                     "timer is expired. Adding new movement cooldown timer instead. This might not behave correctly.");
+                } else {
+                    // Add this time to the current movement cooldown timer
+                    movementTimer.AddTime(timeToAdd);
+                    return;
+                }
+            }
+            
+            // Add a new movement cooldown timer
+            MoveAbilityData moveAbilityData = (MoveAbilityData)moveAbilityScriptable.Content;
+            CreateAbilityTimer(new MoveAbility(moveAbilityData, new MoveAbilityParameters {
+                Destination = new Vector2Int(-3, -3),   // TODO set to an arbitrary specific value to see if we ever actually go there. This should eventually be changed to be the current position or something.
+                SelectorTeam = MyTeam
+            }, this), timeToAdd);
         }
 
         private void Update() {

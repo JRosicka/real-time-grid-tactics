@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Gameplay.Config.Abilities;
@@ -42,9 +41,9 @@ namespace Gameplay.Entities.Abilities {
         private float _initialTimeRemaining;
         private bool _markedCompletedLocally;
 
-        public AbilityCooldownTimer(IAbility ability) {
+        public AbilityCooldownTimer(IAbility ability, float overrideCooldownDuration) {
             Ability = ability;
-            _timeRemaining = _initialTimeRemaining = ability.AbilityData.CooldownDuration;
+            _timeRemaining = _initialTimeRemaining = overrideCooldownDuration > 0 ? overrideCooldownDuration : ability.AbilityData.CooldownDuration;
         }
 
         public void UpdateTimer(float deltaTime) {
@@ -53,6 +52,13 @@ namespace Gameplay.Entities.Abilities {
             _timeRemaining = Mathf.Max(_timeRemaining - deltaTime, 0);
             if (_timeRemaining <= 0) {
                 HandleTimerCompleted();
+            }
+        }
+
+        public void AddTime(float timeToAdd) {
+            _timeRemaining += timeToAdd;
+            if (_timeRemaining > _initialTimeRemaining) {
+                _initialTimeRemaining = _timeRemaining;
             }
         }
 
