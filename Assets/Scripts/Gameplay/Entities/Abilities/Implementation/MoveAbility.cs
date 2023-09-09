@@ -10,7 +10,7 @@ namespace Gameplay.Entities.Abilities {
     /// <see cref="IAbility"/> for moving a <see cref="GridEntity"/>
     /// </summary>
     public class MoveAbility : AbilityBase<MoveAbilityData, MoveAbilityParameters> {
-        private MoveAbilityParameters AbilityParameters => (MoveAbilityParameters) BaseParameters;
+        public MoveAbilityParameters AbilityParameters => (MoveAbilityParameters) BaseParameters;
         private int _moveCost;
         
         public MoveAbility(MoveAbilityData data, MoveAbilityParameters parameters, GridEntity performer) : base(data, parameters, performer) {
@@ -33,6 +33,8 @@ namespace Gameplay.Entities.Abilities {
             if (path == null || path.Count < 2) {
                 throw new Exception("Could not find path for move ability when attempting to perform its effect");
             }
+
+            AbilityParameters.NextMoveCell = path[1].Location;
             
             GameManager.Instance.CommandManager.MoveEntityToCell(Performer, path[1].Location);
             if (path.Count > 2) {
@@ -54,14 +56,17 @@ namespace Gameplay.Entities.Abilities {
 
     public class MoveAbilityParameters : IAbilityParameters {
         public Vector2Int Destination;
+        public Vector2Int NextMoveCell;
         public GridEntity.Team SelectorTeam;
         public void Serialize(NetworkWriter writer) {
             writer.Write(Destination);
+            writer.Write(NextMoveCell);
             writer.Write(SelectorTeam);
         }
 
         public void Deserialize(NetworkReader reader) {
             Destination = reader.Read<Vector2Int>();
+            NextMoveCell = reader.Read<Vector2Int>();
             SelectorTeam = reader.Read<GridEntity.Team>();
         }
     }

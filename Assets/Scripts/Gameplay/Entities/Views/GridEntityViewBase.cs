@@ -68,7 +68,7 @@ namespace Gameplay.Entities {
 
         private void DoGenericMoveAnimation(MoveAbility moveAbility) {
             // Just instantly move the entity to the destination for now
-            Entity.transform.position = GameManager.Instance.GridController.GetWorldPosition(Entity.Location);
+            Entity.transform.position = GameManager.Instance.GridController.GetWorldPosition(moveAbility.AbilityParameters.NextMoveCell);
         }
         
         // TODO can pass in things like color and timer location (maybe use a set of transform references) and stuff
