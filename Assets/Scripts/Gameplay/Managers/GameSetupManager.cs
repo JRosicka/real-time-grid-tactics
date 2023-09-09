@@ -27,7 +27,7 @@ public class GameSetupManager : MonoBehaviour {
     // The total number of players in this game who have arrived in the game scene
     private int _readyPlayerCount;
     // Whether the game was initialized on the server
-    private bool _gameInitialized;
+    public bool GameInitialized { get; private set; }
     
     public void Initialize() {
         // If we are not connected in a multiplayer session, then we must be playing singleplayer. Set up the game now. 
@@ -43,7 +43,7 @@ public class GameSetupManager : MonoBehaviour {
     #region Singleplayer
 
     private void SetupSPGame() {
-        if (_gameInitialized) {
+        if (GameInitialized) {
             Debug.LogError("Can not set up SP game, the game was already set up");
             return;
         }
@@ -57,7 +57,7 @@ public class GameSetupManager : MonoBehaviour {
         opponentPlayer.Data = Player2Data;
         GameManager.SetPlayers(localPlayer, opponentPlayer);
         
-        _gameInitialized = true;
+        GameInitialized = true;
     } 
 
     #endregion
@@ -140,7 +140,7 @@ public class GameSetupManager : MonoBehaviour {
     /// </summary>
     [Server]
     private void SetupMPGame() {
-        if (_gameInitialized) {
+        if (GameInitialized) {
             Debug.LogError("Can not set up MP game, the game was already set up");
             return;
         }
@@ -152,7 +152,7 @@ public class GameSetupManager : MonoBehaviour {
 
         // Tell clients to look for the command controller and player GameObjects
         MPSetupHandler.RpcAssignPlayers();
-        _gameInitialized = true;
+        GameInitialized = true;
     }
 
     #endregion

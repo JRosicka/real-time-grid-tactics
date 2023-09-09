@@ -26,8 +26,9 @@ namespace Gameplay.UI {
         }
 
         public void SelectTile(Vector2Int location, GridEntity entityAtLocation) {
+            if (!GameManager.Instance.GameSetupManager.GameInitialized) return;
+            
             _hidden = false;
-
             _canvasGroup.alpha = 1;
 
             // Set position
