@@ -1,4 +1,7 @@
+using System;
+using System.Collections.Generic;
 using Gameplay.Config.Abilities;
+using Gameplay.Pathfinding;
 using Mirror;
 using UnityEngine;
 
@@ -21,19 +24,21 @@ namespace Gameplay.Entities.Abilities {
         }
 
         protected override void PayCostImpl() {
-            _moveCost = GameManager.Instance.PathfinderService.RequiredMoves(Performer, Performer.Location,
-                    AbilityParameters.Destination);
-            if (_moveCost > Performer.CurrentMoves) {
-                Debug.LogError($"Tried to pay too high of a move cost ({_moveCost}) for entity {Performer.DisplayName} with move amount ({Performer.CurrentMoves})");
-                _moveCost = Performer.CurrentMoves;
-            }
-
-            Performer.CurrentMoves -= _moveCost;
+            // Nothing to do
         }
         
         public override void DoAbilityEffect() {
-            Debug.Log($"Did move ability to {AbilityParameters.Destination}, cool");
-            GameManager.Instance.CommandManager.MoveEntityToCell(Performer, AbilityParameters.Destination);
+            // Perform a single move towards the destination
+            List<GridNode> path = GameManager.Instance.PathfinderService.FindPath(Performer, AbilityParameters.Destination);
+            if (path == null || path.Count < 2) {
+                throw new Exception("Could not find path for move ability when attempting to perform its effect");
+            }
+            
+            GameManager.Instance.CommandManager.MoveEntityToCell(Performer, path[1].Location);
+            if (path.Count > 2) {
+                // There is more distance to travel, so put a new movement at the front of the queue
+                Performer.QueueAbility(Data, AbilityParameters, WaitUntilLegal, false, true);
+            }
         }
 
         public override void SerializeParameters(NetworkWriter writer) {

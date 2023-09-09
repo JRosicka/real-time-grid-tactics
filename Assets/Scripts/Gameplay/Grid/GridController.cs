@@ -62,6 +62,9 @@ namespace Gameplay.Grid {
 
         public void StopHovering() {
             _mouseReticle.Hide();
+        }
+
+        public void ClearPath() {
             _pathVisualizer.ClearPath();
         }
 

@@ -81,6 +81,7 @@ public class EntitySelectionManager {
     private void DeselectEntity() {
         if (SelectedEntity == null) return;
         SelectEntity(null);
+        GridController.ClearPath();
     }
 
     private void EntityAbilityUsed(IAbility ability, AbilityCooldownTimer abilityCooldownTimer) {
@@ -110,20 +111,27 @@ public class EntitySelectionManager {
     /// <returns>True if an ability was successfully used, otherwise false.</returns>
     /// </summary>
     public bool TryUseTargetableAbility(Vector2Int clickedCell) {
-        if (_selectedTargetableAbility != null) {
-            if (_selectedTargetableAbility.CanTargetCell(clickedCell, SelectedEntity, _gameManager.LocalPlayer.Data.Team, _targetData)) {
-                _selectedTargetableAbility.DoTargetableAbility(clickedCell, SelectedEntity, _gameManager.LocalPlayer.Data.Team, _targetData);
-                DeselectTargetableAbility();
-                return true;
-            }
-        
+        if (_selectedTargetableAbility == null) return false;
+
+        if (!_selectedTargetableAbility.CanTargetCell(clickedCell, SelectedEntity, _gameManager.LocalPlayer.Data.Team, _targetData)) {
             // We clicked on a cell that the ability cannot be used on. Deselect the ability. 
             DeselectTargetableAbility();
             return false;
         }
+        
+        SelectedEntity.ClearAbilityQueue();
 
-        // No targetable ability selected
-        return false;
+        // TODO maybe move everything under here in this method to some other class, if things get more complicated
+        if (SelectedEntity.Location != clickedCell) {
+            // We need to move to the clicked cell first
+            // TODO if an ability has a range, like an attack, find a path to the nearest place in range
+            SelectedEntity.MoveToCell(clickedCell);
+        }
+
+        // This targetable ability will get queued
+        _selectedTargetableAbility.DoTargetableAbility(clickedCell, SelectedEntity, _gameManager.LocalPlayer.Data.Team, _targetData);
+        DeselectTargetableAbility();
+        return true;
     }
     
     #endregion

@@ -38,7 +38,8 @@ namespace Gameplay.Config.Abilities {
         }
         
         public void DoTargetableAbility(Vector2Int cellPosition, GridEntity selectedEntity, GridEntity.Team selectorTeam, System.Object targetData) {
-            selectedEntity.PerformAbility(this, new MoveAbilityParameters {Destination = cellPosition, SelectorTeam = selectorTeam}, true);
+            // Nothing to do here - the caller is responsible for moving the entity to the destination first anyway, which 
+            // is the only thing we're trying to do with this ability
         }
     }
 }

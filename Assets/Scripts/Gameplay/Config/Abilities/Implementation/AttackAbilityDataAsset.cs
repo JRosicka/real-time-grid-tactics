@@ -39,7 +39,8 @@ namespace Gameplay.Config.Abilities {
 
         public void DoTargetableAbility(Vector2Int cellPosition, GridEntity selectedEntity, GridEntity.Team selectorTeam, System.Object targetData) {
             GridEntity target = GameManager.Instance.GetEntitiesAtLocation(cellPosition).GetTopEntity().Entity;    // Only able to target the top entity!
-            selectedEntity.PerformAbility(this, new AttackAbilityParameters {Attacker = selectedEntity, Target = target}, false);
+            selectedEntity.QueueAbility(this, new AttackAbilityParameters {Attacker = selectedEntity, Target = target}, 
+                false, false, false);
         }
     }
 }

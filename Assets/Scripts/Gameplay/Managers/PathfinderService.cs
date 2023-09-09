@@ -27,7 +27,8 @@ public class PathfinderService {
     /// <returns>A path of nodes from the entity's location to the destination</returns>
     /// <exception cref="Exception">If the generated path is too long</exception>
     public List<GridNode> FindPath(GridEntity entity, Vector2Int destination) {
-        if (!entity.CanEnterTile(GridController.GridData.GetCell(destination).Tile)) {
+        if (!entity.CanEnterTile(GridController.GridData.GetCell(destination).Tile) 
+                || !CanEntityEnterCell(destination, entity.EntityData, entity.MyTeam)) {
             // Can't go to destination, so no path
             return null;
         }

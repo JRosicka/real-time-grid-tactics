@@ -73,7 +73,7 @@ public abstract class AbstractCommandManager : NetworkBehaviour, ICommandManager
     }
 
     public abstract void PerformAbility(IAbility ability, bool clearQueueFirst);
-    public abstract void QueueAbility(IAbility ability, bool clearQueueFirst);
+    public abstract void QueueAbility(IAbility ability, bool clearQueueFirst, bool insertAtFront);
 
     public abstract void MarkAbilityCooldownExpired(IAbility ability);
 
@@ -123,17 +123,22 @@ public abstract class AbstractCommandManager : NetworkBehaviour, ICommandManager
         }
 
         if (ability.WaitUntilLegal) {
-            DoQueueAbility(ability, false);
+            DoQueueAbility(ability, false, false);
         }
 
         return false;
     }
 
-    protected void DoQueueAbility(IAbility ability, bool clearQueueFirst) {
+    protected void DoQueueAbility(IAbility ability, bool clearQueueFirst, bool insertAtFront) {
         if (clearQueueFirst) {
             ability.Performer.ClearAbilityQueue();
         }
-        ability.Performer.QueuedAbilities.Add(ability);
+
+        if (insertAtFront) {
+            ability.Performer.QueuedAbilities.Insert(0, ability);
+        } else {
+            ability.Performer.QueuedAbilities.Add(ability);
+        }
     }
 
     protected void DoAbilityPerformed(IAbility ability) {

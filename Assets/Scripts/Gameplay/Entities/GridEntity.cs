@@ -274,7 +274,7 @@ namespace Gameplay.Entities {
             // Add a new movement cooldown timer
             MoveAbilityData moveAbilityData = (MoveAbilityData)moveAbilityScriptable.Content;
             CreateAbilityTimer(new MoveAbility(moveAbilityData, new MoveAbilityParameters {
-                Destination = new Vector2Int(-3, -3),   // TODO set to an arbitrary specific value to see if we ever actually go there. This should eventually be changed to be the current position or something.
+                Destination = new Vector2Int(-3, -3),   // TODO currently set to an arbitrary specific value to see if we ever actually go there. This should eventually be changed to be the current position or something.
                 SelectorTeam = MyTeam
             }, this), timeToAdd);
         }
@@ -288,7 +288,7 @@ namespace Gameplay.Entities {
             if (!abilityData.AbilityLegal(parameters, this)) {
                 if (queueIfNotLegal) {
                     // We specified to perform the ability now, but we can't legally do that. So queue it. 
-                    QueueAbility(abilityData, parameters, true, true);
+                    QueueAbility(abilityData, parameters, true, true, false);
                     return true;
                 } else {
                     AbilityFailed(abilityData);
@@ -311,10 +311,10 @@ namespace Gameplay.Entities {
             return true;
         }
 
-        public void QueueAbility(IAbilityData abilityData, IAbilityParameters parameters, bool waitUntilLegal, bool clearQueueFirst) {
+        public void QueueAbility(IAbilityData abilityData, IAbilityParameters parameters, bool waitUntilLegal, bool clearQueueFirst, bool insertAtFront) {
             IAbility abilityInstance = abilityData.CreateAbility(parameters, this);
             abilityInstance.WaitUntilLegal = waitUntilLegal;
-            GameManager.Instance.CommandManager.QueueAbility(abilityInstance, clearQueueFirst);
+            GameManager.Instance.CommandManager.QueueAbility(abilityInstance, clearQueueFirst, insertAtFront);
         }
 
         public void ClearAbilityQueue() {
