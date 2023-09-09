@@ -165,7 +165,7 @@ namespace Gameplay.Entities {
         public void MoveToCell(Vector2Int targetCell) {
             Debug.Log($"Attempting to move {UnitName} to {targetCell}");
             MoveAbilityData data = (MoveAbilityData) EntityData.Abilities.First(a => a.Content.GetType() == typeof(MoveAbilityData)).Content;
-            PerformAbility(data, new MoveAbilityParameters { Destination = targetCell, SelectorTeam = MyTeam}, true);
+            PerformAbility(data, new MoveAbilityParameters { Destination = targetCell, NextMoveCell = targetCell, SelectorTeam = MyTeam}, true);
         }
 
         public void TryTargetEntity(GridEntity targetEntity, Vector2Int targetCell) {
@@ -275,6 +275,7 @@ namespace Gameplay.Entities {
             MoveAbilityData moveAbilityData = (MoveAbilityData)moveAbilityScriptable.Content;
             CreateAbilityTimer(new MoveAbility(moveAbilityData, new MoveAbilityParameters {
                 Destination = new Vector2Int(-3, -3),   // TODO currently set to an arbitrary specific value to see if we ever actually go there. This should eventually be changed to be the current position or something.
+                NextMoveCell = new Vector2Int(-3, -3),   // TODO currently set to an arbitrary specific value to see if we ever actually go there. This should eventually be changed to be the current position or something.
                 SelectorTeam = MyTeam
             }, this), timeToAdd);
         }
