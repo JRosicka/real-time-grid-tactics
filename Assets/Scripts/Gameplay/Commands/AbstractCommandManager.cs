@@ -1,6 +1,7 @@
+// #define AF_LATENCY_TESTING
+
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using Gameplay.Config;
 using Gameplay.Entities;
 using Gameplay.Entities.Abilities;
@@ -25,8 +26,11 @@ public abstract class AbstractCommandManager : NetworkBehaviour, ICommandManager
     protected GridController GridController => GameManager.Instance.GridController;
     
     // TODO this is where I could add some "is this player allowed to call this on the entity" checks
-    [SyncVar]
+    [SyncVar(hook = nameof(OnEntityCollectionChanged))] 
     private GridEntityCollection _entitiesOnGrid = new GridEntityCollection();
+    private void OnEntityCollectionChanged(GridEntityCollection oldValue, GridEntityCollection newValue) {
+        LogTimestamp(nameof(OnEntityCollectionChanged));
+    }
 
     /// <summary>
     /// An entity was just registered (spawned). Triggered on server. 
@@ -161,6 +165,12 @@ public abstract class AbstractCommandManager : NetworkBehaviour, ICommandManager
     /// is not enough to get the sync to occur. 
     /// </summary>
     private void SyncEntityCollection() {    // TODO: If networking is horribly slow when there are a lot of GridEntities in the game... this is probably why. Kinda yucky. 
+        LogTimestamp(nameof(SyncEntityCollection));
         _entitiesOnGrid = new GridEntityCollection(_entitiesOnGrid.Entities);
+    }
+    
+    [System.Diagnostics.Conditional("AF_LATENCY_TESTING")]
+    protected void LogTimestamp(string trigger) {
+        Debug.Log($"Timestamp for ({trigger}): {Time.time}");
     }
 }

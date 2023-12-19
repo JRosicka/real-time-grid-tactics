@@ -14,6 +14,7 @@ public class MPCommandManager : AbstractCommandManager {
     }
 
     public override void SpawnEntity(EntityData data, Vector2Int spawnLocation, GridEntity.Team team, GridEntity entityToIgnore) {
+        LogTimestamp(nameof(SpawnEntity));
         CmdSpawnEntity(data, spawnLocation, team, entityToIgnore);
     }
 
@@ -22,10 +23,12 @@ public class MPCommandManager : AbstractCommandManager {
     }
 
     protected override void RegisterEntity(GridEntity entity, EntityData data, Vector2Int position, GridEntity entityToIgnore) {
+        LogTimestamp(nameof(RegisterEntity));
         CmdRegisterEntity(entity, data, position, entityToIgnore);
     }
 
     public override void UnRegisterEntity(GridEntity entity, bool showDeathAnimation) {
+        LogTimestamp(nameof(UnRegisterEntity));
         CmdUnRegisterEntity(entity, showDeathAnimation);
     }
 
@@ -34,6 +37,7 @@ public class MPCommandManager : AbstractCommandManager {
     }
 
     public override void PerformAbility(IAbility ability, bool clearQueueFirst) {
+        LogTimestamp(nameof(PerformAbility));
         CmdPerformAbility(ability, clearQueueFirst);
     }
 
@@ -48,6 +52,7 @@ public class MPCommandManager : AbstractCommandManager {
 
     [Command(requiresAuthority = false)] // TODO this should definitely require authority
     private void CmdSpawnEntity(EntityData data, Vector2Int spawnLocation, GridEntity.Team team, GridEntity entityToIgnore) {
+        LogTimestamp(nameof(CmdSpawnEntity));
         DoSpawnEntity(data, spawnLocation, () => {
             GridEntity entityInstance = Instantiate(GridEntityPrefab, GridController.GetWorldPosition(spawnLocation), Quaternion.identity, SpawnBucket);
             NetworkServer.Spawn(entityInstance.gameObject);
@@ -68,11 +73,13 @@ public class MPCommandManager : AbstractCommandManager {
     
     [Command(requiresAuthority = false)]
     private void CmdRegisterEntity(GridEntity entity, EntityData data, Vector2Int position, GridEntity entityToIgnore) {
+        LogTimestamp(nameof(CmdRegisterEntity));
         DoRegisterEntity(entity, data, position, entityToIgnore);
     }
 
     [Command(requiresAuthority = false)]
     private void CmdUnRegisterEntity(GridEntity entity, bool showDeathAnimation) {
+        LogTimestamp(nameof(CmdUnRegisterEntity));
         DoUnRegisterEntity(entity);
         RpcEntityUnregistered(entity, showDeathAnimation);
     }
@@ -84,11 +91,13 @@ public class MPCommandManager : AbstractCommandManager {
 
     [ClientRpc]
     private void RpcEntityUnregistered(GridEntity entity, bool showDeathAnimation) {
+        LogTimestamp(nameof(RpcEntityUnregistered));
         DoMarkEntityUnregistered(entity, showDeathAnimation);
     }
     
     [Command(requiresAuthority = false)]
     private void CmdPerformAbility(IAbility ability, bool clearQueueFirst) {
+        LogTimestamp(nameof(CmdPerformAbility));
         bool success = DoPerformAbility(ability, clearQueueFirst);
         if (success) {
             RpcAbilityPerformed(ability);
@@ -99,6 +108,7 @@ public class MPCommandManager : AbstractCommandManager {
 
     [ClientRpc]
     private void RpcAbilityPerformed(IAbility ability) {
+        LogTimestamp(nameof(RpcAbilityPerformed));
         DoAbilityPerformed(ability);
     }
 
@@ -119,6 +129,7 @@ public class MPCommandManager : AbstractCommandManager {
 
     [ClientRpc]    // TODO probably just target the client of the player who tried to do the ability
     private void RpcAbilityFailed(IAbility ability) {
+        LogTimestamp(nameof(RpcAbilityFailed));
         DoAbilityFailed(ability);
     }
 }
