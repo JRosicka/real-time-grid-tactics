@@ -171,6 +171,6 @@ public abstract class AbstractCommandManager : NetworkBehaviour, ICommandManager
     
     [System.Diagnostics.Conditional("AF_LATENCY_TESTING")]
     protected void LogTimestamp(string trigger) {
-        Debug.Log($"Timestamp for ({trigger}): {Time.time}");
+        Debug.Log($"Timestamp for ({trigger}): {DateTime.Now:h:mm:ss.fff}");
     }
 }

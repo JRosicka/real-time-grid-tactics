@@ -42,6 +42,7 @@ public class MPCommandManager : AbstractCommandManager {
     }
 
     public override void QueueAbility(IAbility ability, bool clearQueueFirst, bool insertAtFront) {
+        LogTimestamp(nameof(QueueAbility));
         CmdQueueAbility(ability, clearQueueFirst, insertAtFront);
     }
 
@@ -114,6 +115,7 @@ public class MPCommandManager : AbstractCommandManager {
 
     [Command(requiresAuthority = false)]
     private void CmdQueueAbility(IAbility ability, bool clearQueueFirst, bool insertAtFront) {
+        LogTimestamp(nameof(CmdQueueAbility));
         DoQueueAbility(ability, clearQueueFirst, insertAtFront);
     }
 
