@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
+using System.Net;
 using Gameplay.Config;
 using Gameplay.Entities;
 using Gameplay.Entities.Abilities;
@@ -169,6 +171,14 @@ public abstract class AbstractCommandManager : NetworkBehaviour, ICommandManager
     
     [System.Diagnostics.Conditional("AF_LATENCY_TESTING")]
     protected void LogTimestamp(string trigger) {
-        Debug.Log($"Timestamp for ({trigger}): {DateTime.Now:h:mm:ss.fff}");
+        Debug.Log($"Timestamp for ({trigger}): {GetNistTime():h:mm:ss.fff}");
+    }
+
+    private static DateTime GetNistTime() {
+        using WebResponse response = WebRequest.Create("http://www.microsoft.com").GetResponse();
+        return DateTime.ParseExact(response.Headers["date"], 
+            "ddd, dd MMM yyyy HH:mm:ss 'GMT'", 
+            CultureInfo.InvariantCulture.DateTimeFormat, 
+            DateTimeStyles.AssumeUniversal);
     }
 }
