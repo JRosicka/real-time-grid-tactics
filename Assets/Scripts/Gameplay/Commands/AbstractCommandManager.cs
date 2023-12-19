@@ -1,5 +1,3 @@
-// #define AF_LATENCY_TESTING
-
 using System;
 using System.Collections.Generic;
 using Gameplay.Config;
