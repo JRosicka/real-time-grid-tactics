@@ -10,20 +10,23 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fafa440752424124be5b9cbee86f1e06, type: 3}
-  m_Name: Production Building
+  m_Name: Stable
   m_EditorClassIdentifier: 
-  Description: Generic production structure
-  Cost: []
+  Description: Produces cavalry units
+  Cost:
+  - Type: 0
+    Amount: 100
   Requirements: []
   BuildTime: 1
-  BaseSprite: {fileID: 21300000, guid: 1debb6108b1563e4b8c4460723f95df0, type: 3}
-  TeamColorSprite: {fileID: -2413806693520163455, guid: 9ae72e1845b0c38469b3fd8ca9fa42c6, type: 3}
-  _viewPrefab: {fileID: 2656981576115865338, guid: fe97602c9548e534eb21b66e57e65290, type: 3}
-  HP: 5
-  MaxMove: 0
+  BaseSprite: {fileID: 21300000, guid: 15adac782b070274aaa623958178593a, type: 3}
+  TeamColorSprite: {fileID: 21300000, guid: fb78292322f896f49962c60c5ae0fd56, type: 3}
+  _viewPrefab: {fileID: 8948802681950571690, guid: cbc1e5e772dad9e47a232c148f9e6bd3, type: 3}
+  HP: 30
   Range: 0
   Damage: 0
+  NormalMoveTime: 0
+  SlowMoveTime: 0
   Tags: 01000000
   Abilities:
-  - {fileID: 11400000, guid: 0918ae4f6b3b09a42a15b2ea44c2bdf8, type: 2}
+  - {fileID: 11400000, guid: 3c7dea2ff84b5274db97a62f73988486, type: 2}
   FriendlyUnitsCanShareCell: 1

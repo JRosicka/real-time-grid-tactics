@@ -3,12 +3,12 @@ using Gameplay.Entities.Abilities;
 using UnityEngine;
 
 namespace Gameplay.Entities {
-    public class ProductionBuildingView : GridEntityViewBase {
+    public class AmberMineView : GridEntityViewBase {
         public override void DoAbility(IAbility ability, AbilityCooldownTimer cooldownTimer) {
             Debug.Log($"{nameof(DoAbility)}: {ability}");
             switch (ability.AbilityData) {
-                case BuildAbilityData _:
-                    DoBuildAnimation();
+                case IncomeAbilityData _:
+                    DoIncomeAnimation();
                     break;
                 default:
                     DoGenericAbility(ability);
@@ -26,8 +26,8 @@ namespace Gameplay.Entities {
             Debug.Log(nameof(Killed));
             KillAnimationFinished();
         }
-        private void DoBuildAnimation() {
-            Debug.Log(nameof(DoBuildAnimation));
+        private void DoIncomeAnimation() {
+            Debug.Log(nameof(DoIncomeAnimation));
         }
     }
 }

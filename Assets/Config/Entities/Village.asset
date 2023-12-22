@@ -10,20 +10,22 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fafa440752424124be5b9cbee86f1e06, type: 3}
-  m_Name: Resource Building
+  m_Name: Village
   m_EditorClassIdentifier: 
-  Description: Generic resource collector
-  Cost: []
-  Requirements:
-  - {fileID: 11400000, guid: 931d6c77c7ce144c999bc09078cf1784, type: 2}
-  BuildTime: 1
-  BaseSprite: {fileID: 21300000, guid: 1debb6108b1563e4b8c4460723f95df0, type: 3}
-  TeamColorSprite: {fileID: 0}
+  Description: Resource collector for gold
+  Cost:
+  - Type: 0
+    Amount: 200
+  Requirements: []
+  BuildTime: 30
+  BaseSprite: {fileID: 21300000, guid: f1b38bc6630e36741879634313619637, type: 3}
+  TeamColorSprite: {fileID: 21300000, guid: a712e8d461dd0ce4e9b0361a6361fd1b, type: 3}
   _viewPrefab: {fileID: 5088879590884088445, guid: 7dc0a13730d5c56438a0306afc8a0823, type: 3}
-  HP: 5
-  MaxMove: 0
+  HP: 30
   Range: 0
   Damage: 0
+  NormalMoveTime: 0
+  SlowMoveTime: 0
   Tags: 01000000
   Abilities:
   - {fileID: 11400000, guid: bdf047dc1be4f44418a904a085034a1e, type: 2}

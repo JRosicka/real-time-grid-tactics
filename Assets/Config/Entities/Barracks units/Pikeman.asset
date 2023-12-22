@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fafa440752424124be5b9cbee86f1e06, type: 3}
+  m_Name: Pikeman
+  m_EditorClassIdentifier: 
+  Description: Anti-cavalry unit
+  Cost:
+  - Type: 0
+    Amount: 50
+  Requirements: []
+  BuildTime: 15
+  BaseSprite: {fileID: 21300000, guid: d6bbad549ca5dcb4f9cfa131f24b0bd8, type: 3}
+  TeamColorSprite: {fileID: 21300000, guid: 3105ccc1060d62c45acbb4be8d2d2f8a, type: 3}
+  _viewPrefab: {fileID: 1073968983647195726, guid: 970946a288018114aba70df866efc53d, type: 3}
+  HP: 14
+  Range: 1
+  Damage: 2
+  NormalMoveTime: 3
+  SlowMoveTime: 5
+  Tags: 
+  Abilities:
+  - {fileID: 11400000, guid: ec15a049dabc53b4d92ab14b2871752c, type: 2}
+  - {fileID: 11400000, guid: a5c4aba93e508274894c2c6bfc4b751e, type: 2}
+  FriendlyUnitsCanShareCell: 0

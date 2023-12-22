@@ -10,26 +10,24 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fafa440752424124be5b9cbee86f1e06, type: 3}
-  m_Name: Swordsman
+  m_Name: Peasant
   m_EditorClassIdentifier: 
-  Description: Standard melee unit
+  Description: Worker unit
   Cost:
   - Type: 0
-    Amount: 20
+    Amount: 100
   Requirements: []
-  BuildTime: 1
-  BaseSprite: {fileID: 21300000, guid: 8a0b09c5c94b13a4d94d9851998762db, type: 3}
-  TeamColorSprite: {fileID: 21300000, guid: 244bb6413a5a3e845bc7016a88fbd132, type: 3}
-  _viewPrefab: {fileID: 7268009148713403107, guid: c58f0c96c2c0e8f4fbf691600e98b9b6, type: 3}
-  HP: 5
-  MaxMove: 4
-  Range: 3
-  Damage: 2
-  NormalMoveTime: 1
-  SlowMoveTime: 2
-  Tags: 0200000004000000
+  BuildTime: 15
+  BaseSprite: {fileID: 21300000, guid: 4ca17f5ec0dca7646beda1d4252b2352, type: 3}
+  TeamColorSprite: {fileID: 21300000, guid: 3105ccc1060d62c45acbb4be8d2d2f8a, type: 3}
+  _viewPrefab: {fileID: 280231850379185201, guid: 686dc4cbc73b78143bd1b59d2ee8fed0, type: 3}
+  HP: 10
+  Range: 1
+  Damage: 1
+  NormalMoveTime: 2
+  SlowMoveTime: 4
+  Tags: 
   Abilities:
-  - {fileID: 11400000, guid: 3d5a32e773a380042aa9f61a544e48f2, type: 2}
   - {fileID: 11400000, guid: ec15a049dabc53b4d92ab14b2871752c, type: 2}
   - {fileID: 11400000, guid: a5c4aba93e508274894c2c6bfc4b751e, type: 2}
   - {fileID: 11400000, guid: 809bed6bcd2b7854488b82866fc1dccd, type: 2}

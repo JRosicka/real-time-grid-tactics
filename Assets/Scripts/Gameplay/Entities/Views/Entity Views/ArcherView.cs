@@ -2,7 +2,7 @@ using Gameplay.Entities.Abilities;
 using UnityEngine;
 
 namespace Gameplay.Entities {
-    public class ArcherEntityView : GridEntityViewBase {
+    public class ArcherView : GridEntityViewBase {
         public override void DoAbility(IAbility ability, AbilityCooldownTimer cooldownTimer) {
             Debug.Log(nameof(DoAbility));
             DoGenericAbility(ability);

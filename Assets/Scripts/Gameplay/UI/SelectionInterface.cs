@@ -119,13 +119,12 @@ namespace Gameplay.UI {
             NameField.text = _displayedEntity.DisplayName;
             DescriptionField.text = _displayedEntity.EntityData.Description;
             TagsField.text = string.Join(", ", _displayedEntity.EntityData.Tags);
+            MovesField.text = $"{_displayedEntity.MoveTime}";
 
             if (_displayedEntity.IsAbilityChannelOnCooldown(MoveChannel, out _activeMoveCooldownTimer)) {
-                MovesField.text = $"{_displayedEntity.CurrentMoves} / {_displayedEntity.MaxMove}";
                 MoveTimer.gameObject.SetActive(true);
                 MoveTimer.Initialize(_activeMoveCooldownTimer, false, true);
             } else {
-                MovesField.text = $"{_displayedEntity.MaxMove} / {_displayedEntity.MaxMove}";
                 MoveTimer.gameObject.SetActive(false);
             }
             AttackField.text = _displayedEntity.Damage.ToString();

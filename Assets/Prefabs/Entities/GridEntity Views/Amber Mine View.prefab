@@ -10,18 +10,26 @@ PrefabInstance:
     - target: {fileID: 133772266710080777, guid: 9d77d3ce03b813d42b6c2efebbdefd02, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: 1debb6108b1563e4b8c4460723f95df0, type: 3}
+      objectReference: {fileID: 21300000, guid: 438a1699ad14f354da2599a2e52499ba, type: 3}
+    - target: {fileID: 1579792780671553591, guid: 9d77d3ce03b813d42b6c2efebbdefd02, type: 3}
+      propertyPath: m_SortingOrder
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2387169237097431447, guid: 9d77d3ce03b813d42b6c2efebbdefd02, type: 3}
+      propertyPath: m_SortingOrder
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2517421855927553431, guid: 9d77d3ce03b813d42b6c2efebbdefd02, type: 3}
       propertyPath: m_Name
-      value: Resource Building View
+      value: Amber Mine View
       objectReference: {fileID: 0}
     - target: {fileID: 6941450737904846212, guid: 9d77d3ce03b813d42b6c2efebbdefd02, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 21300000, guid: fb78292322f896f49962c60c5ae0fd56, type: 3}
     - target: {fileID: 6941450737904846212, guid: 9d77d3ce03b813d42b6c2efebbdefd02, type: 3}
       propertyPath: m_Color.a
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8610170292872399313, guid: 9d77d3ce03b813d42b6c2efebbdefd02, type: 3}
       propertyPath: m_Pivot.x
@@ -115,7 +123,7 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 2517421855927553431, guid: 9d77d3ce03b813d42b6c2efebbdefd02, type: 3}
   m_PrefabInstance: {fileID: 2425578244529659934}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &5088879590884088445
+--- !u!114 &8786956079391198247
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -124,7 +132,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 236104011512999305}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 13b89d684fda4ad89aaf5fac0af7114a, type: 3}
+  m_Script: {fileID: 11500000, guid: e139a62c03b64471aa137810afb5fe0f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   TimerCooldownViewPrefab: {fileID: 5971072852972127787, guid: 31b9abd5b640d9648bf03e6305a255b4, type: 3}

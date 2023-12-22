@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2dcfcfe888cb4b74967a9991d2aea7f5, type: 3}
+  m_Name: Income Ability Gold
+  m_EditorClassIdentifier: 
+  Data:
+    _contentResourceID: Income Ability Gold
+    _icon: {fileID: 0}
+    _requirements: []
+    _performDuration: 0
+    _cooldownDuration: 5
+    _channel: {fileID: 11400000, guid: e53d1693004b22b4aaf5ee5caa8e749d, type: 2}
+    _channelBlockers: []
+    _addedMovementTime: 0
+    _performOnStart: 1
+    _repeatWhenCooldownFinishes: 1
+    _selectable: 0
+    _selectableWhenBlocked: 0
+    _autoSelect: 0
+    ResourceAmountIncome:
+      Type: 0
+      Amount: 10

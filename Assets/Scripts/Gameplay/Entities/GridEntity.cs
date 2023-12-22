@@ -46,7 +46,7 @@ namespace Gameplay.Entities {
         
         [Header("Stats")]
         public int MaxHP;
-        public int MaxMove;
+        public float MoveTime;
         public int Range;
         public int Damage;
         public string DisplayName => EntityData.ID;
@@ -70,22 +70,6 @@ namespace Gameplay.Entities {
         }
         private void OnHPChanged(int oldValue, int newValue) {
             HPChangedEvent?.Invoke();
-        }
-
-        [SyncVar(hook = nameof(OnMovesChanged))]
-        private int _currentMoves;
-        public int CurrentMoves {
-            get => _currentMoves;
-            set {
-                _currentMoves = value;
-                if (!NetworkClient.active) {
-                    // SP, so syncvars won't work... Trigger manually.
-                    MovesChangedEvent?.Invoke();
-                }
-            }
-        }
-        private void OnMovesChanged(int oldValue, int newValue) {
-            MovesChangedEvent?.Invoke();
         }
 
         public List<AbilityCooldownTimer> ActiveTimers = new List<AbilityCooldownTimer>();
@@ -135,7 +119,7 @@ namespace Gameplay.Entities {
         }
 
         public bool CanTargetThings => Range > 0;
-        public bool CanMove => MaxMove > 0;
+        public bool CanMove => MoveTime > 0;
         public Vector2Int Location => GameManager.Instance.GetLocationForEntity(this);
 
         public event Action<IAbility, AbilityCooldownTimer> AbilityPerformedEvent;
@@ -145,7 +129,6 @@ namespace Gameplay.Entities {
         public event Action HPChangedEvent;
         public event Action KilledEvent;
         public event Action UnregisteredEvent;
-        public event Action MovesChangedEvent;
 
         public void Select() {
             if (!Interactable) return;
@@ -386,8 +369,7 @@ namespace Gameplay.Entities {
         private void SetupStats() {
             MaxHP = EntityData.HP;
             CurrentHP = EntityData.HP;
-            MaxMove = EntityData.MaxMove;
-            CurrentMoves = EntityData.MaxMove;
+            MoveTime = EntityData.NormalMoveTime;
             Range = EntityData.Range;
             Damage = EntityData.Damage;
 

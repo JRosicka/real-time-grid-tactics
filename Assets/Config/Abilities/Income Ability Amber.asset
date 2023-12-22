@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2dcfcfe888cb4b74967a9991d2aea7f5, type: 3}
-  m_Name: Income Ability
+  m_Name: Income Ability Amber
   m_EditorClassIdentifier: 
   Data:
-    _contentResourceID: Income Ability
+    _contentResourceID: Income Ability Amber
     _icon: {fileID: 0}
     _requirements: []
     _performDuration: 0
@@ -27,5 +27,5 @@ MonoBehaviour:
     _selectableWhenBlocked: 0
     _autoSelect: 0
     ResourceAmountIncome:
-      Type: 0
+      Type: 1
       Amount: 10

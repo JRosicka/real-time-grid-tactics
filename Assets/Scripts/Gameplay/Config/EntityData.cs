@@ -26,7 +26,6 @@ namespace Gameplay.Config {
         
         [Header("Stats")] 
         public int HP;
-        public int MaxMove;
         public int Range;
         public int Damage;
 

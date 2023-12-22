@@ -47,6 +47,7 @@ GameObject:
   - component: {fileID: 5413136849338133239}
   - component: {fileID: 8485311247324045532}
   - component: {fileID: 6941450737904846212}
+  - component: {fileID: 2387169237097431447}
   m_Layer: 0
   m_Name: Team Color Image
   m_TagString: Untagged
@@ -112,6 +113,27 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!223 &2387169237097431447
+Canvas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1740522852598583905}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_RenderMode: 2
+  m_Camera: {fileID: 0}
+  m_PlaneDistance: 100
+  m_PixelPerfect: 0
+  m_ReceivesEvents: 1
+  m_OverrideSorting: 1
+  m_OverridePixelPerfect: 0
+  m_SortingBucketNormalizedSize: 0
+  m_AdditionalShaderChannelsFlag: 0
+  m_SortingLayerID: 0
+  m_SortingOrder: 1
+  m_TargetDisplay: 0
 --- !u!1 &1910710874141268627
 GameObject:
   m_ObjectHideFlags: 0
@@ -123,6 +145,7 @@ GameObject:
   - component: {fileID: 3794917418364224885}
   - component: {fileID: 1918123649422718089}
   - component: {fileID: 133772266710080777}
+  - component: {fileID: 1579792780671553591}
   m_Layer: 0
   m_Name: Main Image
   m_TagString: Untagged
@@ -188,6 +211,27 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!223 &1579792780671553591
+Canvas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1910710874141268627}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_RenderMode: 2
+  m_Camera: {fileID: 0}
+  m_PlaneDistance: 100
+  m_PixelPerfect: 0
+  m_ReceivesEvents: 1
+  m_OverrideSorting: 1
+  m_OverridePixelPerfect: 0
+  m_SortingBucketNormalizedSize: 0
+  m_AdditionalShaderChannelsFlag: 0
+  m_SortingLayerID: 0
+  m_SortingOrder: 0
+  m_TargetDisplay: 0
 --- !u!1 &2218311146732887055
 GameObject:
   m_ObjectHideFlags: 0

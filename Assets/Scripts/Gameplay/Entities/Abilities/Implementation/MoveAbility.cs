@@ -11,7 +11,6 @@ namespace Gameplay.Entities.Abilities {
     /// </summary>
     public class MoveAbility : AbilityBase<MoveAbilityData, MoveAbilityParameters> {
         public MoveAbilityParameters AbilityParameters => (MoveAbilityParameters) BaseParameters;
-        private int _moveCost;
         
         public MoveAbility(MoveAbilityData data, MoveAbilityParameters parameters, GridEntity performer) : base(data, parameters, performer) {
             
@@ -19,7 +18,6 @@ namespace Gameplay.Entities.Abilities {
 
         protected override bool CompleteCooldownImpl() {
             // TODO on a somewhat related note, I should really have these ability and CommandManager methods be more clear about which are run on the server and which are run on clients. Can't do Cmd everywhere because that would break SP. 
-            Performer.CurrentMoves = Mathf.Min(Performer.CurrentMoves + _moveCost, Performer.MaxMove);
             return true;
         }
 
@@ -41,16 +39,6 @@ namespace Gameplay.Entities.Abilities {
                 // There is more distance to travel, so put a new movement at the front of the queue
                 Performer.QueueAbility(Data, AbilityParameters, WaitUntilLegal, false, true);
             }
-        }
-
-        public override void SerializeParameters(NetworkWriter writer) {
-            base.SerializeParameters(writer);
-            writer.Write(_moveCost);
-        }
-
-        public override void DeserializeImpl(NetworkReader reader) {
-            base.DeserializeImpl(reader);
-            _moveCost = reader.ReadInt();
         }
     }
 

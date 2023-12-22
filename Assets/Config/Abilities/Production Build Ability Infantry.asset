@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 575c0f3cd9a64c78aaf8481f645c83a4, type: 3}
-  m_Name: Production Build Ability
+  m_Name: Production Build Ability Infantry
   m_EditorClassIdentifier: 
   Data:
-    _contentResourceID: Production Build Ability
+    _contentResourceID: Production Build Ability Infantry
     _icon: {fileID: 21300000, guid: b1af90ce03a007349aa9428d646a0939, type: 3}
     _requirements: []
     _performDuration: 0
@@ -29,7 +29,11 @@ MonoBehaviour:
     _autoSelect: 1
     Targetable: 0
     Buildables:
+    - data: {fileID: 11400000, guid: b52e5f177d13b1b4580a21f9c5ad0bf1, type: 2}
+      selectionKey: a
     - data: {fileID: 11400000, guid: 991ad2a1d6801ee40b831e7850e0ff35, type: 2}
+      selectionKey: q
+    - data: {fileID: 11400000, guid: ad0f9c1b31a7e3646b82cdb0c91f407b, type: 2}
+      selectionKey: w
+    - data: {fileID: 11400000, guid: 938107a9fc68aa54586e46f7860fc6ff, type: 2}
       selectionKey: e
-    - data: {fileID: 11400000, guid: 931d6c77c7ce144c999bc09078cf1784, type: 2}
-      selectionKey: d

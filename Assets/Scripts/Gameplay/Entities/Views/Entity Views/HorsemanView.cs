@@ -3,12 +3,12 @@ using Gameplay.Entities.Abilities;
 using UnityEngine;
 
 namespace Gameplay.Entities {
-    public class ResourceBuildingView : GridEntityViewBase {
+    public class HorsemanView : GridEntityViewBase {
         public override void DoAbility(IAbility ability, AbilityCooldownTimer cooldownTimer) {
             Debug.Log($"{nameof(DoAbility)}: {ability}");
             switch (ability.AbilityData) {
-                case IncomeAbilityData _:
-                    DoIncomeAnimation();
+                case SiegeAbilityData _:
+                    DoSiegeAnimation();
                     break;
                 default:
                     DoGenericAbility(ability);
@@ -26,8 +26,8 @@ namespace Gameplay.Entities {
             Debug.Log(nameof(Killed));
             KillAnimationFinished();
         }
-        private void DoIncomeAnimation() {
-            Debug.Log(nameof(DoIncomeAnimation));
+        private void DoSiegeAnimation() {
+            Debug.Log(nameof(DoSiegeAnimation));
         }
     }
 }

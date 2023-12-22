@@ -3,7 +3,7 @@ using Gameplay.Entities.Abilities;
 using UnityEngine;
 
 namespace Gameplay.Entities {
-    public class SwordsmanEntityView : GridEntityViewBase {
+    public class SwordsmanView : GridEntityViewBase {
         public override void DoAbility(IAbility ability, AbilityCooldownTimer cooldownTimer) {
             Debug.Log($"{nameof(DoAbility)}: {ability}");
             switch (ability.AbilityData) {
