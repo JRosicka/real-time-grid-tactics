@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using Gameplay.Config;
 using UnityEngine;
@@ -19,6 +18,11 @@ public class GameplayTile : HexagonalRuleTile<GameplayTile.Neighbor> {
         public const int Null = 3;
         public const int NotNull = 4;
     }
+
+    // public override void GetTileData(Vector3Int position, ITilemap tilemap, ref TileData tileData) {
+    //     bool evenY = position.y % 2 == 0;
+    //     tileData.sprite = evenY ? SpriteA : SpriteB;
+    // }
 
     // public override bool RuleMatch(int neighbor, TileBase tile) {
     //     switch (neighbor) {
