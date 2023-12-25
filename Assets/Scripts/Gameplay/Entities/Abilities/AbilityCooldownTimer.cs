@@ -43,7 +43,7 @@ namespace Gameplay.Entities.Abilities {
 
         public AbilityCooldownTimer(IAbility ability, float overrideCooldownDuration) {
             Ability = ability;
-            _timeRemaining = _initialTimeRemaining = overrideCooldownDuration > 0 ? overrideCooldownDuration : ability.AbilityData.CooldownDuration;
+            _timeRemaining = _initialTimeRemaining = overrideCooldownDuration > 0 ? overrideCooldownDuration : ability.CooldownDuration;
         }
 
         public void UpdateTimer(float deltaTime) {

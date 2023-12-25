@@ -17,6 +17,8 @@ namespace Gameplay.Entities.Abilities {
             
         }
 
+        public override float CooldownDuration => AbilityParameters.Buildable.BuildTime;
+
         protected override bool CompleteCooldownImpl() {
             switch (AbilityParameters.Buildable) {
                 case EntityData entityData:

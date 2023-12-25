@@ -27,6 +27,8 @@ namespace Gameplay.Config {
         [Header("References")]
         public Sprite BaseSprite;
         public Sprite TeamColorSprite;
+        [Tooltip("Optional sprite to use for the base unit icon instead of the BaseSprite")]
+        public Sprite BaseSpriteIconOverride;
     }
     
     public static class PurchasableDataSerializer {

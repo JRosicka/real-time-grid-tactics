@@ -20,6 +20,8 @@ namespace Gameplay.Entities.Abilities {
             Performer = performer;
         }
 
+        public virtual float CooldownDuration => Data.CooldownDuration;
+
         public bool CompleteCooldown() {
             if (!CompleteCooldownImpl()) {
                 return false;

@@ -1,3 +1,4 @@
+using Gameplay.Config;
 using Gameplay.Config.Abilities;
 using Gameplay.Entities;
 using Gameplay.Entities.Abilities;
@@ -111,14 +112,15 @@ namespace Gameplay.UI {
 
         private void UpdateEntityInfo() {
             if (_displayedEntity == null) return;
-            
-            EntityIcon.sprite = _displayedEntity.EntityData.BaseSprite;
-            EntityColorsIcon.sprite = _displayedEntity.EntityData.TeamColorSprite;
+
+            EntityData entityData = _displayedEntity.EntityData;
+            EntityIcon.sprite = entityData.BaseSpriteIconOverride == null ? entityData.BaseSprite : entityData.BaseSpriteIconOverride;
+            EntityColorsIcon.sprite = entityData.TeamColorSprite;
             EntityColorsIcon.color = GameManager.Instance.GetPlayerForTeam(_displayedEntity.MyTeam).Data.TeamColor;
 
             NameField.text = _displayedEntity.DisplayName;
-            DescriptionField.text = _displayedEntity.EntityData.Description;
-            TagsField.text = string.Join(", ", _displayedEntity.EntityData.Tags);
+            DescriptionField.text = entityData.Description;
+            TagsField.text = string.Join(", ", entityData.Tags);
             MovesField.text = $"{_displayedEntity.MoveTime}";
 
             if (_displayedEntity.IsAbilityChannelOnCooldown(MoveChannel, out _activeMoveCooldownTimer)) {

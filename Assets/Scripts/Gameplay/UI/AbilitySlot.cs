@@ -70,7 +70,7 @@ namespace Gameplay.UI {
 
             TeamColorsCanvas.sortingOrder = 1;
 
-            AbilityImage.sprite = entityToBuild.BaseSprite;
+            AbilityImage.sprite = entityToBuild.BaseSpriteIconOverride == null ? entityToBuild.BaseSprite : entityToBuild.BaseSpriteIconOverride;
             if (entityToBuild.TeamColorSprite != null) {
                 SecondaryAbilityImage.sprite = entityToBuild.TeamColorSprite;
                 SecondaryAbilityImage.color = GameManager.Instance.GetPlayerForTeam(selectedEntity.MyTeam).Data.TeamColor;

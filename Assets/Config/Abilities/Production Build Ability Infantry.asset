@@ -17,7 +17,7 @@ MonoBehaviour:
     _icon: {fileID: 21300000, guid: b1af90ce03a007349aa9428d646a0939, type: 3}
     _requirements: []
     _performDuration: 0
-    _cooldownDuration: 5
+    _cooldownDuration: 0
     _channel: {fileID: 11400000, guid: a2bb18c2ded749a4e902028c24c166d0, type: 2}
     _channelBlockers:
     - {fileID: 11400000, guid: a2bb18c2ded749a4e902028c24c166d0, type: 2}

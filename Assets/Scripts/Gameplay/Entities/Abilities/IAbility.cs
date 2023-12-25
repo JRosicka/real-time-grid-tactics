@@ -23,6 +23,7 @@ namespace Gameplay.Entities.Abilities {
         /// By "wait", I mean "keep the ability queued, blocking other queued abilities from executing". 
         /// </summary>
         bool WaitUntilLegal { get; set; }
+        float CooldownDuration { get; }
         bool CompleteCooldown();
         /// <summary>
         /// Write the <see cref="IAbility"/>'s parameters to the provided writer so that it can be properly networked. Other than the data
