@@ -16,6 +16,7 @@ namespace Gameplay.Config {
         public enum EntityTag {
             Structure = 1,
             Cavalry = 2, 
+            Infantry = 3,
             Flying = 4,
         }
         

@@ -30,7 +30,5 @@ MonoBehaviour:
     m_NeighborPositions: []
     m_RuleTransform: 0
   m_FlatTop: 0
-  SpriteA: {fileID: 0}
-  SpriteB: {fileID: 0}
-  SlowTags: 02000000
+  SlowTags: 0200000003000000
   InaccessibleTags: 
