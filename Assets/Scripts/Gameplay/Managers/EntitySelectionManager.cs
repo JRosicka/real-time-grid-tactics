@@ -137,7 +137,9 @@ public class EntitySelectionManager {
     #endregion
 
     public void TryFindPath(Vector2Int cell) {
-        if (SelectedEntity == null || !SelectedEntity.CanMove) return;
+        if (SelectedEntity == null) return;
+        if (!SelectedEntity.CanMove) return;
+        if (SelectedEntity.MyTeam != _gameManager.LocalPlayer.Data.Team) return;
 
         List<GridNode> path = PathfinderService.FindPath(SelectedEntity, cell);
         GridController.VisualizePath(path);
