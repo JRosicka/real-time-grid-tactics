@@ -277,7 +277,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8610170292872399313}
-  - component: {fileID: 5004701363549053693}
   m_Layer: 0
   m_Name: GridEntity View Base
   m_TagString: Untagged
@@ -306,23 +305,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: -10, y: -10}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &5004701363549053693
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2517421855927553431}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 417180a682af4f9cbcfce213ae68d03b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  TimerCooldownViewPrefab: {fileID: 5971072852972127787, guid: 31b9abd5b640d9648bf03e6305a255b4, type: 3}
-  _moveTimerLocation: {fileID: 6226759749314100812}
-  _attackTimerLocation: {fileID: 510379157535852243}
-  _mainImage: {fileID: 133772266710080777}
-  _teamColorImage: {fileID: 6941450737904846212}
 --- !u!1 &4640028147844247960
 GameObject:
   m_ObjectHideFlags: 0
