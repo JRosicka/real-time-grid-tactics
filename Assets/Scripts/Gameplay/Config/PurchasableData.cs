@@ -22,6 +22,7 @@ namespace Gameplay.Config {
         /// </summary>
         public List<PurchasableData> Requirements;
         public float BuildTime;
+        public bool DisplayTeamColorOverMainSprite;
         
         [Header("References")]
         public Sprite BaseSprite;

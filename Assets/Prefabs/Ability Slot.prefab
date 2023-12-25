@@ -126,13 +126,14 @@ GameObject:
   - component: {fileID: 8839195388286605810}
   - component: {fileID: 3272488247991760560}
   - component: {fileID: 158200004530816045}
+  - component: {fileID: 4869468343639402695}
   m_Layer: 5
   m_Name: Secondary Icon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &8839195388286605810
 RectTransform:
   m_ObjectHideFlags: 0
@@ -191,6 +192,27 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!223 &4869468343639402695
+Canvas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1370149746228571063}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_RenderMode: 2
+  m_Camera: {fileID: 0}
+  m_PlaneDistance: 100
+  m_PixelPerfect: 0
+  m_ReceivesEvents: 1
+  m_OverrideSorting: 1
+  m_OverridePixelPerfect: 0
+  m_SortingBucketNormalizedSize: 0
+  m_AdditionalShaderChannelsFlag: 0
+  m_SortingLayerID: 0
+  m_SortingOrder: 0
+  m_TargetDisplay: 0
 --- !u!1 &2519242500645226409
 GameObject:
   m_ObjectHideFlags: 0
@@ -392,6 +414,7 @@ MonoBehaviour:
   SlotFrame: {fileID: 7746809697624659004}
   HotkeyText: {fileID: 6493543593206636211}
   AbilityInterface: {fileID: 0}
+  TeamColorsCanvas: {fileID: 4869468343639402695}
 --- !u!222 &8941894723556131554
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -510,6 +533,7 @@ GameObject:
   - component: {fileID: 4234449152147545877}
   - component: {fileID: 83735027537164360}
   - component: {fileID: 9165943905807092847}
+  - component: {fileID: 3996935229277854722}
   m_Layer: 5
   m_Name: Main Icon
   m_TagString: Untagged
@@ -575,3 +599,24 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!223 &3996935229277854722
+Canvas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4450726947637762902}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_RenderMode: 2
+  m_Camera: {fileID: 0}
+  m_PlaneDistance: 100
+  m_PixelPerfect: 0
+  m_ReceivesEvents: 1
+  m_OverrideSorting: 1
+  m_OverridePixelPerfect: 0
+  m_SortingBucketNormalizedSize: 0
+  m_AdditionalShaderChannelsFlag: 0
+  m_SortingLayerID: 0
+  m_SortingOrder: 1
+  m_TargetDisplay: 0

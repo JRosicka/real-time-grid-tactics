@@ -18,6 +18,7 @@ MonoBehaviour:
     Amount: 50
   Requirements: []
   BuildTime: 15
+  DisplayTeamColorOverMainSprite: 1
   BaseSprite: {fileID: 21300000, guid: 8a0b09c5c94b13a4d94d9851998762db, type: 3}
   TeamColorSprite: {fileID: 21300000, guid: 244bb6413a5a3e845bc7016a88fbd132, type: 3}
   _viewPrefab: {fileID: 759299255275732260, guid: c58f0c96c2c0e8f4fbf691600e98b9b6, type: 3}

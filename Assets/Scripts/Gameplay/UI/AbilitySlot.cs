@@ -30,6 +30,7 @@ namespace Gameplay.UI {
         public Image SlotFrame;
         public TMP_Text HotkeyText;
         public AbilityInterface AbilityInterface;
+        public Canvas TeamColorsCanvas;
 
         private IAbilityData _currentAbilityData;
         private GridEntity _selectedEntity;
@@ -53,6 +54,8 @@ namespace Gameplay.UI {
             SecondaryAbilityImage.gameObject.SetActive(false);
             HotkeyText.text = Hotkey;
 
+            TeamColorsCanvas.sortingOrder = 1;
+
             CheckAvailability();
             AddListeners();
         }
@@ -65,11 +68,18 @@ namespace Gameplay.UI {
             _selectedEntity = selectedEntity;
             _displayingBuild = true;
 
+            TeamColorsCanvas.sortingOrder = 1;
+
             AbilityImage.sprite = entityToBuild.BaseSprite;
             if (entityToBuild.TeamColorSprite != null) {
                 SecondaryAbilityImage.sprite = entityToBuild.TeamColorSprite;
                 SecondaryAbilityImage.color = GameManager.Instance.GetPlayerForTeam(selectedEntity.MyTeam).Data.TeamColor;
                 SecondaryAbilityImage.gameObject.SetActive(true);
+                if (entityToBuild.DisplayTeamColorOverMainSprite) {
+                    TeamColorsCanvas.sortingOrder = 2;
+                } else {
+                    TeamColorsCanvas.sortingOrder = 1;
+                }
             }
             HotkeyText.text = Hotkey;
             
