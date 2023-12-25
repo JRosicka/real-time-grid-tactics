@@ -1,3 +1,4 @@
+using Gameplay.Grid;
 using UnityEngine;
 
 namespace Gameplay.Entities {
@@ -23,18 +24,12 @@ namespace Gameplay.Entities {
             if (targetEntity != null && thisEntity.MyTeam != targetEntity.MyTeam) {
                 TryTargetEntity(thisEntity, targetEntity, targetCell);
             } else if (targetEntity == null || targetEntity.EntityData.FriendlyUnitsCanShareCell) {
-                TryMoveEntity(thisEntity, targetCell);
+                thisEntity.TryMoveToCell(targetCell);
             } else {
                 Debug.Log("Can not attack entity or move to cell, doing nothing");
             }
         }
-
-        private void TryMoveEntity(GridEntity thisEntity, Vector2Int targetCell) {
-            if (thisEntity.CanMove) {
-                thisEntity.MoveToCell(targetCell);
-            }
-        }
-
+        
         private void TryTargetEntity(GridEntity thisEntity, GridEntity targetEntity, Vector2Int targetCell) {
             if (!thisEntity.CanTargetThings)
                 return;

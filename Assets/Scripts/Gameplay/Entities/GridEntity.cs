@@ -145,10 +145,14 @@ namespace Gameplay.Entities {
             _interactBehavior.TargetCellWithUnit(this, location);
         }
 
-        public void MoveToCell(Vector2Int targetCell) {
+        public bool TryMoveToCell(Vector2Int targetCell) {
             Debug.Log($"Attempting to move {UnitName} to {targetCell}");
+            if (!CanMove) return false;
+            if (!CanEnterTile(GameManager.Instance.GridController.GridData.GetCell(targetCell).Tile)) return false;
+
             MoveAbilityData data = (MoveAbilityData) EntityData.Abilities.First(a => a.Content.GetType() == typeof(MoveAbilityData)).Content;
             PerformAbility(data, new MoveAbilityParameters { Destination = targetCell, NextMoveCell = targetCell, SelectorTeam = MyTeam}, true);
+            return true;
         }
 
         public void TryTargetEntity(GridEntity targetEntity, Vector2Int targetCell) {
