@@ -32,6 +32,7 @@ public interface ICommandManager {
     /// An entity was just unregistered (killed). Triggered on server. 
     /// </summary>
     event Action<GridEntity.Team> EntityUnregisteredEvent;
+    event Action EntityCollectionChangedEvent;
     GridEntityCollection EntitiesOnGrid { get; }
     Transform SpawnBucket { get; }
 }

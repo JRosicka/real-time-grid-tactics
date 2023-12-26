@@ -28,6 +28,7 @@ public abstract class AbstractCommandManager : NetworkBehaviour, ICommandManager
     private GridEntityCollection _entitiesOnGrid = new GridEntityCollection();
     private void OnEntityCollectionChanged(GridEntityCollection oldValue, GridEntityCollection newValue) {
         LogTimestamp(nameof(OnEntityCollectionChanged));
+        EntityCollectionChangedEvent?.Invoke();
     }
 
     public abstract void CancelAbility(IAbility ability);
@@ -40,6 +41,7 @@ public abstract class AbstractCommandManager : NetworkBehaviour, ICommandManager
     /// An entity was just unregistered (killed). Triggered on server. 
     /// </summary>
     public event Action<GridEntity.Team> EntityUnregisteredEvent;
+    public event Action EntityCollectionChangedEvent;
 
     public GridEntityCollection EntitiesOnGrid => _entitiesOnGrid;
 
@@ -171,6 +173,10 @@ public abstract class AbstractCommandManager : NetworkBehaviour, ICommandManager
     private void SyncEntityCollection() {    // TODO: If networking is horribly slow when there are a lot of GridEntities in the game... this is probably why. Kinda yucky. 
         LogTimestamp(nameof(SyncEntityCollection));
         _entitiesOnGrid = new GridEntityCollection(_entitiesOnGrid.Entities);
+        if (!NetworkClient.active) {
+            // SP, so syncvars won't work
+            EntityCollectionChangedEvent?.Invoke();
+        }
     }
     
     [System.Diagnostics.Conditional("AF_LATENCY_TESTING")]

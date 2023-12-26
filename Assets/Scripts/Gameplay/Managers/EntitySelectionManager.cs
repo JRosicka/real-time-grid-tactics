@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Gameplay.Config.Abilities;
 using Gameplay.Entities;
-using Gameplay.Entities.Abilities;
 using Gameplay.Grid;
 using Gameplay.Pathfinding;
 using Gameplay.UI;
@@ -18,6 +17,7 @@ public class EntitySelectionManager {
     /// </summary>
     public GridEntity SelectedEntity { get; private set; }
     public event Action SelectedEntityMoved;
+    private Vector2Int? _selectedEntityCurrentLocation;
     
     private ITargetableAbilityData _selectedTargetableAbility;
     /// <summary>
@@ -32,6 +32,7 @@ public class EntitySelectionManager {
 
     public EntitySelectionManager(GameManager gameManager) {
         _gameManager = gameManager;
+        _gameManager.CommandManager.EntityCollectionChangedEvent += EntityCollectionChanged;
     }
 
     #region Entity Selection
@@ -40,16 +41,15 @@ public class EntitySelectionManager {
         if (SelectedEntity != null) {
             // Unregister the un-registration event for the previously selected entity
             SelectedEntity.UnregisteredEvent -= DeselectEntity;
-            SelectedEntity.AbilityPerformedEvent -= EntityAbilityUsed;
         }
         
         SelectedEntity = entity;
+        _selectedEntityCurrentLocation = entity == null ? (Vector2Int?) null : entity.Location;
         SelectionInterface.UpdateSelectedEntity(entity);
         GridController.TrackEntity(entity);
 
         if (entity != null) {
             entity.UnregisteredEvent += DeselectEntity;
-            entity.AbilityPerformedEvent += EntityAbilityUsed;
         }
     }
 
@@ -84,11 +84,12 @@ public class EntitySelectionManager {
         GridController.ClearPath();
     }
 
-    private void EntityAbilityUsed(IAbility ability, AbilityCooldownTimer abilityCooldownTimer) {
-        // We only care about the entity moving
-        if (ability is MoveAbility) {
-            SelectedEntityMoved?.Invoke();
-        }
+    private void EntityCollectionChanged() {
+        // We only care about whether the selected entity moved
+        if (SelectedEntity == null) return;
+        if (SelectedEntity.Location == _selectedEntityCurrentLocation) return;
+
+        SelectedEntityMoved?.Invoke();
     }
 
     #endregion
