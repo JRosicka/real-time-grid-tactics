@@ -12,6 +12,9 @@ public class MultiplayerGameSetupHandler : NetworkBehaviour {
     // The total number of players in this game, including players who have not yet arrived in the game scene
     [SyncVar]
     public int PlayerCount = -1;
+
+    [SyncVar] 
+    public bool GameInitialized;
     
     [Command(requiresAuthority = false)]    // TODO
     public void CmdNotifyPlayerReady(string displayName) {

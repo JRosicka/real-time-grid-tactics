@@ -27,8 +27,23 @@ public class GameSetupManager : MonoBehaviour {
     // The total number of players in this game who have arrived in the game scene
     private int _readyPlayerCount;
     // Whether the game was initialized on the server
-    public bool GameInitialized { get; private set; }
-    
+    private bool _gameInitialized;
+    public bool GameInitialized {
+        get {
+            if (NetworkClient.active) {
+                // MP
+                return MPSetupHandler.GameInitialized;
+            }
+            return _gameInitialized;
+        }
+        private set {
+            _gameInitialized = value;
+            if (NetworkServer.active) {
+                MPSetupHandler.GameInitialized = value;
+            }
+        }
+    }
+
     public void Initialize() {
         // If we are not connected in a multiplayer session, then we must be playing singleplayer. Set up the game now. 
         // Otherwise, wait for the network manager to set up the multiplayer game. 
