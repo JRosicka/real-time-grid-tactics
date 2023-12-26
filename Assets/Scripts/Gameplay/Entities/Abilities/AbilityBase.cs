@@ -34,6 +34,8 @@ namespace Gameplay.Entities.Abilities {
             return true;
         }
 
+        public abstract void Cancel();
+
         protected abstract bool CompleteCooldownImpl();
 
         public virtual void SerializeParameters(NetworkWriter writer) {

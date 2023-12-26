@@ -12,6 +12,7 @@ namespace Gameplay.Config.Abilities {
     /// </summary>
     [Serializable]
     public class MoveAbilityData : AbilityDataBase<MoveAbilityParameters>, ITargetableAbilityData {
+        public override bool CancelWhenNewCommandGivenToPerformer => false;
 
         public override void SelectAbility(GridEntity selector) {
             GameManager.Instance.EntitySelectionManager.SelectTargetableAbility(this, null);

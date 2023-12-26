@@ -16,6 +16,10 @@ namespace Gameplay.Entities.Abilities {
             
         }
 
+        public override void Cancel() {
+            // Nothing to do
+        }
+
         protected override bool CompleteCooldownImpl() {
             // TODO on a somewhat related note, I should really have these ability and CommandManager methods be more clear about which are run on the server and which are run on clients. Can't do Cmd everywhere because that would break SP. 
             return true;

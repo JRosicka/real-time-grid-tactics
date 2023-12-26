@@ -23,6 +23,7 @@ public interface ICommandManager {
     void PerformAbility(IAbility ability, bool clearQueueFirst);
     void QueueAbility(IAbility ability, bool clearQueueFirst, bool insertAtFront);
     void MarkAbilityCooldownExpired(IAbility ability);
+    void CancelAbility(IAbility ability);
     /// <summary>
     /// An entity was just registered (spawned). Triggered on server. 
     /// </summary>

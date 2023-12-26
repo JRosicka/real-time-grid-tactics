@@ -30,6 +30,8 @@ public abstract class AbstractCommandManager : NetworkBehaviour, ICommandManager
         LogTimestamp(nameof(OnEntityCollectionChanged));
     }
 
+    public abstract void CancelAbility(IAbility ability);
+
     /// <summary>
     /// An entity was just registered (spawned). Triggered on server. 
     /// </summary>
@@ -152,6 +154,14 @@ public abstract class AbstractCommandManager : NetworkBehaviour, ICommandManager
         if (ability.Performer != null) {
             ability.Performer.ExpireTimerForAbility(ability);
         } 
+    }
+
+    protected void DoCancelAbility(IAbility ability) {
+        ability.Cancel();
+        // Check to make sure that the entity performing the ability is still around
+        if (ability.Performer != null) {
+            ability.Performer.ExpireTimerForAbility(ability);
+        }
     }
 
     protected void DoAbilityFailed(IAbility ability) {

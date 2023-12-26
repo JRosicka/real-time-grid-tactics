@@ -12,6 +12,8 @@ namespace Gameplay.Config.Abilities {
     /// </summary>
     [Serializable]
     public class SiegeAbilityData : AbilityDataBase<NullAbilityParameters> {
+        public override bool CancelWhenNewCommandGivenToPerformer => false;
+
         public override void SelectAbility(GridEntity selector) {
             selector.PerformAbility(this, new NullAbilityParameters(), false);
         }

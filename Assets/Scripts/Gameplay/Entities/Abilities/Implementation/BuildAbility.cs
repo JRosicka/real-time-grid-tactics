@@ -9,6 +9,11 @@ namespace Gameplay.Entities.Abilities {
     /// <summary>
     /// <see cref="IAbility"/> for building a new <see cref="PurchasableData"/>.
     /// Note that this ability covers both structure builds (a structure building a unit) and worker builds (worker building a structure).
+    /// 
+    /// TODO It might be nice to refactor abilities to not have the "do the functionality at the end of the cooldown"
+    /// setting. Seems like it would be more streamlined and better organized to have all abilities do something right
+    /// at the start, and to have stuff like this build be handled by some new thing that gets instantiated and handled
+    /// on the server. Maybe. 
     /// </summary>
     public class BuildAbility : AbilityBase<BuildAbilityData, BuildAbilityParameters> {
         private BuildAbilityParameters AbilityParameters => (BuildAbilityParameters) BaseParameters;
@@ -18,6 +23,13 @@ namespace Gameplay.Entities.Abilities {
         }
 
         public override float CooldownDuration => AbilityParameters.Buildable.BuildTime;
+
+        public override void Cancel() {
+            // Refund the amount spent on the build
+            foreach (ResourceAmount resources in AbilityParameters.Buildable.Cost) {
+                GameManager.Instance.GetPlayerForTeam(Performer.MyTeam).ResourcesController.Earn(resources);
+            }
+        }
 
         protected override bool CompleteCooldownImpl() {
             switch (AbilityParameters.Buildable) {

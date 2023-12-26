@@ -10,6 +10,10 @@ namespace Gameplay.Entities.Abilities {
             Debug.Log("Created ability, cool");
         }
 
+        public override void Cancel() {
+            // Nothing to do
+        }
+
         protected override bool CompleteCooldownImpl() {
             // Nothing to do
             return true;

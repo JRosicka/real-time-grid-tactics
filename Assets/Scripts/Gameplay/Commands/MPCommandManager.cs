@@ -50,6 +50,10 @@ public class MPCommandManager : AbstractCommandManager {
         CmdMarkAbilityCooldownExpired(ability);
     }
 
+    public override void CancelAbility(IAbility ability) {
+        CmdCancelAbility(ability);
+    }
+
 
     [Command(requiresAuthority = false)] // TODO this should definitely require authority
     private void CmdSpawnEntity(EntityData data, Vector2Int spawnLocation, GridEntity.Team team, GridEntity entityToIgnore) {
@@ -122,6 +126,11 @@ public class MPCommandManager : AbstractCommandManager {
     [Command(requiresAuthority = false)]
     private void CmdMarkAbilityCooldownExpired(IAbility ability) {
         RpcMarkAbilityCooldownExpired(ability);
+    }
+
+    [Command(requiresAuthority = false)]
+    private void CmdCancelAbility(IAbility ability) {
+        DoCancelAbility(ability);
     }
 
     [ClientRpc]

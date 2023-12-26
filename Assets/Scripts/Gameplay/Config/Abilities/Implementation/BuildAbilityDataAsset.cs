@@ -23,6 +23,7 @@ namespace Gameplay.Config.Abilities {
             public string selectionKey;
         }
 
+        public override bool CancelWhenNewCommandGivenToPerformer => true;
         public override bool Targeted => Targetable;
 
         public override void SelectAbility(GridEntity selector) {

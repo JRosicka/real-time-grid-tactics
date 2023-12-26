@@ -14,6 +14,10 @@ namespace Gameplay.Entities.Abilities {
             
         }
 
+        public override void Cancel() {
+            // Nothing to do
+        }
+
         protected override bool CompleteCooldownImpl() {
             // Nothing to do
             return true;
