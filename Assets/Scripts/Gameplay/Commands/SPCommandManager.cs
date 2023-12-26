@@ -57,5 +57,6 @@ public class SPCommandManager : AbstractCommandManager {
 
     public override void CancelAbility(IAbility ability) {
         DoCancelAbility(ability);
+        MarkAbilityCooldownExpired(ability);
     }
 }

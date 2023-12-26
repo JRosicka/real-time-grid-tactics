@@ -127,14 +127,20 @@ public class MPCommandManager : AbstractCommandManager {
     private void CmdMarkAbilityCooldownExpired(IAbility ability) {
         RpcMarkAbilityCooldownExpired(ability);
     }
-
+    
+    [ClientRpc]
+    private void RpcMarkAbilityCooldownExpired(IAbility ability) {
+        DoMarkAbilityCooldownExpired(ability);
+    }
+    
     [Command(requiresAuthority = false)]
     private void CmdCancelAbility(IAbility ability) {
         DoCancelAbility(ability);
+        RpcMarkAbilityCanceled(ability);
     }
 
     [ClientRpc]
-    private void RpcMarkAbilityCooldownExpired(IAbility ability) {
+    private void RpcMarkAbilityCanceled(IAbility ability) {
         DoMarkAbilityCooldownExpired(ability);
     }
 

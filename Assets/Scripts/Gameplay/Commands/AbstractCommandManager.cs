@@ -158,10 +158,6 @@ public abstract class AbstractCommandManager : NetworkBehaviour, ICommandManager
 
     protected void DoCancelAbility(IAbility ability) {
         ability.Cancel();
-        // Check to make sure that the entity performing the ability is still around
-        if (ability.Performer != null) {
-            ability.Performer.ExpireTimerForAbility(ability);
-        }
     }
 
     protected void DoAbilityFailed(IAbility ability) {
