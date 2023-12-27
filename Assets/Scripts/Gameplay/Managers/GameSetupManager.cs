@@ -40,8 +40,15 @@ public class GameSetupManager : MonoBehaviour {
             _gameInitialized = value;
             if (NetworkServer.active) {
                 MPSetupHandler.GameInitialized = value;
+            } else if (value) {
+                TriggerGameInitializedEvent();
             }
         }
+    }
+
+    public event Action GameInitializedEvent;
+    public void TriggerGameInitializedEvent() {
+        GameInitializedEvent?.Invoke();
     }
 
     public void Initialize() {

@@ -32,6 +32,14 @@ public class EntitySelectionManager {
 
     public EntitySelectionManager(GameManager gameManager) {
         _gameManager = gameManager;
+        if (_gameManager.GameSetupManager.GameInitialized) {
+            RegisterEvents();
+        } else {
+            gameManager.GameSetupManager.GameInitializedEvent += RegisterEvents;
+        }
+    }
+
+    private void RegisterEvents() {
         _gameManager.CommandManager.EntityCollectionChangedEvent += EntityCollectionChanged;
     }
 
@@ -89,7 +97,7 @@ public class EntitySelectionManager {
         if (SelectedEntity == null) return;
         if (SelectedEntity.Location == _selectedEntityCurrentLocation) return;
 
-        SelectedEntityMoved?.Invoke();
+        SelectedEntityMoved?.Invoke(); 
     }
 
     #endregion

@@ -13,8 +13,13 @@ public class MultiplayerGameSetupHandler : NetworkBehaviour {
     [SyncVar]
     public int PlayerCount = -1;
 
-    [SyncVar] 
+    [SyncVar(hook = nameof(OnGameInitialized))] 
     public bool GameInitialized;
+    private void OnGameInitialized(bool previousState, bool currentState) {
+        if (currentState) {
+            GameSetupManager.TriggerGameInitializedEvent();
+        }
+    }
     
     [Command(requiresAuthority = false)]    // TODO
     public void CmdNotifyPlayerReady(string displayName) {
