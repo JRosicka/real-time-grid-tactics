@@ -95,6 +95,7 @@ public class EntitySelectionManager {
     private void EntityCollectionChanged() {
         // We only care about whether the selected entity moved
         if (SelectedEntity == null) return;
+        if (!_gameManager.CommandManager.EntitiesOnGrid.AllEntities().Contains(SelectedEntity)) return;
         if (SelectedEntity.Location == _selectedEntityCurrentLocation) return;
 
         SelectedEntityMoved?.Invoke(); 
