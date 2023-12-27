@@ -1782,6 +1782,7 @@ MonoBehaviour:
   syncInterval: 0.1
   GameSetupManager: {fileID: 527040125}
   PlayerCount: -1
+  GameInitialized: 0
 --- !u!114 &550799287
 MonoBehaviour:
   m_ObjectHideFlags: 0

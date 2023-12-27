@@ -21,19 +21,16 @@ namespace Gameplay.UI {
         public void SetMask(LineType lineType) {
             switch (lineType) {
                 case LineType.Full:
-                    MaskTransform.anchorMin = new Vector2(.5f, .5f);
-                    MaskTransform.anchorMax = new Vector2(.5f, .5f);
                     MaskTransform.sizeDelta = new Vector2(GridController.CellWidth, MaskTransform.rect.height);
+                    MaskTransform.localPosition = new Vector2(GridController.CellWidth, 0);
                     break;
                 case LineType.StartHalf:
-                    MaskTransform.anchorMin = new Vector2(1f, .5f);
-                    MaskTransform.anchorMax = new Vector2(1f, .5f);
                     MaskTransform.sizeDelta = new Vector2(GridController.CellWidth / 2f, MaskTransform.rect.height);
+                    MaskTransform.localPosition = new Vector2(GridController.CellWidth, 0);
                     break;
                 case LineType.EndHalf:
-                    MaskTransform.anchorMin = new Vector2(.5f, .5f);
-                    MaskTransform.anchorMax = new Vector2(.5f, .5f);
                     MaskTransform.sizeDelta = new Vector2(GridController.CellWidth / 2f, MaskTransform.rect.height);
+                    MaskTransform.localPosition = new Vector2(GridController.CellWidth / 2, 0);
                     ToggleEndDot(false);
                     break;
                 default:
