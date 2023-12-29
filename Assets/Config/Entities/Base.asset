@@ -10,25 +10,22 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fafa440752424124be5b9cbee86f1e06, type: 3}
-  m_Name: Stable
+  m_Name: Base
   m_EditorClassIdentifier: 
-  Description: Produces cavalry units
-  Cost:
-  - Type: 0
-    Amount: 100
+  Description: Your home base - defend this!
+  Cost: []
   Requirements: []
-  BuildTime: 20
+  BuildTime: 1
   DisplayTeamColorOverMainSprite: 0
-  BaseSprite: {fileID: 21300000, guid: 15adac782b070274aaa623958178593a, type: 3}
-  TeamColorSprite: {fileID: 21300000, guid: 2939debaf959a6644a0790dc339bae82, type: 3}
+  BaseSprite: {fileID: 21300000, guid: 847b813419222e9478ec0690c09fe38c, type: 3}
+  TeamColorSprite: {fileID: 21300000, guid: 992393911caff794fa26699f882af973, type: 3}
   BaseSpriteIconOverride: {fileID: 0}
-  _viewPrefab: {fileID: 8948802681950571690, guid: cbc1e5e772dad9e47a232c148f9e6bd3, type: 3}
-  HP: 30
+  _viewPrefab: {fileID: 5331708085926006116, guid: cdbe6c86ea1b88240bef1c5186eaa238, type: 3}
+  HP: 50
   Range: 0
   Damage: 0
   NormalMoveTime: 0
   SlowMoveTime: 0
   Tags: 01000000
-  Abilities:
-  - {fileID: 11400000, guid: 3c7dea2ff84b5274db97a62f73988486, type: 2}
+  Abilities: []
   FriendlyUnitsCanShareCell: 1
