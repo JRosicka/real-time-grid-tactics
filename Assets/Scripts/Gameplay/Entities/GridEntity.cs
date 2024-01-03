@@ -21,6 +21,16 @@ namespace Gameplay.Entities {
             Player1 = 1,
             Player2 = 2
         }
+        // TODO move this team stuff to a new class
+        public static Team OpponentTeam(Team myTeam) {
+            return myTeam switch {
+                Team.Neutral => Team.Neutral,
+                Team.Player1 => Team.Player2,
+                Team.Player2 => Team.Player1,
+                _ => throw new ArgumentOutOfRangeException(nameof(myTeam), myTeam, null)
+            };
+        }
+        
         private enum TargetType {
             Enemy = 1,
             Ally = 2,
@@ -162,8 +172,8 @@ namespace Gameplay.Entities {
 
             if (targetType == TargetType.Enemy) {
                 AttackAbilityData data = (AttackAbilityData) EntityData.Abilities
-                    .First(a => a.Content.GetType() == typeof(AttackAbilityData)).Content;
-                PerformAbility(data, new AttackAbilityParameters { Target = targetEntity, Attacker = this }, false);
+                    .First(a => a.Content is AttackAbilityData).Content;
+                PerformAbility(data, new AttackAbilityParameters { Target = targetEntity, Attacker = this, Destination = targetCell}, true);
             }
         }
 
@@ -338,7 +348,6 @@ namespace Gameplay.Entities {
         public void AbilityPerformed(IAbility abilityInstance) {
             AbilityCooldownTimer cooldownTimer = ActiveTimers.FirstOrDefault(t => t.Ability.UID == abilityInstance.UID);
             if (cooldownTimer == null) {
-                Debug.LogError($"Timer for ability {abilityInstance.AbilityData.ContentResourceID} was not found");
                 return;
             }
 

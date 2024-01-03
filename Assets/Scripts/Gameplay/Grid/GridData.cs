@@ -77,5 +77,28 @@ namespace Gameplay.Grid {
         public List<CellData> GetAdjacentCells(Vector2Int location) {
             return GetCell(location)?.Neighbors;
         }
+
+        /// <summary>
+        /// Returns a list of all cells within range (up to x cells away) from the specified range. The list includes
+        /// the provided location.
+        /// </summary>
+        public List<CellData> GetCellsInRange(Vector2Int location, int range) {
+            CellData currentCell = GetCell(location);
+            List<CellData> ret = new List<CellData>();
+            List<CellData> searching = new List<CellData> { currentCell };
+            List<CellData> toAdd = new List<CellData>();
+            for (int i = 0; i < range; i++) {
+                foreach (CellData cell in searching) {
+                    toAdd.AddRange(cell.Neighbors);
+                }
+
+                toAdd.RemoveAll(c => ret.Contains(c));
+                ret.AddRange(toAdd);
+                searching = toAdd;
+                toAdd.Clear();
+            }
+
+            return ret;
+        }
     }
 }

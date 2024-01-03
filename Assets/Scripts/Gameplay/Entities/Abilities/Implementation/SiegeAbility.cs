@@ -23,8 +23,9 @@ namespace Gameplay.Entities.Abilities {
             // Nothing to do
         }
 
-        public override void DoAbilityEffect() {
+        public override bool DoAbilityEffect() {
             Debug.Log("Did siege ability, cool");
+            return true;
         }
     }
 }

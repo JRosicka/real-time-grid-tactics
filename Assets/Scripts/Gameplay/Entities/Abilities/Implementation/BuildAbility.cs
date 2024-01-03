@@ -62,8 +62,9 @@ namespace Gameplay.Entities.Abilities {
             GameManager.Instance.GetPlayerForTeam(Performer.MyTeam).ResourcesController.Spend(AbilityParameters.Buildable.Cost);
         }
         
-        public override void DoAbilityEffect() {
+        public override bool DoAbilityEffect() {
             Debug.Log($"Did build ability for {AbilityParameters.Buildable.ID} at cell {AbilityParameters.BuildLocation}, cool");
+            return true;
         }
     }
 

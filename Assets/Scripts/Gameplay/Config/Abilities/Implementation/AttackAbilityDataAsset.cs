@@ -8,7 +8,8 @@ namespace Gameplay.Config.Abilities {
     public class AttackAbilityDataAsset : BaseAbilityDataAsset<AttackAbilityData, AttackAbilityParameters> { }
 
     /// <summary>
-    /// A <see cref="AbilityDataBase{T}"/> configuration for attacking an entity
+    /// A <see cref="AbilityDataBase{T}"/> configuration for attacking a specific <see cref="GridEntity"/> and moving
+    /// towards it if out of range, or for doing a general attack-move towards a target cell
     /// </summary>
     [Serializable]
     public class AttackAbilityData : AbilityDataBase<AttackAbilityParameters>, ITargetableAbilityData {
@@ -32,16 +33,18 @@ namespace Gameplay.Config.Abilities {
         }
 
         private bool CanAttackTarget(GridEntity target, GridEntity selector) {
-            if (target == null || selector == null) return false;
+            if (selector == null) return false;
+            if (target == null) return true;    // This is just an a-move, so can always do that
             
-            // TODO range
             return target.MyTeam != GridEntity.Team.Neutral && target.MyTeam != selector.MyTeam;
         }
 
         public void DoTargetableAbility(Vector2Int cellPosition, GridEntity selectedEntity, GridEntity.Team selectorTeam, System.Object targetData) {
-            GridEntity target = GameManager.Instance.GetEntitiesAtLocation(cellPosition).GetTopEntity().Entity;    // Only able to target the top entity!
-            selectedEntity.QueueAbility(this, new AttackAbilityParameters {Attacker = selectedEntity, Target = target}, 
-                false, false, false);
+            GridEntity target = GameManager.Instance.GetEntitiesAtLocation(cellPosition)?.GetTopEntity()?.Entity;    // Only able to target the top entity!
+            selectedEntity.QueueAbility(this, new AttackAbilityParameters {Attacker = selectedEntity, Target = target, Destination = cellPosition}, 
+                true, false, false);
         }
+
+        public bool MoveToTargetCellFirst => false;
     }
 }

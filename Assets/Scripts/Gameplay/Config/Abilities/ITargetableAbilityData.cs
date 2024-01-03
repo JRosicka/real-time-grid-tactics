@@ -16,5 +16,9 @@ namespace Gameplay.Config.Abilities {
         /// Create a new <see cref="IAbility"/> targeting the specified cell. Assumes that <see cref="CanTargetCell"/> is true.
         /// </summary>
         void DoTargetableAbility(Vector2Int cellPosition, GridEntity selectedEntity, GridEntity.Team selectorTeam, Object targetData);
+        /// <summary>
+        /// Whether we should move to the target cell before attempting to do the ability
+        /// </summary>
+        bool MoveToTargetCellFirst { get; }
     }
 }

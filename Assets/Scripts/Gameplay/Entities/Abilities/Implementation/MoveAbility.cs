@@ -29,7 +29,7 @@ namespace Gameplay.Entities.Abilities {
             // Nothing to do
         }
         
-        public override void DoAbilityEffect() {
+        public override bool DoAbilityEffect() {
             // Perform a single move towards the destination
             List<GridNode> path = GameManager.Instance.PathfinderService.FindPath(Performer, AbilityParameters.Destination);
             if (path == null || path.Count < 2) {
@@ -43,6 +43,8 @@ namespace Gameplay.Entities.Abilities {
                 // There is more distance to travel, so put a new movement at the front of the queue
                 Performer.QueueAbility(Data, AbilityParameters, WaitUntilLegal, false, true);
             }
+
+            return true;
         }
     }
 

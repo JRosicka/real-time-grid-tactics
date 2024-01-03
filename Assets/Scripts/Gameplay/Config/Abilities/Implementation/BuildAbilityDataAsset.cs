@@ -59,5 +59,7 @@ namespace Gameplay.Config.Abilities {
             BuildAbilityParameters buildParameters = new BuildAbilityParameters {Buildable = (PurchasableData) targetData, BuildLocation = cellPosition};
             selectedEntity.QueueAbility(this, buildParameters, true, false, false);
         }
+
+        public bool MoveToTargetCellFirst => true;
     }
 }

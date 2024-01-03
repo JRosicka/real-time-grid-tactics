@@ -132,7 +132,7 @@ public class EntitySelectionManager {
         SelectedEntity.ClearAbilityQueue();
 
         // TODO maybe move everything under here in this method to some other class, if things get more complicated
-        if (SelectedEntity.Location != clickedCell) {
+        if (_selectedTargetableAbility.MoveToTargetCellFirst && SelectedEntity.Location != clickedCell) {
             // We need to move to the clicked cell first
             // TODO if an ability has a range, like an attack, find a path to the nearest place in range. We only want to 
             // refrain from doing the targetable ability if it actually matters if the entity can move to the target. Not 

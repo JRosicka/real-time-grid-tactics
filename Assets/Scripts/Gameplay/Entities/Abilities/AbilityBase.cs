@@ -64,12 +64,18 @@ namespace Gameplay.Entities.Abilities {
         public bool PerformAbility() {
             // TODO need to redefine move ability to be legal as long as we can progress towards target
             if (!Data.AbilityLegal(BaseParameters, Performer)) return false;
-            
-            PayCost();
-            DoAbilityEffect();
+
+            bool needToPayCost = DoAbilityEffect();
+            if (needToPayCost) {
+                PayCost();
+            }
             return true;
         }
         
-        public abstract void DoAbilityEffect();
+        /// <summary>
+        /// Actually do the thing this ability is supposed to do
+        /// </summary>
+        /// <returns>True if the cost should be payed (because the ability resulted in some action that demands a cost), otherwise false</returns>
+        public abstract bool DoAbilityEffect();
     }
 }

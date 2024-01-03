@@ -1,4 +1,5 @@
 using Gameplay.Config.Abilities;
+using UnityEditor.Build;
 using UnityEngine;
 
 namespace Gameplay.Entities.Abilities {
@@ -22,9 +23,10 @@ namespace Gameplay.Entities.Abilities {
             // Nothing to do
         }
 
-        public override void DoAbilityEffect() {
+        public override bool DoAbilityEffect() {
             // Does not do anything yet - need to wait for cooldown to complete
             Debug.Log("Starting income cycle, cool");
+            return true;
         }
     
     }

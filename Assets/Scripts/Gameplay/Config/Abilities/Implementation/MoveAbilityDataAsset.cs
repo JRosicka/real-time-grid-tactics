@@ -42,5 +42,7 @@ namespace Gameplay.Config.Abilities {
             // Nothing to do here - the caller is responsible for moving the entity to the destination first anyway, which 
             // is the only thing we're trying to do with this ability
         }
+
+        public bool MoveToTargetCellFirst => false;
     }
 }
