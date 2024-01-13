@@ -64,7 +64,7 @@ namespace Gameplay.Entities.Abilities {
             }
             
             // Otherwise move closer to the target and try again
-            StepTowardsDestination(attacker);
+            StepTowardsDestination(attacker, targetLocation);
             ReQueue();
             return false;
         }
@@ -92,7 +92,7 @@ namespace Gameplay.Entities.Abilities {
             }
             
             // No one in range to attack, so move a cell closer to our destination and re-queue
-            if (StepTowardsDestination(attacker)) {
+            if (StepTowardsDestination(attacker, AbilityParameters.Destination)) {
                 ReQueue();
             }
             return false;
@@ -125,8 +125,8 @@ namespace Gameplay.Entities.Abilities {
         /// Move a single cell towards the destination
         /// </summary>
         /// <returns>True if we moved a cell, otherwise false if there is no path which actually brings us closer</returns>
-        private bool StepTowardsDestination(GridEntity attacker) {
-            PathfinderService.Path path = GameManager.Instance.PathfinderService.FindPath(Performer, AbilityParameters.Destination);
+        private bool StepTowardsDestination(GridEntity attacker, Vector2Int destination) {
+            PathfinderService.Path path = GameManager.Instance.PathfinderService.FindPath(Performer, destination);
             if (path.Nodes.Count < 2) {
                 return false;
             }
