@@ -166,13 +166,16 @@ namespace Gameplay.Entities {
 
         public void TryTargetEntity(GridEntity targetEntity, Vector2Int targetCell) {
             TargetType targetType = GetTargetType(this, targetEntity);
-
-            // TODO figure out if target is in range
-
+            
             if (targetType == TargetType.Enemy) {
                 AttackAbilityData data = (AttackAbilityData) EntityData.Abilities
                     .First(a => a.Content is AttackAbilityData).Content;
-                PerformAbility(data, new AttackAbilityParameters { Target = targetEntity, Attacker = this, Destination = targetCell}, true);
+                PerformAbility(data, new AttackAbilityParameters {
+                    Target = targetEntity, 
+                    TargetFire = true,
+                    Attacker = this, 
+                    Destination = targetCell
+                }, true);
             }
         }
 

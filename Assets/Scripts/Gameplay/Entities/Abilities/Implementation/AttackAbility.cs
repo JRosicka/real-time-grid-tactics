@@ -17,11 +17,7 @@ namespace Gameplay.Entities.Abilities {
         private AttackAbilityParameters AbilityParameters => (AttackAbilityParameters) BaseParameters;
         private GridData GridData => GameManager.Instance.GridController.GridData;
         
-        private bool _targetFire;
-
-        public AttackAbility(AttackAbilityData data, AttackAbilityParameters parameters, GridEntity performer) : base(data, parameters, performer) {
-            _targetFire = AbilityParameters.Target != null;
-        }
+        public AttackAbility(AttackAbilityData data, AttackAbilityParameters parameters, GridEntity performer) : base(data, parameters, performer) { }
 
         public override void Cancel() {
             // Nothing to do
@@ -38,7 +34,7 @@ namespace Gameplay.Entities.Abilities {
         }
 
         public override bool DoAbilityEffect() {
-            if (_targetFire) {
+            if (AbilityParameters.TargetFire) {
                 return DoTargetFireEffect();
             } else {
                 return DoAttackMoveEffect();
@@ -147,16 +143,19 @@ namespace Gameplay.Entities.Abilities {
 
     public class AttackAbilityParameters : IAbilityParameters {
         public GridEntity Attacker;
+        public bool TargetFire;
         public GridEntity Target;    // only used for targeting a specific unit
         public Vector2Int Destination; // only used for attack-moves
         public void Serialize(NetworkWriter writer) {
             writer.Write(Attacker);
+            writer.WriteBool(TargetFire);
             writer.Write(Target);
             writer.Write(Destination);
         }
 
         public void Deserialize(NetworkReader reader) {
             Attacker = reader.Read<GridEntity>();
+            TargetFire = reader.ReadBool();
             Target = reader.Read<GridEntity>();
             Destination = reader.Read<Vector2Int>();
         }
