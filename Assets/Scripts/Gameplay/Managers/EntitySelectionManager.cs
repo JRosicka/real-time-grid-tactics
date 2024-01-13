@@ -66,6 +66,8 @@ public class EntitySelectionManager {
     /// subsequent calls.
     /// </summary>
     public void SelectEntityAtCell(Vector2Int cell) {
+        DeselectEntity();
+
         GridEntityCollection.PositionedGridEntityCollection entitiesAtLocation = _gameManager.GetEntitiesAtLocation(cell);
         if (entitiesAtLocation != null) {
             // Select the top entity, or the next entity if we are already selecting an entity at this location
@@ -75,9 +77,6 @@ public class EntitySelectionManager {
             } else {
                 entitiesAtLocation.GetEntityAfter(orderedEntity).Entity.Select();
             }
-        } else {
-            // The cell is empty - deselect whatever we selected previously
-            DeselectEntity();
         }
     }
 
