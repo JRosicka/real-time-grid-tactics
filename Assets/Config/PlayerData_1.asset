@@ -14,4 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Team: 1
   TeamColor: {r: 0, g: 0.34961152, b: 1, a: 1}
-  SpawnLocation: {x: -4, y: -2, z: 0}
+  SpawnLocation: {x: 2, y: 1}

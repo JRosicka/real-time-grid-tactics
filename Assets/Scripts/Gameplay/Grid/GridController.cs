@@ -68,7 +68,7 @@ namespace Gameplay.Grid {
             _pathVisualizer.ClearPath();
         }
 
-        public void VisualizePath(List<GridNode> path) {
+        public void VisualizePath(PathfinderService.Path path) {
             _pathVisualizer.Visualize(path);
         }
 

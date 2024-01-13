@@ -31,15 +31,16 @@ namespace Gameplay.Entities.Abilities {
         
         public override bool DoAbilityEffect() {
             // Perform a single move towards the destination
-            List<GridNode> path = GameManager.Instance.PathfinderService.FindPath(Performer, AbilityParameters.Destination);
-            if (path == null || path.Count < 2) {
-                throw new Exception("Could not find path for move ability when attempting to perform its effect");
+            PathfinderService.Path path = GameManager.Instance.PathfinderService.FindPath(Performer, AbilityParameters.Destination);
+            List<GridNode> pathNodes = path.Nodes;
+            if (pathNodes.Count < 2) {
+                return false;
             }
 
-            AbilityParameters.NextMoveCell = path[1].Location;
+            AbilityParameters.NextMoveCell = pathNodes[1].Location;
             
-            GameManager.Instance.CommandManager.MoveEntityToCell(Performer, path[1].Location);
-            if (path.Count > 2) {
+            GameManager.Instance.CommandManager.MoveEntityToCell(Performer, pathNodes[1].Location);
+            if (pathNodes.Count > 2) {
                 // There is more distance to travel, so put a new movement at the front of the queue
                 Performer.QueueAbility(Data, AbilityParameters, WaitUntilLegal, false, true);
             }

@@ -156,7 +156,7 @@ public class EntitySelectionManager {
         if (!SelectedEntity.CanMove) return;
         if (SelectedEntity.MyTeam != _gameManager.LocalPlayer.Data.Team) return;
 
-        List<GridNode> path = PathfinderService.FindPath(SelectedEntity, cell);
+        PathfinderService.Path path = PathfinderService.FindPath(SelectedEntity, cell);
         GridController.VisualizePath(path);
     }
 }

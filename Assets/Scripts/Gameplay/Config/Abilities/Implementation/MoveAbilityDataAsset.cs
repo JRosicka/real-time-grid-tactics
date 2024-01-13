@@ -27,7 +27,6 @@ namespace Gameplay.Config.Abilities {
         }
 
         public bool CanTargetCell(Vector2Int cellPosition, GridEntity selectedEntity, GridEntity.Team selectorTeam, System.Object targetData) {
-            // TODO pathfinding stuff
             if (selectedEntity == null || selectedEntity.MyTeam != selectorTeam) return false;
 
             if (selectedEntity.Location == cellPosition) {
@@ -35,7 +34,7 @@ namespace Gameplay.Config.Abilities {
                 return false;
             }
 
-            return PathfinderService.CanEntityEnterCell(cellPosition, selectedEntity.EntityData, selectedEntity.MyTeam);
+            return true;
         }
         
         public void DoTargetableAbility(Vector2Int cellPosition, GridEntity selectedEntity, GridEntity.Team selectorTeam, System.Object targetData) {

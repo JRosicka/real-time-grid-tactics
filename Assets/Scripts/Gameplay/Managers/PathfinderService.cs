@@ -14,27 +14,46 @@ using Util;
 public class PathfinderService {
     // I would really hope that my maps aren't so big that a viable path can be found after searching through this many...
     private const int MaxCellsToSearch = 5000;
+    private const int MaxCellsToSearchWhenWeKnowNoPathExists = 200;
     
     private GridController GridController => GameManager.Instance.GridController;
 
     /// <summary>
+    /// Represents a path of nodes found by the pathfinder. All nodes in the path are guaranteed to be adjacent to their
+    /// neighbors. 
+    /// </summary>
+    public struct Path {
+        public List<GridNode> Nodes;
+        /// <summary>
+        /// Whether the destination node is the one that was actually requested when finding the path. If false, then
+        /// the destination node is the best alternative we could find. 
+        /// </summary>
+        public bool ContainsRequestedDestination;
+    }
+
+    /// <summary>
     /// Find the shortest path between an entity and a destination. Uses a basic A* algorithm. Factors in movement costs
     /// per tile.
+    ///
+    /// If the destination can not be reached, then we return a path to the best legal alternative location. This is
+    /// prioritized by lowest H-cost then by lowest G-cost. 
     /// </summary>
     /// <param name="entity">The entity to traverse the path. Matters for determining movement costs per tile. Also uses
     /// its current location as the path start.</param>
     /// <param name="destination">The location to make a path to</param>
     /// <returns>A path of nodes from the entity's location to the destination</returns>
     /// <exception cref="Exception">If the generated path is too long</exception>
-    public List<GridNode> FindPath(GridEntity entity, Vector2Int destination) {
+    public Path FindPath(GridEntity entity, Vector2Int destination) {
+        int maxSearch = MaxCellsToSearch;
         if (!entity.CanEnterTile(GridController.GridData.GetCell(destination).Tile) 
                 || !CanEntityEnterCell(destination, entity.EntityData, entity.MyTeam)) {
-            // Can't go to destination, so no path
-            return null;
+            // Can't go to destination, so let's not overdo the search since we're just gonna pick the best available choice anyway
+            maxSearch = MaxCellsToSearchWhenWeKnowNoPathExists;
         }
         
         GridNode startNode = new GridNode(entity, GridController.GridData.GetCell(entity.Location));
-
+        startNode.SetH(startNode.GetDistance(destination));
+        
         List<GridNode> toSearch = new List<GridNode> { startNode };
         List<GridNode> processed = new List<GridNode>();
 
@@ -48,55 +67,78 @@ public class PathfinderService {
             
             if (current.Location == destination) {
                 // We have reached the end
-                return ConstructPath(startNode, current);
+                return ConstructPath(startNode, current, true);
             }
             
-            if (processed.Count > MaxCellsToSearch) {
-                // We have not yet found a path after searching for a while, and we have not yet exhausted all of the tiles 
-                // to search. Fail early so we don't take too long.
-                return null;
+            if (processed.Count > maxSearch) {
+                // We have not yet found a path after searching for a while, and we have not exhausted all of the tiles 
+                // to search. Pick the best possible alternative destination out of those we have searched.
+                return ConstructBestAlternativePath(processed, startNode);
             }
 
             // Search through all the current node's neighbors
             foreach (GridNode neighbor in current.Neighbors.Where(n => n.Walkable && processed.All(node => node.Location != n.Location))) {
-                bool inSearch = toSearch.Contains(neighbor);    // Searches via GridComparer to see if the locations match
-                float costToNeighbor = current.G + neighbor.CostToEnter();
+                GridNode existingNeighbor = toSearch.FirstOrDefault(s => s.Location == neighbor.Location);
+                bool inSearch = existingNeighbor != null;
+                GridNode neighborBeingSearched = inSearch ? existingNeighbor : neighbor;
+                float costToNeighbor = current.G + neighborBeingSearched.CostToEnter();
 
-                if (!inSearch || costToNeighbor < neighbor.G) {
+                if (!inSearch || costToNeighbor < existingNeighbor.G) {
                     // This neighbor has not been processed yet or the current path to it is better than a previously found path
-                    neighbor.SetG(costToNeighbor);
-                    neighbor.SetConnection(current);
+                    neighborBeingSearched.SetG(costToNeighbor);
+                    neighborBeingSearched.SetConnection(current);
 
                     if (!inSearch) {
                         // This is the first time we have taken a look at this node, so do some basic one-time setup
                         neighbor.SetH(neighbor.GetDistance(destination));
                         toSearch.AddSorted(neighbor);
+                    } else {
+                        // We just found a better connection for the neighbor, so re-sort the list
+                        toSearch.Remove(neighborBeingSearched);
+                        toSearch.AddSorted(neighborBeingSearched);
                     }
                 }
             }
         }
         
-        // We ran out of nodes to search without finding a way to the destination, so no path exists
-        return null;
+        // We ran out of nodes to search without finding a way to the destination, so no path exists. Pick the best
+        // possible alternative destination out of those we have searched.
+        return ConstructBestAlternativePath(processed, startNode);
     }
 
-    private List<GridNode> ConstructPath(GridNode startNode, GridNode current) {
+    private Path ConstructPath(GridNode startNode, GridNode current, bool originalDestination) {
         GridNode currentPathNode = current;
-        List<GridNode> path = new List<GridNode>();
+        List<GridNode> pathNodes = new List<GridNode>();
         while (currentPathNode != startNode) {
-            path.Add(currentPathNode);
+            pathNodes.Add(currentPathNode);
             currentPathNode = currentPathNode.Connection;
 
-            if (path.Count > 500) {
+            if (pathNodes.Count > 500) {
                 throw new Exception("Frig bro, the path is too long");
             }
         }
-        path.Add(startNode);
+        pathNodes.Add(startNode);
                 
         // Reverse the path so that it is in the correct order
-        path.Reverse();
-        return path;
+        pathNodes.Reverse();
+        return new Path {
+            Nodes = pathNodes,
+            ContainsRequestedDestination = originalDestination
+        };
+    }
 
+    private Path ConstructBestAlternativePath(IReadOnlyCollection<GridNode> processed, GridNode startNode) {
+        GridNode bestAlternative;
+                
+        float minH = processed.Min(n => n.H);
+        List<GridNode> closestNodes = processed.Where(n => Mathf.Approximately(n.H, minH)).ToList();
+        if (closestNodes.Count > 1) {
+            float minG = closestNodes.Min(n => n.G);
+            bestAlternative = closestNodes.First(n => Mathf.Approximately(n.G, minG));
+        } else {
+            bestAlternative = closestNodes[0];
+        }
+        return ConstructPath(startNode, bestAlternative, false);
     }
 
     public int RequiredMoves(GridEntity entity, Vector2Int origin, Vector2Int destination) {

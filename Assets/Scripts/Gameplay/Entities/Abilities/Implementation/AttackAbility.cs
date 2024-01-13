@@ -15,11 +15,12 @@ namespace Gameplay.Entities.Abilities {
     /// </summary>
     public class AttackAbility : AbilityBase<AttackAbilityData, AttackAbilityParameters> {
         private AttackAbilityParameters AbilityParameters => (AttackAbilityParameters) BaseParameters;
-        private bool TargetFire => AbilityParameters.Target != null;
         private GridData GridData => GameManager.Instance.GridController.GridData;
+        
+        private bool _targetFire;
 
         public AttackAbility(AttackAbilityData data, AttackAbilityParameters parameters, GridEntity performer) : base(data, parameters, performer) {
-            
+            _targetFire = AbilityParameters.Target != null;
         }
 
         public override void Cancel() {
@@ -37,7 +38,7 @@ namespace Gameplay.Entities.Abilities {
         }
 
         public override bool DoAbilityEffect() {
-            if (TargetFire) {
+            if (_targetFire) {
                 return DoTargetFireEffect();
             } else {
                 return DoAttackMoveEffect();
@@ -45,14 +46,14 @@ namespace Gameplay.Entities.Abilities {
         }
 
         private bool DoTargetFireEffect() {
-            GridEntity attacker = AbilityParameters.Attacker;
-            Vector2Int attackerLocation = attacker.Location;
-            Vector2Int targetLocation = AbilityParameters.Target.Location;
-
             // Check to make sure that the target still exists
             if (AbilityParameters.Target == null) {
                 return false;
             }
+
+            GridEntity attacker = AbilityParameters.Attacker;
+            Vector2Int attackerLocation = attacker.Location;
+            Vector2Int targetLocation = AbilityParameters.Target.Location;
             
             // Attack the target if it is in range
             if (CellDistanceLogic.DistanceBetweenCells(attackerLocation, targetLocation) <= attacker.Range) {
@@ -91,8 +92,9 @@ namespace Gameplay.Entities.Abilities {
             }
             
             // No one in range to attack, so move a cell closer to our destination and re-queue
-            StepTowardsDestination(attacker);
-            ReQueue();
+            if (StepTowardsDestination(attacker)) {
+                ReQueue();
+            }
             return false;
         }
 
@@ -119,18 +121,23 @@ namespace Gameplay.Entities.Abilities {
             return true;
         }
 
-        private void StepTowardsDestination(GridEntity attacker) {
-            List<GridNode> path = GameManager.Instance.PathfinderService.FindPath(Performer, AbilityParameters.Destination);
-            if (path == null || path.Count < 2) {
-                throw new Exception("Could not find path for move ability when attempting to perform its effect");
+        /// <summary>
+        /// Move a single cell towards the destination
+        /// </summary>
+        /// <returns>True if we moved a cell, otherwise false if there is no path which actually brings us closer</returns>
+        private bool StepTowardsDestination(GridEntity attacker) {
+            PathfinderService.Path path = GameManager.Instance.PathfinderService.FindPath(Performer, AbilityParameters.Destination);
+            if (path.Nodes.Count < 2) {
+                return false;
             }
-            Vector2Int nextMoveCell = path[1].Location;
+            Vector2Int nextMoveCell = path.Nodes[1].Location;
             IAbilityData moveAbility = attacker.Abilities.First(a => a.Content is MoveAbilityData).Content;
             attacker.PerformAbility(moveAbility, new MoveAbilityParameters {
                 Destination = nextMoveCell,
                 NextMoveCell = nextMoveCell,
                 SelectorTeam = attacker.MyTeam
             }, true);
+            return true;
         }
 
         private void ReQueue() {
