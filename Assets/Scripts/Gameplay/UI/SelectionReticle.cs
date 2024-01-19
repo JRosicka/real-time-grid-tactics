@@ -46,6 +46,8 @@ namespace Gameplay.UI {
         }
 
         private void UpdateColor(GridEntity entityAtLocation) {
+            if (!GameManager.Instance.GameSetupManager.GameInitialized) return;
+
             GridEntity.Team localTeam = GameManager.Instance.LocalPlayer.Data.Team;
             Color selectionColor = NeutralSelectionColor;
             if (entityAtLocation && entityAtLocation.MyTeam == localTeam) {
