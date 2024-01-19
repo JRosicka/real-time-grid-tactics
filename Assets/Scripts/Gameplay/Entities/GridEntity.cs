@@ -299,8 +299,8 @@ namespace Gameplay.Entities {
             // Add a new movement cooldown timer
             MoveAbilityData moveAbilityData = (MoveAbilityData)moveAbilityScriptable.Content;
             CreateAbilityTimer(new MoveAbility(moveAbilityData, new MoveAbilityParameters {
-                Destination = new Vector2Int(-3, -3),   // TODO currently set to an arbitrary specific value to see if we ever actually go there. This should eventually be changed to be the current position or something.
-                NextMoveCell = new Vector2Int(-3, -3),   // TODO currently set to an arbitrary specific value to see if we ever actually go there. This should eventually be changed to be the current position or something.
+                Destination = Location,
+                NextMoveCell = Location,
                 SelectorTeam = MyTeam
             }, this), timeToAdd);
         }
@@ -368,6 +368,18 @@ namespace Gameplay.Entities {
             foreach (IAbilityData abilityData in Abilities.Select(a => a.Content).Where(a => a.PerformOnStart)) {
                 PerformAbility(abilityData, new NullAbilityParameters(), false);
             }
+        }
+
+        public void PerformDefaultAbility() {
+            if (!EntityData.AttackByDefault) return;
+            
+            AttackAbilityData data = (AttackAbilityData) EntityData.Abilities
+                .First(a => a.Content is AttackAbilityData).Content;
+            PerformAbility(data, new AttackAbilityParameters {
+                TargetFire = false,
+                Attacker = this, 
+                Destination = Location
+            }, true);
         }
 
         /// <summary>

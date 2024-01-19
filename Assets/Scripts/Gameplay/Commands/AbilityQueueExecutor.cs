@@ -43,7 +43,10 @@ public class AbilityQueueExecutor : MonoBehaviour {
     /// </summary>
     private void ExecuteQueue(GridEntity entity) {
         List<IAbility> abilityQueue = entity.QueuedAbilities;
-        if (abilityQueue.IsNullOrEmpty()) return;
+        if (abilityQueue.IsNullOrEmpty()) {
+            entity.PerformDefaultAbility();
+            return;
+        }
 
         // Try to perform the next ability
         IAbility nextAbility = abilityQueue[0];

@@ -41,6 +41,8 @@ namespace Gameplay.Config {
         [Tooltip("Whether friendly (non-structure) entities can enter (spawn, move, etc) a cell with this entity")]
         public bool FriendlyUnitsCanShareCell;
 
+        public bool AttackByDefault;
+
         public bool IsStructure => Tags.Contains(EntityTag.Structure);
         
         /// <summary>

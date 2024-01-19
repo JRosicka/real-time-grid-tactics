@@ -32,3 +32,4 @@ MonoBehaviour:
   Abilities:
   - {fileID: 11400000, guid: 3c7dea2ff84b5274db97a62f73988486, type: 2}
   FriendlyUnitsCanShareCell: 1
+  AttackByDefault: 1

@@ -21,6 +21,7 @@ MonoBehaviour:
   DisplayTeamColorOverMainSprite: 1
   BaseSprite: {fileID: 21300000, guid: 8a0b09c5c94b13a4d94d9851998762db, type: 3}
   TeamColorSprite: {fileID: 21300000, guid: 244bb6413a5a3e845bc7016a88fbd132, type: 3}
+  BaseSpriteIconOverride: {fileID: 0}
   _viewPrefab: {fileID: 759299255275732260, guid: c58f0c96c2c0e8f4fbf691600e98b9b6, type: 3}
   HP: 14
   Range: 1
@@ -32,3 +33,4 @@ MonoBehaviour:
   - {fileID: 11400000, guid: ec15a049dabc53b4d92ab14b2871752c, type: 2}
   - {fileID: 11400000, guid: a5c4aba93e508274894c2c6bfc4b751e, type: 2}
   FriendlyUnitsCanShareCell: 0
+  AttackByDefault: 1
