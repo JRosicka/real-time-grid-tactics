@@ -252,7 +252,7 @@ namespace Gameplay.Entities {
 
         private void DoAddTimeToAbilityTimer(IAbility ability, float timeToAdd) {
             List<AbilityCooldownTimer> activeTimersCopy = new List<AbilityCooldownTimer>(ActiveTimers);
-            AbilityCooldownTimer timer = activeTimersCopy.FirstOrDefault(t => t.Ability == ability);
+            AbilityCooldownTimer timer = activeTimersCopy.FirstOrDefault(t => t.Ability.AbilityData == ability.AbilityData);
             if (timer == null) {
                 Debug.Log("Tried to add time for an ability that does not currently have an active timer");
                 return;
