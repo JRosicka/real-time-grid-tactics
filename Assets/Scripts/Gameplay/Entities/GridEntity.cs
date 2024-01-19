@@ -172,7 +172,6 @@ namespace Gameplay.Entities {
                 PerformAbility(data, new AttackAbilityParameters {
                     Target = targetEntity, 
                     TargetFire = true,
-                    Attacker = this, 
                     Destination = targetCell
                 }, true);
             }
@@ -377,7 +376,6 @@ namespace Gameplay.Entities {
                 .First(a => a.Content is AttackAbilityData).Content;
             PerformAbility(data, new AttackAbilityParameters {
                 TargetFire = false,
-                Attacker = this, 
                 Destination = Location
             }, true);
         }

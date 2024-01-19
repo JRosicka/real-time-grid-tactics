@@ -20,7 +20,7 @@ namespace Gameplay.Config.Abilities {
         }
 
         protected override bool AbilityLegalImpl(AttackAbilityParameters parameters, GridEntity entity) {
-            return CanAttackTarget(parameters.Target, parameters.Attacker);
+            return CanAttackTarget(parameters.Target, entity);
         }
 
         protected override IAbility CreateAbilityImpl(AttackAbilityParameters parameters, GridEntity performer) {
@@ -42,7 +42,6 @@ namespace Gameplay.Config.Abilities {
         public void DoTargetableAbility(Vector2Int cellPosition, GridEntity selectedEntity, GridEntity.Team selectorTeam, System.Object targetData) {
             GridEntity target = GameManager.Instance.GetEntitiesAtLocation(cellPosition)?.GetTopEntity()?.Entity;    // Only able to target the top entity!
             selectedEntity.QueueAbility(this, new AttackAbilityParameters {
-                    Attacker = selectedEntity, 
                     TargetFire = target != null, 
                     Target = target, 
                     Destination = cellPosition

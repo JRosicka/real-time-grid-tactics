@@ -1,9 +1,7 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using Gameplay.Config.Abilities;
 using Gameplay.Grid;
-using Gameplay.Pathfinding;
 using Mirror;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -47,30 +45,28 @@ namespace Gameplay.Entities.Abilities {
                 return false;
             }
 
-            GridEntity attacker = AbilityParameters.Attacker;
-            Vector2Int attackerLocation = attacker.Location;
+            Vector2Int attackerLocation = Performer.Location;
             Vector2Int targetLocation = AbilityParameters.Target.Location;
             
             // Attack the target if it is in range
-            if (CellDistanceLogic.DistanceBetweenCells(attackerLocation, targetLocation) <= attacker.Range) {
+            if (CellDistanceLogic.DistanceBetweenCells(attackerLocation, targetLocation) <= Performer.Range) {
                 Debug.Log($"Did attack to {AbilityParameters.Target.DisplayName}, cool");
-                AbilityParameters.Target.ReceiveAttackFromEntity(AbilityParameters.Attacker);
+                AbilityParameters.Target.ReceiveAttackFromEntity(Performer);
                 ReQueue();
                 return true;
             }
             
             // Otherwise move closer to the target and try again
-            StepTowardsDestination(attacker, targetLocation);
+            StepTowardsDestination(Performer, targetLocation);
             ReQueue();
             return false;
         }
         
         private bool DoAttackMoveEffect() {
-            GridEntity attacker = AbilityParameters.Attacker;
-            Vector2Int attackerLocation = attacker.Location;
+            Vector2Int attackerLocation = Performer.Location;
             
             // First check to see if there is anything in range to attack
-            if (AttackInRange(attacker, attackerLocation)) {
+            if (AttackInRange(Performer, attackerLocation)) {
                 ReQueue();
                 return true;
             }
@@ -82,13 +78,13 @@ namespace Gameplay.Entities.Abilities {
             
             // If no move available, re-queue this ability for later so that the above check for seeing if anything is 
             // in range is re-performed on the next ability queue update. 
-            if (attacker.ActiveTimers.Any(t => t.Ability is MoveAbility)) {
+            if (Performer.ActiveTimers.Any(t => t.Ability is MoveAbility)) {
                 ReQueue();
                 return false;
             }
             
             // No one in range to attack, so move a cell closer to our destination and re-queue
-            if (StepTowardsDestination(attacker, AbilityParameters.Destination)) {
+            if (StepTowardsDestination(Performer, AbilityParameters.Destination)) {
                 ReQueue();
             }
             return false;
@@ -112,7 +108,7 @@ namespace Gameplay.Entities.Abilities {
             
             // Arbitrarily pick one to attack. TODO pick the closest one instead.
             GridEntity target = enemiesInRange[Random.Range(0, enemiesInRange.Count)];
-            target.ReceiveAttackFromEntity(AbilityParameters.Attacker);
+            target.ReceiveAttackFromEntity(Performer);
             
             return true;
         }
@@ -142,19 +138,16 @@ namespace Gameplay.Entities.Abilities {
     }
 
     public class AttackAbilityParameters : IAbilityParameters {
-        public GridEntity Attacker;
         public bool TargetFire;
         public GridEntity Target;    // only used for targeting a specific unit
         public Vector2Int Destination; // only used for attack-moves
         public void Serialize(NetworkWriter writer) {
-            writer.Write(Attacker);
             writer.WriteBool(TargetFire);
             writer.Write(Target);
             writer.Write(Destination);
         }
 
         public void Deserialize(NetworkReader reader) {
-            Attacker = reader.Read<GridEntity>();
             TargetFire = reader.ReadBool();
             Target = reader.Read<GridEntity>();
             Destination = reader.Read<Vector2Int>();
