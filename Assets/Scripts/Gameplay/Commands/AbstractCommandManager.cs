@@ -119,6 +119,9 @@ public abstract class AbstractCommandManager : NetworkBehaviour, ICommandManager
     }
     
     protected bool DoPerformAbility(IAbility ability, bool clearQueueFirst) {
+        // Don't do anything if the performer has been killed 
+        if (ability.Performer == null) return false;
+        
         if (clearQueueFirst) {
             ability.Performer.ClearAbilityQueue();
         }
