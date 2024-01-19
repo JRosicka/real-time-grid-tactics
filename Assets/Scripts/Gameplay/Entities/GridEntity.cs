@@ -4,7 +4,6 @@ using System.Linq;
 using Gameplay.Config;
 using Gameplay.Config.Abilities;
 using Gameplay.Entities.Abilities;
-using Gameplay.Grid;
 using Mirror;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -235,6 +234,33 @@ namespace Gameplay.Entities {
             CooldownTimerStartedEvent?.Invoke(ability, newCooldownTimer);
         }
 
+        private void AddTimeToAbilityTimer(IAbility ability, float timeToAdd) {
+            if (!NetworkClient.active) {
+                // SP
+                DoAddTimeToAbilityTimer(ability, timeToAdd);
+            } else if (NetworkServer.active) {
+                // MP server
+                RpcAddTimeToAbilityTimer(ability, timeToAdd);
+            }
+            // Else MP client, do nothing
+        }
+        
+        [ClientRpc]
+        private void RpcAddTimeToAbilityTimer(IAbility ability, float timeToAdd) {
+            DoAddTimeToAbilityTimer(ability, timeToAdd);
+        }
+
+        private void DoAddTimeToAbilityTimer(IAbility ability, float timeToAdd) {
+            List<AbilityCooldownTimer> activeTimersCopy = new List<AbilityCooldownTimer>(ActiveTimers);
+            AbilityCooldownTimer timer = activeTimersCopy.FirstOrDefault(t => t.Ability == ability);
+            if (timer == null) {
+                Debug.Log("Tried to add time for an ability that does not currently have an active timer");
+                return;
+            }
+
+            timer.AddTime(timeToAdd);
+        }
+
         public void ExpireTimerForAbility(IAbility ability) {
             // Find the timer with the indicated ability. The timers themselves are not synchronized, but since their abilities are we can use those. 
             AbilityCooldownTimer cooldownTimer = ActiveTimers.FirstOrDefault(t => t.Ability.UID == ability.UID);
@@ -265,7 +291,7 @@ namespace Gameplay.Entities {
                                      "timer is expired. Adding new movement cooldown timer instead. This might not behave correctly.");
                 } else {
                     // Add this time to the current movement cooldown timer
-                    movementTimer.AddTime(timeToAdd);
+                    AddTimeToAbilityTimer(movementTimer.Ability, timeToAdd);
                     return;
                 }
             }
