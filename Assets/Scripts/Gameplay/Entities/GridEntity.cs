@@ -443,9 +443,10 @@ namespace Gameplay.Entities {
         }
 
         private void SetupView() {
-            ViewCanvas.sortingOrder = EntityData.GetStackOrder();
+            int stackOrder = EntityData.GetStackOrder();
+            ViewCanvas.sortingOrder = stackOrder;
             _view = Instantiate(EntityData.ViewPrefab, ViewCanvas.transform);
-            _view.Initialize(this);
+            _view.Initialize(this, stackOrder);
         }
 
         public void ReceiveAttackFromEntity(GridEntity sourceEntity) {

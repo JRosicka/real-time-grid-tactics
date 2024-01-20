@@ -25,12 +25,14 @@ namespace Gameplay.Entities {
         public event Action KillAnimationFinishedEvent;
         
         protected GridEntity Entity;
-        public void Initialize(GridEntity entity) {
+        public void Initialize(GridEntity entity, int stackOrder) {
             Entity = entity;
             
             _mainImage.sprite = entity.EntityData.BaseSprite;
+            _mainImage.GetComponent<Canvas>().sortingOrder += stackOrder;
             _teamColorImage.sprite = entity.EntityData.TeamColorSprite;
             _teamColorImage.color = GameManager.Instance.GetPlayerForTeam(entity.MyTeam).Data.TeamColor;
+            _teamColorImage.GetComponent<Canvas>().sortingOrder += stackOrder;
             
             entity.AbilityPerformedEvent += DoAbility;
             entity.CooldownTimerStartedEvent += CreateTimerView;
