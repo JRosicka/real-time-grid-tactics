@@ -11,20 +11,26 @@ namespace Gameplay.Entities {
     public abstract class GridEntityViewBase : MonoBehaviour {
         [SerializeField]
         private AbilityTimerCooldownView TimerCooldownViewPrefab;
-        [SerializeField]
-        private Transform _moveTimerLocation;
-        [SerializeField]
-        private Transform _attackTimerLocation;
         
         [Header("References")] 
         [SerializeField]
         private Image _mainImage;
         [SerializeField] 
         private Image _teamColorImage;
+        [SerializeField]
+        private Transform _moveTimerLocation;
+        [SerializeField]
+        private Transform _attackTimerLocation;
+        [SerializeField] 
+        private Transform UnitView;
+
+        [Header("Config")]
+        public float SecondsToMoveToAdjacentCell;
+        
+        protected GridEntity Entity;
 
         public event Action KillAnimationFinishedEvent;
         
-        protected GridEntity Entity;
         public void Initialize(GridEntity entity, int stackOrder) {
             Entity = entity;
             
@@ -40,7 +46,11 @@ namespace Gameplay.Entities {
             entity.HPChangedEvent += AttackReceived;
             entity.KilledEvent += Killed;
         }
-        
+
+        private void Update() {
+            UpdateMove();
+        }
+
         public abstract void DoAbility(IAbility ability, AbilityCooldownTimer cooldownTimer);
         public abstract void Selected();
         public abstract void AttackReceived();
@@ -68,10 +78,35 @@ namespace Gameplay.Entities {
             }
         }
 
+        #region shmovement
+        
+        private Vector2 _startPosition;
+        private Vector2 _targetPosition;
+        private float _moveTime;
+        private bool _moving;
+        
         private void DoGenericMoveAnimation(MoveAbility moveAbility) {
-            // Just instantly move the entity to the destination for now
-            Entity.transform.position = GameManager.Instance.GridController.GetWorldPosition(moveAbility.AbilityParameters.NextMoveCell);
+            _startPosition = transform.position;
+            _targetPosition = GameManager.Instance.GridController.GetWorldPosition(moveAbility.AbilityParameters.NextMoveCell);
+            _moveTime = 0;
+            _moving = true;
+
+            // Face the x-direction that we are going
+            SetFacingDirection(_targetPosition.x - _startPosition.x > 0);
         }
+
+        private void UpdateMove() {
+            if (!_moving) return;
+            
+            _moveTime += Time.deltaTime;
+            transform.position = Vector2.Lerp(_startPosition, _targetPosition, _moveTime / SecondsToMoveToAdjacentCell);
+
+            if (_moveTime > SecondsToMoveToAdjacentCell) {
+                _moving = false;
+            }
+        }
+        
+        #endregion
         
         // TODO can pass in things like color and timer location (maybe use a set of transform references) and stuff
         private void CreateTimerView(IAbility ability, AbilityCooldownTimer cooldownTimer) {
@@ -81,6 +116,16 @@ namespace Gameplay.Entities {
             }
             AbilityTimerCooldownView cooldownView = Instantiate(TimerCooldownViewPrefab, timerLocation);
             cooldownView.Initialize(cooldownTimer, true, true);
+        }
+
+        private void SetFacingDirection(bool faceRight) {
+            var localScale = UnitView.transform.localScale;
+            float scaleX = localScale.x;
+
+            if ((faceRight && scaleX > 0) || (!faceRight && scaleX < 0)) return;
+            
+            localScale = new Vector3(scaleX * -1, localScale.y, localScale.z);
+            UnitView.transform.localScale = localScale;
         }
     }
 }

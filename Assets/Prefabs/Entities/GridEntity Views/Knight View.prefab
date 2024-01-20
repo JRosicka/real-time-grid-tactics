@@ -164,10 +164,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   TimerCooldownViewPrefab: {fileID: 5971072852972127787, guid: 31b9abd5b640d9648bf03e6305a255b4, type: 3}
-  _moveTimerLocation: {fileID: 8629045937102790226}
-  _attackTimerLocation: {fileID: 2791204465031194317}
   _mainImage: {fileID: 2337970348640091415}
   _teamColorImage: {fileID: 4755130662697706906}
+  _moveTimerLocation: {fileID: 8629045937102790226}
+  _attackTimerLocation: {fileID: 2791204465031194317}
+  UnitView: {fileID: 4155082150734358272}
+  SecondsToMoveToAdjacentCell: 0.18
 --- !u!114 &2337970348640091415 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 133772266710080777, guid: 9d77d3ce03b813d42b6c2efebbdefd02, type: 3}
@@ -182,6 +184,11 @@ MonoBehaviour:
 --- !u!224 &2791204465031194317 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 510379157535852243, guid: 9d77d3ce03b813d42b6c2efebbdefd02, type: 3}
+  m_PrefabInstance: {fileID: 2425578244529659934}
+  m_PrefabAsset: {fileID: 0}
+--- !u!224 &4155082150734358272 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 1729579879077070622, guid: 9d77d3ce03b813d42b6c2efebbdefd02, type: 3}
   m_PrefabInstance: {fileID: 2425578244529659934}
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &4755130662697706906 stripped
