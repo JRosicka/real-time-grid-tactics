@@ -40,6 +40,13 @@ namespace Gameplay.Entities.Abilities {
         }
 
         private bool DoTargetFireEffect() {
+            if (!GameManager.Instance.CommandManager.EntitiesOnGrid
+                .ActiveEntitiesForTeam(Performer.MyTeam)
+                .Contains(Performer)) {
+                // The entity must be in the process of being killed since it is not present in the entities collection
+                return false;
+            }
+
             // Check to make sure that the target still exists
             if (AbilityParameters.Target == null) {
                 return false;
@@ -63,6 +70,13 @@ namespace Gameplay.Entities.Abilities {
         }
         
         private bool DoAttackMoveEffect() {
+            if (!GameManager.Instance.CommandManager.EntitiesOnGrid
+                    .ActiveEntitiesForTeam(Performer.MyTeam)
+                    .Contains(Performer)) {
+                // The entity must be in the process of being killed since it is not present in the entities collection
+                return false;
+            }
+            
             Vector2Int attackerLocation = Performer.Location;
             
             // First check to see if there is anything in range to attack
