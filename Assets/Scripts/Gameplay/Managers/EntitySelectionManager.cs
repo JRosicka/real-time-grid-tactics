@@ -66,12 +66,13 @@ public class EntitySelectionManager {
     /// subsequent calls.
     /// </summary>
     public void SelectEntityAtCell(Vector2Int cell) {
+        GridEntity lastSelectedEntity = SelectedEntity;
         DeselectEntity();
 
         GridEntityCollection.PositionedGridEntityCollection entitiesAtLocation = _gameManager.GetEntitiesAtLocation(cell);
         if (entitiesAtLocation != null) {
             // Select the top entity, or the next entity if we are already selecting an entity at this location
-            GridEntityCollection.OrderedGridEntity orderedEntity = entitiesAtLocation.Entities.FirstOrDefault(c => c.Entity == SelectedEntity);
+            GridEntityCollection.OrderedGridEntity orderedEntity = entitiesAtLocation.Entities.FirstOrDefault(c => c.Entity == lastSelectedEntity);
             if (orderedEntity == null) {
                 entitiesAtLocation.GetTopEntity().Entity.Select();
             } else {
