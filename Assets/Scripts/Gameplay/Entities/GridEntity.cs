@@ -473,7 +473,11 @@ namespace Gameplay.Entities {
             HPChangedEvent?.Invoke();
         }
 
+        private bool _markedForDeath;
         private void Kill() {
+            if (_markedForDeath) return;
+            _markedForDeath = true;
+            
             GameManager.Instance.CommandManager.UnRegisterEntity(this, true);
         }
         

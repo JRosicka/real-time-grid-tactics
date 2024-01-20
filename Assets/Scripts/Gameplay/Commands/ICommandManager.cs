@@ -13,7 +13,9 @@ public interface ICommandManager {
     void SpawnEntity(EntityData data, Vector2Int spawnLocation, GridEntity.Team team, GridEntity entityToIgnore);
     void AddUpgrade(UpgradeData data, GridEntity.Team team);
     /// <summary>
-    /// Stop keeping track of an entity and also destroy it
+    /// Stop keeping track of an entity and also destroy it.
+    /// Waits for one update cycle before doing so, so that any commands that the entity is executing in the execution
+    /// cycle can be performed.
     /// </summary>
     void UnRegisterEntity(GridEntity entity, bool showDeathAnimation);
     void DestroyEntity(GridEntity entity);

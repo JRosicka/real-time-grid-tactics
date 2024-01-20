@@ -3,6 +3,7 @@ using Gameplay.Entities;
 using Gameplay.Entities.Abilities;
 using Sirenix.Utilities;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 /// <summary>
 /// Handles checking on each active <see cref="GridEntity"/>'s <see cref="IAbility"/> queue and executing the queued
@@ -12,7 +13,8 @@ using UnityEngine;
 /// has a copy. 
 /// </summary>
 public class AbilityQueueExecutor : MonoBehaviour {
-    [SerializeField] private float _updateFrequency;
+    [FormerlySerializedAs("_updateFrequency")]
+    public float UpdateFrequency;
     
     private bool _initialized;
     private ICommandManager _commandManager;
@@ -21,7 +23,7 @@ public class AbilityQueueExecutor : MonoBehaviour {
     
     public void Initialize(ICommandManager commandManager) {
         _commandManager = commandManager;
-        _timeUntilNextUpdate = _updateFrequency;
+        _timeUntilNextUpdate = UpdateFrequency;
 
         _initialized = true;
     }
@@ -31,7 +33,7 @@ public class AbilityQueueExecutor : MonoBehaviour {
 
         _timeUntilNextUpdate -= Time.deltaTime;
         if (_timeUntilNextUpdate <= 0) {
-            _timeUntilNextUpdate += _updateFrequency;
+            _timeUntilNextUpdate += UpdateFrequency;
             
             // Time for an update, so execute each entity's queue.
             _commandManager.EntitiesOnGrid.AllEntities().ForEach(ExecuteQueue);

@@ -1,3 +1,5 @@
+using System;
+using System.Threading.Tasks;
 using Gameplay.Config;
 using Gameplay.Entities;
 using Gameplay.Entities.Abilities;
@@ -30,7 +32,8 @@ public class SPCommandManager : AbstractCommandManager {
         DoRegisterEntity(entity, data, position, entityToIgnore);
     }
 
-    public override void UnRegisterEntity(GridEntity entity, bool showDeathAnimation) {
+    public override async void UnRegisterEntity(GridEntity entity, bool showDeathAnimation) {
+        await Task.Delay(TimeSpan.FromSeconds(AbilityQueueExecutor.UpdateFrequency));
         DoUnRegisterEntity(entity);
         DoMarkEntityUnregistered(entity, showDeathAnimation);
     }

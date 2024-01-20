@@ -1,3 +1,5 @@
+using System;
+using System.Threading.Tasks;
 using Gameplay.Config;
 using Gameplay.Entities;
 using Gameplay.Entities.Abilities;
@@ -27,7 +29,8 @@ public class MPCommandManager : AbstractCommandManager {
         CmdRegisterEntity(entity, data, position, entityToIgnore);
     }
 
-    public override void UnRegisterEntity(GridEntity entity, bool showDeathAnimation) {
+    public override async void UnRegisterEntity(GridEntity entity, bool showDeathAnimation) {
+        await Task.Delay(TimeSpan.FromSeconds(AbilityQueueExecutor.UpdateFrequency));    // TODO maybe would be better to have this be handled in the AbilityQueueExecutor queue execution directly
         LogTimestamp(nameof(UnRegisterEntity));
         CmdUnRegisterEntity(entity, showDeathAnimation);
     }
