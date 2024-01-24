@@ -2,6 +2,7 @@ using System;
 using Gameplay.Config.Abilities;
 using Gameplay.Entities.Abilities;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 namespace Gameplay.Entities {
@@ -21,11 +22,17 @@ namespace Gameplay.Entities {
         private Transform _moveTimerLocation;
         [SerializeField]
         private Transform _attackTimerLocation;
-        [SerializeField] 
-        private Transform UnitView;
+        [FormerlySerializedAs("UnitView")] [SerializeField] 
+        private Transform _unitView;
+        [FormerlySerializedAs("UnitAnimator")] [SerializeField] private Animator _unitAnimator;
 
+        [FormerlySerializedAs("SecondsToMoveToAdjacentCell")]
         [Header("Config")]
-        public float SecondsToMoveToAdjacentCell;
+        [SerializeField] private float _secondsToMoveToAdjacentCell;
+        [SerializeField] private float _attackAnimationIntro_lengthSeconds;
+        [SerializeField] private AnimationCurve _attackAnimationIntro_curve;
+        [SerializeField] private float _attackAnimationOutro_lengthSeconds;
+        [SerializeField] private AnimationCurve _attackAnimationOutro_curve;
         
         protected GridEntity Entity;
 
@@ -49,6 +56,8 @@ namespace Gameplay.Entities {
 
         private void Update() {
             UpdateMove();
+            // Need to do attack after movement in order to properly handle when both are happening
+            UpdateAttack();
         }
 
         public abstract void DoAbility(IAbility ability, AbilityCooldownTimer cooldownTimer);
@@ -70,7 +79,7 @@ namespace Gameplay.Entities {
                     DoGenericMoveAnimation((MoveAbility)ability);
                     break;
                 case AttackAbilityData attackAbility:
-                    // TODO generic attack animation
+                    DoGenericAttackAnimation((AttackAbility) ability);
                     break;
                 default:
                     Debug.LogWarning($"Unexpected entity ability: {ability.AbilityData}");
@@ -78,31 +87,75 @@ namespace Gameplay.Entities {
             }
         }
 
-        #region shmovement
+        #region Shmovement
         
-        private Vector2 _startPosition;
-        private Vector2 _targetPosition;
+        private Vector2 _movementStartPosition;
+        private Vector2 _movementTargetPosition;
         private float _moveTime;
         private bool _moving;
         
         private void DoGenericMoveAnimation(MoveAbility moveAbility) {
-            _startPosition = transform.position;
-            _targetPosition = GameManager.Instance.GridController.GetWorldPosition(moveAbility.AbilityParameters.NextMoveCell);
+            _movementStartPosition = transform.position;
+            _movementTargetPosition = GameManager.Instance.GridController.GetWorldPosition(moveAbility.AbilityParameters.NextMoveCell);
             _moveTime = 0;
             _moving = true;
 
             // Face the x-direction that we are going
-            SetFacingDirection(_targetPosition.x - _startPosition.x > 0);
+            SetFacingDirection(_movementStartPosition, _movementTargetPosition);
+            
+            // Animate
+            _unitAnimator.Play("GenericMove");
         }
 
         private void UpdateMove() {
             if (!_moving) return;
             
             _moveTime += Time.deltaTime;
-            transform.position = Vector2.Lerp(_startPosition, _targetPosition, _moveTime / SecondsToMoveToAdjacentCell);
+            transform.position = Vector2.Lerp(_movementStartPosition, _movementTargetPosition, _moveTime / _secondsToMoveToAdjacentCell);
 
-            if (_moveTime > SecondsToMoveToAdjacentCell) {
+            if (_moveTime > _secondsToMoveToAdjacentCell) {
                 _moving = false;
+            }
+        }
+        
+        #endregion
+        
+        #region Attacking
+
+        private Vector2 _attackStartPosition;
+        private Vector2 _attackTargetPosition;
+        private Vector2 _attackReturnPosition;
+        private float _attackTime;
+        private bool _attacking;
+        
+        private void DoGenericAttackAnimation(AttackAbility attackAbility) {
+            _moving = false;
+            
+            _attackStartPosition = transform.position;    // Might be different from the entity location if we are in the middle of a move animation
+            _attackTargetPosition = GameManager.Instance.GridController.GetWorldPosition(attackAbility.AbilityParameters.Target.Location);
+            _attackReturnPosition = GameManager.Instance.GridController.GetWorldPosition(Entity.Location);
+            _attackTime = 0;
+            _attacking = true;
+            
+            // Face the x-direction that we are attacking
+            SetFacingDirection(_attackReturnPosition, _attackTargetPosition);
+        }
+        
+        private void UpdateAttack() {
+            if (!_attacking) return;
+
+            _attackTime += Time.deltaTime;
+            if (_attackTime <= _attackAnimationIntro_lengthSeconds) {
+                float evaluationProgress = _attackAnimationIntro_curve.Evaluate(_attackTime / _attackAnimationIntro_lengthSeconds);
+                transform.position = Vector2.Lerp(_attackStartPosition, _attackTargetPosition, evaluationProgress);
+            } else {
+                float time = _attackTime - _attackAnimationIntro_lengthSeconds;
+                float evaluationProgress = _attackAnimationOutro_curve.Evaluate(time / _attackAnimationOutro_lengthSeconds);
+                transform.position = Vector2.Lerp(_attackReturnPosition, _attackTargetPosition, evaluationProgress);
+            }
+
+            if (_attackTime > _attackAnimationIntro_lengthSeconds + _attackAnimationOutro_lengthSeconds) {
+                _attacking = false;
             }
         }
         
@@ -118,14 +171,18 @@ namespace Gameplay.Entities {
             cooldownView.Initialize(cooldownTimer, true, true);
         }
 
-        private void SetFacingDirection(bool faceRight) {
-            var localScale = UnitView.transform.localScale;
+        private void SetFacingDirection(Vector2 currentPosition, Vector2 targetPosition) {
+            float xDifference = targetPosition.x - currentPosition.x;
+            if (Mathf.Approximately(xDifference, 0)) return;
+            
+            bool faceRight = targetPosition.x - currentPosition.x > 0;
+            var localScale = _unitView.transform.localScale;
             float scaleX = localScale.x;
-
+            
             if ((faceRight && scaleX > 0) || (!faceRight && scaleX < 0)) return;
             
             localScale = new Vector3(scaleX * -1, localScale.y, localScale.z);
-            UnitView.transform.localScale = localScale;
+            _unitView.transform.localScale = localScale;
         }
     }
 }

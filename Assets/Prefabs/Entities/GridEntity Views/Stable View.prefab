@@ -158,10 +158,16 @@ MonoBehaviour:
   _moveTimerLocation: {fileID: 5157352211739039584}
   _attackTimerLocation: {fileID: 1652335768655818751}
   UnitView: {fileID: 719395336327245362}
-  SecondsToMoveToAdjacentCell: 0.5
+  UnitAnimator: {fileID: 7444509630975393112}
+  SecondsToMoveToAdjacentCell: 0
 --- !u!224 &5157352211739039584 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 6226759749314100812, guid: 9d77d3ce03b813d42b6c2efebbdefd02, type: 3}
+  m_PrefabInstance: {fileID: 1295767320699267372}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &7444509630975393112 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 8551011409483650164, guid: 9d77d3ce03b813d42b6c2efebbdefd02, type: 3}
   m_PrefabInstance: {fileID: 1295767320699267372}
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &8191908258146413736 stripped

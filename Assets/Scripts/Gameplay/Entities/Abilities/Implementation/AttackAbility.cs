@@ -12,7 +12,7 @@ namespace Gameplay.Entities.Abilities {
     /// if out of range, or does a general attack-move towards a target cell.
     /// </summary>
     public class AttackAbility : AbilityBase<AttackAbilityData, AttackAbilityParameters> {
-        private AttackAbilityParameters AbilityParameters => (AttackAbilityParameters) BaseParameters;
+        public AttackAbilityParameters AbilityParameters => (AttackAbilityParameters) BaseParameters;
         private GridData GridData => GameManager.Instance.GridController.GridData;
         
         public AttackAbility(AttackAbilityData data, AttackAbilityParameters parameters, GridEntity performer) : base(data, parameters, performer) { }

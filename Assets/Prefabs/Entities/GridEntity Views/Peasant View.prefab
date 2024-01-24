@@ -136,8 +136,59 @@ MonoBehaviour:
   _teamColorImage: {fileID: 4755130662697706906}
   _moveTimerLocation: {fileID: 8629045937102790226}
   _attackTimerLocation: {fileID: 2791204465031194317}
-  UnitView: {fileID: 4155082150734358272}
-  SecondsToMoveToAdjacentCell: 0.18
+  _unitView: {fileID: 4155082150734358272}
+  _unitAnimator: {fileID: 6269618838813209706}
+  _secondsToMoveToAdjacentCell: 0.15
+  _attackAnimationIntro_lengthSeconds: 0.05
+  _attackAnimationIntro_curve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 1
+      outSlope: 1
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 1
+      outSlope: 1
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  _attackAnimationOutro_lengthSeconds: 0.1
+  _attackAnimationOutro_curve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: -2.2828777
+      outSlope: -2.2828777
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.058441557
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: -0.0001156523
+      outSlope: -0.0001156523
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 1
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!114 &2337970348640091415 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 133772266710080777, guid: 9d77d3ce03b813d42b6c2efebbdefd02, type: 3}
@@ -170,6 +221,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!95 &6269618838813209706 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 8551011409483650164, guid: 9d77d3ce03b813d42b6c2efebbdefd02, type: 3}
+  m_PrefabInstance: {fileID: 2425578244529659934}
+  m_PrefabAsset: {fileID: 0}
 --- !u!224 &8629045937102790226 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 6226759749314100812, guid: 9d77d3ce03b813d42b6c2efebbdefd02, type: 3}
