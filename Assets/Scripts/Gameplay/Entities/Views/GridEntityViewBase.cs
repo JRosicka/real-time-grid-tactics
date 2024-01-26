@@ -31,6 +31,7 @@ namespace Gameplay.Entities {
         [SerializeField] private float _secondsToMoveToAdjacentCell;
         [SerializeField] private float _attackAnimationIntro_lengthSeconds;
         [SerializeField] private AnimationCurve _attackAnimationIntro_curve;
+        [SerializeField] private float _distanceTowardsTargetToMove;
         [SerializeField] private float _attackAnimationOutro_lengthSeconds;
         [SerializeField] private AnimationCurve _attackAnimationOutro_curve;
         
@@ -132,8 +133,12 @@ namespace Gameplay.Entities {
             _moving = false;
             
             _attackStartPosition = transform.position;    // Might be different from the entity location if we are in the middle of a move animation
-            _attackTargetPosition = GameManager.Instance.GridController.GetWorldPosition(attackAbility.AbilityParameters.Target.Location);
             _attackReturnPosition = GameManager.Instance.GridController.GetWorldPosition(Entity.Location);
+            
+            // We don't want to go all the way to the target location, just part of the way
+            Vector2 targetLocation = GameManager.Instance.GridController.GetWorldPosition(attackAbility.AbilityParameters.Target.Location);
+            _attackTargetPosition = Vector2.Lerp(_attackReturnPosition, targetLocation, _distanceTowardsTargetToMove);
+            
             _attackTime = 0;
             _attacking = true;
             
@@ -147,11 +152,11 @@ namespace Gameplay.Entities {
             _attackTime += Time.deltaTime;
             if (_attackTime <= _attackAnimationIntro_lengthSeconds) {
                 float evaluationProgress = _attackAnimationIntro_curve.Evaluate(_attackTime / _attackAnimationIntro_lengthSeconds);
-                transform.position = Vector2.Lerp(_attackStartPosition, _attackTargetPosition, evaluationProgress);
+                transform.position = Vector2.LerpUnclamped(_attackStartPosition, _attackTargetPosition, evaluationProgress);
             } else {
                 float time = _attackTime - _attackAnimationIntro_lengthSeconds;
                 float evaluationProgress = _attackAnimationOutro_curve.Evaluate(time / _attackAnimationOutro_lengthSeconds);
-                transform.position = Vector2.Lerp(_attackReturnPosition, _attackTargetPosition, evaluationProgress);
+                transform.position = Vector2.LerpUnclamped(_attackReturnPosition, _attackTargetPosition, evaluationProgress);
             }
 
             if (_attackTime > _attackAnimationIntro_lengthSeconds + _attackAnimationOutro_lengthSeconds) {
