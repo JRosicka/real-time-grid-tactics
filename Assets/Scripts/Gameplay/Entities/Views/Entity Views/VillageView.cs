@@ -3,31 +3,18 @@ using Gameplay.Entities.Abilities;
 using UnityEngine;
 
 namespace Gameplay.Entities {
-    public class VillageView : GridEntityViewBase {
-        public override void DoAbility(IAbility ability, AbilityCooldownTimer cooldownTimer) {
+    public class VillageView : GridEntityParticularView {
+        public IncomeAnimationBehavior IncomeAnimationBehavior;
+
+        public override bool DoAbility(IAbility ability, AbilityCooldownTimer cooldownTimer) {
             Debug.Log($"{nameof(DoAbility)}: {ability}");
             switch (ability.AbilityData) {
                 case IncomeAbilityData _:
-                    DoIncomeAnimation();
-                    break;
+                    IncomeAnimationBehavior.DoIncomeAnimation();
+                    return false;
                 default:
-                    DoGenericAbility(ability);
-                    break;
+                    return true;
             }
-        }
-        
-        public override void Selected() {
-            Debug.Log(nameof(Selected));
-        }
-        public override void AttackReceived() {
-            Debug.Log(nameof(AttackReceived));
-        }
-        public override void Killed() {
-            Debug.Log(nameof(Killed));
-            KillAnimationFinished();
-        }
-        private void DoIncomeAnimation() {
-            Debug.Log(nameof(DoIncomeAnimation));
         }
     }
 }

@@ -3,29 +3,18 @@ using Gameplay.Entities.Abilities;
 using UnityEngine;
 
 namespace Gameplay.Entities {
-    public class BaseView : GridEntityViewBase {
-        public override void DoAbility(IAbility ability, AbilityCooldownTimer cooldownTimer) {
+    public class BaseView : GridEntityParticularView {
+        public override bool DoAbility(IAbility ability, AbilityCooldownTimer cooldownTimer) {
             Debug.Log($"{nameof(DoAbility)}: {ability}");
             switch (ability.AbilityData) {
                 case BuildAbilityData _:
                     DoBuildAnimation();
-                    break;
+                    return false;
                 default:
-                    DoGenericAbility(ability);
-                    break;
+                    return true;
             }
         }
         
-        public override void Selected() {
-            Debug.Log(nameof(Selected));
-        }
-        public override void AttackReceived() {
-            Debug.Log(nameof(AttackReceived));
-        }
-        public override void Killed() {
-            Debug.Log(nameof(Killed));
-            KillAnimationFinished();
-        }
         private void DoBuildAnimation() {
             Debug.Log(nameof(DoBuildAnimation));
         }

@@ -37,7 +37,7 @@ namespace Gameplay.Entities {
         }
         
 
-        private GridEntityViewBase _view;
+        private GridEntityView _view;
         public Canvas ViewCanvas;
 
         public ClientsStatusHandler InitializationStatusHandler;

@@ -6,11 +6,14 @@ using UnityEngine.UI;
 
 namespace Gameplay.Entities {
     /// <summary>
-    /// The view portion of a <see cref="GridEntity"/>, handling movements, images, animations, and timers
+    /// The view portion of a <see cref="GridEntity"/>, handling movements, images, animations, and timers.
+    ///
+    /// This covers the generic view functionality for all <see cref="GridEntity"/>s. For entity-type-specific functionality,
+    /// see 
     /// </summary>
-    public abstract class GridEntityViewBase : MonoBehaviour {
+    public sealed class GridEntityView : MonoBehaviour {
         [SerializeField]
-        private AbilityTimerCooldownView TimerCooldownViewPrefab;
+        private AbilityTimerCooldownView _timerCooldownViewPrefab;
         [SerializeField]
         private Transform _moveTimerLocation;
         [SerializeField]
@@ -21,10 +24,13 @@ namespace Gameplay.Entities {
         private Image _mainImage;
         [SerializeField] 
         private Image _teamColorImage;
+        [SerializeField]
+        private GridEntityParticularView _particularView;
 
         public event Action KillAnimationFinishedEvent;
         
-        protected GridEntity Entity;
+        [HideInInspector] 
+        public GridEntity Entity;
         public void Initialize(GridEntity entity) {
             Entity = entity;
             
@@ -38,13 +44,28 @@ namespace Gameplay.Entities {
             entity.HPChangedEvent += AttackReceived;
             entity.KilledEvent += Killed;
         }
-        
-        public abstract void DoAbility(IAbility ability, AbilityCooldownTimer cooldownTimer);
-        public abstract void Selected();
-        public abstract void AttackReceived();
-        public abstract void Killed();
 
-        protected void KillAnimationFinished() {
+        public void DoAbility(IAbility ability, AbilityCooldownTimer cooldownTimer) {
+            if (_particularView.DoAbility(ability, cooldownTimer)) {
+                DoGenericAbility(ability);
+            }
+        }
+
+        public void Selected() {
+            Debug.Log(nameof(Selected));
+        }
+
+        public void AttackReceived() {
+            Debug.Log(nameof(AttackReceived));
+        }
+
+        public void Killed() {
+            Debug.Log(nameof(Killed));
+            // TODO wait until we actually do a kill animation before calling this
+            KillAnimationFinished();
+        }
+
+        private void KillAnimationFinished() {
             KillAnimationFinishedEvent?.Invoke();
         }
 
@@ -52,7 +73,7 @@ namespace Gameplay.Entities {
         /// Catch-all for generic ability view behavior. Subclasses should call this in their default cases for their
         /// <see cref="DoAbility"/> overrides.
         /// </summary>
-        protected void DoGenericAbility(IAbility ability) {
+        private void DoGenericAbility(IAbility ability) {
             switch (ability.AbilityData) {
                 case MoveAbilityData moveAbility:
                     DoGenericMoveAnimation((MoveAbility)ability);
@@ -77,7 +98,7 @@ namespace Gameplay.Entities {
             if (cooldownTimer.Ability is AttackAbility) {
                 timerLocation = _attackTimerLocation;
             }
-            AbilityTimerCooldownView cooldownView = Instantiate(TimerCooldownViewPrefab, timerLocation);
+            AbilityTimerCooldownView cooldownView = Instantiate(_timerCooldownViewPrefab, timerLocation);
             cooldownView.Initialize(cooldownTimer, true, true);
         }
     }

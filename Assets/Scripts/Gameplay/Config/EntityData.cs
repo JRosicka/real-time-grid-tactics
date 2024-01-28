@@ -22,8 +22,8 @@ namespace Gameplay.Config {
         
         // Must be private so that Weaver does not try to make a reader and writer for this type. Mirror does this for all public fields, thanks Mirror. 
         [SerializeField]
-        private GridEntityViewBase _viewPrefab;
-        public GridEntityViewBase ViewPrefab => _viewPrefab;
+        private GridEntityView _viewPrefab;
+        public GridEntityView ViewPrefab => _viewPrefab;
         
         [Header("Stats")] 
         public int HP;
