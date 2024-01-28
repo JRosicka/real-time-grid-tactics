@@ -132,10 +132,91 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   TimerCooldownViewPrefab: {fileID: 5971072852972127787, guid: 31b9abd5b640d9648bf03e6305a255b4, type: 3}
-  _moveTimerLocation: {fileID: 8629045937102790226}
-  _attackTimerLocation: {fileID: 2791204465031194317}
   _mainImage: {fileID: 2337970348640091415}
   _teamColorImage: {fileID: 4755130662697706906}
+  _moveTimerLocation: {fileID: 8629045937102790226}
+  _attackTimerLocation: {fileID: 2791204465031194317}
+  _unitView: {fileID: 4155082150734358272}
+  _unitAnimator: {fileID: 6269618838813209706}
+  _secondsToMoveToAdjacentCell: 0.15
+  _attackAnimationIntro_lengthSeconds: 0.25
+  _attackAnimationIntro_curve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: -2.015062
+      outSlope: -2.015062
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.15091507
+      value: -0.30410326
+      inSlope: 0.031874094
+      outSlope: 0.031874094
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.46381518
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.25231022
+      value: -0.3001898
+      inSlope: -0.011536998
+      outSlope: -0.011536998
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.64817464
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.49788404
+      value: 1.0050182
+      inSlope: 0.06491953
+      outSlope: 0.06491953
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.5752165
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: -0.009994173
+      outSlope: -0.009994173
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  _distanceTowardsTargetToMove: 0.4
+  _attackAnimationOutro_lengthSeconds: 0.1
+  _attackAnimationOutro_curve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: -2.2828777
+      outSlope: -2.2828777
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.058441557
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: -0.0001156523
+      outSlope: -0.0001156523
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 1
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!114 &2337970348640091415 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 133772266710080777, guid: 9d77d3ce03b813d42b6c2efebbdefd02, type: 3}
@@ -152,6 +233,11 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 510379157535852243, guid: 9d77d3ce03b813d42b6c2efebbdefd02, type: 3}
   m_PrefabInstance: {fileID: 2425578244529659934}
   m_PrefabAsset: {fileID: 0}
+--- !u!224 &4155082150734358272 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 1729579879077070622, guid: 9d77d3ce03b813d42b6c2efebbdefd02, type: 3}
+  m_PrefabInstance: {fileID: 2425578244529659934}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &4755130662697706906 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 6941450737904846212, guid: 9d77d3ce03b813d42b6c2efebbdefd02, type: 3}
@@ -163,6 +249,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!95 &6269618838813209706 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 8551011409483650164, guid: 9d77d3ce03b813d42b6c2efebbdefd02, type: 3}
+  m_PrefabInstance: {fileID: 2425578244529659934}
+  m_PrefabAsset: {fileID: 0}
 --- !u!224 &8629045937102790226 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 6226759749314100812, guid: 9d77d3ce03b813d42b6c2efebbdefd02, type: 3}

@@ -373,7 +373,9 @@ namespace Gameplay.Entities {
             if (!EntityData.AttackByDefault) return;
             
             AttackAbilityData data = (AttackAbilityData) EntityData.Abilities
-                .First(a => a.Content is AttackAbilityData).Content;
+                .FirstOrDefault(a => a.Content is AttackAbilityData)?.Content;
+            if (data == null) return;
+            
             PerformAbility(data, new AttackAbilityParameters {
                 TargetFire = false,
                 Destination = Location
@@ -441,13 +443,17 @@ namespace Gameplay.Entities {
         }
 
         private void SetupView() {
-            ViewCanvas.sortingOrder = EntityData.GetStackOrder();
+            int stackOrder = EntityData.GetStackOrder();
+            ViewCanvas.sortingOrder = stackOrder;
             _view = Instantiate(EntityData.ViewPrefab, ViewCanvas.transform);
-            _view.Initialize(this);
+            _view.Initialize(this, stackOrder);
         }
 
         public void ReceiveAttackFromEntity(GridEntity sourceEntity) {
             Debug.Log($"Attacked!!!! And from a {sourceEntity.UnitName} no less! OW");
+            
+            // TODO a-move to the target location if no abilities are queued and configured to attack by default.
+            // Necessary so that the entity doesn't just sit there if attacked by something outside of its range. 
             
             CurrentHP -= sourceEntity.Damage;
 
