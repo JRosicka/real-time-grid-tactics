@@ -122,6 +122,7 @@ namespace Gameplay.Entities.Abilities {
             
             // Arbitrarily pick one to attack. TODO pick the closest one instead.
             GridEntity target = enemiesInRange[Random.Range(0, enemiesInRange.Count)];
+            AbilityParameters.Target = target;
             target.ReceiveAttackFromEntity(Performer);
             
             return true;
