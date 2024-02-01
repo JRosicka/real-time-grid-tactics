@@ -157,7 +157,10 @@ namespace Gameplay.Entities {
             _attackReturnPosition = GameManager.Instance.GridController.GetWorldPosition(Entity.Location);
             
             // We don't want to go all the way to the target location, just part of the way
-            Vector2 targetLocation = GameManager.Instance.GridController.GetWorldPosition(attackAbility.AbilityParameters.Target.Location);
+            Vector2Int targetCell = attackAbility.AbilityParameters.Target != null
+                ? attackAbility.AbilityParameters.Target.Location
+                : attackAbility.AbilityParameters.Destination;
+            Vector2 targetLocation = GameManager.Instance.GridController.GetWorldPosition(targetCell);
             _attackTargetPosition = Vector2.Lerp(_attackReturnPosition, targetLocation, _distanceTowardsTargetToMove);
             
             _attackTime = 0;
