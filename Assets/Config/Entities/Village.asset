@@ -22,7 +22,7 @@ MonoBehaviour:
   BaseSprite: {fileID: 21300000, guid: f1b38bc6630e36741879634313619637, type: 3}
   TeamColorSprite: {fileID: 21300000, guid: a712e8d461dd0ce4e9b0361a6361fd1b, type: 3}
   BaseSpriteIconOverride: {fileID: 21300000, guid: e79918f010dacef45aaf15f7b634492b, type: 3}
-  _viewPrefab: {fileID: 5088879590884088445, guid: 7dc0a13730d5c56438a0306afc8a0823, type: 3}
+  _viewPrefab: {fileID: 7504026570216467247, guid: 7dc0a13730d5c56438a0306afc8a0823, type: 3}
   HP: 30
   Range: 0
   Damage: 0
@@ -32,3 +32,4 @@ MonoBehaviour:
   Abilities:
   - {fileID: 11400000, guid: bdf047dc1be4f44418a904a085034a1e, type: 2}
   FriendlyUnitsCanShareCell: 1
+  AttackByDefault: 0

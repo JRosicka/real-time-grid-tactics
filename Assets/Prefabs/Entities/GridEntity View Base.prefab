@@ -320,11 +320,92 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _timerCooldownViewPrefab: {fileID: 5971072852972127787, guid: 31b9abd5b640d9648bf03e6305a255b4, type: 3}
-  _moveTimerLocation: {fileID: 6226759749314100812}
-  _attackTimerLocation: {fileID: 510379157535852243}
   _mainImage: {fileID: 133772266710080777}
   _teamColorImage: {fileID: 6941450737904846212}
   _particularView: {fileID: 0}
+  _moveTimerLocation: {fileID: 6226759749314100812}
+  _attackTimerLocation: {fileID: 510379157535852243}
+  _unitView: {fileID: 1729579879077070622}
+  _unitAnimator: {fileID: 8551011409483650164}
+  _secondsToMoveToAdjacentCell: 0.15
+  _attackAnimationIntro_lengthSeconds: 0.25
+  _attackAnimationIntro_curve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: -1.9920142
+      outSlope: -1.9920142
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.15013129
+      value: -0.29906365
+      inSlope: -0.038478408
+      outSlope: -0.038478408
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.407755
+    - serializedVersion: 3
+      time: 0.25028265
+      value: -0.30030164
+      inSlope: -0.0154361
+      outSlope: -0.0154361
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.6028394
+    - serializedVersion: 3
+      time: 0.5000489
+      value: 0.9979591
+      inSlope: 0.004103857
+      outSlope: 0.004103857
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.25175554
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0.0040822444
+      outSlope: 0.0040822444
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  _distanceTowardsTargetToMove: 0.4
+  _attackAnimationOutro_lengthSeconds: 0.1
+  _attackAnimationOutro_curve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: -2.5412073
+      outSlope: -2.5412073
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.032392893
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: -0.23871946
+      outSlope: -0.23871946
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.057471275
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
   Entity: {fileID: 0}
 --- !u!1 &4640028147844247960
 GameObject:

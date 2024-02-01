@@ -24,7 +24,7 @@ MonoBehaviour:
   BaseSprite: {fileID: 21300000, guid: a77b97fdf550bfa4fa43e066eff192ee, type: 3}
   TeamColorSprite: {fileID: 21300000, guid: 66d970995ee99364288261e3c02b3d71, type: 3}
   BaseSpriteIconOverride: {fileID: 0}
-  _viewPrefab: {fileID: 536875670929435029, guid: 578b7f995f51c3845914f63ae14fc166, type: 3}
+  _viewPrefab: {fileID: 7504026570216467247, guid: 578b7f995f51c3845914f63ae14fc166, type: 3}
   HP: 10
   Range: 2
   Damage: 4
