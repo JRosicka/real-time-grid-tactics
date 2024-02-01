@@ -35,7 +35,9 @@ namespace Gameplay.Entities {
         [Header("Config")]
         [SerializeField] private float _secondsToMoveToAdjacentCell;
         [SerializeField] private float _attackAnimationIntro_lengthSeconds;
-        [SerializeField] private AnimationCurve _attackAnimationIntro_curve;
+        [FormerlySerializedAs("_attackAnimationIntro_curve")] 
+        [SerializeField] private AnimationCurve _attackAnimationIntro_curveFromNoMove;
+        [SerializeField] private AnimationCurve _attackAnimationIntro_curveFromMove;
         [SerializeField] private float _distanceTowardsTargetToMove;
         [SerializeField] private float _attackAnimationOutro_lengthSeconds;
         [SerializeField] private AnimationCurve _attackAnimationOutro_curve;
@@ -149,8 +151,11 @@ namespace Gameplay.Entities {
         private Vector2 _attackReturnPosition;
         private float _attackTime;
         private bool _attacking;
+        // If true, then our attack animation is going straight from the middle of a move. Use a different animation curve so it don't look like garb.
+        private bool _attackFromMove;
         
         private void DoGenericAttackAnimation(AttackAbility attackAbility) {
+            _attackFromMove = _moving;
             _moving = false;
             
             _attackStartPosition = transform.position;    // Might be different from the entity location if we are in the middle of a move animation
@@ -175,7 +180,8 @@ namespace Gameplay.Entities {
 
             _attackTime += Time.deltaTime;
             if (_attackTime <= _attackAnimationIntro_lengthSeconds) {
-                float evaluationProgress = _attackAnimationIntro_curve.Evaluate(_attackTime / _attackAnimationIntro_lengthSeconds);
+                AnimationCurve curve = _attackFromMove ? _attackAnimationIntro_curveFromMove : _attackAnimationIntro_curveFromNoMove;
+                float evaluationProgress = curve.Evaluate(_attackTime / _attackAnimationIntro_lengthSeconds);
                 transform.position = Vector2.LerpUnclamped(_attackStartPosition, _attackTargetPosition, evaluationProgress);
             } else {
                 float time = _attackTime - _attackAnimationIntro_lengthSeconds;
