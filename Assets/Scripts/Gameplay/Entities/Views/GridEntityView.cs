@@ -1,9 +1,11 @@
 using System;
+using System.Threading.Tasks;
 using Gameplay.Config.Abilities;
 using Gameplay.Entities.Abilities;
 using UnityEngine;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
+using Util;
 
 namespace Gameplay.Entities {
     /// <summary>
@@ -30,9 +32,11 @@ namespace Gameplay.Entities {
         [FormerlySerializedAs("UnitView")] [SerializeField] 
         private Transform _unitView;
         [FormerlySerializedAs("UnitAnimator")] [SerializeField] private Animator _unitAnimator;
-
-        [FormerlySerializedAs("SecondsToMoveToAdjacentCell")]
+        [SerializeField]
+        private PerlinShakeBehaviour ShakeBehaviour;
+        
         [Header("Config")]
+        [FormerlySerializedAs("SecondsToMoveToAdjacentCell")]
         [SerializeField] private float _secondsToMoveToAdjacentCell;
         [SerializeField] private float _attackAnimationIntro_lengthSeconds;
         [FormerlySerializedAs("_attackAnimationIntro_curve")] 
@@ -41,7 +45,8 @@ namespace Gameplay.Entities {
         [SerializeField] private float _distanceTowardsTargetToMove;
         [SerializeField] private float _attackAnimationOutro_lengthSeconds;
         [SerializeField] private AnimationCurve _attackAnimationOutro_curve;
-        
+        [SerializeField] private float _attackShakeTriggerTime;
+
         [HideInInspector] 
         public GridEntity Entity;
         
@@ -79,8 +84,12 @@ namespace Gameplay.Entities {
             Debug.Log(nameof(Selected));
         }
 
-        public void AttackReceived() {
+        public async void AttackReceived() {
             Debug.Log(nameof(AttackReceived));
+
+            // Delay so that the shake times up with the attacker's animation
+            await Task.Delay((int)(_attackShakeTriggerTime * 1000));
+            ShakeBehaviour.Shake();
         }
 
         public void Killed() {
@@ -153,6 +162,7 @@ namespace Gameplay.Entities {
         private bool _attacking;
         // If true, then our attack animation is going straight from the middle of a move. Use a different animation curve so it don't look like garb.
         private bool _attackFromMove;
+        private bool _triggeredAttackShake;
         
         private void DoGenericAttackAnimation(AttackAbility attackAbility) {
             _attackFromMove = _moving;
@@ -170,6 +180,7 @@ namespace Gameplay.Entities {
             
             _attackTime = 0;
             _attacking = true;
+            _triggeredAttackShake = false;
             
             // Face the x-direction that we are attacking
             SetFacingDirection(_attackReturnPosition, _attackTargetPosition);
@@ -179,6 +190,8 @@ namespace Gameplay.Entities {
             if (!_attacking) return;
 
             _attackTime += Time.deltaTime;
+            
+            // Attack animation
             if (_attackTime <= _attackAnimationIntro_lengthSeconds) {
                 AnimationCurve curve = _attackFromMove ? _attackAnimationIntro_curveFromMove : _attackAnimationIntro_curveFromNoMove;
                 float evaluationProgress = curve.Evaluate(_attackTime / _attackAnimationIntro_lengthSeconds);
@@ -187,6 +200,12 @@ namespace Gameplay.Entities {
                 float time = _attackTime - _attackAnimationIntro_lengthSeconds;
                 float evaluationProgress = _attackAnimationOutro_curve.Evaluate(time / _attackAnimationOutro_lengthSeconds);
                 transform.position = Vector2.LerpUnclamped(_attackReturnPosition, _attackTargetPosition, evaluationProgress);
+            }
+            
+            // Attack shake
+            if (!_triggeredAttackShake && _attackTime > _attackShakeTriggerTime) {
+                _triggeredAttackShake = true;
+                ShakeBehaviour.Shake();
             }
 
             if (_attackTime > _attackAnimationIntro_lengthSeconds + _attackAnimationOutro_lengthSeconds) {
