@@ -1,3 +1,4 @@
+using Gameplay.UI;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -7,20 +8,27 @@ namespace Gameplay.Grid {
     /// </summary>
     public class GridMouseInputCapturer : MonoBehaviour, IPointerClickHandler, IPointerMoveHandler, IPointerEnterHandler, IPointerExitHandler {
         [SerializeField] private GridInputController _gridInputController;
+        [SerializeField] private InGamePauseMenu _pauseMenu;
+
+        private bool InputAllowed => !_pauseMenu.Paused;
+
         public void OnPointerClick(PointerEventData eventData) {
+            if (!InputAllowed) return;
             _gridInputController.ProcessClick(eventData);
         }
 
-
         public void OnPointerMove(PointerEventData eventData) {
+            if (!InputAllowed) return;
             _gridInputController.ProcessMouseMove(eventData);
         }
         
         public void OnPointerEnter(PointerEventData eventData) {
+            if (!InputAllowed) return;
             _gridInputController.ProcessMouseMove(eventData);
         }
 
         public void OnPointerExit(PointerEventData eventData) {
+            if (!InputAllowed) return;
             _gridInputController.ProcessMouseExit();
         }
     }

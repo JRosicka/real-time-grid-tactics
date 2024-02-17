@@ -14,6 +14,10 @@ namespace Gameplay.Managers {
             "Z", "X", "C", "V"
         };
 
+        private const string EscapeAction = "Escape";
+
+        public InGamePauseMenu PauseMenu;
+        
         private Player _playerInput;
 
         private SelectionInterface SelectionInterface => GameManager.Instance.SelectionInterface;
@@ -23,9 +27,15 @@ namespace Gameplay.Managers {
         }
 
         private void Update() {
-            foreach (string input in AbilityButtons) {
-                if (_playerInput.GetButtonDown(input)) {
-                    SelectionInterface.HandleAbilityHotkey(input);
+            if (_playerInput.GetButtonDown(EscapeAction)) {
+                PauseMenu.TogglePauseMenu();
+            }
+
+            if (!PauseMenu.Paused) {
+                foreach (string input in AbilityButtons) {
+                    if (_playerInput.GetButtonDown(input)) {
+                        SelectionInterface.HandleAbilityHotkey(input);
+                    }
                 }
             }
         }
