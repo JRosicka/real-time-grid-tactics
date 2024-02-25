@@ -2604,7 +2604,7 @@ MonoBehaviour:
   View: {fileID: 1997569859}
   TimerText: {fileID: 327875627}
   LoadingText: {fileID: 1677336874}
-  TimerMessage: Game start in {0}.
+  TimerMessage: Game start in {0}
 --- !u!1 &991379821
 GameObject:
   m_ObjectHideFlags: 0
