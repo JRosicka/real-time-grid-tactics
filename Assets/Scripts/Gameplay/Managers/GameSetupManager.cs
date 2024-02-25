@@ -65,9 +65,12 @@ public class GameSetupManager : MonoBehaviour {
         // Otherwise, wait for the network manager to set up the multiplayer game. 
         if (!NetworkClient.active) {
             SetupSPGame();
-        } else if (!NetworkServer.active) {
-            // This is a client and not the host. Listen for all player objects getting created so that we can tell the server that we are ready.
-            StartCoroutine(ListenForPlayersConnected());
+        } else {
+            CountdownTimer.ShowLoadingStatus();
+            if (!NetworkServer.active) {
+                // This is a client and not the host. Listen for all player objects getting created so that we can tell the server that we are ready.
+                StartCoroutine(ListenForPlayersConnected());
+            }
         }
     }
 
