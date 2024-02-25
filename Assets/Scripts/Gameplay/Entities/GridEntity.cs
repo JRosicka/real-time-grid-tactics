@@ -124,7 +124,9 @@ namespace Gameplay.Entities {
         } 
 
         private void OnEntityInitializedAcrossAllClients() {
-            PerformOnStartAbilities();
+            if (GameManager.Instance.GameSetupManager.GameInitialized) {
+                PerformOnStartAbilities();
+            }
         }
 
         public bool CanTargetThings => Range > 0;
@@ -363,7 +365,7 @@ namespace Gameplay.Entities {
             }
         }
         
-        private void PerformOnStartAbilities() {
+        public void PerformOnStartAbilities() {
             foreach (IAbilityData abilityData in Abilities.Select(a => a.Content).Where(a => a.PerformOnStart)) {
                 PerformAbility(abilityData, new NullAbilityParameters(), false);
             }

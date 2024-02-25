@@ -35,5 +35,21 @@ public class MultiplayerGameSetupHandler : NetworkBehaviour {
         
         GameManager.Instance.CommandManager = commandManager;
         GameManager.Instance.SetPlayers(localPlayer, opponentPlayer);
+        
+        // Let the server know we are done
+        CmdNotifyPlayerAssigned();
+    }
+    
+    [Command(requiresAuthority = false)]
+    public void CmdNotifyPlayerAssigned() {
+        GameSetupManager.MarkPlayerAssigned();
+    }
+
+    /// <summary>
+    /// Client-side countdown call. Does not actually start the game - that is handled later from the server. 
+    /// </summary>
+    [ClientRpc]
+    public void RpcBeginCountdownView() {
+        GameSetupManager.StartCountdownTimerView();
     }
 }

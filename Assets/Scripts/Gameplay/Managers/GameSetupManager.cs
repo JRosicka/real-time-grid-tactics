@@ -2,16 +2,22 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using Game.Network;
 using Gameplay.Config;
+using Gameplay.UI;
 using Mirror;
 using UnityEngine;
 
 /// <summary>
-/// Handles setup for a game - figuring out if it's SP or MP, waiting for all players to connect and be ready, etc
+/// Handles setup for a game - figuring out if it's SP or MP, waiting for all players to connect and be ready, and
+/// controlling the flow of game-start logic in the case of MP games.
 /// </summary>
 public class GameSetupManager : MonoBehaviour {
     public MultiplayerGameSetupHandler MPSetupHandler;
+    public MapLoader MapLoader;
+    public CountdownTimerView CountdownTimer;
 
     [Header("Prefabs")]
     public SPGamePlayer SPGamePlayerPrefab;
@@ -21,11 +27,14 @@ public class GameSetupManager : MonoBehaviour {
     [Header("Data")]
     public PlayerData Player1Data;
     public PlayerData Player2Data;
+    public float CountdownTimeSeconds = 3f;
     
     private static GameManager GameManager => GameManager.Instance;
     
     // The total number of players in this game who have arrived in the game scene
     private int _readyPlayerCount;
+    // The total number of players in this game who have had their gameobjects assigned
+    private int _assignedPlayerCount;
     // Whether the game was initialized on the server
     private bool _gameInitialized;
     public bool GameInitialized {
@@ -60,6 +69,36 @@ public class GameSetupManager : MonoBehaviour {
             // This is a client and not the host. Listen for all player objects getting created so that we can tell the server that we are ready.
             StartCoroutine(ListenForPlayersConnected());
         }
+    }
+
+    private void SpawnStartingUnits() {
+        SpawnPlayerStartingUnits(Player1Data);
+        SpawnPlayerStartingUnits(Player2Data);
+    }
+
+    private void SpawnPlayerStartingUnits(PlayerData player) {
+        MapLoader.StartingEntitySet entitySet = MapLoader.UnitSpawns.First(s => s.Team == player.Team);
+        foreach (MapLoader.EntitySpawn entity in entitySet.Entities) {
+            GameManager.CommandManager.SpawnEntity(entity.Entity, entity.SpawnLocation, player.Team, null);
+        }
+    }
+
+    /// <summary>
+    /// Start the UI for counting down. Does not actually start the game when finished counting down. 
+    /// </summary>
+    public void StartCountdownTimerView() {
+        CountdownTimer.StartCountdown(CountdownTimeSeconds);
+    }
+
+    /// <summary>
+    /// Actual timer (separate from <see cref="CountdownTimerView"/>) for starting the game
+    /// </summary>
+    private async void PerformGameStartCountdown() {
+        await Task.Delay((int)(CountdownTimeSeconds * 1000));
+        
+        // The game is actually starting now, so perform on-start abilities for the starting set of entities
+        GameManager.CommandManager.EntitiesOnGrid.AllEntities().ForEach(e => e.PerformOnStartAbilities());
+        GameInitialized = true;
     }
     
     #region Singleplayer
@@ -98,9 +137,11 @@ public class GameSetupManager : MonoBehaviour {
             StartCoroutine(ListenForPlayersConnected());
             yield break;
         }
-        
+
         List<MPGamePlayer> players = FindObjectsOfType<MPGamePlayer>().ToList();
         if (players.Count == MPSetupHandler.PlayerCount) {
+            // Load the map client-side first, then notify the server that the client setup is finished
+            MapLoader.LoadMap();
             MPSetupHandler.CmdNotifyPlayerReady(players.First(p => p.isLocalPlayer).DisplayName);
         } else if (players.Count > MPSetupHandler.PlayerCount) {
             throw new Exception($"Detected more player objects than the recorded player count! Expected: {MPSetupHandler.PlayerCount}. Actual: {players.Count}");
@@ -174,7 +215,28 @@ public class GameSetupManager : MonoBehaviour {
 
         // Tell clients to look for the command controller and player GameObjects
         MPSetupHandler.RpcAssignPlayers();
-        GameInitialized = true;
+    }
+
+    /// <summary>
+    /// A player has finished the assign step
+    /// </summary>
+    [Server]
+    public void MarkPlayerAssigned() {
+        _assignedPlayerCount++;
+
+        // Proceed with game setup once all players have been assigned
+        if (MPSetupHandler.PlayerCount == _readyPlayerCount) {
+            PerformFinalGameSetupSteps();
+        }
+    }
+
+    [Server]
+    private void PerformFinalGameSetupSteps() {
+        // Now that both players are set up, spawn units for both sides
+        SpawnStartingUnits();
+
+        PerformGameStartCountdown();
+        MPSetupHandler.RpcBeginCountdownView();
     }
 
     #endregion
