@@ -17,7 +17,7 @@ namespace Gameplay.UI {
         }
 
         public void Surrender() {
-            Debug.Log("Local player clicked surrender button");
+            GameManager.Instance.GameEndManager.EndGame(GameManager.Instance.OpponentPlayer);
             TogglePauseMenu();
         }
     }

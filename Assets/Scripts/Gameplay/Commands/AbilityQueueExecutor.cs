@@ -18,11 +18,13 @@ public class AbilityQueueExecutor : MonoBehaviour {
     
     private bool _initialized;
     private ICommandManager _commandManager;
+    private GameEndManager _gameEndManager;
 
     private float _timeUntilNextUpdate;
     
-    public void Initialize(ICommandManager commandManager) {
+    public void Initialize(ICommandManager commandManager, GameEndManager gameEndManager) {
         _commandManager = commandManager;
+        _gameEndManager = gameEndManager;
         _timeUntilNextUpdate = UpdateFrequency;
 
         _initialized = true;
@@ -37,6 +39,9 @@ public class AbilityQueueExecutor : MonoBehaviour {
             
             // Time for an update, so execute each entity's queue.
             _commandManager.EntitiesOnGrid.AllEntities().ForEach(ExecuteQueue);
+            
+            // Also perform a check for game end
+            _gameEndManager.CheckForGameEnd();
         }
     }
 

@@ -6,9 +6,9 @@ using Gameplay.Entities.Abilities;
 using UnityEngine;
 
 public class SPCommandManager : AbstractCommandManager {
-    public override void Initialize(Transform spawnBucketPrefab) {
+    public override void Initialize(Transform spawnBucketPrefab, GameEndManager gameEndManager) {
         SpawnBucket = Instantiate(spawnBucketPrefab);
-        AbilityQueueExecutor.Initialize(this);
+        AbilityQueueExecutor.Initialize(this, gameEndManager);
     }
 
     public override void SpawnEntity(EntityData data, Vector2Int spawnLocation, GridEntity.Team team, GridEntity entityToIgnore) {

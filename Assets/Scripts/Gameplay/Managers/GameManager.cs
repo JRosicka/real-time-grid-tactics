@@ -24,6 +24,7 @@ public class GameManager : MonoBehaviour {
     
     public PathfinderService PathfinderService;
     public EntitySelectionManager EntitySelectionManager;
+    public GameEndManager GameEndManager;
     
     public IGamePlayer LocalPlayer { get; private set; }
     public IGamePlayer OpponentPlayer { get; private set; }
@@ -34,6 +35,7 @@ public class GameManager : MonoBehaviour {
         }
         
         Instance = this;
+        GameEndManager = new GameEndManager(this);
     }
 
     private void Start() {
@@ -84,7 +86,7 @@ public class GameManager : MonoBehaviour {
 
     public void SetupCommandManager(ICommandManager commandManager) {
         CommandManager = commandManager;
-        CommandManager.Initialize(SpawnBucketPrefab);
+        CommandManager.Initialize(SpawnBucketPrefab, GameEndManager);
     }
 
     #endregion
