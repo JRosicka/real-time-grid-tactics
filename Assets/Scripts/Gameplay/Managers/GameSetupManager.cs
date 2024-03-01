@@ -121,6 +121,9 @@ public class GameSetupManager : MonoBehaviour {
         opponentPlayer.Data = Player2Data;
         GameManager.SetPlayers(localPlayer, opponentPlayer);
         
+        SpawnStartingUnits();
+        GameManager.CommandManager.EntitiesOnGrid.AllEntities().ForEach(e => e.PerformOnStartAbilities());
+
         GameInitialized = true;
     } 
 
