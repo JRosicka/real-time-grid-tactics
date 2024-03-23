@@ -1,10 +1,13 @@
 using System;
 using System.Linq;
+using Game.Network;
 using Gameplay.Config;
 using Gameplay.Entities;
 using Gameplay.Grid;
 using Gameplay.UI;
+using Mirror;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 /// <summary>
 /// Central manager for accessing entities, players, and other managers
@@ -87,6 +90,22 @@ public class GameManager : MonoBehaviour {
     public void SetupCommandManager(ICommandManager commandManager) {
         CommandManager = commandManager;
         CommandManager.Initialize(SpawnBucketPrefab, GameEndManager);
+    }
+
+    #endregion
+    
+    #region Game end
+
+    public void ReturnToLobby() {
+        if (!NetworkClient.active) {
+            // SP. Just reload the game scene
+            SceneManager.LoadScene("GamePlay");
+            return;
+        }
+
+        // MP, so return to the lobby
+        GameNetworkManager gameNetworkManager = FindObjectOfType<GameNetworkManager>();
+        gameNetworkManager.ServerChangeScene(gameNetworkManager.RoomScene);
     }
 
     #endregion

@@ -10,9 +10,9 @@ namespace Gameplay.Grid {
         [SerializeField] private GridInputController _gridInputController;
         [SerializeField] private InGamePauseMenu _pauseMenu;
 
-        private bool InputAllowed => !_pauseMenu.Paused 
-                                     && GameManager.Instance.GameSetupManager.GameInitialized;
-                                    // TODO check to see if the game is over
+        private bool InputAllowed => !_pauseMenu.Paused
+                                     && GameManager.Instance.GameSetupManager.GameInitialized
+                                     && !GameManager.Instance.GameSetupManager.GameOver;
 
         public void OnPointerClick(PointerEventData eventData) {
             if (!InputAllowed) return;

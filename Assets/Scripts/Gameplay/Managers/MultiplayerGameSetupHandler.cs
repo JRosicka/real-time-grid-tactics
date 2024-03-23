@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using Gameplay.Entities;
 using Mirror;
 
 /// <summary>
@@ -51,5 +52,16 @@ public class MultiplayerGameSetupHandler : NetworkBehaviour {
     [ClientRpc]
     public void RpcBeginCountdownView() {
         GameSetupManager.StartCountdownTimerView();
+    }
+
+    [Command(requiresAuthority = false)]
+    public void CmdGameOver(GridEntity.Team winner) {
+        GameSetupManager.HaltInputAndReturnToLobby();
+        RpcNotifyGameOver(winner);
+    }
+
+    [ClientRpc]
+    private void RpcNotifyGameOver(GridEntity.Team winner) {
+        GameSetupManager.NotifyGameOver(winner);
     }
 }

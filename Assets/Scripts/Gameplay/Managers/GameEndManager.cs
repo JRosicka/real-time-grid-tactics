@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using Gameplay.Config;
 using Gameplay.Entities;
@@ -7,6 +8,8 @@ using UnityEngine;
 /// Detects and handles the end of the game
 /// </summary>
 public class GameEndManager {
+    public event Action<IGamePlayer> GameEnded;
+    
     private readonly GameManager _gameManager;
     private bool _gameOver;
     
@@ -47,7 +50,7 @@ public class GameEndManager {
             Debug.Log($"Game over - the winner is {winner.DisplayName}");
         }
         
-        // TODO network to server that the game was lost
+        GameEnded?.Invoke(winner);
     }
     
     private bool PlayerHasLost(IGamePlayer player) {

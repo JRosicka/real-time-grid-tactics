@@ -27,6 +27,8 @@ namespace Gameplay.Managers {
         }
 
         private void Update() {
+            if (GameManager.Instance.GameSetupManager.GameOver) return;
+            
             if (_playerInput.GetButtonDown(EscapeAction)) {
                 PauseMenu.TogglePauseMenu();
             }

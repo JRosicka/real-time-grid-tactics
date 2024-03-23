@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using Game.Network;
 using Gameplay.Config;
 using Mirror;
 using Sirenix.OdinInspector;
@@ -11,7 +10,6 @@ namespace Gameplay.Managers {
     /// </summary>
     public class Cheats : MonoBehaviour {
         private GameManager GameManagerInstance => GameManager.Instance;
-        private GameNetworkManager _gameNetworkManager;
 
         [Button]
         public void ReturnToLobby() {
@@ -21,10 +19,7 @@ namespace Gameplay.Managers {
                 return;
             }
 
-            if (_gameNetworkManager == null) {
-                _gameNetworkManager = FindObjectOfType<GameNetworkManager>(); // TODO better way to get this
-            }
-            _gameNetworkManager.ServerChangeScene(_gameNetworkManager.RoomScene);
+            GameManagerInstance.ReturnToLobby();
         }
 
         [Header("Spawn Unit 1")] 

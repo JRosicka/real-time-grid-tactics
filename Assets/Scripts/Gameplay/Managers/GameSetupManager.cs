@@ -2,10 +2,10 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 using Game.Network;
 using Gameplay.Config;
+using Gameplay.Entities;
 using Gameplay.UI;
 using Mirror;
 using UnityEngine;
@@ -18,6 +18,7 @@ public class GameSetupManager : MonoBehaviour {
     public MultiplayerGameSetupHandler MPSetupHandler;
     public MapLoader MapLoader;
     public CountdownTimerView CountdownTimer;
+    public GameOverView GameOverView;
 
     [Header("Prefabs")]
     public SPGamePlayer SPGamePlayerPrefab;
@@ -28,6 +29,7 @@ public class GameSetupManager : MonoBehaviour {
     public PlayerData Player1Data;
     public PlayerData Player2Data;
     public float CountdownTimeSeconds = 3f;
+    public int GameOverDelayMillis = 5 * 1000;
     
     private static GameManager GameManager => GameManager.Instance;
     
@@ -59,6 +61,8 @@ public class GameSetupManager : MonoBehaviour {
     public void TriggerGameInitializedEvent() {
         GameInitializedEvent?.Invoke();
     }
+    
+    public bool GameOver { get; private set; }
 
     public void Initialize() {
         // If we are not connected in a multiplayer session, then we must be playing singleplayer. Set up the game now. 
@@ -71,6 +75,42 @@ public class GameSetupManager : MonoBehaviour {
                 // This is a client and not the host. Listen for all player objects getting created so that we can tell the server that we are ready.
                 StartCoroutine(ListenForPlayersConnected());
             }
+        }
+        
+        GameManager.GameEndManager.GameEnded += HandleGameOver;
+    }
+    
+    // TODO it would be good to move all of this game over logic to GameEndManager, but we currently can't do server-side logic in that class
+    private void HandleGameOver(IGamePlayer winner) {
+        GridEntity.Team winningTeam = winner == null ? GridEntity.Team.Neutral : winner.Data.Team;
+        if (!NetworkClient.active) {
+            HaltInputAndReturnToLobby();
+            NotifyGameOver(winningTeam);
+        } else {
+            MPSetupHandler.CmdGameOver(winningTeam);
+        }
+    }
+    
+    /// <summary>
+    /// Server/SP logic for ending the game. Halts commands and returns to lobby shortly. (SP will just reload the game scene)
+    /// </summary>
+    public async void HaltInputAndReturnToLobby() {
+        GameOver = true;
+        await Task.Delay(GameOverDelayMillis);
+        GameManager.ReturnToLobby();
+    }
+
+    /// <summary>
+    /// Client/SP UI logic for ending the game
+    /// </summary>
+    /// <param name="winner"></param>
+    public void NotifyGameOver(GridEntity.Team winner) {
+        if (winner == GridEntity.Team.Neutral) {
+            GameOverView.ShowTie();
+        } else if (winner == GameManager.LocalPlayer.Data.Team) {
+            GameOverView.ShowVictory();
+        } else {
+            GameOverView.ShowDefeat();
         }
     }
 
