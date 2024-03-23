@@ -56,7 +56,7 @@ public class MultiplayerGameSetupHandler : NetworkBehaviour {
 
     [Command(requiresAuthority = false)]
     public void CmdGameOver(GridEntity.Team winner) {
-        GameSetupManager.HaltInputAndReturnToLobby();
+        GameSetupManager.ReturnToLobbyAsync();
         RpcNotifyGameOver(winner);
     }
 

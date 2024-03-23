@@ -84,7 +84,7 @@ public class GameSetupManager : MonoBehaviour {
     private void HandleGameOver(IGamePlayer winner) {
         GridEntity.Team winningTeam = winner == null ? GridEntity.Team.Neutral : winner.Data.Team;
         if (!NetworkClient.active) {
-            HaltInputAndReturnToLobby();
+            ReturnToLobbyAsync();
             NotifyGameOver(winningTeam);
         } else {
             MPSetupHandler.CmdGameOver(winningTeam);
@@ -94,17 +94,17 @@ public class GameSetupManager : MonoBehaviour {
     /// <summary>
     /// Server/SP logic for ending the game. Halts commands and returns to lobby shortly. (SP will just reload the game scene)
     /// </summary>
-    public async void HaltInputAndReturnToLobby() {
-        GameOver = true;
+    public async void ReturnToLobbyAsync() {
         await Task.Delay(GameOverDelayMillis);
         GameManager.ReturnToLobby();
     }
 
     /// <summary>
-    /// Client/SP UI logic for ending the game
+    /// Client/SP logic for ending the game
     /// </summary>
     /// <param name="winner"></param>
     public void NotifyGameOver(GridEntity.Team winner) {
+        GameOver = true;
         if (winner == GridEntity.Team.Neutral) {
             GameOverView.ShowTie();
         } else if (winner == GameManager.LocalPlayer.Data.Team) {
