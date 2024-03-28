@@ -15,6 +15,7 @@ namespace Gameplay.Grid {
         }
 
         [SerializeField] private GridController _gridController;
+        [SerializeField] private CameraManager _cameraManager;
 
         private EntitySelectionManager _entitySelectionManager;
         private Vector2Int? _currentHoveredCell;
@@ -25,6 +26,8 @@ namespace Gameplay.Grid {
         }
         
         public void ProcessMouseMove(PointerEventData eventData) {
+            _cameraManager.CheckForEdgeScroll(eventData.pointerCurrentRaycast.screenPosition);
+            
             Vector2Int mousePos = _gridController.GetCellPosition(eventData.pointerCurrentRaycast.worldPosition);
             if (mousePos == _currentHoveredCell) return;
             _currentHoveredCell = mousePos;

@@ -15,7 +15,13 @@ namespace Gameplay.Managers {
         };
 
         private const string EscapeAction = "Escape";
+        
+        private const string MoveCameraLeftAction = "CameraLeft";
+        private const string MoveCameraRightAction = "CameraRight";
+        private const string MoveCameraUpAction = "CameraUp";
+        private const string MoveCameraDownAction = "CameraDown";
 
+        public CameraManager CameraManager;
         public InGamePauseMenu PauseMenu;
         
         private Player _playerInput;
@@ -33,11 +39,26 @@ namespace Gameplay.Managers {
                 PauseMenu.TogglePauseMenu();
             }
 
-            if (!PauseMenu.Paused) {
-                foreach (string input in AbilityButtons) {
-                    if (_playerInput.GetButtonDown(input)) {
-                        SelectionInterface.HandleAbilityHotkey(input);
-                    }
+            if (PauseMenu.Paused) return;
+
+            // Camera
+            if (_playerInput.GetButton(MoveCameraLeftAction)) {
+                CameraManager.MoveCameraOrthogonally(CameraManager.CameraDirection.Left);
+            }
+            if (_playerInput.GetButton(MoveCameraRightAction)) {
+                CameraManager.MoveCameraOrthogonally(CameraManager.CameraDirection.Right);
+            }
+            if (_playerInput.GetButton(MoveCameraUpAction)) {
+                CameraManager.MoveCameraOrthogonally(CameraManager.CameraDirection.Up);
+            }
+            if (_playerInput.GetButton(MoveCameraDownAction)) {
+                CameraManager.MoveCameraOrthogonally(CameraManager.CameraDirection.Down);
+            }
+            
+            // Abilities
+            foreach (string input in AbilityButtons) {
+                if (_playerInput.GetButtonDown(input)) {
+                    SelectionInterface.HandleAbilityHotkey(input);
                 }
             }
         }
