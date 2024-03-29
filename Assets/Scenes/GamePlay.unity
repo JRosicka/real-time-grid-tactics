@@ -2000,12 +2000,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _camera: {fileID: 1050066544}
-  _cameraMoveSpeed: 5
+  _cameraMoveSpeed: 7
   _mapMinX: -10
   _mapMaxX: 10
   _mapMinY: -6
   _mapMaxY: 6
-  _edgeScrollNormalThreshold: 0
+  _edgeScrollNormalThreshold: 0.06
 --- !u!1 &527040124
 GameObject:
   m_ObjectHideFlags: 0
@@ -15535,7 +15535,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _gridController: {fileID: 1769013663}
-  _cameraManager: {fileID: 0}
+  _cameraManager: {fileID: 504119508}
 --- !u!4 &2107103690
 Transform:
   m_ObjectHideFlags: 0

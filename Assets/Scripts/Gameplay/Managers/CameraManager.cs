@@ -18,11 +18,43 @@ public class CameraManager : MonoBehaviour {
     
     [SerializeField] [Range(0, .1f)] private float _edgeScrollNormalThreshold;
     private float EdgeScrollThreshold => Screen.height * _edgeScrollNormalThreshold;
-    
-    public void CheckForEdgeScroll(Vector2 mouseScreenPosition) {
+    private CameraDirection? _currentEdgeScrollDirection_horizontal;
+    private CameraDirection? _currentEdgeScrollDirection_vertical;
+
+    private void CheckForEdgeScroll(Vector2 mouseScreenPosition) {
+        // Horizontal
+        if (mouseScreenPosition.x < EdgeScrollThreshold) {
+            _currentEdgeScrollDirection_horizontal = CameraDirection.Left;
+        } else if (mouseScreenPosition.x > Screen.width - EdgeScrollThreshold) {
+            _currentEdgeScrollDirection_horizontal = CameraDirection.Right;
+        } else {
+            _currentEdgeScrollDirection_horizontal = null;
+        }
         
+        // Vertical
+        if (mouseScreenPosition.y < EdgeScrollThreshold) {
+            _currentEdgeScrollDirection_vertical = CameraDirection.Down;
+        } else if (mouseScreenPosition.y > Screen.height - EdgeScrollThreshold) {
+            _currentEdgeScrollDirection_vertical = CameraDirection.Up;
+        } else {
+            _currentEdgeScrollDirection_vertical = null;
+        }
     }
     
+    private void Update() {
+        // Note - rather than updating here, we could check for edge scroll via GridInputController when the mouse moves. 
+        // This would allow us to avoid triggering scroll when the mouse is over UI elements. Not sure if we want that. 
+        Vector2 mousePosition = Input.mousePosition;
+        CheckForEdgeScroll(mousePosition);
+
+        if (_currentEdgeScrollDirection_horizontal != null) {
+            MoveCameraOrthogonally(_currentEdgeScrollDirection_horizontal.Value);
+        }
+        if (_currentEdgeScrollDirection_vertical != null) {
+            MoveCameraOrthogonally(_currentEdgeScrollDirection_vertical.Value);
+        }
+    }
+
     public void MoveCameraOrthogonally(CameraDirection direction) {
         Vector2 moveVector = direction switch {
             CameraDirection.Left => Vector2.left,
