@@ -2001,6 +2001,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _camera: {fileID: 1050066544}
   _cameraMoveSpeed: 7
+  _cameraPanSpeed: 0.05
   _mapMinX: -10
   _mapMaxX: 10
   _mapMinY: -6
@@ -2039,6 +2040,7 @@ MonoBehaviour:
   MapLoader: {fileID: 602790830}
   CountdownTimer: {fileID: 919353506}
   GameOverView: {fileID: 1681351945}
+  _pauseMenu: {fileID: 1723025850449871020}
   SPGamePlayerPrefab: {fileID: 8195557163812692593, guid: c33bd22bbff2db8479bf24a64400fd19, type: 3}
   MPCommandManagerPrefab: {fileID: 5189142770249109527, guid: a96b27fb42ce1f942b78aa1e1b407640, type: 3}
   SPCommandManagerPrefab: {fileID: 1915109481469686083, guid: 51021b11e3159ad4ba95364f5dac7e44, type: 3}
@@ -15056,7 +15058,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _gridInputController: {fileID: 2107103689}
-  _pauseMenu: {fileID: 1723025850449871020}
 --- !u!1 &1997569859
 GameObject:
   m_ObjectHideFlags: 0

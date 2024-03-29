@@ -14,12 +14,70 @@ public class CameraManager : MonoBehaviour {
     
     [SerializeField] private Camera _camera;
     [SerializeField] private float _cameraMoveSpeed;
+    [SerializeField] private float _cameraPanSpeed;
     [SerializeField] private float _mapMinX, _mapMaxX, _mapMinY, _mapMaxY;
     
     [SerializeField] [Range(0, .1f)] private float _edgeScrollNormalThreshold;
     private float EdgeScrollThreshold => Screen.height * _edgeScrollNormalThreshold;
     private CameraDirection? _currentEdgeScrollDirection_horizontal;
     private CameraDirection? _currentEdgeScrollDirection_vertical;
+    
+    private bool InputAllowed => GameManager.Instance.GameSetupManager.InputAllowed;
+    
+    private Vector2? _middleMousePanStartPosition;
+    
+    public void StartMiddleMousePan(Vector2 startMousePosition) {
+        _middleMousePanStartPosition = startMousePosition;
+    }
+
+    public void StopMiddleMousePan() {
+        _middleMousePanStartPosition = null;
+    }
+
+    public void MoveCameraOrthogonally(CameraDirection direction) {
+        Vector2 moveVector = direction switch {
+            CameraDirection.Left => Vector2.left,
+            CameraDirection.Right => Vector2.right,
+            CameraDirection.Up => Vector2.up,
+            CameraDirection.Down => Vector2.down,
+            _ => throw new ArgumentOutOfRangeException(nameof(direction), direction, null)
+        };
+        
+        Vector3 difference = moveVector * Time.deltaTime * _cameraMoveSpeed;
+        _camera.transform.position = ClampCamera(_camera.transform.position + difference);
+        
+        // float scroll = Input.GetAxis("Mouse ScrollWheel");
+        // if (Math.Abs(scroll) > 0.01f) {
+        //     _camera.orthographicSize = Mathf.Clamp(_camera.orthographicSize - scroll * 2, 2, 10);
+        // }
+    }
+    
+    private void Update() {
+        if (!InputAllowed) {
+            StopMiddleMousePan();
+            return;
+        }
+        
+        // Note - rather than updating here, we could check for edge scroll via GridInputController when the mouse moves. 
+        // This would allow us to avoid triggering scroll when the mouse is over UI elements. Not sure if we want that. 
+        Vector2 mousePosition = Input.mousePosition;
+        
+        // Middle mouse pan
+        if (_middleMousePanStartPosition != null) {
+            Vector2 difference = mousePosition - _middleMousePanStartPosition.Value;
+            Vector3 moveVector = new Vector3(difference.x, difference.y, 0) * Time.deltaTime * _cameraPanSpeed;
+            _camera.transform.position = ClampCamera(_camera.transform.position + moveVector);
+        }
+        
+        // Edge scroll
+        CheckForEdgeScroll(mousePosition);
+        if (_currentEdgeScrollDirection_horizontal != null) {
+            MoveCameraOrthogonally(_currentEdgeScrollDirection_horizontal.Value);
+        }
+        if (_currentEdgeScrollDirection_vertical != null) {
+            MoveCameraOrthogonally(_currentEdgeScrollDirection_vertical.Value);
+        }
+    }
 
     private void CheckForEdgeScroll(Vector2 mouseScreenPosition) {
         // Horizontal
@@ -39,38 +97,6 @@ public class CameraManager : MonoBehaviour {
         } else {
             _currentEdgeScrollDirection_vertical = null;
         }
-    }
-    
-    private void Update() {
-        // Note - rather than updating here, we could check for edge scroll via GridInputController when the mouse moves. 
-        // This would allow us to avoid triggering scroll when the mouse is over UI elements. Not sure if we want that. 
-        Vector2 mousePosition = Input.mousePosition;
-        CheckForEdgeScroll(mousePosition);
-
-        if (_currentEdgeScrollDirection_horizontal != null) {
-            MoveCameraOrthogonally(_currentEdgeScrollDirection_horizontal.Value);
-        }
-        if (_currentEdgeScrollDirection_vertical != null) {
-            MoveCameraOrthogonally(_currentEdgeScrollDirection_vertical.Value);
-        }
-    }
-
-    public void MoveCameraOrthogonally(CameraDirection direction) {
-        Vector2 moveVector = direction switch {
-            CameraDirection.Left => Vector2.left,
-            CameraDirection.Right => Vector2.right,
-            CameraDirection.Up => Vector2.up,
-            CameraDirection.Down => Vector2.down,
-            _ => throw new ArgumentOutOfRangeException(nameof(direction), direction, null)
-        };
-        
-        Vector3 difference = moveVector * Time.deltaTime * _cameraMoveSpeed;
-        _camera.transform.position = ClampCamera(_camera.transform.position + difference);
-        
-        // float scroll = Input.GetAxis("Mouse ScrollWheel");
-        // if (Math.Abs(scroll) > 0.01f) {
-        //     _camera.orthographicSize = Mathf.Clamp(_camera.orthographicSize - scroll * 2, 2, 10);
-        // }
     }
     
     private Vector3 ClampCamera(Vector3 targetPosition) {

@@ -6,17 +6,19 @@ namespace Gameplay.Grid {
     /// <summary>
     /// Captures mouse inputs and reports them to the <see cref="GridController"/>
     /// </summary>
-    public class GridMouseInputCapturer : MonoBehaviour, IPointerClickHandler, IPointerMoveHandler, IPointerEnterHandler, IPointerExitHandler {
+    public class GridMouseInputCapturer : MonoBehaviour, IPointerClickHandler, IPointerMoveHandler, IPointerEnterHandler, IPointerExitHandler, IPointerDownHandler {
         [SerializeField] private GridInputController _gridInputController;
-        [SerializeField] private InGamePauseMenu _pauseMenu;
 
-        private bool InputAllowed => !_pauseMenu.Paused
-                                     && GameManager.Instance.GameSetupManager.GameInitialized
-                                     && !GameManager.Instance.GameSetupManager.GameOver;
+        private bool InputAllowed => GameManager.Instance.GameSetupManager.InputAllowed;
 
         public void OnPointerClick(PointerEventData eventData) {
             if (!InputAllowed) return;
             _gridInputController.ProcessClick(eventData);
+        }
+
+        public void OnPointerDown(PointerEventData eventData) {
+            if (!InputAllowed) return;
+            _gridInputController.ProcessClickDown(eventData);
         }
 
         public void OnPointerMove(PointerEventData eventData) {

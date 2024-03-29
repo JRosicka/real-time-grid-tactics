@@ -19,6 +19,7 @@ public class GameSetupManager : MonoBehaviour {
     public MapLoader MapLoader;
     public CountdownTimerView CountdownTimer;
     public GameOverView GameOverView;
+    public InGamePauseMenu _pauseMenu;
 
     [Header("Prefabs")]
     public SPGamePlayer SPGamePlayerPrefab;
@@ -56,6 +57,8 @@ public class GameSetupManager : MonoBehaviour {
             }
         }
     }
+    
+    public bool InputAllowed => !_pauseMenu.Paused && GameInitialized && !GameOver;
 
     public event Action GameInitializedEvent;
     public void TriggerGameInitializedEvent() {

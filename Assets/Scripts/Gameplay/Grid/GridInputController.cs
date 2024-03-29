@@ -72,6 +72,12 @@ namespace Gameplay.Grid {
 
             TryClickOnCell(click, mousePos);
         }
+        
+        public void ProcessClickDown(PointerEventData eventData) {
+            if (eventData.button == PointerEventData.InputButton.Middle) {
+                _cameraManager.StartMiddleMousePan(eventData.pointerPressRaycast.screenPosition);
+            }
+        }
 
         private void TryClickOnCell(MouseClick clickType, Vector2Int clickPosition) {
             switch (clickType) {
@@ -84,7 +90,8 @@ namespace Gameplay.Grid {
                     _entitySelectionManager.SelectEntityAtCell(clickPosition);
                     break;
                 case MouseClick.Middle:
-                    // Don't do anything with this
+                    // If we were holding down the middle mouse button to pan the camera, then make sure we stop now
+                    _cameraManager.StopMiddleMousePan();
                     break;
                 case MouseClick.Right:
                     _entitySelectionManager.TryInteractWithCell(clickPosition);
