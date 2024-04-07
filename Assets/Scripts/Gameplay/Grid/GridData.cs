@@ -21,12 +21,20 @@ namespace Gameplay.Grid {
         private readonly Dictionary<Vector2Int, CellData> _cells = new Dictionary<Vector2Int, CellData>();
         private readonly Dictionary<GameplayTile, List<CellData>> _tilesByTypeCache = new Dictionary<GameplayTile, List<CellData>>(); 
 
-        public GridData(Tilemap tilemap) {
+        public GridData(Tilemap tilemap, MapLoader mapLoader) {
             BoundsInt bounds = tilemap.cellBounds;
             
+            int xMin = Mathf.Max(bounds.xMin, mapLoader.LowerLeftCell.x);
+            int xMax = Mathf.Min(bounds.xMax, mapLoader.UpperRightCell.x);
+            int yMin = Mathf.Max(bounds.yMin, mapLoader.LowerLeftCell.y);
+            int yMax = Mathf.Min(bounds.yMax, mapLoader.UpperRightCell.y);
+            
             // Create each cell data object
-            for (int x = bounds.xMin; x < bounds.xMax; x++) {
-                for (int y = bounds.yMin; y < bounds.yMax; y++) {
+            for (int x = xMin; x <= xMax; x++) {
+                for (int y = yMin; y <= yMax; y++) {
+                    // HACK - skip all xMin values with even y values, since that doesn't really work well with our setup
+                    if (x == xMin && y % 2 == 0) continue;
+                    
                     GameplayTile tile = tilemap.GetTile<GameplayTile>(new Vector3Int(x, y));
                     if (tile == null) continue;
                     

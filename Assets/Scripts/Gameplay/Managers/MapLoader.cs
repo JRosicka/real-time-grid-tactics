@@ -26,9 +26,18 @@ public class MapLoader : MonoBehaviour {
         public Vector2Int SpawnLocation;
     }
 
+    public CameraManager CameraManager;
+    
+    [Header("Config")]
     public List<StartingEntitySet> UnitSpawns;
     
+    [Header("The farthest enter-able areas in the map, in grid-space")]
+    public Vector2Int LowerLeftCell;
+    public Vector2Int UpperRightCell;
+    
     public void LoadMap() {
-        // Nothing to do yet, heehee
+        Vector2 lowerLeftWorldPosition = GameManager.Instance.GridController.GetWorldPosition(LowerLeftCell);
+        Vector2 upperRightWorldPosition = GameManager.Instance.GridController.GetWorldPosition(UpperRightCell);
+        CameraManager.SetBoundaries(lowerLeftWorldPosition.x, upperRightWorldPosition.x, upperRightWorldPosition.y, lowerLeftWorldPosition.y);
     }
 }

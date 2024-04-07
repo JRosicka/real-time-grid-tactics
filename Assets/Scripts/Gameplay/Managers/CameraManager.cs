@@ -15,8 +15,9 @@ public class CameraManager : MonoBehaviour {
     [SerializeField] private Camera _camera;
     [SerializeField] private float _cameraMoveSpeed;
     [SerializeField] private float _cameraPanSpeed;
-    [SerializeField] private float _mapMinX, _mapMaxX, _mapMinY, _mapMaxY;
-    
+    [SerializeField] private float _boundaryBufferHorizontal, _boundaryBufferVertical;
+    [Tooltip("To account for the bottom-screen UI that would otherwise get in the way")]
+    [SerializeField] private float _additionalBoundaryBufferDown;
     [SerializeField] [Range(0, .1f)] private float _edgeScrollNormalThreshold;
     private float EdgeScrollThreshold => Screen.height * _edgeScrollNormalThreshold;
     private CameraDirection? _currentEdgeScrollDirection_horizontal;
@@ -25,6 +26,19 @@ public class CameraManager : MonoBehaviour {
     private bool InputAllowed => GameManager.Instance.GameSetupManager.InputAllowed;
     
     private Vector2? _middleMousePanStartPosition;
+
+    private float _mapMinXBase, _mapMaxXBase, _mapMinYBase, _mapMaxYBase;
+    private float MapMinX => _mapMinXBase - _boundaryBufferHorizontal;
+    private float MapMaxX => _mapMaxXBase + _boundaryBufferHorizontal;
+    private float MapMinY => _mapMinYBase - _boundaryBufferVertical - _additionalBoundaryBufferDown;
+    private float MapMaxY => _mapMaxYBase + _boundaryBufferVertical;
+
+    public void SetBoundaries(float boundaryLeft, float boundaryRight, float boundaryUp, float boundaryDown) {
+        _mapMinXBase = boundaryLeft;
+        _mapMaxXBase = boundaryRight;
+        _mapMinYBase = boundaryDown;
+        _mapMaxYBase = boundaryUp;
+    }
     
     public void StartMiddleMousePan(Vector2 startMousePosition) {
         _middleMousePanStartPosition = startMousePosition;
@@ -103,10 +117,10 @@ public class CameraManager : MonoBehaviour {
         float cameraHeight = _camera.orthographicSize;
         float cameraWidth = cameraHeight * _camera.aspect;
         
-        float minX = _mapMinX + cameraWidth;
-        float maxX = _mapMaxX - cameraWidth;
-        float minY = _mapMinY + cameraHeight;
-        float maxY = _mapMaxY - cameraHeight;
+        float minX = MapMinX + cameraWidth;
+        float maxX = MapMaxX - cameraWidth;
+        float minY = MapMinY + cameraHeight;
+        float maxY = MapMaxY - cameraHeight;
 
         float newX = Mathf.Clamp(targetPosition.x, minX, maxX);
         float newY = Mathf.Clamp(targetPosition.y, minY, maxY);

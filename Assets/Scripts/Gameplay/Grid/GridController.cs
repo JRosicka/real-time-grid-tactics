@@ -1,10 +1,5 @@
-using System.Collections.Generic;
-using System.Linq;
-using Gameplay.Config;
 using Gameplay.Entities;
-using Gameplay.Pathfinding;
 using Gameplay.UI;
-using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
@@ -35,12 +30,15 @@ namespace Gameplay.Grid {
         // Reticle for the target unit (The place where the selected unit is moving towards or attacking)
         [SerializeField] private SelectionReticle _targetUnitReticle;    // TODO not currently doing anything with this. Call associated method in this class when we move or attack.
         private SelectionReticleEntityTracker _targetUnitTracker = new SelectionReticleEntityTracker();
+
+        private MapLoader _mapLoader;
         
         public GridData GridData { get; private set; }
 
         public void Initialize() {
             _pathVisualizer.Initialize();
-            GridData = new GridData(_gameplayTilemap);
+            _mapLoader = GameManager.Instance.GameSetupManager.MapLoader;
+            GridData = new GridData(_gameplayTilemap, _mapLoader);
             _overlayTilemap = new OverlayTilemap(_overlayMap, GridData, _inaccessibleTile, _slowMovementTile);
             _selectedUnitTracker.Initialize(_selectedUnitReticle);
             _targetUnitTracker.Initialize(_targetUnitReticle);
@@ -70,6 +68,17 @@ namespace Gameplay.Grid {
 
         public void VisualizePath(PathfinderService.Path path) {
             _pathVisualizer.Visualize(path);
+        }
+
+        public bool IsInBounds(Vector2Int cell) {
+            // HACK - skip all xMin values with even y values, since that doesn't really work well with our setup
+            if (cell.x == _mapLoader.LowerLeftCell.x && cell.y % 2 == 0) return false;
+            
+            if (cell.x < _mapLoader.LowerLeftCell.x) return false;
+            if (cell.x > _mapLoader.UpperRightCell.x) return false;
+            if (cell.y < _mapLoader.LowerLeftCell.y) return false;
+            if (cell.y > _mapLoader.UpperRightCell.y) return false;
+            return true;
         }
 
         #region Vector Conversion

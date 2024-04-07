@@ -28,6 +28,7 @@ namespace Gameplay.Grid {
         public void ProcessMouseMove(PointerEventData eventData) {
             Vector2Int mousePos = _gridController.GetCellPosition(eventData.pointerCurrentRaycast.worldPosition);
             if (mousePos == _currentHoveredCell) return;
+            if (!_gridController.IsInBounds(mousePos)) return;
             _currentHoveredCell = mousePos;
             
             _gridController.HoverOverCell(mousePos);
@@ -50,7 +51,8 @@ namespace Gameplay.Grid {
         public void ProcessClick(PointerEventData eventData) {
             ProcessMouseMove(eventData);
             Vector2Int mousePos = _gridController.GetCellPosition(eventData.pointerPressRaycast.worldPosition);
-        
+            if (!_gridController.IsInBounds(mousePos)) return;
+            
             MouseClick click;
             switch (eventData.button) {
                 case PointerEventData.InputButton.Left:
