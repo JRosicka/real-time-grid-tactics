@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Data:
     _contentResourceID: Attack Ability
-    _icon: {fileID: 21300000, guid: ab50eddfd4deefb4c84f38f813189326, type: 3}
+    _icon: {fileID: 21300000, guid: 66dfcf8fbcf014928af746036f66864c, type: 3}
     _requirements: []
     _performDuration: 0
     _cooldownDuration: 3

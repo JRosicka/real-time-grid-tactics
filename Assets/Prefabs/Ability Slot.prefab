@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 6391343154038999409}
   - component: {fileID: 3135992484976574037}
   - component: {fileID: 705250121120929910}
+  - component: {fileID: 6457336723202646171}
   m_Layer: 5
   m_Name: Hotkey container
   m_TagString: Untagged
@@ -77,6 +78,27 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 4.1
+--- !u!223 &6457336723202646171
+Canvas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 166338631863816803}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_RenderMode: 2
+  m_Camera: {fileID: 0}
+  m_PlaneDistance: 100
+  m_PixelPerfect: 0
+  m_ReceivesEvents: 1
+  m_OverrideSorting: 1
+  m_OverridePixelPerfect: 0
+  m_SortingBucketNormalizedSize: 0
+  m_AdditionalShaderChannelsFlag: 25
+  m_SortingLayerID: 0
+  m_SortingOrder: 5
+  m_TargetDisplay: 0
 --- !u!1 &1102198016702246132
 GameObject:
   m_ObjectHideFlags: 0
@@ -133,7 +155,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &8839195388286605810
 RectTransform:
   m_ObjectHideFlags: 0
@@ -589,7 +611,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 8e0cb7e7dc5f5a54ab9e388c6b9b5999, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 3e43f24e145544e38ae08cda571ca32a, type: 3}
   m_Type: 0
   m_PreserveAspect: 1
   m_FillCenter: 1
