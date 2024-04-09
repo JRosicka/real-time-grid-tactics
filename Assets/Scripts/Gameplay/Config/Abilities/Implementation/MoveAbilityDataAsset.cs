@@ -42,6 +42,6 @@ namespace Gameplay.Config.Abilities {
             // is the only thing we're trying to do with this ability
         }
 
-        public bool MoveToTargetCellFirst => false;
+        public bool MoveToTargetCellFirst => true;
     }
 }
