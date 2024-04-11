@@ -27,7 +27,9 @@ namespace Gameplay.UI {
 
             // Set up each ability slot
             foreach (IAbilityData abilityData in entity.Abilities.Select(a => a.Content).Where(a => a.Selectable)) {
-                AbilitySlots.First(s => s.Channel == abilityData.Channel).SetUpForAbility(abilityData, entity);
+                AbilitySlot slot = AbilitySlots.First(s => s.Channel == abilityData.Channel);
+                DefaultAbilitySlotBehavior abilityBehavior = new DefaultAbilitySlotBehavior(abilityData, entity);
+                slot.SetUpSlot(abilityBehavior, entity);
             }
         }
 
@@ -64,8 +66,9 @@ namespace Gameplay.UI {
                 if (slot == null) {
                     throw new Exception("Found build ability with an invalid selection key");
                 }
-                
-                slot.SetUpForBuildTarget(buildData, purchasableDataWithSelectionKey.data, selectedEntity);
+
+                BuildAbilitySlotBehavior buildBehavior = new BuildAbilitySlotBehavior(buildData, purchasableDataWithSelectionKey.data, selectedEntity);
+                slot.SetUpSlot(buildBehavior, selectedEntity);
             }
         }
 

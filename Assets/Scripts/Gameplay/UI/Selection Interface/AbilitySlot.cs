@@ -1,7 +1,6 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using Gameplay.Config;
 using Gameplay.Config.Abilities;
 using Gameplay.Entities;
 using Gameplay.Entities.Abilities;
@@ -16,6 +15,15 @@ namespace Gameplay.UI {
     /// consistent hotkey. Blank when no entity is selected or that entity does not have a matching ability for the slot. 
     /// </summary>
     public class AbilitySlot : MonoBehaviour {
+        public enum AvailabilityResult {
+            // The slot's associated action will never be available again
+            NoLongerAvailable,
+            // The slot is currently selectable
+            Selectable,
+            // The slot is not currently selectable
+            Unselectable
+        }
+        
         [Tooltip("An entity's ability of this channel will get visualized here")]
         public AbilityChannel Channel;
         public string Hotkey;
@@ -32,55 +40,28 @@ namespace Gameplay.UI {
         public AbilityInterface AbilityInterface;
         public Canvas TeamColorsCanvas;
 
-        private IAbilityData _currentAbilityData;
         private GridEntity _selectedEntity;
-        private BuildAbilityData _currentBuildData;
-        private PurchasableData _currentEntityToBuild;
         private bool _selectable;
-        private bool _displayingBuild;
         private bool _selected;
         private bool _shouldDeselectWhenTimerElapses;
 
+        /// <summary>
+        /// Delegation of implementation-specific behaviour conducted through here
+        /// </summary>
+        private IAbilitySlotBehavior _slotBehavior;
+
         private PlayerResourcesController LocalResourcesController => GameManager.Instance.LocalPlayer.ResourcesController;
 
-        public void SetUpForAbility(IAbilityData data, GridEntity selectedEntity) {
-            gameObject.SetActive(true);
-            _currentAbilityData = data;
+        /// <summary>
+        /// Update this ability slot to set its state/appearance
+        /// </summary>
+        public void SetUpSlot(IAbilitySlotBehavior slotBehavior, GridEntity selectedEntity) {
+            _slotBehavior = slotBehavior;
             _selectedEntity = selectedEntity;
-            _displayingBuild = false;
-
-            AbilityImage.sprite = _currentAbilityData.Icon;
-            SecondaryAbilityImage.sprite = null;
-            SecondaryAbilityImage.gameObject.SetActive(false);
-            HotkeyText.text = Hotkey;
-
-            TeamColorsCanvas.sortingOrder = 1;
-
-            CheckAvailability();
-            AddListeners();
-        }
-
-        public void SetUpForBuildTarget(BuildAbilityData buildData, PurchasableData entityToBuild, GridEntity selectedEntity) {
+            slotBehavior.SetUpSprites(AbilityImage, SecondaryAbilityImage, TeamColorsCanvas);
+            
             gameObject.SetActive(true);
-            _currentBuildData = buildData;
-            _currentAbilityData = _currentBuildData;
-            _currentEntityToBuild = entityToBuild;
-            _selectedEntity = selectedEntity;
-            _displayingBuild = true;
-
-            TeamColorsCanvas.sortingOrder = 1;
-
-            AbilityImage.sprite = entityToBuild.BaseSpriteIconOverride == null ? entityToBuild.BaseSprite : entityToBuild.BaseSpriteIconOverride;
-            if (entityToBuild.TeamColorSprite != null) {
-                SecondaryAbilityImage.sprite = entityToBuild.TeamColorSprite;
-                SecondaryAbilityImage.color = GameManager.Instance.GetPlayerForTeam(selectedEntity.MyTeam).Data.TeamColor;
-                SecondaryAbilityImage.gameObject.SetActive(true);
-                if (entityToBuild.DisplayTeamColorOverMainSprite) {
-                    TeamColorsCanvas.sortingOrder = 2;
-                } else {
-                    TeamColorsCanvas.sortingOrder = 1;
-                }
-            }
+            
             HotkeyText.text = Hotkey;
             
             CheckAvailability();
@@ -91,11 +72,8 @@ namespace Gameplay.UI {
             RemoveListeners();
             _shouldDeselectWhenTimerElapses = false;
 
-            _currentAbilityData = null;
-            _currentBuildData = null;
-            _currentEntityToBuild = null;
+            _slotBehavior = null;
             _selectedEntity = null;
-            _displayingBuild = false;
             _selected = false;
             _selectable = false;
             gameObject.SetActive(false);
@@ -111,19 +89,7 @@ namespace Gameplay.UI {
             
             MarkSelected(true);
 
-            if (_displayingBuild) {
-                if (_currentBuildData.Targetable) {
-                    GameManager.Instance.EntitySelectionManager.SelectTargetableAbility(_currentBuildData, _currentEntityToBuild);
-                } else {
-                    // Try to perform the build ability
-                    _selectedEntity.PerformAbility(_currentBuildData, new BuildAbilityParameters {
-                        Buildable = _currentEntityToBuild, 
-                        BuildLocation = _selectedEntity.Location
-                    }, false);
-                }
-            } else {
-                _currentAbilityData?.SelectAbility(_selectedEntity);
-            }
+            _slotBehavior.SelectSlot();
             return true;
         }
 
@@ -132,7 +98,7 @@ namespace Gameplay.UI {
             _shouldDeselectWhenTimerElapses = false;
             if (selected) {
                 SlotFrame.color = SelectedColor;
-                if (_currentAbilityData.Targeted) {
+                if (_slotBehavior.IsAbilityTargetable) {
                     // We want this slot to keep appearing as selected until we do something else, so don't auto-unmark it.
                 } else {
                     StartCoroutine(DeselectLater());
@@ -169,29 +135,21 @@ namespace Gameplay.UI {
         }
 
         private void CheckAvailability() {
-            if (_displayingBuild) {
-                IGamePlayer player = GameManager.Instance.GetPlayerForTeam(_selectedEntity.MyTeam);
-                List<PurchasableData> ownedPurchasables = player.OwnedPurchasablesController.OwnedPurchasables;
-
-                if (_currentEntityToBuild is UpgradeData && ownedPurchasables.Contains(_currentEntityToBuild)) {
-                    // Upgrade that we already own
+            if (_slotBehavior == null || _selectedEntity == null) return;
+            
+            AvailabilityResult availability = _slotBehavior.GetAvailability();
+            switch (availability) {
+                case AvailabilityResult.NoLongerAvailable:
                     Clear();
-                } else if (_selectedEntity.CanUseAbility(_currentBuildData) 
-                           && GameManager.Instance.GetPlayerForTeam(_selectedEntity.MyTeam).ResourcesController.CanAfford(_currentEntityToBuild.Cost)
-                           && _currentEntityToBuild.Requirements.All(r => ownedPurchasables.Contains(r))) {
-                    // This entity can build this and we can afford this
+                    break;
+                case AvailabilityResult.Selectable:
                     MarkSelectable(true);
-                } else {
+                    break;
+                case AvailabilityResult.Unselectable:
                     MarkSelectable(false);
-                }
-            } else {
-                if (_currentAbilityData == null || _selectedEntity == null) return;
-
-                if (_currentAbilityData.SelectableWhenBlocked || _selectedEntity.CanUseAbility(_currentAbilityData)) {
-                    MarkSelectable(true);
-                } else {
-                    MarkSelectable(false);
-                }
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
             }
             
             if (_selected && _selectable) {
@@ -226,14 +184,8 @@ namespace Gameplay.UI {
         }
 
         private void OnAbilityTimersChanged(IAbility ability, AbilityCooldownTimer timer) {
-            if (_displayingBuild) {
-                // Displaying build
+            if (!_slotBehavior.CaresAboutAbilityChannels || timer.ChannelBlockers.Contains(Channel)) {
                 CheckAvailability();
-            } else {
-                // Displaying abilities
-                if (timer.ChannelBlockers.Contains(Channel)) {
-                    CheckAvailability();
-                }
             }
         }
         
@@ -241,7 +193,7 @@ namespace Gameplay.UI {
         /// When the player gains or spends resources
         /// </summary>
         private void OnPlayerResourcesBalanceChanged(List<ResourceAmount> resourceAmounts) {
-            if (_displayingBuild) {
+            if (_slotBehavior.IsAvailabilitySensitiveToResources) {
                 CheckAvailability();
             }
         }
