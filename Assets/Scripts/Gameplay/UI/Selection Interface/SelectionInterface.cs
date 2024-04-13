@@ -15,6 +15,8 @@ namespace Gameplay.UI {
 
         [Header("References")] 
         [SerializeField] private GameObject View;
+        [SerializeField] private TooltipView _tooltipView;
+        public TooltipView TooltipView => _tooltipView;
         
         [SerializeField] private Image EntityIcon;
         [SerializeField] private Image EntityColorsIcon;
@@ -70,6 +72,7 @@ namespace Gameplay.UI {
         
         public void DeselectActiveAbility() {
             AbilityInterface.DeselectActiveAbility();
+            TooltipView.ToggleForTargetableAbility(null, null);
         }
 
         public void SelectBuildAbility(BuildAbilityData buildData) {
@@ -96,6 +99,7 @@ namespace Gameplay.UI {
 
         private void ToggleViews(bool active) {
             View.SetActive(active);
+            _tooltipView.ToggleForEntity(_displayedEntity);
 
             if (!active) {
                 AbilityInterface.ClearInfo();

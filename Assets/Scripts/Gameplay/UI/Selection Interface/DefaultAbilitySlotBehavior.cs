@@ -8,24 +8,29 @@ namespace Gameplay.UI {
     /// Handles generic non-ability behavior for an <see cref="AbilitySlot"/>
     /// </summary>
     public class DefaultAbilitySlotBehavior : IAbilitySlotBehavior {
-        private readonly IAbilityData _abilityData;
         private readonly GridEntity _selectedEntity;
         
         public DefaultAbilitySlotBehavior(IAbilityData abilityData, GridEntity selectedEntity) {
-            _abilityData = abilityData;
+            AbilityData = abilityData;
             _selectedEntity = selectedEntity;
         }
 
+        public IAbilityData AbilityData { get; }
         public bool IsAvailabilitySensitiveToResources => false;
         public bool CaresAboutAbilityChannels => true;
-        public bool IsAbilityTargetable => _abilityData.Targeted;
+        public bool IsAbilityTargetable => AbilityData.Targeted;
 
         public void SelectSlot() {
-            _abilityData?.SelectAbility(_selectedEntity);
+            if (AbilityData == null) return;
+            
+            AbilityData.SelectAbility(_selectedEntity);
+            if (AbilityData is ITargetableAbilityData targetableAbilityData) {
+                GameManager.Instance.SelectionInterface.TooltipView.ToggleForTargetableAbility(targetableAbilityData, this);
+            }
         }
 
         public AbilitySlot.AvailabilityResult GetAvailability() {
-            if (_abilityData.SelectableWhenBlocked || _selectedEntity.CanUseAbility(_abilityData)) {
+            if (AbilityData.SelectableWhenBlocked || _selectedEntity.CanUseAbility(AbilityData)) {
                 return AbilitySlot.AvailabilityResult.Selectable;
             } else {
                 return AbilitySlot.AvailabilityResult.Unselectable;
@@ -33,7 +38,7 @@ namespace Gameplay.UI {
         }
 
         public void SetUpSprites(Image abilityImage, Image secondaryAbilityImage, Canvas teamColorsCanvas) {
-            abilityImage.sprite = _abilityData.Icon;
+            abilityImage.sprite = AbilityData.Icon;
             secondaryAbilityImage.sprite = null;
             secondaryAbilityImage.gameObject.SetActive(false);
             teamColorsCanvas.sortingOrder = 1;

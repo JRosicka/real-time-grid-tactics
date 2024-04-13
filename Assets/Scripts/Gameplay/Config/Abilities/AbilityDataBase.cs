@@ -15,6 +15,14 @@ namespace Gameplay.Config.Abilities {
     public abstract class AbilityDataBase<T> : IAbilityData where T : IAbilityParameters, new() {
         [SerializeField] [HideInInspector]
         private string _contentResourceID;
+
+        [SerializeField]
+        private string _id;
+        public string ID => _id;
+        [SerializeField]
+        private string _description;
+        public string Description => _description;
+
         /// <summary>
         /// This gets set automatically in an editor script to match the name of the <see cref="BaseAbilityDataAsset{T,P}"/>
         /// where this comes from. Necessary for writing/reading over network. 

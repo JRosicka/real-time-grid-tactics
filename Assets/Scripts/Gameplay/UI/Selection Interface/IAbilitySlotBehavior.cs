@@ -1,3 +1,4 @@
+using Gameplay.Config.Abilities;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -6,6 +7,7 @@ namespace Gameplay.UI {
     /// Specifies generic behavior for an <see cref="AbilitySlot"/> to be able to perform
     /// </summary>
     public interface IAbilitySlotBehavior {
+        IAbilityData AbilityData { get; }
         /// <summary>
         /// Whether the associated ability's availability can be modified by a change in resources
         /// </summary>

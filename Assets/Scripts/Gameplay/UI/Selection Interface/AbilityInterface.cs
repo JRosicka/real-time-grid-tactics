@@ -13,6 +13,7 @@ namespace Gameplay.UI {
     /// </summary>
     public class AbilityInterface : MonoBehaviour {
         public List<AbilitySlot> AbilitySlots;
+        public TooltipView TooltipView;
 
         private AbilitySlot _selectedSlot;
         

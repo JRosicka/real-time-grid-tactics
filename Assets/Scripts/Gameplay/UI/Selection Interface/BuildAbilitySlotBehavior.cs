@@ -15,7 +15,8 @@ namespace Gameplay.UI {
         private readonly BuildAbilityData _buildAbilityData;
         private readonly PurchasableData _buildable;
         private readonly GridEntity _selectedEntity;
-        
+
+        public IAbilityData AbilityData => _buildAbilityData;
         public bool IsAvailabilitySensitiveToResources => true;
         public bool CaresAboutAbilityChannels => false;
         public bool IsAbilityTargetable => _buildAbilityData.Targeted;
@@ -29,6 +30,7 @@ namespace Gameplay.UI {
         public void SelectSlot() {
             if (_buildAbilityData.Targetable) {
                 GameManager.Instance.EntitySelectionManager.SelectTargetableAbility(_buildAbilityData, _buildable);
+                GameManager.Instance.SelectionInterface.TooltipView.ToggleForTargetableAbility(_buildAbilityData, this);
             } else {
                 // Try to perform the build ability
                 _selectedEntity.PerformAbility(_buildAbilityData, new BuildAbilityParameters {
