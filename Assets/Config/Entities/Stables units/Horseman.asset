@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fafa440752424124be5b9cbee86f1e06, type: 3}
   m_Name: Horseman
   m_EditorClassIdentifier: 
-  Description: Speedy cavalry unit
+  Description: Speedy cavalry unit.
   Cost:
   - Type: 0
     Amount: 100

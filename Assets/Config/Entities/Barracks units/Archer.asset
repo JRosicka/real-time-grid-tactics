@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fafa440752424124be5b9cbee86f1e06, type: 3}
   m_Name: Archer
   m_EditorClassIdentifier: 
-  Description: Standard ranged unit
+  Description: Standard ranged unit.
   Cost:
   - Type: 0
     Amount: 50

@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fafa440752424124be5b9cbee86f1e06, type: 3}
   m_Name: Pikeman
   m_EditorClassIdentifier: 
-  Description: Anti-cavalry unit
+  Description: Anti-cavalry unit.
   Cost:
   - Type: 0
     Amount: 50
