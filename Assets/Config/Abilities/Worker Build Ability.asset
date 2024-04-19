@@ -14,6 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Data:
     _contentResourceID: Worker Build Ability
+    _id: Build
+    _description: Build a structure. After completion, the worker mans the structure
+      for the rest of their days.
     _icon: {fileID: 21300000, guid: 3e43f24e145544e38ae08cda571ca32a, type: 3}
     _requirements: []
     _performDuration: 0

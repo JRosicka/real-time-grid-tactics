@@ -49,13 +49,14 @@ namespace Gameplay.UI {
         }
         
         public void SelectAbility(AbilitySlot slot) {
+            if (!slot.Selectable) return;
+            
             // Deselect current targetable ability
             GameManager.Instance.EntitySelectionManager.DeselectTargetableAbility();
 
             _selectedSlot = slot;
-            if (!_selectedSlot.SelectAbility()) {
-                _selectedSlot = null;
-            }
+            _selectedSlot.SelectAbility();
+            
             DeselectUnselectedSlots();
         }
 

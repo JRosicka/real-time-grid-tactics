@@ -14,6 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Data:
     _contentResourceID: Production Build Ability Infantry
+    _id: Build
+    _description: Build an infantry unit.
     _icon: {fileID: 21300000, guid: 3e43f24e145544e38ae08cda571ca32a, type: 3}
     _requirements: []
     _performDuration: 0

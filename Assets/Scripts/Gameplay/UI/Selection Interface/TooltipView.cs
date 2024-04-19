@@ -31,6 +31,9 @@ namespace Gameplay.UI {
         
         public void ToggleForTargetableAbility(ITargetableAbilityData ability, IAbilitySlotBehavior abilitySlotBehavior) {
             if (ability == null) {
+                _selectedTargetableAbility = null;
+                _selectedTargetableAbilitySlotBehavior = null;
+
                 // No ability selected, so go back to showing the selected entity if we have one
                 ToggleForEntity(_selectedEntity);
             } else {
@@ -62,6 +65,9 @@ namespace Gameplay.UI {
             _icon.sprite = entityData.BaseSpriteIconOverride == null ? entityData.BaseSprite : entityData.BaseSpriteIconOverride;
             _secondaryIcon.sprite = entityData.TeamColorSprite;
             _secondaryIcon.color = GameManager.Instance.GetPlayerForTeam(entity.MyTeam).Data.TeamColor;
+            _secondaryIcon.gameObject.SetActive(true);
+            _teamColorsCanvas.sortingOrder = 1;
+            
             _name.text = entityData.ID;
             _description.text = entityData.Description;
         }

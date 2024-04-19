@@ -15,7 +15,8 @@ MonoBehaviour:
   Data:
     _contentResourceID: Attack Ability
     _id: Attack
-    _description: asdf
+    _description: Target an enemy unit to move towards it and attack it. Target an
+      empty cell to attack-move to that location.
     _icon: {fileID: 21300000, guid: 66dfcf8fbcf014928af746036f66864c, type: 3}
     _requirements: []
     _performDuration: 0

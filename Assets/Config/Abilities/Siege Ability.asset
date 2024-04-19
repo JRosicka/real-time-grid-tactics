@@ -14,6 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Data:
     _contentResourceID: Siege Ability
+    _id: Siege
+    _description: Enter siege mode.
     _icon: {fileID: 0}
     _requirements: []
     _performDuration: 0

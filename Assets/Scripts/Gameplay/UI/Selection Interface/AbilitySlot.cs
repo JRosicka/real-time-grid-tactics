@@ -42,7 +42,6 @@ namespace Gameplay.UI {
         public Canvas TeamColorsCanvas;
 
         private GridEntity _selectedEntity;
-        private bool _selectable;
         private bool _selected;
         private bool _shouldDeselectWhenTimerElapses;
 
@@ -50,6 +49,8 @@ namespace Gameplay.UI {
         /// Delegation of implementation-specific behaviour conducted through here
         /// </summary>
         public IAbilitySlotBehavior SlotBehavior { get; private set; }
+
+        public bool Selectable { get; private set; }
 
         private PlayerResourcesController LocalResourcesController => GameManager.Instance.LocalPlayer.ResourcesController;
 
@@ -76,22 +77,20 @@ namespace Gameplay.UI {
             SlotBehavior = null;
             _selectedEntity = null;
             _selected = false;
-            _selectable = false;
+            Selectable = false;
             gameObject.SetActive(false);
         }
         
         public void OnButtonClick() {
-            if (!_selectable) return;
+            if (!Selectable) return;
             AbilityInterface.SelectAbility(this);
         }
 
-        public bool SelectAbility() {
-            if (!_selectable) return false;
+        public void SelectAbility() {
+            if (!Selectable) return;
             
             MarkSelected(true);
-
             SlotBehavior.SelectSlot();
-            return true;
         }
 
         public void MarkSelected(bool selected) {
@@ -153,7 +152,7 @@ namespace Gameplay.UI {
                     throw new ArgumentOutOfRangeException();
             }
             
-            if (_selected && _selectable) {
+            if (_selected && Selectable) {
                 // Re-set the appearance to "selected" if we were selected and still can be
                 SlotFrame.color = SelectedColor;
             }
@@ -161,7 +160,7 @@ namespace Gameplay.UI {
 
         private void MarkSelectable(bool available) {
             SlotFrame.color = available ? SelectableColor : UnselectableColor;
-            _selectable = available;
+            Selectable = available;
         }
         
         #region Listeners
