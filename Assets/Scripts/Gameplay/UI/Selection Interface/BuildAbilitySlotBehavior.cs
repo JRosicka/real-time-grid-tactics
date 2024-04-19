@@ -12,8 +12,8 @@ namespace Gameplay.UI {
     /// Handles build-ability-specific behavior for an <see cref="AbilitySlot"/>
     /// </summary>
     public class BuildAbilitySlotBehavior : IAbilitySlotBehavior {
+        public PurchasableData Buildable { get; }
         private readonly BuildAbilityData _buildAbilityData;
-        private readonly PurchasableData _buildable;
         private readonly GridEntity _selectedEntity;
 
         public IAbilityData AbilityData => _buildAbilityData;
@@ -23,18 +23,18 @@ namespace Gameplay.UI {
 
         public BuildAbilitySlotBehavior(BuildAbilityData buildData, PurchasableData buildable, GridEntity selectedEntity) {
             _buildAbilityData = buildData;
-            _buildable = buildable;
+            Buildable = buildable;
             _selectedEntity = selectedEntity;
         }
         
         public void SelectSlot() {
             if (_buildAbilityData.Targetable) {
-                GameManager.Instance.EntitySelectionManager.SelectTargetableAbility(_buildAbilityData, _buildable);
+                GameManager.Instance.EntitySelectionManager.SelectTargetableAbility(_buildAbilityData, Buildable);
                 GameManager.Instance.SelectionInterface.TooltipView.ToggleForTargetableAbility(_buildAbilityData, this);
             } else {
                 // Try to perform the build ability
                 _selectedEntity.PerformAbility(_buildAbilityData, new BuildAbilityParameters {
-                    Buildable = _buildable, 
+                    Buildable = Buildable, 
                     BuildLocation = _selectedEntity.Location
                 }, false);
             }
@@ -44,12 +44,12 @@ namespace Gameplay.UI {
             IGamePlayer player = GameManager.Instance.GetPlayerForTeam(_selectedEntity.MyTeam);
             List<PurchasableData> ownedPurchasables = player.OwnedPurchasablesController.OwnedPurchasables;
 
-            if (_buildable is UpgradeData && ownedPurchasables.Contains(_buildable)) {
+            if (Buildable is UpgradeData && ownedPurchasables.Contains(Buildable)) {
                 // Upgrade that we already own
                 return AbilitySlot.AvailabilityResult.NoLongerAvailable;
             } else if (_selectedEntity.CanUseAbility(_buildAbilityData) 
-                       && GameManager.Instance.GetPlayerForTeam(_selectedEntity.MyTeam).ResourcesController.CanAfford(_buildable.Cost)
-                       && _buildable.Requirements.All(r => ownedPurchasables.Contains(r))) {
+                       && GameManager.Instance.GetPlayerForTeam(_selectedEntity.MyTeam).ResourcesController.CanAfford(Buildable.Cost)
+                       && Buildable.Requirements.All(r => ownedPurchasables.Contains(r))) {
                 // This entity can build this and we can afford this
                 return AbilitySlot.AvailabilityResult.Selectable;
             } else {
@@ -58,15 +58,15 @@ namespace Gameplay.UI {
         }
 
         public void SetUpSprites(Image abilityImage, Image secondaryAbilityImage, Canvas teamColorsCanvas) {
-            abilityImage.sprite = _buildable.BaseSpriteIconOverride == null ? _buildable.BaseSprite : _buildable.BaseSpriteIconOverride;
+            abilityImage.sprite = Buildable.BaseSpriteIconOverride == null ? Buildable.BaseSprite : Buildable.BaseSpriteIconOverride;
 
-            if (_buildable.TeamColorSprite == null) {
+            if (Buildable.TeamColorSprite == null) {
                 teamColorsCanvas.sortingOrder = 1;
             } else {
-                secondaryAbilityImage.sprite = _buildable.TeamColorSprite;
+                secondaryAbilityImage.sprite = Buildable.TeamColorSprite;
                 secondaryAbilityImage.color = GameManager.Instance.GetPlayerForTeam(_selectedEntity.MyTeam).Data.TeamColor;
                 secondaryAbilityImage.gameObject.SetActive(true);
-                teamColorsCanvas.sortingOrder = _buildable.DisplayTeamColorOverMainSprite ? 2 : 1;
+                teamColorsCanvas.sortingOrder = Buildable.DisplayTeamColorOverMainSprite ? 2 : 1;
             }
         }
     }

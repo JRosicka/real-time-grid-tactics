@@ -74,8 +74,13 @@ namespace Gameplay.UI {
 
         private void SetUpAbilityView(IAbilityData ability, IAbilitySlotBehavior abilitySlotBehavior) {
             abilitySlotBehavior.SetUpSprites(_icon, _secondaryIcon, _teamColorsCanvas);
-            _name.text = ability.ID;
-            _description.text = ability.Description;
+            if (abilitySlotBehavior is BuildAbilitySlotBehavior buildAbilitySlotBehavior) {
+                _name.text = buildAbilitySlotBehavior.Buildable.ID;
+                _description.text = buildAbilitySlotBehavior.Buildable.Description;
+            } else {
+                _name.text = ability.ID;
+                _description.text = ability.Description;
+            }
         }
         
         private void ToggleTooltip(bool toggle) {
