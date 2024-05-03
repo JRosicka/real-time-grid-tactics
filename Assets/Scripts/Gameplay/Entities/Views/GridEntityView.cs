@@ -2,6 +2,7 @@ using System;
 using System.Threading.Tasks;
 using Gameplay.Config.Abilities;
 using Gameplay.Entities.Abilities;
+using Gameplay.UI;
 using UnityEngine;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
@@ -34,6 +35,8 @@ namespace Gameplay.Entities {
         [FormerlySerializedAs("UnitAnimator")] [SerializeField] private Animator _unitAnimator;
         [SerializeField]
         private PerlinShakeBehaviour ShakeBehaviour;
+        [SerializeField]
+        private VisualBar _healthBar;
         
         [Header("Config")]
         [FormerlySerializedAs("SecondsToMoveToAdjacentCell")]
@@ -66,6 +69,8 @@ namespace Gameplay.Entities {
             entity.SelectedEvent += Selected;
             entity.HPChangedEvent += AttackReceived;
             entity.KilledEvent += Killed;
+            
+            _healthBar.Initialize(new HealthBarLogic(entity));
         }
 
         private void Update() {

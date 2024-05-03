@@ -27,38 +27,38 @@ namespace Gameplay.Entities.Abilities {
         public float TimeRemaining01 {
             get {
                 // ReSharper disable once CompareOfFloatsByEqualityOperator
-                if (_initialTimeRemaining == 0f) {
+                if (InitialTimeRemaining == 0f) {
                     return 0;
                 }
-                return _timeRemaining / _initialTimeRemaining;
+                return TimeRemaining / InitialTimeRemaining;
             }
         }
         
         public bool Expired;
         public event Action ExpiredEvent;
         
-        private float _timeRemaining;
-        private float _initialTimeRemaining;
+        public float TimeRemaining { get; private set; }
+        public float InitialTimeRemaining { get; private set; }
         private bool _markedCompletedLocally;
 
         public AbilityCooldownTimer(IAbility ability, float overrideCooldownDuration) {
             Ability = ability;
-            _timeRemaining = _initialTimeRemaining = overrideCooldownDuration > 0 ? overrideCooldownDuration : ability.CooldownDuration;
+            TimeRemaining = InitialTimeRemaining = overrideCooldownDuration > 0 ? overrideCooldownDuration : ability.CooldownDuration;
         }
 
         public void UpdateTimer(float deltaTime) {
             if (_markedCompletedLocally) return;
             
-            _timeRemaining = Mathf.Max(_timeRemaining - deltaTime, 0);
-            if (_timeRemaining <= 0) {
+            TimeRemaining = Mathf.Max(TimeRemaining - deltaTime, 0);
+            if (TimeRemaining <= 0) {
                 HandleTimerCompleted();
             }
         }
 
         public void AddTime(float timeToAdd) {
-            _timeRemaining += timeToAdd;
-            if (_timeRemaining > _initialTimeRemaining) {
-                _initialTimeRemaining = _timeRemaining;
+            TimeRemaining += timeToAdd;
+            if (TimeRemaining > InitialTimeRemaining) {
+                InitialTimeRemaining = TimeRemaining;
             }
         }
 
@@ -96,7 +96,7 @@ namespace Gameplay.Entities.Abilities {
         /// of whatever state it's at on our end. 
         /// </summary>
         public void Expire() {
-            _timeRemaining = 0f;
+            TimeRemaining = 0f;
             Expired = true;
             ExpiredEvent?.Invoke();
         }

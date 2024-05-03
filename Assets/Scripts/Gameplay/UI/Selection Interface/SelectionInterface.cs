@@ -24,7 +24,7 @@ namespace Gameplay.UI {
         [SerializeField] private TMP_Text DescriptionField;
         [SerializeField] private TMP_Text TagsField;
         
-        [SerializeField] private HealthBar HealthBar;
+        [SerializeField] private HealthDisplay _healthDisplay;
         [SerializeField] private TMP_Text MovesField;
         [SerializeField] private AbilityTimerCooldownView MoveTimer;    // TODO I'll probably want to try out using a move meter instead of a timer for movement. 
         [SerializeField] private TMP_Text AttackField;
@@ -50,7 +50,7 @@ namespace Gameplay.UI {
             if (entity == null) return;
             
             _displayedEntity = entity;
-            HealthBar.SetTarget(entity);
+            _healthDisplay.SetTarget(entity);
 
             UpdateEntityInfo();
             
