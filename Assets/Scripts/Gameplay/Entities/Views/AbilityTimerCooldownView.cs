@@ -1,15 +1,13 @@
 using Gameplay.Entities.Abilities;
 using Gameplay.UI;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace Gameplay.Entities {
     /// <summary>
     /// Visualizes an <see cref="AbilityCooldownTimer"/>
     /// </summary>
     public class AbilityTimerCooldownView : MonoBehaviour {
-        public Image TimerFill;
-        public Gradient FillGradient;
+        public AbilityTimerFill AbilityTimerFill;
         public Canvas Canvas;
         
         private AbilityCooldownTimer _cooldownTimer;
@@ -45,8 +43,7 @@ namespace Gameplay.Entities {
             if (_cooldownTimer == null) return;
             
             float remaining = _cooldownTimer.TimeRemaining01;
-            TimerFill.fillAmount = remaining;
-            TimerFill.color = FillGradient.Evaluate(remaining);
+            AbilityTimerFill.UpdateFillAmount01(remaining);
 
             if (remaining <= 0 && !_waitForServerEvent) {
                 // The timer elapsed locally and we don't care about the server timer, so complete now

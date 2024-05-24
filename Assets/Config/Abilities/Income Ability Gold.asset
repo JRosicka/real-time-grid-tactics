@@ -17,6 +17,7 @@ MonoBehaviour:
     _id: 
     _description: 
     _icon: {fileID: 0}
+    _abilityTimerCooldownView: {fileID: 0}
     _requirements: []
     _performDuration: 0
     _cooldownDuration: 5

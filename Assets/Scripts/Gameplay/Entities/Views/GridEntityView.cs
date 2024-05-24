@@ -16,9 +16,6 @@ namespace Gameplay.Entities {
     /// see 
     /// </summary>
     public sealed class GridEntityView : MonoBehaviour {
-        [SerializeField]
-        private AbilityTimerCooldownView _timerCooldownViewPrefab;
-        
         [Header("References")] 
         [SerializeField]
         private Image _mainImage;
@@ -222,11 +219,13 @@ namespace Gameplay.Entities {
         
         // TODO can pass in things like color and timer location (maybe use a set of transform references) and stuff
         private void CreateTimerView(IAbility ability, AbilityCooldownTimer cooldownTimer) {
+            if (ability.AbilityData.AbilityTimerCooldownViewPrefab == null) return;
+            
             Transform timerLocation = _moveTimerLocation;
             if (cooldownTimer.Ability is AttackAbility) {
                 timerLocation = _attackTimerLocation;
             }
-            AbilityTimerCooldownView cooldownView = Instantiate(_timerCooldownViewPrefab, timerLocation);
+            AbilityTimerCooldownView cooldownView = Instantiate(ability.AbilityData.AbilityTimerCooldownViewPrefab, timerLocation);
             cooldownView.Initialize(cooldownTimer, true, true);
         }
 

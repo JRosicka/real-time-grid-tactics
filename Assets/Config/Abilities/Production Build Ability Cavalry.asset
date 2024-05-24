@@ -17,6 +17,7 @@ MonoBehaviour:
     _id: Build
     _description: Build a cavalry unit.
     _icon: {fileID: 21300000, guid: 3e43f24e145544e38ae08cda571ca32a, type: 3}
+    _abilityTimerCooldownView: {fileID: 5971072852972127787, guid: 31b9abd5b640d9648bf03e6305a255b4, type: 3}
     _requirements: []
     _performDuration: 0
     _cooldownDuration: 0

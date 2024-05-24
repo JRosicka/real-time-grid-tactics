@@ -33,6 +33,9 @@ namespace Gameplay.Config.Abilities {
         private Sprite _icon;
         public Sprite Icon => _icon;
 
+        [SerializeField] private AbilityTimerCooldownView _abilityTimerCooldownView;
+        public AbilityTimerCooldownView AbilityTimerCooldownViewPrefab => _abilityTimerCooldownView;
+
         [Tooltip("All of these must be owned in order to perform the ability")]
         [SerializeField]
         private List<PurchasableData> _requirements;
