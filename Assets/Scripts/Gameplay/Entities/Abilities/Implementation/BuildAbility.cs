@@ -16,7 +16,7 @@ namespace Gameplay.Entities.Abilities {
     /// on the server. Maybe. 
     /// </summary>
     public class BuildAbility : AbilityBase<BuildAbilityData, BuildAbilityParameters> {
-        private BuildAbilityParameters AbilityParameters => (BuildAbilityParameters) BaseParameters;
+        public BuildAbilityParameters AbilityParameters => (BuildAbilityParameters) BaseParameters;
 
         public BuildAbility(BuildAbilityData data, BuildAbilityParameters parameters, GridEntity performer) : base(data, parameters, performer) {
             

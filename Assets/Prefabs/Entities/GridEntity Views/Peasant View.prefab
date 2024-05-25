@@ -135,3 +135,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7af9c3efe06d4ccf8753bac0568064b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _buildingViewPrefab: {fileID: 5769588006877291633, guid: d46915fc53def4d80b9c3622b0a711d1, type: 3}

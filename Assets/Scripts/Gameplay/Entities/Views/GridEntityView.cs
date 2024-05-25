@@ -13,7 +13,7 @@ namespace Gameplay.Entities {
     /// The view portion of a <see cref="GridEntity"/>, handling movements, images, animations, and timers.
     ///
     /// This covers the generic view functionality for all <see cref="GridEntity"/>s. For entity-type-specific functionality,
-    /// see 
+    /// see <see cref="GridEntityParticularView"/>
     /// </summary>
     public sealed class GridEntityView : MonoBehaviour {
         [Header("References")] 
@@ -27,6 +27,7 @@ namespace Gameplay.Entities {
         private Transform _moveTimerLocation;
         [SerializeField]
         private Transform _attackTimerLocation;
+        [SerializeField] private Transform _buildTimerLocation;
         [FormerlySerializedAs("UnitView")] [SerializeField] 
         private Transform _unitView;
         [FormerlySerializedAs("UnitAnimator")] [SerializeField] private Animator _unitAnimator;
@@ -220,11 +221,12 @@ namespace Gameplay.Entities {
         // TODO can pass in things like color and timer location (maybe use a set of transform references) and stuff
         private void CreateTimerView(IAbility ability, AbilityCooldownTimer cooldownTimer) {
             if (ability.AbilityData.AbilityTimerCooldownViewPrefab == null) return;
-            
-            Transform timerLocation = _moveTimerLocation;
-            if (cooldownTimer.Ability is AttackAbility) {
-                timerLocation = _attackTimerLocation;
-            }
+
+            Transform timerLocation = cooldownTimer.Ability switch {
+                AttackAbility => _attackTimerLocation,
+                BuildAbility when cooldownTimer.Ability.AbilityData.Targeted => _buildTimerLocation,
+                _ => _moveTimerLocation
+            };
             AbilityTimerCooldownView cooldownView = Instantiate(ability.AbilityData.AbilityTimerCooldownViewPrefab, timerLocation);
             cooldownView.Initialize(cooldownTimer, true, true);
         }
