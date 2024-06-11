@@ -48,6 +48,10 @@ namespace Gameplay.Config.Abilities {
                 }, true, false, false);
         }
 
+        public void RecalculateTargetableAbilitySelection(GridEntity selector) {
+            // Nothing to do
+        }
+
         public bool MoveToTargetCellFirst => false;
     }
 }

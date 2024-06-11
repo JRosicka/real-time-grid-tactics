@@ -17,6 +17,10 @@ namespace Gameplay.Config.Abilities {
         /// </summary>
         void DoTargetableAbility(Vector2Int cellPosition, GridEntity selectedEntity, GridEntity.Team selectorTeam, Object targetData);
         /// <summary>
+        /// Redo any on-selection calculations that need to be updated when the map state changes
+        /// </summary>
+        void RecalculateTargetableAbilitySelection(GridEntity selector);
+        /// <summary>
         /// Whether we should move to the target cell before attempting to do the ability
         /// </summary>
         bool MoveToTargetCellFirst { get; }

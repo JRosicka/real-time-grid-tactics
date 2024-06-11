@@ -42,6 +42,10 @@ namespace Gameplay.Config.Abilities {
             // is the only thing we're trying to do with this ability
         }
 
+        public void RecalculateTargetableAbilitySelection(GridEntity selector) {
+            // Nothing to do
+        }
+
         public bool MoveToTargetCellFirst => true;
     }
 }

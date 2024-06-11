@@ -111,10 +111,13 @@ namespace Gameplay.Entities {
         /// </summary>
         private void DoGenericAbility(IAbility ability) {
             switch (ability.AbilityData) {
-                case MoveAbilityData moveAbility:
+                case ChargeAbilityData:
+                    DoGenericChargeAnimation((ChargeAbility)ability);
+                    break;
+                case MoveAbilityData:
                     DoGenericMoveAnimation((MoveAbility)ability);
                     break;
-                case AttackAbilityData attackAbility:
+                case AttackAbilityData:
                     DoGenericAttackAnimation((AttackAbility) ability);
                     break;
                 default:
@@ -129,10 +132,18 @@ namespace Gameplay.Entities {
         private Vector2 _movementTargetPosition;
         private float _moveTime;
         private bool _moving;
+
+        private void DoGenericChargeAnimation(ChargeAbility chargeAbility) {
+            DoMoveAnimation(chargeAbility.AbilityParameters.MoveDestination); 
+        }
         
         private void DoGenericMoveAnimation(MoveAbility moveAbility) {
+            DoMoveAnimation(moveAbility.AbilityParameters.NextMoveCell);
+        }
+
+        private void DoMoveAnimation(Vector2Int targetCell) {
             _movementStartPosition = transform.position;
-            _movementTargetPosition = GameManager.Instance.GridController.GetWorldPosition(moveAbility.AbilityParameters.NextMoveCell);
+            _movementTargetPosition = GameManager.Instance.GridController.GetWorldPosition(targetCell);
             _moveTime = 0;
             _moving = true;
 

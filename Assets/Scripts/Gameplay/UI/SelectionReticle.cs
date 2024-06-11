@@ -8,6 +8,8 @@ namespace Gameplay.UI {
     /// Exists to indicate which tile is currently being moused over
     /// </summary>
     public class SelectionReticle : MonoBehaviour {
+        private static readonly Vector2Int DefaultLocation = new Vector2Int(10000, 10000);
+
         public Color AllySelectionColor;
         public Color EnemySelectionColor;
         public Color NeutralSelectionColor;
@@ -42,7 +44,7 @@ namespace Gameplay.UI {
             _hidden = true;
             _canvasGroup.alpha = 0;
             // Set the location to be very far away
-            _currentLocation = new Vector2Int(10000, 10000);
+            _currentLocation = DefaultLocation;
         }
 
         private void UpdateColor(GridEntity entityAtLocation) {

@@ -27,7 +27,6 @@ namespace Gameplay.Config.Abilities {
         public override bool Targeted => Targetable;
 
         public override void SelectAbility(GridEntity selector) {
-            Debug.Log(nameof(SelectAbility)); 
             GameManager.Instance.SelectionInterface.SelectBuildAbility(this);
         }
 
@@ -58,6 +57,10 @@ namespace Gameplay.Config.Abilities {
         public void DoTargetableAbility(Vector2Int cellPosition, GridEntity selectedEntity, GridEntity.Team selectorTeam, System.Object targetData) {
             BuildAbilityParameters buildParameters = new BuildAbilityParameters {Buildable = (PurchasableData) targetData, BuildLocation = cellPosition};
             selectedEntity.QueueAbility(this, buildParameters, true, false, false);
+        }
+
+        public void RecalculateTargetableAbilitySelection(GridEntity selector) {
+            // Nothing to do
         }
 
         public bool MoveToTargetCellFirst => true;

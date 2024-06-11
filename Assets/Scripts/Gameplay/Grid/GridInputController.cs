@@ -18,11 +18,24 @@ namespace Gameplay.Grid {
         [SerializeField] private CameraManager _cameraManager;
 
         private EntitySelectionManager _entitySelectionManager;
+        private GameManager _gameManager;
+        
         private Vector2Int? _currentHoveredCell;
 
-        public void Initialize(EntitySelectionManager entitySelectionManager) {
+        public void Initialize(EntitySelectionManager entitySelectionManager, GameManager gameManager) {
             _entitySelectionManager = entitySelectionManager;
+            _gameManager = gameManager;
+            if (_gameManager.GameSetupManager.GameInitialized) {
+                RegisterEvents();
+            } else {
+                gameManager.GameSetupManager.GameInitializedEvent += RegisterEvents;
+            }
+        }
+
+        private void RegisterEvents() {
             _entitySelectionManager.SelectedEntityMoved += UpdateSelectedEntityPath;
+            // TODO I don't like that we do this and re-path-find every time an entity spawns/despawns/moves. That's a lot of pathfinding. 
+            _gameManager.CommandManager.EntityCollectionChangedEvent += ReProcessMousePosition;
         }
         
         public void ProcessMouseMove(PointerEventData eventData) {
@@ -32,6 +45,12 @@ namespace Gameplay.Grid {
             _currentHoveredCell = mousePos;
             
             _gridController.HoverOverCell(mousePos);
+        }
+
+        public void ReProcessMousePosition() {
+            if (_currentHoveredCell == null) return;
+            if (!_gridController.IsInBounds(_currentHoveredCell.Value)) return;
+            _gridController.HoverOverCell(_currentHoveredCell.Value);
         }
 
         public void ProcessMouseExit() {

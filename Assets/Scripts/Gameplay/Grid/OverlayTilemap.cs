@@ -15,15 +15,40 @@ namespace Gameplay.Grid {
         private readonly Tilemap _overlayMap;
         private readonly Tile _inaccessibleTile;
         private readonly Tile _slowMovementTile;
-        private readonly GridData _gridData;
-
+        private readonly GridController _gridController;
+        
         private GridEntity _entity;
 
-        public OverlayTilemap(Tilemap overlayMap, GridData gridData, Tile inaccessibleTile, Tile slowMovementTile) {
+        private GridData GridData => _gridController.GridData;
+
+        public OverlayTilemap(Tilemap overlayMap, GridController gridController, Tile inaccessibleTile, Tile slowMovementTile) {
             _overlayMap = overlayMap;
-            _gridData = gridData;
+            _gridController = gridController;
             _inaccessibleTile = inaccessibleTile;
             _slowMovementTile = slowMovementTile;
+        }
+
+        public void UpdateCellOverlaysForAbility(List<Vector2Int> cells, GridEntity entity) {
+            if (_entity != entity) {
+                _entity.UnregisteredEvent -= OnEntityUnregistered;
+                _entity = entity;
+                // Register new entity events
+                if (_entity) {
+                    _entity.UnregisteredEvent += OnEntityUnregistered;
+                }
+            }
+            
+            ClearOverlays();
+
+            if (cells != null) {
+                // Darken all cells
+                SetAllTiles(_slowMovementTile);
+                // Un-darken the specified cells
+                SetTiles(cells, null);
+            } else {
+                // Set the overlay tiles to the default for selecting the entity
+                UpdateCellOverlaysForEntity(entity);
+            }
         }
 
         public void UpdateCellOverlaysForEntity(GridEntity entity) {
@@ -36,10 +61,10 @@ namespace Gameplay.Grid {
             if (_entity) {
                 _entity.UnregisteredEvent += OnEntityUnregistered;
             }
-            ApplyTileOverlays();
+            ApplyEntityMovementTileOverlays();
         }
 
-        private void ApplyTileOverlays() {
+        private void ApplyEntityMovementTileOverlays() {
             ClearOverlays();
 
             if (_entity == null) return;
@@ -52,20 +77,28 @@ namespace Gameplay.Grid {
         /// <summary>
         /// Apply an overlay to all tiles of the given types
         /// </summary>
-        private void SetTiles(List<GameplayTile> tilesToApplyOverlayTo, Tile overlayTile) {
+        private void SetTiles(List<GameplayTile> tilesToApplyOverlayTo, TileBase overlayTile) {
             // Find all of the locations of the given tiles
-            List<Vector3Int> locationsToModify = new List<Vector3Int>();
+            List<Vector2Int> locationsToModify = new List<Vector2Int>();
             foreach (GameplayTile tile in tilesToApplyOverlayTo) {
-                locationsToModify.AddRange(_gridData.GetCells(tile).Select(c => (Vector3Int)c.Location));
+                locationsToModify.AddRange(GridData.GetCells(tile).Select(c => c.Location));
             }
+            SetTiles(locationsToModify, overlayTile);
+        }
+
+        private void SetTiles(IReadOnlyCollection<Vector2Int> cellsToApplyOverlayTo, TileBase overlayTile) {
             // Make a collection of the tile to be applied, because Unity demands it be done this way
             List<TileBase> tilesToApply = new List<TileBase>();
-            for (int i = 0; i < locationsToModify.Count; i++) {
+            for (int i = 0; i < cellsToApplyOverlayTo.Count; i++) {
                 tilesToApply.Add(overlayTile);
             }
             
             // Apply the overlay tiles
-            _overlayMap.SetTiles(locationsToModify.ToArray(), tilesToApply.ToArray());
+            _overlayMap.SetTiles(cellsToApplyOverlayTo.Select(c => (Vector3Int)c).ToArray(), tilesToApply.ToArray());
+        }
+        
+        private void SetAllTiles(TileBase overlayTile) {
+            SetTiles(_gridController.GetAllCellsInBounds(), overlayTile);
         }
 
         private void ClearOverlays() {
