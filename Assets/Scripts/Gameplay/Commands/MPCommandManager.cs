@@ -88,8 +88,8 @@ public class MPCommandManager : AbstractCommandManager {
     [Command(requiresAuthority = false)]
     private void CmdUnRegisterEntity(GridEntity entity, bool showDeathAnimation) {
         LogTimestamp(nameof(CmdUnRegisterEntity));
-        DoUnRegisterEntity(entity);
         RpcEntityUnregistered(entity, showDeathAnimation);
+        DoUnRegisterEntity(entity);
     }
 
     [Command(requiresAuthority = false)]
