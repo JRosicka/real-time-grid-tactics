@@ -15,6 +15,13 @@ namespace Gameplay.Entities.Abilities {
         public MoveAbility(MoveAbilityData data, MoveAbilityParameters parameters, GridEntity performer) : base(data, parameters, performer) {
             
         }
+        
+        public override float CooldownDuration {
+            get {
+                GameplayTile tile = GameManager.Instance.GridController.GridData.GetCell(AbilityParameters.NextMoveCell).Tile;
+                return Performer.MoveTimeToTile(tile);
+            }
+        }
 
         public override void Cancel() {
             // Nothing to do
