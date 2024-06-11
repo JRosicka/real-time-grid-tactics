@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Gameplay.Entities;
 using Gameplay.Entities.Abilities;
+using Gameplay.UI;
 using Mirror;
 using UnityEngine;
 
@@ -60,6 +61,9 @@ namespace Gameplay.Config.Abilities {
         [SerializeField]
         private List<AbilityChannel> _channelBlockers = new List<AbilityChannel>();
         public List<AbilityChannel> ChannelBlockers => _channelBlockers;
+        [SerializeField] 
+        private AbilitySlotLocation _slotLocation;
+        public AbilitySlotLocation SlotLocation => _slotLocation;
 
         [Tooltip("How much time is added to the entity's movement cooldown timer after performing this ability. " +
                  "If there is an active cooldown timer for movement when this ability is performed, then this amount " +

@@ -4068,6 +4068,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 11400000, guid: 34e49ddc4511a404c9f63aec4466a3a5, type: 2}
     - target: {fileID: 8182987531277296321, guid: 6dd1050f28a9d6e4a97253fd0afc4480, type: 3}
+      propertyPath: SlotLocation
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8182987531277296321, guid: 6dd1050f28a9d6e4a97253fd0afc4480, type: 3}
       propertyPath: AbilityInterface
       value: 
       objectReference: {fileID: 1367829116564083173}
@@ -4191,6 +4195,10 @@ PrefabInstance:
     - target: {fileID: 8182987531277296321, guid: 6dd1050f28a9d6e4a97253fd0afc4480, type: 3}
       propertyPath: Hotkey
       value: V
+      objectReference: {fileID: 0}
+    - target: {fileID: 8182987531277296321, guid: 6dd1050f28a9d6e4a97253fd0afc4480, type: 3}
+      propertyPath: SlotLocation
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 8182987531277296321, guid: 6dd1050f28a9d6e4a97253fd0afc4480, type: 3}
       propertyPath: AbilityInterface
@@ -4439,6 +4447,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 11400000, guid: 98e93cf2e89779d4494a08d38620b523, type: 2}
     - target: {fileID: 8182987531277296321, guid: 6dd1050f28a9d6e4a97253fd0afc4480, type: 3}
+      propertyPath: SlotLocation
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8182987531277296321, guid: 6dd1050f28a9d6e4a97253fd0afc4480, type: 3}
       propertyPath: AbilityInterface
       value: 
       objectReference: {fileID: 1367829116564083173}
@@ -4562,6 +4574,10 @@ PrefabInstance:
     - target: {fileID: 8182987531277296321, guid: 6dd1050f28a9d6e4a97253fd0afc4480, type: 3}
       propertyPath: Hotkey
       value: C
+      objectReference: {fileID: 0}
+    - target: {fileID: 8182987531277296321, guid: 6dd1050f28a9d6e4a97253fd0afc4480, type: 3}
+      propertyPath: SlotLocation
+      value: 11
       objectReference: {fileID: 0}
     - target: {fileID: 8182987531277296321, guid: 6dd1050f28a9d6e4a97253fd0afc4480, type: 3}
       propertyPath: AbilityInterface
@@ -4693,6 +4709,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 11400000, guid: eacfc65ea85012e4c82589a51fd62ea8, type: 2}
     - target: {fileID: 8182987531277296321, guid: 6dd1050f28a9d6e4a97253fd0afc4480, type: 3}
+      propertyPath: SlotLocation
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 8182987531277296321, guid: 6dd1050f28a9d6e4a97253fd0afc4480, type: 3}
       propertyPath: AbilityInterface
       value: 
       objectReference: {fileID: 1367829116564083173}
@@ -4822,6 +4842,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 11400000, guid: 2b3dac029f6126240a9fb26ced930b91, type: 2}
     - target: {fileID: 8182987531277296321, guid: 6dd1050f28a9d6e4a97253fd0afc4480, type: 3}
+      propertyPath: SlotLocation
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8182987531277296321, guid: 6dd1050f28a9d6e4a97253fd0afc4480, type: 3}
       propertyPath: AbilityInterface
       value: 
       objectReference: {fileID: 1367829116564083173}
@@ -4945,6 +4969,10 @@ PrefabInstance:
     - target: {fileID: 8182987531277296321, guid: 6dd1050f28a9d6e4a97253fd0afc4480, type: 3}
       propertyPath: Hotkey
       value: F
+      objectReference: {fileID: 0}
+    - target: {fileID: 8182987531277296321, guid: 6dd1050f28a9d6e4a97253fd0afc4480, type: 3}
+      propertyPath: SlotLocation
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 8182987531277296321, guid: 6dd1050f28a9d6e4a97253fd0afc4480, type: 3}
       propertyPath: AbilityInterface
@@ -5076,6 +5104,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 11400000, guid: eacfc65ea85012e4c82589a51fd62ea8, type: 2}
     - target: {fileID: 8182987531277296321, guid: 6dd1050f28a9d6e4a97253fd0afc4480, type: 3}
+      propertyPath: SlotLocation
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 8182987531277296321, guid: 6dd1050f28a9d6e4a97253fd0afc4480, type: 3}
       propertyPath: AbilityInterface
       value: 
       objectReference: {fileID: 1367829116564083173}
@@ -5204,6 +5236,10 @@ PrefabInstance:
       propertyPath: Channel
       value: 
       objectReference: {fileID: 11400000, guid: f0a973c5e8bb25644aa85baaa725a551, type: 2}
+    - target: {fileID: 8182987531277296321, guid: 6dd1050f28a9d6e4a97253fd0afc4480, type: 3}
+      propertyPath: SlotLocation
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 8182987531277296321, guid: 6dd1050f28a9d6e4a97253fd0afc4480, type: 3}
       propertyPath: AbilityInterface
       value: 
@@ -5334,6 +5370,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 11400000, guid: a2bb18c2ded749a4e902028c24c166d0, type: 2}
     - target: {fileID: 8182987531277296321, guid: 6dd1050f28a9d6e4a97253fd0afc4480, type: 3}
+      propertyPath: SlotLocation
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8182987531277296321, guid: 6dd1050f28a9d6e4a97253fd0afc4480, type: 3}
       propertyPath: AbilityInterface
       value: 
       objectReference: {fileID: 1367829116564083173}
@@ -5459,6 +5499,10 @@ PrefabInstance:
       value: X
       objectReference: {fileID: 0}
     - target: {fileID: 8182987531277296321, guid: 6dd1050f28a9d6e4a97253fd0afc4480, type: 3}
+      propertyPath: SlotLocation
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 8182987531277296321, guid: 6dd1050f28a9d6e4a97253fd0afc4480, type: 3}
       propertyPath: AbilityInterface
       value: 
       objectReference: {fileID: 1367829116564083173}
@@ -5582,6 +5626,10 @@ PrefabInstance:
     - target: {fileID: 8182987531277296321, guid: 6dd1050f28a9d6e4a97253fd0afc4480, type: 3}
       propertyPath: Hotkey
       value: Z
+      objectReference: {fileID: 0}
+    - target: {fileID: 8182987531277296321, guid: 6dd1050f28a9d6e4a97253fd0afc4480, type: 3}
+      propertyPath: SlotLocation
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 8182987531277296321, guid: 6dd1050f28a9d6e4a97253fd0afc4480, type: 3}
       propertyPath: AbilityInterface

@@ -28,7 +28,7 @@ namespace Gameplay.UI {
 
             // Set up each ability slot
             foreach (IAbilityData abilityData in entity.Abilities.Select(a => a.Content).Where(a => a.Selectable)) {
-                AbilitySlot slot = AbilitySlots.First(s => s.Channel == abilityData.Channel);
+                AbilitySlot slot = AbilitySlots.First(s => s.SlotLocation == abilityData.SlotLocation);
                 DefaultAbilitySlotBehavior abilityBehavior = new DefaultAbilitySlotBehavior(abilityData, entity);
                 slot.SetUpSlot(abilityBehavior, entity);
             }

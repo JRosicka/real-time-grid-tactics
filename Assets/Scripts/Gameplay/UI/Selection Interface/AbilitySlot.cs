@@ -24,9 +24,8 @@ namespace Gameplay.UI {
             // The slot is not currently selectable
             Unselectable
         }
-        
-        [Tooltip("An entity's ability of this channel will get visualized here")]
-        public AbilityChannel Channel;
+
+        public AbilitySlotLocation SlotLocation;
         public string Hotkey;
         public Color SelectableColor;
         public Color UnselectableColor;
@@ -184,7 +183,7 @@ namespace Gameplay.UI {
         }
 
         private void OnAbilityTimersChanged(IAbility ability, AbilityCooldownTimer timer) {
-            if (!SlotBehavior.CaresAboutAbilityChannels || timer.ChannelBlockers.Contains(Channel)) {
+            if (!SlotBehavior.CaresAboutAbilityChannels || timer.Ability.AbilityData.SlotLocation == SlotLocation) {
                 CheckAvailability();
             }
         }

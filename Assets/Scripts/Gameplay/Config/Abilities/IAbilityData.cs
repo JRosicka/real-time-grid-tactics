@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Gameplay.Entities;
 using Gameplay.Entities.Abilities;
+using Gameplay.UI;
 using Mirror;
 using UnityEngine;
 
@@ -21,6 +22,7 @@ namespace Gameplay.Config.Abilities {
         float CooldownDuration { get; }
         AbilityChannel Channel { get; }
         List<AbilityChannel> ChannelBlockers { get; }
+        AbilitySlotLocation SlotLocation { get; }
         [Tooltip("How much time is added to the entity's movement cooldown timer after performing this ability. If there " +
                  "is an active cooldown timer for movement when this ability is performed, then this amount is added to " +
                  "that timer. Otherwise, a new cooldown timer is added with this amount.")]
