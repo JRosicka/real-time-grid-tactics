@@ -100,9 +100,11 @@ namespace Gameplay.Grid {
                     toAdd.AddRange(cell.Neighbors);
                 }
 
+                toAdd = toAdd.Distinct().ToList();
                 toAdd.RemoveAll(c => ret.Contains(c));
                 ret.AddRange(toAdd);
-                searching = toAdd;
+                searching = new List<CellData>();
+                searching.AddRange(toAdd);
                 toAdd.Clear();
             }
 
