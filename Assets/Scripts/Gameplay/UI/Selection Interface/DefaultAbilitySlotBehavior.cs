@@ -30,11 +30,9 @@ namespace Gameplay.UI {
         }
 
         public AbilitySlot.AvailabilityResult GetAvailability() {
-            if (AbilityData.SelectableWhenBlocked || _selectedEntity.CanUseAbility(AbilityData)) {
-                return AbilitySlot.AvailabilityResult.Selectable;
-            } else {
-                return AbilitySlot.AvailabilityResult.Unselectable;
-            }
+            return _selectedEntity.CanUseAbility(AbilityData, AbilityData.SelectableWhenBlocked) 
+                ? AbilitySlot.AvailabilityResult.Selectable 
+                : AbilitySlot.AvailabilityResult.Unselectable;
         }
 
         public void SetUpSprites(Image abilityImage, Image secondaryAbilityImage, Canvas teamColorsCanvas) {

@@ -188,7 +188,7 @@ namespace Gameplay.Entities {
             return originEntity.MyTeam == targetEntity.MyTeam ? TargetType.Ally : TargetType.Enemy;
         }
 
-        public bool CanUseAbility(IAbilityData data) {
+        public bool CanUseAbility(IAbilityData data, bool ignoreBlockingTimers) {
             // Is this entity set up to use this ability?
             if (Abilities.All(a => a.Content != data)) {
                 return false;
@@ -202,7 +202,7 @@ namespace Gameplay.Entities {
             }
             
             // Are there any active timers blocking this ability?
-            if (ActiveTimers.Any(t => t.ChannelBlockers.Contains(data.Channel) && !t.Expired)) {
+            if (!ignoreBlockingTimers && ActiveTimers.Any(t => t.ChannelBlockers.Contains(data.Channel) && !t.Expired)) {
                 return false;
             }
 

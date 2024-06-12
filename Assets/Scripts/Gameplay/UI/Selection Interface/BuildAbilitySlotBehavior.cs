@@ -47,7 +47,7 @@ namespace Gameplay.UI {
             if (Buildable is UpgradeData && ownedPurchasables.Contains(Buildable)) {
                 // Upgrade that we already own
                 return AbilitySlot.AvailabilityResult.NoLongerAvailable;
-            } else if (_selectedEntity.CanUseAbility(_buildAbilityData) 
+            } else if (_selectedEntity.CanUseAbility(_buildAbilityData, false) 
                        && GameManager.Instance.GetPlayerForTeam(_selectedEntity.MyTeam).ResourcesController.CanAfford(Buildable.Cost)
                        && Buildable.Requirements.All(r => ownedPurchasables.Contains(r))) {
                 // This entity can build this and we can afford this
