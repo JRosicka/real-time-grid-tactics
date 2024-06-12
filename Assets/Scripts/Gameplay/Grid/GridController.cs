@@ -46,6 +46,7 @@ namespace Gameplay.Grid {
             _overlayTilemap = new OverlayTilemap(_overlayMap, this, _inaccessibleTile, _slowMovementTile);
             _selectedUnitTracker.Initialize(_selectedUnitReticle);
             _targetUnitTracker.Initialize(_targetUnitReticle);
+            _selectableCells = null;    // Not sure why this is necessary, but it seems to be
         }
         
         public void TrackEntity(GridEntity entity) {
