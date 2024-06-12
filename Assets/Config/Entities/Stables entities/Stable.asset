@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fafa440752424124be5b9cbee86f1e06, type: 3}
+  m_Name: Stable
+  m_EditorClassIdentifier: 
+  Description: Produces cavalry units.
+  Cost:
+  - Type: 0
+    Amount: 100
+  Requirements: []
+  BuildTime: 20
+  DisplayTeamColorOverMainSprite: 0
+  BaseSprite: {fileID: 21300000, guid: 15adac782b070274aaa623958178593a, type: 3}
+  TeamColorSprite: {fileID: 21300000, guid: 2939debaf959a6644a0790dc339bae82, type: 3}
+  BaseSpriteIconOverride: {fileID: 0}
+  _viewPrefab: {fileID: 6373076591908856349, guid: cbc1e5e772dad9e47a232c148f9e6bd3, type: 3}
+  HP: 30
+  Range: 0
+  Damage: 0
+  NormalMoveTime: 0
+  SlowMoveTime: 0
+  Tags: 01000000
+  Abilities:
+  - {fileID: 11400000, guid: 3c7dea2ff84b5274db97a62f73988486, type: 2}
+  FriendlyUnitsCanShareCell: 1
+  AttackByDefault: 0
