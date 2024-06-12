@@ -132,6 +132,7 @@ namespace Gameplay.Entities {
         public bool CanTargetThings => Range > 0;
         public bool CanMove => MoveTime > 0;
         public Vector2Int Location => GameManager.Instance.GetLocationForEntity(this);
+        private GameplayTile CurrentTileType => GameManager.Instance.GridController.GridData.GetCell(Location).Tile;
 
         public event Action<IAbility, AbilityCooldownTimer> AbilityPerformedEvent;
         public event Action<IAbility, AbilityCooldownTimer> CooldownTimerStartedEvent;
@@ -454,10 +455,11 @@ namespace Gameplay.Entities {
         public void ReceiveAttackFromEntity(GridEntity sourceEntity) {
             Debug.Log($"Attacked!!!! And from a {sourceEntity.UnitName} no less! OW");
             
-            // TODO a-move to the target location if no abilities are queued and configured to attack by default.
+            // TODO Could consider attack-moving to the target location if no abilities are queued and configured to attack by default.
             // Necessary so that the entity doesn't just sit there if attacked by something outside of its range. 
-            
-            CurrentHP -= sourceEntity.Damage;
+
+            float damage = sourceEntity.Damage * CurrentTileType.GetDefenseModifier(EntityData);
+            CurrentHP -= Mathf.RoundToInt(damage);
 
             if (!NetworkClient.active) {
                 // SP

@@ -32,3 +32,5 @@ MonoBehaviour:
   m_FlatTop: 0
   SlowTags: 0200000003000000
   InaccessibleTags: 
+  _defenseModifier: 0.75
+  _defenseBoostTags: 03000000

@@ -1,5 +1,7 @@
 using System.Collections.Generic;
+using System.Linq;
 using Gameplay.Config;
+using Gameplay.Entities;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
@@ -13,6 +15,20 @@ public class GameplayTile : HexagonalRuleTile<GameplayTile.Neighbor> {
     /// Any entities with these tags will not be able to move into cells of this tile type
     /// </summary>
     public List<EntityData.EntityTag> InaccessibleTags;
+
+    [Space] 
+    [Range(0, 1)]
+    [Tooltip("Percentage of base damage that affected units take when attacked on this tile. E.g. a value of .75 means that affected units take 75% of the damage they normally would.")]
+    [SerializeField]
+    private float _defenseModifier = 1f;
+    /// <summary>
+    /// Any entities with these tags will receive the defense bonus
+    /// </summary>
+    [SerializeField]
+    private List<EntityData.EntityTag> _defenseBoostTags;
+    public float GetDefenseModifier(EntityData entityData) {
+        return entityData.Tags.Any(tag => _defenseBoostTags.Contains(tag)) ? _defenseModifier : 1f;
+    }
 
     public class Neighbor : HexagonalRuleTile.TilingRule.Neighbor {
         public const int Null = 3;

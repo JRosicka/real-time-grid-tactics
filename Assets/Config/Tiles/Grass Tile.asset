@@ -30,7 +30,7 @@ MonoBehaviour:
     m_NeighborPositions: []
     m_RuleTransform: 0
   m_FlatTop: 0
-  SpriteA: {fileID: 21300000, guid: 469cef7a37992b54aa340f894517d840, type: 3}
-  SpriteB: {fileID: 21300000, guid: 9a7a5646f2dd66f48ae5cd849fce83ff, type: 3}
   SlowTags: 
   InaccessibleTags: 
+  _defenseModifier: 1
+  _defenseBoostTags: 
