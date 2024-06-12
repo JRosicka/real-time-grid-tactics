@@ -88,6 +88,8 @@ public class MPCommandManager : AbstractCommandManager {
     [Command(requiresAuthority = false)]
     private void CmdUnRegisterEntity(GridEntity entity, bool showDeathAnimation) {
         LogTimestamp(nameof(CmdUnRegisterEntity));
+        // TODO it would be better to have these both (entity collection sync and this rpc call) go out at the same time.
+        // Can't do that cleanly currently since the entity collection is a syncvar.
         RpcEntityUnregistered(entity, showDeathAnimation);
         DoUnRegisterEntity(entity);
     }

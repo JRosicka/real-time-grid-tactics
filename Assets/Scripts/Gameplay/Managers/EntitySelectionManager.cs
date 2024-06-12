@@ -103,7 +103,7 @@ public class EntitySelectionManager {
 
     private void DetermineIfSelectedEntityMoved() {
         if (SelectedEntity == null) return;
-        if (!_gameManager.CommandManager.EntitiesOnGrid.AllEntities().Contains(SelectedEntity)) return;
+        if (!_gameManager.CommandManager.EntitiesOnGrid.IsEntityOnGrid(SelectedEntity)) return;
         if (SelectedEntity.Location == _selectedEntityCurrentLocation) return;
         
         SelectedEntityMoved?.Invoke();
@@ -166,6 +166,7 @@ public class EntitySelectionManager {
 
     public void TryFindPath(Vector2Int cell) {
         if (SelectedEntity == null) return;
+        if (!_gameManager.CommandManager.EntitiesOnGrid.IsEntityOnGrid(SelectedEntity)) return; // May be in the middle of getting unregistered
         if (!SelectedEntity.CanMove) return;
         if (SelectedEntity.MyTeam != _gameManager.LocalPlayer.Data.Team) return;
 

@@ -154,6 +154,10 @@ namespace Gameplay.Entities {
                 .ToList();
         }
 
+        public bool IsEntityOnGrid(GridEntity entity) {
+            return AllEntities().Contains(entity);
+        }
+
         private bool CanEntityShareLocation(GridEntity entity, PositionedGridEntityCollection otherEntities, GridEntity entityToIgnore = null) {
             if (otherEntities == null) return true;
             if (otherEntities.Entities.IsNullOrEmpty()) return true;
