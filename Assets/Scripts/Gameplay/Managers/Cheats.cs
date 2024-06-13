@@ -52,24 +52,31 @@ namespace Gameplay.Managers {
         [Header("Set money")] 
         public bool SetMoney_LocalTeam;
         public int SetMoney_Amount = 10000;
-        public ResourceType SetMoney_ResourceType = ResourceType.Basic;
         [Button]
         public void SetMoney() {
             PlayerResourcesController resourcesController = SetMoney_LocalTeam ? GameManagerInstance.LocalPlayer.ResourcesController : GameManagerInstance.OpponentPlayer.ResourcesController;
-            int currentAmount = resourcesController.GetBalance(SetMoney_ResourceType).Amount;
-            if (currentAmount < SetMoney_Amount) {
-                ResourceAmount amountToGive = new ResourceAmount {
-                    Amount = SetMoney_Amount - currentAmount,
-                    Type = SetMoney_ResourceType
-                };
-                resourcesController.Earn(amountToGive);
-            } else if (currentAmount > SetMoney_Amount) {
-                ResourceAmount amountToLose = new ResourceAmount {
-                    Amount = currentAmount - SetMoney_Amount,
-                    Type = SetMoney_ResourceType
-                };
-                resourcesController.Spend(new List<ResourceAmount> {amountToLose});
+            foreach (ResourceType resourceType in new[] { ResourceType.Basic, ResourceType.Advanced }) {
+                int currentAmount = resourcesController.GetBalance(resourceType).Amount;
+                if (currentAmount < SetMoney_Amount) {
+                    ResourceAmount amountToGive = new ResourceAmount {
+                        Amount = SetMoney_Amount - currentAmount,
+                        Type = resourceType
+                    };
+                    resourcesController.Earn(amountToGive);
+                } else if (currentAmount > SetMoney_Amount) {
+                    ResourceAmount amountToLose = new ResourceAmount {
+                        Amount = currentAmount - SetMoney_Amount,
+                        Type = resourceType
+                    };
+                    resourcesController.Spend(new List<ResourceAmount> {amountToLose});
+                }
             }
+        }
+        
+        public bool RemoveBuildTime { get; private set; }
+        [Button]
+        public void ToggleRemoveBuildTime() {
+            RemoveBuildTime = !RemoveBuildTime;
         }
 
         public void SwapTeamTarget() {

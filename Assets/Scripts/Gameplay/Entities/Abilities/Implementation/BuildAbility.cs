@@ -22,7 +22,8 @@ namespace Gameplay.Entities.Abilities {
             
         }
 
-        public override float CooldownDuration => AbilityParameters.Buildable.BuildTime;
+        public override float CooldownDuration => GameManager.Instance.Cheats.RemoveBuildTime ? .1f 
+            : AbilityParameters.Buildable.BuildTime;
 
         public override void Cancel() {
             // Refund the amount spent on the build

@@ -4,6 +4,7 @@ using Game.Network;
 using Gameplay.Config;
 using Gameplay.Entities;
 using Gameplay.Grid;
+using Gameplay.Managers;
 using Gameplay.UI;
 using Mirror;
 using UnityEngine;
@@ -24,6 +25,7 @@ public class GameManager : MonoBehaviour {
     public GameConfiguration Configuration;
     public SelectionInterface SelectionInterface;
     public ResourcesInterface ResourcesInterface;
+    public Cheats Cheats;
     
     public PathfinderService PathfinderService;
     public EntitySelectionManager EntitySelectionManager;
