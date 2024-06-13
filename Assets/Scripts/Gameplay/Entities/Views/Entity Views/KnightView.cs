@@ -5,7 +5,6 @@ using UnityEngine;
 namespace Gameplay.Entities {
     public class KnightView : GridEntityParticularView {
         public override bool DoAbility(IAbility ability, AbilityCooldownTimer cooldownTimer) {
-            Debug.Log($"{nameof(DoAbility)}: {ability}");
             switch (ability.AbilityData) {
                 case SiegeAbilityData _:
                     DoSiegeAnimation();

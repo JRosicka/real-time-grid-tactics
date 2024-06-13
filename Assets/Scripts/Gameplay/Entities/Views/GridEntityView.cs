@@ -186,9 +186,7 @@ namespace Gameplay.Entities {
             _attackReturnPosition = GameManager.Instance.GridController.GetWorldPosition(Entity.Location);
             
             // We don't want to go all the way to the target location, just part of the way
-            Vector2Int targetCell = attackAbility.AbilityParameters.Target != null
-                ? attackAbility.AbilityParameters.Target.Location
-                : attackAbility.AbilityParameters.Destination;
+            Vector2Int targetCell = attackAbility.AbilityParameters.Target.Location;
             Vector2 targetLocation = GameManager.Instance.GridController.GetWorldPosition(targetCell);
             _attackTargetPosition = Vector2.Lerp(_attackReturnPosition, targetLocation, _distanceTowardsTargetToMove);
             
@@ -242,7 +240,7 @@ namespace Gameplay.Entities {
             cooldownView.Initialize(cooldownTimer, true, true);
         }
 
-        private void SetFacingDirection(Vector2 currentPosition, Vector2 targetPosition) {
+        public void SetFacingDirection(Vector2 currentPosition, Vector2 targetPosition) {
             float xDifference = targetPosition.x - currentPosition.x;
             if (Mathf.Approximately(xDifference, 0)) return;
             
