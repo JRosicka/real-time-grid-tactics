@@ -91,6 +91,8 @@ namespace Gameplay.Entities {
         
         public bool Interactable { get; private set; }
 
+        public GridEntity LastAttackedEntity;
+
         [ClientRpc]
         public void RpcInitialize(EntityData data, Team team) {
             transform.parent = GameManager.Instance.CommandManager.SpawnBucket;
@@ -317,12 +319,22 @@ namespace Gameplay.Entities {
                 if (queueIfNotLegal) {
                     // We specified to perform the ability now, but we can't legally do that. So queue it. 
                     QueueAbility(abilityData, parameters, true, true, false);
+                    if (abilityData is not AttackAbilityData) {
+                        // Clear the targeted entity since we are telling this entity to do something else
+                        LastAttackedEntity = null;
+                    }
                     return true;
                 } else {
                     AbilityFailed(abilityData);
                     return false;
                 }
             }
+            
+            if (abilityData is not AttackAbilityData) {
+                // Clear the targeted entity since we are telling this entity to do something else
+                LastAttackedEntity = null;
+            }
+            
             IAbility abilityInstance = abilityData.CreateAbility(parameters, this);
             abilityInstance.WaitUntilLegal = queueIfNotLegal;
             GameManager.Instance.CommandManager.PerformAbility(abilityInstance, true);
@@ -454,6 +466,8 @@ namespace Gameplay.Entities {
 
         public void ReceiveAttackFromEntity(GridEntity sourceEntity) {
             Debug.Log($"Attacked!!!! And from a {sourceEntity.UnitName} no less! OW");
+
+            sourceEntity.LastAttackedEntity = this;
             
             // TODO Could consider attack-moving to the target location if no abilities are queued and configured to attack by default.
             // Necessary so that the entity doesn't just sit there if attacked by something outside of its range. 

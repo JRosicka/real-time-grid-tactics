@@ -83,7 +83,10 @@ namespace Gameplay.Entities.Abilities {
             if (AttackInRange(Performer, attackerLocation)) {
                 ReQueue();
                 return true;
-            }
+            } 
+            
+            // We are not immediately doing an attack when it is available, so clear the last attack target
+            Performer.LastAttackedEntity = null;
             
             // If we are at the destination, then the attack-move has completed
             if (attackerLocation == AbilityParameters.Destination) {
@@ -109,21 +112,34 @@ namespace Gameplay.Entities.Abilities {
         /// </summary>
         /// <returns>True if there was something to attack, otherwise false</returns>
         private bool AttackInRange(GridEntity attacker, Vector2Int location) {
+            Vector2Int attackerLocation = attacker.Location;
             List<Vector2Int> cellsInRange = GridData.GetCellsInRange(location, attacker.Range)
                 .Select(c => c.Location)
                 .ToList();
-            List<GridEntity> enemiesInRange =
-                GameManager.Instance.CommandManager.EntitiesOnGrid.ActiveEntitiesForTeam(
-                        GridEntity.OpponentTeam(attacker.MyTeam))
+            // Only get the top entities - can't attack an entity behind another entity
+            List<GridEntity> enemiesInRange = GameManager.Instance.CommandManager.EntitiesOnGrid.ActiveEntitiesForTeam(
+                        GridEntity.OpponentTeam(attacker.MyTeam), true)
                     .Where(e => cellsInRange.Contains(e.Location))
                     .ToList();
             
             if (enemiesInRange.Count == 0) return false;
+
+            // If there are multiple viable targets, then disregard the farther-away enemies
+            int closestDistance = enemiesInRange.Min(e => CellDistanceLogic.DistanceBetweenCells(attackerLocation, e.Location));
+            enemiesInRange = enemiesInRange
+                .Where(e => CellDistanceLogic.DistanceBetweenCells(attackerLocation, e.Location) == closestDistance)
+                .ToList();
             
-            // Arbitrarily pick one to attack. TODO pick the closest one instead.
-            GridEntity target = enemiesInRange[Random.Range(0, enemiesInRange.Count)];
-            AbilityParameters.Target = target;
-            target.ReceiveAttackFromEntity(Performer);
+            // If the attacker's last target is a viable target, then pick that one
+            if (attacker.LastAttackedEntity != null && enemiesInRange.Contains(attacker.LastAttackedEntity)) {
+                AbilityParameters.Target = attacker.LastAttackedEntity;
+                attacker.LastAttackedEntity.ReceiveAttackFromEntity(Performer);
+            } else {
+                // Otherwise arbitrarily pick one to attack.
+                GridEntity target = enemiesInRange[Random.Range(0, enemiesInRange.Count)];
+                AbilityParameters.Target = target;
+                target.ReceiveAttackFromEntity(Performer);
+            }
             
             return true;
         }

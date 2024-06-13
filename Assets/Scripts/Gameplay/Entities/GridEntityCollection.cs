@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Mirror;
 using Sirenix.Utilities;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace Gameplay.Entities {
@@ -144,11 +145,14 @@ namespace Gameplay.Entities {
             return entry.Location;
         }
 
-        public List<GridEntity> ActiveEntitiesForTeam(GridEntity.Team team) {
-            return AllEntities().Where(e => e.MyTeam == team).ToList();
+        public List<GridEntity> ActiveEntitiesForTeam(GridEntity.Team team, bool justTop = false) {
+            return AllEntities(justTop).Where(e => e.MyTeam == team).ToList();
         }
 
-        public List<GridEntity> AllEntities() {
+        public List<GridEntity> AllEntities(bool justTop = false) {
+            if (justTop) {
+                return Entities.Select(c => c.GetTopEntity()?.Entity).NotNull().ToList();
+            }
             return Entities.SelectMany(c => c.Entities)
                 .Select(o => o.Entity)
                 .ToList();
