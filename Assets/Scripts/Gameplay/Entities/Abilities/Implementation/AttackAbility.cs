@@ -3,6 +3,7 @@ using System.Linq;
 using Gameplay.Config.Abilities;
 using Gameplay.Grid;
 using Mirror;
+using Sirenix.OdinInspector;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -57,8 +58,8 @@ namespace Gameplay.Entities.Abilities {
             
             // Attack the target if it is in range
             if (CellDistanceLogic.DistanceBetweenCells(attackerLocation, targetLocation) <= Performer.Range) {
-                Debug.Log($"Did attack to {AbilityParameters.Target.DisplayName}, cool");
-                AbilityParameters.Target.ReceiveAttackFromEntity(Performer);
+                Debug.Log($"Doing attack to {AbilityParameters.Target.DisplayName}, cool");
+                DoAttack(AbilityParameters.Target);
                 ReQueue();
                 return true;
             }
@@ -133,12 +134,12 @@ namespace Gameplay.Entities.Abilities {
             // If the attacker's last target is a viable target, then pick that one
             if (attacker.LastAttackedEntity != null && enemiesInRange.Contains(attacker.LastAttackedEntity)) {
                 AbilityParameters.Target = attacker.LastAttackedEntity;
-                attacker.LastAttackedEntity.ReceiveAttackFromEntity(Performer);
+                DoAttack(attacker.LastAttackedEntity);
             } else {
                 // Otherwise arbitrarily pick one to attack.
                 GridEntity target = enemiesInRange[Random.Range(0, enemiesInRange.Count)];
                 AbilityParameters.Target = target;
-                target.ReceiveAttackFromEntity(Performer);
+                DoAttack(target);
             }
             
             return true;
@@ -165,6 +166,11 @@ namespace Gameplay.Entities.Abilities {
 
         private void ReQueue() {
             Performer.QueueAbility(Data, AbilityParameters, true, false, false);
+        }
+
+        private void DoAttack(GridEntity target) {
+            IAttackLogic attackLogic = AttackAbilityLogicFactory.CreateAttackLogic(this);
+            attackLogic.DoAttack(Performer, target);
         }
     }
 

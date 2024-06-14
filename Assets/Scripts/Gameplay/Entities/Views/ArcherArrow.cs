@@ -1,7 +1,8 @@
+using Mirror;
 using UnityEngine;
 
 namespace Gameplay.Entities {
-    public class ArcherArrow : MonoBehaviour {
+    public class ArcherArrow : NetworkBehaviour {
         
     }
 }

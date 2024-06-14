@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: cea1fa961828495881f8202f32d2f84f, type: 3}
-  m_Name: Attack Ability
+  m_Name: Attack Ability Archer Arrow
   m_EditorClassIdentifier: 
   Data:
-    _contentResourceID: Attack Ability
+    _contentResourceID: Attack Ability Archer Arrow
     _id: Attack
     _description: Target an enemy unit to move towards it and attack it. Target an
       empty cell to attack-move to that location.
@@ -32,3 +32,4 @@ MonoBehaviour:
     _selectable: 1
     _selectableWhenBlocked: 1
     _autoSelect: 0
+    AttackType: 2

@@ -25,6 +25,7 @@ public class GameManager : MonoBehaviour {
     public GameConfiguration Configuration;
     public SelectionInterface SelectionInterface;
     public ResourcesInterface ResourcesInterface;
+    public PrefabAtlas PrefabAtlas;
     public Cheats Cheats;
     
     public PathfinderService PathfinderService;

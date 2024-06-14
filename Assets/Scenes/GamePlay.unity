@@ -3362,6 +3362,51 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1094545143}
   m_CullTransparentMesh: 1
+--- !u!1 &1110648183
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1110648184}
+  - component: {fileID: 1110648185}
+  m_Layer: 0
+  m_Name: PrefabAtlas
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1110648184
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1110648183}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1548131395}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1110648185
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1110648183}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f7f6254d0f304c2da3b959c3e7afe14a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ArcherArrow: {fileID: 6713023327431512938, guid: 7ae4d1f5989894796b824bc120222926, type: 3}
 --- !u!1 &1153804042
 GameObject:
   m_ObjectHideFlags: 0
@@ -4461,6 +4506,7 @@ MonoBehaviour:
   Configuration: {fileID: 11400000, guid: 039c03c459bdcb44a97810fd135982a3, type: 2}
   SelectionInterface: {fileID: 5915743770835495769}
   ResourcesInterface: {fileID: 8502686354531273348}
+  PrefabAtlas: {fileID: 1110648185}
   Cheats: {fileID: 1548131396}
 --- !u!4 &1548131395
 Transform:
@@ -4477,6 +4523,7 @@ Transform:
   - {fileID: 527040126}
   - {fileID: 1219106639}
   - {fileID: 504119507}
+  - {fileID: 1110648184}
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

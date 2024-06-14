@@ -13,6 +13,8 @@ namespace Gameplay.Config.Abilities {
     /// </summary>
     [Serializable]
     public class AttackAbilityData : AbilityDataBase<AttackAbilityParameters>, ITargetableAbilityData {
+        public AttackAbilityLogicType AttackType;
+
         public override bool CancelWhenNewCommandGivenToPerformer => false;
 
         public override void SelectAbility(GridEntity selector) {
