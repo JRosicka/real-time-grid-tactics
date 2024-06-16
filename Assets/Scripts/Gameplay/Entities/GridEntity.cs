@@ -497,7 +497,15 @@ namespace Gameplay.Entities {
             HPChangedEvent?.Invoke();
         }
 
+        
+        // Server flag?
         private bool _markedForDeath;
+        // Client flag
+        private bool _unregistered;
+        public bool DeadOrDying() {
+            return this == null || _markedForDeath || _unregistered;
+        }
+        
         private void Kill() {
             if (_markedForDeath) return;
             _markedForDeath = true;
@@ -521,7 +529,8 @@ namespace Gameplay.Entities {
                 // Skip animation, immediately mark as ready to die
                 DeathStatusHandler.SetLocalClientReady();
             }
-            
+
+            _unregistered = true;
             UnregisteredEvent?.Invoke(); 
             KilledEvent?.Invoke();
         }
