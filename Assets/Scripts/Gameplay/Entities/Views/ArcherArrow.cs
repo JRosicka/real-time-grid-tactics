@@ -15,7 +15,7 @@ namespace Gameplay.Entities {
         private GridEntity _attacker;
         private GridEntity _target;
         private GridController _gridController;
-        private bool _shouldPerformUpdates;
+        private bool _actuallyDamageTarget;
         private Vector3 _originalLocation;
         private Vector2Int _lastTargetLocation;
         private Vector3 _lastLocation;
@@ -24,15 +24,30 @@ namespace Gameplay.Entities {
         private float _startingDistance;
         private bool _stopLobbing;
         private int _signInt;
+        private bool _initialized; 
 
         /// <summary>
         /// Should only be called on the server/SP. Sets up logic for moving the arrow to the target. 
         /// </summary>
         public void Initialize(GridEntity attacker, GridEntity target) {
+            _initialized = true;
+            DoInitialize(attacker, target, true);
+            if (NetworkClient.active) {
+                RpcInitialize(attacker, target);
+            }
+        }
+
+        [ClientRpc]
+        private void RpcInitialize(GridEntity attacker, GridEntity target) {
+            if (_initialized) return;
+            DoInitialize(attacker, target, false);
+        }
+
+        private void DoInitialize(GridEntity attacker, GridEntity target, bool actuallyDamageTarget) {
             _attacker = attacker;
             _target = target;
             _gridController = GameManager.Instance.GridController;
-            _shouldPerformUpdates = true;
+            _actuallyDamageTarget = actuallyDamageTarget;
             _originalLocation = transform.position;
             _lastTargetLocation = target.Location;
             _lastLocation = _originalLocation;
@@ -43,7 +58,6 @@ namespace Gameplay.Entities {
         }
 
         public void Update() {
-            if (!_shouldPerformUpdates) return;
             if (_target == null || _target.DeadOrDying()) {
                 Destroy(gameObject);
                 return;
@@ -86,7 +100,9 @@ namespace Gameplay.Entities {
         }
         
         private void HitTarget() {
-            _target.ReceiveAttackFromEntity(_attacker);
+            if (_actuallyDamageTarget) {
+                _target.ReceiveAttackFromEntity(_attacker);
+            }
             Destroy(gameObject);
         }
     }
