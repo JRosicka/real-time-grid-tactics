@@ -26,6 +26,8 @@ MonoBehaviour:
   HP: 14
   Range: 1
   Damage: 2
+  BonusDamage: 6
+  TagsToApplyBonusDamageTo: 02000000
   NormalMoveTime: 3
   SlowMoveTime: 5
   Tags: 03000000

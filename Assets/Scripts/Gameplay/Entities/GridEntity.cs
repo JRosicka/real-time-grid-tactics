@@ -472,7 +472,16 @@ namespace Gameplay.Entities {
             // TODO Could consider attack-moving to the target location if no abilities are queued and configured to attack by default.
             // Necessary so that the entity doesn't just sit there if attacked by something outside of its range. 
 
-            float damage = sourceEntity.Damage * CurrentTileType.GetDefenseModifier(EntityData);
+            // Get base damage
+            float damage = sourceEntity.Damage;
+            
+            // Apply any additive attack modifiers based on tags
+            damage += sourceEntity.EntityData.TagsToApplyBonusDamageTo.Any(t => EntityData.Tags.Contains(t))
+                ? sourceEntity.EntityData.BonusDamage
+                : 0;
+            
+            // Apply any multiplicative defense modifiers
+            damage *= CurrentTileType.GetDefenseModifier(EntityData);
             CurrentHP -= Mathf.RoundToInt(damage);
 
             if (!NetworkClient.active) {
