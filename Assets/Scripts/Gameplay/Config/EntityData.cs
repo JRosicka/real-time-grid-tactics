@@ -18,6 +18,7 @@ namespace Gameplay.Config {
             Cavalry = 2, 
             Infantry = 3,
             Flying = 4,
+            HomeBase = 5,
         }
         
         // Must be private so that Weaver does not try to make a reader and writer for this type. Mirror does this for all public fields, thanks Mirror. 

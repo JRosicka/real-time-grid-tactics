@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fafa440752424124be5b9cbee86f1e06, type: 3}
   m_Name: Base
   m_EditorClassIdentifier: 
-  Description: Your home base - defend this!
+  Description: Home base - destroying this ends the game!
   Cost: []
   Requirements: []
   BuildTime: 1
@@ -26,7 +26,7 @@ MonoBehaviour:
   Damage: 0
   NormalMoveTime: 0
   SlowMoveTime: 0
-  Tags: 01000000
+  Tags: 0100000005000000
   Abilities: []
   FriendlyUnitsCanShareCell: 1
   AttackByDefault: 0
