@@ -47,6 +47,8 @@ namespace Gameplay.Config {
         public bool AttackByDefault;
 
         public bool IsStructure => Tags.Contains(EntityTag.Structure);
+        [Tooltip("Where this can be build. Relevant for structures only.")]
+        public List<GameplayTile> EligibleStructureLocations;
         
         /// <summary>
         /// The order that this should appear and be selectable compared to other entities at the same location.

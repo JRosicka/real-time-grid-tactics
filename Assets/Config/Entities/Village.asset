@@ -26,6 +26,8 @@ MonoBehaviour:
   HP: 30
   Range: 0
   Damage: 0
+  BonusDamage: 0
+  TagsToApplyBonusDamageTo: 
   NormalMoveTime: 0
   SlowMoveTime: 0
   Tags: 01000000
@@ -33,3 +35,5 @@ MonoBehaviour:
   - {fileID: 11400000, guid: bdf047dc1be4f44418a904a085034a1e, type: 2}
   FriendlyUnitsCanShareCell: 1
   AttackByDefault: 0
+  EligibleStructureLocations:
+  - {fileID: 11400000, guid: be8d7ccbdc543194e9649f8f9fadbf2b, type: 2}

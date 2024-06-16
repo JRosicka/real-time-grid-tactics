@@ -4,6 +4,7 @@ using Gameplay.Config;
 using Gameplay.Config.Abilities;
 using Gameplay.Entities;
 using Gameplay.Entities.Abilities;
+using Gameplay.Grid;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -20,6 +21,8 @@ namespace Gameplay.UI {
         public bool IsAvailabilitySensitiveToResources => true;
         public bool CaresAboutAbilityChannels => false;
         public bool IsAbilityTargetable => _buildAbilityData.Targeted;
+        private GridController GridController => GameManager.Instance.GridController;
+        private GridEntityCollection EntitiesOnGrid => GameManager.Instance.CommandManager.EntitiesOnGrid;
 
         public BuildAbilitySlotBehavior(BuildAbilityData buildData, PurchasableData buildable, GridEntity selectedEntity) {
             _buildAbilityData = buildData;
@@ -31,6 +34,10 @@ namespace Gameplay.UI {
             if (_buildAbilityData.Targetable) {
                 GameManager.Instance.EntitySelectionManager.SelectTargetableAbility(_buildAbilityData, Buildable);
                 GameManager.Instance.SelectionInterface.TooltipView.ToggleForTargetableAbility(_buildAbilityData, this);
+                List<Vector2Int> viableTargets = GetViableTargets();
+                if (viableTargets != null) {
+                    GridController.UpdateSelectableCells(viableTargets, _selectedEntity);
+                }
             } else {
                 // Try to perform the build ability
                 _selectedEntity.PerformAbility(_buildAbilityData, new BuildAbilityParameters {
@@ -68,6 +75,35 @@ namespace Gameplay.UI {
                 secondaryAbilityImage.gameObject.SetActive(true);
                 teamColorsCanvas.sortingOrder = Buildable.DisplayTeamColorOverMainSprite ? 2 : 1;
             }
+        }
+        
+        private List<Vector2Int> GetViableTargets() {
+            if (Buildable is not EntityData buildableEntity) return null;
+            
+            List<Vector2Int> viableTargets = new List<Vector2Int>();
+            
+            // Add each cell with a tile that the structure can be built on
+            foreach (GameplayTile tile in buildableEntity.EligibleStructureLocations) {
+                viableTargets.AddRange(GridController.GridData.GetCells(tile).Select(c => c.Location));
+            }
+
+            // Remove any cells that have opponent entities or friendly structures
+            List<Vector2Int> ret = new List<Vector2Int>();
+            foreach (Vector2Int viableTarget in viableTargets) {
+                var entities = EntitiesOnGrid.EntitiesAtLocation(viableTarget);
+                if (entities?.Entities == null) {
+                    // No entities there, so it is eligible
+                    ret.Add(viableTarget);
+                    continue;
+                }
+                if (!entities.Entities.Any(e =>
+                        e.Entity.MyTeam != _selectedEntity.MyTeam || e.Entity.EntityData.IsStructure)) {
+                    // Entities there, but none of them are opponents or friendly structures, so eligible
+                    ret.Add(viableTarget);
+                }
+            }
+
+            return ret;
         }
     }
 }
