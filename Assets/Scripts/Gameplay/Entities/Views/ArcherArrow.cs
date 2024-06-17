@@ -9,6 +9,7 @@ namespace Gameplay.Entities {
     /// upon reaching it. 
     /// </summary>
     public class ArcherArrow : NetworkBehaviour {
+        public float CloseEnoughAmount = .05f;
         public float Speed;
         public AnimationCurve AttackPathCurve;
 
@@ -77,8 +78,12 @@ namespace Gameplay.Entities {
 
             if (_stopLobbing) {
                 // Progress in a straight line
-                Vector3 progressVector = Time.deltaTime * Speed * (_lastTargetWorldPosition - _lastLocation);
+                Vector3 progressVector = Time.deltaTime * Speed * (_lastTargetWorldPosition - _lastLocation).normalized;
                 transform.position += progressVector;
+                if (Vector2.Distance(_lastTargetWorldPosition, transform.position) < CloseEnoughAmount) {
+                    HitTarget();
+                    return;
+                }
             } else {
                 // Lob towards the target
                 _currentProgress += Time.deltaTime * Speed / _startingDistance;
@@ -86,12 +91,12 @@ namespace Gameplay.Entities {
                     HitTarget();
                     return;
                 }
-
+            
                 currentPosition = Vector3.Lerp(_originalLocation, _lastTargetWorldPosition, _currentProgress);
                 Vector2 perpendicular = Vector2.Perpendicular(_lastTargetWorldPosition - _originalLocation);
                 currentPosition += _signInt * AttackPathCurve.Evaluate(_currentProgress) * (Vector3)perpendicular;
                 transform.position = currentPosition;
-
+            
                 float degreeRotation = Mathf.Rad2Deg * Mathf.Atan2(currentPosition.y - _lastLocation.y, currentPosition.x - _lastLocation.x);
                 transform.rotation = Quaternion.Euler(0, 0, degreeRotation);
             }
