@@ -47,8 +47,15 @@ namespace Gameplay.Config {
         public bool AttackByDefault;
 
         public bool IsStructure => Tags.Contains(EntityTag.Structure);
+        
+        [Header("Structure config")]
         [Tooltip("Where this can be build. Relevant for structures only.")]
         public List<GameplayTile> EligibleStructureLocations;
+        [Tooltip("Damage multiplier for units on the structure who are taking damage. Relevant for structures only.")]
+        [Range(0, 1)]
+        public float SharedUnitDamageTakenModifier = 1;
+        [Tooltip("Tags that shared unit damage taken modifier gets applied to, for units sharing this cell. An empty list makes the damage modifier get applied to everyone. Relevant for structures only.")]
+        public List<EntityTag> SharedUnitDamageTakenModifierTags;
         
         /// <summary>
         /// The order that this should appear and be selectable compared to other entities at the same location.

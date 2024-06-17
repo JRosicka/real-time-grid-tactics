@@ -37,3 +37,5 @@ MonoBehaviour:
   AttackByDefault: 0
   EligibleStructureLocations:
   - {fileID: 11400000, guid: be8d7ccbdc543194e9649f8f9fadbf2b, type: 2}
+  SharedUnitDamageTakenModifier: 1
+  SharedUnitDamageTakenModifierTags: 
