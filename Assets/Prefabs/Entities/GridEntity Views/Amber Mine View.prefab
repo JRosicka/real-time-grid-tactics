@@ -172,6 +172,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: IncomeAnimationBehavior
       objectReference: {fileID: 0}
+    - target: {fileID: 7257307962244981539, guid: 6e986d07040c6474fa0b72e98db67860, type: 3}
+      propertyPath: _textColor.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7257307962244981539, guid: 6e986d07040c6474fa0b72e98db67860, type: 3}
+      propertyPath: _textColor.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7257307962244981539, guid: 6e986d07040c6474fa0b72e98db67860, type: 3}
+      propertyPath: _textColor.r
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8817218394539216316, guid: 6e986d07040c6474fa0b72e98db67860, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -186,27 +198,27 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8817218394539216316, guid: 6e986d07040c6474fa0b72e98db67860, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 1
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 8817218394539216316, guid: 6e986d07040c6474fa0b72e98db67860, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 8817218394539216316, guid: 6e986d07040c6474fa0b72e98db67860, type: 3}
       propertyPath: m_AnchorMin.x
-      value: 0
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 8817218394539216316, guid: 6e986d07040c6474fa0b72e98db67860, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 8817218394539216316, guid: 6e986d07040c6474fa0b72e98db67860, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 0
+      value: 75
       objectReference: {fileID: 0}
     - target: {fileID: 8817218394539216316, guid: 6e986d07040c6474fa0b72e98db67860, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 0
+      value: 75
       objectReference: {fileID: 0}
     - target: {fileID: 8817218394539216316, guid: 6e986d07040c6474fa0b72e98db67860, type: 3}
       propertyPath: m_LocalPosition.x

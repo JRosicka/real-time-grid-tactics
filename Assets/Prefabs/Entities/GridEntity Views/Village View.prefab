@@ -21,7 +21,7 @@ PrefabInstance:
       objectReference: {fileID: 5088879590884088445}
     - target: {fileID: 6720547402385952072, guid: 9d77d3ce03b813d42b6c2efebbdefd02, type: 3}
       propertyPath: m_RootOrder
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 6941450737904846212, guid: 9d77d3ce03b813d42b6c2efebbdefd02, type: 3}
       propertyPath: m_Sprite
@@ -151,6 +151,18 @@ PrefabInstance:
     - target: {fileID: 1692742463295867104, guid: 6e986d07040c6474fa0b72e98db67860, type: 3}
       propertyPath: m_Name
       value: IncomeAnimationBehavior
+      objectReference: {fileID: 0}
+    - target: {fileID: 7257307962244981539, guid: 6e986d07040c6474fa0b72e98db67860, type: 3}
+      propertyPath: _textColor.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7257307962244981539, guid: 6e986d07040c6474fa0b72e98db67860, type: 3}
+      propertyPath: _textColor.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7257307962244981539, guid: 6e986d07040c6474fa0b72e98db67860, type: 3}
+      propertyPath: _textColor.r
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8817218394539216316, guid: 6e986d07040c6474fa0b72e98db67860, type: 3}
       propertyPath: m_Pivot.x
