@@ -136,3 +136,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _buildingViewPrefab: {fileID: 5769588006877291633, guid: d46915fc53def4d80b9c3622b0a711d1, type: 3}
+  _animator: {fileID: 6269618838813209706}
+--- !u!95 &6269618838813209706 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 8551011409483650164, guid: 9d77d3ce03b813d42b6c2efebbdefd02, type: 3}
+  m_PrefabInstance: {fileID: 2425578244529659934}
+  m_PrefabAsset: {fileID: 0}

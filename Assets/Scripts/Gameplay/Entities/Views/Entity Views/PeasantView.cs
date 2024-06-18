@@ -4,8 +4,9 @@ using UnityEngine;
 namespace Gameplay.Entities {
     public class PeasantView : GridEntityParticularView {
         [SerializeField] private InProgressBuildingView _buildingViewPrefab;
+        [SerializeField] private Animator _animator;
         private InProgressBuildingView _buildingViewInstance;
-        
+
         public override bool DoAbility(IAbility ability, AbilityCooldownTimer cooldownTimer) {
             Debug.Log($"{nameof(DoAbility)}: {ability}");
             switch (ability) {
@@ -24,14 +25,16 @@ namespace Gameplay.Entities {
             _buildingViewInstance.Initialize(buildAbility);
             timer.ExpiredEvent += BuildAbilityCompleted;
             
-            // Animate the peasant view with the build animation TODO
+            // Animate the peasant view with the build animation
+            _animator.Play("WorkerBuild");
         }
 
         private void BuildAbilityCompleted() {
             // Hide the temporary building visual
             Destroy(_buildingViewInstance.gameObject);
 
-            // Stop the peasant build animation TODO
+            // Stop the peasant build animation
+            _animator.Play("Idle");
         }
     }
 }
