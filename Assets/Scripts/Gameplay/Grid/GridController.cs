@@ -104,15 +104,18 @@ namespace Gameplay.Grid {
             
             _allCellsInBounds = new List<Vector2Int>();
             
-            // HACK - skip all xMin values with even y values, since that doesn't really work well with our setup
-            for (int y = _mapLoader.LowerLeftCell.y; y <= _mapLoader.UpperRightCell.y; y++) {
-                if (Mathf.Abs(y % 2) == 1) {
-                    _allCellsInBounds.Add(new Vector2Int(_mapLoader.LowerLeftCell.x, y));
+            // HACK for when xMin is even - skip all xMin values with even y values, since that doesn't really work well with our setup
+            bool xMinIsEven = Mathf.Abs(_mapLoader.LowerLeftCell.x % 2) == 0;
+            if (xMinIsEven) {
+                for (int y = _mapLoader.LowerLeftCell.y; y <= _mapLoader.UpperRightCell.y; y++) {
+                    if (Mathf.Abs(y % 2) == 1) {
+                        _allCellsInBounds.Add(new Vector2Int(_mapLoader.LowerLeftCell.x, y));
+                    }
                 }
             }
-            
+
             // Fill in the rest
-            for (int x = _mapLoader.LowerLeftCell.x + 1; x <= _mapLoader.UpperRightCell.x; x++) {
+            for (int x = xMinIsEven ? _mapLoader.LowerLeftCell.x + 1 : _mapLoader.LowerLeftCell.x; x <= _mapLoader.UpperRightCell.x; x++) {
                 for (int y = _mapLoader.LowerLeftCell.y; y <= _mapLoader.UpperRightCell.y; y++) {
                     _allCellsInBounds.Add(new Vector2Int(x, y));
                 }

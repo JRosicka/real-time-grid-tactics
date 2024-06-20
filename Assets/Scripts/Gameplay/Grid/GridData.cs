@@ -30,10 +30,11 @@ namespace Gameplay.Grid {
             int yMax = Mathf.Min(bounds.yMax, mapLoader.UpperRightCell.y);
             
             // Create each cell data object
+            bool xMinIsEven = Mathf.Abs(xMin) % 2 == 0;
             for (int x = xMin; x <= xMax; x++) {
                 for (int y = yMin; y <= yMax; y++) {
-                    // HACK - skip all xMin values with even y values, since that doesn't really work well with our setup
-                    if (x == xMin && y % 2 == 0) continue;
+                    // HACK for when xMin is even - skip all xMin values with even y values, since that doesn't really work well with our setup
+                    if (xMinIsEven && x == xMin && y % 2 == 0) continue;
                     
                     GameplayTile tile = tilemap.GetTile<GameplayTile>(new Vector3Int(x, y));
                     if (tile == null) continue;
