@@ -164,7 +164,7 @@ public class GameSetupManager : MonoBehaviour {
         opponentPlayer.Data = Player2Data;
         GameManager.SetPlayers(localPlayer, opponentPlayer);
         
-        MapLoader.LoadMap();
+        MapLoader.LoadMap(localPlayer.Data.Team);
         SpawnStartingUnits();
 
         GameManager.CommandManager.EntitiesOnGrid.AllEntities().ForEach(e => e.PerformOnStartAbilities());
@@ -192,7 +192,7 @@ public class GameSetupManager : MonoBehaviour {
         List<MPGamePlayer> players = FindObjectsOfType<MPGamePlayer>().ToList();
         if (players.Count == MPSetupHandler.PlayerCount) {
             // Load the map client-side first, then notify the server that the client setup is finished
-            MapLoader.LoadMap();
+            MapLoader.LoadMap(players.First(p => p.isLocalPlayer).Data.Team);
             MPSetupHandler.CmdNotifyPlayerReady(players.First(p => p.isLocalPlayer).DisplayName);
         } else if (players.Count > MPSetupHandler.PlayerCount) {
             throw new Exception($"Detected more player objects than the recorded player count! Expected: {MPSetupHandler.PlayerCount}. Actual: {players.Count}");
@@ -231,7 +231,7 @@ public class GameSetupManager : MonoBehaviour {
 
         if (networkPlayer.isLocalPlayer) {
             // This is the server's local player. Since no other clients will notify us that this player joined, we should do it here
-            MapLoader.LoadMap(); 
+            MapLoader.LoadMap(gamePlayer.Data.Team); 
             MarkPlayerReady(networkPlayer.DisplayName + " (host)");
         }
     }

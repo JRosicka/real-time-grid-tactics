@@ -39,6 +39,13 @@ public class CameraManager : MonoBehaviour {
         _mapMinYBase = boundaryDown;
         _mapMaxYBase = boundaryUp;
     }
+
+    public void SetCameraStartPosition(Vector3 startPosition) {
+        Vector3 cameraStartPosition = _camera.transform.position;
+        Vector3 newPosition = ClampCamera(startPosition);
+        newPosition.z = cameraStartPosition.z;
+        _camera.transform.position = newPosition;
+    }
     
     public void StartMiddleMousePan(Vector2 startMousePosition) {
         _middleMousePanStartPosition = startMousePosition;

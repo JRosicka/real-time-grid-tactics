@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gameplay.Config;
 using Gameplay.Entities;
+using Gameplay.Grid;
 using UnityEngine;
 
 /// <summary>
@@ -34,10 +36,21 @@ public class MapLoader : MonoBehaviour {
     [Header("The farthest enter-able areas in the map, in grid-space")]
     public Vector2Int LowerLeftCell;
     public Vector2Int UpperRightCell;
+
+    private GridController GridController => GameManager.Instance.GridController;
     
-    public void LoadMap() {
-        Vector2 lowerLeftWorldPosition = GameManager.Instance.GridController.GetWorldPosition(LowerLeftCell);
-        Vector2 upperRightWorldPosition = GameManager.Instance.GridController.GetWorldPosition(UpperRightCell);
+    public void LoadMap(GridEntity.Team team) {
+        Vector2 lowerLeftWorldPosition = GridController.GetWorldPosition(LowerLeftCell);
+        Vector2 upperRightWorldPosition = GridController.GetWorldPosition(UpperRightCell);
         CameraManager.SetBoundaries(lowerLeftWorldPosition.x, upperRightWorldPosition.x, upperRightWorldPosition.y, lowerLeftWorldPosition.y);
+        CameraManager.SetCameraStartPosition(GridController.GetWorldPosition(GetHomeBaseLocation(team)));
+    }
+
+    private Vector2Int GetHomeBaseLocation(GridEntity.Team team) {
+        return UnitSpawns
+            .First(u => u.Team == team)
+            .Entities
+            .First(e => e.Entity.Tags.Contains(EntityData.EntityTag.HomeBase))
+            .SpawnLocation;
     }
 }
