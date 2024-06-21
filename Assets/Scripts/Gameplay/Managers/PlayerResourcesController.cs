@@ -10,7 +10,7 @@ public enum ResourceType {
 }
     
 [Serializable]
-public struct ResourceAmount {
+public class ResourceAmount {
     public ResourceType Type;
     public int Amount;
 }

@@ -1,3 +1,4 @@
+using System.Linq;
 using Gameplay.Config;
 using Gameplay.Config.Abilities;
 using Gameplay.Entities;
@@ -16,6 +17,11 @@ namespace Gameplay.UI {
         [SerializeField] private Canvas _teamColorsCanvas;
         [SerializeField] private TMP_Text _name;
         [SerializeField] private TMP_Text _description;
+
+        [SerializeField] private GameObject _basicResourceCostContainer;
+        [SerializeField] private TMP_Text _basicResourceCostAmount;
+        [SerializeField] private GameObject _advancedResourceCostContainer;
+        [SerializeField] private TMP_Text _advancedResourceCostAmount;
 
         private GridEntity _selectedEntity;
         private ITargetableAbilityData _selectedTargetableAbility;
@@ -70,6 +76,9 @@ namespace Gameplay.UI {
             
             _name.text = entityData.ID;
             _description.text = entityData.Description;
+            
+            _basicResourceCostContainer.SetActive(false);
+            _advancedResourceCostContainer.SetActive(false);
         }
 
         private void SetUpAbilityView(IAbilityData ability, IAbilitySlotBehavior abilitySlotBehavior) {
@@ -77,9 +86,18 @@ namespace Gameplay.UI {
             if (abilitySlotBehavior is BuildAbilitySlotBehavior buildAbilitySlotBehavior) {
                 _name.text = buildAbilitySlotBehavior.Buildable.ID;
                 _description.text = buildAbilitySlotBehavior.Buildable.Description;
+
+                int basicCost = buildAbilitySlotBehavior.Buildable.Cost.FirstOrDefault(r => r.Type == ResourceType.Basic)?.Amount ?? 0;
+                int advancedCost = buildAbilitySlotBehavior.Buildable.Cost.FirstOrDefault(r => r.Type == ResourceType.Advanced)?.Amount ?? 0;
+                _basicResourceCostContainer.SetActive(basicCost > 0);
+                _basicResourceCostAmount.text = basicCost.ToString();
+                _advancedResourceCostContainer.SetActive(advancedCost > 0);
+                _advancedResourceCostAmount.text = advancedCost.ToString();
             } else {
                 _name.text = ability.ID;
                 _description.text = ability.Description;
+                _basicResourceCostContainer.SetActive(false);
+                _advancedResourceCostContainer.SetActive(false);
             }
         }
         
