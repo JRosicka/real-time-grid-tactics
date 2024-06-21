@@ -42,7 +42,7 @@ namespace Gameplay.Grid {
         public void Initialize() {
             _pathVisualizer.Initialize();
             _mapLoader = GameManager.Instance.GameSetupManager.MapLoader;
-            GridData = new GridData(_gameplayTilemap, _mapLoader);
+            GridData = new GridData(_gameplayTilemap, this);
             _overlayTilemap = new OverlayTilemap(_overlayMap, this, _inaccessibleTile, _slowMovementTile);
             _selectedUnitTracker.Initialize(_selectedUnitReticle);
             _targetUnitTracker.Initialize(_targetUnitReticle);
@@ -104,22 +104,48 @@ namespace Gameplay.Grid {
             
             _allCellsInBounds = new List<Vector2Int>();
             
-            // HACK for when xMin is even - skip all xMin values with even y values, since that doesn't really work well with our setup
-            bool xMinIsEven = Mathf.Abs(_mapLoader.LowerLeftCell.x % 2) == 0;
-            if (xMinIsEven) {
-                for (int y = _mapLoader.LowerLeftCell.y; y <= _mapLoader.UpperRightCell.y; y++) {
-                    if (Mathf.Abs(y % 2) == 1) {
-                        _allCellsInBounds.Add(new Vector2Int(_mapLoader.LowerLeftCell.x, y));
-                    }
+            // Even-numbered y-values default to having "thin" left sides
+            bool needsExtraLeftColumnCells = Mathf.Abs(_mapLoader.LowerLeftCell.y) % 2 == 0 && _mapLoader.WideLeftSide;
+            if (needsExtraLeftColumnCells) {
+                // Add every other cell in the column to the left of the leftmost configured column
+                for (int y = _mapLoader.LowerLeftCell.y + 1; y <= _mapLoader.UpperRightCell.y; y += 2) {
+                    _allCellsInBounds.Add(new Vector2Int(_mapLoader.LowerLeftCell.x - 1, y));
                 }
             }
+            
+            // Leave out the leftmost and rightmost cells if they should be "thin"
+            bool needsLessLeftColumnCells = Mathf.Abs(_mapLoader.LowerLeftCell.y) % 2 == 1 && !_mapLoader.WideLeftSide;
+            if (needsLessLeftColumnCells) {
+                for (int y = _mapLoader.LowerLeftCell.y; y <= _mapLoader.UpperRightCell.y; y += 2) {
+                    _allCellsInBounds.Add(new Vector2Int(_mapLoader.LowerLeftCell.x, y));
+                }
+            }
+            bool needsLessRightColumnCells = Mathf.Abs(_mapLoader.UpperRightCell.y) % 2 == 0 && !_mapLoader.WideRightSide;
 
-            // Fill in the rest
-            for (int x = xMinIsEven ? _mapLoader.LowerLeftCell.x + 1 : _mapLoader.LowerLeftCell.x; x <= _mapLoader.UpperRightCell.x; x++) {
+            // Fill in the middle. 
+            for (int x = needsLessLeftColumnCells ? _mapLoader.LowerLeftCell.x + 1 : _mapLoader.LowerLeftCell.x; 
+                     x <= (needsLessRightColumnCells ? _mapLoader.UpperRightCell.x - 1 : _mapLoader.UpperRightCell.x); 
+                     x++) {
                 for (int y = _mapLoader.LowerLeftCell.y; y <= _mapLoader.UpperRightCell.y; y++) {
                     _allCellsInBounds.Add(new Vector2Int(x, y));
                 }
             }
+            
+            // Odd-numbered y-values default to having "thin" left sides
+            bool needsExtraRightColumnCells = Mathf.Abs(_mapLoader.UpperRightCell.y) % 2 == 1 && _mapLoader.WideRightSide;
+            if (needsExtraRightColumnCells) {
+                // Add every other cell in the column to the right of the rightmost configured column
+                for (int y = _mapLoader.UpperRightCell.y - 1; y >= _mapLoader.LowerLeftCell.y; y -= 2) {
+                    _allCellsInBounds.Add(new Vector2Int(_mapLoader.UpperRightCell.x + 1, y));
+                }
+            }
+            
+            if (needsLessRightColumnCells) {
+                for (int y = _mapLoader.UpperRightCell.y; y >= _mapLoader.LowerLeftCell.y; y -= 2) {
+                    _allCellsInBounds.Add(new Vector2Int(_mapLoader.UpperRightCell.x, y));
+                }
+            }
+
             return _allCellsInBounds;
         }
         

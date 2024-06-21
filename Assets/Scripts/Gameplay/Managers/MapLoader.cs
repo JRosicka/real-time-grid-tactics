@@ -37,12 +37,21 @@ public class MapLoader : MonoBehaviour {
     public Vector2Int LowerLeftCell;
     public Vector2Int UpperRightCell;
 
+    [Header("Whether either side should be 'wide' meaning an extra column beyond the corner cell's column")]
+    public bool WideLeftSide;
+    public bool WideRightSide;
+
     private GridController GridController => GameManager.Instance.GridController;
     
     public void LoadMap(GridEntity.Team team) {
         Vector2 lowerLeftWorldPosition = GridController.GetWorldPosition(LowerLeftCell);
         Vector2 upperRightWorldPosition = GridController.GetWorldPosition(UpperRightCell);
-        CameraManager.SetBoundaries(lowerLeftWorldPosition.x, upperRightWorldPosition.x, upperRightWorldPosition.y, lowerLeftWorldPosition.y);
+        
+        bool needAdditionalHalfCellAtLeft = WideLeftSide;
+        float xMin = lowerLeftWorldPosition.x - (needAdditionalHalfCellAtLeft ? GridController.CellWidth / 2 : 0);
+        bool needAdditionalHalfCellAtRight = WideRightSide;
+        float xMax = upperRightWorldPosition.x + (needAdditionalHalfCellAtRight ? GridController.CellWidth / 2 : 0);
+        CameraManager.SetBoundaries(xMin, xMax, upperRightWorldPosition.y, lowerLeftWorldPosition.y);
         CameraManager.SetCameraStartPosition(GridController.GetWorldPosition(GetHomeBaseLocation(team)));
     }
 
