@@ -147,6 +147,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8698903681141106588, guid: 9d77d3ce03b813d42b6c2efebbdefd02, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 3
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9d77d3ce03b813d42b6c2efebbdefd02, type: 3}
 --- !u!1 &236104011512999305 stripped
@@ -167,7 +171,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   EntityView: {fileID: 7504026570216467247}
-  ArrowPrefab: {fileID: 6713023327431512938, guid: 7ae4d1f5989894796b824bc120222926, type: 3}
 --- !u!114 &7504026570216467247 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5299271008241535793, guid: 9d77d3ce03b813d42b6c2efebbdefd02, type: 3}

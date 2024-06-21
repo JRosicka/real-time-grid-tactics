@@ -28,6 +28,7 @@ namespace Gameplay.Entities {
         [SerializeField]
         private Transform _attackTimerLocation;
         [SerializeField] private Transform _buildTimerLocation;
+        [SerializeField] private Transform _uniqueAbilityTimerLocation;
         [FormerlySerializedAs("UnitView")] [SerializeField] 
         private Transform _unitView;
         [FormerlySerializedAs("UnitAnimator")] [SerializeField] private Animator _unitAnimator;
@@ -234,7 +235,8 @@ namespace Gameplay.Entities {
             Transform timerLocation = cooldownTimer.Ability switch {
                 AttackAbility => _attackTimerLocation,
                 BuildAbility when cooldownTimer.Ability.AbilityData.Targeted => _buildTimerLocation,
-                _ => _moveTimerLocation
+                MoveAbility => _moveTimerLocation,
+                _ => _uniqueAbilityTimerLocation
             };
             AbilityTimerCooldownView cooldownView = Instantiate(ability.AbilityData.AbilityTimerCooldownViewPrefab, timerLocation);
             cooldownView.Initialize(cooldownTimer, true, true);
