@@ -29,9 +29,8 @@ namespace Gameplay.Entities {
         private Transform _attackTimerLocation;
         [SerializeField] private Transform _buildTimerLocation;
         [SerializeField] private Transform _uniqueAbilityTimerLocation;
-        [FormerlySerializedAs("UnitView")] [SerializeField] 
-        private Transform _unitView;
         [FormerlySerializedAs("UnitAnimator")] [SerializeField] private Animator _unitAnimator;
+        [SerializeField] private Transform _directionContainer;
         [SerializeField]
         private PerlinShakeBehaviour ShakeBehaviour;
         [SerializeField]
@@ -247,13 +246,13 @@ namespace Gameplay.Entities {
             if (Mathf.Approximately(xDifference, 0)) return;
             
             bool faceRight = targetPosition.x - currentPosition.x > 0;
-            var localScale = _unitView.transform.localScale;
+            Vector3 localScale = _directionContainer.transform.localScale;
             float scaleX = localScale.x;
             
             if ((faceRight && scaleX > 0) || (!faceRight && scaleX < 0)) return;
             
             localScale = new Vector3(scaleX * -1, localScale.y, localScale.z);
-            _unitView.transform.localScale = localScale;
+            _directionContainer.transform.localScale = localScale;
         }
     }
 }
