@@ -71,6 +71,16 @@ namespace Gameplay.Entities {
             _healthBar.Initialize(new HealthBarLogic(entity));
         }
 
+        private void OnDestroy() {
+            if (Entity == null) return;
+            
+            Entity.AbilityPerformedEvent -= DoAbility;
+            Entity.CooldownTimerStartedEvent -= CreateTimerView;
+            Entity.SelectedEvent -= Selected;
+            Entity.HPChangedEvent -= AttackReceived;
+            Entity.KilledEvent -= Killed;
+        }
+
         private void Update() {
             UpdateMove();
             // Need to do attack after movement in order to properly handle when both are happening
@@ -78,6 +88,7 @@ namespace Gameplay.Entities {
         }
         
         public void DoAbility(IAbility ability, AbilityCooldownTimer cooldownTimer) {
+            if (Entity == null || Entity.DeadOrDying()) return;
             if (_particularView.DoAbility(ability, cooldownTimer)) {
                 DoGenericAbility(ability);
             }
@@ -179,6 +190,8 @@ namespace Gameplay.Entities {
         private bool _triggeredAttackShake;
         
         private void DoGenericAttackAnimation(AttackAbility attackAbility) {
+            if (attackAbility.AbilityParameters.Target.DeadOrDying()) return;
+            
             _attackFromMove = _moving;
             _moving = false;
             
