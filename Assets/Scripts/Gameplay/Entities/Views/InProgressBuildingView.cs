@@ -21,6 +21,13 @@ namespace Gameplay.Entities {
             _buildingVisual_teamColorImage.sprite = entityData.TeamColorSprite;
             _buildingVisual_teamColorImage.color = GameManager.Instance.GetPlayerForTeam(team).Data.TeamColor;
             _buildingVisual_teamColorImage.GetComponent<Canvas>().sortingOrder += entityData.GetStackOrder();
+
+            buildAbility.Performer.KilledEvent += RemoveView;
+        }
+
+        private void RemoveView() {
+            if (!this) return;
+            Destroy(gameObject);
         }
     }
 }
