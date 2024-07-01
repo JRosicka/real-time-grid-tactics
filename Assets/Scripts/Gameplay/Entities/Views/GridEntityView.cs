@@ -62,7 +62,7 @@ namespace Gameplay.Entities {
             _teamColorImage.color = GameManager.Instance.GetPlayerForTeam(entity.MyTeam).Data.TeamColor;
             _teamColorImage.GetComponent<Canvas>().sortingOrder += stackOrder;
             
-            entity.AbilityPerformedEvent += DoAbility;
+            entity.PerformAnimationEvent += DoAbility;
             entity.CooldownTimerStartedEvent += CreateTimerView;
             entity.SelectedEvent += Selected;
             entity.HPChangedEvent += AttackReceived;
@@ -74,7 +74,7 @@ namespace Gameplay.Entities {
         private void OnDestroy() {
             if (Entity == null) return;
             
-            Entity.AbilityPerformedEvent -= DoAbility;
+            Entity.PerformAnimationEvent -= DoAbility;
             Entity.CooldownTimerStartedEvent -= CreateTimerView;
             Entity.SelectedEvent -= Selected;
             Entity.HPChangedEvent -= AttackReceived;

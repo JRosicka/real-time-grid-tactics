@@ -9,28 +9,28 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2dcfcfe888cb4b74967a9991d2aea7f5, type: 3}
-  m_Name: Income Ability Gold
+  m_Script: {fileID: 11500000, guid: 1e24495cef884ff69d1b946f7863d9e8, type: 3}
+  m_Name: Heal On Structure Ability
   m_EditorClassIdentifier: 
   Data:
-    _contentResourceID: Income Ability Gold
-    _id: 
+    _contentResourceID: Heal On Structure Ability
+    _id: Heal On Structure
     _description: 
     _icon: {fileID: 0}
     _abilityTimerCooldownView: {fileID: 0}
     _requirements: []
     _performDuration: 0
-    _cooldownDuration: 5
-    _channel: {fileID: 11400000, guid: e53d1693004b22b4aaf5ee5caa8e749d, type: 2}
-    _channelBlockers: []
+    _cooldownDuration: 0.1
+    _channel: {fileID: 11400000, guid: a2bb18c2ded749a4e902028c24c166d0, type: 2}
+    _channelBlockers:
+    - {fileID: 11400000, guid: a2bb18c2ded749a4e902028c24c166d0, type: 2}
     _slotLocation: 0
     _addedMovementTime: 0
     _performOnStart: 1
     _repeatWhenCooldownFinishes: 1
-    _animateWhenCooldownComplete: 1
+    _animateWhenCooldownComplete: 0
     _selectable: 0
     _selectableWhenBlocked: 0
     _autoSelect: 0
-    ResourceAmountIncome:
-      Type: 0
-      Amount: 10
+    HealAmount: 5
+    HealAbility: {fileID: 11400000, guid: 86aba77c1f31c4824bad0b7e96215b6f, type: 2}

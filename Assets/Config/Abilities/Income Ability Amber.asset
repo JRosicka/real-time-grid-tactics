@@ -27,6 +27,7 @@ MonoBehaviour:
     _addedMovementTime: 0
     _performOnStart: 1
     _repeatWhenCooldownFinishes: 1
+    _animateWhenCooldownComplete: 1
     _selectable: 0
     _selectableWhenBlocked: 0
     _autoSelect: 0

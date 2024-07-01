@@ -139,10 +139,15 @@ namespace Gameplay.Entities {
         public event Action<IAbility, AbilityCooldownTimer> AbilityPerformedEvent;
         public event Action<IAbility, AbilityCooldownTimer> CooldownTimerStartedEvent;
         public event Action<IAbility, AbilityCooldownTimer> CooldownTimerExpiredEvent;
+        public event Action<IAbility, AbilityCooldownTimer> PerformAnimationEvent;
         public event Action SelectedEvent;
         public event Action HPChangedEvent;
         public event Action KilledEvent;
         public event Action UnregisteredEvent;
+        /// <summary>
+        /// Only triggered on server
+        /// </summary>
+        public event Action EntityMovedEvent;
 
         public void Select() {
             if (!Interactable) return;
@@ -166,6 +171,11 @@ namespace Gameplay.Entities {
             MoveAbilityData data = (MoveAbilityData) EntityData.Abilities.First(a => a.Content.GetType() == typeof(MoveAbilityData)).Content;
             PerformAbility(data, new MoveAbilityParameters { Destination = targetCell, NextMoveCell = targetCell, SelectorTeam = MyTeam}, true);
             return true;
+        }
+
+        // Triggered on server
+        public void EntityMoved() {
+            EntityMovedEvent?.Invoke();
         }
 
         public void TryTargetEntity(GridEntity targetEntity, Vector2Int targetCell) {
@@ -265,7 +275,7 @@ namespace Gameplay.Entities {
             timer.AddTime(timeToAdd);
         }
 
-        public void ExpireTimerForAbility(IAbility ability) {
+        public void ExpireTimerForAbility(IAbility ability, bool canceled) {
             // Find the timer with the indicated ability. The timers themselves are not synchronized, but since their abilities are we can use those. 
             AbilityCooldownTimer cooldownTimer = ActiveTimers.FirstOrDefault(t => t.Ability.UID == ability.UID);
             if (cooldownTimer == null) {
@@ -276,6 +286,9 @@ namespace Gameplay.Entities {
             cooldownTimer.Expire();
             ActiveTimers.Remove(cooldownTimer);
             CooldownTimerExpiredEvent?.Invoke(ability, cooldownTimer);
+            if (!canceled && ability.AbilityData.AnimateWhenCooldownComplete) {
+                PerformAnimationEvent?.Invoke(ability, cooldownTimer);
+            }
         }
 
         /// <summary>
@@ -380,7 +393,7 @@ namespace Gameplay.Entities {
         
         public void PerformOnStartAbilities() {
             foreach (IAbilityData abilityData in Abilities.Select(a => a.Content).Where(a => a.PerformOnStart)) {
-                PerformAbility(abilityData, new NullAbilityParameters(), false);
+                PerformAbility(abilityData, new NullAbilityParameters(), true);
             }
         }
 
@@ -407,6 +420,9 @@ namespace Gameplay.Entities {
             }
 
             AbilityPerformedEvent?.Invoke(abilityInstance, cooldownTimer);
+            if (!abilityInstance.AbilityData.AnimateWhenCooldownComplete) {
+                PerformAnimationEvent?.Invoke(abilityInstance, cooldownTimer);
+            }
         }
 
         /// <summary>
@@ -507,6 +523,23 @@ namespace Gameplay.Entities {
             
             if (CurrentHP <= 0) {
                 Kill();
+            }
+        }
+
+        public void Heal(int healAmount) {
+            Debug.Log($"Healed");
+
+            if (CurrentHP == MaxHP) return;
+            
+            CurrentHP += healAmount;
+            CurrentHP = Mathf.Min(CurrentHP, MaxHP);
+
+            if (!NetworkClient.active) {
+                // SP
+                OnHPChanged();
+            } else if (NetworkServer.active) {
+                // MP server
+                RpcOnHPChanged();
             }
         }
 

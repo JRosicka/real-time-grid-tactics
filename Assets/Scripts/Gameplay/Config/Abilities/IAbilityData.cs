@@ -38,6 +38,10 @@ namespace Gameplay.Config.Abilities {
         /// </summary>
         bool CancelWhenNewCommandGivenToPerformer { get; }
         /// <summary>
+        /// Whether to perform view logic when the cooldown is complete instead of when the ability is triggered 
+        /// </summary>
+        bool AnimateWhenCooldownComplete { get; }
+        /// <summary>
         /// Whether this is an active ability that should be selectable via the ability interface or hotkeys
         /// </summary>
         bool Selectable { get; }

@@ -81,6 +81,9 @@ namespace Gameplay.Config.Abilities {
         [SerializeField]
         private bool _repeatWhenCooldownFinishes;
         public bool RepeatWhenCooldownFinishes => _repeatWhenCooldownFinishes;
+        [SerializeField] 
+        private bool _animateWhenCooldownComplete;
+        public bool AnimateWhenCooldownComplete => _animateWhenCooldownComplete;
 
         [SerializeField] 
         private bool _selectable;

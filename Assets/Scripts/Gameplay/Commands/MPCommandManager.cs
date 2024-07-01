@@ -135,7 +135,7 @@ public class MPCommandManager : AbstractCommandManager {
     
     [ClientRpc]
     private void RpcMarkAbilityCooldownExpired(IAbility ability) {
-        DoMarkAbilityCooldownExpired(ability);
+        DoMarkAbilityCooldownExpired(ability, false);
     }
     
     [Command(requiresAuthority = false)]
@@ -146,7 +146,7 @@ public class MPCommandManager : AbstractCommandManager {
 
     [ClientRpc]
     private void RpcMarkAbilityCanceled(IAbility ability) {
-        DoMarkAbilityCooldownExpired(ability);
+        DoMarkAbilityCooldownExpired(ability, true);
     }
 
     [ClientRpc]    // TODO probably just target the client of the player who tried to do the ability

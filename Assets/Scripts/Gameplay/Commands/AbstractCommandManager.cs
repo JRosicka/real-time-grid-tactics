@@ -68,6 +68,7 @@ public abstract class AbstractCommandManager : NetworkBehaviour, ICommandManager
     public void MoveEntityToCell(GridEntity entity, Vector2Int destination) {
         _entitiesOnGrid.MoveEntity(entity, destination);
         SyncEntityCollection();
+        entity.EntityMoved();
     }
     
     public GridEntityCollection.PositionedGridEntityCollection GetEntitiesAtCell(Vector2Int location) {
@@ -154,10 +155,10 @@ public abstract class AbstractCommandManager : NetworkBehaviour, ICommandManager
         ability.Performer.AbilityPerformed(ability);
     }
 
-    protected void DoMarkAbilityCooldownExpired(IAbility ability) {
+    protected void DoMarkAbilityCooldownExpired(IAbility ability, bool canceled) {
         // Check to make sure that the entity performing the ability is still around
         if (ability.Performer != null) {
-            ability.Performer.ExpireTimerForAbility(ability);
+            ability.Performer.ExpireTimerForAbility(ability, canceled);
         } 
     }
 

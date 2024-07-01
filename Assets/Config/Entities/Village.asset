@@ -33,6 +33,8 @@ MonoBehaviour:
   Tags: 01000000
   Abilities:
   - {fileID: 11400000, guid: bdf047dc1be4f44418a904a085034a1e, type: 2}
+  - {fileID: 11400000, guid: dc6b93f0d31da45a8949c673df2c6fa2, type: 2}
+  - {fileID: 11400000, guid: 86aba77c1f31c4824bad0b7e96215b6f, type: 2}
   FriendlyUnitsCanShareCell: 1
   AttackByDefault: 0
   EligibleStructureLocations:

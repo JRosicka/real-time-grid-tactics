@@ -66,9 +66,14 @@ namespace Gameplay.Config {
         }
         
         private void OnValidate() {
-            if (Abilities.Select(a => a.Content.Channel).Distinct().ToList().Count < Abilities.Count) {
-                string channelNames = Abilities.Select(a => a.Content.Channel).Aggregate("", (current, channel) => current + channel.name + ", ");
-                Debug.LogError($"{name}: Detected abilities with the same channel, don't do that! {channelNames}");
+            if (Abilities.Select(a => a.Content.SlotLocation)
+                    .Distinct()
+                    .Where(s => s != AbilitySlotLocation.Unpicked)
+                    .ToList()
+                    .Count < Abilities.Where(a => a.Content.SlotLocation != AbilitySlotLocation.Unpicked)
+                    .ToList().Count) {
+                string channelNames = Abilities.Select(a => a.Content.SlotLocation).Aggregate("", (current, slotLocation) => current + slotLocation + ", ");
+                Debug.LogError($"{name}: Detected abilities with the same slot location, don't do that! {channelNames}");
             } 
 
             if (FriendlyUnitsCanShareCell && !IsStructure) {
