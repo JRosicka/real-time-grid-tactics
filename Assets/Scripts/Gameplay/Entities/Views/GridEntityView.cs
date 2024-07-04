@@ -30,6 +30,7 @@ namespace Gameplay.Entities {
         [SerializeField] private Transform _buildTimerLocation;
         [SerializeField] private Transform _uniqueAbilityTimerLocation;
         [FormerlySerializedAs("UnitAnimator")] [SerializeField] private Animator _unitAnimator;
+        [SerializeField] private Animator _healAnimator;
         [SerializeField] private Transform _directionContainer;
         [SerializeField]
         private PerlinShakeBehaviour ShakeBehaviour;
@@ -65,7 +66,8 @@ namespace Gameplay.Entities {
             entity.PerformAnimationEvent += DoAbility;
             entity.CooldownTimerStartedEvent += CreateTimerView;
             entity.SelectedEvent += Selected;
-            entity.HPChangedEvent += AttackReceived;
+            entity.AttackedEvent += AttackReceived;
+            entity.HealedEvent += HealReceived;
             entity.KilledEvent += Killed;
             
             _healthBar.Initialize(new HealthBarLogic(entity));
@@ -77,7 +79,8 @@ namespace Gameplay.Entities {
             Entity.PerformAnimationEvent -= DoAbility;
             Entity.CooldownTimerStartedEvent -= CreateTimerView;
             Entity.SelectedEvent -= Selected;
-            Entity.HPChangedEvent -= AttackReceived;
+            Entity.AttackedEvent -= AttackReceived;
+            Entity.HealedEvent -= HealReceived;
             Entity.KilledEvent -= Killed;
         }
 
@@ -86,19 +89,19 @@ namespace Gameplay.Entities {
             // Need to do attack after movement in order to properly handle when both are happening
             UpdateAttack();
         }
-        
-        public void DoAbility(IAbility ability, AbilityCooldownTimer cooldownTimer) {
+
+        private void DoAbility(IAbility ability, AbilityCooldownTimer cooldownTimer) {
             if (Entity == null || Entity.DeadOrDying()) return;
             if (_particularView.DoAbility(ability, cooldownTimer)) {
                 DoGenericAbility(ability);
             }
         }
 
-        public void Selected() {
+        private void Selected() {
             Debug.Log(nameof(Selected));
         }
 
-        public async void AttackReceived() {
+        private async void AttackReceived() {
             Debug.Log(nameof(AttackReceived));
 
             // Delay so that the shake times up with the attacker's animation
@@ -106,7 +109,11 @@ namespace Gameplay.Entities {
             ShakeBehaviour.Shake();
         }
 
-        public void Killed() {
+        private void HealReceived() {
+            _healAnimator.Play("Heal");
+        }
+
+        private void Killed() {
             Debug.Log(nameof(Killed));
             // TODO wait until we actually do a kill animation before calling this
             KillAnimationFinished();
