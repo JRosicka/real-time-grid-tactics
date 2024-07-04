@@ -22,7 +22,7 @@ namespace Gameplay.Entities.Abilities {
                 AbilityParameters.Target.EntityMovedEvent -= TargetEntityNoLongerValid;
             }
 
-            if (Data.AbilityLegal(AbilityParameters, Performer)) {
+            if (Data.CanHeal(AbilityParameters, Performer)) {
                 // Actually perform the heal
                 AbilityParameters.Target.Heal(AbilityParameters.HealAmount);
             }

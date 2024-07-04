@@ -18,12 +18,16 @@ namespace Gameplay.Config.Abilities {
             // Nothing to do
         }
 
-        protected override bool AbilityLegalImpl(HealAbilityParameters parameters, GridEntity entity) {
+        public bool CanHeal(HealAbilityParameters parameters, GridEntity entity) {
             return parameters.Target != null 
                    && !parameters.Target.DeadOrDying() 
                    && parameters.Target.CurrentHP < parameters.Target.MaxHP;
         }
-        
+
+        protected override bool AbilityLegalImpl(HealAbilityParameters parameters, GridEntity entity) {
+            return CanHeal(parameters, entity);
+        }
+
         protected override IAbility CreateAbilityImpl(HealAbilityParameters parameters, GridEntity performer) {
             return new HealAbility(this, parameters, performer);
         }

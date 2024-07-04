@@ -28,7 +28,7 @@ namespace Gameplay.Entities.Abilities {
             }
             
             if (Data.RepeatWhenCooldownFinishes) {
-                Performer.PerformAbility(AbilityData, BaseParameters, WaitUntilLegal);
+                Performer.PerformAbility(AbilityData, BaseParameters, WaitUntilLegal, false);
             }
 
             return true;

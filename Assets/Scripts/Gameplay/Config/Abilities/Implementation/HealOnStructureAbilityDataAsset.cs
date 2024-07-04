@@ -21,6 +21,8 @@ namespace Gameplay.Config.Abilities {
         }
 
         protected override bool AbilityLegalImpl(NullAbilityParameters parameters, GridEntity entity) {
+            if (!entity.Registered || entity.DeadOrDying()) return false;
+            
             // Check to see if there is any eligible target at the performer's location
             GridEntity potentialTarget = GameManager.Instance.GetTopEntityAtLocation(entity.Location);
             HealAbilityParameters healParameters = new HealAbilityParameters {

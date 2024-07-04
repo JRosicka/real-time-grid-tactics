@@ -64,22 +64,8 @@ namespace Gameplay.Entities {
         public List<GameplayTile> SlowTiles;
         public List<GameplayTile> InaccessibleTiles;
 
-        [Header("Current")] 
-        [SyncVar(hook = nameof(OnHPChanged))] 
-        private int _currentHP;
-        public int CurrentHP {
-            get => _currentHP;
-            set {
-                _currentHP = value;
-                if (!NetworkClient.active) {
-                    // SP, so syncvars won't work... Trigger manually.
-                    HPChangedEvent?.Invoke();
-                }
-            }
-        }
-        private void OnHPChanged(int oldValue, int newValue) {
-            HPChangedEvent?.Invoke();
-        }
+        [field: Header("Current")]
+        public int CurrentHP { get; private set; }
 
         public List<AbilityCooldownTimer> ActiveTimers = new List<AbilityCooldownTimer>();
         
@@ -142,6 +128,8 @@ namespace Gameplay.Entities {
         public event Action<IAbility, AbilityCooldownTimer> PerformAnimationEvent;
         public event Action SelectedEvent;
         public event Action HPChangedEvent;
+        public event Action AttackedEvent;
+        public event Action HealedEvent;
         public event Action KilledEvent;
         public event Action UnregisteredEvent;
         /// <summary>
@@ -327,7 +315,7 @@ namespace Gameplay.Entities {
             activeTimersCopy.ForEach(t => t.UpdateTimer(Time.deltaTime));
         }
 
-        public bool PerformAbility(IAbilityData abilityData, IAbilityParameters parameters, bool queueIfNotLegal) {
+        public bool PerformAbility(IAbilityData abilityData, IAbilityParameters parameters, bool queueIfNotLegal, bool clearQueueFirst = true) {
             if (!abilityData.AbilityLegal(parameters, this)) {
                 if (queueIfNotLegal) {
                     // We specified to perform the ability now, but we can't legally do that. So queue it. 
@@ -350,7 +338,7 @@ namespace Gameplay.Entities {
             
             IAbility abilityInstance = abilityData.CreateAbility(parameters, this);
             abilityInstance.WaitUntilLegal = queueIfNotLegal;
-            GameManager.Instance.CommandManager.PerformAbility(abilityInstance, true);
+            GameManager.Instance.CommandManager.PerformAbility(abilityInstance, clearQueueFirst);
             return true;
         }
 
@@ -515,10 +503,10 @@ namespace Gameplay.Entities {
 
             if (!NetworkClient.active) {
                 // SP
-                OnHPChanged();
+                OnAttacked();
             } else if (NetworkServer.active) {
                 // MP server
-                RpcOnHPChanged();
+                RpcOnAttacked();
             }
             
             if (CurrentHP <= 0) {
@@ -536,23 +524,33 @@ namespace Gameplay.Entities {
 
             if (!NetworkClient.active) {
                 // SP
-                OnHPChanged();
+                OnHealed();
             } else if (NetworkServer.active) {
                 // MP server
-                RpcOnHPChanged();
+                RpcOnHealed();
             }
         }
 
         [ClientRpc]
-        private void RpcOnHPChanged() {
-            OnHPChanged();
+        private void RpcOnAttacked() {
+            OnAttacked();
         }
 
-        private void OnHPChanged() {
+        private void OnAttacked() {
             HPChangedEvent?.Invoke();
+            AttackedEvent?.Invoke();
         }
 
-        
+        [ClientRpc]
+        private void RpcOnHealed() {
+            OnHealed();
+        }
+
+        private void OnHealed() {
+            HPChangedEvent?.Invoke();
+            HealedEvent?.Invoke();
+        }
+
         // Server flag?
         private bool _markedForDeath;
         // Client flag

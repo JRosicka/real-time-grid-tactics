@@ -58,7 +58,7 @@ public class GameManager : MonoBehaviour {
     }
 
     public GridEntity GetTopEntityAtLocation(Vector2Int location) {
-        return GetEntitiesAtLocation(location)?.Entities.Select(o => o.Entity).First();
+        return GetEntitiesAtLocation(location)?.GetTopEntity().Entity;
     }
 
     public Vector2Int GetLocationForEntity(GridEntity entity) {
