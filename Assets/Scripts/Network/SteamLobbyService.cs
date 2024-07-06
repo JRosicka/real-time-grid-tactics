@@ -46,6 +46,7 @@ public class SteamLobbyService : MonoBehaviour {
     [SerializeField] private GameNetworkManager _networkManager;
 
     private const string ArbitraryStaticID = "ArbitraryStaticID";
+    private const string GameVersionKey = "GameVersionKey";
     private const string HostAddressKey = "HostAddress";
     public const string LobbyUIDKey = "LobbyUID";
     public const string LobbyIsOpenKey = "LobbyIsOpen";
@@ -182,6 +183,9 @@ public class SteamLobbyService : MonoBehaviour {
         // Assign the arbitrary ID so that we can identify lobbies we create
         SteamMatchmaking.SetLobbyData(CurrentLobbyID, ArbitraryStaticID, ArbitraryStaticID);
 
+        // Assign the game version
+        SteamMatchmaking.SetLobbyData(CurrentLobbyID, GameVersionKey, Application.version);
+
         // Assign the game-active status (false since we just started this lobby)
         SteamMatchmaking.SetLobbyData(CurrentLobbyID, LobbyGameActiveKey, false.ToString());
         
@@ -264,6 +268,8 @@ public class SteamLobbyService : MonoBehaviour {
 
         // Only return lobbies with our arbitrary ID that we assign to all lobbies. This prevents lobbies from other developers to be returned (in the case of using the test Steam app).
         SteamMatchmaking.AddRequestLobbyListStringFilter(ArbitraryStaticID, ArbitraryStaticID, ELobbyComparison.k_ELobbyComparisonEqual);
+        // Only return lobbies with the same game version.
+        SteamMatchmaking.AddRequestLobbyListStringFilter(GameVersionKey, Application.version, ELobbyComparison.k_ELobbyComparisonEqual);
         // Only return lobbies that are not actively playing in a game. 
         SteamMatchmaking.AddRequestLobbyListStringFilter(LobbyGameActiveKey, false.ToString(), ELobbyComparison.k_ELobbyComparisonEqual);
         // Worldwide search
