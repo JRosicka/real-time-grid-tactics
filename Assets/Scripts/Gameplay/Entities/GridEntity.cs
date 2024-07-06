@@ -287,7 +287,7 @@ namespace Gameplay.Entities {
             // Find the timer with the indicated ability. The timers themselves are not synchronized, but since their abilities are we can use those. 
             AbilityCooldownTimer cooldownTimer = ActiveTimers.FirstOrDefault(t => t.Ability.UID == ability.UID);
             if (cooldownTimer == null) {
-                Debug.LogError($"Timer for ability {ability.AbilityData.ContentResourceID} was not found");
+                // The ability timer must have already expired
                 return;
             }
 

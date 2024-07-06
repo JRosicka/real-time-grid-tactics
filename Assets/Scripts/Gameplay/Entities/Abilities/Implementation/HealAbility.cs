@@ -17,8 +17,6 @@ namespace Gameplay.Entities.Abilities {
         }
 
         protected override bool CompleteCooldownImpl() {
-            AbilityParameters.HealCompleted = true;
-            
             if (Data.CanHeal(AbilityParameters, Performer)) {
                 // Actually perform the heal
                 AbilityParameters.Target.Heal(AbilityParameters.HealAmount);
@@ -43,27 +41,22 @@ namespace Gameplay.Entities.Abilities {
             AbilityParameters.Target.KilledEvent -= TargetEntityNoLongerValid;
             AbilityParameters.Target.EntityMovedEvent -= TargetEntityNoLongerValid;
 
-            if (!AbilityParameters.HealCompleted) {
-                // Cancel the ability since the target is no longer heal-able
-                GameManager.Instance.CommandManager.CancelAbility(this);
-            }
+            // Cancel the ability since the target is no longer heal-able
+            GameManager.Instance.CommandManager.CancelAbility(this);
         }
     }
 
     public class HealAbilityParameters : IAbilityParameters {
         public GridEntity Target;
         public int HealAmount;
-        public bool HealCompleted;
         public void Serialize(NetworkWriter writer) {
             writer.Write(Target);
             writer.WriteInt(HealAmount);
-            writer.WriteBool(HealCompleted);
         }
 
         public void Deserialize(NetworkReader reader) {
             Target = reader.Read<GridEntity>();
             HealAmount = reader.ReadInt();
-            HealCompleted = reader.ReadBool();
         }
     }
 }
