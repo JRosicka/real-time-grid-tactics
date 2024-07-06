@@ -58,7 +58,6 @@ namespace Gameplay.Entities.Abilities {
             
             // Attack the target if it is in range
             if (CellDistanceLogic.DistanceBetweenCells(attackerLocation, targetLocation) <= Performer.Range) {
-                Debug.Log($"Doing attack to {AbilityParameters.Target.DisplayName}, cool");
                 DoAttack(AbilityParameters.Target);
                 ReQueue();
                 return true;

@@ -106,10 +106,6 @@ public class PlayerResourcesController : NetworkBehaviour {
             // MP host.  
             CmdUpdateBalances();
         }
-
-        foreach (ResourceAmount resourceAmount in _balances) {
-            Debug.Log($"Balance for {resourceAmount.Type}: {resourceAmount.Amount}");
-        }
     }
     
     [Command(requiresAuthority = false)]

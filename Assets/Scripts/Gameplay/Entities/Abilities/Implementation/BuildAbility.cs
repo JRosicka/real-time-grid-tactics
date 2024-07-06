@@ -64,7 +64,6 @@ namespace Gameplay.Entities.Abilities {
         }
         
         public override bool DoAbilityEffect() {
-            Debug.Log($"Did build ability for {AbilityParameters.Buildable.ID} at cell {AbilityParameters.BuildLocation}, cool");
             return true;
         }
     }

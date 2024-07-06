@@ -37,7 +37,6 @@ namespace Gameplay.Entities {
             }
 
             if (UpgradesDict[upgrade]) {
-                Debug.Log($"Not adding upgrade ({upgrade.ID}) because we already have the upgrade");
                 return false;  // We already have the upgrade, so do nothing
             }
 

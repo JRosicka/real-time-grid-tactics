@@ -71,25 +71,13 @@ namespace Gameplay.Grid {
             ProcessMouseMove(eventData);
             Vector2Int mousePos = _gridController.GetCellPosition(eventData.pointerPressRaycast.worldPosition);
             if (!_gridController.IsInBounds(mousePos)) return;
-            
-            MouseClick click;
-            switch (eventData.button) {
-                case PointerEventData.InputButton.Left:
-                    // Left mouse button click
-                    Debug.Log("Click on grid at " + mousePos);
-                    click = MouseClick.Left;
-                    break;
-                case PointerEventData.InputButton.Right:
-                    Debug.Log("Right click at " + mousePos);
-                    click = MouseClick.Right;
-                    break;
-                case PointerEventData.InputButton.Middle:
-                    Debug.Log("Middle mouse click at " + mousePos);
-                    click = MouseClick.Middle;
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException();
-            }
+
+            MouseClick click = eventData.button switch {
+                PointerEventData.InputButton.Left => MouseClick.Left,
+                PointerEventData.InputButton.Right => MouseClick.Right,
+                PointerEventData.InputButton.Middle => MouseClick.Middle,
+                _ => throw new ArgumentOutOfRangeException()
+            };
 
             TryClickOnCell(click, mousePos);
         }

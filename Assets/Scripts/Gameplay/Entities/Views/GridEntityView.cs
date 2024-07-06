@@ -97,13 +97,9 @@ namespace Gameplay.Entities {
             }
         }
 
-        private void Selected() {
-            Debug.Log(nameof(Selected));
-        }
+        private void Selected() { }
 
         private async void AttackReceived() {
-            Debug.Log(nameof(AttackReceived));
-
             // Delay so that the shake times up with the attacker's animation
             await Task.Delay((int)(_attackShakeTriggerTime * 1000));
             ShakeBehaviour.Shake();

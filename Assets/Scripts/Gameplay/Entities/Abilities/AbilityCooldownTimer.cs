@@ -66,15 +66,12 @@ namespace Gameplay.Entities.Abilities {
             _markedCompletedLocally = true;
             if (!NetworkClient.active) {
                 // SP
-                Debug.Log("Ability timer completed, DING");
                 TryCompleteAbilityCooldownAsync().FireAndForget();
             } else if (NetworkServer.active) {
                 // MP and we are the server
-                Debug.Log("Server: Ability timer completed, DING");
                 TryCompleteAbilityCooldownAsync().FireAndForget();
             } else {
                 // MP and we are a client. Only handle client-specific stuff. 
-                Debug.Log("Client: Ability timer completed, DING");
             }
         }
 

@@ -8,7 +8,6 @@ namespace Gameplay.Entities {
         private InProgressBuildingView _buildingViewInstance;
 
         public override bool DoAbility(IAbility ability, AbilityCooldownTimer cooldownTimer) {
-            Debug.Log($"{nameof(DoAbility)}: {ability}");
             switch (ability) {
                 case BuildAbility buildAbility:
                     DoBuildAnimation(buildAbility, cooldownTimer);

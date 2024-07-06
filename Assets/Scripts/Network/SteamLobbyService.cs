@@ -208,7 +208,6 @@ public class SteamLobbyService : MonoBehaviour {
             .TrimEnd('=');
         uid = uid.Substring(0, 8);
         uid = uid.Substring(0, 4) + "-" + uid.Substring(4, 4);
-        Debug.Log($"Generated unique ID: {uid}");
         return uid;
     }
 

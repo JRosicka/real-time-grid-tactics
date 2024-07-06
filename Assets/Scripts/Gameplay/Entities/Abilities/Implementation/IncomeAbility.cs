@@ -24,7 +24,6 @@ namespace Gameplay.Entities.Abilities {
 
         public override bool DoAbilityEffect() {
             // Does not do anything yet - need to wait for cooldown to complete
-            Debug.Log("Starting income cycle, cool");
             return true;
         }
     

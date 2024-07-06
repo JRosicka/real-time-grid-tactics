@@ -25,8 +25,6 @@ namespace Gameplay.Entities {
                 TryTargetEntity(thisEntity, targetEntity, targetCell);
             } else if (targetEntity == null || targetEntity.EntityData.FriendlyUnitsCanShareCell) {
                 thisEntity.TryMoveToCell(targetCell);
-            } else {
-                Debug.Log("Can not attack entity or move to cell, doing nothing");
             }
         }
         

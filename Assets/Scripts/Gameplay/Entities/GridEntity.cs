@@ -159,7 +159,6 @@ namespace Gameplay.Entities {
 
         public void Select() {
             if (!Interactable) return;
-            Debug.Log($"Selecting {UnitName}");
             _interactBehavior.Select(this);
             SelectedEvent?.Invoke();
         }
@@ -173,7 +172,6 @@ namespace Gameplay.Entities {
         }
 
         public bool TryMoveToCell(Vector2Int targetCell) {
-            Debug.Log($"Attempting to move {UnitName} to {targetCell}");
             if (!CanMove) return false;
 
             MoveAbilityData data = (MoveAbilityData) EntityData.Abilities.First(a => a.Content.GetType() == typeof(MoveAbilityData)).Content;
@@ -489,8 +487,6 @@ namespace Gameplay.Entities {
         }
 
         public void ReceiveAttackFromEntity(GridEntity sourceEntity) {
-            Debug.Log($"Attacked!!!! And from a {sourceEntity.UnitName} no less! OW");
-
             sourceEntity.LastAttackedEntity = this;
             
             // TODO Could consider attack-moving to the target location if no abilities are queued and configured to attack by default.
@@ -527,8 +523,6 @@ namespace Gameplay.Entities {
         }
 
         public void Heal(int healAmount) {
-            Debug.Log($"Healed");
-
             if (CurrentHP == MaxHP) return;
 
             int newHP = CurrentHP + healAmount;

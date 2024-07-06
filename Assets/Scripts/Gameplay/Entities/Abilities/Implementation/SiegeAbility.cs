@@ -7,7 +7,6 @@ namespace Gameplay.Entities.Abilities {
     /// </summary>
     public class SiegeAbility : AbilityBase<SiegeAbilityData, NullAbilityParameters> {
         public SiegeAbility(SiegeAbilityData data, NullAbilityParameters parameters, GridEntity performer) : base(data, parameters, performer) {
-            Debug.Log("Created ability, cool");
         }
 
         public override void Cancel() {
@@ -24,7 +23,6 @@ namespace Gameplay.Entities.Abilities {
         }
 
         public override bool DoAbilityEffect() {
-            Debug.Log("Did siege ability, cool");
             return true;
         }
     }
