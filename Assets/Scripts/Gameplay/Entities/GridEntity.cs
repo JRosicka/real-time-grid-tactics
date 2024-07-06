@@ -64,8 +64,28 @@ namespace Gameplay.Entities {
         public List<GameplayTile> SlowTiles;
         public List<GameplayTile> InaccessibleTiles;
 
-        [field: Header("Current")]
-        public int CurrentHP { get; private set; }
+        [Header("Current")] 
+        [SyncVar(hook = nameof(OnHPChanged))] 
+        private int _currentHP;
+        public int CurrentHP {
+            get => _currentHP;
+            set {
+                int oldValue = _currentHP;
+                _currentHP = value;
+                if (!NetworkClient.active) {
+                    // SP, so syncvars won't work... Trigger manually.
+                    OnHPChanged(oldValue, value);
+                }
+            }
+        }
+        private void OnHPChanged(int oldValue, int newValue) {
+            HPChangedEvent?.Invoke();
+            if (oldValue < newValue) {
+                HealedEvent?.Invoke();
+            } else if (oldValue > newValue) {
+                AttackedEvent?.Invoke();
+            }
+        }
 
         public List<AbilityCooldownTimer> ActiveTimers = new List<AbilityCooldownTimer>();
         
@@ -501,14 +521,6 @@ namespace Gameplay.Entities {
             
             CurrentHP -= Mathf.RoundToInt(damage);
 
-            if (!NetworkClient.active) {
-                // SP
-                OnAttacked();
-            } else if (NetworkServer.active) {
-                // MP server
-                RpcOnAttacked();
-            }
-            
             if (CurrentHP <= 0) {
                 Kill();
             }
@@ -518,37 +530,10 @@ namespace Gameplay.Entities {
             Debug.Log($"Healed");
 
             if (CurrentHP == MaxHP) return;
-            
-            CurrentHP += healAmount;
-            CurrentHP = Mathf.Min(CurrentHP, MaxHP);
 
-            if (!NetworkClient.active) {
-                // SP
-                OnHealed();
-            } else if (NetworkServer.active) {
-                // MP server
-                RpcOnHealed();
-            }
-        }
-
-        [ClientRpc]
-        private void RpcOnAttacked() {
-            OnAttacked();
-        }
-
-        private void OnAttacked() {
-            HPChangedEvent?.Invoke();
-            AttackedEvent?.Invoke();
-        }
-
-        [ClientRpc]
-        private void RpcOnHealed() {
-            OnHealed();
-        }
-
-        private void OnHealed() {
-            HPChangedEvent?.Invoke();
-            HealedEvent?.Invoke();
+            int newHP = CurrentHP + healAmount;
+            newHP = Mathf.Min(newHP, MaxHP);
+            CurrentHP = newHP;
         }
 
         // Server flag?
