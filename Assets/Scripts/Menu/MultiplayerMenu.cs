@@ -148,6 +148,10 @@ public class MultiplayerMenu : MonoBehaviour {
         // TODO cancel logic
     }
 
+    public void OnQuitClicked() {
+        Application.Quit(0);
+    }
+
     private event Action _onClickedOkayOnFailureDialog;
     public void OnClickedOkOnFailureDialog() {
         FailureFeedbackDialog.SetActive(false);
