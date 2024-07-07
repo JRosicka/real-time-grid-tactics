@@ -277,7 +277,7 @@ public class GameSetupManager : MonoBehaviour {
         _assignedPlayerCount++;
 
         // Proceed with game setup once all players have been assigned
-        if (MPSetupHandler.PlayerCount == _readyPlayerCount) {
+        if (MPSetupHandler.PlayerCount == _assignedPlayerCount) {
             PerformFinalGameSetupSteps();
         }
     }
