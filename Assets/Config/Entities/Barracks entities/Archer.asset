@@ -15,11 +15,11 @@ MonoBehaviour:
   Description: Standard ranged unit.
   Cost:
   - Type: 0
-    Amount: 50
+    Amount: 75
   - Type: 1
     Amount: 25
   Requirements: []
-  BuildTime: 20
+  BuildTime: 30
   DisplayTeamColorOverMainSprite: 0
   BaseSprite: {fileID: 21300000, guid: a77b97fdf550bfa4fa43e066eff192ee, type: 3}
   TeamColorSprite: {fileID: 21300000, guid: 66d970995ee99364288261e3c02b3d71, type: 3}
