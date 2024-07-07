@@ -129,7 +129,13 @@ public class CameraManager : MonoBehaviour {
         float minY = MapMinY + cameraHeight;
         float maxY = MapMaxY - cameraHeight;
 
-        float newX = Mathf.Clamp(targetPosition.x, minX, maxX);
+        float newX;
+        if (minX > maxX) {
+            // The aspect ratio is too high. Just keep the x position in the middle of the min and max
+            newX = (MapMinX + MapMaxX) / 2;
+        } else {
+            newX = Mathf.Clamp(targetPosition.x, minX, maxX);
+        }
         float newY = Mathf.Clamp(targetPosition.y, minY, maxY);
 
         return new Vector3(newX, newY, targetPosition.z);
