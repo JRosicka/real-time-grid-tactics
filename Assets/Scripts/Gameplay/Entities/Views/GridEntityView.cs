@@ -110,7 +110,6 @@ namespace Gameplay.Entities {
         }
 
         private void Killed() {
-            Debug.Log(nameof(Killed));
             // TODO wait until we actually do a kill animation before calling this
             KillAnimationFinished();
         }
@@ -133,9 +132,6 @@ namespace Gameplay.Entities {
                     break;
                 case AttackAbilityData:
                     DoGenericAttackAnimation((AttackAbility) ability);
-                    break;
-                default:
-                    Debug.LogWarning($"Unexpected entity ability: {ability.AbilityData}");
                     break;
             }
         }
