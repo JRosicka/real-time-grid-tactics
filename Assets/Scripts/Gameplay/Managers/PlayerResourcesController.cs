@@ -24,8 +24,8 @@ public class PlayerResourcesController : NetworkBehaviour {
     
     [SyncVar(hook = nameof(OnBalanceChanged))]
     private List<ResourceAmount> _balances = new List<ResourceAmount> {
-        new ResourceAmount {Type = ResourceType.Basic, },
-        new ResourceAmount {Type = ResourceType.Advanced, Amount = GameManager.Instance.Configuration.StartingAmberAmount}
+        new ResourceAmount {Type = ResourceType.Basic},
+        new ResourceAmount {Type = ResourceType.Advanced}
     };
 
     private void OnBalanceChanged(List<ResourceAmount> oldValue, List<ResourceAmount> newValue) {
