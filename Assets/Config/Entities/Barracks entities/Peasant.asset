@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fafa440752424124be5b9cbee86f1e06, type: 3}
   m_Name: Peasant
   m_EditorClassIdentifier: 
-  Description: Worker unit.
+  Description: Worker unit. Can build resource collection and unit production structures.
   Cost:
   - Type: 0
-    Amount: 100
+    Amount: 50
   Requirements: []
   BuildTime: 15
   DisplayTeamColorOverMainSprite: 0
@@ -26,7 +26,9 @@ MonoBehaviour:
   HP: 10
   Range: 1
   Damage: 1
-  NormalMoveTime: 2
+  BonusDamage: 0
+  TagsToApplyBonusDamageTo: 
+  NormalMoveTime: 2.5
   SlowMoveTime: 4
   Tags: 03000000
   Abilities:
@@ -35,3 +37,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 809bed6bcd2b7854488b82866fc1dccd, type: 2}
   FriendlyUnitsCanShareCell: 0
   AttackByDefault: 0
+  EligibleStructureLocations: []
+  SharedUnitDamageTakenModifier: 1
+  SharedUnitDamageTakenModifierTags: 

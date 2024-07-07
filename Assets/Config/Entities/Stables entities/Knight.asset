@@ -15,9 +15,9 @@ MonoBehaviour:
   Description: Powerful cavalry unit.
   Cost:
   - Type: 0
-    Amount: 200
+    Amount: 150
   - Type: 1
-    Amount: 100
+    Amount: 150
   Requirements: []
   BuildTime: 30
   DisplayTeamColorOverMainSprite: 0
@@ -25,9 +25,11 @@ MonoBehaviour:
   TeamColorSprite: {fileID: 21300000, guid: 42a36b0e8795a1740ac2f2c246405dba, type: 3}
   BaseSpriteIconOverride: {fileID: 0}
   _viewPrefab: {fileID: 7504026570216467247, guid: 756acdd55b6cc334791cee33d2ee90d3, type: 3}
-  HP: 40
+  HP: 35
   Range: 1
   Damage: 6
+  BonusDamage: 0
+  TagsToApplyBonusDamageTo: 
   NormalMoveTime: 2.5
   SlowMoveTime: 5
   Tags: 02000000
@@ -37,3 +39,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 981a0f8e1c01041bda4a621902f205a3, type: 2}
   FriendlyUnitsCanShareCell: 0
   AttackByDefault: 1
+  EligibleStructureLocations: []
+  SharedUnitDamageTakenModifier: 1
+  SharedUnitDamageTakenModifierTags: 

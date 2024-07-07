@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fafa440752424124be5b9cbee86f1e06, type: 3}
   m_Name: Village
   m_EditorClassIdentifier: 
-  Description: Resource collector for gold.
+  Description: Resource collector for Gold.
   Cost:
   - Type: 0
     Amount: 200
@@ -23,7 +23,7 @@ MonoBehaviour:
   TeamColorSprite: {fileID: 21300000, guid: a712e8d461dd0ce4e9b0361a6361fd1b, type: 3}
   BaseSpriteIconOverride: {fileID: 21300000, guid: e79918f010dacef45aaf15f7b634492b, type: 3}
   _viewPrefab: {fileID: 7504026570216467247, guid: 7dc0a13730d5c56438a0306afc8a0823, type: 3}
-  HP: 30
+  HP: 40
   Range: 0
   Damage: 0
   BonusDamage: 0

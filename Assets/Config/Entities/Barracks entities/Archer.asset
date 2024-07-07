@@ -19,16 +19,18 @@ MonoBehaviour:
   - Type: 1
     Amount: 25
   Requirements: []
-  BuildTime: 15
+  BuildTime: 20
   DisplayTeamColorOverMainSprite: 0
   BaseSprite: {fileID: 21300000, guid: a77b97fdf550bfa4fa43e066eff192ee, type: 3}
   TeamColorSprite: {fileID: 21300000, guid: 66d970995ee99364288261e3c02b3d71, type: 3}
   BaseSpriteIconOverride: {fileID: 0}
   _viewPrefab: {fileID: 7504026570216467247, guid: 578b7f995f51c3845914f63ae14fc166, type: 3}
-  HP: 10
+  HP: 12
   Range: 2
   Damage: 4
-  NormalMoveTime: 2
+  BonusDamage: 0
+  TagsToApplyBonusDamageTo: 
+  NormalMoveTime: 2.5
   SlowMoveTime: 4
   Tags: 03000000
   Abilities:
@@ -36,3 +38,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: ab5b4bce08f844c0fb5f4803fe352787, type: 2}
   FriendlyUnitsCanShareCell: 0
   AttackByDefault: 1
+  EligibleStructureLocations: []
+  SharedUnitDamageTakenModifier: 1
+  SharedUnitDamageTakenModifierTags: 
