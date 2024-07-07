@@ -92,6 +92,11 @@ public abstract class AbstractCommandManager : NetworkBehaviour, ICommandManager
 
         GridEntity entityInstance = spawnFunc();
         RegisterEntity(entityInstance, data, spawnLocation, entityToIgnore); 
+        
+        // Now that the entity is registered, perform any on-start abilities
+        if (GameManager.Instance.GameSetupManager.GameInitialized) {
+            entityInstance.PerformOnStartAbilities();
+        }
     }
 
     protected void DoAddUpgrade(UpgradeData data, GridEntity.Team team) {

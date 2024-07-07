@@ -132,9 +132,7 @@ namespace Gameplay.Entities {
         } 
 
         private void OnEntityInitializedAcrossAllClients() {
-            if (GameManager.Instance.GameSetupManager.GameInitialized) {
-                PerformOnStartAbilities();
-            }
+            Debug.Log("Entity initialized across all clients");
         }
 
         public bool CanTargetThings => Range > 0;
