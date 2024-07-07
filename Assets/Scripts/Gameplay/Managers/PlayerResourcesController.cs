@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Gameplay.Config;
 using Mirror;
 using UnityEngine;
 
@@ -23,8 +24,8 @@ public class PlayerResourcesController : NetworkBehaviour {
     
     [SyncVar(hook = nameof(OnBalanceChanged))]
     private List<ResourceAmount> _balances = new List<ResourceAmount> {
-        new ResourceAmount {Type = ResourceType.Basic, Amount = 0},
-        new ResourceAmount {Type = ResourceType.Advanced, Amount = 0}
+        new ResourceAmount {Type = ResourceType.Basic, Amount = GameManager.Instance.Configuration.StartingGoldAmount},
+        new ResourceAmount {Type = ResourceType.Advanced, Amount = GameManager.Instance.Configuration.StartingAmberAmount}
     };
 
     private void OnBalanceChanged(List<ResourceAmount> oldValue, List<ResourceAmount> newValue) {

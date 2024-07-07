@@ -15,8 +15,8 @@ namespace Gameplay.UI {
 
         public void Initialize(PlayerResourcesController resourcesController) {
             resourcesController.BalanceChangedEvent += UpdateBalancesView;
-            BasicResourcesAmount.text = "0";
-            AdvancedResourcesAmount.text = "0";
+            BasicResourcesAmount.text = GameManager.Instance.Configuration.StartingGoldAmount.ToString();
+            AdvancedResourcesAmount.text = GameManager.Instance.Configuration.StartingAmberAmount.ToString();
         }
 
         private void UpdateBalancesView(List<ResourceAmount> resourceAmounts) {

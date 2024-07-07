@@ -12,6 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c1ac0351385b4d34a0d54b2328fbac1d, type: 3}
   m_Name: GameConfiguration
   m_EditorClassIdentifier: 
+  StartingGoldAmount: 50
+  StartingAmberAmount: 0
   Purchasables:
   - {fileID: 11400000, guid: 991ad2a1d6801ee40b831e7850e0ff35, type: 2}
   - {fileID: 11400000, guid: 13a02f740ff7d294ca02fe7f547820c0, type: 2}

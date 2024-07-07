@@ -9,6 +9,9 @@ namespace Gameplay.Config {
     /// </summary>
     [CreateAssetMenu(menuName = "GameConfiguration", fileName = "GameConfiguration", order = 0)]
     public class GameConfiguration : ScriptableObject {
+        public int StartingGoldAmount;
+        public int StartingAmberAmount;
+        
         public List<PurchasableData> Purchasables;
         public List<AbilityDataScriptableObject> Abilities;
         public List<GameplayTile> Tiles;
