@@ -33,13 +33,19 @@ public class PlayerResourcesController : NetworkBehaviour {
     }
 
     public void Initialize(GameConfiguration gameConfiguration) {
-        ResourceAmount currentBasicBalance = GetBalance(ResourceType.Basic);
-        currentBasicBalance.Amount += gameConfiguration.StartingGoldAmount;
-        ResourceAmount currentAmberBalance = GetBalance(ResourceType.Advanced);
-        currentAmberBalance.Amount += gameConfiguration.StartingAmberAmount;
-        
-        SetBalance(currentBasicBalance);
-        SetBalance(currentAmberBalance);
+        if (gameConfiguration.StartingGoldAmount > 0) {
+            Earn(new ResourceAmount {
+                Type = ResourceType.Basic,
+                Amount = gameConfiguration.StartingGoldAmount
+            });
+        }
+
+        if (gameConfiguration.StartingAmberAmount > 0) {
+            Earn(new ResourceAmount {
+                Type = ResourceType.Advanced,
+                Amount = gameConfiguration.StartingAmberAmount
+            });
+        }
     }
 
     public ResourceAmount GetBalance(ResourceType type) {
