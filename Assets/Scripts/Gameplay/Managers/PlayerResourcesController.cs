@@ -24,12 +24,22 @@ public class PlayerResourcesController : NetworkBehaviour {
     
     [SyncVar(hook = nameof(OnBalanceChanged))]
     private List<ResourceAmount> _balances = new List<ResourceAmount> {
-        new ResourceAmount {Type = ResourceType.Basic, Amount = GameManager.Instance.Configuration.StartingGoldAmount},
+        new ResourceAmount {Type = ResourceType.Basic, },
         new ResourceAmount {Type = ResourceType.Advanced, Amount = GameManager.Instance.Configuration.StartingAmberAmount}
     };
 
     private void OnBalanceChanged(List<ResourceAmount> oldValue, List<ResourceAmount> newValue) {
         BalanceChangedEvent?.Invoke(newValue);
+    }
+
+    public void Initialize(GameConfiguration gameConfiguration) {
+        ResourceAmount currentBasicBalance = GetBalance(ResourceType.Basic);
+        currentBasicBalance.Amount += gameConfiguration.StartingGoldAmount;
+        ResourceAmount currentAmberBalance = GetBalance(ResourceType.Advanced);
+        currentAmberBalance.Amount += gameConfiguration.StartingAmberAmount;
+        
+        SetBalance(currentBasicBalance);
+        SetBalance(currentAmberBalance);
     }
 
     public ResourceAmount GetBalance(ResourceType type) {

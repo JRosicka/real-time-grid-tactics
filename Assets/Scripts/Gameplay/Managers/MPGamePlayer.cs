@@ -13,8 +13,9 @@ public class MPGamePlayer : NetworkBehaviour, IGamePlayer {
     [SerializeField]
     private PlayerOwnedPurchasablesController _ownedPurchasablesController;
     public PlayerOwnedPurchasablesController OwnedPurchasablesController => _ownedPurchasablesController;
-    public void Initialize(List<UpgradeData> upgradesToRegister) {
+    public void Initialize(List<UpgradeData> upgradesToRegister, GameConfiguration gameConfiguration) {
         _ownedPurchasablesController.Initialize(Data.Team, upgradesToRegister);
+        _resourcesController.Initialize(gameConfiguration);
     }
 
     public override void OnStartLocalPlayer() { }

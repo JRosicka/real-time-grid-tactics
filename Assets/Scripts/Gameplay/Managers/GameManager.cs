@@ -82,10 +82,10 @@ public class GameManager : MonoBehaviour {
     
     public void SetPlayers(IGamePlayer localPlayer, IGamePlayer opponentPlayer) {
         LocalPlayer = localPlayer;
-        localPlayer.Initialize(Configuration.GetUpgrades());
+        localPlayer.Initialize(Configuration.GetUpgrades(), Configuration);
 
         OpponentPlayer = opponentPlayer;
-        opponentPlayer.Initialize(Configuration.GetUpgrades());
+        opponentPlayer.Initialize(Configuration.GetUpgrades(), Configuration);
 
         ResourcesInterface.Initialize(LocalPlayer.ResourcesController);
     }

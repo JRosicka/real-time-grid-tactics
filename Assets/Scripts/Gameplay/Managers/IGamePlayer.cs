@@ -13,5 +13,5 @@ public interface IGamePlayer {
     /// currently active in the game (not destroyed).
     /// </summary>
     PlayerOwnedPurchasablesController OwnedPurchasablesController { get; }    // TODO actually handle adding/removing things from this
-    void Initialize(List<UpgradeData> upgradesToRegister);
+    void Initialize(List<UpgradeData> upgradesToRegister, GameConfiguration gameConfiguration);
 }
