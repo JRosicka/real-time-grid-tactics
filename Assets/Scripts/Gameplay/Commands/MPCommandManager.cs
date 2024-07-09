@@ -15,9 +15,9 @@ public class MPCommandManager : AbstractCommandManager {
         AbilityQueueExecutor.Initialize(this, gameEndManager);
     }
 
-    public override void SpawnEntity(EntityData data, Vector2Int spawnLocation, GridEntity.Team team, GridEntity entityToIgnore) {
+    public override void SpawnEntity(EntityData data, Vector2Int spawnLocation, GridEntity.Team team, GridEntity spawnerEntity) {
         LogTimestamp(nameof(SpawnEntity));
-        CmdSpawnEntity(data, spawnLocation, team, entityToIgnore);
+        CmdSpawnEntity(data, spawnLocation, team, spawnerEntity);
     }
 
     public override void AddUpgrade(UpgradeData data, GridEntity.Team team) {
@@ -65,11 +65,9 @@ public class MPCommandManager : AbstractCommandManager {
             GridEntity entityInstance = Instantiate(GridEntityPrefab, GridController.GetWorldPosition(spawnLocation), Quaternion.identity, SpawnBucket);
             NetworkServer.Spawn(entityInstance.gameObject);
             
-            // Set the items that we can't wait until client initialization for
-            entityInstance.EntityData = data;
-            entityInstance.MyTeam = team;
-
+            entityInstance.ServerInitialize(data, team, spawnLocation);
             entityInstance.RpcInitialize(data, team);
+            
             return entityInstance;
         }, team, entityToIgnore);
     }

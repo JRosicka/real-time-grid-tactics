@@ -30,7 +30,7 @@ MonoBehaviour:
     m_NeighborPositions: []
     m_RuleTransform: 0
   m_FlatTop: 0
-  SlowTags: 0200000003000000
+  SlowTags: 020000000300000001000000
   InaccessibleTags: 
   _defenseModifier: 0.75
   _defenseBoostTags: 03000000

@@ -11,17 +11,15 @@ public class SPCommandManager : AbstractCommandManager {
         AbilityQueueExecutor.Initialize(this, gameEndManager);
     }
 
-    public override void SpawnEntity(EntityData data, Vector2Int spawnLocation, GridEntity.Team team, GridEntity entityToIgnore) {
+    public override void SpawnEntity(EntityData data, Vector2Int spawnLocation, GridEntity.Team team, GridEntity spawnerEntity) {
         DoSpawnEntity(data, spawnLocation, () => {
             GridEntity entityInstance = Instantiate(GridEntityPrefab, GridController.GetWorldPosition(spawnLocation), Quaternion.identity, SpawnBucket);
             
-            // Set the items that we can't wait until client initialization for
-            entityInstance.EntityData = data;
-            entityInstance.MyTeam = team;
+            entityInstance.ServerInitialize(data, team, spawnLocation);
+            entityInstance.ClientInitialize(data, team);
             
-            entityInstance.DoInitialize(data, team);
             return entityInstance;
-        }, team, entityToIgnore); 
+        }, team, spawnerEntity); 
     }
  
     public override void AddUpgrade(UpgradeData data, GridEntity.Team team) {

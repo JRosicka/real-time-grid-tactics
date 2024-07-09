@@ -98,17 +98,33 @@ namespace Gameplay.Entities {
         public bool Interactable { get; private set; }
 
         public GridEntity LastAttackedEntity;
+        
+        public IRallyLogic RallyLogic { get; private set; }
 
+        /// <summary>
+        /// Initialization method ran only on the server, before <see cref="ClientInitialize"/>.
+        /// </summary>
+        public void ServerInitialize(EntityData data, Team team, Vector2Int spawnLocation) {    // TODO hmm, I wonder if it would be better to set the location here and listen for updates when it moves, so that we don't need to worry about registration states. There have been a lot of bugs related to entities not being registered when trying to get their location. 
+            EntityData = data;
+            MyTeam = team;
+
+            if (EntityData.CanRally) {
+                RallyLogic = new StructureRallyLogic(spawnLocation);
+            } else {
+                RallyLogic = new NullRallyLogic();
+            }
+        }
+        
         [ClientRpc]
         public void RpcInitialize(EntityData data, Team team) {
             transform.parent = GameManager.Instance.CommandManager.SpawnBucket;
-            DoInitialize(data, team);
+            ClientInitialize(data, team);
         }
 
         /// <summary>
         /// Initialization that runs on each client
         /// </summary>
-        public void DoInitialize(EntityData data, Team team) {
+        public void ClientInitialize(EntityData data, Team team) {
             EntityData = data;
             MyTeam = team;
             Team playerTeam = GameManager.Instance.LocalPlayer.Data.Team;
@@ -174,6 +190,14 @@ namespace Gameplay.Entities {
 
             MoveAbilityData data = (MoveAbilityData) EntityData.Abilities.First(a => a.Content.GetType() == typeof(MoveAbilityData)).Content;
             PerformAbility(data, new MoveAbilityParameters { Destination = targetCell, NextMoveCell = targetCell, SelectorTeam = MyTeam}, true);
+            return true;
+        }
+
+        public bool TryAttackMoveToCell(Vector2Int targetCell) {
+            if (!CanMove) return false;
+
+            AttackAbilityData data = (AttackAbilityData) EntityData.Abilities.First(a => a.Content.GetType() == typeof(AttackAbilityData)).Content;
+            PerformAbility(data, new AttackAbilityParameters { Destination = targetCell, TargetFire = false }, true);
             return true;
         }
 
@@ -438,10 +462,9 @@ namespace Gameplay.Entities {
         }
 
         /// <summary>
-        /// Whether this entity can move to a cell with the given tile, assuming it starts adjacent to it.
+        /// Whether this entity can move to (or rally to) a cell with the given tile, assuming it starts adjacent to it.
         /// </summary>
-        public bool CanEnterTile(GameplayTile tile) {
-            if (!CanMove) return false;
+        public bool CanPathFindToTile(GameplayTile tile) {
             return !InaccessibleTiles.Contains(tile);
         }
         
@@ -450,7 +473,7 @@ namespace Gameplay.Entities {
         /// adjacent to it.
         /// </summary>
         public float MoveTimeToTile(GameplayTile tile) {
-            if (!CanEnterTile(tile)) {
+            if (!CanPathFindToTile(tile)) {
                 return -1;
             }
 

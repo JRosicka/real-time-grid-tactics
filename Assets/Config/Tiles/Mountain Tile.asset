@@ -31,6 +31,6 @@ MonoBehaviour:
     m_RuleTransform: 0
   m_FlatTop: 0
   SlowTags: 
-  InaccessibleTags: 0200000003000000
+  InaccessibleTags: 020000000300000001000000
   _defenseModifier: 1
   _defenseBoostTags: 

@@ -45,7 +45,7 @@ public class PathfinderService {
     /// <exception cref="Exception">If the generated path is too long</exception>
     public Path FindPath(GridEntity entity, Vector2Int destination) {
         int maxSearch = MaxCellsToSearch;
-        if (!entity.CanEnterTile(GridController.GridData.GetCell(destination).Tile) 
+        if (!entity.CanPathFindToTile(GridController.GridData.GetCell(destination).Tile) 
                 || !CanEntityEnterCell(destination, entity.EntityData, entity.MyTeam)) {
             // Can't go to destination, so let's not overdo the search since we're just gonna pick the best available choice anyway
             maxSearch = MaxCellsToSearchWhenWeKnowNoPathExists;
@@ -154,7 +154,7 @@ public class PathfinderService {
     }
     
     // TODO repurpose this a bit - we need to factor in types. We will want to consider a similar method for calculating movement penalties as well. 
-    public static bool CanEntityEnterCell(Vector2Int cellPosition, EntityData entityData, GridEntity.Team entityTeam, List<GridEntity> entitiesToIgnore = null) {
+    public static bool CanEntityEnterCell(Vector2Int cellPosition, EntityData entityData, GridEntity.Team entityTeam, List<GridEntity> entitiesToIgnore = null, bool forRallying = false) {
         entitiesToIgnore ??= new List<GridEntity>();
         List<GridEntity> entitiesAtLocation = GameManager.Instance.GetEntitiesAtLocation(cellPosition)?.Entities
             .Select(o => o.Entity).ToList();
@@ -173,8 +173,11 @@ public class PathfinderService {
             // Note that this means that structures can not be built on cells that contain units! This is intentional. 
             return false;
         }
-        // So the only entities here do indeed allow for non-structures to share space with them. Still need to check if this is a structure. Can't put a structure on a structure!
-        if (entityData.IsStructure && entitiesAtLocation.Any(e => e.EntityData.IsStructure)) {
+        // So the only entities here do indeed allow for non-structures to share space with them.
+        // Still need to check if this is a structure. Can't put a structure on a structure!
+        // Though if this is for the purpose of determining whether a production structure can rally here, then ignore the 
+        // fact that this is a structure
+        if (!forRallying && entityData.IsStructure && entitiesAtLocation.Any(e => e.EntityData.IsStructure)) {
             return false;
         }
         

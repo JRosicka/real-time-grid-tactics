@@ -19,6 +19,7 @@ namespace Gameplay.Config {
             Infantry = 3,
             Flying = 4,
             HomeBase = 5,
+            Worker = 6,
         }
         
         // Must be private so that Weaver does not try to make a reader and writer for this type. Mirror does this for all public fields, thanks Mirror. 
@@ -35,6 +36,8 @@ namespace Gameplay.Config {
 
         [Header("Movement")]
         // NOTE: if we add faster movement times here, then update GridNode._fastestEnterTime calculation accordingly
+        // These should have values for production structures even though those can't move. This is so that the pathfinding 
+        // logic works correctly when setting rally points.
         public float NormalMoveTime;
         public float SlowMoveTime;
 
@@ -56,6 +59,7 @@ namespace Gameplay.Config {
         public float SharedUnitDamageTakenModifier = 1;
         [Tooltip("Tags that shared unit damage taken modifier gets applied to, for units sharing this cell. An empty list makes the damage modifier get applied to everyone. Relevant for structures only.")]
         public List<EntityTag> SharedUnitDamageTakenModifierTags;
+        public bool CanRally;
         
         /// <summary>
         /// The order that this should appear and be selectable compared to other entities at the same location.

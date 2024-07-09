@@ -30,7 +30,7 @@ MonoBehaviour:
   TagsToApplyBonusDamageTo: 
   NormalMoveTime: 2.5
   SlowMoveTime: 4
-  Tags: 03000000
+  Tags: 0300000006000000
   Abilities:
   - {fileID: 11400000, guid: ec15a049dabc53b4d92ab14b2871752c, type: 2}
   - {fileID: 11400000, guid: a5c4aba93e508274894c2c6bfc4b751e, type: 2}
@@ -40,3 +40,4 @@ MonoBehaviour:
   EligibleStructureLocations: []
   SharedUnitDamageTakenModifier: 1
   SharedUnitDamageTakenModifierTags: 
+  CanRally: 0

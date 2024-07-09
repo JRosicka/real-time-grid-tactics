@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 073a3dda96ee46d19a17c46265e4d896, type: 3}
+  m_Name: Rally Ability
+  m_EditorClassIdentifier: 
+  Data:
+    _contentResourceID: Rally Ability
+    _id: Rally
+    _description: 
+    _icon: {fileID: 0}
+    _abilityTimerCooldownView: {fileID: 0}
+    _requirements: []
+    _performDuration: 0
+    _cooldownDuration: 0
+    _channel: {fileID: 11400000, guid: f0a973c5e8bb25644aa85baaa725a551, type: 2}
+    _channelBlockers: []
+    _slotLocation: 0
+    _addedMovementTime: 0
+    _performOnStart: 0
+    _repeatWhenCooldownFinishes: 0
+    _animateWhenCooldownComplete: 0
+    _selectable: 0
+    _selectableWhenBlocked: 0
+    _autoSelect: 0

@@ -1,3 +1,7 @@
+using System.Linq;
+using Gameplay.Config;
+using Gameplay.Config.Abilities;
+using Gameplay.Entities.Abilities;
 using Gameplay.Grid;
 using UnityEngine;
 
@@ -16,6 +20,15 @@ namespace Gameplay.Entities {
             }
             
             GameManager.Instance.SelectionInterface.DeselectActiveAbility();
+            
+            // If this entity can rally (i.e. it is a production structure), do that
+            if (thisEntity.RallyLogic.CanRally) {
+                RallyAbilityData data = (RallyAbilityData) thisEntity.Abilities.First(a => a.Content.GetType() == typeof(RallyAbilityData)).Content;
+                thisEntity.PerformAbility(data, new RallyAbilityParameters {
+                    Destination = targetCell
+                }, false, false);
+                return;
+            }
             
             // Target the top entity
             GridEntity targetEntity = GameManager.Instance.GetEntitiesAtLocation(targetCell)?.GetTopEntity()?.Entity;

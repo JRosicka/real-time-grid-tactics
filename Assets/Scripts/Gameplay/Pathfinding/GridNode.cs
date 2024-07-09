@@ -54,7 +54,8 @@ namespace Gameplay.Pathfinding {
             _cellData = cellData;
             _fastestEnterTime = entity.EntityData.NormalMoveTime;
 
-            Walkable = entity.CanEnterTile(cellData.Tile) && PathfinderService.CanEntityEnterCell(cellData.Location, entity.EntityData, entity.MyTeam);
+            Walkable = entity.CanPathFindToTile(cellData.Tile) && PathfinderService.CanEntityEnterCell(cellData.Location, 
+                entity.EntityData, entity.MyTeam, forRallying:entity.EntityData.CanRally);
         }
 
         public float CostToEnter() {

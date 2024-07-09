@@ -51,7 +51,7 @@ public abstract class AbstractCommandManager : NetworkBehaviour, ICommandManager
     /// Attempts to spawn a new instance of the provided <see cref="GridEntity"/> at the specified location on the game
     /// grid. No-op if another entity already exists in the specified location. 
     /// </summary>
-    public abstract void SpawnEntity(EntityData data, Vector2Int spawnLocation, GridEntity.Team team, GridEntity entityToIgnore);
+    public abstract void SpawnEntity(EntityData data, Vector2Int spawnLocation, GridEntity.Team team, GridEntity spawnerEntity);
     public abstract void AddUpgrade(UpgradeData data, GridEntity.Team team);
 
     // TODO need to have some way of verifying that these commands are legal for the client to do - especially doing stuff with GridEntites, we gotta own em
@@ -84,14 +84,24 @@ public abstract class AbstractCommandManager : NetworkBehaviour, ICommandManager
 
     public abstract void MarkAbilityCooldownExpired(IAbility ability);
 
-    protected void DoSpawnEntity(EntityData data, Vector2Int spawnLocation, Func<GridEntity> spawnFunc, GridEntity.Team team, GridEntity entityToIgnore) {
-        List<GridEntity> entitiesToIgnore = entityToIgnore != null ? new List<GridEntity> {entityToIgnore} : null;
+    protected void DoSpawnEntity(EntityData data, Vector2Int spawnLocation, Func<GridEntity> spawnFunc, GridEntity.Team team, GridEntity spawnerEntity) {
+        List<GridEntity> entitiesToIgnore = spawnerEntity != null ? new List<GridEntity> {spawnerEntity} : null;
         if (!PathfinderService.CanEntityEnterCell(spawnLocation, data, team, entitiesToIgnore)) {
             return;
         }
 
         GridEntity entityInstance = spawnFunc();
-        RegisterEntity(entityInstance, data, spawnLocation, entityToIgnore); 
+        RegisterEntity(entityInstance, data, spawnLocation, spawnerEntity);
+
+        if (spawnerEntity != null && spawnerEntity.RallyLogic.CanRally) {
+            if (data.Tags.Contains(EntityData.EntityTag.Worker)) {
+                // Workers get move-commanded
+                entityInstance.TryMoveToCell(spawnerEntity.RallyLogic.RallyPoint);
+            } else {
+                // Everything else attack-moves
+                entityInstance.TryAttackMoveToCell(spawnerEntity.RallyLogic.RallyPoint);
+            }
+        }
         
         // Now that the entity is registered, perform any on-start abilities
         if (GameManager.Instance.GameSetupManager.GameInitialized) {
