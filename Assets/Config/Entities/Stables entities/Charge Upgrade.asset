@@ -17,7 +17,7 @@ MonoBehaviour:
   - Type: 0
     Amount: 100
   - Type: 1
-    Amount: 100
+    Amount: 50
   Requirements: []
   BuildTime: 45
   DisplayTeamColorOverMainSprite: 0
