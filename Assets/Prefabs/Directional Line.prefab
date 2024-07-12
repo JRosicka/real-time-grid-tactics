@@ -876,7 +876,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MaskTransform: {fileID: 5910571140299457898}
-  ArrowsTransform: {fileID: 3613816852913018698}
   EndDot: {fileID: 1573779306634511731}
 --- !u!95 &2595929354444759405
 Animator:
@@ -917,7 +916,7 @@ Canvas:
   m_SortingBucketNormalizedSize: 0
   m_AdditionalShaderChannelsFlag: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 3
+  m_SortingOrder: 8
   m_TargetDisplay: 0
 --- !u!1 &7630062242684716720
 GameObject:

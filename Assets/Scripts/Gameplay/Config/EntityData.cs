@@ -20,6 +20,7 @@ namespace Gameplay.Config {
             Flying = 4,
             HomeBase = 5,
             Worker = 6,
+            Resource = 7,
         }
         
         // Must be private so that Weaver does not try to make a reader and writer for this type. Mirror does this for all public fields, thanks Mirror. 
@@ -50,6 +51,7 @@ namespace Gameplay.Config {
         public bool AttackByDefault;
 
         public bool IsStructure => Tags.Contains(EntityTag.Structure);
+        public bool IsResourceExtractor;
         
         [Header("Structure config")]
         [Tooltip("Where this can be build. Relevant for structures only.")]
@@ -60,13 +62,16 @@ namespace Gameplay.Config {
         [Tooltip("Tags that shared unit damage taken modifier gets applied to, for units sharing this cell. An empty list makes the damage modifier get applied to everyone. Relevant for structures only.")]
         public List<EntityTag> SharedUnitDamageTakenModifierTags;
         public bool CanRally;
+        public ResourceAmount StartingResourceSet;
         
         /// <summary>
         /// The order that this should appear and be selectable compared to other entities at the same location.
         /// Lower values appear on top of higher values and are selected first. 
         /// </summary>
         public int GetStackOrder() {
-            return IsStructure ? CanvasSortingOrderMap.GridEntity_Structure : CanvasSortingOrderMap.GridEntity_Unit;
+            return Tags.Contains(EntityTag.Resource) ? CanvasSortingOrderMap.GridEntity_Resource
+                : IsStructure ? CanvasSortingOrderMap.GridEntity_Structure 
+                : CanvasSortingOrderMap.GridEntity_Unit;
         }
         
         private void OnValidate() {

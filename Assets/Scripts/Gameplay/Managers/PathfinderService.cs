@@ -157,9 +157,17 @@ public class PathfinderService {
     public static bool CanEntityEnterCell(Vector2Int cellPosition, EntityData entityData, GridEntity.Team entityTeam, List<GridEntity> entitiesToIgnore = null, bool forRallying = false) {
         entitiesToIgnore ??= new List<GridEntity>();
         List<GridEntity> entitiesAtLocation = GameManager.Instance.GetEntitiesAtLocation(cellPosition)?.Entities
-            .Select(o => o.Entity).ToList();
+            .Select(o => o.Entity)
+            .Where(e => !entitiesToIgnore.Contains(e))
+            .ToList();
         if (entitiesAtLocation == null) {
             // No other entities are here
+            
+            // If this is a resource extractor structure, then it needs a resource entity
+            if (entityData.IsStructure && entityData.IsResourceExtractor) {
+                return false;
+            }
+            
             // TODO Check to see if tile type allows for this entity
             return true;
         }
@@ -167,7 +175,7 @@ public class PathfinderService {
             // There are enemies here
             return false;
         }
-        if (entitiesAtLocation.Any(e => !e.EntityData.FriendlyUnitsCanShareCell && !entitiesToIgnore.Contains(e))) {
+        if (entitiesAtLocation.Any(e => e.MyTeam == entityTeam && !e.EntityData.FriendlyUnitsCanShareCell)) {
             // Can only enter a friendly entity's cell if they are specifically configured to allow for that
             // or if we are set to ignore that entity.
             // Note that this means that structures can not be built on cells that contain units! This is intentional. 
@@ -178,6 +186,12 @@ public class PathfinderService {
         // Though if this is for the purpose of determining whether a production structure can rally here, then ignore the 
         // fact that this is a structure
         if (!forRallying && entityData.IsStructure && entitiesAtLocation.Any(e => e.EntityData.IsStructure)) {
+            return false;
+        }
+        
+        // If this is a resource structure, then it can only go on a resource entity. 
+        if (entityData.IsStructure && entityData.IsResourceExtractor &&
+                entitiesAtLocation.Any(e => !e.EntityData.Tags.Contains(EntityData.EntityTag.Resource))) {
             return false;
         }
         

@@ -74,7 +74,7 @@ public class GameManager : MonoBehaviour {
         } else if (OpponentPlayer.Data.Team == team) {
             return OpponentPlayer;
         } else {
-            throw new ArgumentException($"Invalid team ({team}");
+            return null;
         }
     }
 

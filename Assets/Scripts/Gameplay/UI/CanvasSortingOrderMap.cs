@@ -5,6 +5,7 @@ namespace Gameplay.UI {
     public static class CanvasSortingOrderMap {
         public const int TimerView = 10;
         public const int GridEntity_Unit = 5;
-        public const int GridEntity_Structure = 1;
+        public const int GridEntity_Structure = 3;
+        public const int GridEntity_Resource = 0;
     }
 }

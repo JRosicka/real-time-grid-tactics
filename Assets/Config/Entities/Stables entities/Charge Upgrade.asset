@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 01c00a817442473ab78b30e1f2bdfb36, type: 3}
   m_Name: Charge Upgrade
   m_EditorClassIdentifier: 
+  ShortDescription: Enables the charge ability for cavalry units.
   Description: Enables the charge ability for cavalry units.
   Cost:
   - Type: 0

@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fafa440752424124be5b9cbee86f1e06, type: 3}
   m_Name: Horseman
   m_EditorClassIdentifier: 
+  ShortDescription: Speedy cavalry unit.
   Description: Speedy cavalry unit.
   Cost:
   - Type: 0
@@ -37,6 +38,11 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 981a0f8e1c01041bda4a621902f205a3, type: 2}
   FriendlyUnitsCanShareCell: 0
   AttackByDefault: 1
+  IsResourceExtractor: 0
   EligibleStructureLocations: []
   SharedUnitDamageTakenModifier: 1
   SharedUnitDamageTakenModifierTags: 
+  CanRally: 0
+  StartingResourceSet:
+    Type: 0
+    Amount: 0

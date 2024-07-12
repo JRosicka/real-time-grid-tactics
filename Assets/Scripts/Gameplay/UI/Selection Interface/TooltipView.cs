@@ -70,7 +70,8 @@ namespace Gameplay.UI {
             
             _icon.sprite = entityData.BaseSpriteIconOverride == null ? entityData.BaseSprite : entityData.BaseSpriteIconOverride;
             _secondaryIcon.sprite = entityData.TeamColorSprite;
-            _secondaryIcon.color = GameManager.Instance.GetPlayerForTeam(entity.MyTeam).Data.TeamColor;
+            IGamePlayer player = GameManager.Instance.GetPlayerForTeam(entity.MyTeam);
+            _secondaryIcon.color = player != null ? player.Data.TeamColor : Color.clear;
             _secondaryIcon.gameObject.SetActive(true);
             _teamColorsCanvas.sortingOrder = 1;
             

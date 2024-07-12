@@ -34,7 +34,9 @@ namespace Gameplay.Entities {
             GridEntity targetEntity = GameManager.Instance.GetEntitiesAtLocation(targetCell)?.GetTopEntity()?.Entity;
 
             // See if we should target this entity
-            if (targetEntity != null && thisEntity.MyTeam != targetEntity.MyTeam) {
+            if (targetEntity != null && targetEntity.MyTeam == GridEntity.Team.Neutral) {
+                thisEntity.TryMoveToCell(targetCell);
+            } else if (targetEntity != null && thisEntity.MyTeam != targetEntity.MyTeam) {
                 TryTargetEntity(thisEntity, targetEntity, targetCell);
             } else if (targetEntity == null || targetEntity.EntityData.FriendlyUnitsCanShareCell) {
                 thisEntity.TryMoveToCell(targetCell);

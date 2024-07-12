@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fafa440752424124be5b9cbee86f1e06, type: 3}
   m_Name: Archer
   m_EditorClassIdentifier: 
-  Description: Standard ranged unit.
+  ShortDescription: Standard ranged unit.
+  Description: Standard ranged unit. Can attack up to two tiles away.
   Cost:
   - Type: 0
     Amount: 75
@@ -38,6 +39,11 @@ MonoBehaviour:
   - {fileID: 11400000, guid: ab5b4bce08f844c0fb5f4803fe352787, type: 2}
   FriendlyUnitsCanShareCell: 0
   AttackByDefault: 1
+  IsResourceExtractor: 0
   EligibleStructureLocations: []
   SharedUnitDamageTakenModifier: 1
   SharedUnitDamageTakenModifierTags: 
+  CanRally: 0
+  StartingResourceSet:
+    Type: 0
+    Amount: 0

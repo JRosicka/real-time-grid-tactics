@@ -76,6 +76,9 @@ namespace Gameplay.Config.Abilities {
         [SerializeField] 
         private bool _performOnStart;
         public bool PerformOnStart => _performOnStart;
+        [SerializeField] 
+        private bool _repeatForeverAfterStartEvenWhenFailed;
+        public bool RepeatForeverAfterStartEvenWhenFailed => _repeatForeverAfterStartEvenWhenFailed;
         public abstract bool CancelWhenNewCommandGivenToPerformer { get; }
 
         [SerializeField]

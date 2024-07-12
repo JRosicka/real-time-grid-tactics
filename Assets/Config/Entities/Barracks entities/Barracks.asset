@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fafa440752424124be5b9cbee86f1e06, type: 3}
   m_Name: Barracks
   m_EditorClassIdentifier: 
+  ShortDescription: Produces infantry units.
   Description: Produces infantry units.
   Cost:
   - Type: 0
@@ -36,8 +37,12 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 7417594f3892443608287a253299cecc, type: 2}
   FriendlyUnitsCanShareCell: 1
   AttackByDefault: 0
+  IsResourceExtractor: 0
   EligibleStructureLocations:
   - {fileID: 11400000, guid: 25ec46ce372031f4d904f708f269dcb4, type: 2}
   SharedUnitDamageTakenModifier: 1
   SharedUnitDamageTakenModifierTags: 
   CanRally: 1
+  StartingResourceSet:
+    Type: 0
+    Amount: 0

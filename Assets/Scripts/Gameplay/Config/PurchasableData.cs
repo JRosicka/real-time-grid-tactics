@@ -11,6 +11,7 @@ namespace Gameplay.Config {
     public abstract class PurchasableData : ScriptableObject {
 
         public string ID => name;
+        public string ShortDescription;
         public string Description;
 
         [Header("Build Requirements")]

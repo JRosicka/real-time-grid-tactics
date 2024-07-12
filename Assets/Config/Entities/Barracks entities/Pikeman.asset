@@ -12,7 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fafa440752424124be5b9cbee86f1e06, type: 3}
   m_Name: Pikeman
   m_EditorClassIdentifier: 
-  Description: Anti-cavalry unit.
+  ShortDescription: Anti-cavalry unit.
+  Description: Anti-cavalry unit. Deals high damage to cavalry units and low damage
+    to everything else.
   Cost:
   - Type: 0
     Amount: 50
@@ -36,6 +38,11 @@ MonoBehaviour:
   - {fileID: 11400000, guid: a5c4aba93e508274894c2c6bfc4b751e, type: 2}
   FriendlyUnitsCanShareCell: 0
   AttackByDefault: 1
+  IsResourceExtractor: 0
   EligibleStructureLocations: []
   SharedUnitDamageTakenModifier: 1
   SharedUnitDamageTakenModifierTags: 
+  CanRally: 0
+  StartingResourceSet:
+    Type: 0
+    Amount: 0

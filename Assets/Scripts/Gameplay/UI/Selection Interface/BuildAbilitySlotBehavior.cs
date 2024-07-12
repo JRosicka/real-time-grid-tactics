@@ -97,7 +97,7 @@ namespace Gameplay.UI {
                     continue;
                 }
                 if (!entities.Entities.Any(e =>
-                        e.Entity.MyTeam != _selectedEntity.MyTeam || e.Entity.EntityData.IsStructure)) {
+                        (e.Entity.MyTeam != _selectedEntity.MyTeam && e.Entity.MyTeam != GridEntity.Team.Neutral) || e.Entity.EntityData.IsStructure)) {
                     // Entities there, but none of them are opponents or friendly structures, so eligible
                     ret.Add(viableTarget);
                 }

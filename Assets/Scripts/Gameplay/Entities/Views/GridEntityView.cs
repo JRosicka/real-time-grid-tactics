@@ -60,8 +60,13 @@ namespace Gameplay.Entities {
             _mainImage.sprite = entity.EntityData.BaseSprite;
             _mainImage.GetComponent<Canvas>().sortingOrder += stackOrder;
             _teamColorImage.sprite = entity.EntityData.TeamColorSprite;
-            _teamColorImage.color = GameManager.Instance.GetPlayerForTeam(entity.MyTeam).Data.TeamColor;
-            _teamColorImage.GetComponent<Canvas>().sortingOrder += stackOrder;
+            IGamePlayer player = GameManager.Instance.GetPlayerForTeam(entity.MyTeam);
+            if (player != null) {
+                _teamColorImage.color = player.Data.TeamColor;
+                _teamColorImage.GetComponent<Canvas>().sortingOrder += stackOrder;
+            } else {
+                _teamColorImage.color = Color.clear;
+            }
             
             entity.PerformAnimationEvent += DoAbility;
             entity.CooldownTimerStartedEvent += CreateTimerView;

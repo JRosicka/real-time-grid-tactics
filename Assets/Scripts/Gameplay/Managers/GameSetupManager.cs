@@ -118,14 +118,18 @@ public class GameSetupManager : MonoBehaviour {
     }
 
     private void SpawnStartingUnits() {
-        SpawnPlayerStartingUnits(Player1Data);
-        SpawnPlayerStartingUnits(Player2Data);
+        // Spawn neutrals first so that resource patches go on the bottom of the stack
+        SpawnPlayerStartingUnits(GridEntity.Team.Neutral);
+        
+        // Then spawn player starting units
+        SpawnPlayerStartingUnits(Player1Data.Team);
+        SpawnPlayerStartingUnits(Player2Data.Team);
     }
 
-    private void SpawnPlayerStartingUnits(PlayerData player) {
-        MapLoader.StartingEntitySet entitySet = MapLoader.UnitSpawns.First(s => s.Team == player.Team);
+    private void SpawnPlayerStartingUnits(GridEntity.Team team) {
+        MapLoader.StartingEntitySet entitySet = MapLoader.UnitSpawns.First(s => s.Team == team);
         foreach (MapLoader.EntitySpawn entity in entitySet.Entities) {
-            GameManager.CommandManager.SpawnEntity(entity.Entity, entity.SpawnLocation, player.Team, null);
+            GameManager.CommandManager.SpawnEntity(entity.Entity, entity.SpawnLocation, team, null);
         }
     }
 

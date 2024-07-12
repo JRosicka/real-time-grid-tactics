@@ -87,6 +87,23 @@ namespace Gameplay.Entities {
             }
         }
 
+        [SyncVar(hook = nameof(OnCurrentResourcesChanged))] 
+        private ResourceAmount _currentResources;
+        public ResourceAmount CurrentResources {
+            get => _currentResources;
+            set {
+                ResourceAmount oldValue = _currentResources;
+                _currentResources = value;
+                if (!NetworkClient.active) {
+                    // SP, so syncvars won't work... Trigger manually.
+                    OnCurrentResourcesChanged(oldValue, value);
+                }
+            }
+        }
+        private void OnCurrentResourcesChanged(ResourceAmount oldValue, ResourceAmount newValue) {
+            ResourceAmountChangedEvent?.Invoke();
+        }
+        
         public List<AbilityCooldownTimer> ActiveTimers = new List<AbilityCooldownTimer>();
         
         /// <summary>
@@ -113,6 +130,10 @@ namespace Gameplay.Entities {
             } else {
                 RallyLogic = new NullRallyLogic();
             }
+            
+            // Syncvar stats
+            CurrentHP = EntityData.HP;
+            CurrentResources = new ResourceAmount(EntityData.StartingResourceSet);
         }
         
         [ClientRpc]
@@ -162,6 +183,7 @@ namespace Gameplay.Entities {
         public event Action<IAbility, AbilityCooldownTimer> PerformAnimationEvent;
         public event Action SelectedEvent;
         public event Action HPChangedEvent;
+        public event Action ResourceAmountChangedEvent;
         public event Action AttackedEvent;
         public event Action HealedEvent;
         public event Action KilledEvent;
@@ -421,7 +443,7 @@ namespace Gameplay.Entities {
         
         public void PerformOnStartAbilities() {
             foreach (IAbilityData abilityData in Abilities.Select(a => a.Content).Where(a => a.PerformOnStart)) {
-                PerformAbility(abilityData, new NullAbilityParameters(), true);
+                PerformAbility(abilityData, new NullAbilityParameters(), abilityData.RepeatForeverAfterStartEvenWhenFailed);
             }
         }
 
@@ -486,7 +508,6 @@ namespace Gameplay.Entities {
         
         private void SetupStats() {
             MaxHP = EntityData.HP;
-            CurrentHP = EntityData.HP;
             MoveTime = EntityData.NormalMoveTime;
             Range = EntityData.Range;
             Damage = EntityData.Damage;

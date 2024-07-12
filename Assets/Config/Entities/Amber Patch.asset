@@ -10,35 +10,34 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fafa440752424124be5b9cbee86f1e06, type: 3}
-  m_Name: Base
+  m_Name: Amber Patch
   m_EditorClassIdentifier: 
-  ShortDescription: Home base.
-  Description: Home base - destroying this ends the game!
+  ShortDescription: Resource patch for Amber.
+  Description: Resource patch for Amber. Build an Amber Mine here to harvest.
   Cost: []
   Requirements: []
-  BuildTime: 1
+  BuildTime: 0
   DisplayTeamColorOverMainSprite: 0
-  BaseSprite: {fileID: 21300000, guid: 847b813419222e9478ec0690c09fe38c, type: 3}
-  TeamColorSprite: {fileID: 21300000, guid: 992393911caff794fa26699f882af973, type: 3}
+  BaseSprite: {fileID: 21300000, guid: 9c88fbe8eade42645800a79fbaf6adc2, type: 3}
+  TeamColorSprite: {fileID: 0}
   BaseSpriteIconOverride: {fileID: 0}
-  _viewPrefab: {fileID: 6373076591908856349, guid: cdbe6c86ea1b88240bef1c5186eaa238, type: 3}
-  HP: 50
+  _viewPrefab: {fileID: 7504026570216467247, guid: 73ae2ea6cc4fe46278c933adff406740, type: 3}
+  HP: 0
   Range: 0
   Damage: 0
   BonusDamage: 0
   TagsToApplyBonusDamageTo: 
   NormalMoveTime: 0
   SlowMoveTime: 0
-  Tags: 0100000005000000
+  Tags: 07000000
   Abilities: []
-  FriendlyUnitsCanShareCell: 1
+  FriendlyUnitsCanShareCell: 0
   AttackByDefault: 0
   IsResourceExtractor: 0
-  EligibleStructureLocations:
-  - {fileID: 11400000, guid: 25ec46ce372031f4d904f708f269dcb4, type: 2}
-  SharedUnitDamageTakenModifier: 0.6
+  EligibleStructureLocations: []
+  SharedUnitDamageTakenModifier: 1
   SharedUnitDamageTakenModifierTags: 
   CanRally: 0
   StartingResourceSet:
-    Type: 0
-    Amount: 0
+    Type: 1
+    Amount: 600

@@ -9,11 +9,28 @@ public enum ResourceType {
     Basic,
     Advanced
 }
+
+public static class ResourceTypeExtensions {
+    public static string DisplayName(this ResourceType resourceType) {
+        return resourceType switch {
+            ResourceType.Basic => "Gold",
+            ResourceType.Advanced => "Amber",
+            _ => throw new ArgumentOutOfRangeException(nameof(resourceType), resourceType, null)
+        };
+    }
+}
     
 [Serializable]
 public class ResourceAmount {
     public ResourceType Type;
     public int Amount;
+
+    public ResourceAmount() {}
+
+    public ResourceAmount(ResourceAmount other) {
+        Type = other.Type;
+        Amount = other.Amount;
+    }
 }
 
 /// <summary>

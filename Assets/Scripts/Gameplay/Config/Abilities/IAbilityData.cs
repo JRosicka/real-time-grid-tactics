@@ -33,6 +33,11 @@ namespace Gameplay.Config.Abilities {
         /// </summary>
         bool PerformOnStart { get; }
         /// <summary>
+        /// Only relevant if PerformOnStart is true. Whether to keep this ability in the queue and keep trying forever,
+        /// regardless of whether we ever fail to perform the ability. 
+        /// </summary>
+        bool RepeatForeverAfterStartEvenWhenFailed { get; }
+        /// <summary>
         /// Whether to cancel this ability if it is in-progress (i.e. has an active ability cooldown timer) when the
         /// performer is given a new command. Useful for abilities that do stuff at the end of a cooldown. 
         /// </summary>

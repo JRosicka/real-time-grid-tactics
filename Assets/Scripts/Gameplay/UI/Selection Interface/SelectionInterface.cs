@@ -25,9 +25,14 @@ namespace Gameplay.UI {
         [SerializeField] private TMP_Text TagsField;
         
         [SerializeField] private HealthDisplay _healthDisplay;
+        [SerializeField] private GameObject MovesRow;
         [SerializeField] private TMP_Text MovesField;
         [SerializeField] private AbilityTimerCooldownView MoveTimer;    // TODO I'll probably want to try out using a move meter instead of a timer for movement. 
+        [SerializeField] private GameObject AttackRow;
         [SerializeField] private TMP_Text AttackField;
+        [SerializeField] private GameObject ResourceRow;
+        [SerializeField] private TMP_Text ResourceLabel;
+        [SerializeField] private TMP_Text ResourceField;
         
         // TODO Row of icons representing upgrades? Hoverable to get info about them?
         
@@ -58,6 +63,7 @@ namespace Gameplay.UI {
 
             entity.AbilityPerformedEvent += OnEntityAbilityPerformed;
             entity.CooldownTimerExpiredEvent += OnEntityAbilityCooldownExpired;
+            entity.ResourceAmountChangedEvent += OnEntityResourceAmountChanged;
             
             ToggleViews(true);
 
@@ -84,6 +90,7 @@ namespace Gameplay.UI {
             
             _displayedEntity.AbilityPerformedEvent -= OnEntityAbilityPerformed;
             _displayedEntity.CooldownTimerExpiredEvent -= OnEntityAbilityCooldownExpired;
+            _displayedEntity.ResourceAmountChangedEvent -= OnEntityResourceAmountChanged;
 
             _activeMoveCooldownTimer = null;
             _displayedEntity = null;
@@ -114,26 +121,52 @@ namespace Gameplay.UI {
             UpdateEntityInfo();
         }
 
+        private void OnEntityResourceAmountChanged() {
+            UpdateEntityInfo();
+        }
+
         private void UpdateEntityInfo() {
             if (_displayedEntity == null) return;
 
             EntityData entityData = _displayedEntity.EntityData;
             EntityIcon.sprite = entityData.BaseSpriteIconOverride == null ? entityData.BaseSprite : entityData.BaseSpriteIconOverride;
             EntityColorsIcon.sprite = entityData.TeamColorSprite;
-            EntityColorsIcon.color = GameManager.Instance.GetPlayerForTeam(_displayedEntity.MyTeam).Data.TeamColor;
+            IGamePlayer player = GameManager.Instance.GetPlayerForTeam(_displayedEntity.MyTeam);
+            EntityColorsIcon.color = player != null ? player.Data.TeamColor : Color.clear;
 
             NameField.text = _displayedEntity.DisplayName;
-            DescriptionField.text = entityData.Description;
+            DescriptionField.text = entityData.ShortDescription;
             TagsField.text = string.Join(", ", entityData.Tags);
-            MovesField.text = $"{_displayedEntity.MoveTime}";
 
-            if (_displayedEntity.IsAbilityChannelOnCooldown(MoveChannel, out _activeMoveCooldownTimer)) {
-                MoveTimer.gameObject.SetActive(true);
-                MoveTimer.Initialize(_activeMoveCooldownTimer, false, true);
+            _healthDisplay.gameObject.SetActive(entityData.HP > 0);
+
+            if (_displayedEntity.CanMove) {
+                MovesRow.SetActive(true);
+                MovesField.text = $"{_displayedEntity.MoveTime}";
+                if (_displayedEntity.IsAbilityChannelOnCooldown(MoveChannel, out _activeMoveCooldownTimer)) {
+                    MoveTimer.gameObject.SetActive(true);
+                    MoveTimer.Initialize(_activeMoveCooldownTimer, false, true);
+                } else {
+                    MoveTimer.gameObject.SetActive(false);
+                }
             } else {
-                MoveTimer.gameObject.SetActive(false);
+                MovesRow.SetActive(false);
             }
-            AttackField.text = _displayedEntity.Damage.ToString();
+
+            if (entityData.Damage > 0) {
+                AttackRow.SetActive(true);
+                AttackField.text = _displayedEntity.Damage.ToString();
+            } else {
+                AttackRow.SetActive(false);
+            }
+
+            if (entityData.StartingResourceSet.Amount > 0) {
+                ResourceRow.gameObject.SetActive(true);
+                ResourceLabel.text = $"{_displayedEntity.CurrentResources.Type.DisplayName()}:";
+                ResourceField.text = _displayedEntity.CurrentResources.Amount.ToString();
+            } else {
+                ResourceRow.gameObject.SetActive(false);
+            }
         }
     }
 }
