@@ -65,31 +65,31 @@ namespace Gameplay.Entities {
         public List<GameplayTile> InaccessibleTiles;
 
         public int CurrentHP { get; private set; }
-        private void SetCurrentHP(int newHP, bool fromGameEffect) {
+        private void SetCurrentHP(int newHP, int oldHP, bool fromGameEffect) {
             if (!NetworkClient.active) {
                 // SP
-                DoSetCurrentHP(newHP, fromGameEffect);
+                DoSetCurrentHP(newHP, oldHP, fromGameEffect);
             } else {
                 // MP
-                CmdSetCurrentHP(newHP, fromGameEffect);
+                CurrentHP = newHP;  // Set HP value immediately
+                CmdSetCurrentHP(newHP, oldHP, fromGameEffect);
             }
         }
         [Command(requiresAuthority = false)]
-        private void CmdSetCurrentHP(int newHP, bool fromGameEffect) {
-            RpcSetCurrentHP(newHP, fromGameEffect);
+        private void CmdSetCurrentHP(int newHP, int oldHP, bool fromGameEffect) {
+            RpcSetCurrentHP(newHP, oldHP, fromGameEffect);
         }
         [ClientRpc]
-        private void RpcSetCurrentHP(int newHP, bool fromGameEffect) {
-            DoSetCurrentHP(newHP, fromGameEffect);
+        private void RpcSetCurrentHP(int newHP, int oldHP, bool fromGameEffect) {
+            DoSetCurrentHP(newHP, oldHP, fromGameEffect);
         }
-        private void DoSetCurrentHP(int newHP, bool fromGameEffect) {
-            int oldValue = CurrentHP;
+        private void DoSetCurrentHP(int newHP, int oldHP, bool fromGameEffect) {
             CurrentHP = newHP;
 
             HPChangedEvent?.Invoke();
-            if (fromGameEffect && oldValue < newHP) {
+            if (fromGameEffect && oldHP < newHP) {
                 HealedEvent?.Invoke();
-            } else if (fromGameEffect && oldValue > newHP) {
+            } else if (fromGameEffect && oldHP > newHP) {
                 AttackedEvent?.Invoke();
             }
         }
