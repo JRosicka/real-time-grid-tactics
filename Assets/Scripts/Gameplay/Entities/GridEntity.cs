@@ -121,15 +121,9 @@ namespace Gameplay.Entities {
         /// <summary>
         /// Initialization method ran only on the server, before <see cref="ClientInitialize"/>.
         /// </summary>
-        public void ServerInitialize(EntityData data, Team team, Vector2Int spawnLocation) {    // TODO hmm, I wonder if it would be better to set the location here and listen for updates when it moves, so that we don't need to worry about registration states. There have been a lot of bugs related to entities not being registered when trying to get their location. 
+        public void ServerInitialize(EntityData data, Team team) {    // TODO hmm, I wonder if it would be better to set the location here and listen for updates when it moves, so that we don't need to worry about registration states. There have been a lot of bugs related to entities not being registered when trying to get their location. 
             EntityData = data;
             MyTeam = team;
-
-            if (EntityData.CanRally) {
-                RallyLogic = new StructureRallyLogic(spawnLocation);
-            } else {
-                RallyLogic = new NullRallyLogic();
-            }
             
             // Syncvar stats
             CurrentHP = EntityData.HP;
@@ -137,19 +131,25 @@ namespace Gameplay.Entities {
         }
         
         [ClientRpc]
-        public void RpcInitialize(EntityData data, Team team) {
+        public void RpcInitialize(EntityData data, Team team, Vector2Int spawnLocation) {
             transform.parent = GameManager.Instance.CommandManager.SpawnBucket;
-            ClientInitialize(data, team);
+            ClientInitialize(data, team, spawnLocation);
         }
 
         /// <summary>
         /// Initialization that runs on each client
         /// </summary>
-        public void ClientInitialize(EntityData data, Team team) {
+        public void ClientInitialize(EntityData data, Team team, Vector2Int spawnLocation) {
             EntityData = data;
             MyTeam = team;
             Team playerTeam = GameManager.Instance.LocalPlayer.Data.Team;
             
+            if (EntityData.CanRally) {
+                RallyLogic = new StructureRallyLogic(spawnLocation);
+            } else {
+                RallyLogic = new NullRallyLogic();
+            }
+
             if (MyTeam == Team.Neutral) {
                 _interactBehavior = new NeutralInteractBehavior();
             } else if (MyTeam == playerTeam) {

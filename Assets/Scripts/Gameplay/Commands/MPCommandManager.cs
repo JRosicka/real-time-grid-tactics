@@ -65,8 +65,8 @@ public class MPCommandManager : AbstractCommandManager {
             GridEntity entityInstance = Instantiate(GridEntityPrefab, GridController.GetWorldPosition(spawnLocation), Quaternion.identity, SpawnBucket);
             NetworkServer.Spawn(entityInstance.gameObject);
             
-            entityInstance.ServerInitialize(data, team, spawnLocation);
-            entityInstance.RpcInitialize(data, team);
+            entityInstance.ServerInitialize(data, team);
+            entityInstance.RpcInitialize(data, team, spawnLocation);
             
             return entityInstance;
         }, team, entityToIgnore);
