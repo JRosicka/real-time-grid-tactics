@@ -64,25 +64,32 @@ namespace Gameplay.Entities {
         public List<GameplayTile> SlowTiles;
         public List<GameplayTile> InaccessibleTiles;
 
-        [Header("Current")] 
-        [SyncVar(hook = nameof(OnHPChanged))] 
-        private int _currentHP;
-        public int CurrentHP {
-            get => _currentHP;
-            set {
-                int oldValue = _currentHP;
-                _currentHP = value;
-                if (!NetworkClient.active) {
-                    // SP, so syncvars won't work... Trigger manually.
-                    OnHPChanged(oldValue, value);
-                }
+        public int CurrentHP { get; private set; }
+        private void SetCurrentHP(int newHP, bool fromGameEffect) {
+            if (!NetworkClient.active) {
+                // SP
+                DoSetCurrentHP(newHP, fromGameEffect);
+            } else {
+                // MP
+                CmdSetCurrentHP(newHP, fromGameEffect);
             }
         }
-        private void OnHPChanged(int oldValue, int newValue) {
+        [Command(requiresAuthority = false)]
+        private void CmdSetCurrentHP(int newHP, bool fromGameEffect) {
+            RpcSetCurrentHP(newHP, fromGameEffect);
+        }
+        [ClientRpc]
+        private void RpcSetCurrentHP(int newHP, bool fromGameEffect) {
+            DoSetCurrentHP(newHP, fromGameEffect);
+        }
+        private void DoSetCurrentHP(int newHP, bool fromGameEffect) {
+            int oldValue = CurrentHP;
+            CurrentHP = newHP;
+
             HPChangedEvent?.Invoke();
-            if (oldValue < newValue) {
+            if (fromGameEffect && oldValue < newHP) {
                 HealedEvent?.Invoke();
-            } else if (oldValue > newValue) {
+            } else if (fromGameEffect && oldValue > newHP) {
                 AttackedEvent?.Invoke();
             }
         }
@@ -126,7 +133,7 @@ namespace Gameplay.Entities {
             MyTeam = team;
             
             // Syncvar stats
-            CurrentHP = EntityData.HP;
+            SetCurrentHP(EntityData.HP, false);
             CurrentResources = new ResourceAmount(EntityData.StartingResourceSet);
         }
         
@@ -557,7 +564,7 @@ namespace Gameplay.Entities {
                 }
             }
             
-            CurrentHP -= Mathf.RoundToInt(damage);
+            SetCurrentHP(CurrentHP - Mathf.RoundToInt(damage), true);
 
             if (CurrentHP <= 0) {
                 Kill();
@@ -569,7 +576,7 @@ namespace Gameplay.Entities {
 
             int newHP = CurrentHP + healAmount;
             newHP = Mathf.Min(newHP, MaxHP);
-            CurrentHP = newHP;
+            SetCurrentHP(newHP, true);
         }
 
         // Server flag?

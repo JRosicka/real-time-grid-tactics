@@ -15,6 +15,7 @@ namespace Gameplay.UI {
 
         private IBarLogic _barLogic;
         private float _maxWidthForThisEntity;
+        private bool _frameInitialized;
         
         public void Initialize(IBarLogic barLogic) {
             barLogic.BarUpdateEvent += UpdateBar;
@@ -26,7 +27,6 @@ namespace Gameplay.UI {
             _maxWidthForThisEntity = Mathf.Lerp(MinBarWidth, MaxBarWidth, maxBarLerp);
 
             UpdateBar();
-            BarFrame.sizeDelta = new Vector2(BarFilling.rect.width + AdditionalWidthForFrame, BarFrame.sizeDelta.y);
         }
         
         private void OnDestroy() {
@@ -35,6 +35,14 @@ namespace Gameplay.UI {
 
         private void UpdateBar() {
             BarFilling.sizeDelta = new Vector2(_barLogic.CurrentValue / _barLogic.MaxValue * _maxWidthForThisEntity, BarFilling.sizeDelta.y);
+            InitializeFrame(); 
+        }
+    
+        private void InitializeFrame() {
+            if (_frameInitialized) return;
+            
+            _frameInitialized = _barLogic.CurrentValue > 0;
+            BarFrame.sizeDelta = new Vector2(BarFilling.rect.width + AdditionalWidthForFrame, BarFrame.sizeDelta.y);
         }
 
         private void DestroyBar() {
