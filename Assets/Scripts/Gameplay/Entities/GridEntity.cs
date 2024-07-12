@@ -65,7 +65,8 @@ namespace Gameplay.Entities {
         public List<GameplayTile> InaccessibleTiles;
 
         public int CurrentHP { get; private set; }
-        private void SetCurrentHP(int newHP, int oldHP, bool fromGameEffect) {
+        private void SetCurrentHP(int newHP, bool fromGameEffect) {
+            int oldHP = CurrentHP;
             if (!NetworkClient.active) {
                 // SP
                 DoSetCurrentHP(newHP, oldHP, fromGameEffect);
