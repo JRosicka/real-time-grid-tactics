@@ -133,6 +133,9 @@ namespace Gameplay.Entities {
             EntityData = data;
             MyTeam = team;
             
+            // We call this later on the client, but we need the stats set up immediately on the server too (at least for rallying) 
+            SetupStats();
+
             // Syncvar stats
             SetCurrentHP(EntityData.HP, false);
             CurrentResources = new ResourceAmount(EntityData.StartingResourceSet);
