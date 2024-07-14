@@ -1,5 +1,4 @@
 using System;
-using System.Linq;
 using Game.Network;
 using Gameplay.Config;
 using Gameplay.Entities;
@@ -27,10 +26,12 @@ public class GameManager : MonoBehaviour {
     public ResourcesInterface ResourcesInterface;
     public PrefabAtlas PrefabAtlas;
     public Cheats Cheats;
+    public DisconnectionDialog DisconnectionDialog;
     
     public PathfinderService PathfinderService;
     public EntitySelectionManager EntitySelectionManager;
     public GameEndManager GameEndManager;
+    public DisconnectionHandler DisconnectionHandler;
     
     public IGamePlayer LocalPlayer { get; private set; }
     public IGamePlayer OpponentPlayer { get; private set; }
@@ -42,6 +43,7 @@ public class GameManager : MonoBehaviour {
         
         Instance = this;
         GameEndManager = new GameEndManager(this);
+        DisconnectionHandler = new DisconnectionHandler();
     }
 
     private void Start() {
@@ -51,6 +53,7 @@ public class GameManager : MonoBehaviour {
         GridController.Initialize();
         EntitySelectionManager = new EntitySelectionManager(this);
         GridInputController.Initialize(EntitySelectionManager, this);
+        DisconnectionDialog.Initialize(DisconnectionHandler);
     }
 
     public GridEntityCollection.PositionedGridEntityCollection GetEntitiesAtLocation(Vector2Int location) {

@@ -58,7 +58,7 @@ public class GameSetupManager : MonoBehaviour {
         }
     }
     
-    public bool InputAllowed => !_pauseMenu.Paused && GameInitialized && !GameOver;
+    public bool InputAllowed => !_pauseMenu.Paused && GameInitialized && !GameOver && !GameManager.DisconnectionHandler.Disconnected;
 
     public event Action GameInitializedEvent;
     public void TriggerGameInitializedEvent() {

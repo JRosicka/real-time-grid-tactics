@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Gameplay.Config;
 using Mirror;
@@ -79,11 +80,17 @@ namespace Gameplay.Managers {
             RemoveBuildTime = !RemoveBuildTime;
         }
 
+        [Button]
         public void SwapTeamTarget() {
             Unit1_LocalTeam = !Unit1_LocalTeam;
             Unit2_LocalTeam = !Unit2_LocalTeam;
             Unit3_LocalTeam = !Unit3_LocalTeam;
             SetMoney_LocalTeam = !SetMoney_LocalTeam;
+        }
+
+        [Button]
+        public void ThrowException() {
+            throw new Exception("Forced exception throw from cheats");
         }
     }
 }
