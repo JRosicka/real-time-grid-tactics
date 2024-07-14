@@ -292,7 +292,8 @@ namespace Gameplay.Entities {
                 // SP
                 DoCreateAbilityTimer(ability, overrideCooldownDuration);
             } else if (NetworkServer.active) {
-                // MP server
+                // MP server. Make the timer immediately locally, and also make the RPC call to do it remotely. 
+                DoCreateAbilityTimer(ability, overrideCooldownDuration); 
                 RpcCreateAbilityTimer(ability, overrideCooldownDuration);
             }
             // Else MP client, do nothing
@@ -300,6 +301,7 @@ namespace Gameplay.Entities {
 
         [ClientRpc]
         private void RpcCreateAbilityTimer(IAbility ability, float overrideCooldownDuration) {
+            if (NetworkServer.active) return;   // Don't make the timer on the server since it was already created locally there. 
             DoCreateAbilityTimer(ability, overrideCooldownDuration);
         }
 
