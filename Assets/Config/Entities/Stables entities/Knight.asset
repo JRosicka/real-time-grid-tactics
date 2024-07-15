@@ -26,9 +26,9 @@ MonoBehaviour:
   TeamColorSprite: {fileID: 21300000, guid: 42a36b0e8795a1740ac2f2c246405dba, type: 3}
   BaseSpriteIconOverride: {fileID: 0}
   _viewPrefab: {fileID: 7504026570216467247, guid: 756acdd55b6cc334791cee33d2ee90d3, type: 3}
-  HP: 35
+  HP: 30
   Range: 1
-  Damage: 6
+  Damage: 8
   BonusDamage: 0
   TagsToApplyBonusDamageTo: 
   NormalMoveTime: 2.5

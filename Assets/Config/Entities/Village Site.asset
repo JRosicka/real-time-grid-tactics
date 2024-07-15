@@ -40,4 +40,4 @@ MonoBehaviour:
   CanRally: 0
   StartingResourceSet:
     Type: 0
-    Amount: 30
+    Amount: 1000
