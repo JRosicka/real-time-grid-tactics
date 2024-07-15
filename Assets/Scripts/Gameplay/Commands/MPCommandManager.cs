@@ -109,6 +109,7 @@ public class MPCommandManager : AbstractCommandManager {
         LogTimestamp(nameof(CmdPerformAbility));
         
         if (Cheats.NeedsToDisconnect) {
+            Cheats.NeedsToDisconnect = false;
             throw new Exception("Forced exception from cheats");
         }
         

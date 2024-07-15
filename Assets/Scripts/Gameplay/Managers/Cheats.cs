@@ -88,7 +88,7 @@ namespace Gameplay.Managers {
             SetMoney_LocalTeam = !SetMoney_LocalTeam;
         }
 
-        public static bool NeedsToDisconnect { get; private set; }
+        public static bool NeedsToDisconnect { get; set; }
         [Button]
         public void ThrowNetworkedException() {
             NeedsToDisconnect = true;
