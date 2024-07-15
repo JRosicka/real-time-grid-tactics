@@ -15,6 +15,7 @@ public class MultiplayerMenu : MonoBehaviour {
 
     public Button CancelButton;
     public Button StopHostButton;
+    public Button QuitButton;
 
     public LobbyListMenu LobbyListMenu;
     public GameObject JoinByIDMenu;
@@ -78,6 +79,7 @@ public class MultiplayerMenu : MonoBehaviour {
         ToggleButton(HostButton, true);
         ToggleButton(LobbySearchButton, true);
         ToggleButton(JoinByIDButton, true);
+        ToggleButton(QuitButton, true);
         CancelButton.gameObject.SetActive(false);
         LobbyTypeSelection.gameObject.SetActive(false);
         JoinByIDMenu.gameObject.SetActive(false);
@@ -114,6 +116,7 @@ public class MultiplayerMenu : MonoBehaviour {
         LobbySearchButton.gameObject.SetActive(false);
         JoinByIDButton.gameObject.SetActive(false);
         CancelButton.gameObject.SetActive(false);
+        QuitButton.gameObject.SetActive(false); 
         
         // TODO maybe respond to OnLobbyCreationComplete callback? Might just get whisked away to the room though. 
     }
