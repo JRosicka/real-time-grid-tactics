@@ -1,5 +1,6 @@
 using Gameplay.Entities;
 using Gameplay.Entities.Abilities;
+using UnityEngine;
 
 namespace Gameplay.UI {
     /// <summary>
@@ -27,29 +28,33 @@ namespace Gameplay.UI {
                 _entity.AbilityPerformedEvent += OnAbilityPerformed;
                 _entity.UnregisteredEvent += OnEntityUnregistered;
             }
-            UpdateReticle();
+            UpdateReticle(entity);
         }
 
         /// <summary>
         /// Move the reticle to the location of the tracked entity (or hide if it does not exist or is not interactable)
         /// </summary>
-        private void UpdateReticle() {
+        private void UpdateReticle(Vector2Int newLocation) {
             if (_entity == null || !_entity.Interactable) {
                 _reticle.Hide();
             } else {
-                _reticle.SelectTile(_entity.Location, _entity);
+                _reticle.SelectTile(newLocation, _entity); 
             }
+        }
+
+        private void UpdateReticle(GridEntity gridEntity) {
+            UpdateReticle(gridEntity == null ? Vector2Int.zero : gridEntity.Location);
         }
 
         private void OnAbilityPerformed(IAbility ability, AbilityCooldownTimer timer) {
             // We only care about the entity moving
-            if (ability is MoveAbility) {
-                UpdateReticle();
+            if (ability is MoveAbility moveAbility) {
+                UpdateReticle(moveAbility.AbilityParameters.NextMoveCell);
             }
         }
 
         private void OnEntityUnregistered() {
-            UpdateReticle();
+            UpdateReticle(_entity);
         }
     }
 }
