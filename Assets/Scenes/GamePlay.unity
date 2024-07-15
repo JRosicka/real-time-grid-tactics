@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.3731193, g: 0.38073996, b: 0.35872698, a: 1}
+  m_IndirectSpecularColor: {r: 0.37311953, g: 0.38074014, b: 0.3587274, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1429,8 +1429,6 @@ MonoBehaviour:
     Entities:
     - Entity: {fileID: 11400000, guid: f8a9d9571b0a8324587b160065ca7fce, type: 2}
       SpawnLocation: {x: -8, y: -5}
-    - Entity: {fileID: 11400000, guid: b52e5f177d13b1b4580a21f9c5ad0bf1, type: 2}
-      SpawnLocation: {x: -8, y: -4}
     - Entity: {fileID: 11400000, guid: 5d9e30910c9795b49bea0c2c257e60eb, type: 2}
       SpawnLocation: {x: -10, y: -5}
     - Entity: {fileID: 11400000, guid: 5d9e30910c9795b49bea0c2c257e60eb, type: 2}
@@ -1441,8 +1439,6 @@ MonoBehaviour:
     Entities:
     - Entity: {fileID: 11400000, guid: f8a9d9571b0a8324587b160065ca7fce, type: 2}
       SpawnLocation: {x: 7, y: 6}
-    - Entity: {fileID: 11400000, guid: b52e5f177d13b1b4580a21f9c5ad0bf1, type: 2}
-      SpawnLocation: {x: 7, y: 5}
     - Entity: {fileID: 11400000, guid: 5d9e30910c9795b49bea0c2c257e60eb, type: 2}
       SpawnLocation: {x: 9, y: 6}
     - Entity: {fileID: 11400000, guid: 5d9e30910c9795b49bea0c2c257e60eb, type: 2}

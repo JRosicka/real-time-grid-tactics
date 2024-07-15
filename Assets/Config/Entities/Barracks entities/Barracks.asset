@@ -18,7 +18,7 @@ MonoBehaviour:
   - Type: 0
     Amount: 100
   Requirements: []
-  BuildTime: 30
+  BuildTime: 25
   DisplayTeamColorOverMainSprite: 0
   BaseSprite: {fileID: 21300000, guid: d198c94ef4580b74b87fe9c20e7a5b47, type: 3}
   TeamColorSprite: {fileID: 21300000, guid: 2b64c96c935da3a4fbac2c8a0c37d3e3, type: 3}
