@@ -88,9 +88,10 @@ namespace Gameplay.Managers {
             SetMoney_LocalTeam = !SetMoney_LocalTeam;
         }
 
+        public static bool NeedsToDisconnect { get; private set; }
         [Button]
-        public void ThrowException() {
-            throw new Exception("Forced exception throw from cheats");
+        public void ThrowNetworkedException() {
+            NeedsToDisconnect = true;
         }
     }
 }

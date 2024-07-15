@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Gameplay.Config;
 using Gameplay.Entities;
 using Gameplay.Entities.Abilities;
+using Gameplay.Managers;
 using Mirror;
 using UnityEngine;
 
@@ -106,6 +107,11 @@ public class MPCommandManager : AbstractCommandManager {
     [Command(requiresAuthority = false)]
     private void CmdPerformAbility(IAbility ability, bool clearQueueFirst) {
         LogTimestamp(nameof(CmdPerformAbility));
+        
+        if (Cheats.NeedsToDisconnect) {
+            throw new Exception("Forced exception from cheats");
+        }
+        
         bool success = DoPerformAbility(ability, clearQueueFirst);
         if (success) {
             RpcAbilityPerformed(ability);

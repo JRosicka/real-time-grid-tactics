@@ -14,6 +14,8 @@ namespace Mirror
         // message header size
         public const int HeaderSize = sizeof(ushort);
 
+        public static event Action DisconnectedFromException;
+
         // max message content size (without header) calculation for convenience
         // -> Transport.GetMaxPacketSize is the raw maximum
         // -> Every message gets serialized into <<id, content>>
@@ -128,9 +130,12 @@ namespace Mirror
             catch (Exception e)
             {
                 Debug.LogError($"Disconnecting connId={conn.connectionId} to prevent exploits from an Exception in MessageHandler: {e.GetType().Name} {e.Message}\n{e.StackTrace}");
+                DisconnectedFromException?.Invoke();
                 conn.Disconnect();
             }
         };
+
+        public static void CauseCompilationErrorIfMethodRemoved() { }
 
         // version for handlers without channelId
         // TODO obsolete this some day to always use the channelId version.

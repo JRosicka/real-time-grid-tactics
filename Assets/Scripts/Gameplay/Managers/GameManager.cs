@@ -56,6 +56,10 @@ public class GameManager : MonoBehaviour {
         DisconnectionDialog.Initialize(DisconnectionHandler);
     }
 
+    private void OnDestroy() {
+        DisconnectionHandler?.UnregisterListeners(); 
+    }
+
     public GridEntityCollection.PositionedGridEntityCollection GetEntitiesAtLocation(Vector2Int location) {
         return CommandManager?.GetEntitiesAtCell(location);
     }

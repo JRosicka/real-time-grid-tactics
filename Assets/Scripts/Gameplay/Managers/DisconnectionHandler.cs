@@ -1,7 +1,9 @@
 using System;
 using System.Threading.Tasks;
+using Game.Network;
 using Mirror;
 using UnityEngine.SceneManagement;
+using Object = UnityEngine.Object;
 
 namespace Gameplay.Managers {
     /// <summary>
@@ -15,7 +17,11 @@ namespace Gameplay.Managers {
         public DisconnectionHandler() {
             if (!NetworkClient.active) return;
 
-            // TODO listen for disconnects, call DisconnectDetected when found
+            MessagePacking.DisconnectedFromException += DisconnectDetected;
+        }
+
+        public void UnregisterListeners() {
+            MessagePacking.DisconnectedFromException -= DisconnectDetected;
         }
 
         private async void DisconnectDetected() {
@@ -23,7 +29,20 @@ namespace Gameplay.Managers {
             OnDisconnected?.Invoke();
 
             await Task.Delay(TimeSpan.FromSeconds(3));
-            SceneManager.LoadScene("GamePlay");
+            
+            GameNetworkManager gameNetworkManager = Object.FindObjectOfType<GameNetworkManager>();
+            gameNetworkManager.ServerChangeScene(gameNetworkManager.RoomScene); 
+
+            DisconnectFeedbackService.SetDisconnectReason(DisconnectFeedbackService.DisconnectReason.Unknown);
+            if (NetworkServer.active) {
+                // We're the host, so stop the whole server
+                gameNetworkManager.StopHost();
+            } else {
+                // We're just a little baby client, so just stop the client
+                gameNetworkManager.StopClient();
+            }
+
+            SceneManager.LoadScene("MainMenu");
         }
     }
 }
