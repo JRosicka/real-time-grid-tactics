@@ -52,7 +52,7 @@ public class EntitySelectionManager {
         }
         
         SelectedEntity = entity;
-        _selectedEntityCurrentLocation = entity == null ? (Vector2Int?) null : entity.Location;
+        _selectedEntityCurrentLocation = entity == null ? null : entity.Location;
         SelectionInterface.UpdateSelectedEntity(entity);
         GridController.TrackEntity(entity);
 

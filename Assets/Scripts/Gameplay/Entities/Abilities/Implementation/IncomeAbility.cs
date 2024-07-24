@@ -15,8 +15,11 @@ namespace Gameplay.Entities.Abilities {
         }
 
         protected override bool CompleteCooldownImpl() {
+            Vector2Int? performerLocation = Performer.Location;
+            if (performerLocation == null) return false;
+            
             // Get the resource entity on this cell
-            GridEntity resourceEntity = GameManager.Instance.GetEntitiesAtLocation(Performer.Location)
+            GridEntity resourceEntity = GameManager.Instance.GetEntitiesAtLocation(performerLocation.Value)
                 .Entities
                 .Select(e => e.Entity)
                 .FirstOrDefault(e => e.Tags.Contains(EntityData.EntityTag.Resource));

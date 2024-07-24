@@ -1,4 +1,5 @@
 using Gameplay.Config.Abilities;
+using UnityEngine;
 
 namespace Gameplay.Entities.Abilities {
     /// <summary>
@@ -24,8 +25,11 @@ namespace Gameplay.Entities.Abilities {
         }
         
         public override bool DoAbilityEffect() {
+            Vector2Int? location = Performer.Location;
+            if (location == null) return false;
+            
             // Queue the heal ability
-            GridEntity target = GameManager.Instance.GetTopEntityAtLocation(Performer.Location);
+            GridEntity target = GameManager.Instance.GetTopEntityAtLocation(location.Value);
             Performer.PerformAbility(Data.HealAbility.Content, new HealAbilityParameters {
                 Target = target,
                 HealAmount = Data.HealAmount

@@ -38,7 +38,9 @@ namespace Gameplay.Entities.Abilities {
             }
             
             // Entity exists, so move to one cell away from it in a straight line (Assume that AbilityLegal checked for movement legality)...
-            List<Vector2Int> cellsInLine = CellDistanceLogic.GetCellsInStraightLine(Performer.Location, AbilityParameters.Destination);
+            // ReSharper disable once PossibleInvalidOperationException     No way for performer to be unregistered
+            Vector2Int performerLocation = Performer.Location.Value;
+            List<Vector2Int> cellsInLine = CellDistanceLogic.GetCellsInStraightLine(performerLocation, AbilityParameters.Destination);
             if (cellsInLine == null || cellsInLine.Count == 0) {
                 Debug.LogError("Uhhh something about the charge ability movement got screwed up");
                 return false;

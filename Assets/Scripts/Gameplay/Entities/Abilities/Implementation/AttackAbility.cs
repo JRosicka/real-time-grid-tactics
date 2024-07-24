@@ -3,7 +3,6 @@ using System.Linq;
 using Gameplay.Config.Abilities;
 using Gameplay.Grid;
 using Mirror;
-using Sirenix.OdinInspector;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -48,39 +47,35 @@ namespace Gameplay.Entities.Abilities {
                 return false;
             }
 
-            // Check to make sure that the target still exists
-            if (AbilityParameters.Target == null) {
+            // Check to make sure that the target and performer still exist
+            Vector2Int? targetLocation = AbilityParameters.Target == null ? null : AbilityParameters.Target.Location;
+            Vector2Int? attackerLocation = Performer == null ? null : Performer.Location;
+            if (targetLocation == null || attackerLocation == null) {
                 return false;
             }
-
-            Vector2Int attackerLocation = Performer.Location;
-            Vector2Int targetLocation = AbilityParameters.Target.Location;
             
             // Attack the target if it is in range
-            if (CellDistanceLogic.DistanceBetweenCells(attackerLocation, targetLocation) <= Performer.Range) {
-                DoAttack(AbilityParameters.Target);
+            if (CellDistanceLogic.DistanceBetweenCells(attackerLocation.Value, targetLocation.Value) <= Performer.Range) {
+                DoAttack(targetLocation.Value);
                 ReQueue();
                 return true;
             }
             
             // Otherwise move closer to the target and try again
-            StepTowardsDestination(Performer, targetLocation);
+            StepTowardsDestination(Performer, targetLocation.Value);
             ReQueue();
             return false;
         }
         
         private bool DoAttackMoveEffect() {
-            if (!GameManager.Instance.CommandManager.EntitiesOnGrid
-                    .ActiveEntitiesForTeam(Performer.MyTeam)
-                    .Contains(Performer)) {
+            Vector2Int? attackerLocation = Performer.Location;
+            if (attackerLocation == null) {
                 // The entity must be in the process of being killed since it is not present in the entities collection
                 return false;
             }
             
-            Vector2Int attackerLocation = Performer.Location;
-            
             // First check to see if there is anything in range to attack
-            if (AttackInRange(Performer, attackerLocation)) {
+            if (AttackInRange(Performer, attackerLocation.Value)) {
                 ReQueue();
                 return true;
             } 
@@ -112,35 +107,40 @@ namespace Gameplay.Entities.Abilities {
         /// </summary>
         /// <returns>True if there was something to attack, otherwise false</returns>
         private bool AttackInRange(GridEntity attacker, Vector2Int location) {
-            Vector2Int attackerLocation = attacker.Location;
+            Vector2Int? attackerLocation = attacker.Location;
+            if (attackerLocation == null) return false;
+            
             List<Vector2Int> cellsInRange = GridData.GetCellsInRange(location, attacker.Range)
                 .Select(c => c.Location)
                 .ToList();
             // Only get the top entities - can't attack an entity behind another entity
             List<GridEntity> enemiesInRange = GameManager.Instance.CommandManager.EntitiesOnGrid.ActiveEntitiesForTeam(
                         GridEntity.OpponentTeam(attacker.MyTeam), true)
-                    .Where(e => cellsInRange.Contains(e.Location))
+                    .Where(e => e.Location != null && cellsInRange.Contains(e.Location.Value))
                     .ToList();
             
             if (enemiesInRange.Count == 0) return false;
 
             // If there are multiple viable targets, then disregard the farther-away enemies
-            int closestDistance = enemiesInRange.Min(e => CellDistanceLogic.DistanceBetweenCells(attackerLocation, e.Location));
+            // ReSharper disable PossibleInvalidOperationException      We already confirmed these values are not null
+            int closestDistance = enemiesInRange.Min(e => CellDistanceLogic.DistanceBetweenCells(attackerLocation.Value, e.Location.Value));
             enemiesInRange = enemiesInRange
-                .Where(e => CellDistanceLogic.DistanceBetweenCells(attackerLocation, e.Location) == closestDistance)
+                .Where(e => CellDistanceLogic.DistanceBetweenCells(attackerLocation.Value, e.Location.Value) == closestDistance)
                 .ToList();
-            
+
             // If the attacker's last target is a viable target, then pick that one
-            if (attacker.LastAttackedEntity != null && enemiesInRange.Contains(attacker.LastAttackedEntity)) {
+            Vector2Int? lastAttackedEntityLocation = attacker.LastAttackedEntity == null ? null : attacker.LastAttackedEntity.Location;
+            if (lastAttackedEntityLocation != null && enemiesInRange.Contains(attacker.LastAttackedEntity)) {
                 AbilityParameters.Target = attacker.LastAttackedEntity;
-                DoAttack(attacker.LastAttackedEntity);
+                DoAttack(lastAttackedEntityLocation.Value);
             } else {
                 // Otherwise arbitrarily pick one to attack.
                 GridEntity target = enemiesInRange[Random.Range(0, enemiesInRange.Count)];
                 AbilityParameters.Target = target;
-                DoAttack(target);
+                DoAttack(target.Location.Value);
             }
-            
+            // ReSharper restore PossibleInvalidOperationException
+
             return true;
         }
 
@@ -167,10 +167,10 @@ namespace Gameplay.Entities.Abilities {
             Performer.QueueAbility(Data, AbilityParameters, true, false, false);
         }
 
-        private void DoAttack(GridEntity target) {
+        private void DoAttack(Vector2Int location) {
             // Even though we have our target, we need to check if there is any viable target on top of the target. If so, 
             // then the attack needs to go towards whatever entity is on top of the stack. Them's the rules. 
-            target = GameManager.Instance.CommandManager.GetEntitiesAtCell(target.Location).GetTopEntity().Entity;
+            GridEntity target = GameManager.Instance.CommandManager.GetEntitiesAtCell(location).GetTopEntity().Entity;
             
             IAttackLogic attackLogic = AttackAbilityLogicFactory.CreateAttackLogic(this);
             attackLogic.DoAttack(Performer, target);

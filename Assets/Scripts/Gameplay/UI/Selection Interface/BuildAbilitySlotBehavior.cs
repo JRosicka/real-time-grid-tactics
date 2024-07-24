@@ -40,9 +40,11 @@ namespace Gameplay.UI {
                 }
             } else {
                 // Try to perform the build ability
+                Vector2Int? selectedEntityLocation = _selectedEntity.Location;
+                if (selectedEntityLocation == null) return;
                 _selectedEntity.PerformAbility(_buildAbilityData, new BuildAbilityParameters {
                     Buildable = Buildable, 
-                    BuildLocation = _selectedEntity.Location
+                    BuildLocation = selectedEntityLocation.Value
                 }, false);
             }
         }

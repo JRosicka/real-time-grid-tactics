@@ -195,17 +195,19 @@ namespace Gameplay.Entities {
         
         private void DoGenericAttackAnimation(AttackAbility attackAbility) {
             if (attackAbility.AbilityParameters.Target.DeadOrDying()) return;
+            Vector2Int? performerLocation = Entity.Location;
+            Vector2Int? targetLocation = attackAbility.AbilityParameters.Target.Location;
+            if (performerLocation == null || targetLocation == null) return;
             
             _attackFromMove = _moving;
             _moving = false;
             
             _attackStartPosition = transform.position;    // Might be different from the entity location if we are in the middle of a move animation
-            _attackReturnPosition = GameManager.Instance.GridController.GetWorldPosition(Entity.Location);
+            _attackReturnPosition = GameManager.Instance.GridController.GetWorldPosition(performerLocation.Value);
             
             // We don't want to go all the way to the target location, just part of the way
-            Vector2Int targetCell = attackAbility.AbilityParameters.Target.Location;
-            Vector2 targetLocation = GameManager.Instance.GridController.GetWorldPosition(targetCell);
-            _attackTargetPosition = Vector2.Lerp(_attackReturnPosition, targetLocation, _distanceTowardsTargetToMove);
+            Vector2 targetWorldLocation = GameManager.Instance.GridController.GetWorldPosition(targetLocation.Value);
+            _attackTargetPosition = Vector2.Lerp(_attackReturnPosition, targetWorldLocation, _distanceTowardsTargetToMove);
             
             _attackTime = 0;
             _attacking = true;

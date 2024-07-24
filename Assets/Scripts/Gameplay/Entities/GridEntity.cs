@@ -4,6 +4,7 @@ using System.Linq;
 using Gameplay.Config;
 using Gameplay.Config.Abilities;
 using Gameplay.Entities.Abilities;
+using JetBrains.Annotations;
 using Mirror;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -185,8 +186,18 @@ namespace Gameplay.Entities {
 
         public bool CanTargetThings => Range > 0;
         public bool CanMove => MoveTime > 0;
-        public Vector2Int Location => GameManager.Instance.GetLocationForEntity(this);
-        private GameplayTile CurrentTileType => GameManager.Instance.GridController.GridData.GetCell(Location).Tile;
+        /// <summary>
+        /// Null if the entity is unregistered (or not yet registered)
+        /// </summary>
+        public Vector2Int? Location => GameManager.Instance.GetLocationForEntity(this);
+        
+        [CanBeNull]
+        private GameplayTile CurrentTileType {
+            get {
+                Vector2Int? location = Location;
+                return location == null ? null : GameManager.Instance.GridController.GridData.GetCell(location.Value).Tile;
+            }
+        }
 
         public event Action<IAbility, AbilityCooldownTimer> AbilityPerformedEvent;
         public event Action<IAbility, AbilityCooldownTimer> CooldownTimerStartedEvent;
@@ -362,6 +373,8 @@ namespace Gameplay.Entities {
         public void AddMovementTime(float timeToAdd) {
             AbilityDataScriptableObject moveAbilityScriptable = Abilities.FirstOrDefault(a => a.Content is MoveAbilityData);
             if (moveAbilityScriptable == null) return;
+            Vector2Int? location = Location;
+            if (location == null) return;
             
             List<AbilityCooldownTimer> activeTimersCopy = new List<AbilityCooldownTimer>(ActiveTimers);
             AbilityCooldownTimer movementTimer = activeTimersCopy.FirstOrDefault(t => t.Ability is MoveAbility);
@@ -379,8 +392,8 @@ namespace Gameplay.Entities {
             // Add a new movement cooldown timer
             MoveAbilityData moveAbilityData = (MoveAbilityData)moveAbilityScriptable.Content;
             CreateAbilityTimer(new MoveAbility(moveAbilityData, new MoveAbilityParameters {
-                Destination = Location,
-                NextMoveCell = Location,
+                Destination = location.Value,
+                NextMoveCell = location.Value,
                 SelectorTeam = MyTeam
             }, this), timeToAdd);
         }
@@ -462,6 +475,8 @@ namespace Gameplay.Entities {
 
         public void PerformDefaultAbility() {
             if (!EntityData.AttackByDefault) return;
+            Vector2Int? location = Location;
+            if (location == null) return;
             
             AttackAbilityData data = (AttackAbilityData) EntityData.Abilities
                 .FirstOrDefault(a => a.Content is AttackAbilityData)?.Content;
@@ -469,7 +484,7 @@ namespace Gameplay.Entities {
             
             PerformAbility(data, new AttackAbilityParameters {
                 TargetFire = false,
-                Destination = Location
+                Destination = location.Value
             }, true);
         }
 
@@ -543,6 +558,10 @@ namespace Gameplay.Entities {
 
         public void ReceiveAttackFromEntity(GridEntity sourceEntity) {
             sourceEntity.LastAttackedEntity = this;
+            if (Location == null) {
+                Debug.LogWarning("Entity received attack but it is not registered or unregistered");
+                return;
+            }
             
             // TODO Could consider attack-moving to the target location if no abilities are queued and configured to attack by default.
             // Necessary so that the entity doesn't just sit there if attacked by something outside of its range. 
@@ -556,11 +575,11 @@ namespace Gameplay.Entities {
                 : 0;
             
             // Apply any multiplicative defense modifiers from terrain
-            damage *= CurrentTileType.GetDefenseModifier(EntityData);
+            damage *= CurrentTileType!.GetDefenseModifier(EntityData);
 
             // Apply any multiplicative defense modifiers from structures (as long as this is not a structure)
             if (!EntityData.IsStructure) {
-                List<GridEntity> structuresAtLocation = GameManager.Instance.CommandManager.EntitiesOnGrid.EntitiesAtLocation(Location)?.Entities
+                List<GridEntity> structuresAtLocation = GameManager.Instance.CommandManager.EntitiesOnGrid.EntitiesAtLocation(Location.Value)?.Entities
                     ?.Select(e => e.Entity)?.Where(e => e.EntityData.IsStructure).ToList() ?? new List<GridEntity>();
                 foreach (GridEntity structure in structuresAtLocation) {
                     if (structure.EntityData.SharedUnitDamageTakenModifierTags.Count == 0

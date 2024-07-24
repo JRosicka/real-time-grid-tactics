@@ -60,6 +60,9 @@ namespace Gameplay.Config.Abilities {
 
         // TODO find some way to cache this, probably
         private List<Vector2Int> GetViableTargets(GridEntity selector) {
+            Vector2Int? selectorLocation = selector.Location;
+            if (selectorLocation == null) return new List<Vector2Int>();
+            
             List<GridData.CellData> cells = GetViableCellsWithoutConsideringTerrainOrEntities(selector);
             
             // Caches and helper function for blocker calculations
@@ -69,7 +72,7 @@ namespace Gameplay.Config.Abilities {
                 .ToList();
             
             // For viable cells, leave out adjacent cells
-            cells = cells.Except(GridController.GridData.GetAdjacentCells(selector.Location)).ToList();
+            cells = cells.Except(GridController.GridData.GetAdjacentCells(selectorLocation.Value)).ToList();
 
             List<GridData.CellData> cachedBlockerCells = new List<GridData.CellData>();
             List<GridData.CellData> cachedNotBlockerCells = new List<GridData.CellData>();
@@ -99,7 +102,7 @@ namespace Gameplay.Config.Abilities {
             // Leave out cells that do not have clear straight paths
             List<GridData.CellData> viableCells = new List<GridData.CellData>();
             foreach (GridData.CellData cell in cells) {
-                List<Vector2Int> cellsInPath = CellDistanceLogic.GetCellsInStraightLine(selector.Location, cell.Location);
+                List<Vector2Int> cellsInPath = CellDistanceLogic.GetCellsInStraightLine(selectorLocation.Value, cell.Location);
                 // Only look for blockers in the cells leading up to the target, not the target itself
                 if (cellsInPath.SkipLast(1)
                     .Any(c => DoesCellBlock(GridController.GridData.GetCell(c)))) {
@@ -126,14 +129,17 @@ namespace Gameplay.Config.Abilities {
         }
         
         private List<GridData.CellData> GetViableCellsWithoutConsideringTerrainOrEntities(GridEntity selector) {
+            Vector2Int? selectorLocation = selector.Location;
+            if (selectorLocation == null) return new List<GridData.CellData>();
+
             // Get all cells in range
-            List<GridData.CellData> cells = GridController.GridData.GetCellsInRange(selector.Location, ChargeRange);
+            List<GridData.CellData> cells = GridController.GridData.GetCellsInRange(selectorLocation.Value, ChargeRange);
             
             // Leave out the current cell
             cells = cells.Where(c => c.Location != selector.Location).ToList();
             
             // Leave out any cells that are not in a straight line from the selector
-            return cells.Where(c => CellDistanceLogic.AreCellsInStraightLine(selector.Location, c.Location)).ToList();
+            return cells.Where(c => CellDistanceLogic.AreCellsInStraightLine(selectorLocation.Value, c.Location)).ToList();
         }
 
         private bool CanChargeToCell(GridEntity selector, Vector2Int cell) {

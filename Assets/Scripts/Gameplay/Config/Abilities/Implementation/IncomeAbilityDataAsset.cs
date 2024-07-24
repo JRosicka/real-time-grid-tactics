@@ -22,8 +22,11 @@ namespace Gameplay.Config.Abilities {
         }
 
         protected override bool AbilityLegalImpl(NullAbilityParameters parameters, GridEntity entity) {
+            Vector2Int? entityLocation = entity.Location;
+            if (entityLocation == null) return false;
+            
             // We need an eligible resource entity on this cell in order to get income from it
-            GridEntity resourceEntity = GameManager.Instance.GetEntitiesAtLocation(entity.Location)
+            GridEntity resourceEntity = GameManager.Instance.GetEntitiesAtLocation(entityLocation.Value)
                 .Entities
                 .Select(e => e.Entity)
                 .FirstOrDefault(e => e.Tags.Contains(EntityData.EntityTag.Resource));

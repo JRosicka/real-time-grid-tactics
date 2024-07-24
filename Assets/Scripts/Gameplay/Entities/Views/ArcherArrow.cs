@@ -45,21 +45,29 @@ namespace Gameplay.Entities {
         }
 
         private void DoInitialize(GridEntity attacker, GridEntity target, bool actuallyDamageTarget) {
+            Vector2Int? targetLocation = target.Location;
+            Vector2Int? attackerLocation = attacker.Location;
+            if (targetLocation == null || attackerLocation == null) {
+                Destroy(gameObject);
+                return;
+            }
+            
             _attacker = attacker;
             _target = target;
             _gridController = GameManager.Instance.GridController;
             _actuallyDamageTarget = actuallyDamageTarget;
             _originalLocation = transform.position;
-            _lastTargetLocation = target.Location;
+            _lastTargetLocation = targetLocation.Value;
             _lastLocation = _originalLocation;
-            _lastTargetWorldPosition = _gridController.GetWorldPosition(target.Location);
+            _lastTargetWorldPosition = _gridController.GetWorldPosition(targetLocation.Value);
             _startingDistance = Vector2.Distance(_originalLocation, _lastTargetWorldPosition);
-            int xDif = _lastTargetLocation.x - attacker.Location.x;
+            int xDif = _lastTargetLocation.x - attackerLocation.Value.x;
             _signInt = xDif < 0 ? -1 : 1;
         }
 
         public void Update() {
-            if (_target == null || _target.DeadOrDying()) {
+            Vector2Int? targetLocation = _target == null ? null : _target.Location;
+            if (targetLocation == null || _target.DeadOrDying()) {
                 Destroy(gameObject);
                 return;
             }
@@ -68,8 +76,8 @@ namespace Gameplay.Entities {
             
             if (_lastTargetLocation != _target.Location) {
                 // The target moved, so record changes and from now on just travel in a straight line towards the target
-                _lastTargetLocation = _target.Location;
-                _lastTargetWorldPosition = _gridController.GetWorldPosition(_target.Location);
+                _lastTargetLocation = targetLocation.Value;
+                _lastTargetWorldPosition = _gridController.GetWorldPosition(targetLocation.Value);
                 _stopLobbing = true;
 
                 float degreeRotation = Mathf.Rad2Deg * Mathf.Atan2(_lastTargetWorldPosition.y - currentPosition.y, _lastTargetWorldPosition.x - currentPosition.x);

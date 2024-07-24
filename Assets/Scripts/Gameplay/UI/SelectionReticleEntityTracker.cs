@@ -43,7 +43,12 @@ namespace Gameplay.UI {
         }
 
         private void UpdateReticle(GridEntity gridEntity) {
-            UpdateReticle(gridEntity == null ? Vector2Int.zero : gridEntity.Location);
+            Vector2Int? entityLocation = gridEntity == null ? null : gridEntity.Location;
+            if (entityLocation == null) {
+                _reticle.Hide();
+                return;
+            }
+            UpdateReticle(entityLocation.Value);
         }
 
         private void OnAbilityPerformed(IAbility ability, AbilityCooldownTimer timer) {

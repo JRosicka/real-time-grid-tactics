@@ -68,7 +68,7 @@ public class GameManager : MonoBehaviour {
         return GetEntitiesAtLocation(location)?.GetTopEntity().Entity;
     }
 
-    public Vector2Int GetLocationForEntity(GridEntity entity) {
+    public Vector2Int? GetLocationForEntity(GridEntity entity) {
         if (CommandManager == null) {
             throw new Exception($"{nameof(GetLocationForEntity)} failed: Command controller not yet initialized");
         }

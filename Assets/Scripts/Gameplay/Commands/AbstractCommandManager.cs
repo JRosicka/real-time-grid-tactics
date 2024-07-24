@@ -75,7 +75,7 @@ public abstract class AbstractCommandManager : NetworkBehaviour, ICommandManager
         return _entitiesOnGrid.EntitiesAtLocation(location);
     }
 
-    public Vector2Int GetLocationForEntity(GridEntity entity) {
+    public Vector2Int? GetLocationForEntity(GridEntity entity) {
         return _entitiesOnGrid.LocationOfEntity(entity);
     }
 

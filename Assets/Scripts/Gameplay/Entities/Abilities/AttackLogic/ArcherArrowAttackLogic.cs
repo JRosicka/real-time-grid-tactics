@@ -12,8 +12,10 @@ namespace Gameplay.Entities.Abilities {
         private GridController GridController => GameManager.Instance.GridController;
         
         public void DoAttack(GridEntity attacker, GridEntity target) {
-            Vector2Int attackLocation = attacker.Location;
-            Vector3 attackWorldPosition = GridController.GetWorldPosition(attackLocation);
+            Vector2Int? attackLocation = attacker.Location;
+            if (attackLocation == null) return;
+            
+            Vector3 attackWorldPosition = GridController.GetWorldPosition(attackLocation.Value);
             
             ArcherArrow arrow = Object.Instantiate(ArrowPrefab, attackWorldPosition, Quaternion.identity, 
                 GameManager.Instance.CommandManager.SpawnBucket);

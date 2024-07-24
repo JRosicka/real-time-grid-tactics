@@ -136,13 +136,9 @@ namespace Gameplay.Entities {
         /// Gets the current location of the given <see cref="GridEntity"/>
         /// </summary>
         /// <exception cref="GridEntityNotPresentException">Thrown if the entity was not found in this collection</exception>
-        public Vector2Int LocationOfEntity(GridEntity entity) {
+        public Vector2Int? LocationOfEntity(GridEntity entity) {
             PositionedGridEntityCollection entry = Entities.FirstOrDefault(e => e.Entities.Any(o => o.Entity == entity));
-            if (entry == null) {
-                throw new GridEntityNotPresentException(entity);
-            }
-            
-            return entry.Location;
+            return entry?.Location;
         }
 
         public List<GridEntity> ActiveEntitiesForTeam(GridEntity.Team team, bool justTop = false) {

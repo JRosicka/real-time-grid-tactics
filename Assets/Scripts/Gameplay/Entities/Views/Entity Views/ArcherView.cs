@@ -19,10 +19,11 @@ namespace Gameplay.Entities {
         private void DoAttackAnimation(AttackAbility attackAbility) {
             if (attackAbility.AbilityParameters.Target.DeadOrDying()) return;
             
-            Vector2Int attackLocation = attackAbility.Performer.Location;
-            Vector2Int targetLocation = attackAbility.AbilityParameters.Target.Location;
+            Vector2Int? attackLocation = attackAbility.Performer.Location;
+            Vector2Int? targetLocation = attackAbility.AbilityParameters.Target.Location;
 
-            EntityView.SetFacingDirection(attackLocation, targetLocation);
+            if (attackLocation == null || targetLocation == null) return;
+            EntityView.SetFacingDirection(attackLocation.Value, targetLocation.Value);
         }
     }
 }
