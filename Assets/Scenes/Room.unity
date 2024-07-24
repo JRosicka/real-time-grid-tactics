@@ -1204,15 +1204,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 693523754353465205, guid: 5e8532a3114bc8041ad2a66875c6058e, type: 3}
       propertyPath: PlayerColor.b
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 693523754353465205, guid: 5e8532a3114bc8041ad2a66875c6058e, type: 3}
       propertyPath: PlayerColor.g
-      value: 0.16732645
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 693523754353465205, guid: 5e8532a3114bc8041ad2a66875c6058e, type: 3}
       propertyPath: PlayerColor.r
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 693523754353465206, guid: 5e8532a3114bc8041ad2a66875c6058e, type: 3}
       propertyPath: m_Pivot.x
@@ -2720,15 +2720,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 693523754353465205, guid: 5e8532a3114bc8041ad2a66875c6058e, type: 3}
       propertyPath: PlayerColor.b
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 693523754353465205, guid: 5e8532a3114bc8041ad2a66875c6058e, type: 3}
       propertyPath: PlayerColor.g
-      value: 0
+      value: 0.16862746
       objectReference: {fileID: 0}
     - target: {fileID: 693523754353465205, guid: 5e8532a3114bc8041ad2a66875c6058e, type: 3}
       propertyPath: PlayerColor.r
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 693523754353465206, guid: 5e8532a3114bc8041ad2a66875c6058e, type: 3}
       propertyPath: m_Pivot.x
