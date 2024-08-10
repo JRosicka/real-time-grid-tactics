@@ -71,7 +71,6 @@ namespace Gameplay.Grid {
             
             // Reset the hover-over-cell functionality to update
             StopHovering();
-            ClearPath();
             GameManager.Instance.GridInputController.ReProcessMousePosition();
             
             UpdateCellOverlaysForAbility(selectableCells, selectedEntity);
@@ -83,7 +82,6 @@ namespace Gameplay.Grid {
             }
             
             _mouseReticle.SelectTile(cell, GameManager.Instance.GetTopEntityAtLocation(cell));
-            GameManager.Instance.EntitySelectionManager.TryFindPath(cell);
         }
 
         public void StopHovering() {

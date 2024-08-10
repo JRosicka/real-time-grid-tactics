@@ -47,7 +47,6 @@ namespace Gameplay.Config.Abilities {
                 MoveDestination = cellPosition,
                 SelectorTeam = selectorTeam
             }, true, false, false);
-
         }
 
         public void RecalculateTargetableAbilitySelection(GridEntity selector) {

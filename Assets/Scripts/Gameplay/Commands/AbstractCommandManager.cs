@@ -93,13 +93,13 @@ public abstract class AbstractCommandManager : NetworkBehaviour, ICommandManager
         GridEntity entityInstance = spawnFunc();
         RegisterEntity(entityInstance, data, spawnLocation, spawnerEntity);
 
-        if (spawnerEntity != null && spawnerEntity.RallyLogic.CanRally) {
+        if (spawnerEntity != null && spawnerEntity.TargetLocationLogic.CanRally) {
             if (data.Tags.Contains(EntityData.EntityTag.Worker)) {
                 // Workers get move-commanded
-                entityInstance.TryMoveToCell(spawnerEntity.RallyLogic.RallyPoint);
+                entityInstance.TryMoveToCell(spawnerEntity.TargetLocationLogic.CurrentTarget);
             } else {
                 // Everything else attack-moves
-                entityInstance.TryAttackMoveToCell(spawnerEntity.RallyLogic.RallyPoint);
+                entityInstance.TryAttackMoveToCell(spawnerEntity.TargetLocationLogic.CurrentTarget);
             }
         }
         

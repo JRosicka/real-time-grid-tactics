@@ -26,7 +26,7 @@ namespace Gameplay.Entities.Abilities {
         }
         
         public override bool DoAbilityEffect() {
-            Performer.RallyLogic.RallyPoint = AbilityParameters.Destination;
+            Performer.SetTargetLocation(AbilityParameters.Destination, null);
             return true;
         }
     }

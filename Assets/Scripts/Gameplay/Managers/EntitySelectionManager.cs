@@ -1,10 +1,8 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using Gameplay.Config.Abilities;
 using Gameplay.Entities;
 using Gameplay.Grid;
-using Gameplay.Pathfinding;
 using Gameplay.UI;
 using UnityEngine;
 
@@ -48,6 +46,7 @@ public class EntitySelectionManager {
     public void SelectEntity(GridEntity entity) {
         if (SelectedEntity != null) {
             // Unregister the un-registration event for the previously selected entity
+            SelectedEntity.TargetLocationLogicChangedEvent -= TryFindPath;
             SelectedEntity.UnregisteredEvent -= DeselectEntity;
         }
         
@@ -57,6 +56,8 @@ public class EntitySelectionManager {
         GridController.TrackEntity(entity);
 
         if (entity != null) {
+            TryFindPath(entity.TargetLocationLogic.CurrentTarget);
+            entity.TargetLocationLogicChangedEvent += TryFindPath;
             entity.UnregisteredEvent += DeselectEntity;
         }
     }
@@ -105,7 +106,8 @@ public class EntitySelectionManager {
         if (SelectedEntity == null) return;
         if (!_gameManager.CommandManager.EntitiesOnGrid.IsEntityOnGrid(SelectedEntity)) return;
         if (SelectedEntity.Location == _selectedEntityCurrentLocation) return;
-        
+
+        TryFindPath(SelectedEntity.TargetLocationLogic.CurrentTarget);
         SelectedEntityMoved?.Invoke();
     }
 
@@ -164,10 +166,10 @@ public class EntitySelectionManager {
     
     #endregion
 
-    public void TryFindPath(Vector2Int cell) {
+    private void TryFindPath(Vector2Int cell) {
         if (SelectedEntity == null) return;
         if (!_gameManager.CommandManager.EntitiesOnGrid.IsEntityOnGrid(SelectedEntity)) return; // May be in the middle of getting unregistered
-        if (!SelectedEntity.CanMove && !SelectedEntity.RallyLogic.CanRally) return;
+        if (!SelectedEntity.CanMove && !SelectedEntity.TargetLocationLogic.CanRally) return;
         if (SelectedEntity.MyTeam != _gameManager.LocalPlayer.Data.Team) return;
 
         PathfinderService.Path path = PathfinderService.FindPath(SelectedEntity, cell);

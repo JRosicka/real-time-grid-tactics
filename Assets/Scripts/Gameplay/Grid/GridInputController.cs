@@ -56,7 +56,6 @@ namespace Gameplay.Grid {
         public void ProcessMouseExit() {
             _currentHoveredCell = null;
             _gridController.StopHovering();
-            _gridController.ClearPath();
         }
         
         private void UpdateSelectedEntityPath() {

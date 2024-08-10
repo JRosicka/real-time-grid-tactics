@@ -120,17 +120,15 @@ namespace Gameplay.Entities {
         /// TODO if this gets complicated then we should extract this out into a new AbilityQueue class. 
         /// </summary>
         public List<IAbility> QueuedAbilities = new List<IAbility>();
-        
+
         public bool Interactable { get; private set; }
 
         public GridEntity LastAttackedEntity;
-        
-        public IRallyLogic RallyLogic { get; private set; }
 
         /// <summary>
         /// Initialization method ran only on the server, before <see cref="ClientInitialize"/>.
         /// </summary>
-        public void ServerInitialize(EntityData data, Team team) {    // TODO hmm, I wonder if it would be better to set the location here and listen for updates when it moves, so that we don't need to worry about registration states. There have been a lot of bugs related to entities not being registered when trying to get their location. 
+        public void ServerInitialize(EntityData data, Team team, Vector2Int spawnLocation) {
             EntityData = data;
             MyTeam = team;
             
@@ -140,27 +138,26 @@ namespace Gameplay.Entities {
             // Syncvar stats
             SetCurrentHP(EntityData.HP, false);
             CurrentResources = new ResourceAmount(EntityData.StartingResourceSet);
+            
+            // Target logic
+            TargetLocationLogic = new TargetLocationLogic(EntityData.CanRally, spawnLocation, null);
+            TargetLocationLogicChangedEvent += TargetLocationLogicChanged;
+            SyncTargetLocationLogic();
         }
         
         [ClientRpc]
-        public void RpcInitialize(EntityData data, Team team, Vector2Int spawnLocation) {
+        public void RpcInitialize(EntityData data, Team team) {
             transform.parent = GameManager.Instance.CommandManager.SpawnBucket;
-            ClientInitialize(data, team, spawnLocation);
+            ClientInitialize(data, team);
         }
 
         /// <summary>
         /// Initialization that runs on each client
         /// </summary>
-        public void ClientInitialize(EntityData data, Team team, Vector2Int spawnLocation) {
+        public void ClientInitialize(EntityData data, Team team) {
             EntityData = data;
             MyTeam = team;
             Team playerTeam = GameManager.Instance.LocalPlayer.Data.Team;
-            
-            if (EntityData.CanRally) {
-                RallyLogic = new StructureRallyLogic(spawnLocation);
-            } else {
-                RallyLogic = new NullRallyLogic();
-            }
 
             if (MyTeam == Team.Neutral) {
                 _interactBehavior = new NeutralInteractBehavior();
@@ -215,6 +212,47 @@ namespace Gameplay.Entities {
         /// </summary>
         public event Action EntityMovedEvent;
 
+        #region Target Location
+        
+        public event Action<Vector2Int> TargetLocationLogicChangedEvent;
+        [SyncVar(hook = nameof(OnTargetLocationLogicChanged))]
+        public TargetLocationLogic TargetLocationLogic;
+        private void OnTargetLocationLogicChanged(TargetLocationLogic oldValue, TargetLocationLogic newValue) {
+            TargetLocationLogicChangedEvent?.Invoke(newValue.CurrentTarget);
+        }
+        /// <summary>
+        /// Reset the reference for <see cref="TargetLocationLogic"/> to force a sync across clients. Just updating fields in the class
+        /// is not enough to get the sync to occur. 
+        /// </summary>
+        private void SyncTargetLocationLogic() { 
+            TargetLocationLogic = new TargetLocationLogic(TargetLocationLogic.CanRally, TargetLocationLogic.CurrentTarget, TargetLocationLogic.TargetEntity);
+            if (!NetworkClient.active) {
+                // SP, so syncvars won't work
+                TargetLocationLogicChangedEvent?.Invoke(TargetLocationLogic.CurrentTarget);
+            }
+        }
+        private void TargetLocationLogicChanged(Vector2Int newLocation) {
+            if (TargetLocationLogic.TargetEntity != null) { // TODO this might cause memory leaks, since I don't know of a good way to unregister these events since we are not guaranteed to call SyncTargetLocationLogic from the server. 
+                TargetLocationLogic.TargetEntity.EntityMovedEvent += TargetEntityUpdated;
+                TargetLocationLogic.TargetEntity.UnregisteredEvent += TargetEntityUpdated;
+            }
+        }
+        private void TargetEntityUpdated() {
+            Vector2Int? newLocation = TargetLocationLogic.TargetEntity == null ? null : TargetLocationLogic.TargetEntity.Location;
+            if (newLocation == null) {
+                SetTargetLocation(Location!.Value, null);
+            } else {
+                SetTargetLocation(newLocation.Value, TargetLocationLogic.TargetEntity);
+            }
+        }
+        public void SetTargetLocation(Vector2Int newTargetLocation, GridEntity targetEntity) {
+            TargetLocationLogic.CurrentTarget = newTargetLocation;
+            TargetLocationLogic.TargetEntity = targetEntity;
+            SyncTargetLocationLogic();
+        }
+        
+        #endregion
+        
         public void Select() {
             if (!Interactable) return;
             _interactBehavior.Select(this);
@@ -233,7 +271,13 @@ namespace Gameplay.Entities {
             if (!CanMove) return false;
 
             MoveAbilityData data = (MoveAbilityData) EntityData.Abilities.First(a => a.Content.GetType() == typeof(MoveAbilityData)).Content;
-            PerformAbility(data, new MoveAbilityParameters { Destination = targetCell, NextMoveCell = targetCell, SelectorTeam = MyTeam}, true);
+            if (PerformAbility(data, new MoveAbilityParameters {
+                        Destination = targetCell, 
+                        NextMoveCell = targetCell, 
+                        SelectorTeam = MyTeam
+                    }, true)) {
+                SetTargetLocation(targetCell, null);
+            }
             return true;
         }
 
@@ -241,7 +285,13 @@ namespace Gameplay.Entities {
             if (!CanMove) return false;
 
             AttackAbilityData data = (AttackAbilityData) EntityData.Abilities.First(a => a.Content.GetType() == typeof(AttackAbilityData)).Content;
-            PerformAbility(data, new AttackAbilityParameters { Destination = targetCell, TargetFire = false }, true);
+            if (PerformAbility(data, new AttackAbilityParameters {
+                        Destination = targetCell, 
+                        TargetFire = false
+                    },
+                    true)) {
+                SetTargetLocation(targetCell, null);
+            }
             return true;
         }
 
@@ -252,16 +302,21 @@ namespace Gameplay.Entities {
 
         public void TryTargetEntity(GridEntity targetEntity, Vector2Int targetCell) {
             TargetType targetType = GetTargetType(this, targetEntity);
-            
-            if (targetType == TargetType.Enemy) {
-                AttackAbilityData data = (AttackAbilityData) EntityData.Abilities
-                    .First(a => a.Content is AttackAbilityData).Content;
-                PerformAbility(data, new AttackAbilityParameters {
-                    Target = targetEntity, 
-                    TargetFire = true,
-                    Destination = targetCell
-                }, true);
+
+            if (targetType != TargetType.Enemy) return;
+            AttackAbilityData data = (AttackAbilityData) EntityData.Abilities
+                .First(a => a.Content is AttackAbilityData).Content;
+            if (PerformAbility(data, new AttackAbilityParameters {
+                        Target = targetEntity, 
+                        TargetFire = true,
+                        Destination = targetCell
+                    }, true)) {
+                SetTargetLocation(targetCell, targetEntity);
             }
+        }
+
+        public Vector2Int CurrentTargetLocation() {
+            return TargetLocationLogic.CurrentTarget;
         }
 
         private static TargetType GetTargetType(GridEntity originEntity, GridEntity targetEntity) {

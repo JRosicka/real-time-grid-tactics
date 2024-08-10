@@ -52,6 +52,13 @@ public class PathfinderService {
             };
         }
 
+        if (entityLocation == destination) {
+            return new Path {
+                Nodes = new List<GridNode> { new GridNode(entity, GridController.GridData.GetCell(entityLocation.Value)) },
+                ContainsRequestedDestination = true
+            };
+        }
+
         int maxSearch = MaxCellsToSearch;
         if (!entity.CanPathFindToTile(GridController.GridData.GetCell(destination).Tile) 
                 || !CanEntityEnterCell(destination, entity.EntityData, entity.MyTeam)) {
