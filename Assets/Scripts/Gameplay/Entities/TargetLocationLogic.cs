@@ -34,6 +34,9 @@ namespace Gameplay.Entities {
         public static void WriteTargetLocationLogic(this NetworkWriter writer, TargetLocationLogic logic) {
             if (logic == null) {
                 writer.WriteBool(false);    // Indicates null
+                writer.WriteBool(false);
+                writer.WriteVector2(Vector2.zero);
+                writer.Write<GridEntity>(null);
                 return;
             }
             writer.WriteBool(true);    // Indicates not null
@@ -43,11 +46,13 @@ namespace Gameplay.Entities {
         }
 
         public static TargetLocationLogic ReadTargetLocationLogic(this NetworkReader reader) {
-            bool notNull = reader.ReadBool(); 
-            return notNull ? new TargetLocationLogic(reader.ReadBool(), 
-                reader.ReadVector2Int(), 
-                reader.Read<GridEntity>())
-                    : null;
+            if (reader.ReadBool()) {
+                return new TargetLocationLogic(reader.ReadBool(),
+                    reader.ReadVector2Int(),
+                    reader.Read<GridEntity>());
+            }
+            
+            return null;
         }
     }
 }
