@@ -224,12 +224,24 @@ namespace Gameplay.Entities {
         /// Reset the reference for <see cref="TargetLocationLogic"/> to force a sync across clients. Just updating fields in the class
         /// is not enough to get the sync to occur. 
         /// </summary>
-        private void SyncTargetLocationLogic() { 
-            TargetLocationLogic = new TargetLocationLogic(TargetLocationLogic.CanRally, TargetLocationLogic.CurrentTarget, TargetLocationLogic.TargetEntity);
+        private void SyncTargetLocationLogic() {
+            TargetLocationLogic newTargetLocationLogic = new TargetLocationLogic(TargetLocationLogic.CanRally, TargetLocationLogic.CurrentTarget, TargetLocationLogic.TargetEntity);
+            if (!NetworkServer.active && !NetworkClient.active) {
+                // MP client, so we need to network the change to the syncvar
+                CmdSyncTargetLocationLogic(newTargetLocationLogic);
+                return;
+            }
+
+            // Otherwise we are the MP server or in SP, so directly modify the field here 
+            TargetLocationLogic = newTargetLocationLogic;
             if (!NetworkClient.active) {
                 // SP, so syncvars won't work
                 TargetLocationLogicChangedEvent?.Invoke(TargetLocationLogic.CurrentTarget);
             }
+        }
+        [Command(requiresAuthority = false)]
+        private void CmdSyncTargetLocationLogic(TargetLocationLogic newTargetLocationLogic) {
+            TargetLocationLogic = newTargetLocationLogic;
         }
         private void TargetLocationLogicChanged(Vector2Int newLocation) {
             if (TargetLocationLogic.TargetEntity != null) { // TODO this might cause memory leaks, since I don't know of a good way to unregister these events since we are not guaranteed to call SyncTargetLocationLogic from the server. 
