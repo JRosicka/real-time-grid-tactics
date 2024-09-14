@@ -34,14 +34,11 @@ namespace Gameplay.Entities {
         public static void WriteTargetLocationLogic(this NetworkWriter writer, TargetLocationLogic logic) {
             if (logic == null) {
                 writer.WriteBool(false);    // Indicates null
-                writer.WriteBool(false);
-                writer.WriteVector2(Vector2.zero);
-                writer.Write<GridEntity>(null);
                 return;
             }
             writer.WriteBool(true);    // Indicates not null
             writer.WriteBool(logic.CanRally);
-            writer.WriteVector2(logic.CurrentTarget);
+            writer.WriteVector2Int(logic.CurrentTarget);
             writer.Write(logic.TargetEntity);
         }
 
