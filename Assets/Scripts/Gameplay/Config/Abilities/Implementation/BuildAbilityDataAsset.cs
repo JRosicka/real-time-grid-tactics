@@ -62,7 +62,7 @@ namespace Gameplay.Config.Abilities {
 
         public void DoTargetableAbility(Vector2Int cellPosition, GridEntity selectedEntity, GridEntity.Team selectorTeam, System.Object targetData) {
             BuildAbilityParameters buildParameters = new BuildAbilityParameters {Buildable = (PurchasableData) targetData, BuildLocation = cellPosition};
-            selectedEntity.QueueAbility(this, buildParameters, true, false, false);
+            selectedEntity.QueueAbility(this, buildParameters, true, true, false);
             selectedEntity.SetTargetLocation(cellPosition, null);
         }
 
