@@ -226,7 +226,7 @@ namespace Gameplay.Entities {
         /// </summary>
         private void SyncTargetLocationLogic() {
             TargetLocationLogic newTargetLocationLogic = new TargetLocationLogic(TargetLocationLogic.CanRally, TargetLocationLogic.CurrentTarget, TargetLocationLogic.TargetEntity);
-            if (!NetworkServer.active && !NetworkClient.active) {
+            if (!NetworkServer.active && NetworkClient.active) {
                 // MP client, so we need to network the change to the syncvar
                 CmdSyncTargetLocationLogic(newTargetLocationLogic);
                 return;
