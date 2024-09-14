@@ -32,15 +32,22 @@ namespace Gameplay.Entities {
     
     public static class TargetLocationLogicSerializer {
         public static void WriteTargetLocationLogic(this NetworkWriter writer, TargetLocationLogic logic) {
+            if (logic == null) {
+                writer.WriteBool(false);    // Indicates null
+                return;
+            }
+            writer.WriteBool(true);    // Indicates not null
             writer.WriteBool(logic.CanRally);
             writer.WriteVector2(logic.CurrentTarget);
             writer.Write(logic.TargetEntity);
         }
 
         public static TargetLocationLogic ReadTargetLocationLogic(this NetworkReader reader) {
-            return new TargetLocationLogic(reader.ReadBool(), 
+            bool notNull = reader.ReadBool(); 
+            return notNull ? new TargetLocationLogic(reader.ReadBool(), 
                 reader.ReadVector2Int(), 
-                reader.Read<GridEntity>());
+                reader.Read<GridEntity>())
+                    : null;
         }
     }
 }
