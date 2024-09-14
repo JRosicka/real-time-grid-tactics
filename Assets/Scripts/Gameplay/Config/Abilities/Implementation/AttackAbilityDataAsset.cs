@@ -48,7 +48,7 @@ namespace Gameplay.Config.Abilities {
                     TargetFire = target != null && target.MyTeam != GridEntity.Team.Neutral, 
                     Target = target, 
                     Destination = cellPosition
-                }, true, false, false);
+                }, true, true, false);
             selectedEntity.SetTargetLocation(cellPosition, target);
         }
 
