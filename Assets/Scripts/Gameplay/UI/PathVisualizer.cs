@@ -31,7 +31,7 @@ namespace Gameplay.UI {
             List<GridNode> pathNodes = path.Nodes;
             
             // If the path is too short, then no need to place any lines
-            if (pathNodes.Count < 2 || (pathNodes.Count < 3 && path.ContainsRequestedDestination)) return;
+            if (pathNodes.Count < 1 || (pathNodes.Count < 2 && path.ContainsRequestedDestination)) return;
             
             // No need to visualise for the final cell
             float currentAngle = -1f;
@@ -59,13 +59,15 @@ namespace Gameplay.UI {
                 } else if (i == pathNodes.Count - 2) {
                     // This is the last node we care about visualizing
                     if (path.ContainsRequestedDestination) {
-                        line.SetMask(DirectionalLine.LineType.EndHalf);
+                        line.SetMask(DirectionalLine.LineType.Full);
                     } else {
                         // We don't want to show the path to the destination
                         line.SetMask(DirectionalLine.LineType.Full);
                         line.ToggleEndDot(true);
                     }
                     
+                    line.ToggleEndDot(true);
+
                     // Hide/show the previous line's dot if it has a different angle than this one.
                     _currentlyDisplayedLines[i-1].ToggleEndDot(!Mathf.Approximately(currentAngle, previousAngle));
                 } else {
