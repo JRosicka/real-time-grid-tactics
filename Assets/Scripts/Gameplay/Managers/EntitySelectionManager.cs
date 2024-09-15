@@ -94,7 +94,7 @@ public class EntitySelectionManager {
     }
 
     private void EntityCollectionChanged() {
-        DetermineIfSelectedEntityMoved();
+        UpdateSelectedEntity();
         if (_selectedTargetableAbility != null && SelectedEntity != null) {
             // TODO I don't like that we do this every time an entity spawns/despawns/moves. That's a lot of calculating,
             // especially for expensive calculations like the charge ability selection. 
@@ -102,12 +102,15 @@ public class EntitySelectionManager {
         }
     }
 
-    private void DetermineIfSelectedEntityMoved() {
+    private void UpdateSelectedEntity() {
         if (SelectedEntity == null) return;
         if (!_gameManager.CommandManager.EntitiesOnGrid.IsEntityOnGrid(SelectedEntity)) return;
-        if (SelectedEntity.Location == _selectedEntityCurrentLocation) return;
-
+        // Update the path if necessary
         TryFindPath(SelectedEntity.TargetLocationLogic.CurrentTarget);
+
+        // Update the location if necessary
+        if (SelectedEntity.Location == _selectedEntityCurrentLocation) return; 
+        _selectedEntityCurrentLocation = SelectedEntity.Location;
         SelectedEntityMoved?.Invoke();
     }
 
