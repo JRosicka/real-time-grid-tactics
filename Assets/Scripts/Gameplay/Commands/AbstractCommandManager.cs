@@ -145,7 +145,9 @@ public abstract class AbstractCommandManager : NetworkBehaviour, ICommandManager
             ClearAbilityQueue(ability.Performer);   // TODO test on multiplayer to see if the server-side of this gets executed before moving on with this method. It needs to. 
         }
         // Assign a UID here since this is guaranteed to be on the server (if MP)
-        ability.UID = IDUtil.GenerateUID();
+        if (ability.UID == default) {
+            ability.UID = IDUtil.GenerateUID();
+        }
         if (ability.PerformAbility()) {
             return true;
         }
@@ -160,6 +162,11 @@ public abstract class AbstractCommandManager : NetworkBehaviour, ICommandManager
     protected void DoQueueAbility(IAbility ability, bool clearQueueFirst, bool insertAtFront) {
         if (clearQueueFirst) {
             ClearAbilityQueue(ability.Performer);      // TODO test same as above
+        }
+
+        // Assign a UID here since this is guaranteed to be on the server (if MP)
+        if (ability.UID == default) {
+            ability.UID = IDUtil.GenerateUID();
         }
 
         if (insertAtFront) {
