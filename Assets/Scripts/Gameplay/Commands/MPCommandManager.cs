@@ -53,7 +53,7 @@ public class MPCommandManager : AbstractCommandManager {
 
     public override void RemoveAbilityFromQueue(GridEntity entity, IAbility queuedAbility) {
         LogTimestamp(nameof(RemoveAbilityFromQueue));
-        CmdRemoveAbilityFromQueue(entity, queuedAbility);
+        CmdRemoveAbilityFromQueue(entity, queuedAbility.UID);
     }
 
     public override void ClearAbilityQueue(GridEntity entity) {
@@ -151,8 +151,8 @@ public class MPCommandManager : AbstractCommandManager {
     }
 
     [Command(requiresAuthority = false)]
-    private void CmdRemoveAbilityFromQueue(GridEntity entity, IAbility queuedAbility) {
-        DoRemoveAbilityFromQueue(entity, queuedAbility);
+    private void CmdRemoveAbilityFromQueue(GridEntity entity, int abilityID) {
+        DoRemoveAbilityFromQueue(entity, abilityID);
         RpcUpdateAbilityQueue(entity, entity.QueuedAbilities);
     }
 

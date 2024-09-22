@@ -53,7 +53,7 @@ public class SPCommandManager : AbstractCommandManager {
     }
 
     public override void RemoveAbilityFromQueue(GridEntity entity, IAbility queuedAbility) {
-        DoRemoveAbilityFromQueue(entity, queuedAbility);
+        DoRemoveAbilityFromQueue(entity, queuedAbility.UID);
     }
 
     public override void ClearAbilityQueue(GridEntity entity) {

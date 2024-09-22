@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gameplay.Config;
 using Gameplay.Entities;
 using Gameplay.Entities.Abilities;
@@ -168,7 +169,14 @@ public abstract class AbstractCommandManager : NetworkBehaviour, ICommandManager
         }
     }
 
-    protected void DoRemoveAbilityFromQueue(GridEntity entity, IAbility queuedAbility) {
+    protected void DoRemoveAbilityFromQueue(GridEntity entity, int abilityID) {
+        IAbility queuedAbility = entity.QueuedAbilities.FirstOrDefault(t => t.UID == abilityID);
+        if (queuedAbility == null) {
+            // Not expected
+            Debug.LogError("Tried to remove a queued ability that is not present!");
+            return;
+        }
+
         entity.QueuedAbilities.Remove(queuedAbility);
     }
 
