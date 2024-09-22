@@ -81,6 +81,8 @@ public abstract class AbstractCommandManager : NetworkBehaviour, ICommandManager
 
     public abstract void PerformAbility(IAbility ability, bool clearQueueFirst);
     public abstract void QueueAbility(IAbility ability, bool clearQueueFirst, bool insertAtFront);
+    public abstract void RemoveAbilityFromQueue(GridEntity entity, IAbility queuedAbility);
+    public abstract void ClearAbilityQueue(GridEntity entity);
 
     public abstract void MarkAbilityCooldownExpired(IAbility ability);
 
@@ -139,7 +141,7 @@ public abstract class AbstractCommandManager : NetworkBehaviour, ICommandManager
         if (ability.Performer == null) return false;
         
         if (clearQueueFirst) {
-            ability.Performer.ClearAbilityQueue();
+            ClearAbilityQueue(ability.Performer);   // TODO test on multiplayer to see if the server-side of this gets executed before moving on with this method. It needs to. 
         }
         // Assign a UID here since this is guaranteed to be on the server (if MP)
         ability.UID = IDUtil.GenerateUID();
@@ -148,7 +150,7 @@ public abstract class AbstractCommandManager : NetworkBehaviour, ICommandManager
         }
 
         if (ability.WaitUntilLegal) {
-            DoQueueAbility(ability, false, false);
+            QueueAbility(ability, false, false);
         }
 
         return false;
@@ -156,7 +158,7 @@ public abstract class AbstractCommandManager : NetworkBehaviour, ICommandManager
 
     protected void DoQueueAbility(IAbility ability, bool clearQueueFirst, bool insertAtFront) {
         if (clearQueueFirst) {
-            ability.Performer.ClearAbilityQueue();
+            ClearAbilityQueue(ability.Performer);      // TODO test same as above
         }
 
         if (insertAtFront) {
@@ -164,6 +166,15 @@ public abstract class AbstractCommandManager : NetworkBehaviour, ICommandManager
         } else {
             ability.Performer.QueuedAbilities.Add(ability);
         }
+    }
+
+    protected void DoRemoveAbilityFromQueue(GridEntity entity, IAbility queuedAbility) {
+        entity.QueuedAbilities.Remove(queuedAbility);
+    }
+
+    protected void DoClearAbilityQueue(GridEntity entity) {
+        entity.QueuedAbilities.ForEach(a => GameManager.Instance.CommandManager.CancelAbility(a));
+        entity.QueuedAbilities.Clear();
     }
 
     protected void DoAbilityPerformed(IAbility ability) {

@@ -52,6 +52,14 @@ public class SPCommandManager : AbstractCommandManager {
         DoQueueAbility(ability, clearQueueFirst, insertAtFront);
     }
 
+    public override void RemoveAbilityFromQueue(GridEntity entity, IAbility queuedAbility) {
+        DoRemoveAbilityFromQueue(entity, queuedAbility);
+    }
+
+    public override void ClearAbilityQueue(GridEntity entity) {
+        DoClearAbilityQueue(entity);
+    }
+
     public override void MarkAbilityCooldownExpired(IAbility ability) {
         DoMarkAbilityCooldownExpired(ability, false);
     }

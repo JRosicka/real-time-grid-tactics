@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Gameplay.Config;
 using Gameplay.Entities;
@@ -48,6 +49,16 @@ public class MPCommandManager : AbstractCommandManager {
     public override void QueueAbility(IAbility ability, bool clearQueueFirst, bool insertAtFront) {
         LogTimestamp(nameof(QueueAbility));
         CmdQueueAbility(ability, clearQueueFirst, insertAtFront);
+    }
+
+    public override void RemoveAbilityFromQueue(GridEntity entity, IAbility queuedAbility) {
+        LogTimestamp(nameof(RemoveAbilityFromQueue));
+        CmdRemoveAbilityFromQueue(entity, queuedAbility);
+    }
+
+    public override void ClearAbilityQueue(GridEntity entity) {
+        LogTimestamp(nameof(ClearAbilityQueue));
+        CmdClearAbilityQueue(entity);
     }
 
     public override void MarkAbilityCooldownExpired(IAbility ability) {
@@ -131,6 +142,24 @@ public class MPCommandManager : AbstractCommandManager {
     private void CmdQueueAbility(IAbility ability, bool clearQueueFirst, bool insertAtFront) {
         LogTimestamp(nameof(CmdQueueAbility));
         DoQueueAbility(ability, clearQueueFirst, insertAtFront);
+        RpcUpdateAbilityQueue(ability.Performer, ability.Performer.QueuedAbilities);
+    }
+    
+    [ClientRpc]
+    private void RpcUpdateAbilityQueue(GridEntity performer, List<IAbility> updatedAbilityQueue) {
+        performer.QueuedAbilities = updatedAbilityQueue;
+    }
+
+    [Command(requiresAuthority = false)]
+    private void CmdRemoveAbilityFromQueue(GridEntity entity, IAbility queuedAbility) {
+        DoRemoveAbilityFromQueue(entity, queuedAbility);
+        RpcUpdateAbilityQueue(entity, entity.QueuedAbilities);
+    }
+
+    [Command(requiresAuthority = false)]
+    private void CmdClearAbilityQueue(GridEntity entity) {
+        DoClearAbilityQueue(entity);
+        RpcUpdateAbilityQueue(entity, entity.QueuedAbilities);
     }
 
     [Command(requiresAuthority = false)]

@@ -146,8 +146,8 @@ public class EntitySelectionManager {
             DeselectTargetableAbility();
             return false;
         }
-        
-        SelectedEntity.ClearAbilityQueue();
+
+        _gameManager.CommandManager.ClearAbilityQueue(SelectedEntity);
 
         // TODO maybe move everything under here in this method to some other class, if things get more complicated
         if (_selectedTargetableAbility.MoveToTargetCellFirst && SelectedEntity.Location != clickedCell) {

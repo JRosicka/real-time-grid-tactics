@@ -517,15 +517,6 @@ namespace Gameplay.Entities {
         }
 
         /// <summary>
-        /// Only occurs on server. That's the only place where we keep track of queued abilities anyway. 
-        /// </summary>
-        public void ClearAbilityQueue() {
-            // Cancel all queued abilities
-            QueuedAbilities.ForEach(a => GameManager.Instance.CommandManager.CancelAbility(a));
-            QueuedAbilities.Clear();
-        }
-
-        /// <summary>
         /// Auto-select any abilities that we have configured as auto-selectable.
         /// This probably won't behave well if this entity has multiple abilities configured as auto-selectable... 
         /// </summary>

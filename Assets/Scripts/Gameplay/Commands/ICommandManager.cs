@@ -24,6 +24,8 @@ public interface ICommandManager {
     Vector2Int? GetLocationForEntity(GridEntity entity);
     void PerformAbility(IAbility ability, bool clearQueueFirst);
     void QueueAbility(IAbility ability, bool clearQueueFirst, bool insertAtFront);
+    void RemoveAbilityFromQueue(GridEntity entity, IAbility queuedAbility);
+    void ClearAbilityQueue(GridEntity entity);
     void MarkAbilityCooldownExpired(IAbility ability);
     void CancelAbility(IAbility ability);
     /// <summary>

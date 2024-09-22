@@ -58,9 +58,9 @@ public class AbilityQueueExecutor : MonoBehaviour {
         // Try to perform the next ability
         IAbility nextAbility = abilityQueue[0];
         if (entity.PerformQueuedAbility(nextAbility)) {
-            abilityQueue.Remove(nextAbility);    // TODO Hmmm we remove the ability if we determine here on the client that it is performed successfully, but we don't yet know if it will actually be successfully performed on the server. Not sure if there is much to do about that. Well, actually, this only ever gets executed on the server, so maybe we could just skip the Command networking part and just directly do the ability. 
+            _commandManager.RemoveAbilityFromQueue(entity, nextAbility); // TODO Hmmm we remove the ability if we determine here on the client that it is performed successfully, but we don't yet know if it will actually be successfully performed on the server. Not sure if there is much to do about that. Well, actually, this only ever gets executed on the server, so maybe we could just skip the Command networking part and just directly do the ability. 
         } else if (!nextAbility.WaitUntilLegal) {
-            abilityQueue.Remove(nextAbility);
+            _commandManager.RemoveAbilityFromQueue(entity, nextAbility);
         }
     }
 }
