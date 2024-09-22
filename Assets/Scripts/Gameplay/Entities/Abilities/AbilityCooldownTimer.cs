@@ -80,13 +80,6 @@ namespace Gameplay.Entities.Abilities {
             await AsyncUtil.WaitUntilOnCallerThread(Ability.CompleteCooldown, CooldownCheckMillis);
             GameManager.Instance.CommandManager.MarkAbilityCooldownExpired(Ability);
         }
-
-        /// <summary>
-        /// Immediately cancel and expire the timer without calling any cooldown-completed functionality on the ability
-        /// </summary>
-        public void CancelAbility() {
-            GameManager.Instance.CommandManager.CancelAbility(Ability);
-        }
         
         /// <summary>
         /// We just received word that the timer has expired on the server, so we should mark it as completed here regardless

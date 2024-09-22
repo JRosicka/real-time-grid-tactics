@@ -520,11 +520,9 @@ namespace Gameplay.Entities {
         /// Only occurs on server. That's the only place where we keep track of queued abilities anyway. 
         /// </summary>
         public void ClearAbilityQueue() {
+            // Cancel all queued abilities
+            QueuedAbilities.ForEach(a => GameManager.Instance.CommandManager.CancelAbility(a));
             QueuedAbilities.Clear();
-            // Also cancel any abilities that are in the middle of being resolved
-            List<AbilityCooldownTimer> activeTimersToCancel = ActiveTimers
-                .Where(a => a.Ability.AbilityData.CancelWhenNewCommandGivenToPerformer).ToList();
-            activeTimersToCancel.ForEach(t => t.CancelAbility());
         }
 
         /// <summary>
