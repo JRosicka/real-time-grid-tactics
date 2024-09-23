@@ -58,6 +58,8 @@ public class MPCommandManager : AbstractCommandManager {
 
     public override void ClearAbilityQueue(GridEntity entity) {
         LogTimestamp(nameof(ClearAbilityQueue));
+        // I think this is safe to do?
+        if (entity.QueuedAbilities.Count == 0) return;
         CmdClearAbilityQueue(entity);
     }
 
