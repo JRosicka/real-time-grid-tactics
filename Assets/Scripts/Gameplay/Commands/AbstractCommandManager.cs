@@ -142,7 +142,7 @@ public abstract class AbstractCommandManager : NetworkBehaviour, ICommandManager
         if (ability.Performer == null) return false;
         
         if (clearQueueFirst) {
-            ClearAbilityQueue(ability.Performer);   // TODO test on multiplayer to see if the server-side of this gets executed before moving on with this method. It needs to. 
+            ClearAbilityQueue(ability.Performer); 
         }
         // Assign a UID here since this is guaranteed to be on the server (if MP)
         if (ability.UID == default) {
@@ -161,7 +161,7 @@ public abstract class AbstractCommandManager : NetworkBehaviour, ICommandManager
 
     protected void DoQueueAbility(IAbility ability, bool clearQueueFirst, bool insertAtFront) {
         if (clearQueueFirst) {
-            ClearAbilityQueue(ability.Performer);      // TODO test same as above
+            ClearAbilityQueue(ability.Performer);
         }
 
         // Assign a UID here since this is guaranteed to be on the server (if MP)
@@ -179,8 +179,7 @@ public abstract class AbstractCommandManager : NetworkBehaviour, ICommandManager
     protected void DoRemoveAbilityFromQueue(GridEntity entity, int abilityID) {
         IAbility queuedAbility = entity.QueuedAbilities.FirstOrDefault(t => t.UID == abilityID);
         if (queuedAbility == null) {
-            // Not expected
-            Debug.LogError("Tried to remove a queued ability that is not present!");
+            // This can happen if the whole queue was cleared between sending the remove command and now
             return;
         }
 
