@@ -4,6 +4,7 @@ using System.Linq;
 using Gameplay.Config;
 using Gameplay.Config.Abilities;
 using Gameplay.Entities.Abilities;
+using Gameplay.Entities.BuildQueue;
 using JetBrains.Annotations;
 using Mirror;
 using UnityEngine;
@@ -120,7 +121,8 @@ namespace Gameplay.Entities {
         /// TODO if this gets complicated then we should extract this out into a new AbilityQueue class. 
         /// </summary>
         public List<IAbility> QueuedAbilities = new List<IAbility>();
-
+        public IBuildQueue BuildQueue;
+        
         public bool Interactable { get; private set; }
 
         public GridEntity LastAttackedEntity;
@@ -167,6 +169,10 @@ namespace Gameplay.Entities {
                 _interactBehavior = new EnemyInteractBehavior();
             }
 
+            BuildQueue = data.CanBuild 
+                ? new BuildableBuildQueue(this, data.BuildQueueSize) 
+                : new NullBuildQueue();
+
             SetupStats();
             SetupView();
             
@@ -207,6 +213,7 @@ namespace Gameplay.Entities {
         public event Action HealedEvent;
         public event Action KilledEvent;
         public event Action UnregisteredEvent;
+        public event Action<List<IAbility>> AbilityQueueUpdatedEvent;
         /// <summary>
         /// Only triggered on server
         /// </summary>
@@ -419,20 +426,36 @@ namespace Gameplay.Entities {
             timer.AddTime(timeToAdd);
         }
 
-        public void ExpireTimerForAbility(IAbility ability, bool canceled) {
+        /// <summary>
+        /// Server method. Clear the ability timer locally if the ability is active, otherwise remove it from the queue if queued.
+        /// </summary>
+        public void ExpireAbility(IAbility ability, bool canceled) {
+            if (ExpireTimerForAbility(ability, canceled)) return;
+            
+            // The ability is queued, so remove it from the queue
+            IAbility localAbility = QueuedAbilities.FirstOrDefault(a => a.UID == ability.UID);
+            if (localAbility != null) {
+                GameManager.Instance.CommandManager.RemoveAbilityFromQueue(this, localAbility);
+            }
+        }
+
+        /// <summary>
+        /// Client method. Returns true if the timer was active and successfully expired, otherwise false.
+        /// </summary>
+        public bool ExpireTimerForAbility(IAbility ability, bool canceled) {
             // Find the timer with the indicated ability. The timers themselves are not synchronized, but since their abilities are we can use those. 
             AbilityCooldownTimer cooldownTimer = ActiveTimers.FirstOrDefault(t => t.Ability.UID == ability.UID);
-            if (cooldownTimer == null) {
-                // The ability timer must have already expired
-                return;
-            }
-
+            if (cooldownTimer == null) return false;
+            
+            // The ability is indeed active, so cancel it
             cooldownTimer.Expire();
             ActiveTimers.Remove(cooldownTimer);
             CooldownTimerExpiredEvent?.Invoke(ability, cooldownTimer);
             if (!canceled && ability.AbilityData.AnimateWhenCooldownComplete) {
                 PerformAnimationEvent?.Invoke(ability, cooldownTimer);
             }
+
+            return true;
         }
 
         /// <summary>
@@ -476,17 +499,23 @@ namespace Gameplay.Entities {
         public bool PerformAbility(IAbilityData abilityData, IAbilityParameters parameters, bool queueIfNotLegal, bool clearQueueFirst = true) {
             if (!abilityData.AbilityLegal(parameters, this)) {
                 if (queueIfNotLegal) {
-                    // We specified to perform the ability now, but we can't legally do that. So queue it. 
+                    // We specified to perform the ability now, but we can't legally do that. So queue it if we can. 
+                    
+                    // Don't try to queue it if we can't actually pay for it
+                    if (abilityData.PayCostUpFront && !abilityData.CanPayCost(parameters, this)) {
+                        AbilityFailed(abilityData);
+                        return false;
+                    }
                     QueueAbility(abilityData, parameters, true, true, false);
                     if (abilityData is not AttackAbilityData) {
                         // Clear the targeted entity since we are telling this entity to do something else
                         LastAttackedEntity = null;
                     }
                     return true;
-                } else {
-                    AbilityFailed(abilityData);
-                    return false;
                 }
+
+                AbilityFailed(abilityData);
+                return false;
             }
             
             if (abilityData is not AttackAbilityData) {
@@ -514,6 +543,11 @@ namespace Gameplay.Entities {
             IAbility abilityInstance = abilityData.CreateAbility(parameters, this);
             abilityInstance.WaitUntilLegal = waitUntilLegal;
             GameManager.Instance.CommandManager.QueueAbility(abilityInstance, clearQueueFirst, insertAtFront);
+        }
+
+        public void UpdateAbilityQueue(List<IAbility> newAbilityQueue) {
+            QueuedAbilities = newAbilityQueue;
+            AbilityQueueUpdatedEvent?.Invoke(newAbilityQueue);
         }
 
         /// <summary>

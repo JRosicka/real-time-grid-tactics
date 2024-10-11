@@ -33,6 +33,10 @@ namespace Gameplay.Config.Abilities {
         /// </summary>
         bool PerformOnStart { get; }
         /// <summary>
+        /// Whether to pay the cost of the ability up front, even when queueing the ability. 
+        /// </summary>
+        bool PayCostUpFront { get; }
+        /// <summary>
         /// Only relevant if PerformOnStart is true. Whether to keep this ability in the queue and keep trying forever,
         /// regardless of whether we ever fail to perform the ability. 
         /// </summary>
@@ -77,6 +81,11 @@ namespace Gameplay.Config.Abilities {
         /// the ability. If the server check fails, let the client know. 
         /// </summary>
         bool AbilityLegal(IAbilityParameters parameters, GridEntity entity);
+
+        /// <summary>
+        /// Whether we are able to pay the cost for this ability
+        /// </summary>
+        bool CanPayCost(IAbilityParameters parameters, GridEntity entity);
         
         /// <summary>
         /// Create an instance of this ability, passing in any user input. This created instance should be passed to the

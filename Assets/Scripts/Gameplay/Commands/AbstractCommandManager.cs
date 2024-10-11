@@ -148,6 +148,21 @@ public abstract class AbstractCommandManager : NetworkBehaviour, ICommandManager
         if (ability.UID == default) {
             ability.UID = IDUtil.GenerateUID();
         }
+        
+        if (ability.AbilityData.PayCostUpFront) {
+            // We need to pay the cost now instead of in PerformAbility because we do not pay the cost there for up-front cost 
+            // abilities. This is necessary because in PerformAbility we don't know where the cost might have been payed, 
+            // so we need to do it here. 
+            if (!ability.AbilityData.CanPayCost(ability.BaseParameters, ability.Performer)) {
+                Debug.Log($"Tried to pay the cost up front while performing the ability {ability.AbilityData.ID}, but we are not able to pay the cost.");
+                if (ability.WaitUntilLegal) {
+                    QueueAbility(ability, false, false);
+                }
+                return false;
+            }
+            ability.PayCost(true);
+        }
+
         if (ability.PerformAbility()) {
             return true;
         }
@@ -169,11 +184,23 @@ public abstract class AbstractCommandManager : NetworkBehaviour, ICommandManager
             ability.UID = IDUtil.GenerateUID();
         }
 
+        if (ability.AbilityData.PayCostUpFront) {
+            if (!ability.AbilityData.CanPayCost(ability.BaseParameters, ability.Performer)) {
+                Debug.Log($"Tried to pay the cost up front while queueing the ability {ability.AbilityData.ID}, but we are not able to pay the cost. No op.");
+                return;
+            }
+            ability.PayCost(true);
+        }
+        
         if (insertAtFront) {
             ability.Performer.QueuedAbilities.Insert(0, ability);
         } else {
             ability.Performer.QueuedAbilities.Add(ability);
         }
+    }
+    
+    protected void DoUpdateAbilityQueue(GridEntity performer, List<IAbility> updatedAbilityQueue) {
+        performer.UpdateAbilityQueue(updatedAbilityQueue);
     }
 
     protected void DoRemoveAbilityFromQueue(GridEntity entity, int abilityID) {
@@ -187,8 +214,8 @@ public abstract class AbstractCommandManager : NetworkBehaviour, ICommandManager
     }
 
     protected void DoClearAbilityQueue(GridEntity entity) {
-        entity.QueuedAbilities.ForEach(a => GameManager.Instance.CommandManager.CancelAbility(a));
-        entity.QueuedAbilities.Clear();
+        List<IAbility> queuedAbilities = new List<IAbility>(entity.QueuedAbilities);
+        queuedAbilities.ForEach(a => GameManager.Instance.CommandManager.CancelAbility(a));
     }
 
     protected void DoAbilityPerformed(IAbility ability) {
@@ -204,6 +231,7 @@ public abstract class AbstractCommandManager : NetworkBehaviour, ICommandManager
 
     protected void DoCancelAbility(IAbility ability) {
         ability.Cancel();
+        ability.Performer.ExpireAbility(ability, true);
     }
 
     protected void DoAbilityFailed(IAbility ability) {

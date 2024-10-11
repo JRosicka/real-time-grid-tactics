@@ -52,6 +52,9 @@ namespace Gameplay.Config {
 
         public bool IsStructure => Tags.Contains(EntityTag.Structure);
         public bool IsResourceExtractor;
+
+        public int BuildQueueSize = 5;
+        public bool CanBuild => Abilities.Any(a => a.Content is BuildAbilityData);
         
         [Header("Structure config")]
         [Tooltip("Where this can be build. Relevant for structures only.")]

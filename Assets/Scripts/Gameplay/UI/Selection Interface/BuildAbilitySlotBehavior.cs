@@ -39,13 +39,16 @@ namespace Gameplay.UI {
                     GridController.UpdateSelectableCells(viableTargets, _selectedEntity);
                 }
             } else {
-                // Try to perform the build ability
+                // Try to perform the build ability, but only if the build queue is not full
+                if (!_selectedEntity.BuildQueue.HasSpace) {
+                    return;
+                }
                 Vector2Int? selectedEntityLocation = _selectedEntity.Location;
                 if (selectedEntityLocation == null) return;
                 _selectedEntity.PerformAbility(_buildAbilityData, new BuildAbilityParameters {
                     Buildable = Buildable, 
                     BuildLocation = selectedEntityLocation.Value
-                }, false);
+                }, true, false);
             }
         }
 

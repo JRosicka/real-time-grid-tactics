@@ -12,6 +12,7 @@ namespace Gameplay.Entities.Abilities {
         /// Actually perform the ability. Returns false if we were not able to do so (<see cref="IAbilityData.AbilityLegal"/> false).
         /// </summary>
         bool PerformAbility();
+        void PayCost(bool justSpecificCost);
         IAbilityData AbilityData { get; }
         IAbilityParameters BaseParameters { get; }
         int UID { get; set; }

@@ -51,8 +51,17 @@ namespace Gameplay.Entities.Abilities {
         /// Pay any costs required for the ability. By default, this just creates a new timer for the performing <see cref="GridEntity"/>,
         /// but the impl method can be overridden to do other things too. 
         /// </summary>
-        private void PayCost() {
-            PayCostImpl();
+        public void PayCost(bool justSpecificCost) {
+            if (justSpecificCost) {
+                PayCostImpl();
+                return;
+            }
+            
+            // If we pay up front, then that part already happened
+            if (!Data.PayCostUpFront) {
+                PayCostImpl();
+            }
+            
             Performer.CreateAbilityTimer(this);
             if (Data.AddedMovementTime > 0) {
                 Performer.AddMovementTime(Data.AddedMovementTime);
@@ -67,7 +76,7 @@ namespace Gameplay.Entities.Abilities {
 
             bool needToPayCost = DoAbilityEffect();
             if (needToPayCost) {
-                PayCost();
+                PayCost(false);
             }
             return true;
         }

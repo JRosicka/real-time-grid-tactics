@@ -149,7 +149,7 @@ public class MPCommandManager : AbstractCommandManager {
     
     [ClientRpc]
     private void RpcUpdateAbilityQueue(GridEntity performer, List<IAbility> updatedAbilityQueue) {
-        performer.QueuedAbilities = updatedAbilityQueue;
+        DoUpdateAbilityQueue(performer, updatedAbilityQueue);
     }
 
     [Command(requiresAuthority = false)]

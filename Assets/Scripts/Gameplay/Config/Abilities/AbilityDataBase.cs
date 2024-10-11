@@ -76,6 +76,11 @@ namespace Gameplay.Config.Abilities {
         [SerializeField] 
         private bool _performOnStart;
         public bool PerformOnStart => _performOnStart;
+        
+        [SerializeField] 
+        private bool _payCostUpFront;
+        public bool PayCostUpFront => _payCostUpFront;
+
         [SerializeField] 
         private bool _repeatForeverAfterStartEvenWhenFailed;
         public bool RepeatForeverAfterStartEvenWhenFailed => _repeatForeverAfterStartEvenWhenFailed;
@@ -116,7 +121,11 @@ namespace Gameplay.Config.Abilities {
         public bool AbilityLegal(IAbilityParameters parameters, GridEntity entity) {
             return entity.CanUseAbility(this, false) && AbilityLegalImpl((T) parameters, entity);
         }
-        
+
+        public bool CanPayCost(IAbilityParameters parameters, GridEntity entity) {
+            return AbilityLegalImpl((T) parameters, entity);
+        }
+
         protected abstract bool AbilityLegalImpl(T parameters, GridEntity entity);
 
         /// <summary>
