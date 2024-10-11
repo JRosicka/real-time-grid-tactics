@@ -188,7 +188,8 @@ namespace Gameplay.Entities {
         }
 
         public bool CanTargetThings => Range > 0;
-        public bool CanMove => MoveTime > 0;
+        public bool CanMoveOrRally => MoveTime > 0;
+        public bool CanMove => CanMoveOrRally && !EntityData.IsStructure;
         /// <summary>
         /// Null if the entity is unregistered (or not yet registered)
         /// </summary>
@@ -290,7 +291,7 @@ namespace Gameplay.Entities {
         }
 
         public bool TryMoveToCell(Vector2Int targetCell) {
-            if (!CanMove) return false;
+            if (!CanMoveOrRally) return false;
 
             MoveAbilityData data = (MoveAbilityData) EntityData.Abilities.First(a => a.Content.GetType() == typeof(MoveAbilityData)).Content;
             if (PerformAbility(data, new MoveAbilityParameters {
@@ -304,7 +305,7 @@ namespace Gameplay.Entities {
         }
 
         public bool TryAttackMoveToCell(Vector2Int targetCell) {
-            if (!CanMove) return false;
+            if (!CanMoveOrRally) return false;
 
             AttackAbilityData data = (AttackAbilityData) EntityData.Abilities.First(a => a.Content.GetType() == typeof(AttackAbilityData)).Content;
             if (PerformAbility(data, new AttackAbilityParameters {

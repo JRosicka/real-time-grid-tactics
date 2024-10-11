@@ -172,7 +172,7 @@ public class EntitySelectionManager {
     private void TryFindPath(Vector2Int cell) {
         if (SelectedEntity == null) return;
         if (!_gameManager.CommandManager.EntitiesOnGrid.IsEntityOnGrid(SelectedEntity)) return; // May be in the middle of getting unregistered
-        if (!SelectedEntity.CanMove && !SelectedEntity.TargetLocationLogic.CanRally) return;
+        if (!SelectedEntity.CanMoveOrRally && !SelectedEntity.TargetLocationLogic.CanRally) return;
         if (SelectedEntity.MyTeam != _gameManager.LocalPlayer.Data.Team) return;
 
         PathfinderService.Path path = PathfinderService.FindPath(SelectedEntity, cell);
