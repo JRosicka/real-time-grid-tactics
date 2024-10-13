@@ -135,7 +135,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 39.9, y: 49.1}
+  m_SizeDelta: {x: 45, y: 80}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1370149746228571063
 GameObject:
@@ -425,7 +425,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fbaf4fbb879a40f59d6471ac90ab94e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Channel: {fileID: 0}
+  SlotLocation: 0
   Hotkey: 0
   SelectableColor: {r: 0.4056604, g: 0.4056604, b: 0.4056604, a: 1}
   UnselectableColor: {r: 0.3018868, g: 0.3018868, b: 0.3018868, a: 1}
