@@ -28,13 +28,14 @@ namespace Gameplay.Entities.BuildQueue {
 
         public bool HasSpace => Queue.Count <= _maxSize;
         
-        public void CancelBuild(int index) {
-            if (Queue.Count >= index) {
-                Debug.LogError($"Tried to cancel build at index {index}, but there are only {Queue.Count} builds in the queue!");
+        public void CancelBuild(BuildAbility build) {
+            BuildAbility abilityInBuildQueue = Queue.FirstOrDefault(b => b.UID == build.UID);
+            if (abilityInBuildQueue == null) {
+                Debug.LogError($"Tried to cancel build that wasn't in the queue!");
                 return;
             }
             
-            GameManager.Instance.CommandManager.CancelAbility(Queue[index]);
+            GameManager.Instance.CommandManager.CancelAbility(abilityInBuildQueue);
         }
         
         private void DetermineBuildQueue() {

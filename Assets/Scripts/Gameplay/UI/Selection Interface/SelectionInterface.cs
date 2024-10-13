@@ -33,6 +33,9 @@ namespace Gameplay.UI {
         [SerializeField] private GameObject ResourceRow;
         [SerializeField] private TMP_Text ResourceLabel;
         [SerializeField] private TMP_Text ResourceField;
+
+        [SerializeField] private BuildQueueView _buildQueueForStructure;
+        [SerializeField] private BuildQueueView _buildQueueForWorker;
         
         // TODO Row of icons representing upgrades? Hoverable to get info about them?
         
@@ -85,7 +88,7 @@ namespace Gameplay.UI {
             AbilityInterface.SelectBuildAbility(buildData, _displayedEntity);
         }
 
-        public void DeselectCurrentEntity() {
+        private void DeselectCurrentEntity() {
             if (_displayedEntity == null) return;
             
             _displayedEntity.AbilityPerformedEvent -= OnEntityAbilityPerformed;
@@ -110,6 +113,8 @@ namespace Gameplay.UI {
 
             if (!active) {
                 AbilityInterface.ClearInfo();
+                _buildQueueForStructure.Clear();
+                _buildQueueForWorker.Clear();
             }
         }
 
@@ -166,6 +171,15 @@ namespace Gameplay.UI {
                 ResourceField.text = _displayedEntity.CurrentResources.Amount.ToString();
             } else {
                 ResourceRow.gameObject.SetActive(false);
+            }
+            
+            // Build queue
+            if (entityData.CanBuild) {
+                if (entityData.IsStructure) {
+                    _buildQueueForStructure.SetUpForEntity(_displayedEntity);
+                } else {
+                    _buildQueueForWorker.SetUpForEntity(_displayedEntity);
+                }
             }
         }
     }

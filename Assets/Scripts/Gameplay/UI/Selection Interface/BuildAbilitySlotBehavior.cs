@@ -15,7 +15,7 @@ namespace Gameplay.UI {
     public class BuildAbilitySlotBehavior : IAbilitySlotBehavior {
         public PurchasableData Buildable { get; }
         private readonly BuildAbilityData _buildAbilityData;
-        private readonly GridEntity _selectedEntity;
+        protected readonly GridEntity SelectedEntity;
 
         public IAbilityData AbilityData => _buildAbilityData;
         public bool IsAvailabilitySensitiveToResources => true;
@@ -27,40 +27,40 @@ namespace Gameplay.UI {
         public BuildAbilitySlotBehavior(BuildAbilityData buildData, PurchasableData buildable, GridEntity selectedEntity) {
             _buildAbilityData = buildData;
             Buildable = buildable;
-            _selectedEntity = selectedEntity;
+            SelectedEntity = selectedEntity;
         }
         
-        public void SelectSlot() {
+        public virtual void SelectSlot() {
             if (_buildAbilityData.Targetable) {
                 GameManager.Instance.EntitySelectionManager.SelectTargetableAbility(_buildAbilityData, Buildable);
                 GameManager.Instance.SelectionInterface.TooltipView.ToggleForTargetableAbility(_buildAbilityData, this);
                 List<Vector2Int> viableTargets = GetViableTargets();
                 if (viableTargets != null) {
-                    GridController.UpdateSelectableCells(viableTargets, _selectedEntity);
+                    GridController.UpdateSelectableCells(viableTargets, SelectedEntity);
                 }
             } else {
                 // Try to perform the build ability, but only if the build queue is not full
-                if (!_selectedEntity.BuildQueue.HasSpace) {
+                if (!SelectedEntity.BuildQueue.HasSpace) {
                     return;
                 }
-                Vector2Int? selectedEntityLocation = _selectedEntity.Location;
+                Vector2Int? selectedEntityLocation = SelectedEntity.Location;
                 if (selectedEntityLocation == null) return;
-                _selectedEntity.PerformAbility(_buildAbilityData, new BuildAbilityParameters {
+                SelectedEntity.PerformAbility(_buildAbilityData, new BuildAbilityParameters {
                     Buildable = Buildable, 
                     BuildLocation = selectedEntityLocation.Value
                 }, true, false);
             }
         }
 
-        public AbilitySlot.AvailabilityResult GetAvailability() {
-            IGamePlayer player = GameManager.Instance.GetPlayerForTeam(_selectedEntity.MyTeam);
+        public virtual AbilitySlot.AvailabilityResult GetAvailability() {
+            IGamePlayer player = GameManager.Instance.GetPlayerForTeam(SelectedEntity.MyTeam);
             List<PurchasableData> ownedPurchasables = player.OwnedPurchasablesController.OwnedPurchasables;
 
             if (Buildable is UpgradeData && ownedPurchasables.Contains(Buildable)) {
                 // Upgrade that we already own
                 return AbilitySlot.AvailabilityResult.NoLongerAvailable;
-            } else if (_selectedEntity.CanUseAbility(_buildAbilityData, false) 
-                       && GameManager.Instance.GetPlayerForTeam(_selectedEntity.MyTeam).ResourcesController.CanAfford(Buildable.Cost)
+            } else if (SelectedEntity.CanUseAbility(_buildAbilityData, false) 
+                       && GameManager.Instance.GetPlayerForTeam(SelectedEntity.MyTeam).ResourcesController.CanAfford(Buildable.Cost)
                        && Buildable.Requirements.All(r => ownedPurchasables.Contains(r))) {
                 // This entity can build this and we can afford this
                 return AbilitySlot.AvailabilityResult.Selectable;
@@ -76,7 +76,7 @@ namespace Gameplay.UI {
                 teamColorsCanvas.sortingOrder = 1;
             } else {
                 secondaryAbilityImage.sprite = Buildable.TeamColorSprite;
-                secondaryAbilityImage.color = GameManager.Instance.GetPlayerForTeam(_selectedEntity.MyTeam).Data.TeamColor;
+                secondaryAbilityImage.color = GameManager.Instance.GetPlayerForTeam(SelectedEntity.MyTeam).Data.TeamColor;
                 secondaryAbilityImage.gameObject.SetActive(true);
                 teamColorsCanvas.sortingOrder = Buildable.DisplayTeamColorOverMainSprite ? 2 : 1;
             }
@@ -102,7 +102,7 @@ namespace Gameplay.UI {
                     continue;
                 }
                 if (!entities.Entities.Any(e =>
-                        (e.Entity.MyTeam != _selectedEntity.MyTeam && e.Entity.MyTeam != GridEntity.Team.Neutral) || e.Entity.EntityData.IsStructure)) {
+                        (e.Entity.MyTeam != SelectedEntity.MyTeam && e.Entity.MyTeam != GridEntity.Team.Neutral) || e.Entity.EntityData.IsStructure)) {
                     // Entities there, but none of them are opponents or friendly structures, so eligible
                     ret.Add(viableTarget);
                 }
