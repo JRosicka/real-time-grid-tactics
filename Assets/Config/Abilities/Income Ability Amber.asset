@@ -26,12 +26,14 @@ MonoBehaviour:
     _slotLocation: 0
     _addedMovementTime: 0
     _performOnStart: 1
+    _payCostUpFront: 0
     _repeatForeverAfterStartEvenWhenFailed: 0
     _repeatWhenCooldownFinishes: 1
     _animateWhenCooldownComplete: 1
     _selectable: 0
     _selectableWhenBlocked: 0
     _autoSelect: 0
+    _tryingToPerformCancelsBuilds: 0
     ResourceAmountIncome:
       Type: 1
       Amount: 10

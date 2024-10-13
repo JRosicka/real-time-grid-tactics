@@ -27,13 +27,14 @@ MonoBehaviour:
     _slotLocation: 2
     _addedMovementTime: 0
     _performOnStart: 0
-    _payCostUpFront: 0
+    _payCostUpFront: 1
     _repeatForeverAfterStartEvenWhenFailed: 0
     _repeatWhenCooldownFinishes: 0
     _animateWhenCooldownComplete: 0
     _selectable: 1
     _selectableWhenBlocked: 1
     _autoSelect: 1
+    _tryingToPerformCancelsBuilds: 0
     Targetable: 0
     Buildables:
     - data: {fileID: 11400000, guid: ab21f1dc552bf344ba9f886807dcb498, type: 2}

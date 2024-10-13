@@ -103,6 +103,9 @@ namespace Gameplay.Config.Abilities {
         private bool _autoSelect;
         public bool AutoSelect => _autoSelect;
         public virtual bool Targeted => this is ITargetableAbilityData;
+        [SerializeField] 
+        private bool _tryingToPerformCancelsBuilds;
+        public bool TryingToPerformCancelsBuilds => _tryingToPerformCancelsBuilds;
 
         /// <summary>
         /// Respond to the user input intending to use this ability. Do not actually perform the ability (unless there is
@@ -122,9 +125,7 @@ namespace Gameplay.Config.Abilities {
             return entity.CanUseAbility(this, false) && AbilityLegalImpl((T) parameters, entity);
         }
 
-        public bool CanPayCost(IAbilityParameters parameters, GridEntity entity) {
-            return AbilityLegalImpl((T) parameters, entity);
-        }
+        public abstract bool CanPayCost(IAbilityParameters parameters, GridEntity entity);
 
         protected abstract bool AbilityLegalImpl(T parameters, GridEntity entity);
 

@@ -73,6 +73,7 @@ namespace Gameplay.Entities.Abilities {
         public bool PerformAbility() {
             // TODO need to redefine move ability to be legal as long as we can progress towards target
             if (!Data.AbilityLegal(BaseParameters, Performer)) return false;
+            if (!Data.PayCostUpFront && !Data.CanPayCost(BaseParameters, Performer)) return false;
 
             bool needToPayCost = DoAbilityEffect();
             if (needToPayCost) {

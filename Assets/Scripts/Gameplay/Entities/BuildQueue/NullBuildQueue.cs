@@ -13,5 +13,9 @@ namespace Gameplay.Entities.BuildQueue {
         public void CancelBuild(BuildAbility build) {
             // Nothing to do
         }
+
+        public void CancelAllBuilds() {
+            // Nothing to do
+        }
     }
 }

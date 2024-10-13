@@ -12,5 +12,6 @@ namespace Gameplay.Entities.BuildQueue {
         List<BuildAbility> Queue { get; }
         bool HasSpace { get; }
         void CancelBuild(BuildAbility build);
+        void CancelAllBuilds();
     }
 }

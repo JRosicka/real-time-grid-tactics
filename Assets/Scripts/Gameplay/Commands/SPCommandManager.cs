@@ -40,8 +40,8 @@ public class SPCommandManager : AbstractCommandManager {
         Destroy(entity.gameObject);
     }
 
-    public override void PerformAbility(IAbility ability, bool clearQueueFirst) {
-        if (DoPerformAbility(ability, clearQueueFirst)) {
+    public override void PerformAbility(IAbility ability, bool clearQueueFirst, bool handleCost) {
+        if (DoPerformAbility(ability, clearQueueFirst, handleCost)) {
             DoAbilityPerformed(ability);
         } else if (!ability.WaitUntilLegal) {
             DoAbilityFailed(ability);

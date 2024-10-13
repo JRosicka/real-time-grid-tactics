@@ -69,6 +69,11 @@ namespace Gameplay.Config.Abilities {
         /// </summary>
         bool Targeted { get; }
         /// <summary>
+        /// Whether this ability should cancel all of this entity's active or queued builds at the moment that the player
+        /// tries to issue the ability command
+        /// </summary>
+        bool TryingToPerformCancelsBuilds { get; }
+        /// <summary>
         /// Respond to the user input intending to use this ability. Do not actually perform the ability (unless there is
         /// nothing else to do first) - rather, handle any client-side stuff by sending events to prompt for further input. 
         /// </summary>

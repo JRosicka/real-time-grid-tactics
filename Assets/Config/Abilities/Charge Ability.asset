@@ -29,10 +29,12 @@ MonoBehaviour:
     _slotLocation: 1
     _addedMovementTime: 1.5
     _performOnStart: 0
+    _payCostUpFront: 0
     _repeatForeverAfterStartEvenWhenFailed: 0
     _repeatWhenCooldownFinishes: 0
     _animateWhenCooldownComplete: 0
     _selectable: 1
     _selectableWhenBlocked: 1
     _autoSelect: 0
+    _tryingToPerformCancelsBuilds: 1
     ChargeRange: 3

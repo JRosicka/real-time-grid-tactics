@@ -7,7 +7,8 @@ using UnityEngine;
 namespace Gameplay.Entities.BuildQueue {
     /// <summary>
     /// A <see cref="IBuildQueue"/> implementation for <see cref="GridEntity"/>s that can actually build stuff.
-    /// Entirely client-side, not networked.
+    /// Entirely client-side, not networked - this reacts to events that are communicated to the client (and user inputs),
+    /// and any operations are sent to the <see cref="ICommandManager"/>
     /// </summary>
     public class BuildableBuildQueue : IBuildQueue {
         private readonly GridEntity _entity;
@@ -26,7 +27,7 @@ namespace Gameplay.Entities.BuildQueue {
 
         public List<BuildAbility> Queue { get; private set; } = new();
 
-        public bool HasSpace => Queue.Count <= _maxSize;
+        public bool HasSpace => Queue.Count < _maxSize;
         
         public void CancelBuild(BuildAbility build) {
             BuildAbility abilityInBuildQueue = Queue.FirstOrDefault(b => b.UID == build.UID);
@@ -36,6 +37,10 @@ namespace Gameplay.Entities.BuildQueue {
             }
             
             GameManager.Instance.CommandManager.CancelAbility(abilityInBuildQueue);
+        }
+
+        public void CancelAllBuilds() {
+            Queue.ForEach(b => GameManager.Instance.CommandManager.CancelAbility(b));
         }
         
         private void DetermineBuildQueue() {

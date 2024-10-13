@@ -33,13 +33,20 @@ namespace Gameplay.Config.Abilities {
             GameManager.Instance.SelectionInterface.SelectBuildAbility(this);
         }
 
-        protected override bool AbilityLegalImpl(BuildAbilityParameters parameters, GridEntity entity) {
+        // TODO: You know, it seems like the only ability that has this cost consideration is the build ability. So maybe we just get rid of the PayCostUpFront field and consider that the default logic for... the one ability that has a cost. 
+        public override bool CanPayCost(IAbilityParameters parameters, GridEntity entity) {
+            BuildAbilityParameters buildParameters = (BuildAbilityParameters) parameters;
             IGamePlayer player = GameManager.Instance.GetPlayerForTeam(entity.MyTeam);
-            if (!player.ResourcesController.CanAfford(parameters.Buildable.Cost)) {
-                Debug.Log($"Not building ({parameters.Buildable.ID}) because we can't pay the cost");
+            if (!player.ResourcesController.CanAfford(buildParameters.Buildable.Cost)) {
+                Debug.Log($"Not building ({buildParameters.Buildable.ID}) because we can't pay the cost");
                 return false;
             }
-            
+
+            return true;
+        }
+
+        protected override bool AbilityLegalImpl(BuildAbilityParameters parameters, GridEntity entity) {
+            IGamePlayer player = GameManager.Instance.GetPlayerForTeam(entity.MyTeam);
             List<PurchasableData> ownedPurchasables = player.OwnedPurchasablesController.OwnedPurchasables;
             if (parameters.Buildable.Requirements.Any(r => !ownedPurchasables.Contains(r))) {
                 Debug.Log($"Not building ({parameters.Buildable.ID}) because we don't have the proper requirements");

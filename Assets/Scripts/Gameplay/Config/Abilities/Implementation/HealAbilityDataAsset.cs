@@ -24,6 +24,10 @@ namespace Gameplay.Config.Abilities {
                    && parameters.Target.CurrentHP < parameters.Target.MaxHP;
         }
 
+        public override bool CanPayCost(IAbilityParameters parameters, GridEntity entity) {
+            return true;
+        }
+
         protected override bool AbilityLegalImpl(HealAbilityParameters parameters, GridEntity entity) {
             return CanHeal(parameters, entity);
         }

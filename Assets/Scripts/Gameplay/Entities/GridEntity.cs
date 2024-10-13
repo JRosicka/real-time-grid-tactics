@@ -498,6 +498,10 @@ namespace Gameplay.Entities {
         }
 
         public bool PerformAbility(IAbilityData abilityData, IAbilityParameters parameters, bool queueIfNotLegal, bool clearQueueFirst = true) {
+            if (abilityData.TryingToPerformCancelsBuilds) {
+                BuildQueue.CancelAllBuilds();
+            }
+            
             if (!abilityData.AbilityLegal(parameters, this)) {
                 if (queueIfNotLegal) {
                     // We specified to perform the ability now, but we can't legally do that. So queue it if we can. 
@@ -507,7 +511,7 @@ namespace Gameplay.Entities {
                         AbilityFailed(abilityData);
                         return false;
                     }
-                    QueueAbility(abilityData, parameters, true, true, false);
+                    QueueAbility(abilityData, parameters, true, clearQueueFirst, false);
                     if (abilityData is not AttackAbilityData) {
                         // Clear the targeted entity since we are telling this entity to do something else
                         LastAttackedEntity = null;
@@ -526,7 +530,7 @@ namespace Gameplay.Entities {
             
             IAbility abilityInstance = abilityData.CreateAbility(parameters, this);
             abilityInstance.WaitUntilLegal = queueIfNotLegal;
-            GameManager.Instance.CommandManager.PerformAbility(abilityInstance, clearQueueFirst);
+            GameManager.Instance.CommandManager.PerformAbility(abilityInstance, clearQueueFirst, true);
             return true;
         }
 
@@ -536,7 +540,7 @@ namespace Gameplay.Entities {
                 return false;
             }
             
-            GameManager.Instance.CommandManager.PerformAbility(ability, false);
+            GameManager.Instance.CommandManager.PerformAbility(ability, false, false);
             return true;
         }
 

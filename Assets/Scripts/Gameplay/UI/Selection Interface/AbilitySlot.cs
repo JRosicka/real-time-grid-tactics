@@ -89,7 +89,7 @@ namespace Gameplay.UI {
             if (!Selectable) return;
             
             MarkSelected(true);
-            SlotBehavior.SelectSlot();
+            SlotBehavior?.SelectSlot();
         }
 
         public void MarkSelected(bool selected) {
@@ -97,7 +97,7 @@ namespace Gameplay.UI {
             _shouldDeselectWhenTimerElapses = false;
             if (selected) {
                 SlotFrame.color = SelectedColor;
-                if (SlotBehavior.IsAbilityTargetable) {
+                if (SlotBehavior != null && SlotBehavior.IsAbilityTargetable) {
                     // We want this slot to keep appearing as selected until we do something else, so don't auto-unmark it.
                 } else {
                     StartCoroutine(DeselectLater());
@@ -183,6 +183,7 @@ namespace Gameplay.UI {
         }
 
         private void OnAbilityTimersChanged(IAbility ability, AbilityCooldownTimer timer) {
+            if (SlotBehavior == null) return; 
             if (!SlotBehavior.CaresAboutAbilityChannels || timer.Ability.AbilityData.SlotLocation == SlotLocation) {
                 CheckAvailability();
             }
@@ -192,6 +193,7 @@ namespace Gameplay.UI {
         /// When the player gains or spends resources
         /// </summary>
         private void OnPlayerResourcesBalanceChanged(List<ResourceAmount> resourceAmounts) {
+            if (SlotBehavior == null) return; 
             if (SlotBehavior.IsAvailabilitySensitiveToResources) {
                 CheckAvailability();
             }
@@ -207,10 +209,12 @@ namespace Gameplay.UI {
         #endregion
 
         public void OnPointerEnter(PointerEventData eventData) {
+            if (SlotBehavior == null) return;
             AbilityInterface.TooltipView.ToggleForHoveredAbility(SlotBehavior.AbilityData, SlotBehavior);
         }
 
         public void OnPointerExit(PointerEventData eventData) {
+            if (SlotBehavior == null) return; 
             AbilityInterface.TooltipView.ToggleForHoveredAbility(null, null);
         }
     }

@@ -21,6 +21,10 @@ namespace Gameplay.Config.Abilities {
             // Nothing to do
         }
 
+        public override bool CanPayCost(IAbilityParameters parameters, GridEntity entity) {
+            return true;
+        }
+
         protected override bool AbilityLegalImpl(NullAbilityParameters parameters, GridEntity entity) {
             Vector2Int? entityLocation = entity.Location;
             if (entityLocation == null) return false;

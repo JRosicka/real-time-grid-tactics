@@ -18,6 +18,10 @@ namespace Gameplay.Config.Abilities {
             selector.PerformAbility(this, new NullAbilityParameters(), false);
         }
 
+        public override bool CanPayCost(IAbilityParameters parameters, GridEntity entity) {
+            return true;
+        }
+
         protected override bool AbilityLegalImpl(NullAbilityParameters parameters, GridEntity entity) {
             return true;
         }

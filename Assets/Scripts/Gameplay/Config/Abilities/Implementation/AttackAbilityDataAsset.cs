@@ -21,6 +21,10 @@ namespace Gameplay.Config.Abilities {
             GameManager.Instance.EntitySelectionManager.SelectTargetableAbility(this, null);
         }
 
+        public override bool CanPayCost(IAbilityParameters parameters, GridEntity entity) {
+            return true;
+        }
+
         protected override bool AbilityLegalImpl(AttackAbilityParameters parameters, GridEntity entity) {
             return CanAttackTarget(parameters.Target, entity);
         }

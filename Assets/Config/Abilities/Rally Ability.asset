@@ -26,9 +26,11 @@ MonoBehaviour:
     _slotLocation: 0
     _addedMovementTime: 0
     _performOnStart: 0
+    _payCostUpFront: 0
     _repeatForeverAfterStartEvenWhenFailed: 0
     _repeatWhenCooldownFinishes: 0
     _animateWhenCooldownComplete: 0
     _selectable: 0
     _selectableWhenBlocked: 0
     _autoSelect: 0
+    _tryingToPerformCancelsBuilds: 0

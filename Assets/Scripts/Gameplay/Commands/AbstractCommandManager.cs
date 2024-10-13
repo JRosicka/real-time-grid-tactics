@@ -80,7 +80,7 @@ public abstract class AbstractCommandManager : NetworkBehaviour, ICommandManager
         return _entitiesOnGrid.LocationOfEntity(entity);
     }
 
-    public abstract void PerformAbility(IAbility ability, bool clearQueueFirst);
+    public abstract void PerformAbility(IAbility ability, bool clearQueueFirst, bool handleCost);
     public abstract void QueueAbility(IAbility ability, bool clearQueueFirst, bool insertAtFront);
     public abstract void RemoveAbilityFromQueue(GridEntity entity, IAbility queuedAbility);
     public abstract void ClearAbilityQueue(GridEntity entity);
@@ -137,7 +137,7 @@ public abstract class AbstractCommandManager : NetworkBehaviour, ICommandManager
         entity.OnUnregistered(showDeathAnimation);
     }
     
-    protected bool DoPerformAbility(IAbility ability, bool clearQueueFirst) {
+    protected bool DoPerformAbility(IAbility ability, bool clearQueueFirst, bool handleCost) {
         // Don't do anything if the performer has been killed 
         if (ability.Performer == null) return false;
         
@@ -149,7 +149,7 @@ public abstract class AbstractCommandManager : NetworkBehaviour, ICommandManager
             ability.UID = IDUtil.GenerateUID();
         }
         
-        if (ability.AbilityData.PayCostUpFront) {
+        if (ability.AbilityData.PayCostUpFront && handleCost) {
             // We need to pay the cost now instead of in PerformAbility because we do not pay the cost there for up-front cost 
             // abilities. This is necessary because in PerformAbility we don't know where the cost might have been payed, 
             // so we need to do it here. 

@@ -30,13 +30,6 @@ namespace Gameplay.UI {
             gameObject.SetActive(true);
             entity.BuildQueue.BuildQueueUpdated += UpdateBuildQueue;
             UpdateBuildQueue(entity.BuildQueue.Queue);
-            
-            if (entity.IsAbilityChannelOnCooldown(_buildChannel, out _activeBuildCooldownTimer)) {
-                _buildTimer.gameObject.SetActive(true);
-                _buildTimer.Initialize(_activeBuildCooldownTimer, false, true);
-            } else {
-                _buildTimer.gameObject.SetActive(false);
-            }
         }
 
         public void Clear() {
@@ -60,6 +53,13 @@ namespace Gameplay.UI {
                 QueuedBuildAbilitySlotBehavior buildBehavior = new QueuedBuildAbilitySlotBehavior(buildAbility, _gridEntity);
                 _slots[slotNumber].SetUpSlot(buildBehavior, _gridEntity);
                 slotNumber++;
+            }
+            
+            if (_gridEntity.IsAbilityChannelOnCooldown(_buildChannel, out _activeBuildCooldownTimer)) {
+                _buildTimer.gameObject.SetActive(true);
+                _buildTimer.Initialize(_activeBuildCooldownTimer, false, true);
+            } else {
+                _buildTimer.gameObject.SetActive(false);
             }
         }
     }

@@ -27,11 +27,13 @@ MonoBehaviour:
     _slotLocation: 0
     _addedMovementTime: 0
     _performOnStart: 1
+    _payCostUpFront: 0
     _repeatForeverAfterStartEvenWhenFailed: 1
     _repeatWhenCooldownFinishes: 1
     _animateWhenCooldownComplete: 0
     _selectable: 0
     _selectableWhenBlocked: 0
     _autoSelect: 0
+    _tryingToPerformCancelsBuilds: 0
     HealAmount: 5
     HealAbility: {fileID: 11400000, guid: 86aba77c1f31c4824bad0b7e96215b6f, type: 2}
