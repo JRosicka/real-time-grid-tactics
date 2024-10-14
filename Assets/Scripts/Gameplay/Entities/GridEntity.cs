@@ -498,7 +498,7 @@ namespace Gameplay.Entities {
         }
 
         public bool PerformAbility(IAbilityData abilityData, IAbilityParameters parameters, bool queueIfNotLegal, bool clearQueueFirst = true) {
-            if (abilityData.TryingToPerformCancelsBuilds) {
+            if (BuildQueue != null && abilityData.TryingToPerformCancelsBuilds) {
                 BuildQueue.CancelAllBuilds();
             }
             
