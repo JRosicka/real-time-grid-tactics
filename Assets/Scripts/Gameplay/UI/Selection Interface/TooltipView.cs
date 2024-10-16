@@ -1,7 +1,9 @@
+using System.Collections.Generic;
 using System.Linq;
 using Gameplay.Config;
 using Gameplay.Config.Abilities;
 using Gameplay.Entities;
+using Gameplay.Entities.Abilities;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -28,9 +30,13 @@ namespace Gameplay.UI {
         private IAbilitySlotBehavior _selectedTargetableAbilitySlotBehavior;
 
         public void ToggleForEntity(GridEntity entity) {
+            if (_selectedEntity != null) {
+                _selectedEntity.BuildQueue.BuildQueueUpdated -= SelectedEntityBuildQueueUpdated;
+            }
             _selectedEntity = entity;
             ToggleTooltip(entity != null);
             if (entity != null) {
+                _selectedEntity.BuildQueue.BuildQueueUpdated += SelectedEntityBuildQueueUpdated;
                 SetUpEntityView(entity);
             }
         }
@@ -44,7 +50,7 @@ namespace Gameplay.UI {
                 ToggleForEntity(_selectedEntity);
             } else {
                 ToggleTooltip(true);
-                SetUpAbilityView(ability, abilitySlotBehavior);
+                SetUpAbilityView(ability, abilitySlotBehavior, false);
                 _selectedTargetableAbility = ability;
                 _selectedTargetableAbilitySlotBehavior = abilitySlotBehavior;
             }
@@ -61,11 +67,18 @@ namespace Gameplay.UI {
                 }
             } else {
                 ToggleTooltip(true);
-                SetUpAbilityView(ability, abilitySlotBehavior);
+                SetUpAbilityView(ability, abilitySlotBehavior, abilitySlotBehavior is QueuedBuildAbilitySlotBehavior);
             }
         }
         
         private void SetUpEntityView(GridEntity entity) {
+            List<BuildAbility> buildQueue = entity.BuildQueue.Queue;
+            if (!entity.EntityData.IsStructure && buildQueue.Count > 0 && !entity.QueuedAbilities.Select(a => a.UID).Contains(buildQueue[0].UID)) {
+                // This is a non-structure builder that is actively building something. Show that. 
+                SetUpForInProgressBuild(entity.BuildQueue.Queue[0], entity);
+                return;
+            }
+            
             EntityData entityData = entity.EntityData;
             
             _icon.sprite = entityData.BaseSpriteIconOverride == null ? entityData.BaseSprite : entityData.BaseSpriteIconOverride;
@@ -82,10 +95,16 @@ namespace Gameplay.UI {
             _advancedResourceCostContainer.SetActive(false);
         }
 
-        private void SetUpAbilityView(IAbilityData ability, IAbilitySlotBehavior abilitySlotBehavior) {
+        private void SetUpForInProgressBuild(BuildAbility buildAbility, GridEntity entity) {
+            BuildAbilityData buildData = (BuildAbilityData) buildAbility.AbilityData;
+            BuildAbilitySlotBehavior buildBehavior = new BuildAbilitySlotBehavior(buildData, buildAbility.AbilityParameters.Buildable, entity);
+            SetUpAbilityView(buildData, buildBehavior, true);
+        }
+
+        private void SetUpAbilityView(IAbilityData ability, IAbilitySlotBehavior abilitySlotBehavior, bool includeInProgressMessage) {
             abilitySlotBehavior.SetUpSprites(_icon, _secondaryIcon, _teamColorsCanvas);
             if (abilitySlotBehavior is BuildAbilitySlotBehavior buildAbilitySlotBehavior) {
-                _name.text = buildAbilitySlotBehavior.Buildable.ID;
+                _name.text = buildAbilitySlotBehavior.Buildable.ID + (includeInProgressMessage ? " (constructing)" : "");
                 _description.text = buildAbilitySlotBehavior.Buildable.Description;
 
                 int basicCost = buildAbilitySlotBehavior.Buildable.Cost.FirstOrDefault(r => r.Type == ResourceType.Basic)?.Amount ?? 0;
@@ -104,6 +123,12 @@ namespace Gameplay.UI {
         
         private void ToggleTooltip(bool toggle) {
             _view.SetActive(toggle);
+        }
+
+        private void SelectedEntityBuildQueueUpdated(List<BuildAbility> buildAbilities) {
+            if (_selectedTargetableAbility == null && _selectedTargetableAbilitySlotBehavior == null) {
+                SetUpEntityView(_selectedEntity);
+            }
         }
     }
 }
