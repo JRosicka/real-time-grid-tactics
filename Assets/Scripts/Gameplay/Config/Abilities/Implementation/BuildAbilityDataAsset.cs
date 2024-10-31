@@ -73,6 +73,10 @@ namespace Gameplay.Config.Abilities {
             BuildAbilityParameters buildParameters = new BuildAbilityParameters {Buildable = (PurchasableData) targetData, BuildLocation = cellPosition};
             selectedEntity.QueueAbility(this, buildParameters, true, false, false);
             selectedEntity.SetTargetLocation(cellPosition, null);
+            if (GameManager.Instance.SelectionInterface.BuildMenuOpenFromSelection) {
+                // Leave the build menu
+                GameManager.Instance.SelectionInterface.DeselectBuildAbility();
+            }
         }
 
         public void RecalculateTargetableAbilitySelection(GridEntity selector) {
