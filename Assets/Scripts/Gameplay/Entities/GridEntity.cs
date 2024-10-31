@@ -459,6 +459,20 @@ namespace Gameplay.Entities {
             return true;
         }
 
+        public List<IAbility> GetCancelableAbilities() {
+            List<IAbility> abilities = new List<IAbility>();
+            
+            // Get cancelable active abilities
+            abilities.AddRange(ActiveTimers
+                .Select(t => t.Ability)
+                .Where(a => a.AbilityData.CancelableWhileActive));
+            
+            // Get cancelable queued abilities
+            abilities.AddRange(QueuedAbilities.Where(a => a.AbilityData.CancelableWhileQueued));
+
+            return abilities;
+        }
+
         /// <summary>
         /// Add time to the movement cooldown timer due to another ability being performed.
         /// If there is an active cooldown timer, then this amount is added to that timer.

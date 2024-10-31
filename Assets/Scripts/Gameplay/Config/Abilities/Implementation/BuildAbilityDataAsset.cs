@@ -27,6 +27,8 @@ namespace Gameplay.Config.Abilities {
         }
 
         public override bool CancelWhenNewCommandGivenToPerformer => true;
+        public override bool CancelableWhileActive => true;
+        public override bool CancelableWhileQueued => true;
         public override bool Targeted => Targetable;
 
         public override void SelectAbility(GridEntity selector) {

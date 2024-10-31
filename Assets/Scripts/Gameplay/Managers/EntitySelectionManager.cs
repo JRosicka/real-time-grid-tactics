@@ -59,6 +59,8 @@ public class EntitySelectionManager {
             TryFindPath(entity.TargetLocationLogic.CurrentTarget);
             entity.TargetLocationLogicChangedEvent += TryFindPath;
             entity.UnregisteredEvent += DeselectEntity;
+        } else {
+            GridController.ClearPath();
         }
     }
 
@@ -90,7 +92,6 @@ public class EntitySelectionManager {
     private void DeselectEntity() {
         if (SelectedEntity == null) return;
         SelectEntity(null);
-        GridController.ClearPath();
     }
 
     private void EntityCollectionChanged() {
@@ -123,11 +124,14 @@ public class EntitySelectionManager {
         _targetData = data;
     }
 
-    public void DeselectTargetableAbility() {
+    /// <returns>True if there was actually a selected targetable ability that gets canceled, otherwise false</returns>
+    public bool DeselectTargetableAbility() {
+        bool targetableAbilityWasSelected = _selectedTargetableAbility != null;
         _selectedTargetableAbility = null;
         _targetData = null;
         SelectionInterface.DeselectActiveAbility();
         ClearSelectableTiles();
+        return targetableAbilityWasSelected;
     }
 
     private void ClearSelectableTiles() {

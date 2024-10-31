@@ -47,6 +47,14 @@ namespace Gameplay.Config.Abilities {
         /// </summary>
         bool CancelWhenNewCommandGivenToPerformer { get; }
         /// <summary>
+        /// Whether this ability can be manually canceled while in progress (active timer). 
+        /// </summary>
+        bool CancelableWhileActive { get; }
+        /// <summary>
+        /// Whether this ability can be manually canceled while queued. 
+        /// </summary>
+        bool CancelableWhileQueued { get; }
+        /// <summary>
         /// Whether to perform view logic when the cooldown is complete instead of when the ability is triggered 
         /// </summary>
         bool AnimateWhenCooldownComplete { get; }

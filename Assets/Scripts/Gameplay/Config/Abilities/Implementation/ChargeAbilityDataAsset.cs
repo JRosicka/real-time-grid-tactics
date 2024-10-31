@@ -23,6 +23,9 @@ namespace Gameplay.Config.Abilities {
         public ICommandManager CommandManager => GameManager.Instance.CommandManager;
         
         public override bool CancelWhenNewCommandGivenToPerformer => false;
+        public override bool CancelableWhileActive => false;
+        public override bool CancelableWhileQueued => true;
+
         public override void SelectAbility(GridEntity selector) {
             List<Vector2Int> viableTargets = GetViableTargets(selector);
             GridController.UpdateSelectableCells(viableTargets, selector);

@@ -13,6 +13,8 @@ namespace Gameplay.Config.Abilities {
     [Serializable]
     public class HealAbilityData : AbilityDataBase<HealAbilityParameters> {
         public override bool CancelWhenNewCommandGivenToPerformer => false;
+        public override bool CancelableWhileActive => false;
+        public override bool CancelableWhileQueued => false;
 
         public override void SelectAbility(GridEntity selector) {
             // Nothing to do

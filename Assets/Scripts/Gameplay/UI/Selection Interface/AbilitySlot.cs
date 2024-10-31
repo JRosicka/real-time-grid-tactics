@@ -126,13 +126,6 @@ namespace Gameplay.UI {
             }
         }
 
-        /// <summary>
-        /// Shows additional info about an ability when hovering over slot
-        /// </summary>
-        public void DisplayTooltip() {
-            // TODO
-        }
-
         private void CheckAvailability() {
             if (SlotBehavior == null || _selectedEntity == null) return;
             

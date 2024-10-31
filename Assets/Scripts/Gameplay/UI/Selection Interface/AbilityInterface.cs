@@ -14,11 +14,15 @@ namespace Gameplay.UI {
     public class AbilityInterface : MonoBehaviour {
         public List<AbilitySlot> AbilitySlots;
         public TooltipView TooltipView;
+        
+        /// <summary>
+        /// True if displaying the build menu after an active selection (i.e. the build ability was not auto-selected)
+        /// </summary>
+        public bool BuildMenuOpenFromSelection { get; private set; }
 
         private AbilitySlot _selectedSlot;
         
         public void SetUpForEntity(GridEntity entity) {
-            // TODO if all this entity does is build stuff (i.e. is a building), then immediately select its build ability here instead of normal setup. 
             ClearInfo();
             
             if (entity.MyTeam != GameManager.Instance.LocalPlayer.Data.Team) {
@@ -35,6 +39,7 @@ namespace Gameplay.UI {
         }
 
         public void ClearInfo() {
+            BuildMenuOpenFromSelection = false;
             AbilitySlots.ForEach(s => s.Clear());
         }
 
@@ -62,6 +67,9 @@ namespace Gameplay.UI {
 
         public void SelectBuildAbility(BuildAbilityData buildData, GridEntity selectedEntity) {
             ClearInfo();
+            if (!buildData.AutoSelect) {
+                BuildMenuOpenFromSelection = true;
+            }
 
             foreach (BuildAbilityData.PurchasableDataWithSelectionKey purchasableDataWithSelectionKey in buildData.Buildables) {
                 AbilitySlot slot = AbilitySlots.FirstOrDefault(s => string.Equals(s.Hotkey, purchasableDataWithSelectionKey.selectionKey, StringComparison.CurrentCultureIgnoreCase));

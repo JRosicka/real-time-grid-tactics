@@ -1,4 +1,7 @@
 using System.Collections.Generic;
+using System.Linq;
+using Gameplay.Entities.Abilities;
+using Gameplay.Entities.BuildQueue;
 using Gameplay.UI;
 using Rewired;
 using UnityEngine;
@@ -27,6 +30,8 @@ namespace Gameplay.Managers {
         private Player _playerInput;
 
         private SelectionInterface SelectionInterface => GameManager.Instance.SelectionInterface;
+        private EntitySelectionManager EntitySelectionManager => GameManager.Instance.EntitySelectionManager;
+        private ICommandManager CommandManager => GameManager.Instance.CommandManager;
         
         private void Start() {
             _playerInput = ReInput.players.GetPlayer(0);
@@ -34,10 +39,8 @@ namespace Gameplay.Managers {
 
         private void Update() {
             if (GameManager.Instance.GameSetupManager.GameOver) return;
-            
-            if (_playerInput.GetButtonDown(EscapeAction)) {
-                PauseMenu.TogglePauseMenu();
-            }
+
+            HandleEscape();
 
             if (PauseMenu.Paused) return;
 
@@ -61,6 +64,50 @@ namespace Gameplay.Managers {
                     SelectionInterface.HandleAbilityHotkey(input);
                 }
             }
+        }
+
+        private void HandleEscape() {
+            if (!_playerInput.GetButtonDown(EscapeAction)) return;
+
+            // If paused, prioritize resuming
+            if (PauseMenu.Paused) {
+                PauseMenu.TogglePauseMenu();
+                return;
+            }
+            
+            // Otherwise clear the selected targetable ability if there is one
+            if (EntitySelectionManager.DeselectTargetableAbility()) {
+                return;
+            }
+            
+            // Otherwise move out of a nested build menu if we are in one
+            if (SelectionInterface.BuildMenuOpenFromSelection) {
+                SelectionInterface.DeselectBuildAbility();
+                return;
+            }
+
+            if (EntitySelectionManager.SelectedEntity != null) {
+                // Otherwise clear the last build in the selected entity's build queue if there is one
+                IBuildQueue buildQueue = EntitySelectionManager.SelectedEntity.BuildQueue;
+                if (buildQueue != null && buildQueue.Queue.Count > 0) {
+                    buildQueue.CancelBuild(buildQueue.Queue.Last());
+                    return;
+                }
+            
+                // Otherwise cancel all selected entity's in progress/queued abilities if there are any
+                List<IAbility> cancelableAbilities = EntitySelectionManager.SelectedEntity.GetCancelableAbilities();
+                if (cancelableAbilities.Count > 0) {
+                    cancelableAbilities.ForEach(a => CommandManager.CancelAbility(a));
+                    return;
+                }
+
+                // Otherwise deselect the current entity if there is one selected
+                EntitySelectionManager.SelectEntity(null);
+                return;
+            }
+
+            // Otherwise pause
+            PauseMenu.TogglePauseMenu();
         }
     }
 }

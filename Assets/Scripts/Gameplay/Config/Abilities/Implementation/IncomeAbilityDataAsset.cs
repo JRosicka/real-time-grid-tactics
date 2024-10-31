@@ -16,6 +16,8 @@ namespace Gameplay.Config.Abilities {
     public class IncomeAbilityData : AbilityDataBase<NullAbilityParameters> {
         public ResourceAmount ResourceAmountIncome;
         public override bool CancelWhenNewCommandGivenToPerformer => false;
+        public override bool CancelableWhileActive => false;
+        public override bool CancelableWhileQueued => false;
 
         public override void SelectAbility(GridEntity selector) {
             // Nothing to do

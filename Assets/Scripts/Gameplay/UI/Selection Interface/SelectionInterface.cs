@@ -45,6 +45,8 @@ namespace Gameplay.UI {
 
         private GridEntity _displayedEntity;
         private AbilityCooldownTimer _activeMoveCooldownTimer;
+
+        public bool BuildMenuOpenFromSelection => AbilityInterface.BuildMenuOpenFromSelection;
         
         public void Initialize() {
             ToggleViews(false);
@@ -82,6 +84,12 @@ namespace Gameplay.UI {
         public void DeselectActiveAbility() {
             AbilityInterface.DeselectActiveAbility();
             TooltipView.ToggleForTargetableAbility(null, null);
+        }
+
+        public void DeselectBuildAbility() {
+            if (_displayedEntity != null) {
+                AbilityInterface.SetUpForEntity(_displayedEntity);
+            }
         }
 
         public void SelectBuildAbility(BuildAbilityData buildData) {
