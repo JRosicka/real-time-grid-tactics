@@ -24,12 +24,7 @@ namespace Gameplay.Entities.Abilities {
         }
 
         public override void Cancel() {
-            // Update the rally point
-            var currentLocation = Performer.Location;
-            if (currentLocation != null) {
-                // The location might be null if the entity is being destroyed 
-                Performer.SetTargetLocation(currentLocation.Value, null);
-            }
+            // Nothing to do
         }
 
         protected override bool CompleteCooldownImpl() {

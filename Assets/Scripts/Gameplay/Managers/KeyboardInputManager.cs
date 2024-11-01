@@ -98,6 +98,14 @@ namespace Gameplay.Managers {
                 List<IAbility> cancelableAbilities = EntitySelectionManager.SelectedEntity.GetCancelableAbilities();
                 if (cancelableAbilities.Count > 0) {
                     cancelableAbilities.ForEach(a => CommandManager.CancelAbility(a));
+                    
+                    // Update the rally point
+                    var currentLocation = EntitySelectionManager.SelectedEntity.Location;
+                    if (currentLocation != null) {
+                        // The location might be null if the entity is being destroyed 
+                        EntitySelectionManager.SelectedEntity.SetTargetLocation(currentLocation.Value, null);
+                    }
+                    
                     return;
                 }
 
