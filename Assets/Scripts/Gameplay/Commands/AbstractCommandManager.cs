@@ -53,6 +53,7 @@ public abstract class AbstractCommandManager : NetworkBehaviour, ICommandManager
     /// grid. No-op if another entity already exists in the specified location. 
     /// </summary>
     public abstract void SpawnEntity(EntityData data, Vector2Int spawnLocation, GridEntity.Team team, GridEntity spawnerEntity);
+    // TODO I don't think this needs to be in CommandManager since this is only called by the server and it doesn't contain any RPC calls
     public abstract void AddUpgrade(UpgradeData data, GridEntity.Team team);
 
     // TODO need to have some way of verifying that these commands are legal for the client to do - especially doing stuff with GridEntites, we gotta own em

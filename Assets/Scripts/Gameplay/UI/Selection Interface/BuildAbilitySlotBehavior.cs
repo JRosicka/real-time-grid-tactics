@@ -56,9 +56,10 @@ namespace Gameplay.UI {
             IGamePlayer player = GameManager.Instance.GetPlayerForTeam(SelectedEntity.MyTeam);
             List<PurchasableData> ownedPurchasables = player.OwnedPurchasablesController.OwnedPurchasables;
 
-            if (Buildable is UpgradeData && ownedPurchasables.Contains(Buildable)) {
-                // Upgrade that we already own
-                return AbilitySlot.AvailabilityResult.NoLongerAvailable;
+            if (Buildable is UpgradeData && (ownedPurchasables.Contains(Buildable) 
+                                             || player.OwnedPurchasablesController.InProgressUpgrades.Contains(Buildable))) {
+                // Upgrade that we already own or are currently building somewhere
+                return AbilitySlot.AvailabilityResult.Unavailable;
             } else if (SelectedEntity.CanUseAbility(_buildAbilityData, AbilityData.SelectableWhenBlocked)
                        && GameManager.Instance.GetPlayerForTeam(SelectedEntity.MyTeam).ResourcesController.CanAfford(Buildable.Cost)
                        && Buildable.Requirements.All(r => ownedPurchasables.Contains(r))) {

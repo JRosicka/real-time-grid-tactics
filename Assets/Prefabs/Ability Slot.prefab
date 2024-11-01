@@ -384,6 +384,7 @@ GameObject:
   - component: {fileID: 7746809697624659004}
   - component: {fileID: 8556368915745534929}
   - component: {fileID: 245845246818459804}
+  - component: {fileID: 6754938932479475139}
   m_Layer: 5
   m_Name: Ability Slot
   m_TagString: Untagged
@@ -437,6 +438,7 @@ MonoBehaviour:
   HotkeyText: {fileID: 6493543593206636211}
   AbilityInterface: {fileID: 0}
   TeamColorsCanvas: {fileID: 4869468343639402695}
+  CanvasGroup: {fileID: 6754938932479475139}
 --- !u!222 &8941894723556131554
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -544,6 +546,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_ShowMaskGraphic: 1
+--- !u!225 &6754938932479475139
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3634664905948075230}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &4450726947637762902
 GameObject:
   m_ObjectHideFlags: 0

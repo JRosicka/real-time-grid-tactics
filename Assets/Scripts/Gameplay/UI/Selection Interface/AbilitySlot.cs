@@ -17,11 +17,11 @@ namespace Gameplay.UI {
     /// </summary>
     public class AbilitySlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler {
         public enum AvailabilityResult {
-            // The slot's associated action will never be available again
-            NoLongerAvailable,
+            // The slot's associated action is not available again
+            Unavailable,
             // The slot is currently selectable
             Selectable,
-            // The slot is not currently selectable
+            // The slot is visible but not currently selectable
             Unselectable
         }
 
@@ -39,6 +39,7 @@ namespace Gameplay.UI {
         public TMP_Text HotkeyText;
         public AbilityInterface AbilityInterface;
         public Canvas TeamColorsCanvas;
+        public CanvasGroup CanvasGroup;
 
         private GridEntity _selectedEntity;
         private bool _selected;
@@ -62,11 +63,17 @@ namespace Gameplay.UI {
             slotBehavior.SetUpSprites(AbilityImage, SecondaryAbilityImage, TeamColorsCanvas);
             
             gameObject.SetActive(true);
+            CanvasGroup.alpha = 1;
             
             HotkeyText.text = Hotkey;
             
             CheckAvailability();
             AddListeners();
+        }
+
+        private void Hide() {
+            CanvasGroup.alpha = 0;
+            Selectable = false;
         }
 
         public void Clear() {
@@ -131,8 +138,8 @@ namespace Gameplay.UI {
             
             AvailabilityResult availability = SlotBehavior.GetAvailability();
             switch (availability) {
-                case AvailabilityResult.NoLongerAvailable:
-                    Clear();
+                case AvailabilityResult.Unavailable:
+                    Hide();
                     break;
                 case AvailabilityResult.Selectable:
                     MarkSelectable(true);
@@ -152,6 +159,7 @@ namespace Gameplay.UI {
 
         private void MarkSelectable(bool available) {
             SlotFrame.color = available ? SelectableColor : UnselectableColor;
+            CanvasGroup.alpha = 1;
             Selectable = available;
         }
         

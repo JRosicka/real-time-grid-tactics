@@ -30,6 +30,11 @@ namespace Gameplay.Entities.Abilities {
             foreach (ResourceAmount resources in AbilityParameters.Buildable.Cost) {
                 GameManager.Instance.GetPlayerForTeam(Performer.MyTeam).ResourcesController.Earn(resources);
             }
+
+            if (AbilityParameters.Buildable is UpgradeData upgradeData) {
+                // Cancel the upgrade
+                GameManager.Instance.GetPlayerForTeam(Performer.MyTeam).OwnedPurchasablesController.CancelInProgressUpgrade(upgradeData);
+            }
         }
 
         protected override bool CompleteCooldownImpl() {
@@ -64,6 +69,11 @@ namespace Gameplay.Entities.Abilities {
         }
         
         public override bool DoAbilityEffect() {
+            if (AbilityParameters.Buildable is UpgradeData upgradeData) {
+                // Mark the upgrade as in-progress
+                GameManager.Instance.GetPlayerForTeam(Performer.MyTeam).OwnedPurchasablesController.AddInProgressUpgrade(upgradeData);
+            }
+
             return true;
         }
     }

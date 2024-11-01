@@ -38,13 +38,29 @@ public class PlayerOwnedPurchasablesController : NetworkBehaviour {
         }
     }
 
+    public List<UpgradeData> InProgressUpgrades => _upgrades.GetInProgressUpgrades();
+
     public void AddUpgrade(UpgradeData upgrade) {
         if (_upgrades.AddUpgrade(upgrade)) {
             SyncUpgrades();
             OwnedPurchasablesMayHaveChanged(_team);
         }
     }
+
+    public void AddInProgressUpgrade(UpgradeData upgrade) {
+        if (_upgrades.AddInProgressUpgrade(upgrade)) {
+            SyncUpgrades();
+            OwnedPurchasablesMayHaveChanged(_team);
+        }
+    }
     
+    public void CancelInProgressUpgrade(UpgradeData upgrade) {
+        if (_upgrades.CancelInProgressUpgrade(upgrade)) {
+            SyncUpgrades();
+            OwnedPurchasablesMayHaveChanged(_team);
+        }
+    }
+
     /// <summary>
     /// Reset the reference for <see cref="_upgrades"/> to force a sync across clients. Just updating fields in the class
     /// is not enough to get the sync to occur. 
