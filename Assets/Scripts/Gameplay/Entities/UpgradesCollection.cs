@@ -112,7 +112,7 @@ namespace Gameplay.Entities {
             writer.Write(dict.Count);
             foreach ((UpgradeData key, UpgradesCollection.UpgradeStatus value) in dict) {
                 writer.Write(key);
-                writer.Write(value);
+                writer.WriteInt((int)value);
             }
         }
 
@@ -120,12 +120,10 @@ namespace Gameplay.Entities {
             Dictionary<UpgradeData, UpgradesCollection.UpgradeStatus> ret = new Dictionary<UpgradeData, UpgradesCollection.UpgradeStatus>();
             int collectionSize = reader.ReadInt();
             for (int i = 0; i < collectionSize; i++) {
-                ret[reader.Read<UpgradeData>()] = reader.Read<UpgradesCollection.UpgradeStatus>();
+                ret[reader.Read<UpgradeData>()] = (UpgradesCollection.UpgradeStatus)reader.ReadInt();
             }
 
             return ret;
         }
     }
-
-
 }
