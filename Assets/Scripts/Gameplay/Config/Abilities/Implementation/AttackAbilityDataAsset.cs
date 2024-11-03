@@ -15,7 +15,7 @@ namespace Gameplay.Config.Abilities {
     public class AttackAbilityData : AbilityDataBase<AttackAbilityParameters>, ITargetableAbilityData {
         public AttackAbilityLogicType AttackType;
 
-        public override bool CancelWhenNewCommandGivenToPerformer => false;
+        public override bool CanBeCanceled => true;
         public override bool CancelableWhileActive => false;
         public override bool CancelableWhileQueued => true;
 

@@ -26,7 +26,7 @@ namespace Gameplay.Config.Abilities {
             public string selectionKey;
         }
 
-        public override bool CancelWhenNewCommandGivenToPerformer => true;
+        public override bool CanBeCanceled => true;
         public override bool CancelableWhileActive => true;
         public override bool CancelableWhileQueued => true;
         public override bool Targeted => Targetable;

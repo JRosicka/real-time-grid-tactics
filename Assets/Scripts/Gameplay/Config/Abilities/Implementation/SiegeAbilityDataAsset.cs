@@ -12,7 +12,7 @@ namespace Gameplay.Config.Abilities {
     /// </summary>
     [Serializable]
     public class SiegeAbilityData : AbilityDataBase<NullAbilityParameters> {
-        public override bool CancelWhenNewCommandGivenToPerformer => false;
+        public override bool CanBeCanceled => false;
         public override bool CancelableWhileActive => false;
         public override bool CancelableWhileQueued => true;
 

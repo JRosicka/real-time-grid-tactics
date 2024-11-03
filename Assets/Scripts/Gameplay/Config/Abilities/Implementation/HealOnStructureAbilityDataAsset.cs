@@ -14,7 +14,7 @@ namespace Gameplay.Config.Abilities {
     public class HealOnStructureAbilityData : AbilityDataBase<NullAbilityParameters> {
         public int HealAmount;
         public HealAbilityDataAsset HealAbility;
-        public override bool CancelWhenNewCommandGivenToPerformer => false;
+        public override bool CanBeCanceled => false;
         public override bool CancelableWhileActive => false;
         public override bool CancelableWhileQueued => false;
 

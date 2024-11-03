@@ -15,7 +15,7 @@ namespace Gameplay.Config.Abilities {
     [Serializable]
     public class IncomeAbilityData : AbilityDataBase<NullAbilityParameters> {
         public ResourceAmount ResourceAmountIncome;
-        public override bool CancelWhenNewCommandGivenToPerformer => false;
+        public override bool CanBeCanceled => false;
         public override bool CancelableWhileActive => false;
         public override bool CancelableWhileQueued => false;
 

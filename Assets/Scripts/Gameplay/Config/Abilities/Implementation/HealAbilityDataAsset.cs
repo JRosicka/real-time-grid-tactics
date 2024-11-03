@@ -12,7 +12,7 @@ namespace Gameplay.Config.Abilities {
     /// </summary>
     [Serializable]
     public class HealAbilityData : AbilityDataBase<HealAbilityParameters> {
-        public override bool CancelWhenNewCommandGivenToPerformer => false;
+        public override bool CanBeCanceled => true;
         public override bool CancelableWhileActive => false;
         public override bool CancelableWhileQueued => false;
 

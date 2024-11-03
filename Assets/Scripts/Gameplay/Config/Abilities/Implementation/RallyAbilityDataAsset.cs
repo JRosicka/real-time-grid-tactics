@@ -15,7 +15,7 @@ namespace Gameplay.Config.Abilities {
     /// </summary>
     [Serializable]
     public class RallyAbilityData : AbilityDataBase<RallyAbilityParameters> {
-        public override bool CancelWhenNewCommandGivenToPerformer => false;
+        public override bool CanBeCanceled => false;
         public override bool CancelableWhileActive => false;
         public override bool CancelableWhileQueued => false;
 

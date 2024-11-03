@@ -232,6 +232,7 @@ public abstract class AbstractCommandManager : NetworkBehaviour, ICommandManager
     }
 
     protected void DoCancelAbility(IAbility ability) {
+        if (!ability.AbilityData.CanBeCanceled) return;
         ability.Cancel();
         ability.Performer.ExpireAbility(ability, true);
     }

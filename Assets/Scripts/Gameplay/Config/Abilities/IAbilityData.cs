@@ -42,10 +42,9 @@ namespace Gameplay.Config.Abilities {
         /// </summary>
         bool RepeatForeverAfterStartEvenWhenFailed { get; }
         /// <summary>
-        /// Whether to cancel this ability if it is in-progress (i.e. has an active ability cooldown timer) when the
-        /// performer is given a new command. Useful for abilities that do stuff at the end of a cooldown. 
+        /// Whether this ability can ever be canceled from manual cancellation, clearing the queue, etc.
         /// </summary>
-        bool CancelWhenNewCommandGivenToPerformer { get; }
+        bool CanBeCanceled { get; }
         /// <summary>
         /// Whether this ability can be manually canceled while in progress (active timer). 
         /// </summary>
