@@ -17,7 +17,7 @@ public class PlayerOwnedPurchasablesController : NetworkBehaviour {
 
     private GridEntity.Team _team;
 
-    [SyncVar]
+    [SyncVar(hook = nameof(OwnedPurchasablesSyncVarChanged))] 
     private UpgradesCollection _upgrades = new UpgradesCollection();
 
     /// <summary>
@@ -43,21 +43,30 @@ public class PlayerOwnedPurchasablesController : NetworkBehaviour {
     public void AddUpgrade(UpgradeData upgrade) {
         if (_upgrades.AddUpgrade(upgrade)) {
             SyncUpgrades();
-            OwnedPurchasablesMayHaveChanged(_team);
+            if (!NetworkClient.active) {
+                // SP, so trigger manually.
+                OwnedPurchasablesChangedEvent?.Invoke();
+            }
         }
     }
 
     public void AddInProgressUpgrade(UpgradeData upgrade) {
         if (_upgrades.AddInProgressUpgrade(upgrade)) {
             SyncUpgrades();
-            OwnedPurchasablesMayHaveChanged(_team);
+            if (!NetworkClient.active) {
+                // SP, so trigger manually.
+                OwnedPurchasablesChangedEvent?.Invoke();
+            }
         }
     }
     
     public void CancelInProgressUpgrade(UpgradeData upgrade) {
         if (_upgrades.CancelInProgressUpgrade(upgrade)) {
             SyncUpgrades();
-            OwnedPurchasablesMayHaveChanged(_team);
+            if (!NetworkClient.active) {
+                // SP, so trigger manually.
+                OwnedPurchasablesChangedEvent?.Invoke();
+            }
         }
     }
 
@@ -79,6 +88,10 @@ public class PlayerOwnedPurchasablesController : NetworkBehaviour {
             // MP, so update on each client. 
             RpcOwnedPurchasablesChanged();
         }
+    }
+
+    private void OwnedPurchasablesSyncVarChanged(UpgradesCollection oldValue, UpgradesCollection newValue) {
+        OwnedPurchasablesChangedEvent?.Invoke();
     }
 
     [ClientRpc]
