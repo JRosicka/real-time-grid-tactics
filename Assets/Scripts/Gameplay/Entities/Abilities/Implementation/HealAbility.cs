@@ -13,7 +13,10 @@ namespace Gameplay.Entities.Abilities {
         }
         
         public override void Cancel() {
-            // Nothing to do
+            if (AbilityParameters.Target != null) {
+                AbilityParameters.Target.KilledEvent -= TargetEntityNoLongerValid;
+                AbilityParameters.Target.EntityMovedEvent -= TargetEntityNoLongerValid;
+            }
         }
 
         protected override bool CompleteCooldownImpl() {
@@ -21,6 +24,11 @@ namespace Gameplay.Entities.Abilities {
                 // Actually perform the heal
                 AbilityParameters.Target.Heal(AbilityParameters.HealAmount);
             }
+
+            if (AbilityParameters.Target != null) {
+                AbilityParameters.Target.KilledEvent -= TargetEntityNoLongerValid;
+                AbilityParameters.Target.EntityMovedEvent -= TargetEntityNoLongerValid;
+            } 
 
             return true;
         }

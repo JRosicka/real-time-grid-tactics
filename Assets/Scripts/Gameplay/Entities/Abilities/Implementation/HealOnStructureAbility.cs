@@ -33,7 +33,7 @@ namespace Gameplay.Entities.Abilities {
             Performer.PerformAbility(Data.HealAbility.Content, new HealAbilityParameters {
                 Target = target,
                 HealAmount = Data.HealAmount
-            }, true);
+            }, true, false);
             
             return true;
         }
