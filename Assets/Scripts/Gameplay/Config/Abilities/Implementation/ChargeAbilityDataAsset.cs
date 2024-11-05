@@ -22,7 +22,7 @@ namespace Gameplay.Config.Abilities {
         public EntitySelectionManager EntitySelectionManager => GameManager.Instance.EntitySelectionManager;
         public ICommandManager CommandManager => GameManager.Instance.CommandManager;
         
-        public override bool CanBeCanceled => false;
+        public override bool CanBeCanceled => true;
         public override bool CancelableWhileActive => false;
         public override bool CancelableWhileQueued => true;
 
@@ -49,6 +49,7 @@ namespace Gameplay.Config.Abilities {
         }
 
         public void DoTargetableAbility(Vector2Int cellPosition, GridEntity selectedEntity, GridEntity.Team selectorTeam, object targetData) {
+            selectedEntity.SetTargetLocation(cellPosition, null);
             selectedEntity.QueueAbility(this, new ChargeAbilityParameters {
                 Destination = cellPosition,
                 MoveDestination = cellPosition,
