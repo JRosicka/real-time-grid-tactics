@@ -176,17 +176,13 @@ namespace Gameplay.Entities {
             SetupStats();
             SetupView();
             
-            InitializationStatusHandler.Initialize(OnEntityInitializedAcrossAllClients);
+            InitializationStatusHandler.Initialize(null);
             InitializationStatusHandler.SetLocalClientReady();
             DeathStatusHandler.Initialize(OnEntityReadyToDie);
             
             Interactable = true;
         } 
-
-        private void OnEntityInitializedAcrossAllClients() {
-            Debug.Log("Entity initialized across all clients");
-        }
-
+        
         public bool CanTargetThings => Range > 0;
         public bool CanMoveOrRally => MoveTime > 0;
         public bool CanMove => CanMoveOrRally && !EntityData.IsStructure;

@@ -124,7 +124,6 @@ public abstract class AbstractCommandManager : NetworkBehaviour, ICommandManager
         _entitiesOnGrid.RegisterEntity(entity, position, data.GetStackOrder(), entityToIgnore);
         entity.Registered = true;
         SyncEntityCollection();
-        Debug.Log($"Registered new entity {entity.UnitName} at position {position}");
         EntityRegisteredEvent?.Invoke(entity.MyTeam);
     }
 
