@@ -16,7 +16,7 @@ MonoBehaviour:
   Description: Speedy cavalry unit.
   Cost:
   - Type: 0
-    Amount: 100
+    Amount: 75
   - Type: 1
     Amount: 25
   Requirements: []
@@ -41,6 +41,7 @@ MonoBehaviour:
   FriendlyUnitsCanShareCell: 0
   AttackByDefault: 1
   IsResourceExtractor: 0
+  BuildQueueSize: 5
   EligibleStructureLocations: []
   SharedUnitDamageTakenModifier: 1
   SharedUnitDamageTakenModifierTags: 
