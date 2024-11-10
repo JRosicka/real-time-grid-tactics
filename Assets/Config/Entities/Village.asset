@@ -13,7 +13,8 @@ MonoBehaviour:
   m_Name: Village
   m_EditorClassIdentifier: 
   ShortDescription: Resource collector for Gold.
-  Description: Resource collector for Gold. Build this on an empty Village Site.
+  Description: Resource collector for Gold. Also heals friendly units. Buildable
+    on an empty Village Site.
   Cost:
   - Type: 0
     Amount: 50
@@ -39,6 +40,7 @@ MonoBehaviour:
   FriendlyUnitsCanShareCell: 1
   AttackByDefault: 0
   IsResourceExtractor: 1
+  BuildQueueSize: 5
   EligibleStructureLocations:
   - {fileID: 11400000, guid: be8d7ccbdc543194e9649f8f9fadbf2b, type: 2}
   SharedUnitDamageTakenModifier: 1

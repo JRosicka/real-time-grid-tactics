@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Amber Mine
   m_EditorClassIdentifier: 
   ShortDescription: Resource collector for Amber.
-  Description: Resource collector for Amber. Build this on an empty Amber Patch.
+  Description: Resource collector for Amber. Buildable on an empty Amber Patch.
   Cost:
   - Type: 0
     Amount: 50
@@ -37,6 +37,7 @@ MonoBehaviour:
   FriendlyUnitsCanShareCell: 1
   AttackByDefault: 0
   IsResourceExtractor: 1
+  BuildQueueSize: 5
   EligibleStructureLocations:
   - {fileID: 11400000, guid: d2abf14400b53b645a0af4f3676cfbb2, type: 2}
   SharedUnitDamageTakenModifier: 1
