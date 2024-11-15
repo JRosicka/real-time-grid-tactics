@@ -55,6 +55,19 @@ namespace Gameplay.Config.Abilities {
                 return false;
             }
 
+            if (parameters.Buildable is EntityData { IsStructure: true }) {
+                // We need the space to be empty (except for the builder) in order to build a new structure there
+                List<GridEntity> entitiesAtBuildLocation = GameManager.Instance.GetEntitiesAtLocation(parameters.BuildLocation)
+                    ?.Entities.Select(o => o.Entity).ToList() ?? new List<GridEntity>();
+                if (entitiesAtBuildLocation.Any(e => e != entity)) {
+                    return false;
+                }
+            }
+
+            if (entity.Location == null || entity.Location.Value != parameters.BuildLocation) {
+                return false;
+            }
+
             return true;
         }
 

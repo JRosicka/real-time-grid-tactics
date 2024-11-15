@@ -1,6 +1,8 @@
 using System;
+using System.Collections.Generic;
 using Gameplay.Entities;
 using Gameplay.Entities.Abilities;
+using Gameplay.Pathfinding;
 using UnityEngine;
 
 namespace Gameplay.Config.Abilities {
@@ -25,7 +27,19 @@ namespace Gameplay.Config.Abilities {
         }
 
         protected override bool AbilityLegalImpl(MoveAbilityParameters parameters, GridEntity entity) {
-            return CanTargetCell(parameters.Destination, entity, parameters.SelectorTeam, null);
+            if (!CanTargetCell(parameters.Destination, entity, parameters.SelectorTeam, null)) {
+                return false;
+            }
+
+            if (parameters.BlockedByOccupation && !PathfinderService.CanEntityEnterCell(parameters.Destination, 
+                        entity.EntityData, parameters.SelectorTeam, new List<GridEntity> { entity })) {
+                // Only consider this legal if we can take a step towards the destination
+                PathfinderService.Path path = GameManager.Instance.PathfinderService.FindPath(entity, parameters.Destination);
+                List<GridNode> pathNodes = path.Nodes;
+                return pathNodes.Count >= 2;
+            }
+
+            return true;
         }
 
         protected override IAbility CreateAbilityImpl(MoveAbilityParameters parameters, GridEntity performer) {

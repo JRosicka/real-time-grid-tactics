@@ -35,11 +35,11 @@ namespace Gameplay.Entities {
 
             // See if we should target this entity
             if (targetEntity != null && targetEntity.MyTeam == GridEntity.Team.Neutral) {
-                thisEntity.TryMoveToCell(targetCell);
+                thisEntity.TryMoveToCell(targetCell, false);
             } else if (targetEntity != null && thisEntity.MyTeam != targetEntity.MyTeam) {
                 TryTargetEntity(thisEntity, targetEntity, targetCell);
             } else if (targetEntity == null || targetEntity.EntityData.FriendlyUnitsCanShareCell) {
-                thisEntity.TryMoveToCell(targetCell);
+                thisEntity.TryMoveToCell(targetCell, false);
             }
         }
         

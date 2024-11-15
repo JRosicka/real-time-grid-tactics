@@ -165,7 +165,8 @@ namespace Gameplay.Entities.Abilities {
             attacker.PerformAbility(moveAbility, new MoveAbilityParameters {
                 Destination = nextMoveCell,
                 NextMoveCell = nextMoveCell,
-                SelectorTeam = attacker.MyTeam
+                SelectorTeam = attacker.MyTeam,
+                BlockedByOccupation = false
             }, true);
             return true;
         }

@@ -156,11 +156,6 @@ public class PathfinderService {
         return ConstructPath(startNode, bestAlternative, false);
     }
 
-    public int RequiredMoves(GridEntity entity, Vector2Int origin, Vector2Int destination) {
-        Vector2Int pathVector = destination - origin;
-        return Mathf.Abs(pathVector.x) + Mathf.Abs(pathVector.y);
-    }
-
     public float AngleBetweenCells(Vector2Int cell1, Vector2Int cell2) {
         Vector2 cell1WorldPos = GridController.GetWorldPosition(cell1);
         Vector2 cell2WorldPos = GridController.GetWorldPosition(cell2);

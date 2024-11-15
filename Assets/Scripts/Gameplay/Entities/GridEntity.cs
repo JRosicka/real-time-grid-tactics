@@ -283,14 +283,15 @@ namespace Gameplay.Entities {
             _interactBehavior.TargetCellWithUnit(this, location);
         }
 
-        public bool TryMoveToCell(Vector2Int targetCell) {
+        public bool TryMoveToCell(Vector2Int targetCell, bool blockedByOccupation) {
             if (!CanMoveOrRally) return false;
 
             MoveAbilityData data = (MoveAbilityData) EntityData.Abilities.First(a => a.Content.GetType() == typeof(MoveAbilityData)).Content;
             if (PerformAbility(data, new MoveAbilityParameters {
                         Destination = targetCell, 
                         NextMoveCell = targetCell, 
-                        SelectorTeam = MyTeam
+                        SelectorTeam = MyTeam,
+                        BlockedByOccupation = blockedByOccupation
                     }, true)) {
                 SetTargetLocation(targetCell, null);
             }
@@ -495,7 +496,8 @@ namespace Gameplay.Entities {
             CreateAbilityTimer(new MoveAbility(moveAbilityData, new MoveAbilityParameters {
                 Destination = location.Value,
                 NextMoveCell = location.Value,
-                SelectorTeam = MyTeam
+                SelectorTeam = MyTeam,
+                BlockedByOccupation = false
             }, this), timeToAdd);
         }
 

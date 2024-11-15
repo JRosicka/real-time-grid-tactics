@@ -47,7 +47,7 @@ namespace Gameplay.Entities.Abilities {
             AbilityParameters.NextMoveCell = pathNodes[1].Location;
             
             GameManager.Instance.CommandManager.MoveEntityToCell(Performer, pathNodes[1].Location);
-            if (pathNodes.Count > 2) {
+            if (pathNodes.Count > 2 || (AbilityParameters.BlockedByOccupation && pathNodes[1].Location != AbilityParameters.Destination)) {
                 // There is more distance to travel, so put a new movement at the front of the queue
                 Performer.QueueAbility(Data, AbilityParameters, WaitUntilLegal, false, true);
             }
@@ -60,16 +60,19 @@ namespace Gameplay.Entities.Abilities {
         public Vector2Int Destination;
         public Vector2Int NextMoveCell;
         public GridEntity.Team SelectorTeam;
+        public bool BlockedByOccupation;    // Whether we consider the move illegal when the target location is occupied
         public void Serialize(NetworkWriter writer) {
             writer.Write(Destination);
             writer.Write(NextMoveCell);
             writer.Write(SelectorTeam);
+            writer.WriteBool(BlockedByOccupation);
         }
 
         public void Deserialize(NetworkReader reader) {
             Destination = reader.Read<Vector2Int>();
             NextMoveCell = reader.Read<Vector2Int>();
             SelectorTeam = reader.Read<GridEntity.Team>();
+            BlockedByOccupation = reader.ReadBool();
         }
     }
 }
