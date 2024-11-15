@@ -55,11 +55,12 @@ namespace Gameplay.Config.Abilities {
                 return false;
             }
 
-            if (parameters.Buildable is EntityData { IsStructure: true }) {
+            if (parameters.Buildable is EntityData { IsStructure: true } buildable) {
                 // We need the space to be empty (except for the builder) in order to build a new structure there
-                List<GridEntity> entitiesAtBuildLocation = GameManager.Instance.GetEntitiesAtLocation(parameters.BuildLocation)
-                    ?.Entities.Select(o => o.Entity).ToList() ?? new List<GridEntity>();
-                if (entitiesAtBuildLocation.Any(e => e != entity)) {
+                List<GridEntity> performer = new List<GridEntity> { entity };
+                bool buildableCanEnterCell = PathfinderService.CanEntityEnterCell(parameters.BuildLocation, buildable, entity.MyTeam, performer);
+                bool performerCanEnterCell = PathfinderService.CanEntityEnterCell(parameters.BuildLocation, entity.EntityData, entity.MyTeam, performer);
+                if (!buildableCanEnterCell || !performerCanEnterCell) {
                     return false;
                 }
             }
