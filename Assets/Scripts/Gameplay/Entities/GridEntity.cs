@@ -256,10 +256,7 @@ namespace Gameplay.Entities {
         private void TargetEntityUpdated() {
             Vector2Int? newLocation = TargetLocationLogic.TargetEntity == null ? null : TargetLocationLogic.TargetEntity.Location;
             if (newLocation == null) {
-                newLocation = Location;
-                if (newLocation != null) {  // The location might be null if the entity is being destroyed 
-                    SetTargetLocation(newLocation.Value, null);
-                }
+                SetTargetLocation(TargetLocationLogic.CurrentTarget, null);
             } else {
                 SetTargetLocation(newLocation.Value, TargetLocationLogic.TargetEntity);
             }
