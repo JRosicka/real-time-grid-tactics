@@ -47,12 +47,19 @@ namespace Gameplay.Entities.Abilities {
                 return false;
             }
 
-            // Check to make sure that the target and performer still exist
-            Vector2Int? targetLocation = AbilityParameters.Target == null ? null : AbilityParameters.Target.Location;
+            // Check to make sure that the performer still exists
             Vector2Int? attackerLocation = Performer == null ? null : Performer.Location;
-            if (targetLocation == null || attackerLocation == null) {
+            if (attackerLocation == null) {
                 return false;
             }
+            
+            // If the target no longer exists, then it must have been killed or turned into a structure or something. 
+            // Do a normal attack move in this case.
+            Vector2Int? targetLocation = AbilityParameters.Target == null ? null : AbilityParameters.Target.Location;
+            if (targetLocation == null) {
+                AbilityParameters.TargetFire = false;
+                return DoAttackMoveEffect();
+            } 
             
             // Attack the target if it is in range
             if (CellDistanceLogic.DistanceBetweenCells(attackerLocation.Value, targetLocation.Value) <= Performer.Range) {
