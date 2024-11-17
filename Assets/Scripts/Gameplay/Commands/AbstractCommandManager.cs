@@ -142,6 +142,8 @@ public abstract class AbstractCommandManager : NetworkBehaviour, ICommandManager
         // Don't do anything if the performer has been killed 
         if (ability.Performer == null) return false;
         
+        Debug.Log($"Performing ability {ability.GetType().Name}");
+        
         if (clearQueueFirst) {
             ClearAbilityQueue(ability.Performer); 
         }
@@ -159,12 +161,14 @@ public abstract class AbstractCommandManager : NetworkBehaviour, ICommandManager
                 if (ability.WaitUntilLegal) {
                     QueueAbility(ability, false, false);
                 }
+                Debug.Log($"Did not perform ability {ability.GetType().Name}");
                 return false;
             }
             ability.PayCost(true);
         }
 
         if (ability.PerformAbility()) {
+            Debug.Log($"Done performing ability {ability.GetType().Name}");
             return true;
         }
 
@@ -172,6 +176,7 @@ public abstract class AbstractCommandManager : NetworkBehaviour, ICommandManager
             QueueAbility(ability, false, false);
         }
 
+        Debug.Log($"Did not perform ability {ability.GetType().Name}");
         return false;
     }
 

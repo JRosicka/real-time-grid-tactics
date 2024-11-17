@@ -5,6 +5,7 @@ using Gameplay.Config;
 using Gameplay.Entities;
 using Gameplay.Grid;
 using Gameplay.Pathfinding;
+using Mirror.SimpleWeb;
 using UnityEngine;
 using Util;
 
@@ -59,6 +60,9 @@ public class PathfinderService {
             };
         }
 
+        float startTime = Time.realtimeSinceStartup;
+        Debug.Log($"Starting pathfinding. Start time: {startTime}. Entity: {entity.EntityData.name}. Start location: {entityLocation}. Destination: {destination}.");
+        
         int maxSearch = MaxCellsToSearch;
         if (!entity.CanPathFindToTile(GridController.GridData.GetCell(destination).Tile) 
                 || !CanEntityEnterCell(destination, entity.EntityData, entity.MyTeam)) {
@@ -82,12 +86,18 @@ public class PathfinderService {
             
             if (current.Location == destination) {
                 // We have reached the end
+                Debug.Log($"Found path successfully. Duration (s): {Time.realtimeSinceStartup - startTime}. " +
+                          $"Processed: {processed.Count}. Entity: {entity.EntityData.name}. " +
+                          $"Start location: {entityLocation}. Destination: {destination}.");
                 return ConstructPath(startNode, current, true);
             }
             
             if (processed.Count > maxSearch) {
                 // We have not yet found a path after searching for a while, and we have not exhausted all of the tiles 
                 // to search. Pick the best possible alternative destination out of those we have searched.
+                Debug.Log($"Found alternative path. Duration (s): {Time.realtimeSinceStartup - startTime}. " +
+                          $"Processed: {processed.Count}. Entity: {entity.EntityData.name}. " +
+                          $"Start location: {entityLocation}. Destination: {destination}.");
                 return ConstructBestAlternativePath(processed, startNode);
             }
 
@@ -118,6 +128,9 @@ public class PathfinderService {
         
         // We ran out of nodes to search without finding a way to the destination, so no path exists. Pick the best
         // possible alternative destination out of those we have searched.
+        Debug.Log($"Ran out of nodes to search. Duration (s): {Time.realtimeSinceStartup - startTime}. " +
+                  $"Processed: {processed.Count}. Entity: {entity.EntityData.name}. " +
+                  $"Start location: {entityLocation}. Destination: {destination}.");
         return ConstructBestAlternativePath(processed, startNode);
     }
 
@@ -129,6 +142,7 @@ public class PathfinderService {
             currentPathNode = currentPathNode.Connection;
 
             if (pathNodes.Count > 500) {
+                Debug.Log("Path is too long!");
                 throw new Exception("Frig bro, the path is too long");
             }
         }
