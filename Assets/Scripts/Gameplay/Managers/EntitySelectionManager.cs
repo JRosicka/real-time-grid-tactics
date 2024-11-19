@@ -56,7 +56,7 @@ public class EntitySelectionManager {
         GridController.TrackEntity(entity);
 
         if (entity != null) {
-            TryFindPath(entity.TargetLocationLogic.CurrentTarget);
+            TryFindPath(null, entity.TargetLocationLogic);
             entity.TargetLocationLogicChangedEvent += TryFindPath;
             entity.UnregisteredEvent += DeselectEntity;
         } else {
@@ -107,7 +107,7 @@ public class EntitySelectionManager {
         if (SelectedEntity == null) return;
         if (!_gameManager.CommandManager.EntitiesOnGrid.IsEntityOnGrid(SelectedEntity)) return;
         // Update the path if necessary
-        TryFindPath(SelectedEntity.TargetLocationLogic.CurrentTarget);
+        TryFindPath(null, SelectedEntity.TargetLocationLogic);
 
         // Update the location if necessary
         if (SelectedEntity.Location == _selectedEntityCurrentLocation) return; 
@@ -173,13 +173,13 @@ public class EntitySelectionManager {
     
     #endregion
 
-    private void TryFindPath(Vector2Int cell) {
+    private void TryFindPath(TargetLocationLogic oldValue, TargetLocationLogic newValue) {
         if (SelectedEntity == null) return;
         if (!_gameManager.CommandManager.EntitiesOnGrid.IsEntityOnGrid(SelectedEntity)) return; // May be in the middle of getting unregistered
         if (!SelectedEntity.CanMoveOrRally && !SelectedEntity.TargetLocationLogic.CanRally) return;
         if (SelectedEntity.MyTeam != _gameManager.LocalPlayer.Data.Team) return;
 
-        PathfinderService.Path path = PathfinderService.FindPath(SelectedEntity, cell);
+        PathfinderService.Path path = PathfinderService.FindPath(SelectedEntity, newValue.CurrentTarget);
         GridController.VisualizePath(path);
     }
 }

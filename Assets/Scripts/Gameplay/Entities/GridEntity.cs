@@ -144,7 +144,7 @@ namespace Gameplay.Entities {
             // Target logic
             TargetLocationLogic = new TargetLocationLogic(EntityData.CanRally, spawnLocation, null);
             TargetLocationLogicChangedEvent += TargetLocationLogicChanged;
-            SyncTargetLocationLogic();
+            SyncTargetLocationLogic(null, TargetLocationLogic);
         }
         
         [ClientRpc]
@@ -218,39 +218,58 @@ namespace Gameplay.Entities {
 
         #region Target Location
         
-        public event Action<Vector2Int> TargetLocationLogicChangedEvent;
+        public event Action<TargetLocationLogic, TargetLocationLogic> TargetLocationLogicChangedEvent;
         [SyncVar(hook = nameof(OnTargetLocationLogicChanged))]
         public TargetLocationLogic TargetLocationLogic;
         private void OnTargetLocationLogicChanged(TargetLocationLogic oldValue, TargetLocationLogic newValue) {
-            TargetLocationLogicChangedEvent?.Invoke(newValue.CurrentTarget);
+            TargetLocationLogicChangedEvent?.Invoke(oldValue, newValue);
         }
         /// <summary>
         /// Reset the reference for <see cref="TargetLocationLogic"/> to force a sync across clients. Just updating fields in the class
         /// is not enough to get the sync to occur. 
         /// </summary>
-        private void SyncTargetLocationLogic() {
-            TargetLocationLogic newTargetLocationLogic = new TargetLocationLogic(TargetLocationLogic.CanRally, TargetLocationLogic.CurrentTarget, TargetLocationLogic.TargetEntity);
+        private void SyncTargetLocationLogic(TargetLocationLogic oldValue, TargetLocationLogic newValue) {
             if (!NetworkServer.active && NetworkClient.active) {
                 // MP client, so we need to network the change to the syncvar
-                CmdSyncTargetLocationLogic(newTargetLocationLogic);
+                CmdSyncTargetLocationLogic(newValue);
                 return;
             }
 
             // Otherwise we are the MP server or in SP, so directly modify the field here 
-            TargetLocationLogic = newTargetLocationLogic;
+            TargetLocationLogic = newValue;
             if (!NetworkClient.active) {
                 // SP, so syncvars won't work
-                TargetLocationLogicChangedEvent?.Invoke(TargetLocationLogic.CurrentTarget);
+                TargetLocationLogicChangedEvent?.Invoke(oldValue, newValue);
             }
         }
         [Command(requiresAuthority = false)]
         private void CmdSyncTargetLocationLogic(TargetLocationLogic newTargetLocationLogic) {
             TargetLocationLogic = newTargetLocationLogic;
         }
-        private void TargetLocationLogicChanged(Vector2Int newLocation) {
-            if (TargetLocationLogic.TargetEntity != null) { // TODO this might cause memory leaks, since I don't know of a good way to unregister these events since we are not guaranteed to call SyncTargetLocationLogic from the server. 
-                TargetLocationLogic.TargetEntity.EntityMovedEvent += TargetEntityUpdated;
-                TargetLocationLogic.TargetEntity.UnregisteredEvent += TargetEntityUpdated;
+        private void TargetLocationLogicChanged(TargetLocationLogic oldValue, TargetLocationLogic newValue) {
+            if (oldValue == null && newValue == null) return;
+
+            void TryUnSubscribe() {
+                if (oldValue.TargetEntity == null) return;
+                oldValue.TargetEntity.EntityMovedEvent -= TargetEntityUpdated;
+                oldValue.TargetEntity.UnregisteredEvent -= TargetEntityUpdated;
+            }
+            void TrySubscribe() {
+                if (newValue.TargetEntity == null) return;
+                // TODO this might cause memory leaks, since I don't know of a good way to unregister these events since we are not guaranteed to call SyncTargetLocationLogic from the server. 
+                newValue.TargetEntity.EntityMovedEvent += TargetEntityUpdated;
+                newValue.TargetEntity.UnregisteredEvent += TargetEntityUpdated;
+            }
+            
+            // This sort of weird branching is meant to ensure that listeners get properly unsubscribed and that we 
+            // only subscribe the new target entity if it is actually new
+            if (newValue == null) {
+                TryUnSubscribe();
+            } else if (oldValue == null) {
+                TrySubscribe();
+            } else if (oldValue.TargetEntity != newValue.TargetEntity) {
+                TryUnSubscribe();
+                TrySubscribe();
             }
         }
         private void TargetEntityUpdated() {
@@ -262,9 +281,8 @@ namespace Gameplay.Entities {
             }
         }
         public void SetTargetLocation(Vector2Int newTargetLocation, GridEntity targetEntity) {
-            TargetLocationLogic.CurrentTarget = newTargetLocation;
-            TargetLocationLogic.TargetEntity = targetEntity;
-            SyncTargetLocationLogic();
+            TargetLocationLogic newTargetLocationLogic = new TargetLocationLogic(TargetLocationLogic.CanRally, newTargetLocation, targetEntity);
+            SyncTargetLocationLogic(TargetLocationLogic, newTargetLocationLogic);
         }
         
         #endregion
