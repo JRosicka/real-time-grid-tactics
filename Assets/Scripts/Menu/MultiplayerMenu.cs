@@ -3,6 +3,7 @@ using Game.Network;
 using Steamworks;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.Tilemaps;
 using UnityEngine.UI;
 
@@ -16,13 +17,15 @@ public class MultiplayerMenu : MonoBehaviour {
     public Button CancelButton;
     public Button StopHostButton;
     public Button QuitButton;
-
+    public Button SinglePlayerButton;
+    
     public LobbyListMenu LobbyListMenu;
     public GameObject JoinByIDMenu;
     public TMP_InputField JoinByIDField;
     public GameObject FailureFeedbackDialog;
     public TMP_Text FailureFeedbackText;
-
+    public GameObject SinglePlayerConfirmationDialog;
+    
     public TMP_Text LobbyStatusText;
 
     public GameNetworkManager NetworkManager;
@@ -80,9 +83,12 @@ public class MultiplayerMenu : MonoBehaviour {
         ToggleButton(LobbySearchButton, true);
         ToggleButton(JoinByIDButton, true);
         ToggleButton(QuitButton, true);
+        ToggleButton(SinglePlayerButton, true);
         CancelButton.gameObject.SetActive(false);
         LobbyTypeSelection.gameObject.SetActive(false);
         JoinByIDMenu.gameObject.SetActive(false);
+        SinglePlayerButton.gameObject.SetActive(true);
+        SinglePlayerConfirmationDialog.SetActive(false);
         JoinByIDField.text = "";
         HideLobbyMenu();
     }
@@ -121,6 +127,10 @@ public class MultiplayerMenu : MonoBehaviour {
         // TODO maybe respond to OnLobbyCreationComplete callback? Might just get whisked away to the room though. 
     }
 
+    public void OnStartSinglePlayerGameClicked() {
+        SceneManager.LoadScene("GamePlay");
+    }
+
     public void OnStopHostClicked() {
         SteamLobbyService.Instance.ExitLobby();
         
@@ -142,6 +152,14 @@ public class MultiplayerMenu : MonoBehaviour {
         ToggleButton(JoinByIDButton, false);
         
         JoinByIDMenu.gameObject.SetActive(true);
+    }
+
+    public void OnSinglePlayerButtonClicked() {
+        ResetMultiplayerMenu();
+        CancelButton.gameObject.SetActive(true);
+        ToggleButton(SinglePlayerButton, false);
+
+        SinglePlayerConfirmationDialog.SetActive(true);
     }
 
     public void OnCancelClicked() {
