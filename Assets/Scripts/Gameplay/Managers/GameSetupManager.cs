@@ -147,7 +147,7 @@ public class GameSetupManager : MonoBehaviour {
         await Task.Delay((int)(CountdownTimeSeconds * 1000));
         
         // The game is actually starting now, so perform on-start abilities for the starting set of entities
-        GameManager.CommandManager.EntitiesOnGrid.AllEntities().ForEach(e => e.PerformOnStartAbilities());
+        PerformOnStartAbilities();
         GameInitialized = true;
     }
     
@@ -171,12 +171,17 @@ public class GameSetupManager : MonoBehaviour {
         MapLoader.LoadMap(localPlayer.Data.Team);
         SpawnStartingUnits();
 
-        GameManager.CommandManager.EntitiesOnGrid.AllEntities().ForEach(e => e.PerformOnStartAbilities());
+        PerformOnStartAbilities();
 
         GameInitialized = true;
     } 
 
     #endregion
+
+    private static void PerformOnStartAbilities() {
+        GameManager.CommandManager.EntitiesOnGrid.AllEntities().ForEach(e => 
+            GameManager.AbilityAssignmentManager.PerformOnStartAbilitiesForEntity(e));
+    }
     
     #region Multiplayer
     

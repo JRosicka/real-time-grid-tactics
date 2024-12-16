@@ -3,12 +3,13 @@ using System.Threading.Tasks;
 using Gameplay.Config;
 using Gameplay.Entities;
 using Gameplay.Entities.Abilities;
+using Gameplay.Managers;
 using UnityEngine;
 
 public class SPCommandManager : AbstractCommandManager {
-    public override void Initialize(Transform spawnBucketPrefab, GameEndManager gameEndManager) {
+    public override void Initialize(Transform spawnBucketPrefab, GameEndManager gameEndManager, AbilityAssignmentManager abilityAssignmentManager) {
         SpawnBucket = Instantiate(spawnBucketPrefab);
-        AbilityQueueExecutor.Initialize(this, gameEndManager);
+        AbilityQueueExecutor.Initialize(this, gameEndManager, abilityAssignmentManager);
     }
 
     public override void SpawnEntity(EntityData data, Vector2Int spawnLocation, GameTeam team, GridEntity spawnerEntity) {

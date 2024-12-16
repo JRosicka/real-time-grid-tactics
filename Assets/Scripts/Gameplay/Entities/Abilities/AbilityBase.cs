@@ -1,5 +1,6 @@
 using System;
 using Gameplay.Config.Abilities;
+using Gameplay.Managers;
 using Mirror;
 
 namespace Gameplay.Entities.Abilities {
@@ -13,6 +14,8 @@ namespace Gameplay.Entities.Abilities {
         public IAbilityParameters BaseParameters { get; }
         public GridEntity Performer { get; }
         public bool WaitUntilLegal { get; set; }
+
+        protected AbilityAssignmentManager AbilityAssignmentManager => GameManager.Instance.AbilityAssignmentManager;
 
         protected AbilityBase(T data, IAbilityParameters abilityParameters, GridEntity performer) {
             Data = data;
@@ -28,7 +31,7 @@ namespace Gameplay.Entities.Abilities {
             }
             
             if (Data.RepeatWhenCooldownFinishes) {
-                Performer.PerformAbility(AbilityData, BaseParameters, WaitUntilLegal, false);
+                AbilityAssignmentManager.PerformAbility(Performer, AbilityData, BaseParameters, WaitUntilLegal, false);
             }
 
             return true;
@@ -64,7 +67,7 @@ namespace Gameplay.Entities.Abilities {
             
             Performer.CreateAbilityTimer(this);
             if (Data.AddedMovementTime > 0) {
-                Performer.AddMovementTime(Data.AddedMovementTime);
+                AbilityAssignmentManager.AddMovementTime(Performer, Data.AddedMovementTime);
             }
         }
 

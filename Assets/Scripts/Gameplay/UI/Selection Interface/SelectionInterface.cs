@@ -1,3 +1,4 @@
+using System.Linq;
 using Gameplay.Config;
 using Gameplay.Config.Abilities;
 using Gameplay.Entities;
@@ -73,7 +74,7 @@ namespace Gameplay.UI {
             ToggleViews(true);
 
             if (entity.MyTeam == GameManager.Instance.LocalPlayer.Data.Team) {
-                entity.PerformAutoSelection();
+                PerformAutoSelectionAbilities(entity);
             }
         }
 
@@ -156,7 +157,7 @@ namespace Gameplay.UI {
             if (_displayedEntity.CanMove) {
                 MovesRow.SetActive(true);
                 MovesField.text = $"{_displayedEntity.MoveTime}";
-                if (_displayedEntity.IsAbilityChannelOnCooldown(MoveChannel, out _activeMoveCooldownTimer)) {
+                if (GameManager.Instance.AbilityAssignmentManager.IsAbilityChannelOnCooldownForEntity(_displayedEntity, MoveChannel, out _activeMoveCooldownTimer)) {
                     MoveTimer.gameObject.SetActive(true);
                     MoveTimer.Initialize(_activeMoveCooldownTimer, false, true);
                 } else {
@@ -188,6 +189,16 @@ namespace Gameplay.UI {
                 } else {
                     _buildQueueForWorker.SetUpForEntity(_displayedEntity);
                 }
+            }
+        }
+        
+        /// <summary>
+        /// Auto-select any abilities that we have configured as auto-selectable.
+        /// This probably won't behave well if this entity has multiple abilities configured as auto-selectable... 
+        /// </summary>
+        private static void PerformAutoSelectionAbilities(GridEntity entity) {
+            foreach (IAbilityData abilityData in entity.Abilities.Select(a => a.Content).Where(a => a.AutoSelect)) {
+                abilityData.SelectAbility(entity);
             }
         }
     }

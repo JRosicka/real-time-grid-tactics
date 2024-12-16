@@ -2,6 +2,7 @@ using System;
 using Gameplay.Config;
 using Gameplay.Entities;
 using Gameplay.Entities.Abilities;
+using Gameplay.Managers;
 using UnityEngine;
 
 /// <summary>
@@ -9,7 +10,7 @@ using UnityEngine;
 /// In multiplayer games, these commands are networked to the server.
 /// </summary>
 public interface ICommandManager {
-    void Initialize(Transform spawnBucketPrefab, GameEndManager gameEndManager);
+    void Initialize(Transform spawnBucketPrefab, GameEndManager gameEndManager, AbilityAssignmentManager abilityAssignmentManager);
     void SpawnEntity(EntityData data, Vector2Int spawnLocation, GameTeam team, GridEntity spawnerEntity);
     void AddUpgrade(UpgradeData data, GameTeam team);
     /// <summary>

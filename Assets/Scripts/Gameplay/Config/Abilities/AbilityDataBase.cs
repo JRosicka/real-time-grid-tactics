@@ -124,7 +124,8 @@ namespace Gameplay.Config.Abilities {
         /// the ability. If the server check fails, let the client know. 
         /// </summary>
         public bool AbilityLegal(IAbilityParameters parameters, GridEntity entity) {
-            return entity.CanUseAbility(this, false) && AbilityLegalImpl((T) parameters, entity);
+            return GameManager.Instance.AbilityAssignmentManager.CanEntityUseAbility(entity, this, false) 
+                   && AbilityLegalImpl((T) parameters, entity);
         }
 
         public abstract bool CanPayCost(IAbilityParameters parameters, GridEntity entity);

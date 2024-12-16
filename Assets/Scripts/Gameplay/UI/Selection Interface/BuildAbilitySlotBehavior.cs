@@ -5,6 +5,7 @@ using Gameplay.Config.Abilities;
 using Gameplay.Entities;
 using Gameplay.Entities.Abilities;
 using Gameplay.Grid;
+using Gameplay.Managers;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -23,6 +24,7 @@ namespace Gameplay.UI {
         public bool IsAbilityTargetable => _buildAbilityData.Targeted;
         private GridController GridController => GameManager.Instance.GridController;
         private GridEntityCollection EntitiesOnGrid => GameManager.Instance.CommandManager.EntitiesOnGrid;
+        private AbilityAssignmentManager AbilityAssignmentManager => GameManager.Instance.AbilityAssignmentManager;
 
         public BuildAbilitySlotBehavior(BuildAbilityData buildData, PurchasableData buildable, GridEntity selectedEntity) {
             _buildAbilityData = buildData;
@@ -45,7 +47,7 @@ namespace Gameplay.UI {
                 }
                 Vector2Int? selectedEntityLocation = SelectedEntity.Location;
                 if (selectedEntityLocation == null) return;
-                SelectedEntity.PerformAbility(_buildAbilityData, new BuildAbilityParameters {
+                AbilityAssignmentManager.PerformAbility(SelectedEntity, _buildAbilityData, new BuildAbilityParameters {
                     Buildable = Buildable, 
                     BuildLocation = selectedEntityLocation.Value
                 }, true, false);
@@ -60,7 +62,7 @@ namespace Gameplay.UI {
                                              || player.OwnedPurchasablesController.InProgressUpgrades.Contains(Buildable))) {
                 // Upgrade that we already own or are currently building somewhere
                 return AbilitySlot.AvailabilityResult.Unavailable;
-            } else if (SelectedEntity.CanUseAbility(_buildAbilityData, AbilityData.SelectableWhenBlocked)
+            } else if (AbilityAssignmentManager.CanEntityUseAbility(SelectedEntity, _buildAbilityData, AbilityData.SelectableWhenBlocked)
                        && GameManager.Instance.GetPlayerForTeam(SelectedEntity.MyTeam).ResourcesController.CanAfford(Buildable.Cost)
                        && Buildable.Requirements.All(r => ownedPurchasables.Contains(r))) {
                 // This entity can build this and we can afford this

@@ -54,7 +54,7 @@ namespace Gameplay.Entities.Abilities {
 
             // ...then attack it
             AttackAbilityData attackAbilityData = (AttackAbilityData) Performer.EntityData.Abilities.First(a => a.Content.GetType() == typeof(AttackAbilityData)).Content;
-            Performer.QueueAbility(attackAbilityData, new AttackAbilityParameters {
+            AbilityAssignmentManager.QueueAbility(Performer, attackAbilityData, new AttackAbilityParameters {
                 TargetFire = true,
                 Target = targetEntity,
                 Destination = AbilityParameters.Destination

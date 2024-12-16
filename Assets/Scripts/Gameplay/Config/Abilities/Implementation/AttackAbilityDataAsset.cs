@@ -50,7 +50,7 @@ namespace Gameplay.Config.Abilities {
 
         public void DoTargetableAbility(Vector2Int cellPosition, GridEntity selectedEntity, GameTeam selectorTeam, System.Object targetData) {
             GridEntity target = GameManager.Instance.GetEntitiesAtLocation(cellPosition)?.GetTopEntity()?.Entity;    // Only able to target the top entity!
-            selectedEntity.QueueAbility(this, new AttackAbilityParameters {
+            GameManager.Instance.AbilityAssignmentManager.QueueAbility(selectedEntity, this, new AttackAbilityParameters {
                     TargetFire = target != null && target.MyTeam != GameTeam.Neutral, 
                     Target = target, 
                     Destination = cellPosition

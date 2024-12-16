@@ -5,6 +5,7 @@ using Gameplay.Config;
 using Gameplay.Entities;
 using Gameplay.Entities.Abilities;
 using Gameplay.Grid;
+using Gameplay.Managers;
 using Mirror;
 using UnityEngine;
 using Util;
@@ -23,6 +24,7 @@ public abstract class AbstractCommandManager : NetworkBehaviour, ICommandManager
     public GridEntity GridEntityPrefab;
 
     protected GridController GridController => GameManager.Instance.GridController;
+    private AbilityAssignmentManager AbilityAssignmentManager => GameManager.Instance.AbilityAssignmentManager;
     
     // TODO this is where I could add some "is this player allowed to call this on the entity" checks
     [SyncVar(hook = nameof(OnEntityCollectionChanged))] 
@@ -46,7 +48,7 @@ public abstract class AbstractCommandManager : NetworkBehaviour, ICommandManager
 
     public GridEntityCollection EntitiesOnGrid => _entitiesOnGrid;
 
-    public abstract void Initialize(Transform spawnBucketPrefab, GameEndManager gameEndManager);
+    public abstract void Initialize(Transform spawnBucketPrefab, GameEndManager gameEndManager, AbilityAssignmentManager abilityAssignmentManager);
     
     /// <summary>
     /// Attempts to spawn a new instance of the provided <see cref="GridEntity"/> at the specified location on the game
@@ -109,7 +111,7 @@ public abstract class AbstractCommandManager : NetworkBehaviour, ICommandManager
         
         // Now that the entity is registered, perform any on-start abilities
         if (GameManager.Instance.GameSetupManager.GameInitialized) {
-            entityInstance.PerformOnStartAbilities();
+            AbilityAssignmentManager.PerformOnStartAbilitiesForEntity(entityInstance);
         }
     }
 
@@ -226,14 +228,13 @@ public abstract class AbstractCommandManager : NetworkBehaviour, ICommandManager
     protected void DoMarkAbilityCooldownExpired(IAbility ability, bool canceled) {
         // Check to make sure that the entity performing the ability is still around
         if (ability.Performer != null) {
-            ability.Performer.ExpireTimerForAbility(ability, canceled);
+            AbilityAssignmentManager.ExpireTimerForAbility(ability.Performer, ability, canceled);
         } 
     }
 
     protected void DoCancelAbility(IAbility ability) {
         if (!ability.AbilityData.CanBeCanceled) return;
-        ability.Cancel();
-        ability.Performer.ExpireAbility(ability, true);
+        AbilityAssignmentManager.ExpireAbility(ability.Performer, ability, true);
     }
 
     protected void DoAbilityFailed(IAbility ability) {

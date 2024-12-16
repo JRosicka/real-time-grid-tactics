@@ -17,7 +17,7 @@ namespace Gameplay.Config.Abilities {
         public override bool CancelableWhileQueued => true;
 
         public override void SelectAbility(GridEntity selector) {
-            selector.PerformAbility(this, new NullAbilityParameters(), false);
+            GameManager.Instance.AbilityAssignmentManager.PerformAbility(selector, this, new NullAbilityParameters(), false);
         }
 
         public override bool CanPayCost(IAbilityParameters parameters, GridEntity entity) {

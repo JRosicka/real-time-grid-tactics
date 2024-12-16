@@ -5,6 +5,7 @@ using Gameplay.Config;
 using Gameplay.Config.Abilities;
 using Gameplay.Entities.Abilities;
 using Gameplay.Entities.BuildQueue;
+using Gameplay.Managers;
 using JetBrains.Annotations;
 using Mirror;
 using UnityEngine;
@@ -21,6 +22,9 @@ namespace Gameplay.Entities {
             Ally = 2,
             Neutral = 3
         }
+
+        private ICommandManager CommandManager => GameManager.Instance.CommandManager;
+        private AbilityAssignmentManager AbilityAssignmentManager => GameManager.Instance.AbilityAssignmentManager;
 
         private GridEntityView _view;
         public Canvas ViewCanvas;
@@ -103,7 +107,7 @@ namespace Gameplay.Entities {
         
         [ClientRpc]
         public void RpcInitialize(EntityData data, GameTeam team) {
-            transform.parent = GameManager.Instance.CommandManager.SpawnBucket;
+            transform.parent = CommandManager.SpawnBucket;
             ClientInitialize(data, team);
         }
 
@@ -257,7 +261,7 @@ namespace Gameplay.Entities {
             if (!CanMoveOrRally) return false;
 
             MoveAbilityData data = (MoveAbilityData) EntityData.Abilities.First(a => a.Content.GetType() == typeof(MoveAbilityData)).Content;
-            if (PerformAbility(data, new MoveAbilityParameters {
+            if (AbilityAssignmentManager.PerformAbility(this, data, new MoveAbilityParameters {
                         Destination = targetCell, 
                         NextMoveCell = targetCell, 
                         SelectorTeam = MyTeam,
@@ -272,7 +276,7 @@ namespace Gameplay.Entities {
             if (!CanMoveOrRally) return false;
 
             AttackAbilityData data = (AttackAbilityData) EntityData.Abilities.First(a => a.Content.GetType() == typeof(AttackAbilityData)).Content;
-            if (PerformAbility(data, new AttackAbilityParameters {
+            if (AbilityAssignmentManager.PerformAbility(this, data, new AttackAbilityParameters {
                         Destination = targetCell, 
                         TargetFire = false
                     },
@@ -293,17 +297,13 @@ namespace Gameplay.Entities {
             if (targetType != TargetType.Enemy) return;
             AttackAbilityData data = (AttackAbilityData) EntityData.Abilities
                 .First(a => a.Content is AttackAbilityData).Content;
-            if (PerformAbility(data, new AttackAbilityParameters {
+            if (AbilityAssignmentManager.PerformAbility(this, data, new AttackAbilityParameters {
                         Target = targetEntity, 
                         TargetFire = true,
                         Destination = targetCell
                     }, true)) {
                 SetTargetLocation(targetCell, targetEntity);
             }
-        }
-
-        public Vector2Int CurrentTargetLocation() {
-            return TargetLocationLogic.CurrentTarget;
         }
 
         private static TargetType GetTargetType(GridEntity originEntity, GridEntity targetEntity) {
@@ -314,32 +314,6 @@ namespace Gameplay.Entities {
             return originEntity.MyTeam == targetEntity.MyTeam ? TargetType.Ally : TargetType.Enemy;
         }
 
-        public bool CanUseAbility(IAbilityData data, bool ignoreBlockingTimers) {
-            // Is this entity set up to use this ability?
-            if (Abilities.All(a => a.Content != data)) {
-                return false;
-            }
-
-            // Do we own the requirements for this ability?
-            List<PurchasableData> ownedPurchasables = GameManager.Instance.GetPlayerForTeam(MyTeam)
-                .OwnedPurchasablesController.OwnedPurchasables;
-            if (data.Requirements.Any(r => !ownedPurchasables.Contains(r))) {
-                return false;
-            }
-            
-            // Are there any active timers blocking this ability?
-            if (!ignoreBlockingTimers && ActiveTimers.Any(t => t.ChannelBlockers.Contains(data.Channel) && !t.Expired)) {
-                return false;
-            }
-
-            return true;
-        }
-
-        public bool IsAbilityChannelOnCooldown(AbilityChannel channel, out AbilityCooldownTimer timer) {
-            timer = ActiveTimers.FirstOrDefault(t => t.Ability.AbilityData.Channel == channel);
-            return timer != null;
-        }
-        
         public void CreateAbilityTimer(IAbility ability, float overrideCooldownDuration = -1) {
             if (!NetworkClient.active) {
                 // SP
@@ -364,7 +338,7 @@ namespace Gameplay.Entities {
             CooldownTimerStartedEvent?.Invoke(ability, newCooldownTimer);
         }
 
-        private void AddTimeToAbilityTimer(IAbility ability, float timeToAdd) {
+        public void AddTimeToAbilityTimer(IAbility ability, float timeToAdd) {
             if (!NetworkClient.active) {
                 // SP
                 DoAddTimeToAbilityTimer(ability, timeToAdd);
@@ -391,38 +365,13 @@ namespace Gameplay.Entities {
             timer.AddTime(timeToAdd);
         }
 
-        /// <summary>
-        /// Server method. Clear the ability timer locally if the ability is active, otherwise remove it from the queue if queued.
-        /// </summary>
-        public void ExpireAbility(IAbility ability, bool canceled) {
-            if (ExpireTimerForAbility(ability, canceled)) return;
-            
-            // The ability is queued, so remove it from the queue
-            IAbility localAbility = QueuedAbilities.FirstOrDefault(a => a.UID == ability.UID);
-            if (localAbility != null) {
-                GameManager.Instance.CommandManager.RemoveAbilityFromQueue(this, localAbility);
-            }
-        }
-
-        /// <summary>
-        /// Client method. Returns true if the timer was active and successfully expired, otherwise false.
-        /// </summary>
-        public bool ExpireTimerForAbility(IAbility ability, bool canceled) {
-            // Find the timer with the indicated ability. The timers themselves are not synchronized, but since their abilities are we can use those. 
-            AbilityCooldownTimer cooldownTimer = ActiveTimers.FirstOrDefault(t => t.Ability.UID == ability.UID);
-            if (cooldownTimer == null) return false;
-            
-            // The ability is indeed active, so cancel it
-            cooldownTimer.Expire();
-            ActiveTimers.Remove(cooldownTimer);
+        public void TriggerAbilityCooldownExpired(IAbility ability, AbilityCooldownTimer cooldownTimer, bool canceled) {
             CooldownTimerExpiredEvent?.Invoke(ability, cooldownTimer);
             if (!canceled && ability.AbilityData.AnimateWhenCooldownComplete) {
                 PerformAnimationEvent?.Invoke(ability, cooldownTimer);
             }
-
-            return true;
         }
-
+        
         public List<IAbility> GetCancelableAbilities() {
             List<IAbility> abilities = new List<IAbility>();
             
@@ -437,134 +386,16 @@ namespace Gameplay.Entities {
             return abilities;
         }
 
-        /// <summary>
-        /// Add time to the movement cooldown timer due to another ability being performed.
-        /// If there is an active cooldown timer, then this amount is added to that timer.
-        /// Otherwise, a new cooldown timer is added with this amount.
-        /// </summary>
-        public void AddMovementTime(float timeToAdd) {
-            AbilityDataScriptableObject moveAbilityScriptable = Abilities.FirstOrDefault(a => a.Content is MoveAbilityData);
-            if (moveAbilityScriptable == null) return;
-            Vector2Int? location = Location;
-            if (location == null) return;
-            
-            List<AbilityCooldownTimer> activeTimersCopy = new List<AbilityCooldownTimer>(ActiveTimers);
-            AbilityCooldownTimer movementTimer = activeTimersCopy.FirstOrDefault(t => t.Ability is MoveAbility);
-            if (movementTimer != null) {
-                if (movementTimer.Expired) {
-                    Debug.LogWarning("Tried to add movement cooldown timer time from another ability, but that " +
-                                     "timer is expired. Adding new movement cooldown timer instead. This might not behave correctly.");
-                } else {
-                    // Add this time to the current movement cooldown timer
-                    AddTimeToAbilityTimer(movementTimer.Ability, timeToAdd);
-                    return;
-                }
-            }
-            
-            // Add a new movement cooldown timer
-            MoveAbilityData moveAbilityData = (MoveAbilityData)moveAbilityScriptable.Content;
-            CreateAbilityTimer(new MoveAbility(moveAbilityData, new MoveAbilityParameters {
-                Destination = location.Value,
-                NextMoveCell = location.Value,
-                SelectorTeam = MyTeam,
-                BlockedByOccupation = false
-            }, this), timeToAdd);
-        }
-
         private void Update() {
             List<AbilityCooldownTimer> activeTimersCopy = new List<AbilityCooldownTimer>(ActiveTimers);
             activeTimersCopy.ForEach(t => t.UpdateTimer(Time.deltaTime));
-        }
-
-        public bool PerformAbility(IAbilityData abilityData, IAbilityParameters parameters, bool queueIfNotLegal, bool clearQueueFirst = true) {
-            if (BuildQueue != null && abilityData.TryingToPerformCancelsBuilds) {
-                BuildQueue.CancelAllBuilds();
-            }
-            
-            if (!abilityData.AbilityLegal(parameters, this)) {
-                if (queueIfNotLegal) {
-                    // We specified to perform the ability now, but we can't legally do that. So queue it if we can. 
-                    
-                    // Don't try to queue it if we can't actually pay for it
-                    if (abilityData.PayCostUpFront && !abilityData.CanPayCost(parameters, this)) {
-                        AbilityFailed(abilityData);
-                        return false;
-                    }
-                    QueueAbility(abilityData, parameters, true, clearQueueFirst, false);
-                    if (abilityData is not AttackAbilityData) {
-                        // Clear the targeted entity since we are telling this entity to do something else
-                        LastAttackedEntity = null;
-                    }
-                    return true;
-                }
-
-                AbilityFailed(abilityData);
-                return false;
-            }
-            
-            if (abilityData is not AttackAbilityData) {
-                // Clear the targeted entity since we are telling this entity to do something else
-                LastAttackedEntity = null;
-            }
-            
-            IAbility abilityInstance = abilityData.CreateAbility(parameters, this);
-            abilityInstance.WaitUntilLegal = queueIfNotLegal;
-            GameManager.Instance.CommandManager.PerformAbility(abilityInstance, clearQueueFirst, true);
-            return true;
-        }
-
-        public bool PerformQueuedAbility(IAbility ability) {
-            if (!ability.AbilityData.AbilityLegal(ability.BaseParameters, ability.Performer)) {
-                AbilityFailed(ability.AbilityData);
-                return false;
-            }
-            
-            GameManager.Instance.CommandManager.PerformAbility(ability, false, false);
-            return true;
-        }
-
-        public void QueueAbility(IAbilityData abilityData, IAbilityParameters parameters, bool waitUntilLegal, bool clearQueueFirst, bool insertAtFront) {
-            IAbility abilityInstance = abilityData.CreateAbility(parameters, this);
-            abilityInstance.WaitUntilLegal = waitUntilLegal;
-            GameManager.Instance.CommandManager.QueueAbility(abilityInstance, clearQueueFirst, insertAtFront);
         }
 
         public void UpdateAbilityQueue(List<IAbility> newAbilityQueue) {
             QueuedAbilities = newAbilityQueue;
             AbilityQueueUpdatedEvent?.Invoke(newAbilityQueue);
         }
-
-        /// <summary>
-        /// Auto-select any abilities that we have configured as auto-selectable.
-        /// This probably won't behave well if this entity has multiple abilities configured as auto-selectable... 
-        /// </summary>
-        public void PerformAutoSelection() {
-            foreach (IAbilityData abilityData in Abilities.Select(a => a.Content).Where(a => a.AutoSelect)) {
-                abilityData.SelectAbility(this);
-            }
-        }
         
-        public void PerformOnStartAbilities() {
-            foreach (IAbilityData abilityData in Abilities.Select(a => a.Content).Where(a => a.PerformOnStart)) {
-                PerformAbility(abilityData, new NullAbilityParameters(), abilityData.RepeatForeverAfterStartEvenWhenFailed);
-            }
-        }
-
-        public void PerformDefaultAbility() {
-            if (!EntityData.AttackByDefault) return;
-            Vector2Int? location = Location;
-            if (location == null) return;
-            
-            AttackAbilityData data = (AttackAbilityData) EntityData.Abilities
-                .FirstOrDefault(a => a.Content is AttackAbilityData)?.Content;
-            if (data == null) return;
-            
-            PerformAbility(data, new AttackAbilityParameters {
-                TargetFire = false,
-                Destination = location.Value
-            }, true);
-        }
-
         /// <summary>
         /// Responds with any client-specific user-facing events for an ability being performed
         /// </summary>
@@ -683,7 +514,7 @@ namespace Gameplay.Entities {
         /// We have just detected that all clients are ready for this entity to be destroyed. Do that. 
         /// </summary>
         private void OnEntityReadyToDie() {
-            GameManager.Instance.CommandManager.DestroyEntity(this);
+            CommandManager.DestroyEntity(this);
         }
     }
 }

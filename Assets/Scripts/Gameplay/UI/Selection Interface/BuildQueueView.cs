@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using Gameplay.Config.Abilities;
 using Gameplay.Entities;
 using Gameplay.Entities.Abilities;
+using Gameplay.Managers;
 using UnityEngine;
 
 namespace Gameplay.UI {
@@ -16,6 +17,7 @@ namespace Gameplay.UI {
         private int SlotCount => _slots.Count;
         private GridEntity _gridEntity;
         private AbilityCooldownTimer _activeBuildCooldownTimer;
+        private AbilityAssignmentManager AbilityAssignmentManager => GameManager.Instance.AbilityAssignmentManager;
 
         public void SetUpForEntity(GridEntity entity) {
             if (_gridEntity != null) {
@@ -55,7 +57,7 @@ namespace Gameplay.UI {
                 slotNumber++;
             }
             
-            if (_gridEntity.IsAbilityChannelOnCooldown(_buildChannel, out _activeBuildCooldownTimer)) {
+            if (AbilityAssignmentManager.IsAbilityChannelOnCooldownForEntity(_gridEntity, _buildChannel, out _activeBuildCooldownTimer)) {
                 _buildTimer.gameObject.SetActive(true);
                 _buildTimer.Initialize(_activeBuildCooldownTimer, false, true);
             } else {

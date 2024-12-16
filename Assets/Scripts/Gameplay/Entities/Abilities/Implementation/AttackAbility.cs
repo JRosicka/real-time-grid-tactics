@@ -162,7 +162,7 @@ namespace Gameplay.Entities.Abilities {
             }
             Vector2Int nextMoveCell = path.Nodes[1].Location;
             IAbilityData moveAbility = attacker.Abilities.First(a => a.Content is MoveAbilityData).Content;
-            attacker.PerformAbility(moveAbility, new MoveAbilityParameters {
+            AbilityAssignmentManager.PerformAbility(attacker, moveAbility, new MoveAbilityParameters {
                 Destination = nextMoveCell,
                 NextMoveCell = nextMoveCell,
                 SelectorTeam = attacker.MyTeam,
@@ -172,7 +172,7 @@ namespace Gameplay.Entities.Abilities {
         }
 
         private void ReQueue() {
-            Performer.QueueAbility(Data, AbilityParameters, true, false, false);
+            AbilityAssignmentManager.QueueAbility(Performer, Data, AbilityParameters, true, false, false);
         }
 
         private void DoAttack(Vector2Int location) {

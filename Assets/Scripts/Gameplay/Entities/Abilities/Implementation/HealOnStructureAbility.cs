@@ -30,7 +30,7 @@ namespace Gameplay.Entities.Abilities {
             
             // Queue the heal ability
             GridEntity target = GameManager.Instance.GetTopEntityAtLocation(location.Value);
-            Performer.PerformAbility(Data.HealAbility.Content, new HealAbilityParameters {
+            AbilityAssignmentManager.PerformAbility(Performer, Data.HealAbility.Content, new HealAbilityParameters {
                 Target = target,
                 HealAmount = Data.HealAmount
             }, true, false);

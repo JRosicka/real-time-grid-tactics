@@ -32,6 +32,7 @@ public class GameManager : MonoBehaviour {
     public EntitySelectionManager EntitySelectionManager;
     public GameEndManager GameEndManager;
     public DisconnectionHandler DisconnectionHandler;
+    public AbilityAssignmentManager AbilityAssignmentManager;
     
     public IGamePlayer LocalPlayer { get; private set; }
     public IGamePlayer OpponentPlayer { get; private set; }
@@ -44,6 +45,7 @@ public class GameManager : MonoBehaviour {
         Instance = this;
         GameEndManager = new GameEndManager(this);
         DisconnectionHandler = new DisconnectionHandler();
+        AbilityAssignmentManager = new AbilityAssignmentManager();
     }
 
     private void Start() {
@@ -99,7 +101,7 @@ public class GameManager : MonoBehaviour {
 
     public void SetupCommandManager(ICommandManager commandManager) {
         CommandManager = commandManager;
-        CommandManager.Initialize(SpawnBucketPrefab, GameEndManager);
+        CommandManager.Initialize(SpawnBucketPrefab, GameEndManager, AbilityAssignmentManager);
     }
 
     #endregion

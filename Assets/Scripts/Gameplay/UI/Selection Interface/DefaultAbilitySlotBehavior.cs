@@ -30,7 +30,7 @@ namespace Gameplay.UI {
         }
 
         public AbilitySlot.AvailabilityResult GetAvailability() {
-            return _selectedEntity.CanUseAbility(AbilityData, AbilityData.SelectableWhenBlocked) 
+            return GameManager.Instance.AbilityAssignmentManager.CanEntityUseAbility(_selectedEntity, AbilityData, AbilityData.SelectableWhenBlocked) 
                 ? AbilitySlot.AvailabilityResult.Selectable 
                 : AbilitySlot.AvailabilityResult.Unselectable;
         }

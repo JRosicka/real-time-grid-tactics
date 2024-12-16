@@ -9,12 +9,12 @@ using Mirror;
 using UnityEngine;
 
 public class MPCommandManager : AbstractCommandManager {
-    public override void Initialize(Transform spawnBucketPrefab, GameEndManager gameEndManager) {
+    public override void Initialize(Transform spawnBucketPrefab, GameEndManager gameEndManager, AbilityAssignmentManager abilityAssignmentManager) {
         SpawnBucket = Instantiate(spawnBucketPrefab);
         NetworkServer.Spawn(SpawnBucket.gameObject);
         
         // Only initialize this on the server. Clients do not need to handle an ability queue.
-        AbilityQueueExecutor.Initialize(this, gameEndManager);
+        AbilityQueueExecutor.Initialize(this, gameEndManager, abilityAssignmentManager);
     }
 
     public override void SpawnEntity(EntityData data, Vector2Int spawnLocation, GameTeam team, GridEntity spawnerEntity) {
