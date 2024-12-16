@@ -23,7 +23,7 @@ namespace Gameplay.Config.Abilities {
         public bool CanHeal(HealAbilityParameters parameters, GridEntity entity) {
             return parameters.Target != null 
                    && !parameters.Target.DeadOrDying() 
-                   && parameters.Target.CurrentHP < parameters.Target.MaxHP;
+                   && parameters.Target.HPHandler.CurrentHP < parameters.Target.MaxHP;
         }
 
         public override bool CanPayCost(IAbilityParameters parameters, GridEntity entity) {

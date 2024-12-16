@@ -49,36 +49,7 @@ namespace Gameplay.Entities {
         public List<GameplayTile> SlowTiles;
         public List<GameplayTile> InaccessibleTiles;
 
-        public int CurrentHP { get; private set; }
-        private void SetCurrentHP(int newHP, bool fromGameEffect) {
-            int oldHP = CurrentHP;
-            if (!NetworkClient.active) {
-                // SP
-                DoSetCurrentHP(newHP, oldHP, fromGameEffect);
-            } else {
-                // MP
-                CurrentHP = newHP;  // Set HP value immediately
-                CmdSetCurrentHP(newHP, oldHP, fromGameEffect);
-            }
-        }
-        [Command(requiresAuthority = false)]
-        private void CmdSetCurrentHP(int newHP, int oldHP, bool fromGameEffect) {
-            RpcSetCurrentHP(newHP, oldHP, fromGameEffect);
-        }
-        [ClientRpc]
-        private void RpcSetCurrentHP(int newHP, int oldHP, bool fromGameEffect) {
-            DoSetCurrentHP(newHP, oldHP, fromGameEffect);
-        }
-        private void DoSetCurrentHP(int newHP, int oldHP, bool fromGameEffect) {
-            CurrentHP = newHP;
-
-            HPChangedEvent?.Invoke();
-            if (fromGameEffect && oldHP < newHP) {
-                HealedEvent?.Invoke();
-            } else if (fromGameEffect && oldHP > newHP) {
-                AttackedEvent?.Invoke();
-            }
-        }
+        public GridEntityHPHandler HPHandler;
 
         [SyncVar(hook = nameof(OnCurrentResourcesChanged))] 
         private ResourceAmount _currentResources;
@@ -121,7 +92,7 @@ namespace Gameplay.Entities {
             SetupStats();
 
             // Syncvar stats
-            SetCurrentHP(EntityData.HP, false);
+            HPHandler.SetCurrentHP(EntityData.HP, false);
             CurrentResources = new ResourceAmount(EntityData.StartingResourceSet);
             
             // Target logic
@@ -175,7 +146,7 @@ namespace Gameplay.Entities {
         public Vector2Int? Location => GameManager.Instance.GetLocationForEntity(this);
         
         [CanBeNull]
-        private GameplayTile CurrentTileType {
+        public GameplayTile CurrentTileType {
             get {
                 Vector2Int? location = Location;
                 return location == null ? null : GameManager.Instance.GridController.GridData.GetCell(location.Value).Tile;
@@ -187,12 +158,10 @@ namespace Gameplay.Entities {
         public event Action<IAbility, AbilityCooldownTimer> CooldownTimerExpiredEvent;
         public event Action<IAbility, AbilityCooldownTimer> PerformAnimationEvent;
         public event Action SelectedEvent;
-        public event Action HPChangedEvent;
         public event Action ResourceAmountChangedEvent;
-        public event Action AttackedEvent;
-        public event Action HealedEvent;
-        public event Action KilledEvent;
         public event Action UnregisteredEvent;
+        // Needs to happen right after UnregisteredEvent, probably. Keep separate. 
+        public event Action KilledEvent;
         public event Action<List<IAbility>> AbilityQueueUpdatedEvent;
         /// <summary>
         /// Only triggered on server
@@ -674,57 +643,13 @@ namespace Gameplay.Entities {
             // TODO Could consider attack-moving to the target location if no abilities are queued and configured to attack by default.
             // Necessary so that the entity doesn't just sit there if attacked by something outside of its range. 
 
-            // Get base damage
-            float damage = sourceEntity.Damage;
-            
-            // Apply any additive attack modifiers based on tags
-            damage += sourceEntity.EntityData.TagsToApplyBonusDamageTo.Any(t => EntityData.Tags.Contains(t))
-                ? sourceEntity.EntityData.BonusDamage
-                : 0;
-            
-            // Apply any multiplicative defense modifiers from terrain
-            damage *= CurrentTileType!.GetDefenseModifier(EntityData);
-
-            // Apply any multiplicative defense modifiers from structures (as long as this is not a structure)
-            if (!EntityData.IsStructure) {
-                List<GridEntity> structuresAtLocation = GameManager.Instance.CommandManager.EntitiesOnGrid.EntitiesAtLocation(Location.Value)?.Entities
-                    ?.Select(e => e.Entity)?.Where(e => e.EntityData.IsStructure).ToList() ?? new List<GridEntity>();
-                foreach (GridEntity structure in structuresAtLocation) {
-                    if (structure.EntityData.SharedUnitDamageTakenModifierTags.Count == 0
-                        || structure.EntityData.SharedUnitDamageTakenModifierTags.Any(t => EntityData.Tags.Contains(t))) {
-                        damage *= structure.EntityData.SharedUnitDamageTakenModifier;
-                    }
-                }
-            }
-            
-            SetCurrentHP(CurrentHP - Mathf.RoundToInt(damage), true);
-
-            if (CurrentHP <= 0) {
-                Kill();
-            }
+            HPHandler.ReceiveAttackFromEntity(sourceEntity);
         }
-
-        public void Heal(int healAmount) {
-            if (CurrentHP == MaxHP) return;
-
-            int newHP = CurrentHP + healAmount;
-            newHP = Mathf.Min(newHP, MaxHP);
-            SetCurrentHP(newHP, true);
-        }
-
-        // Server flag?
-        private bool _markedForDeath;
+        
         // Client flag
         private bool _unregistered;
         public bool DeadOrDying() {
-            return this == null || _markedForDeath || _unregistered;
-        }
-        
-        private void Kill() {
-            if (_markedForDeath) return;
-            _markedForDeath = true;
-            
-            GameManager.Instance.CommandManager.UnRegisterEntity(this, true);
+            return this == null || HPHandler.MarkedForDeath || _unregistered;
         }
         
         /// <summary>

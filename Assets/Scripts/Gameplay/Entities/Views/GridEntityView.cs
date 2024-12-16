@@ -71,8 +71,8 @@ namespace Gameplay.Entities {
             entity.PerformAnimationEvent += DoAbility;
             entity.CooldownTimerStartedEvent += CreateTimerView;
             entity.SelectedEvent += Selected;
-            entity.AttackedEvent += AttackReceived;
-            entity.HealedEvent += HealReceived;
+            entity.HPHandler.AttackedEvent += AttackReceived;
+            entity.HPHandler.HealedEvent += HealReceived;
             entity.KilledEvent += Killed;
             
             _healthBar.Initialize(new HealthBarLogic(entity));
@@ -84,8 +84,8 @@ namespace Gameplay.Entities {
             Entity.PerformAnimationEvent -= DoAbility;
             Entity.CooldownTimerStartedEvent -= CreateTimerView;
             Entity.SelectedEvent -= Selected;
-            Entity.AttackedEvent -= AttackReceived;
-            Entity.HealedEvent -= HealReceived;
+            Entity.HPHandler.AttackedEvent -= AttackReceived;
+            Entity.HPHandler.HealedEvent -= HealReceived;
             Entity.KilledEvent -= Killed;
         }
 

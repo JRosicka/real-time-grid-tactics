@@ -22,7 +22,7 @@ namespace Gameplay.Entities.Abilities {
         protected override bool CompleteCooldownImpl() {
             if (Data.CanHeal(AbilityParameters, Performer)) {
                 // Actually perform the heal
-                AbilityParameters.Target.Heal(AbilityParameters.HealAmount);
+                AbilityParameters.Target.HPHandler.Heal(AbilityParameters.HealAmount);
             }
 
             if (AbilityParameters.Target != null) {
