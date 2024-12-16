@@ -53,7 +53,7 @@ namespace Gameplay.Entities.Abilities {
             }   // Otherwise if the count is one, then we are already one cell away from the target, so don't move
 
             // ...then attack it
-            AttackAbilityData attackAbilityData = (AttackAbilityData) Performer.EntityData.Abilities.First(a => a.Content.GetType() == typeof(AttackAbilityData)).Content;
+            AttackAbilityData attackAbilityData = Performer.GetAbilityData<AttackAbilityData>();
             AbilityAssignmentManager.QueueAbility(Performer, attackAbilityData, new AttackAbilityParameters {
                 TargetFire = true,
                 Target = targetEntity,

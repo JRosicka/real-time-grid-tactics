@@ -161,8 +161,8 @@ namespace Gameplay.Entities.Abilities {
                 return false;
             }
             Vector2Int nextMoveCell = path.Nodes[1].Location;
-            IAbilityData moveAbility = attacker.Abilities.First(a => a.Content is MoveAbilityData).Content;
-            AbilityAssignmentManager.PerformAbility(attacker, moveAbility, new MoveAbilityParameters {
+            MoveAbilityData moveAbilityData = attacker.GetAbilityData<MoveAbilityData>();
+            AbilityAssignmentManager.PerformAbility(attacker, moveAbilityData, new MoveAbilityParameters {
                 Destination = nextMoveCell,
                 NextMoveCell = nextMoveCell,
                 SelectorTeam = attacker.MyTeam,

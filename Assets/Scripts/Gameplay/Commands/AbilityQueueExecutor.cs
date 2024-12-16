@@ -83,9 +83,8 @@ public class AbilityQueueExecutor : MonoBehaviour {
         if (!entity.EntityData.AttackByDefault) return;
         Vector2Int? location = entity.Location;
         if (location == null) return;
-            
-        AttackAbilityData data = (AttackAbilityData) entity.EntityData.Abilities
-            .FirstOrDefault(a => a.Content is AttackAbilityData)?.Content;
+
+        AttackAbilityData data = entity.GetAbilityData<AttackAbilityData>();
         if (data == null) return;
             
         _abilityAssignmentManager.PerformAbility(entity, data, new AttackAbilityParameters {

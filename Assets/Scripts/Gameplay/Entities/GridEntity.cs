@@ -260,7 +260,7 @@ namespace Gameplay.Entities {
         public bool TryMoveToCell(Vector2Int targetCell, bool blockedByOccupation) {
             if (!CanMoveOrRally) return false;
 
-            MoveAbilityData data = (MoveAbilityData) EntityData.Abilities.First(a => a.Content.GetType() == typeof(MoveAbilityData)).Content;
+            MoveAbilityData data = GetAbilityData<MoveAbilityData>();
             if (AbilityAssignmentManager.PerformAbility(this, data, new MoveAbilityParameters {
                         Destination = targetCell, 
                         NextMoveCell = targetCell, 
@@ -272,10 +272,10 @@ namespace Gameplay.Entities {
             return true;
         }
 
-        public bool TryAttackMoveToCell(Vector2Int targetCell) {
-            if (!CanMoveOrRally) return false;
+        public void TryAttackMoveToCell(Vector2Int targetCell) {
+            if (!CanMoveOrRally) return;
 
-            AttackAbilityData data = (AttackAbilityData) EntityData.Abilities.First(a => a.Content.GetType() == typeof(AttackAbilityData)).Content;
+            AttackAbilityData data = GetAbilityData<AttackAbilityData>();
             if (AbilityAssignmentManager.PerformAbility(this, data, new AttackAbilityParameters {
                         Destination = targetCell, 
                         TargetFire = false
@@ -283,7 +283,11 @@ namespace Gameplay.Entities {
                     true)) {
                 SetTargetLocation(targetCell, null);
             }
-            return true;
+        }
+        
+        [CanBeNull]
+        public TAbilityData GetAbilityData<TAbilityData>() {
+            return (TAbilityData)EntityData.Abilities.FirstOrDefault(a => a.Content.GetType() == typeof(TAbilityData))?.Content;
         }
 
         // Triggered on server
@@ -295,8 +299,7 @@ namespace Gameplay.Entities {
             TargetType targetType = GetTargetType(this, targetEntity);
 
             if (targetType != TargetType.Enemy) return;
-            AttackAbilityData data = (AttackAbilityData) EntityData.Abilities
-                .First(a => a.Content is AttackAbilityData).Content;
+            AttackAbilityData data = GetAbilityData<AttackAbilityData>();
             if (AbilityAssignmentManager.PerformAbility(this, data, new AttackAbilityParameters {
                         Target = targetEntity, 
                         TargetFire = true,

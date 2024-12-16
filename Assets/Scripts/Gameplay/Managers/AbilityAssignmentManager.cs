@@ -139,8 +139,8 @@ namespace Gameplay.Managers {
         /// Otherwise, a new cooldown timer is added with this amount.
         /// </summary>
         public void AddMovementTime(GridEntity entity, float timeToAdd) {
-            AbilityDataScriptableObject moveAbilityScriptable = entity.Abilities.FirstOrDefault(a => a.Content is MoveAbilityData);
-            if (moveAbilityScriptable == null) return;
+            MoveAbilityData moveAbilityData = entity.GetAbilityData<MoveAbilityData>();
+            if (moveAbilityData == null) return;
             Vector2Int? location = entity.Location;
             if (location == null) return;
             
@@ -158,7 +158,6 @@ namespace Gameplay.Managers {
             }
             
             // Add a new movement cooldown timer
-            MoveAbilityData moveAbilityData = (MoveAbilityData)moveAbilityScriptable.Content;
             entity.CreateAbilityTimer(new MoveAbility(moveAbilityData, new MoveAbilityParameters {
                 Destination = location.Value,
                 NextMoveCell = location.Value,

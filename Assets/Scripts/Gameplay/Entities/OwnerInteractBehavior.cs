@@ -1,8 +1,5 @@
-using System.Linq;
-using Gameplay.Config;
 using Gameplay.Config.Abilities;
 using Gameplay.Entities.Abilities;
-using Gameplay.Grid;
 using UnityEngine;
 
 namespace Gameplay.Entities {
@@ -23,7 +20,7 @@ namespace Gameplay.Entities {
             
             // If this entity can rally (i.e. it is a production structure), do that
             if (thisEntity.TargetLocationLogic.CanRally) {
-                RallyAbilityData data = (RallyAbilityData) thisEntity.Abilities.First(a => a.Content.GetType() == typeof(RallyAbilityData)).Content;
+                RallyAbilityData data = thisEntity.GetAbilityData<RallyAbilityData>();
                 GameManager.Instance.AbilityAssignmentManager.PerformAbility(thisEntity, data, new RallyAbilityParameters {
                     Destination = targetCell
                 }, false, false);
