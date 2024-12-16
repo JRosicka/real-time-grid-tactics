@@ -35,7 +35,7 @@ namespace Gameplay.Config.Abilities {
             return new AttackAbility(this, parameters, performer);
         }
 
-        public bool CanTargetCell(Vector2Int cellPosition, GridEntity selectedEntity, GridEntity.Team selectorTeam, System.Object targetData) {
+        public bool CanTargetCell(Vector2Int cellPosition, GridEntity selectedEntity, GameTeam selectorTeam, System.Object targetData) {
             GridEntity target = GameManager.Instance.GetEntitiesAtLocation(cellPosition)?.GetTopEntity()?.Entity;
             return CanAttackTarget(target, selectedEntity);
         }
@@ -43,15 +43,15 @@ namespace Gameplay.Config.Abilities {
         private bool CanAttackTarget(GridEntity target, GridEntity selector) {
             if (selector == null) return false;
             if (target == null) return true;    // This is just an a-move, so can always do that
-            if (target.MyTeam == GridEntity.Team.Neutral) return true;  // Can attack (or at least a-move to) neutral entities
+            if (target.MyTeam == GameTeam.Neutral) return true;  // Can attack (or at least a-move to) neutral entities
             
             return target.MyTeam != selector.MyTeam;    // Can not attack friendly entities
         }
 
-        public void DoTargetableAbility(Vector2Int cellPosition, GridEntity selectedEntity, GridEntity.Team selectorTeam, System.Object targetData) {
+        public void DoTargetableAbility(Vector2Int cellPosition, GridEntity selectedEntity, GameTeam selectorTeam, System.Object targetData) {
             GridEntity target = GameManager.Instance.GetEntitiesAtLocation(cellPosition)?.GetTopEntity()?.Entity;    // Only able to target the top entity!
             selectedEntity.QueueAbility(this, new AttackAbilityParameters {
-                    TargetFire = target != null && target.MyTeam != GridEntity.Team.Neutral, 
+                    TargetFire = target != null && target.MyTeam != GameTeam.Neutral, 
                     Target = target, 
                     Destination = cellPosition
                 }, true, true, false);

@@ -122,7 +122,7 @@ namespace Gameplay.Entities.Abilities {
                 .ToList();
             // Only get the top entities - can't attack an entity behind another entity
             List<GridEntity> enemiesInRange = GameManager.Instance.CommandManager.EntitiesOnGrid.ActiveEntitiesForTeam(
-                        GridEntity.OpponentTeam(attacker.MyTeam), true)
+                        attacker.MyTeam.OpponentTeam(), true)
                     .Where(e => e.Location != null && cellsInRange.Contains(e.Location.Value))
                     .ToList();
             

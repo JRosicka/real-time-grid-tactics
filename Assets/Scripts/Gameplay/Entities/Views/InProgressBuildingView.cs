@@ -14,7 +14,7 @@ namespace Gameplay.Entities {
 
         public void Initialize(BuildAbility buildAbility) {
             EntityData entityData = (EntityData)buildAbility.AbilityParameters.Buildable;
-            GridEntity.Team team = buildAbility.Performer.MyTeam;
+            GameTeam team = buildAbility.Performer.MyTeam;
             
             _buildingVisual_mainImage.sprite = entityData.BaseSprite;
             _buildingVisual_mainImage.GetComponent<Canvas>().sortingOrder += entityData.GetStackOrder();

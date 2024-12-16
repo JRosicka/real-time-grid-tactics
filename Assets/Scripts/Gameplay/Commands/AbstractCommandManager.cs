@@ -37,11 +37,11 @@ public abstract class AbstractCommandManager : NetworkBehaviour, ICommandManager
     /// <summary>
     /// An entity was just registered (spawned). Triggered on server. 
     /// </summary>
-    public event Action<GridEntity.Team> EntityRegisteredEvent;
+    public event Action<GameTeam> EntityRegisteredEvent;
     /// <summary>
     /// An entity was just unregistered (killed). Triggered on server. 
     /// </summary>
-    public event Action<GridEntity.Team> EntityUnregisteredEvent;
+    public event Action<GameTeam> EntityUnregisteredEvent;
     public event Action EntityCollectionChangedEvent;
 
     public GridEntityCollection EntitiesOnGrid => _entitiesOnGrid;
@@ -52,9 +52,9 @@ public abstract class AbstractCommandManager : NetworkBehaviour, ICommandManager
     /// Attempts to spawn a new instance of the provided <see cref="GridEntity"/> at the specified location on the game
     /// grid. No-op if another entity already exists in the specified location. 
     /// </summary>
-    public abstract void SpawnEntity(EntityData data, Vector2Int spawnLocation, GridEntity.Team team, GridEntity spawnerEntity);
+    public abstract void SpawnEntity(EntityData data, Vector2Int spawnLocation, GameTeam team, GridEntity spawnerEntity);
     // TODO I don't think this needs to be in CommandManager since this is only called by the server and it doesn't contain any RPC calls
-    public abstract void AddUpgrade(UpgradeData data, GridEntity.Team team);
+    public abstract void AddUpgrade(UpgradeData data, GameTeam team);
 
     // TODO need to have some way of verifying that these commands are legal for the client to do - especially doing stuff with GridEntites, we gotta own em
     // Maybe we can just make these abstract methods virtual, include a check at the beginning, and then have the overrides call base() at the start
@@ -88,7 +88,7 @@ public abstract class AbstractCommandManager : NetworkBehaviour, ICommandManager
 
     public abstract void MarkAbilityCooldownExpired(IAbility ability);
 
-    protected void DoSpawnEntity(EntityData data, Vector2Int spawnLocation, Func<GridEntity> spawnFunc, GridEntity.Team team, GridEntity spawnerEntity) {
+    protected void DoSpawnEntity(EntityData data, Vector2Int spawnLocation, Func<GridEntity> spawnFunc, GameTeam team, GridEntity spawnerEntity) {
         List<GridEntity> entitiesToIgnore = spawnerEntity != null ? new List<GridEntity> {spawnerEntity} : null;
         if (!PathfinderService.CanEntityEnterCell(spawnLocation, data, team, entitiesToIgnore)) {
             return;
@@ -113,7 +113,7 @@ public abstract class AbstractCommandManager : NetworkBehaviour, ICommandManager
         }
     }
 
-    protected void DoAddUpgrade(UpgradeData data, GridEntity.Team team) {
+    protected void DoAddUpgrade(UpgradeData data, GameTeam team) {
         GameManager.Instance.GetPlayerForTeam(team).OwnedPurchasablesController.AddUpgrade(data);
     }
     

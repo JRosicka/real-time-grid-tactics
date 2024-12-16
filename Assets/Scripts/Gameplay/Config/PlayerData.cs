@@ -7,7 +7,7 @@ namespace Gameplay.Config {
     /// </summary>
     [CreateAssetMenu(menuName = "PlayerData", fileName = "PlayerData", order = 0)]
     public class PlayerData : ScriptableObject {
-        public GridEntity.Team Team;
+        public GameTeam Team;
         public Color TeamColor;
         public Vector2Int SpawnLocation;
     }

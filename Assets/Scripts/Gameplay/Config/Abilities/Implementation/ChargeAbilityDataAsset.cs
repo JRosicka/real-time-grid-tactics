@@ -44,11 +44,11 @@ namespace Gameplay.Config.Abilities {
             return new ChargeAbility(this, parameters, performer);
         }
 
-        public bool CanTargetCell(Vector2Int cellPosition, GridEntity selectedEntity, GridEntity.Team selectorTeam, object targetData) {
+        public bool CanTargetCell(Vector2Int cellPosition, GridEntity selectedEntity, GameTeam selectorTeam, object targetData) {
             return CanChargeToCell(selectedEntity, cellPosition);
         }
 
-        public void DoTargetableAbility(Vector2Int cellPosition, GridEntity selectedEntity, GridEntity.Team selectorTeam, object targetData) {
+        public void DoTargetableAbility(Vector2Int cellPosition, GridEntity selectedEntity, GameTeam selectorTeam, object targetData) {
             selectedEntity.SetTargetLocation(cellPosition, null);
             selectedEntity.QueueAbility(this, new ChargeAbilityParameters {
                 Destination = cellPosition,

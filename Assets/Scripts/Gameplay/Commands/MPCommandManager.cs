@@ -17,12 +17,12 @@ public class MPCommandManager : AbstractCommandManager {
         AbilityQueueExecutor.Initialize(this, gameEndManager);
     }
 
-    public override void SpawnEntity(EntityData data, Vector2Int spawnLocation, GridEntity.Team team, GridEntity spawnerEntity) {
+    public override void SpawnEntity(EntityData data, Vector2Int spawnLocation, GameTeam team, GridEntity spawnerEntity) {
         LogTimestamp(nameof(SpawnEntity));
         CmdSpawnEntity(data, spawnLocation, team, spawnerEntity);
     }
 
-    public override void AddUpgrade(UpgradeData data, GridEntity.Team team) {
+    public override void AddUpgrade(UpgradeData data, GameTeam team) {
         CmdAddUpgrade(data, team);
     }
 
@@ -73,7 +73,7 @@ public class MPCommandManager : AbstractCommandManager {
 
 
     [Command(requiresAuthority = false)] // TODO this should definitely require authority
-    private void CmdSpawnEntity(EntityData data, Vector2Int spawnLocation, GridEntity.Team team, GridEntity entityToIgnore) {
+    private void CmdSpawnEntity(EntityData data, Vector2Int spawnLocation, GameTeam team, GridEntity entityToIgnore) {
         LogTimestamp(nameof(CmdSpawnEntity));
         DoSpawnEntity(data, spawnLocation, () => {
             GridEntity entityInstance = Instantiate(GridEntityPrefab, GridController.GetWorldPosition(spawnLocation), Quaternion.identity, SpawnBucket);
@@ -87,7 +87,7 @@ public class MPCommandManager : AbstractCommandManager {
     }
 
     [Command(requiresAuthority = false)]
-    private void CmdAddUpgrade(UpgradeData data, GridEntity.Team team) {
+    private void CmdAddUpgrade(UpgradeData data, GameTeam team) {
         DoAddUpgrade(data, team);
     }
     

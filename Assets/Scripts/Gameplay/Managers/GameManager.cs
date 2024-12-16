@@ -75,7 +75,7 @@ public class GameManager : MonoBehaviour {
         return CommandManager.GetLocationForEntity(entity);
     }
 
-    public IGamePlayer GetPlayerForTeam(GridEntity.Team team) {
+    public IGamePlayer GetPlayerForTeam(GameTeam team) {
         if (LocalPlayer.Data.Team == team) {
             return LocalPlayer;
         } else if (OpponentPlayer.Data.Team == team) {

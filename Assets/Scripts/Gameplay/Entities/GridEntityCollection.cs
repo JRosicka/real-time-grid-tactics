@@ -141,7 +141,7 @@ namespace Gameplay.Entities {
             return entry?.Location;
         }
 
-        public List<GridEntity> ActiveEntitiesForTeam(GridEntity.Team team, bool justTop = false) {
+        public List<GridEntity> ActiveEntitiesForTeam(GameTeam team, bool justTop = false) {
             return AllEntities(justTop).Where(e => e.MyTeam == team).ToList();
         }
 

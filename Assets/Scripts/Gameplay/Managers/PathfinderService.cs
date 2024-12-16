@@ -164,7 +164,7 @@ public class PathfinderService {
     }
     
     // TODO repurpose this a bit - we need to factor in types. We will want to consider a similar method for calculating movement penalties as well. 
-    public static bool CanEntityEnterCell(Vector2Int cellPosition, EntityData entityData, GridEntity.Team entityTeam, List<GridEntity> entitiesToIgnore = null, bool forRallying = false) {
+    public static bool CanEntityEnterCell(Vector2Int cellPosition, EntityData entityData, GameTeam entityTeam, List<GridEntity> entitiesToIgnore = null, bool forRallying = false) {
         entitiesToIgnore ??= new List<GridEntity>();
         List<GridEntity> entitiesAtLocation = GameManager.Instance.GetEntitiesAtLocation(cellPosition)?.Entities
             .Select(o => o.Entity)
@@ -181,7 +181,7 @@ public class PathfinderService {
             // TODO Check to see if tile type allows for this entity
             return true;
         }
-        if (entitiesAtLocation.Any(e => e.MyTeam != entityTeam && e.MyTeam != GridEntity.Team.Neutral)) {
+        if (entitiesAtLocation.Any(e => e.MyTeam != entityTeam && e.MyTeam != GameTeam.Neutral)) {
             // There are enemies here
             return false;
         }

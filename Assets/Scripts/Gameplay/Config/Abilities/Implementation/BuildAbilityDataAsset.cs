@@ -76,14 +76,14 @@ namespace Gameplay.Config.Abilities {
             return new BuildAbility(this, parameters, performer);
         }
 
-        public bool CanTargetCell(Vector2Int cellPosition, GridEntity selectedEntity, GridEntity.Team selectorTeam, System.Object targetData) {
+        public bool CanTargetCell(Vector2Int cellPosition, GridEntity selectedEntity, GameTeam selectorTeam, System.Object targetData) {
             EntityData entityToBuild = (EntityData)targetData;
             GameplayTile tileAtLocation = GridController.GridData.GetCell(cellPosition).Tile;
             return entityToBuild.EligibleStructureLocations.Contains(tileAtLocation) 
                    && PathfinderService.CanEntityEnterCell(cellPosition, entityToBuild, selectorTeam, new List<GridEntity>{selectedEntity});
         }
 
-        public void DoTargetableAbility(Vector2Int cellPosition, GridEntity selectedEntity, GridEntity.Team selectorTeam, System.Object targetData) {
+        public void DoTargetableAbility(Vector2Int cellPosition, GridEntity selectedEntity, GameTeam selectorTeam, System.Object targetData) {
             BuildAbilityParameters buildParameters = new BuildAbilityParameters {Buildable = (PurchasableData) targetData, BuildLocation = cellPosition};
             selectedEntity.QueueAbility(this, buildParameters, true, false, false);
             selectedEntity.SetTargetLocation(cellPosition, null);

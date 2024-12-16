@@ -14,30 +14,13 @@ namespace Gameplay.Entities {
     /// <summary>
     /// Represents an entity that exists at a specific position on the gameplay grid.
     /// Has an <see cref="IInteractBehavior"/> field to handle player input.
-    /// TODO There is a ton of stuff here, would be good to break this up in a refactor
     /// </summary>
     public class GridEntity : NetworkBehaviour {
-        public enum Team {
-            Neutral = -1,
-            Player1 = 1,
-            Player2 = 2
-        }
-        // TODO move this team stuff to a new class
-        public static Team OpponentTeam(Team myTeam) {
-            return myTeam switch {
-                Team.Neutral => Team.Neutral,
-                Team.Player1 => Team.Player2,
-                Team.Player2 => Team.Player1,
-                _ => throw new ArgumentOutOfRangeException(nameof(myTeam), myTeam, null)
-            };
-        }
-        
         private enum TargetType {
             Enemy = 1,
             Ally = 2,
             Neutral = 3
         }
-        
 
         private GridEntityView _view;
         public Canvas ViewCanvas;
@@ -47,7 +30,7 @@ namespace Gameplay.Entities {
 
         [Header("Config")] 
         public string UnitName;
-        public Team MyTeam;
+        public GameTeam MyTeam;
 
         [HideInInspector] 
         public bool Registered;
@@ -130,7 +113,7 @@ namespace Gameplay.Entities {
         /// <summary>
         /// Initialization method ran only on the server, before <see cref="ClientInitialize"/>.
         /// </summary>
-        public void ServerInitialize(EntityData data, Team team, Vector2Int spawnLocation) {
+        public void ServerInitialize(EntityData data, GameTeam team, Vector2Int spawnLocation) {
             EntityData = data;
             MyTeam = team;
             
@@ -148,7 +131,7 @@ namespace Gameplay.Entities {
         }
         
         [ClientRpc]
-        public void RpcInitialize(EntityData data, Team team) {
+        public void RpcInitialize(EntityData data, GameTeam team) {
             transform.parent = GameManager.Instance.CommandManager.SpawnBucket;
             ClientInitialize(data, team);
         }
@@ -156,12 +139,12 @@ namespace Gameplay.Entities {
         /// <summary>
         /// Initialization that runs on each client
         /// </summary>
-        public void ClientInitialize(EntityData data, Team team) {
+        public void ClientInitialize(EntityData data, GameTeam team) {
             EntityData = data;
             MyTeam = team;
-            Team playerTeam = GameManager.Instance.LocalPlayer.Data.Team;
+            GameTeam playerTeam = GameManager.Instance.LocalPlayer.Data.Team;
 
-            if (MyTeam == Team.Neutral) {
+            if (MyTeam == GameTeam.Neutral) {
                 _interactBehavior = new NeutralInteractBehavior();
             } else if (MyTeam == playerTeam) {
                 _interactBehavior = new OwnerInteractBehavior();
@@ -355,7 +338,7 @@ namespace Gameplay.Entities {
         }
 
         private static TargetType GetTargetType(GridEntity originEntity, GridEntity targetEntity) {
-            if (targetEntity.MyTeam == Team.Neutral || originEntity.MyTeam == Team.Neutral) {
+            if (targetEntity.MyTeam == GameTeam.Neutral || originEntity.MyTeam == GameTeam.Neutral) {
                 return TargetType.Neutral;
             }
 

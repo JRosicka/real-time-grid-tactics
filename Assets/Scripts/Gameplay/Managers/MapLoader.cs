@@ -15,7 +15,7 @@ public class MapLoader : MonoBehaviour {
     /// </summary>
     [Serializable]
     public struct StartingEntitySet {
-        public GridEntity.Team Team;
+        public GameTeam Team;
         public List<EntitySpawn> Entities;
     }
 
@@ -43,7 +43,7 @@ public class MapLoader : MonoBehaviour {
 
     private GridController GridController => GameManager.Instance.GridController;
     
-    public void LoadMap(GridEntity.Team team) {
+    public void LoadMap(GameTeam team) {
         Vector2 lowerLeftWorldPosition = GridController.GetWorldPosition(LowerLeftCell);
         Vector2 upperRightWorldPosition = GridController.GetWorldPosition(UpperRightCell);
         
@@ -55,7 +55,7 @@ public class MapLoader : MonoBehaviour {
         CameraManager.SetCameraStartPosition(GridController.GetWorldPosition(GetHomeBaseLocation(team)));
     }
 
-    private Vector2Int GetHomeBaseLocation(GridEntity.Team team) {
+    private Vector2Int GetHomeBaseLocation(GameTeam team) {
         return UnitSpawns
             .First(u => u.Team == team)
             .Entities

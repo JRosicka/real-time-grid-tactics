@@ -85,7 +85,7 @@ public class GameSetupManager : MonoBehaviour {
     
     // TODO it would be good to move all of this game over logic to GameEndManager, but we currently can't do server-side logic in that class
     private void HandleGameOver(IGamePlayer winner) {
-        GridEntity.Team winningTeam = winner == null ? GridEntity.Team.Neutral : winner.Data.Team;
+        GameTeam winningTeam = winner == null ? GameTeam.Neutral : winner.Data.Team;
         if (!NetworkClient.active) {
             ReturnToLobbyAsync();
             NotifyGameOver(winningTeam);
@@ -106,9 +106,9 @@ public class GameSetupManager : MonoBehaviour {
     /// Client/SP logic for ending the game
     /// </summary>
     /// <param name="winner"></param>
-    public void NotifyGameOver(GridEntity.Team winner) {
+    public void NotifyGameOver(GameTeam winner) {
         GameOver = true;
-        if (winner == GridEntity.Team.Neutral) {
+        if (winner == GameTeam.Neutral) {
             GameOverView.ShowTie();
         } else if (winner == GameManager.LocalPlayer.Data.Team) {
             GameOverView.ShowVictory();
@@ -119,14 +119,14 @@ public class GameSetupManager : MonoBehaviour {
 
     private void SpawnStartingUnits() {
         // Spawn neutrals first so that resource patches go on the bottom of the stack
-        SpawnPlayerStartingUnits(GridEntity.Team.Neutral);
+        SpawnPlayerStartingUnits(GameTeam.Neutral);
         
         // Then spawn player starting units
         SpawnPlayerStartingUnits(Player1Data.Team);
         SpawnPlayerStartingUnits(Player2Data.Team);
     }
 
-    private void SpawnPlayerStartingUnits(GridEntity.Team team) {
+    private void SpawnPlayerStartingUnits(GameTeam team) {
         MapLoader.StartingEntitySet entitySet = MapLoader.UnitSpawns.First(s => s.Team == team);
         foreach (MapLoader.EntitySpawn entity in entitySet.Entities) {
             GameManager.CommandManager.SpawnEntity(entity.Entity, entity.SpawnLocation, team, null);

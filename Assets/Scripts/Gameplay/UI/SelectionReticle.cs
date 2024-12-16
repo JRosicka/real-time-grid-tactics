@@ -50,11 +50,11 @@ namespace Gameplay.UI {
         private void UpdateColor(GridEntity entityAtLocation) {
             if (!GameManager.Instance.GameSetupManager.GameInitialized) return;
 
-            GridEntity.Team localTeam = GameManager.Instance.LocalPlayer.Data.Team;
+            GameTeam localTeam = GameManager.Instance.LocalPlayer.Data.Team;
             Color selectionColor = NeutralSelectionColor;
             if (entityAtLocation && entityAtLocation.MyTeam == localTeam) {
                 selectionColor = AllySelectionColor;
-            } else if (entityAtLocation && entityAtLocation.MyTeam != GridEntity.Team.Neutral
+            } else if (entityAtLocation && entityAtLocation.MyTeam != GameTeam.Neutral
                                         && entityAtLocation.MyTeam != localTeam) {
                 selectionColor = EnemySelectionColor;
             }

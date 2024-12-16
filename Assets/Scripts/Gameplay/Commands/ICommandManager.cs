@@ -10,8 +10,8 @@ using UnityEngine;
 /// </summary>
 public interface ICommandManager {
     void Initialize(Transform spawnBucketPrefab, GameEndManager gameEndManager);
-    void SpawnEntity(EntityData data, Vector2Int spawnLocation, GridEntity.Team team, GridEntity spawnerEntity);
-    void AddUpgrade(UpgradeData data, GridEntity.Team team);
+    void SpawnEntity(EntityData data, Vector2Int spawnLocation, GameTeam team, GridEntity spawnerEntity);
+    void AddUpgrade(UpgradeData data, GameTeam team);
     /// <summary>
     /// Stop keeping track of an entity and also destroy it.
     /// Waits for one update cycle before doing so, so that any commands that the entity is executing in the execution
@@ -31,11 +31,11 @@ public interface ICommandManager {
     /// <summary>
     /// An entity was just registered (spawned). Triggered on server. 
     /// </summary>
-    event Action<GridEntity.Team> EntityRegisteredEvent;
+    event Action<GameTeam> EntityRegisteredEvent;
     /// <summary>
     /// An entity was just unregistered (killed). Triggered on server. 
     /// </summary>
-    event Action<GridEntity.Team> EntityUnregisteredEvent;
+    event Action<GameTeam> EntityUnregisteredEvent;
     event Action EntityCollectionChangedEvent;
     GridEntityCollection EntitiesOnGrid { get; }
     Transform SpawnBucket { get; }

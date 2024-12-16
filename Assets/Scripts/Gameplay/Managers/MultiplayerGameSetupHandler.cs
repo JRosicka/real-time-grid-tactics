@@ -55,13 +55,13 @@ public class MultiplayerGameSetupHandler : NetworkBehaviour {
     }
 
     [Command(requiresAuthority = false)]
-    public void CmdGameOver(GridEntity.Team winner) {
+    public void CmdGameOver(GameTeam winner) {
         GameSetupManager.ReturnToLobbyAsync();
         RpcNotifyGameOver(winner);
     }
 
     [ClientRpc]
-    private void RpcNotifyGameOver(GridEntity.Team winner) {
+    private void RpcNotifyGameOver(GameTeam winner) {
         GameSetupManager.NotifyGameOver(winner);
     }
 }

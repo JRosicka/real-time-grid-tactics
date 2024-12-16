@@ -15,7 +15,7 @@ public class PlayerOwnedPurchasablesController : NetworkBehaviour {
     /// </summary>
     public event Action OwnedPurchasablesChangedEvent;
 
-    private GridEntity.Team _team;
+    private GameTeam _team;
 
     [SyncVar(hook = nameof(OwnedPurchasablesSyncVarChanged))] 
     private UpgradesCollection _upgrades = new UpgradesCollection();
@@ -23,7 +23,7 @@ public class PlayerOwnedPurchasablesController : NetworkBehaviour {
     /// <summary>
     /// Server call
     /// </summary>
-    public void Initialize(GridEntity.Team team, List<UpgradeData> upgradesToRegister) {
+    public void Initialize(GameTeam team, List<UpgradeData> upgradesToRegister) {
         _team = team;
         _upgrades.RegisterUpgrades(upgradesToRegister);
         GameManager.Instance.CommandManager.EntityRegisteredEvent += OwnedPurchasablesMayHaveChanged;
@@ -78,7 +78,7 @@ public class PlayerOwnedPurchasablesController : NetworkBehaviour {
         _upgrades = new UpgradesCollection(_upgrades.UpgradesDict);
     }
 
-    private void OwnedPurchasablesMayHaveChanged(GridEntity.Team team) {
+    private void OwnedPurchasablesMayHaveChanged(GameTeam team) {
         if (team != _team) return;
         
         if (!NetworkClient.active) {
