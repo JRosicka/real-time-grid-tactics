@@ -70,6 +70,11 @@ namespace Gameplay.Entities {
 
         public GridEntity LastAttackedEntity;
 
+        private void Awake() {
+            CurrentResources = new NetworkableField<ResourceAmount>(this, nameof(CurrentResources));
+            TargetLocationLogic = new NetworkableField<TargetLocationLogic>(this, nameof(TargetLocationLogic));
+        }
+
         /// <summary>
         /// Initialization method ran only on the server, before <see cref="ClientInitialize"/>.
         /// </summary>
@@ -80,15 +85,11 @@ namespace Gameplay.Entities {
             // We call this later on the client, but we need the stats set up immediately on the server too (at least for rallying) 
             SetupStats();
 
-            // Syncvar stats
+            // NetworkableFields
             HPHandler.SetCurrentHP(EntityData.HP, false);
-            CurrentResources = new NetworkableField<ResourceAmount>(this, nameof(CurrentResources));
             CurrentResources.UpdateValue(EntityData.StartingResourceSet);
-            
-            // Target logic
-            TargetLocationLogic = new TargetLocationLogic(EntityData.CanRally, spawnLocation, null);
-            TargetLocationLogicChangedEvent += TargetLocationLogicChanged;
-            SyncTargetLocationLogic(null, TargetLocationLogic);
+            TargetLocationLogic.ValueChanged += TargetLocationLogicChanged;
+            TargetLocationLogic.UpdateValue(new TargetLocationLogic(EntityData.CanRally, spawnLocation, null));
         }
         
         [ClientRpc]
@@ -159,35 +160,9 @@ namespace Gameplay.Entities {
 
         #region Target Location
         
-        public event Action<TargetLocationLogic, TargetLocationLogic> TargetLocationLogicChangedEvent;
-        [SyncVar(hook = nameof(OnTargetLocationLogicChanged))]
-        public TargetLocationLogic TargetLocationLogic;
-        private void OnTargetLocationLogicChanged(TargetLocationLogic oldValue, TargetLocationLogic newValue) {
-            TargetLocationLogicChangedEvent?.Invoke(oldValue, newValue);
-        }
-        /// <summary>
-        /// Reset the reference for <see cref="TargetLocationLogic"/> to force a sync across clients. Just updating fields in the class
-        /// is not enough to get the sync to occur. 
-        /// </summary>
-        private void SyncTargetLocationLogic(TargetLocationLogic oldValue, TargetLocationLogic newValue) {
-            if (!NetworkServer.active && NetworkClient.active) {
-                // MP client, so we need to network the change to the syncvar
-                CmdSyncTargetLocationLogic(newValue);
-                return;
-            }
-
-            // Otherwise we are the MP server or in SP, so directly modify the field here 
-            TargetLocationLogic = newValue;
-            if (!NetworkClient.active) {
-                // SP, so syncvars won't work
-                TargetLocationLogicChangedEvent?.Invoke(oldValue, newValue);
-            }
-        }
-        [Command(requiresAuthority = false)]
-        private void CmdSyncTargetLocationLogic(TargetLocationLogic newTargetLocationLogic) {
-            TargetLocationLogic = newTargetLocationLogic;
-        }
-        private void TargetLocationLogicChanged(TargetLocationLogic oldValue, TargetLocationLogic newValue) {
+        public NetworkableField<TargetLocationLogic> TargetLocationLogic;
+        
+        private void TargetLocationLogicChanged(TargetLocationLogic oldValue, TargetLocationLogic newValue, object metadata) {
             if (oldValue == null && newValue == null) return;
 
             void TryUnSubscribe() {
@@ -214,16 +189,15 @@ namespace Gameplay.Entities {
             }
         }
         private void TargetEntityUpdated() {
-            Vector2Int? newLocation = TargetLocationLogic.TargetEntity == null ? null : TargetLocationLogic.TargetEntity.Location;
+            Vector2Int? newLocation = TargetLocationLogic.Value.TargetEntity == null ? null : TargetLocationLogic.Value.TargetEntity.Location;
             if (newLocation == null) {
-                SetTargetLocation(TargetLocationLogic.CurrentTarget, null);
+                SetTargetLocation(TargetLocationLogic.Value.CurrentTarget, null);
             } else {
-                SetTargetLocation(newLocation.Value, TargetLocationLogic.TargetEntity);
+                SetTargetLocation(newLocation.Value, TargetLocationLogic.Value.TargetEntity);
             }
         }
         public void SetTargetLocation(Vector2Int newTargetLocation, GridEntity targetEntity) {
-            TargetLocationLogic newTargetLocationLogic = new TargetLocationLogic(TargetLocationLogic.CanRally, newTargetLocation, targetEntity);
-            SyncTargetLocationLogic(TargetLocationLogic, newTargetLocationLogic);
+            TargetLocationLogic.UpdateValue(new TargetLocationLogic(TargetLocationLogic.Value.CanRally, newTargetLocation, targetEntity));
         }
         
         #endregion

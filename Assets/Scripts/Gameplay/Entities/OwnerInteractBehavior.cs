@@ -19,7 +19,7 @@ namespace Gameplay.Entities {
             GameManager.Instance.SelectionInterface.DeselectActiveAbility();
             
             // If this entity can rally (i.e. it is a production structure), do that
-            if (thisEntity.TargetLocationLogic.CanRally) {
+            if (thisEntity.TargetLocationLogic.Value.CanRally) {
                 RallyAbilityData data = thisEntity.GetAbilityData<RallyAbilityData>();
                 GameManager.Instance.AbilityAssignmentManager.PerformAbility(thisEntity, data, new RallyAbilityParameters {
                     Destination = targetCell

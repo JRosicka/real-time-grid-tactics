@@ -11,7 +11,6 @@ namespace Gameplay.Entities {
     /// death. 
     /// </summary>
     public class GridEntityHPHandler : NetworkBehaviour {
-        public event Action HPChangedEvent;
         public event Action AttackedEvent;
         public event Action HealedEvent;
         
@@ -21,33 +20,21 @@ namespace Gameplay.Entities {
         // Server flag?
         public bool MarkedForDeath { get; private set; }
 
-        public int CurrentHP { get; private set; }
+        public NetworkableField<int> CurrentHP { get; private set; }
+
+        private void Awake() {
+            CurrentHP = new NetworkableField<int>(this, nameof(CurrentHP));
+            CurrentHP.ValueChanged += HPChanged;
+        }
         
         #region Update HP
         
         public void SetCurrentHP(int newHP, bool fromGameEffect) {
-            int oldHP = CurrentHP;
-            if (!NetworkClient.active) {
-                // SP
-                DoSetCurrentHP(newHP, oldHP, fromGameEffect);
-            } else {
-                // MP
-                CurrentHP = newHP;  // Set HP value immediately
-                CmdSetCurrentHP(newHP, oldHP, fromGameEffect);
-            }
+            CurrentHP.UpdateValue(newHP, fromGameEffect);
         }
-        [Command(requiresAuthority = false)]
-        private void CmdSetCurrentHP(int newHP, int oldHP, bool fromGameEffect) {
-            RpcSetCurrentHP(newHP, oldHP, fromGameEffect);
-        }
-        [ClientRpc]
-        private void RpcSetCurrentHP(int newHP, int oldHP, bool fromGameEffect) {
-            DoSetCurrentHP(newHP, oldHP, fromGameEffect);
-        }
-        private void DoSetCurrentHP(int newHP, int oldHP, bool fromGameEffect) {
-            CurrentHP = newHP;
 
-            HPChangedEvent?.Invoke();
+        private void HPChanged(int oldHP, int newHP, object metadata) {
+            bool fromGameEffect = (bool)metadata;
             if (fromGameEffect && oldHP < newHP) {
                 HealedEvent?.Invoke();
             } else if (fromGameEffect && oldHP > newHP) {
@@ -72,7 +59,7 @@ namespace Gameplay.Entities {
             // Apply any multiplicative defense modifiers from structures (as long as this is not a structure)
             if (!EntityData.IsStructure) {
                 List<GridEntity> structuresAtLocation = GameManager.Instance.CommandManager.EntitiesOnGrid.EntitiesAtLocation(_gridEntity.Location!.Value)?.Entities
-                    ?.Select(e => e.Entity)?.Where(e => e.EntityData.IsStructure).ToList() ?? new List<GridEntity>();
+                    ?.Select(e => e.Entity).Where(e => e.EntityData.IsStructure).ToList() ?? new List<GridEntity>();
                 foreach (GridEntity structure in structuresAtLocation) {
                     if (structure.EntityData.SharedUnitDamageTakenModifierTags.Count == 0
                         || structure.EntityData.SharedUnitDamageTakenModifierTags.Any(t => EntityData.Tags.Contains(t))) {
@@ -81,17 +68,17 @@ namespace Gameplay.Entities {
                 }
             }
             
-            SetCurrentHP(CurrentHP - Mathf.RoundToInt(damage), true);
+            SetCurrentHP(CurrentHP.Value - Mathf.RoundToInt(damage), true);
 
-            if (CurrentHP <= 0) {
+            if (CurrentHP.Value <= 0) {
                 Kill();
             }
         }
         
         public void Heal(int healAmount) {
-            if (CurrentHP == _gridEntity.MaxHP) return;
+            if (CurrentHP.Value == _gridEntity.MaxHP) return;
 
-            int newHP = CurrentHP + healAmount;
+            int newHP = CurrentHP.Value + healAmount;
             newHP = Mathf.Min(newHP, _gridEntity.MaxHP);
             SetCurrentHP(newHP, true);
         }

@@ -46,7 +46,7 @@ public class EntitySelectionManager {
     public void SelectEntity(GridEntity entity) {
         if (SelectedEntity != null) {
             // Unregister the un-registration event for the previously selected entity
-            SelectedEntity.TargetLocationLogicChangedEvent -= TryFindPath;
+            SelectedEntity.TargetLocationLogic.ValueChanged -= TryFindPath;
             SelectedEntity.UnregisteredEvent -= DeselectEntity;
         }
         
@@ -56,8 +56,8 @@ public class EntitySelectionManager {
         GridController.TrackEntity(entity);
 
         if (entity != null) {
-            TryFindPath(null, entity.TargetLocationLogic);
-            entity.TargetLocationLogicChangedEvent += TryFindPath;
+            TryFindPath(null, entity.TargetLocationLogic.Value, null);
+            entity.TargetLocationLogic.ValueChanged += TryFindPath;
             entity.UnregisteredEvent += DeselectEntity;
         } else {
             GridController.ClearPath();
@@ -107,7 +107,7 @@ public class EntitySelectionManager {
         if (SelectedEntity == null) return;
         if (!_gameManager.CommandManager.EntitiesOnGrid.IsEntityOnGrid(SelectedEntity)) return;
         // Update the path if necessary
-        TryFindPath(null, SelectedEntity.TargetLocationLogic);
+        TryFindPath(null, SelectedEntity.TargetLocationLogic.Value, null);
 
         // Update the location if necessary
         if (SelectedEntity.Location == _selectedEntityCurrentLocation) return; 
@@ -173,10 +173,10 @@ public class EntitySelectionManager {
     
     #endregion
 
-    private void TryFindPath(TargetLocationLogic oldValue, TargetLocationLogic newValue) {
+    private void TryFindPath(TargetLocationLogic oldValue, TargetLocationLogic newValue, object metadata) {
         if (SelectedEntity == null) return;
         if (!_gameManager.CommandManager.EntitiesOnGrid.IsEntityOnGrid(SelectedEntity)) return; // May be in the middle of getting unregistered
-        if (!SelectedEntity.CanMoveOrRally && !SelectedEntity.TargetLocationLogic.CanRally) return;
+        if (!SelectedEntity.CanMoveOrRally && !SelectedEntity.TargetLocationLogic.Value.CanRally) return;
         if (SelectedEntity.MyTeam != _gameManager.LocalPlayer.Data.Team) return;
 
         PathfinderService.Path path = PathfinderService.FindPath(SelectedEntity, newValue.CurrentTarget);

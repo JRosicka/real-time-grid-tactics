@@ -37,7 +37,7 @@ public abstract class AbstractCommandManager : NetworkBehaviour, ICommandManager
     }
 
     public abstract void CancelAbility(IAbility ability);
-    public abstract void UpdateNetworkableField<T>(NetworkBehaviour parent, string fieldName, T newValue);
+    public abstract void UpdateNetworkableField<T>(NetworkBehaviour parent, string fieldName, T newValue, object metadata);
 
     /// <summary>
     /// An entity was just registered (spawned). Triggered on server. 
@@ -102,13 +102,13 @@ public abstract class AbstractCommandManager : NetworkBehaviour, ICommandManager
         GridEntity entityInstance = spawnFunc();
         RegisterEntity(entityInstance, data, spawnLocation, spawnerEntity);
 
-        if (spawnerEntity != null && spawnerEntity.TargetLocationLogic.CanRally) {
+        if (spawnerEntity != null && spawnerEntity.TargetLocationLogic.Value.CanRally) {
             if (data.Tags.Contains(EntityData.EntityTag.Worker)) {
                 // Workers get move-commanded
-                entityInstance.TryMoveToCell(spawnerEntity.TargetLocationLogic.CurrentTarget, false);
+                entityInstance.TryMoveToCell(spawnerEntity.TargetLocationLogic.Value.CurrentTarget, false);
             } else {
                 // Everything else attack-moves
-                entityInstance.TryAttackMoveToCell(spawnerEntity.TargetLocationLogic.CurrentTarget);
+                entityInstance.TryAttackMoveToCell(spawnerEntity.TargetLocationLogic.Value.CurrentTarget);
             }
         }
         
@@ -244,11 +244,11 @@ public abstract class AbstractCommandManager : NetworkBehaviour, ICommandManager
         ability.Performer.AbilityFailed(ability.AbilityData);
     }
 
-    protected void DoUpdateNetworkableField(NetworkBehaviour parent, string fieldName, object newValue) {
+    protected void DoUpdateNetworkableField(NetworkBehaviour parent, string fieldName, object newValue, object metadata) {
         Type type = parent.GetType();
         MemberInfo info = type.GetField(fieldName) as MemberInfo ?? type.GetProperty(fieldName);
         dynamic networkableField = info.GetMemberValue(parent);
-        networkableField.DoUpdateValue(newValue);
+        networkableField.DoUpdateValue(newValue, metadata);
     }
     
     /// <summary>

@@ -135,7 +135,7 @@ namespace Gameplay.UI {
             UpdateEntityInfo();
         }
 
-        private void OnEntityResourceAmountChanged(ResourceAmount oldValue, ResourceAmount newValue) {
+        private void OnEntityResourceAmountChanged(ResourceAmount oldValue, ResourceAmount newValue, object metadata) {
             UpdateEntityInfo();
         }
 
