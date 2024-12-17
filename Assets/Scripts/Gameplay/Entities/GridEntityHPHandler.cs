@@ -95,22 +95,4 @@ namespace Gameplay.Entities {
             GameManager.Instance.CommandManager.UnRegisterEntity(_gridEntity, true);
         }
     }
-
-    [Serializable]
-    public class NetworkableIntegerValue : INetworkableFieldValue {
-        public int Value;
-        public NetworkableIntegerValue(int value) {
-            Value = value;
-        }
-
-        public string ID => nameof(NetworkableIntegerValue);
-
-        public void SerializeValue(NetworkWriter writer) {
-            writer.WriteInt(Value);
-        }
-
-        public static NetworkableIntegerValue Deserialize(NetworkReader reader) {
-            return new NetworkableIntegerValue(reader.ReadInt());
-        }
-    }
 }

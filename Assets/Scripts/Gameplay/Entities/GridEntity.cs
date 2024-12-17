@@ -46,6 +46,7 @@ namespace Gameplay.Entities {
         // NetworkableFields and composition objects
         public NetworkableField<ResourceAmount> CurrentResources;
         public NetworkableField<TargetLocationLogic> TargetLocationLogic;
+        private NetworkableField<NetworkableVector2IntegerValue> _location;
         public IBuildQueue BuildQueue;
         
         // Abilities
@@ -71,7 +72,15 @@ namespace Gameplay.Entities {
         /// <summary>
         /// Null if the entity is unregistered (or not yet registered)
         /// </summary>
-        public Vector2Int? Location => GameManager.Instance.GetLocationForEntity(this);
+        public Vector2Int? Location {
+            get {
+                if (_location == null || _location.Value == null) {
+                    Debug.LogWarning("Location is null!!");
+                }
+                return _location?.Value?.Value;
+            }
+        }
+
         [CanBeNull] public GameplayTile CurrentTileType {
             get {
                 Vector2Int? location = Location;
@@ -106,6 +115,8 @@ namespace Gameplay.Entities {
         private void Awake() {
             CurrentResources = new NetworkableField<ResourceAmount>(this, nameof(CurrentResources), new ResourceAmount());
             TargetLocationLogic = new NetworkableField<TargetLocationLogic>(this, nameof(TargetLocationLogic), new TargetLocationLogic());
+            _location = new NetworkableField<NetworkableVector2IntegerValue>(this, nameof(_location),
+                new NetworkableVector2IntegerValue(new Vector2Int(0, 0)));
         }
 
         /// <summary>
@@ -121,6 +132,7 @@ namespace Gameplay.Entities {
             // NetworkableFields
             HPHandler.SetCurrentHP(EntityData.HP, false);
             CurrentResources.UpdateValue(EntityData.StartingResourceSet);
+            _location.UpdateValue(new NetworkableVector2IntegerValue(spawnLocation));
             TargetLocationLogic.ValueChanged += TargetLocationLogicChanged;
             TargetLocationLogic.UpdateValue(new TargetLocationLogic(EntityData.CanRally, spawnLocation, null));
         }
@@ -376,7 +388,12 @@ namespace Gameplay.Entities {
         }
         
         // Triggered on server
-        public void EntityMoved() {
+        public void UpdateEntityLocation(Vector2Int newLocation) {
+            _location.UpdateValue(new NetworkableVector2IntegerValue(newLocation));
+        }
+        
+        // Triggered on server
+        public void TriggerEntityMovedEvent() {
             EntityMovedEvent?.Invoke();
         }
 

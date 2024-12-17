@@ -74,16 +74,15 @@ public abstract class AbstractCommandManager : NetworkBehaviour, ICommandManager
 
     public void MoveEntityToCell(GridEntity entity, Vector2Int destination) {
         _entitiesOnGrid.MoveEntity(entity, destination);
+        // We need to update the entity location first so that EntityCollectionChanged listeners get the updated value for the entity location
+        entity.UpdateEntityLocation(destination);
         SyncEntityCollection();
-        entity.EntityMoved();
+        // Now that the entity collection is synced, we can let listeners know that the entity moved 
+        entity.TriggerEntityMovedEvent();
     }
     
     public GridEntityCollection.PositionedGridEntityCollection GetEntitiesAtCell(Vector2Int location) {
         return _entitiesOnGrid.EntitiesAtLocation(location);
-    }
-
-    public Vector2Int? GetLocationForEntity(GridEntity entity) {
-        return _entitiesOnGrid.LocationOfEntity(entity);
     }
 
     public abstract void PerformAbility(IAbility ability, bool clearQueueFirst, bool handleCost);

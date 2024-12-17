@@ -23,7 +23,6 @@ public interface ICommandManager {
     void DestroyEntity(GridEntity entity);
     void MoveEntityToCell(GridEntity entity, Vector2Int destination);
     GridEntityCollection.PositionedGridEntityCollection GetEntitiesAtCell(Vector2Int location);
-    Vector2Int? GetLocationForEntity(GridEntity entity);
     void PerformAbility(IAbility ability, bool clearQueueFirst, bool handleCost);
     void QueueAbility(IAbility ability, bool clearQueueFirst, bool insertAtFront);
     void RemoveAbilityFromQueue(GridEntity entity, IAbility queuedAbility);
