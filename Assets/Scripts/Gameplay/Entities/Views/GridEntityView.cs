@@ -96,7 +96,7 @@ namespace Gameplay.Entities {
         }
 
         private void DoAbility(IAbility ability, AbilityCooldownTimer cooldownTimer) {
-            if (Entity == null || Entity.DeadOrDying()) return;
+            if (Entity == null || Entity.DeadOrDying) return;
             if (_particularView.DoAbility(ability, cooldownTimer)) {
                 DoGenericAbility(ability);
             }
@@ -194,7 +194,7 @@ namespace Gameplay.Entities {
         private bool _triggeredAttackShake;
         
         private void DoGenericAttackAnimation(AttackAbility attackAbility) {
-            if (attackAbility.AbilityParameters.Target.DeadOrDying()) return;
+            if (attackAbility.AbilityParameters.Target.DeadOrDying) return;
             Vector2Int? performerLocation = Entity.Location;
             Vector2Int? targetLocation = attackAbility.AbilityParameters.Target.Location;
             if (performerLocation == null || targetLocation == null) return;

@@ -18,7 +18,7 @@ namespace Gameplay.Managers {
         
         public bool CanEntityUseAbility(GridEntity entity, IAbilityData data, bool ignoreBlockingTimers) {
             // Is this entity set up to use this ability?
-            if (entity.Abilities.All(a => a.Content != data)) {
+            if (!entity.Abilities.Contains(data)) {
                 return false;
             }
 
@@ -91,7 +91,7 @@ namespace Gameplay.Managers {
         }
 
         public void PerformOnStartAbilitiesForEntity(GridEntity entity) {
-            foreach (IAbilityData abilityData in entity.Abilities.Select(a => a.Content).Where(a => a.PerformOnStart)) {
+            foreach (IAbilityData abilityData in entity.Abilities.Where(a => a.PerformOnStart)) {
                 PerformAbility(entity, abilityData, new NullAbilityParameters(), abilityData.RepeatForeverAfterStartEvenWhenFailed);
             }
         }

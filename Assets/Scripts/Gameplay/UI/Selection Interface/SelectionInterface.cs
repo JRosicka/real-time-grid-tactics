@@ -197,7 +197,7 @@ namespace Gameplay.UI {
         /// This probably won't behave well if this entity has multiple abilities configured as auto-selectable... 
         /// </summary>
         private static void PerformAutoSelectionAbilities(GridEntity entity) {
-            foreach (IAbilityData abilityData in entity.Abilities.Select(a => a.Content).Where(a => a.AutoSelect)) {
+            foreach (IAbilityData abilityData in entity.Abilities.Where(a => a.AutoSelect)) {
                 abilityData.SelectAbility(entity);
             }
         }

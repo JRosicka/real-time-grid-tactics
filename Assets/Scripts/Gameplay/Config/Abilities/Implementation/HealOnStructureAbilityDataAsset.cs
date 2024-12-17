@@ -27,7 +27,7 @@ namespace Gameplay.Config.Abilities {
         }
 
         protected override bool AbilityLegalImpl(NullAbilityParameters parameters, GridEntity entity) {
-            if (!entity.Registered || entity.DeadOrDying()) return false;
+            if (!entity.Registered || entity.DeadOrDying) return false;
             Vector2Int? entityLocation = entity.Location;
             if (entityLocation == null) return false;
             

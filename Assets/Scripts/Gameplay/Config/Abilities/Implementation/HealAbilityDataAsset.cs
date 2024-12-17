@@ -22,7 +22,7 @@ namespace Gameplay.Config.Abilities {
 
         public bool CanHeal(HealAbilityParameters parameters, GridEntity entity) {
             return parameters.Target != null 
-                   && !parameters.Target.DeadOrDying() 
+                   && !parameters.Target.DeadOrDying
                    && parameters.Target.HPHandler.CurrentHP < parameters.Target.MaxHP;
         }
 

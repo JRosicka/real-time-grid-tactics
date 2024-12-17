@@ -8,7 +8,7 @@ using UnityEngine;
 namespace Gameplay.Entities {
     /// <summary>
     /// Manages state and updates for a <see cref="GridEntity"/>'s HP. Handles incoming attacks and heals, and triggers
-    /// death. 
+    /// death.  
     /// </summary>
     public class GridEntityHPHandler : NetworkBehaviour {
         public event Action HPChangedEvent;

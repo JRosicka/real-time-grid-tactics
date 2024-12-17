@@ -9,7 +9,6 @@ using Gameplay.Managers;
 using JetBrains.Annotations;
 using Mirror;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace Gameplay.Entities {
     /// <summary>
@@ -17,59 +16,93 @@ namespace Gameplay.Entities {
     /// Has an <see cref="IInteractBehavior"/> field to handle player input.
     /// </summary>
     public class GridEntity : NetworkBehaviour {
-        private enum TargetType {
-            Enemy = 1,
-            Ally = 2,
-            Neutral = 3
-        }
+        // GameManager getters
+        private static ICommandManager CommandManager => GameManager.Instance.CommandManager;
+        private static AbilityAssignmentManager AbilityAssignmentManager => GameManager.Instance.AbilityAssignmentManager;
 
-        private ICommandManager CommandManager => GameManager.Instance.CommandManager;
-        private AbilityAssignmentManager AbilityAssignmentManager => GameManager.Instance.AbilityAssignmentManager;
-
-        private GridEntityView _view;
+        #region Fields
+        
+        [Header("References")]
         public Canvas ViewCanvas;
-
         public ClientsStatusHandler InitializationStatusHandler;
         public ClientsStatusHandler DeathStatusHandler;
+        public GridEntityHPHandler HPHandler;
 
         [Header("Config")] 
         public string UnitName;
         public GameTeam MyTeam;
+        public string DisplayName => EntityData.ID;
+        public List<EntityData.EntityTag> Tags => EntityData.Tags;
+        public IEnumerable<IAbilityData> Abilities => EntityData.Abilities.Select(a => a.Content);
+        public List<GameplayTile> SlowTiles;
+        public List<GameplayTile> InaccessibleTiles;
 
-        [HideInInspector] 
-        public bool Registered;
-
-        [FormerlySerializedAs("Data")] public EntityData EntityData;
-        private IInteractBehavior _interactBehavior;
-        
         [Header("Stats")]
         public int MaxHP;
         public float MoveTime;
         public int Range;
         public int Damage;
-        public string DisplayName => EntityData.ID;
-        public List<EntityData.EntityTag> Tags => EntityData.Tags;
-        public List<AbilityDataScriptableObject> Abilities => EntityData.Abilities; // TODO maybe I do want these to be interfaces after all?
-        public List<GameplayTile> SlowTiles;
-        public List<GameplayTile> InaccessibleTiles;
 
-        public GridEntityHPHandler HPHandler;
-
+        // NetworkableFields and composition objects
         public NetworkableField<ResourceAmount> CurrentResources;
-        
-        public List<AbilityCooldownTimer> ActiveTimers = new List<AbilityCooldownTimer>();
-        
-        /// <summary>
-        /// This entity's current ability queue.
-        /// TODO if this gets complicated then we should extract this out into a new AbilityQueue class. 
-        /// </summary>
-        public List<IAbility> QueuedAbilities = new List<IAbility>();
+        public NetworkableField<TargetLocationLogic> TargetLocationLogic;
         public IBuildQueue BuildQueue;
         
-        public bool Interactable { get; private set; }
+        // Abilities
+        /// <summary>
+        /// This entity's active abilities.
+        /// </summary>
+        public List<AbilityCooldownTimer> ActiveTimers = new List<AbilityCooldownTimer>();
+        /// <summary>
+        /// This entity's current ability queue.
+        /// </summary>
+        public List<IAbility> QueuedAbilities = new List<IAbility>();
 
+        // Misc fields and properties
+        [HideInInspector] 
+        public bool Registered;
+        [HideInInspector] 
+        public EntityData EntityData;
         public GridEntity LastAttackedEntity;
+        public bool Interactable { get; private set; }
+        public bool CanTargetThings => Range > 0;
+        public bool CanMoveOrRally => MoveTime > 0;
+        public bool CanMove => CanMoveOrRally && !EntityData.IsStructure;
+        /// <summary>
+        /// Null if the entity is unregistered (or not yet registered)
+        /// </summary>
+        public Vector2Int? Location => GameManager.Instance.GetLocationForEntity(this);
+        [CanBeNull] public GameplayTile CurrentTileType {
+            get {
+                Vector2Int? location = Location;
+                return location == null ? null : GameManager.Instance.GridController.GridData.GetCell(location.Value).Tile;
+            }
+        }
+        public bool DeadOrDying => this == null || HPHandler.MarkedForDeath || _unregistered;
 
+        // Client flag
+        private bool _unregistered;
+        private GridEntityView _view;
+        private IInteractBehavior _interactBehavior;
+        
+        // Events
+        public event Action<IAbility, AbilityCooldownTimer> AbilityPerformedEvent;
+        public event Action<IAbility, AbilityCooldownTimer> CooldownTimerStartedEvent;
+        public event Action<IAbility, AbilityCooldownTimer> CooldownTimerExpiredEvent;
+        public event Action<IAbility, AbilityCooldownTimer> PerformAnimationEvent;
+        public event Action SelectedEvent;
+        public event Action UnregisteredEvent;
+        // Needs to happen right after UnregisteredEvent, probably. Keep separate. 
+        public event Action KilledEvent;
+        public event Action<List<IAbility>> AbilityQueueUpdatedEvent;
+        /// <summary>
+        /// Only triggered on server
+        /// </summary>
+        public event Action EntityMovedEvent;
+        
+        #endregion
+        #region Initialization
+        
         private void Awake() {
             CurrentResources = new NetworkableField<ResourceAmount>(this, nameof(CurrentResources), new ResourceAmount());
             TargetLocationLogic = new NetworkableField<TargetLocationLogic>(this, nameof(TargetLocationLogic), new TargetLocationLogic());
@@ -128,39 +161,35 @@ namespace Gameplay.Entities {
             Interactable = true;
         } 
         
-        public bool CanTargetThings => Range > 0;
-        public bool CanMoveOrRally => MoveTime > 0;
-        public bool CanMove => CanMoveOrRally && !EntityData.IsStructure;
-        /// <summary>
-        /// Null if the entity is unregistered (or not yet registered)
-        /// </summary>
-        public Vector2Int? Location => GameManager.Instance.GetLocationForEntity(this);
-        
-        [CanBeNull]
-        public GameplayTile CurrentTileType {
-            get {
-                Vector2Int? location = Location;
-                return location == null ? null : GameManager.Instance.GridController.GridData.GetCell(location.Value).Tile;
-            }
+        private void SetupStats() {
+            MaxHP = EntityData.HP;
+            MoveTime = EntityData.NormalMoveTime;
+            Range = EntityData.Range;
+            Damage = EntityData.Damage;
+
+            List<GameplayTile> tiles = GameManager.Instance.Configuration.Tiles;
+            // Add any tiles that have at least one of our tags in its inaccessible tags list
+            InaccessibleTiles = tiles.Where(t => t.InaccessibleTags.Intersect(Tags).Any()).ToList();
+            // Add any tiles that have at least one of our tags in its slow tags list, and is not an inaccessible tile
+            SlowTiles = tiles.Where(t => t.SlowTags.Intersect(Tags).Any())
+                .Where(t => !InaccessibleTiles.Contains(t))
+                .ToList();
         }
 
-        public event Action<IAbility, AbilityCooldownTimer> AbilityPerformedEvent;
-        public event Action<IAbility, AbilityCooldownTimer> CooldownTimerStartedEvent;
-        public event Action<IAbility, AbilityCooldownTimer> CooldownTimerExpiredEvent;
-        public event Action<IAbility, AbilityCooldownTimer> PerformAnimationEvent;
-        public event Action SelectedEvent;
-        public event Action UnregisteredEvent;
-        // Needs to happen right after UnregisteredEvent, probably. Keep separate. 
-        public event Action KilledEvent;
-        public event Action<List<IAbility>> AbilityQueueUpdatedEvent;
-        /// <summary>
-        /// Only triggered on server
-        /// </summary>
-        public event Action EntityMovedEvent;
-
-        #region Target Location
+        private void SetupView() {
+            int stackOrder = EntityData.GetStackOrder();
+            ViewCanvas.sortingOrder = stackOrder;
+            _view = Instantiate(EntityData.ViewPrefab, ViewCanvas.transform);
+            _view.Initialize(this, stackOrder);
+        }
         
-        public NetworkableField<TargetLocationLogic> TargetLocationLogic;
+        private void Update() {
+            List<AbilityCooldownTimer> activeTimersCopy = new List<AbilityCooldownTimer>(ActiveTimers);
+            activeTimersCopy.ForEach(t => t.UpdateTimer(Time.deltaTime));
+        }
+
+        #endregion
+        #region Target Location
         
         private void TargetLocationLogicChanged(TargetLocationLogic oldValue, TargetLocationLogic newValue, object metadata) {
             if (oldValue == null && newValue == null) return;
@@ -201,6 +230,7 @@ namespace Gameplay.Entities {
         }
         
         #endregion
+        #region Selection and Inputs
         
         public void Select() {
             if (!Interactable) return;
@@ -216,65 +246,8 @@ namespace Gameplay.Entities {
             _interactBehavior.TargetCellWithUnit(this, location);
         }
 
-        public bool TryMoveToCell(Vector2Int targetCell, bool blockedByOccupation) {
-            if (!CanMoveOrRally) return false;
-
-            MoveAbilityData data = GetAbilityData<MoveAbilityData>();
-            if (AbilityAssignmentManager.PerformAbility(this, data, new MoveAbilityParameters {
-                        Destination = targetCell, 
-                        NextMoveCell = targetCell, 
-                        SelectorTeam = MyTeam,
-                        BlockedByOccupation = blockedByOccupation
-                    }, true)) {
-                SetTargetLocation(targetCell, null);
-            }
-            return true;
-        }
-
-        public void TryAttackMoveToCell(Vector2Int targetCell) {
-            if (!CanMoveOrRally) return;
-
-            AttackAbilityData data = GetAbilityData<AttackAbilityData>();
-            if (AbilityAssignmentManager.PerformAbility(this, data, new AttackAbilityParameters {
-                        Destination = targetCell, 
-                        TargetFire = false
-                    },
-                    true)) {
-                SetTargetLocation(targetCell, null);
-            }
-        }
-        
-        [CanBeNull]
-        public TAbilityData GetAbilityData<TAbilityData>() {
-            return (TAbilityData)EntityData.Abilities.FirstOrDefault(a => a.Content.GetType() == typeof(TAbilityData))?.Content;
-        }
-
-        // Triggered on server
-        public void EntityMoved() {
-            EntityMovedEvent?.Invoke();
-        }
-
-        public void TryTargetEntity(GridEntity targetEntity, Vector2Int targetCell) {
-            TargetType targetType = GetTargetType(this, targetEntity);
-
-            if (targetType != TargetType.Enemy) return;
-            AttackAbilityData data = GetAbilityData<AttackAbilityData>();
-            if (AbilityAssignmentManager.PerformAbility(this, data, new AttackAbilityParameters {
-                        Target = targetEntity, 
-                        TargetFire = true,
-                        Destination = targetCell
-                    }, true)) {
-                SetTargetLocation(targetCell, targetEntity);
-            }
-        }
-
-        private static TargetType GetTargetType(GridEntity originEntity, GridEntity targetEntity) {
-            if (targetEntity.MyTeam == GameTeam.Neutral || originEntity.MyTeam == GameTeam.Neutral) {
-                return TargetType.Neutral;
-            }
-
-            return originEntity.MyTeam == targetEntity.MyTeam ? TargetType.Ally : TargetType.Enemy;
-        }
+        #endregion
+        #region AbilityTimers
 
         public void CreateAbilityTimer(IAbility ability, float overrideCooldownDuration = -1) {
             if (!NetworkClient.active) {
@@ -326,6 +299,14 @@ namespace Gameplay.Entities {
 
             timer.AddTime(timeToAdd);
         }
+        
+        #endregion
+        #region Abilities
+        
+        [CanBeNull]
+        public TAbilityData GetAbilityData<TAbilityData>() {
+            return (TAbilityData)EntityData.Abilities.FirstOrDefault(a => a.Content.GetType() == typeof(TAbilityData))?.Content;
+        }
 
         public void TriggerAbilityCooldownExpired(IAbility ability, AbilityCooldownTimer cooldownTimer, bool canceled) {
             CooldownTimerExpiredEvent?.Invoke(ability, cooldownTimer);
@@ -347,12 +328,7 @@ namespace Gameplay.Entities {
 
             return abilities;
         }
-
-        private void Update() {
-            List<AbilityCooldownTimer> activeTimersCopy = new List<AbilityCooldownTimer>(ActiveTimers);
-            activeTimersCopy.ForEach(t => t.UpdateTimer(Time.deltaTime));
-        }
-
+        
         public void UpdateAbilityQueue(List<IAbility> newAbilityQueue) {
             QueuedAbilities = newAbilityQueue;
             AbilityQueueUpdatedEvent?.Invoke(newAbilityQueue);
@@ -380,6 +356,29 @@ namespace Gameplay.Entities {
         public void AbilityFailed(IAbilityData ability) {
             // TODO
         }
+        
+        #endregion
+        #region Moving
+        
+        public bool TryMoveToCell(Vector2Int targetCell, bool blockedByOccupation) {
+            if (!CanMoveOrRally) return false;
+
+            MoveAbilityData data = GetAbilityData<MoveAbilityData>();
+            if (AbilityAssignmentManager.PerformAbility(this, data, new MoveAbilityParameters {
+                    Destination = targetCell, 
+                    NextMoveCell = targetCell, 
+                    SelectorTeam = MyTeam,
+                    BlockedByOccupation = blockedByOccupation
+                }, true)) {
+                SetTargetLocation(targetCell, null);
+            }
+            return true;
+        }
+        
+        // Triggered on server
+        public void EntityMoved() {
+            EntityMovedEvent?.Invoke();
+        }
 
         /// <summary>
         /// Whether this entity can move to (or rally to) a cell with the given tile, assuming it starts adjacent to it.
@@ -404,26 +403,48 @@ namespace Gameplay.Entities {
             return EntityData.NormalMoveTime;
         }
         
-        private void SetupStats() {
-            MaxHP = EntityData.HP;
-            MoveTime = EntityData.NormalMoveTime;
-            Range = EntityData.Range;
-            Damage = EntityData.Damage;
+        #endregion
+        #region Attacking
 
-            List<GameplayTile> tiles = GameManager.Instance.Configuration.Tiles;
-            // Add any tiles that have at least one of our tags in its inaccessible tags list
-            InaccessibleTiles = tiles.Where(t => t.InaccessibleTags.Intersect(Tags).Any()).ToList();
-            // Add any tiles that have at least one of our tags in its slow tags list, and is not an inaccessible tile
-            SlowTiles = tiles.Where(t => t.SlowTags.Intersect(Tags).Any())
-                .Where(t => !InaccessibleTiles.Contains(t))
-                .ToList();
+        public void TryAttackMoveToCell(Vector2Int targetCell) {
+            if (!CanMoveOrRally) return;
+
+            AttackAbilityData data = GetAbilityData<AttackAbilityData>();
+            if (AbilityAssignmentManager.PerformAbility(this, data, new AttackAbilityParameters {
+                        Destination = targetCell, 
+                        TargetFire = false
+                    },
+                    true)) {
+                SetTargetLocation(targetCell, null);
+            }
+        }
+        
+        private enum TargetType {
+            Enemy = 1,
+            Ally = 2,
+            Neutral = 3
         }
 
-        private void SetupView() {
-            int stackOrder = EntityData.GetStackOrder();
-            ViewCanvas.sortingOrder = stackOrder;
-            _view = Instantiate(EntityData.ViewPrefab, ViewCanvas.transform);
-            _view.Initialize(this, stackOrder);
+        public void TryTargetEntity(GridEntity targetEntity, Vector2Int targetCell) {
+            TargetType targetType = GetTargetType(this, targetEntity);
+
+            if (targetType != TargetType.Enemy) return;
+            AttackAbilityData data = GetAbilityData<AttackAbilityData>();
+            if (AbilityAssignmentManager.PerformAbility(this, data, new AttackAbilityParameters {
+                    Target = targetEntity, 
+                    TargetFire = true,
+                    Destination = targetCell
+                }, true)) {
+                SetTargetLocation(targetCell, targetEntity);
+            }
+        }
+
+        private static TargetType GetTargetType(GridEntity originEntity, GridEntity targetEntity) {
+            if (targetEntity.MyTeam == GameTeam.Neutral || originEntity.MyTeam == GameTeam.Neutral) {
+                return TargetType.Neutral;
+            }
+
+            return originEntity.MyTeam == targetEntity.MyTeam ? TargetType.Ally : TargetType.Enemy;
         }
 
         public void ReceiveAttackFromEntity(GridEntity sourceEntity) {
@@ -439,11 +460,8 @@ namespace Gameplay.Entities {
             HPHandler.ReceiveAttackFromEntity(sourceEntity);
         }
         
-        // Client flag
-        private bool _unregistered;
-        public bool DeadOrDying() {
-            return this == null || HPHandler.MarkedForDeath || _unregistered;
-        }
+        #endregion
+        #region Death
         
         /// <summary>
         /// Client event letting us know that we have finished being unregistered and are dying.
@@ -478,5 +496,7 @@ namespace Gameplay.Entities {
         private void OnEntityReadyToDie() {
             CommandManager.DestroyEntity(this);
         }
+        
+        #endregion
     }
 }
