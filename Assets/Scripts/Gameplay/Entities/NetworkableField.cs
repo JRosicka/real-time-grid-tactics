@@ -25,9 +25,10 @@ namespace Gameplay.Entities {
         /// </summary>
         public ValueChangedDelegate ValueChanged;
 
-        public NetworkableField(NetworkBehaviour parent, string fieldName) {
+        public NetworkableField(NetworkBehaviour parent, string fieldName, T startingValue) {
             _parent = parent;
             _fieldName = fieldName;
+            Value = startingValue;
         }
 
         /// <summary>

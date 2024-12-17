@@ -71,8 +71,8 @@ namespace Gameplay.Entities {
         public GridEntity LastAttackedEntity;
 
         private void Awake() {
-            CurrentResources = new NetworkableField<ResourceAmount>(this, nameof(CurrentResources));
-            TargetLocationLogic = new NetworkableField<TargetLocationLogic>(this, nameof(TargetLocationLogic));
+            CurrentResources = new NetworkableField<ResourceAmount>(this, nameof(CurrentResources), new ResourceAmount());
+            TargetLocationLogic = new NetworkableField<TargetLocationLogic>(this, nameof(TargetLocationLogic), new TargetLocationLogic());
         }
 
         /// <summary>

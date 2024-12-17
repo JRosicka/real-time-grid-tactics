@@ -26,7 +26,7 @@ namespace Gameplay.Entities {
         private NetworkableField<NetworkableIntegerValue> _currentHP;
 
         private void Awake() {
-            _currentHP = new NetworkableField<NetworkableIntegerValue>(this, nameof(_currentHP));
+            _currentHP = new NetworkableField<NetworkableIntegerValue>(this, nameof(_currentHP), new NetworkableIntegerValue(0));
             _currentHP.ValueChanged += HPChanged;
         }
         
