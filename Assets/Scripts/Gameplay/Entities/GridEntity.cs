@@ -55,22 +55,7 @@ namespace Gameplay.Entities {
 
         public GridEntityHPHandler HPHandler;
 
-        [SyncVar(hook = nameof(OnCurrentResourcesChanged))] 
-        private ResourceAmount _currentResources;
-        public ResourceAmount CurrentResources {
-            get => _currentResources;
-            set {
-                ResourceAmount oldValue = _currentResources;
-                _currentResources = value;
-                if (!NetworkClient.active) {
-                    // SP, so syncvars won't work... Trigger manually.
-                    OnCurrentResourcesChanged(oldValue, value);
-                }
-            }
-        }
-        private void OnCurrentResourcesChanged(ResourceAmount oldValue, ResourceAmount newValue) {
-            ResourceAmountChangedEvent?.Invoke();
-        }
+        public NetworkableField<ResourceAmount> CurrentResources;
         
         public List<AbilityCooldownTimer> ActiveTimers = new List<AbilityCooldownTimer>();
         
@@ -97,7 +82,8 @@ namespace Gameplay.Entities {
 
             // Syncvar stats
             HPHandler.SetCurrentHP(EntityData.HP, false);
-            CurrentResources = new ResourceAmount(EntityData.StartingResourceSet);
+            CurrentResources = new NetworkableField<ResourceAmount>(this, nameof(CurrentResources));
+            CurrentResources.UpdateValue(EntityData.StartingResourceSet);
             
             // Target logic
             TargetLocationLogic = new TargetLocationLogic(EntityData.CanRally, spawnLocation, null);
@@ -162,7 +148,6 @@ namespace Gameplay.Entities {
         public event Action<IAbility, AbilityCooldownTimer> CooldownTimerExpiredEvent;
         public event Action<IAbility, AbilityCooldownTimer> PerformAnimationEvent;
         public event Action SelectedEvent;
-        public event Action ResourceAmountChangedEvent;
         public event Action UnregisteredEvent;
         // Needs to happen right after UnregisteredEvent, probably. Keep separate. 
         public event Action KilledEvent;

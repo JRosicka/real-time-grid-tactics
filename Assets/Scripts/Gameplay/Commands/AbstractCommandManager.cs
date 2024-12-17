@@ -1,12 +1,14 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using Gameplay.Config;
 using Gameplay.Entities;
 using Gameplay.Entities.Abilities;
 using Gameplay.Grid;
 using Gameplay.Managers;
 using Mirror;
+using Sirenix.Utilities;
 using UnityEngine;
 using Util;
 
@@ -35,6 +37,7 @@ public abstract class AbstractCommandManager : NetworkBehaviour, ICommandManager
     }
 
     public abstract void CancelAbility(IAbility ability);
+    public abstract void UpdateNetworkableField<T>(NetworkBehaviour parent, string fieldName, T newValue);
 
     /// <summary>
     /// An entity was just registered (spawned). Triggered on server. 
@@ -241,6 +244,13 @@ public abstract class AbstractCommandManager : NetworkBehaviour, ICommandManager
         ability.Performer.AbilityFailed(ability.AbilityData);
     }
 
+    protected void DoUpdateNetworkableField(NetworkBehaviour parent, string fieldName, object newValue) {
+        Type type = parent.GetType();
+        MemberInfo info = type.GetField(fieldName) as MemberInfo ?? type.GetProperty(fieldName);
+        dynamic networkableField = info.GetMemberValue(parent);
+        networkableField.DoUpdateValue(newValue);
+    }
+    
     /// <summary>
     /// Reset the reference for <see cref="_entitiesOnGrid"/> to force a sync across clients. Just updating fields in the class
     /// is not enough to get the sync to occur. 

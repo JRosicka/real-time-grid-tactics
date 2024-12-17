@@ -71,6 +71,10 @@ public class MPCommandManager : AbstractCommandManager {
         CmdCancelAbility(ability);
     }
 
+    public override void UpdateNetworkableField<T>(NetworkBehaviour parent, string fieldName, T newValue) {
+        CmdUpdateNetworkableField(parent, fieldName, newValue);
+    }
+
 
     [Command(requiresAuthority = false)] // TODO this should definitely require authority
     private void CmdSpawnEntity(EntityData data, Vector2Int spawnLocation, GameTeam team, GridEntity entityToIgnore) {
@@ -189,5 +193,15 @@ public class MPCommandManager : AbstractCommandManager {
     private void RpcAbilityFailed(IAbility ability) {
         LogTimestamp(nameof(RpcAbilityFailed));
         DoAbilityFailed(ability);
+    }
+
+    [Command(requiresAuthority = false)]
+    private void CmdUpdateNetworkableField(NetworkBehaviour parent, string fieldName, object newValue) {
+        RpcUpdateNetworkableField(parent, fieldName, newValue);
+    }
+
+    [ClientRpc]
+    private void RpcUpdateNetworkableField(NetworkBehaviour parent, string fieldName, object newValue) {
+        DoUpdateNetworkableField(parent, fieldName, newValue);
     }
 }

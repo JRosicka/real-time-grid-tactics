@@ -3,6 +3,7 @@ using Gameplay.Config;
 using Gameplay.Entities;
 using Gameplay.Entities.Abilities;
 using Gameplay.Managers;
+using Mirror;
 using UnityEngine;
 
 /// <summary>
@@ -29,6 +30,7 @@ public interface ICommandManager {
     void ClearAbilityQueue(GridEntity entity);
     void MarkAbilityCooldownExpired(IAbility ability);
     void CancelAbility(IAbility ability);
+    void UpdateNetworkableField<T>(NetworkBehaviour parent, string fieldName, T newValue);
     /// <summary>
     /// An entity was just registered (spawned). Triggered on server. 
     /// </summary>

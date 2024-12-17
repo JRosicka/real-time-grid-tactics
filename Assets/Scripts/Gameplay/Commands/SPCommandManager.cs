@@ -4,6 +4,7 @@ using Gameplay.Config;
 using Gameplay.Entities;
 using Gameplay.Entities.Abilities;
 using Gameplay.Managers;
+using Mirror;
 using UnityEngine;
 
 public class SPCommandManager : AbstractCommandManager {
@@ -71,5 +72,9 @@ public class SPCommandManager : AbstractCommandManager {
     public override void CancelAbility(IAbility ability) {
         DoCancelAbility(ability);
         DoMarkAbilityCooldownExpired(ability, true);
+    }
+
+    public override void UpdateNetworkableField<T>(NetworkBehaviour parent, string fieldName, T newValue) {
+        DoUpdateNetworkableField(parent, fieldName, newValue);
     }
 }

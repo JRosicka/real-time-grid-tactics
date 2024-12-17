@@ -69,7 +69,7 @@ namespace Gameplay.UI {
 
             entity.AbilityPerformedEvent += OnEntityAbilityPerformed;
             entity.CooldownTimerExpiredEvent += OnEntityAbilityCooldownExpired;
-            entity.ResourceAmountChangedEvent += OnEntityResourceAmountChanged;
+            entity.CurrentResources.ValueChanged += OnEntityResourceAmountChanged;
             
             ToggleViews(true);
 
@@ -102,7 +102,7 @@ namespace Gameplay.UI {
             
             _displayedEntity.AbilityPerformedEvent -= OnEntityAbilityPerformed;
             _displayedEntity.CooldownTimerExpiredEvent -= OnEntityAbilityCooldownExpired;
-            _displayedEntity.ResourceAmountChangedEvent -= OnEntityResourceAmountChanged;
+            _displayedEntity.CurrentResources.ValueChanged -= OnEntityResourceAmountChanged;
 
             _activeMoveCooldownTimer = null;
             _displayedEntity = null;
@@ -135,7 +135,7 @@ namespace Gameplay.UI {
             UpdateEntityInfo();
         }
 
-        private void OnEntityResourceAmountChanged() {
+        private void OnEntityResourceAmountChanged(ResourceAmount oldValue, ResourceAmount newValue) {
             UpdateEntityInfo();
         }
 
@@ -176,8 +176,8 @@ namespace Gameplay.UI {
 
             if (entityData.StartingResourceSet.Amount > 0) {
                 ResourceRow.gameObject.SetActive(true);
-                ResourceLabel.text = $"{_displayedEntity.CurrentResources.Type.DisplayName()}:";
-                ResourceField.text = _displayedEntity.CurrentResources.Amount.ToString();
+                ResourceLabel.text = $"{_displayedEntity.CurrentResources.Value.Type.DisplayName()}:";
+                ResourceField.text = _displayedEntity.CurrentResources.Value.Amount.ToString();
             } else {
                 ResourceRow.gameObject.SetActive(false);
             }

@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using Gameplay.Entities;
 using Gameplay.Entities.Abilities;
@@ -37,8 +36,8 @@ namespace Gameplay.Config.Abilities {
                 .Select(e => e.Entity)
                 .FirstOrDefault(e => e.Tags.Contains(EntityData.EntityTag.Resource));
             if (resourceEntity == null) return false;
-            if (resourceEntity.CurrentResources.Type != ResourceAmountIncome.Type) return false;
-            if (resourceEntity.CurrentResources.Amount <= 0) return false;
+            if (resourceEntity.CurrentResources.Value.Type != ResourceAmountIncome.Type) return false;
+            if (resourceEntity.CurrentResources.Value.Amount <= 0) return false;
             return true;
         }
 
