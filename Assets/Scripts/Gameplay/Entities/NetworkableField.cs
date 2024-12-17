@@ -13,7 +13,7 @@ namespace Gameplay.Entities {
     /// - Allows for tracking state correctly in both SP and MP instead of just MP
     /// - Allows for any client to update the value, not just the host
     /// </summary>
-    public class NetworkableField<T> where T : NetworkableFieldValue {
+    public class NetworkableField<T> where T : INetworkableFieldValue {
         private readonly NetworkBehaviour _parent;
         private readonly string _fieldName;
         public T Value { get; private set; }
@@ -42,7 +42,7 @@ namespace Gameplay.Entities {
         /// Only call this via <see cref="ICommandManager"/>. Called on the client.
         /// </summary>
         [SuppressMessage("ReSharper", "UnusedMember.Global")]   // Called via reflection
-        public void DoUpdateValue(NetworkableFieldValue newValueObject, string metaData) {
+        public void DoUpdateValue(INetworkableFieldValue newValueObject, string metaData) {
             T newValue = (T)newValueObject;
             T oldValue = Value;
             Value = newValue;

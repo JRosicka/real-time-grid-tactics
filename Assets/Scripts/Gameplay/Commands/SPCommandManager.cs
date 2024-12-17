@@ -74,7 +74,7 @@ public class SPCommandManager : AbstractCommandManager {
         DoMarkAbilityCooldownExpired(ability, true);
     }
 
-    public override void UpdateNetworkableField(NetworkBehaviour parent, string fieldName, NetworkableFieldValue newValue, string metadata) {
+    public override void UpdateNetworkableField(NetworkBehaviour parent, string fieldName, INetworkableFieldValue newValue, string metadata) {
         DoUpdateNetworkableField(parent, fieldName, newValue, metadata);
     }
 }

@@ -22,7 +22,9 @@ public static class ResourceTypeExtensions {
 }
     
 [Serializable]
-public class ResourceAmount : NetworkableFieldValue {
+public class ResourceAmount : INetworkableFieldValue {
+    public string ID => nameof(ResourceAmount);
+
     public ResourceType Type;
     public int Amount;
 
@@ -31,6 +33,18 @@ public class ResourceAmount : NetworkableFieldValue {
     public ResourceAmount(ResourceAmount other) {
         Type = other.Type;
         Amount = other.Amount;
+    }
+    
+    public void SerializeValue(NetworkWriter writer) {
+        writer.WriteInt((int)Type);
+        writer.WriteInt(Amount);
+    }
+
+    public static ResourceAmount Deserialize(NetworkReader reader) {
+        return new ResourceAmount {
+            Type = (ResourceType)reader.ReadInt(),
+            Amount = reader.ReadInt()
+        };
     }
 }
 

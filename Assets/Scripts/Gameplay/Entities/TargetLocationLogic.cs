@@ -5,7 +5,9 @@ namespace Gameplay.Entities {
     /// <summary>
     /// Logic for tracking an entity's current target
     /// </summary>
-    public class TargetLocationLogic : NetworkableFieldValue {
+    public class TargetLocationLogic : INetworkableFieldValue {
+        public string ID => nameof(TargetLocationLogic);
+
         /// <summary>
         /// Whether the target is a rally point rather than a destination to move to
         /// </summary>
@@ -26,6 +28,17 @@ namespace Gameplay.Entities {
             CanRally = canRally;
             CurrentTarget = initialTargetLocation;
             TargetEntity = targetEntity;
+        }
+
+        public void SerializeValue(NetworkWriter writer) {
+            writer.WriteBool(CanRally);
+            writer.WriteVector2Int(CurrentTarget);
+            writer.Write(TargetEntity);
+        }
+
+        public static TargetLocationLogic Deserialize(NetworkReader reader) {
+            return new TargetLocationLogic(reader.ReadBool(), reader.ReadVector2Int(),
+                reader.Read<GridEntity>());
         }
     }
     
