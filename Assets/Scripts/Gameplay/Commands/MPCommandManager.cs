@@ -71,7 +71,7 @@ public class MPCommandManager : AbstractCommandManager {
         CmdCancelAbility(ability);
     }
 
-    public override void UpdateNetworkableField<T>(NetworkBehaviour parent, string fieldName, T newValue, object metadata) {
+    public override void UpdateNetworkableField(NetworkBehaviour parent, string fieldName, NetworkableFieldValue newValue, string metadata) {
         CmdUpdateNetworkableField(parent, fieldName, newValue, metadata);
     }
 
@@ -196,12 +196,12 @@ public class MPCommandManager : AbstractCommandManager {
     }
 
     [Command(requiresAuthority = false)]
-    private void CmdUpdateNetworkableField(NetworkBehaviour parent, string fieldName, object newValue, object metadata) {
+    private void CmdUpdateNetworkableField(NetworkBehaviour parent, string fieldName, NetworkableFieldValue newValue, string metadata) {
         RpcUpdateNetworkableField(parent, fieldName, newValue, metadata);
     }
 
     [ClientRpc]
-    private void RpcUpdateNetworkableField(NetworkBehaviour parent, string fieldName, object newValue, object metadata) {
+    private void RpcUpdateNetworkableField(NetworkBehaviour parent, string fieldName, NetworkableFieldValue newValue, string metadata) {
         DoUpdateNetworkableField(parent, fieldName, newValue, metadata);
     }
 }

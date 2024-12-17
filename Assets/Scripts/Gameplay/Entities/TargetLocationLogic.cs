@@ -1,4 +1,3 @@
-using Gameplay.Config;
 using Mirror;
 using UnityEngine;
 
@@ -6,7 +5,7 @@ namespace Gameplay.Entities {
     /// <summary>
     /// Logic for tracking an entity's current target
     /// </summary>
-    public class TargetLocationLogic {
+    public class TargetLocationLogic : NetworkableFieldValue {
         /// <summary>
         /// Whether the target is a rally point rather than a destination to move to
         /// </summary>

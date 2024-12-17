@@ -11,6 +11,7 @@ namespace Gameplay.Entities {
     /// death. 
     /// </summary>
     public class GridEntityHPHandler : NetworkBehaviour {
+        public event Action HPChangedEvent;
         public event Action AttackedEvent;
         public event Action HealedEvent;
         
@@ -20,24 +21,28 @@ namespace Gameplay.Entities {
         // Server flag?
         public bool MarkedForDeath { get; private set; }
 
-        public NetworkableField<int> CurrentHP { get; private set; }
+        public int CurrentHP => _currentHP?.Value.Value ?? 0;
+        
+        private NetworkableField<NetworkableIntegerValue> _currentHP;
 
         private void Awake() {
-            CurrentHP = new NetworkableField<int>(this, nameof(CurrentHP));
-            CurrentHP.ValueChanged += HPChanged;
+            _currentHP = new NetworkableField<NetworkableIntegerValue>(this, nameof(_currentHP));
+            _currentHP.ValueChanged += HPChanged;
         }
         
         #region Update HP
         
         public void SetCurrentHP(int newHP, bool fromGameEffect) {
-            CurrentHP.UpdateValue(newHP, fromGameEffect);
+            _currentHP.UpdateValue(new NetworkableIntegerValue(newHP), fromGameEffect.ToString());
         }
 
-        private void HPChanged(int oldHP, int newHP, object metadata) {
-            bool fromGameEffect = (bool)metadata;
-            if (fromGameEffect && oldHP < newHP) {
+        private void HPChanged(NetworkableIntegerValue oldHP, NetworkableIntegerValue newHP, string metadata) {
+            HPChangedEvent?.Invoke();
+            
+            bool fromGameEffect = Convert.ToBoolean(metadata);
+            if (fromGameEffect && oldHP.Value < newHP.Value) {
                 HealedEvent?.Invoke();
-            } else if (fromGameEffect && oldHP > newHP) {
+            } else if (fromGameEffect && oldHP.Value > newHP.Value) {
                 AttackedEvent?.Invoke();
             }
         }
@@ -68,17 +73,17 @@ namespace Gameplay.Entities {
                 }
             }
             
-            SetCurrentHP(CurrentHP.Value - Mathf.RoundToInt(damage), true);
+            SetCurrentHP(CurrentHP - Mathf.RoundToInt(damage), true);
 
-            if (CurrentHP.Value <= 0) {
+            if (CurrentHP <= 0) {
                 Kill();
             }
         }
         
         public void Heal(int healAmount) {
-            if (CurrentHP.Value == _gridEntity.MaxHP) return;
+            if (CurrentHP == _gridEntity.MaxHP) return;
 
-            int newHP = CurrentHP.Value + healAmount;
+            int newHP = CurrentHP + healAmount;
             newHP = Mathf.Min(newHP, _gridEntity.MaxHP);
             SetCurrentHP(newHP, true);
         }
@@ -88,6 +93,14 @@ namespace Gameplay.Entities {
             MarkedForDeath = true;
             
             GameManager.Instance.CommandManager.UnRegisterEntity(_gridEntity, true);
+        }
+    }
+
+    [Serializable]
+    public class NetworkableIntegerValue : NetworkableFieldValue {
+        public int Value;
+        public NetworkableIntegerValue(int value) {
+            Value = value;
         }
     }
 }

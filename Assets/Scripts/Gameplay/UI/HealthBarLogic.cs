@@ -13,18 +13,18 @@ namespace Gameplay.UI {
 
         public HealthBarLogic(GridEntity gridEntity) {
             _gridEntity = gridEntity;
-            gridEntity.HPHandler.CurrentHP.ValueChanged += EntityHPChanged;
+            gridEntity.HPHandler.HPChangedEvent += EntityHPChanged;
             gridEntity.KilledEvent += DestroyBar;
         }
         
         public void UnsubscribeFromEvents() {
             if (_gridEntity != null) {
-                _gridEntity.HPHandler.CurrentHP.ValueChanged -= EntityHPChanged;
+                _gridEntity.HPHandler.HPChangedEvent -= EntityHPChanged;
                 _gridEntity.KilledEvent -= DestroyBar;
             }
         }
 
-        private void EntityHPChanged(int oldValue, int newValue, object metadata) {
+        private void EntityHPChanged() {
             BarUpdateEvent?.Invoke();
         }
 
@@ -32,7 +32,7 @@ namespace Gameplay.UI {
             BarDestroyEvent?.Invoke();
         }
         
-        public float CurrentValue => _gridEntity.HPHandler.CurrentHP.Value;
+        public float CurrentValue => _gridEntity.HPHandler.CurrentHP;
         public float MaxValue => _gridEntity.MaxHP;
         
         // TODO eventually configure these somewhere else

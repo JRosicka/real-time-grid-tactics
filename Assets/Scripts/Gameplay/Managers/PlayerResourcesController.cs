@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Gameplay.Config;
+using Gameplay.Entities;
 using Mirror;
 using UnityEngine;
 
@@ -21,7 +22,7 @@ public static class ResourceTypeExtensions {
 }
     
 [Serializable]
-public class ResourceAmount {
+public class ResourceAmount : NetworkableFieldValue {
     public ResourceType Type;
     public int Amount;
 

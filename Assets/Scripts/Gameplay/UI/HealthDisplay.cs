@@ -14,16 +14,16 @@ namespace Gameplay.UI {
         public void SetTarget(GridEntity entity) {
             if (_target != null) {
                 // Remove event listener from old target if assigned
-                _target.HPHandler.CurrentHP.ValueChanged -= UpdateHealth;
+                _target.HPHandler.HPChangedEvent -= UpdateHealth;
             }
 
             _target = entity;
-            _target.HPHandler.CurrentHP.ValueChanged += UpdateHealth;
-            UpdateHealth(0, _target.HPHandler.CurrentHP.Value, null);
+            _target.HPHandler.HPChangedEvent += UpdateHealth;
+            UpdateHealth();
         }
 
-        private void UpdateHealth(int oldValue, int newValue, object metadata) {
-            HealthField.text = $"{newValue} / {_target.MaxHP}";
+        private void UpdateHealth() {
+            HealthField.text = $"{_target.HPHandler.CurrentHP} / {_target.MaxHP}";
         }
     }
 }

@@ -37,7 +37,7 @@ public abstract class AbstractCommandManager : NetworkBehaviour, ICommandManager
     }
 
     public abstract void CancelAbility(IAbility ability);
-    public abstract void UpdateNetworkableField<T>(NetworkBehaviour parent, string fieldName, T newValue, object metadata);
+    public abstract void UpdateNetworkableField(NetworkBehaviour parent, string fieldName, NetworkableFieldValue newValue, string metadata);
 
     /// <summary>
     /// An entity was just registered (spawned). Triggered on server. 
@@ -244,7 +244,7 @@ public abstract class AbstractCommandManager : NetworkBehaviour, ICommandManager
         ability.Performer.AbilityFailed(ability.AbilityData);
     }
 
-    protected void DoUpdateNetworkableField(NetworkBehaviour parent, string fieldName, object newValue, object metadata) {
+    protected void DoUpdateNetworkableField(NetworkBehaviour parent, string fieldName, NetworkableFieldValue newValue, string metadata) {
         Type type = parent.GetType();
         MemberInfo info = type.GetField(fieldName) as MemberInfo ?? type.GetProperty(fieldName);
         dynamic networkableField = info.GetMemberValue(parent);

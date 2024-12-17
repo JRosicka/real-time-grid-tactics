@@ -30,7 +30,7 @@ public interface ICommandManager {
     void ClearAbilityQueue(GridEntity entity);
     void MarkAbilityCooldownExpired(IAbility ability);
     void CancelAbility(IAbility ability);
-    void UpdateNetworkableField<T>(NetworkBehaviour parent, string fieldName, T newValue, object metaData);
+    void UpdateNetworkableField(NetworkBehaviour parent, string fieldName, NetworkableFieldValue newValue, string metaData);
     /// <summary>
     /// An entity was just registered (spawned). Triggered on server. 
     /// </summary>
