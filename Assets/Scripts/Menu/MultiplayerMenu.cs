@@ -106,16 +106,18 @@ public class MultiplayerMenu : MonoBehaviour {
     public void OnHostPrivateLobbyClicked() {
         SteamLobbyService.Instance.HostLobby(false);
 
-        LobbyTypeSelection.SetActive(false);
-        // StopHostButton.gameObject.SetActive(true);
-        HostButton.gameObject.SetActive(false);
-        LobbySearchButton.gameObject.SetActive(false);
-        JoinByIDButton.gameObject.SetActive(false);
+        HideButtons();
     }
 
     public void OnHostPublicLobbyClicked() {
         SteamLobbyService.Instance.HostLobby(true);
+        
+        HideButtons();
+        
+        // TODO maybe respond to OnLobbyCreationComplete callback? Might just get whisked away to the room though. 
+    }
 
+    private void HideButtons() {
         LobbyTypeSelection.SetActive(false);
         // StopHostButton.gameObject.SetActive(true);
         HostButton.gameObject.SetActive(false);
@@ -123,8 +125,7 @@ public class MultiplayerMenu : MonoBehaviour {
         JoinByIDButton.gameObject.SetActive(false);
         CancelButton.gameObject.SetActive(false);
         QuitButton.gameObject.SetActive(false); 
-        
-        // TODO maybe respond to OnLobbyCreationComplete callback? Might just get whisked away to the room though. 
+        SinglePlayerButton.gameObject.SetActive(false);
     }
 
     public void OnStartSinglePlayerGameClicked() {
