@@ -244,6 +244,11 @@ public abstract class AbstractCommandManager : NetworkBehaviour, ICommandManager
     }
 
     protected void DoUpdateNetworkableField(NetworkBehaviour parent, string fieldName, INetworkableFieldValue newValue, string metadata) {
+        if (parent == null) {
+            // The parent (GridEntity or otherwise) has been destroyed. Just do nothing. 
+            Debug.Log($"Parent is kill for {fieldName}");
+            return;
+        }
         Type type = parent.GetType();
         BindingFlags bindingFlags = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic;
         MemberInfo info = type.GetField(fieldName, bindingFlags) as MemberInfo 
