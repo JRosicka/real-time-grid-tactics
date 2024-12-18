@@ -2459,7 +2459,7 @@ MonoBehaviour:
   onlineScene: Assets/Scenes/Room.unity
   transport: {fileID: 1716136049}
   networkAddress: localhost
-  maxConnections: 2
+  maxConnections: 10
   authenticator: {fileID: 0}
   playerPrefab: {fileID: 1480027675339556, guid: 55db1d50132c69d4fb591de75d649982, type: 3}
   autoCreatePlayer: 1
@@ -2470,7 +2470,7 @@ MonoBehaviour:
   - {fileID: 8358905128234154868, guid: 4a9a831e37d10b7489f112c3d665e6d4, type: 3}
   - {fileID: 58514246982734065, guid: 7ae4d1f5989894796b824bc120222926, type: 3}
   showRoomGUI: 0
-  minPlayers: 2
+  minPlayers: 1
   roomPlayerPrefab: {fileID: 4969931017508440330, guid: 1c7a6204d5610c24ba957415e5b786de, type: 3}
   RoomScene: Assets/Scenes/Room.unity
   GameplayScene: Assets/Scenes/GamePlay.unity

@@ -17,14 +17,15 @@ namespace Game.Network
         [SyncVar(hook = nameof(OnDisplayNameSet))]
         public string DisplayName;
         [SyncVar]
-        private CSteamID _steamID;
+        public CSteamID SteamID;
 
         public static event Action PlayerReadyStatusChanged;
         public static event Action PlayerSteamInfoDetermined;
+        public event Action<ulong, int> PlayerSwappedToSlot;
 
         [Command]
         private void CmdSetSteamIDs(CSteamID newSteamID, string newDisplayName) {
-            _steamID = newSteamID;
+            SteamID = newSteamID;
             DisplayName = newDisplayName;
         }
         
@@ -46,6 +47,19 @@ namespace Game.Network
         [Command]
         private void CmdDoKick() {
             netIdentity.connectionToClient.Disconnect();
+        }
+
+        [Command]
+        public void CmdSwapToSlot(int slotIndex) {
+            // Swapping un-readies the player 
+            CmdChangeReadyState(false);
+            
+            RpcSwapToSlot(slotIndex);
+        }
+
+        [ClientRpc]
+        private void RpcSwapToSlot(int slotIndex) {
+            PlayerSwappedToSlot?.Invoke(SteamID.m_SteamID, slotIndex);
         }
 
         public override void OnStartClient()

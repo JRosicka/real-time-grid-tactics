@@ -1,17 +1,20 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Game.Network;
-using kcp2k;
 using Mirror;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>
+/// UI for the game lobby.
+/// TODO: Also handles a lot of the business logic for swapping players around and starting the game. Might be good to
+/// separate that out into its own class. 
+/// </summary>
 public class RoomMenu : MonoBehaviour {
     public PlayerSlot PlayerSlot1;
     public PlayerSlot PlayerSlot2;
+    public List<PlayerSlot> SpectatorSlots;
     public Button StartButton;
     public Button ToggleReadyButton;
     public TMP_Text ToggleReadyButtonText;
@@ -22,49 +25,35 @@ public class RoomMenu : MonoBehaviour {
     private GameNetworkManager _gameNetworkManager;
     private SteamLobbyService steamLobbyService => SteamLobbyService.Instance;
     private string _joinCode;
+
+    private List<GameNetworkPlayer> PlayersInLobby => FindObjectsOfType<GameNetworkPlayer>().ToList();
     private GameNetworkPlayer _cachedGameNetworkPlayer;
     private GameNetworkPlayer _localPlayer {
         get {
             if (_cachedGameNetworkPlayer == null) {
-                _cachedGameNetworkPlayer = FindObjectsOfType<GameNetworkPlayer>().First(player => player.isLocalPlayer);
+                _cachedGameNetworkPlayer = PlayersInLobby.First(player => player.isLocalPlayer);
             }
 
             return _cachedGameNetworkPlayer;
         }
     }
-    
-    // Do not cache because other players can leave/join later
-    private GameNetworkPlayer _opponentPlayer {
-        get {
-            return FindObjectsOfType<GameNetworkPlayer>().First(player => !player.isLocalPlayer);
-        }
-    }
 
-    private PlayerSlot localPlayerSlot => PlayerSlot1.AssignedPlayer.isLocalPlayer ? PlayerSlot1 : PlayerSlot2;
-    private PlayerSlot opponentPlayerSlot => PlayerSlot1.AssignedPlayer.isLocalPlayer ? PlayerSlot2 : PlayerSlot1;
+    private PlayerSlot localPlayerSlot => AllPlayerSlots.First(s => s.AssignedPlayer != null && s.AssignedPlayer.isLocalPlayer);
 
-    private PlayerSlot GetSlotForPlayer(GameNetworkPlayer player) {
-        if (PlayerSlot1.AssignedPlayer == player) {
-            return PlayerSlot1;
-        }
-
-        if (PlayerSlot2.AssignedPlayer == player) {
-            return PlayerSlot2;
-        }
-
-        return null;
+    private PlayerSlot SlotForPlayer(GameNetworkPlayer player) {
+        return AllPlayerSlots.FirstOrDefault(s => s.AssignedPlayer == player);
     }
 
     void Start() {
         StartButton.gameObject.SetActive(false);
         _gameNetworkManager = FindObjectOfType<GameNetworkManager>();
-        _gameNetworkManager.RoomServerPlayersReadyAction += ShowStartButton;
+        _gameNetworkManager.RoomServerPlayersReadyAction += TryShowStartButton;
         _gameNetworkManager.RoomServerPlayersNotReadyAction += HideStartButton;
         _gameNetworkManager.RoomServerSceneChangedAction += UpdateLobbyOpenStatus;
         _gameNetworkManager.RoomClientSceneChangedAction += AddUnassignedPlayers;
         GameNetworkPlayer.PlayerSteamInfoDetermined += AddUnassignedPlayers;
         GameNetworkPlayer.PlayerReadyStatusChanged += UpdatePlayerReadyStatus;
-        GameNetworkPlayer.PlayerExitedRoom += UnassignPlayer;
+        GameNetworkPlayer.PlayerExitedRoom += UpdatePlayers;
         GameNetworkPlayer.PlayerExitedRoom += ResetReadyButton;
 
         SteamLobbyService.Lobby lobby =
@@ -77,10 +66,10 @@ public class RoomMenu : MonoBehaviour {
     private void OnDestroy() {
         GameNetworkPlayer.PlayerSteamInfoDetermined -= AddUnassignedPlayers;
         GameNetworkPlayer.PlayerReadyStatusChanged -= UpdatePlayerReadyStatus;
-        GameNetworkPlayer.PlayerExitedRoom -= UnassignPlayer;
+        GameNetworkPlayer.PlayerExitedRoom -= UpdatePlayers;
         GameNetworkPlayer.PlayerExitedRoom -= ResetReadyButton;
         if (_gameNetworkManager != null) {
-            _gameNetworkManager.RoomServerPlayersReadyAction -= ShowStartButton;
+            _gameNetworkManager.RoomServerPlayersReadyAction -= TryShowStartButton;
             _gameNetworkManager.RoomServerPlayersNotReadyAction -= HideStartButton;
             _gameNetworkManager.RoomServerSceneChangedAction -= UpdateLobbyOpenStatus;
             _gameNetworkManager.RoomClientSceneChangedAction -= AddUnassignedPlayers;
@@ -111,8 +100,19 @@ public class RoomMenu : MonoBehaviour {
         CopiedToClipboardAnimator.Play("Copy Join Code");
     }
 
-    private void ShowStartButton() {
-        StartButton.gameObject.SetActive(true);
+    private void TryShowStartButton() {
+        if (PlayerSlot1.AssignedPlayer == null && PlayerSlot2.AssignedPlayer == null) {
+            // Need at least one filled team slot to start a game
+            StartButton.gameObject.SetActive(false);
+        } else if (PlayerSlot1.AssignedPlayer != null && !PlayerSlot1.AssignedPlayer.readyToBegin) {
+            // Player 1 not ready
+            StartButton.gameObject.SetActive(false);
+        } else if (PlayerSlot2.AssignedPlayer != null && !PlayerSlot2.AssignedPlayer.readyToBegin) {
+            // Player 2 not ready
+            StartButton.gameObject.SetActive(false);
+        } else {
+            StartButton.gameObject.SetActive(true);
+        }
     }
 
     private void HideStartButton() {
@@ -120,47 +120,87 @@ public class RoomMenu : MonoBehaviour {
     }
 
     private void AddUnassignedPlayers() {
-        // List<GameNetworkPlayer> players = _gameNetworkManager.roomSlots.ConvertAll(player => (GameNetworkPlayer)player);
-        List<GameNetworkPlayer> players = FindObjectsOfType<GameNetworkPlayer>().OrderBy(p => p.index).ToList();
+        List<GameNetworkPlayer> players = PlayersInLobby.OrderBy(p => p.index).ToList();
         
         // Assign any unassigned players
-        bool isHosting = _gameNetworkManager.IsHosting();
-        foreach (GameNetworkPlayer player in players) {
-            if (PlayerSlot1.AssignedPlayer != player && PlayerSlot2.AssignedPlayer != player) {
-                if (PlayerSlot1.AssignedPlayer == null) {
-                    bool kickable = !player.isLocalPlayer && isHosting;
-                    PlayerSlot1.AssignPlayer(player, kickable);
-                } else if (PlayerSlot2.AssignedPlayer == null) {
-                    bool kickable = !player.isLocalPlayer && isHosting;
-                    PlayerSlot2.AssignPlayer(player, kickable);
-                } else {
-                    Log.Error("A new player joined, but we don't have any slots for them!");
-                }
+        foreach (GameNetworkPlayer player in players.Where(player => !AllPlayerSlots.Select(s => s.AssignedPlayer).Contains(player))) {
+            PlayerSlot nextEmptySlot = GetNextEmptySlot();
+            if (nextEmptySlot == null) {
+                Debug.LogError("A new player joined, but we don't have any slots for them!");
+            } else {
+                nextEmptySlot.AssignPlayer(player, PlayerIsKickable(player));
+                player.PlayerSwappedToSlot += HandlePlayerSwappedToSlot;
             }
         }
 
         UpdatePlayerReadyStatus();
+        ResetReadyButton();
         // TODO: If players can update their info for their slots, do so here
     }
 
-    private void UpdatePlayerReadyStatus() {
-        List<GameNetworkPlayer> players = _gameNetworkManager.roomSlots.ConvertAll(player => (GameNetworkPlayer)player);
-
-        foreach (PlayerSlot slot in new [] {PlayerSlot1, PlayerSlot2}) {
-            slot.UpdateReadyStatus();
-        }
+    private PlayerSlot GetNextEmptySlot() {
+        return PlayerSlot1.AssignedPlayer == null ? PlayerSlot1
+            : PlayerSlot2.AssignedPlayer == null ? PlayerSlot2
+            : SpectatorSlots.FirstOrDefault(s => s.AssignedPlayer == null);
     }
 
-    private void UnassignPlayer() {
+    private List<PlayerSlot> AllPlayerSlots => new List<PlayerSlot> { PlayerSlot1, PlayerSlot2 }.Concat(SpectatorSlots).ToList();
+
+    private void UpdatePlayerReadyStatus() {
+        AllPlayerSlots.ForEach(s => s.UpdateReadyStatus());
+    }
+
+    private void UpdatePlayers() {
         List<GameNetworkPlayer> players = _gameNetworkManager.roomSlots.ConvertAll(player => (GameNetworkPlayer)player);
 
         // Unassign any players who have disconnected
-        if (PlayerSlot1.AssignedPlayer != null && !players.Contains(PlayerSlot1.AssignedPlayer)) {
-            PlayerSlot1.UnassignPlayer();
+        foreach (PlayerSlot playerSlot in AllPlayerSlots) {
+            if (playerSlot.AssignedPlayer != null && !players.Contains(playerSlot.AssignedPlayer)) {
+                playerSlot.UnassignPlayer();
+            }
         }
-        if (PlayerSlot2.AssignedPlayer != null && !players.Contains(PlayerSlot2.AssignedPlayer)) {
-            PlayerSlot2.UnassignPlayer();
+    }
+
+    private bool PlayerIsKickable(GameNetworkPlayer player) {
+        return _gameNetworkManager.IsHosting() && !player.isLocalPlayer;
+    }
+
+    public void SwapLocalPlayerToSlot(PlayerSlot playerSlot) {
+        _localPlayer.CmdSwapToSlot(playerSlot.SlotIndex);
+    }
+
+    // Client event
+    private void HandlePlayerSwappedToSlot(ulong steamID, int slotIndex) {
+        PlayerSlot slotToSwapTo = AllPlayerSlots.First(s => s.SlotIndex == slotIndex);
+        if (slotToSwapTo.AssignedPlayer != null) {
+            Debug.LogWarning($"Tried to swap to a slot that already contains a player! Slot: {slotIndex}.");
+            return;
         }
+
+        GameNetworkPlayer playerToAssign = PlayersInLobby.FirstOrDefault(p => p.SteamID.m_SteamID == steamID);
+        if (playerToAssign == null) {
+            Debug.LogWarning($"Tried to swap a player that is not in the lobby! Steam ID: {steamID}. Slot: {slotIndex}");
+            return;
+        }
+        
+        PlayerSlot slotToSwapFrom = SlotForPlayer(playerToAssign);
+        if (slotToSwapFrom == null) {
+            Debug.LogWarning($"Tried to swap a player away from a slot, but they are not currently assigned to " +
+                             $"a slot! Steam ID: {steamID}. Slot we attempted to swap to: {slotIndex}");
+            return;
+        }
+        
+        // Unassign the player from whatever slot they were in
+        slotToSwapFrom.UnassignPlayer();
+        
+        // Assign the player to their new slot
+        slotToSwapTo.AssignPlayer(playerToAssign, PlayerIsKickable(playerToAssign));
+        
+        // If the local player just swapped, then we might want to toggle the availability of the ready/cancel button
+        ResetReadyButton();
+        
+        // Swapping players out of/into a player slot could affect whether we can start the game
+        TryShowStartButton();
     }
 
     public void ToggleReady() {
@@ -178,10 +218,15 @@ public class RoomMenu : MonoBehaviour {
     /// room, then call this to reset the text on the ready button to reflect the actual ready state
     /// </summary>
     private void ResetReadyButton() {
-        if (_localPlayer.readyToBegin) {
-            ToggleReadyButtonText.text = "Cancel";
+        if (localPlayerSlot.SpectatorSlot) { 
+            ToggleReadyButton.gameObject.SetActive(false);
         } else {
-            ToggleReadyButtonText.text = "Ready";
+            ToggleReadyButton.gameObject.SetActive(true);
+            if (_localPlayer.readyToBegin) {
+                ToggleReadyButtonText.text = "Cancel";
+            } else {
+                ToggleReadyButtonText.text = "Ready";
+            }
         }
     }
     

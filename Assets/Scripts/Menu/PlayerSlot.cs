@@ -15,11 +15,13 @@ public class PlayerSlot : MonoBehaviour {
     public Button KickButton;
     public TMP_Text ReadyText;
     public TMP_Text NotReadyText;
+    public RoomMenu RoomMenu;
     
     [Header("Config")]
     public Color PlayerColor;
-    public int PlayerIndex;
+    public int SlotIndex;
     public GameNetworkPlayer AssignedPlayer;
+    public bool SpectatorSlot;
 
     public void Start() {
         // Configure
@@ -53,7 +55,8 @@ public class PlayerSlot : MonoBehaviour {
     }
 
     public void SwapToSlot() {
-        
+        if (AssignedPlayer != null) return;
+        RoomMenu.SwapLocalPlayerToSlot(this);
     }
 
     public void KickPlayer() {
@@ -68,11 +71,13 @@ public class PlayerSlot : MonoBehaviour {
 
     public void UpdateReadyStatus() {
         if (AssignedPlayer == null) {
+            ReadyText.gameObject.SetActive(false);
+            NotReadyText.gameObject.SetActive(false);
             return;
         }
         
-        ReadyText.gameObject.SetActive(AssignedPlayer.readyToBegin);
-        NotReadyText.gameObject.SetActive(!AssignedPlayer.readyToBegin);
+        ReadyText.gameObject.SetActive(AssignedPlayer.readyToBegin && !SpectatorSlot);
+        NotReadyText.gameObject.SetActive(!AssignedPlayer.readyToBegin && !SpectatorSlot);
     }
 
     /// <summary>
@@ -80,12 +85,12 @@ public class PlayerSlot : MonoBehaviour {
     /// </summary>
     private void DisplayActive(bool active) {
         PlayerName.gameObject.SetActive(active);
-        ColorLabel.gameObject.SetActive(active);
-        Color.gameObject.SetActive(active);
+        ColorLabel.gameObject.SetActive(active && !SpectatorSlot);
+        Color.gameObject.SetActive(active && !SpectatorSlot);
         EmptyLabel.gameObject.SetActive(!active);
         KickButton.gameObject.SetActive(false);
         ReadyText.gameObject.SetActive(false);
-        NotReadyText.gameObject.SetActive(active);
+        NotReadyText.gameObject.SetActive(active && !SpectatorSlot);
         if (active) {
             UpdateReadyStatus();
         }
