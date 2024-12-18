@@ -197,10 +197,12 @@ public class MPCommandManager : AbstractCommandManager {
 
     [Command(requiresAuthority = false)]
     private void CmdUpdateNetworkableField(NetworkBehaviour parent, string fieldName, INetworkableFieldValue newValue, string metadata) {
+        // Update the field right away on the server
+        DoUpdateNetworkableField(parent, fieldName, newValue, metadata);
         RpcUpdateNetworkableField(parent, fieldName, newValue, metadata);
     }
 
-    [ClientRpc]
+    [ClientRpc(includeOwner = false)]
     private void RpcUpdateNetworkableField(NetworkBehaviour parent, string fieldName, INetworkableFieldValue newValue, string metadata) {
         DoUpdateNetworkableField(parent, fieldName, newValue, metadata);
     }
