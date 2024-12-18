@@ -8,7 +8,6 @@ using UnityEngine.UI;
 /// </summary>
 public class PlayerSlot : MonoBehaviour {
     [Header("References")]
-    public TMP_Text PlayerLabel;
     public TMP_Text PlayerName;
     public TMP_Text ColorLabel;
     public Image Color;
@@ -24,7 +23,6 @@ public class PlayerSlot : MonoBehaviour {
 
     public void Start() {
         // Configure
-        PlayerLabel.text = $"Player {PlayerIndex}";
         Color.color = PlayerColor;
         
         // Show as empty
@@ -52,6 +50,10 @@ public class PlayerSlot : MonoBehaviour {
         
         // Show as empty
         DisplayActive(false);
+    }
+
+    public void SwapToSlot() {
+        
     }
 
     public void KickPlayer() {
