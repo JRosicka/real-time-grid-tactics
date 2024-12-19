@@ -20,7 +20,7 @@ public class GameSetupManager : MonoBehaviour {
     public MapLoader MapLoader;
     public CountdownTimerView CountdownTimer;
     public GameOverView GameOverView;
-    public InGamePauseMenu _pauseMenu;
+    [SerializeField] private InGamePauseMenu _pauseMenu;
 
     [Header("Prefabs")]
     public SPGamePlayer SPGamePlayerPrefab;
@@ -36,6 +36,8 @@ public class GameSetupManager : MonoBehaviour {
     
     private static GameManager GameManager => GameManager.Instance;
     
+    // Only assigned on server, and only for MP
+    private readonly List<IGamePlayer> _spectatorPlayers = new List<IGamePlayer>();
     // The total number of players in this game who have arrived in the game scene
     private int _readyPlayerCount;
     // The total number of players in this game who have had their gameobjects assigned
@@ -232,8 +234,9 @@ public class GameSetupManager : MonoBehaviour {
     /// </summary>
     [Server]
     public void SetupMPPlayer(GameNetworkPlayer networkPlayer, MPGamePlayer gamePlayer, int playerCount) {
-        // TODO-spectate: Check for spectating players too
-        if ((MPGamePlayer) GameManager.Player1 == gamePlayer || (MPGamePlayer) GameManager.Player2 == gamePlayer) {
+        if ((MPGamePlayer) GameManager.Player1 == gamePlayer 
+                || (MPGamePlayer) GameManager.Player2 == gamePlayer
+                || _spectatorPlayers.Cast<MPGamePlayer>().Contains(gamePlayer)) {
             Debug.LogError($"Game scene loaded for player {networkPlayer.DisplayName}, but we already detected the game scene loading for them.");
             return;
         }
@@ -254,6 +257,9 @@ public class GameSetupManager : MonoBehaviour {
         gamePlayer.DisplayName = networkPlayer.DisplayName;
         
         Debug.Log($"Player ({gamePlayer.DisplayName}) has been detected. Index ({networkPlayer.index}).");
+        if (gamePlayer.Data.Team == GameTeam.Spectator) {
+            _spectatorPlayers.Add(gamePlayer);
+        }
 
         if (networkPlayer.isLocalPlayer) {
             // This is the server's local player. Since no other clients will notify us that this player joined, we should do it here
