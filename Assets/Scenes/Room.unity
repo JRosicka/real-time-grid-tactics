@@ -377,6 +377,10 @@ PrefabInstance:
       propertyPath: SpectatorSlot
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 874320614776698600, guid: c2e706927b6314e9b9522c892639f872, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -0.000061035156
+      objectReference: {fileID: 0}
     - target: {fileID: 2934698654989435237, guid: c2e706927b6314e9b9522c892639f872, type: 3}
       propertyPath: m_Name
       value: Spectator Slot 3
@@ -476,10 +480,6 @@ PrefabInstance:
     - target: {fileID: 2934698654989435238, guid: c2e706927b6314e9b9522c892639f872, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7177279168426993412, guid: c2e706927b6314e9b9522c892639f872, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c2e706927b6314e9b9522c892639f872, type: 3}
@@ -1594,10 +1594,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 7177279168426993412, guid: c2e706927b6314e9b9522c892639f872, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c2e706927b6314e9b9522c892639f872, type: 3}
 --- !u!114 &899310544 stripped
@@ -1733,10 +1729,6 @@ PrefabInstance:
     - target: {fileID: 2934698654989435238, guid: c2e706927b6314e9b9522c892639f872, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7177279168426993412, guid: c2e706927b6314e9b9522c892639f872, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c2e706927b6314e9b9522c892639f872, type: 3}
@@ -2697,10 +2689,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 7177279168426993412, guid: c2e706927b6314e9b9522c892639f872, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c2e706927b6314e9b9522c892639f872, type: 3}
 --- !u!114 &1495938158 stripped
@@ -3003,6 +2991,10 @@ PrefabInstance:
       propertyPath: SpectatorSlot
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 874320614776698600, guid: c2e706927b6314e9b9522c892639f872, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -0.000061035156
+      objectReference: {fileID: 0}
     - target: {fileID: 2934698654989435237, guid: c2e706927b6314e9b9522c892639f872, type: 3}
       propertyPath: m_Name
       value: Spectator Slot 4
@@ -3102,10 +3094,6 @@ PrefabInstance:
     - target: {fileID: 2934698654989435238, guid: c2e706927b6314e9b9522c892639f872, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7177279168426993412, guid: c2e706927b6314e9b9522c892639f872, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c2e706927b6314e9b9522c892639f872, type: 3}
@@ -3420,6 +3408,10 @@ PrefabInstance:
       propertyPath: SpectatorSlot
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 874320614776698600, guid: c2e706927b6314e9b9522c892639f872, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -0.000061035156
+      objectReference: {fileID: 0}
     - target: {fileID: 2934698654989435237, guid: c2e706927b6314e9b9522c892639f872, type: 3}
       propertyPath: m_Name
       value: Spectator Slot 5
@@ -3519,10 +3511,6 @@ PrefabInstance:
     - target: {fileID: 2934698654989435238, guid: c2e706927b6314e9b9522c892639f872, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7177279168426993412, guid: c2e706927b6314e9b9522c892639f872, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c2e706927b6314e9b9522c892639f872, type: 3}
@@ -3795,6 +3783,10 @@ PrefabInstance:
       propertyPath: SpectatorSlot
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 874320614776698600, guid: c2e706927b6314e9b9522c892639f872, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -0.000061035156
+      objectReference: {fileID: 0}
     - target: {fileID: 2934698654989435237, guid: c2e706927b6314e9b9522c892639f872, type: 3}
       propertyPath: m_Name
       value: Spectator Slot 2
@@ -3894,10 +3886,6 @@ PrefabInstance:
     - target: {fileID: 2934698654989435238, guid: c2e706927b6314e9b9522c892639f872, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7177279168426993412, guid: c2e706927b6314e9b9522c892639f872, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c2e706927b6314e9b9522c892639f872, type: 3}
