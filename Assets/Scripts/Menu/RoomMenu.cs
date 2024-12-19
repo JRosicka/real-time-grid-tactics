@@ -38,6 +38,12 @@ public class RoomMenu : MonoBehaviour {
             return _cachedGameNetworkPlayer;
         }
     }
+    
+    private List<PlayerSlot> AllPlayerSlots => new List<PlayerSlot> { PlayerSlot1, PlayerSlot2 }.Concat(SpectatorSlots).ToList();
+    
+    private PlayerSlot GetSlotForIndex(int index) {
+        return AllPlayerSlots.First(s => s.SlotIndex == index);
+    }
 
     [CanBeNull]
     private PlayerSlot LocalPlayerSlot => AllPlayerSlots.FirstOrDefault(s => s.AssignedPlayer != null && s.AssignedPlayer.isLocalPlayer);
@@ -141,13 +147,7 @@ public class RoomMenu : MonoBehaviour {
         ResetReadyButton();
         // TODO: If players can update their info for their slots, do so here
     }
-
-    private PlayerSlot GetSlotForIndex(int index) {
-        return AllPlayerSlots.First(s => s.SlotIndex == index);
-    }
-
-    private List<PlayerSlot> AllPlayerSlots => new List<PlayerSlot> { PlayerSlot1, PlayerSlot2 }.Concat(SpectatorSlots).ToList();
-
+    
     private void UpdatePlayerReadyStatus() {
         AllPlayerSlots.ForEach(s => s.UpdateReadyStatus());
     }
