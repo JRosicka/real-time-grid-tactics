@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Game.Network;
+using JetBrains.Annotations;
 using Mirror;
 using TMPro;
 using UnityEngine;
@@ -38,7 +39,8 @@ public class RoomMenu : MonoBehaviour {
         }
     }
 
-    private PlayerSlot localPlayerSlot => AllPlayerSlots.First(s => s.AssignedPlayer != null && s.AssignedPlayer.isLocalPlayer);
+    [CanBeNull]
+    private PlayerSlot LocalPlayerSlot => AllPlayerSlots.FirstOrDefault(s => s.AssignedPlayer != null && s.AssignedPlayer.isLocalPlayer);
 
     private PlayerSlot SlotForPlayer(GameNetworkPlayer player) {
         return AllPlayerSlots.FirstOrDefault(s => s.AssignedPlayer == player);
@@ -218,15 +220,12 @@ public class RoomMenu : MonoBehaviour {
     /// room, then call this to reset the text on the ready button to reflect the actual ready state
     /// </summary>
     private void ResetReadyButton() {
-        if (localPlayerSlot.SpectatorSlot) { 
+        PlayerSlot localSlot = LocalPlayerSlot;
+        if (localSlot == null || localSlot.SpectatorSlot) { 
             ToggleReadyButton.gameObject.SetActive(false);
         } else {
             ToggleReadyButton.gameObject.SetActive(true);
-            if (_localPlayer.readyToBegin) {
-                ToggleReadyButtonText.text = "Cancel";
-            } else {
-                ToggleReadyButtonText.text = "Ready";
-            }
+            ToggleReadyButtonText.text = _localPlayer.readyToBegin ? "Cancel" : "Ready";
         }
     }
     
