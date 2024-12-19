@@ -3,6 +3,9 @@ using Gameplay.Config;
 using Mirror;
 using UnityEngine;
 
+/// <summary>
+/// An <see cref="IGamePlayer"/> in a MP game that represents one of the actual players (not a spectator)
+/// </summary>
 public class MPGamePlayer : NetworkBehaviour, IGamePlayer {
     [field: SyncVar]
     public PlayerData Data { get; set; }
@@ -17,7 +20,4 @@ public class MPGamePlayer : NetworkBehaviour, IGamePlayer {
         _ownedPurchasablesController.Initialize(Data.Team, upgradesToRegister);
         _resourcesController.Initialize(gameConfiguration);
     }
-
-    public override void OnStartLocalPlayer() { }
-    public override void OnStopLocalPlayer() { }
 }

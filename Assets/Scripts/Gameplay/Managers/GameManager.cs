@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Game.Network;
 using Gameplay.Config;
 using Gameplay.Entities;
@@ -38,11 +39,6 @@ public class GameManager : MonoBehaviour {
     public IGamePlayer Player1;
     public IGamePlayer Player2;
     public GameTeam LocalTeam { get; private set; }
-    /// <summary>
-    /// Null if the local player is a spectator
-    /// </summary>
-    [CanBeNull]
-    public IGamePlayer LocalPlayer { get; private set; }
     
     private void Awake() {
         if (Instance != null) {
@@ -92,20 +88,20 @@ public class GameManager : MonoBehaviour {
     public void SetPlayers(IGamePlayer player1, IGamePlayer player2, GameTeam localTeam) {
         LocalTeam = localTeam;
         
+        // Set up players
         Player1 = player1;
         player1.Initialize(Configuration.GetUpgrades(), Configuration);
-
         Player2 = player2;
         player2.Initialize(Configuration.GetUpgrades(), Configuration);
-
-        if (localTeam == GameTeam.Player1) {
-            LocalPlayer = player1;
-        } else if (localTeam == GameTeam.Player2) {
-            LocalPlayer = player2;
-        }   // Else this is a spectator, so there is no local player
-
-        // TODO-spectate: I need to allow for swapping between player resources by clicking on a player. Or displaying both at once. 
-        ResourcesInterface.Initialize(LocalPlayer.ResourcesController);
+        
+        // Set up resources interface - for spectators, we want to track all players' resources
+        IPlayerResourcesObserver resourcesObserver = localTeam switch {
+            GameTeam.Spectator => new CompoundPlayerResourcesObserver(new List<IGamePlayer> { player1, player2 }),
+            GameTeam.Player1 => new PlayerResourcesObserver(player1),
+            GameTeam.Player2 => new PlayerResourcesObserver(player2),
+            _ => throw new Exception($"Invalid local team: {localTeam}")
+        };
+        ResourcesInterface.Initialize(resourcesObserver);
     }
 
     public void SetupCommandManager(ICommandManager commandManager) {

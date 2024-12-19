@@ -52,8 +52,6 @@ namespace Gameplay.UI {
 
         public bool Selectable { get; private set; }
 
-        private PlayerResourcesController LocalResourcesController => GameManager.Instance.LocalPlayer.ResourcesController;
-
         /// <summary>
         /// Update this ability slot to set its state/appearance
         /// </summary>
@@ -170,8 +168,13 @@ namespace Gameplay.UI {
             
             _selectedEntity.CooldownTimerExpiredEvent += OnAbilityTimersChanged;
             _selectedEntity.AbilityPerformedEvent += OnAbilityTimersChanged;
-            LocalResourcesController.BalanceChangedEvent += OnPlayerResourcesBalanceChanged;
-            GameManager.Instance.LocalPlayer.OwnedPurchasablesController.OwnedPurchasablesChangedEvent += OnPlayerOwnedEntitiesChanged;
+
+            if (_selectedEntity.Team is GameTeam.Player1 or GameTeam.Player2) {
+                // Track resources and owned changes for the player
+                IGamePlayer player = GameManager.Instance.GetPlayerForTeam(_selectedEntity.Team);
+                player.ResourcesController.BalanceChangedEvent += OnPlayerResourcesBalanceChanged;
+                player.OwnedPurchasablesController.OwnedPurchasablesChangedEvent += OnPlayerOwnedEntitiesChanged;
+            }
         }
 
         private void RemoveListeners() {
@@ -179,8 +182,13 @@ namespace Gameplay.UI {
             
             _selectedEntity.CooldownTimerExpiredEvent -= OnAbilityTimersChanged;
             _selectedEntity.AbilityPerformedEvent -= OnAbilityTimersChanged;
-            LocalResourcesController.BalanceChangedEvent -= OnPlayerResourcesBalanceChanged;
-            GameManager.Instance.LocalPlayer.OwnedPurchasablesController.OwnedPurchasablesChangedEvent -= OnPlayerOwnedEntitiesChanged;
+            
+            if (_selectedEntity.Team is GameTeam.Player1 or GameTeam.Player2) {
+                // Track owned changes for the player
+                IGamePlayer player = GameManager.Instance.GetPlayerForTeam(_selectedEntity.Team);
+                player.ResourcesController.BalanceChangedEvent -= OnPlayerResourcesBalanceChanged;
+                player.OwnedPurchasablesController.OwnedPurchasablesChangedEvent -= OnPlayerOwnedEntitiesChanged;
+            }
         }
 
         private void OnAbilityTimersChanged(IAbility ability, AbilityCooldownTimer timer) {

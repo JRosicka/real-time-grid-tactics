@@ -8,6 +8,7 @@ using Gameplay.Config;
 using Gameplay.Entities;
 using Gameplay.UI;
 using Mirror;
+using Steamworks;
 using UnityEngine;
 
 /// <summary>
@@ -165,10 +166,21 @@ public class GameSetupManager : MonoBehaviour {
         ICommandManager commandManager = Instantiate(SPCommandManagerPrefab, transform);
         GameManager.SetupCommandManager(commandManager);
         
+        // Set up players
         SPGamePlayer player1 = Instantiate(SPGamePlayerPrefab);
         player1.Data = Player1Data;
         SPGamePlayer player2 = Instantiate(SPGamePlayerPrefab);
         player2.Data = Player2Data;
+        
+        // Attempt to set the local player name
+        try {
+            player1.DisplayName = SteamFriends.GetPersonaName();
+        } catch (InvalidOperationException) {
+            // Steamworks not initialized. Just set a dummy name. 
+            player1.DisplayName = "Local Player";
+        }
+        player2.DisplayName = "Opponent";
+        
         GameManager.SetPlayers(player1, player2, GameTeam.Player1);
         
         MapLoader.LoadMap(player1.Data.Team);
