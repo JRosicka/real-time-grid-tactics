@@ -293,10 +293,7 @@ namespace Mirror
                 if (player != null)
                     player.GetComponent<NetworkRoomPlayer>().readyToBegin = false;
             }
-
-            if (IsSceneActive(RoomScene))
-                RecalculateRoomPlayerIndices();
-
+            
             OnRoomServerDisconnect(conn);
             base.OnServerDisconnect(conn);
 
@@ -343,9 +340,14 @@ namespace Mirror
         {
             if (roomSlots.Count > 0)
             {
-                for (int i = 0; i < roomSlots.Count; i++)
-                {
-                    roomSlots[i].index = i;
+                for (int i = 0; i < roomSlots.Count; i++) {
+                    // Assign an index that is different than any of the previous room slots 
+                    List<int> priorRoomSlotIndices = roomSlots.GetRange(0, i).Select(p => p.index).ToList();
+                    for (int j = 0; j <= i; j++) {
+                        if (priorRoomSlotIndices.Contains(j)) continue;
+                        roomSlots[i].index = j;
+                        break;
+                    }
                 }
             }
         }
