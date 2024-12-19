@@ -53,6 +53,7 @@ namespace Game.Network
         public void CmdSwapToSlot(int slotIndex) {
             // Swapping un-readies the player 
             CmdChangeReadyState(false);
+            index = slotIndex;
             
             RpcSwapToSlot(slotIndex);
         }

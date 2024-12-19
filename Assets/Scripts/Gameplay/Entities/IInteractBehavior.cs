@@ -6,6 +6,11 @@ namespace Gameplay.Entities {
     /// </summary>
     public interface IInteractBehavior {
         /// <summary>
+        /// Whether this entity belongs to the local player
+        /// </summary>
+        bool IsLocalTeam { get; }
+        
+        /// <summary>
         /// The user clicked to select this unit
         /// </summary>
         void Select(GridEntity entity);

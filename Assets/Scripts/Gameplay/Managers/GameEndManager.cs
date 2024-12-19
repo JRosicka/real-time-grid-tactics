@@ -26,18 +26,16 @@ public class GameEndManager {
         if (_gameOver) return;
         if (!_gameManager.GameSetupManager.GameInitialized) return;
         
-        IGamePlayer localPlayer = _gameManager.LocalPlayer;
-        IGamePlayer opponentPlayer = _gameManager.OpponentPlayer;
-        bool localPlayerLost = PlayerHasLost(localPlayer);
-        bool opponentPlayerLost = PlayerHasLost(opponentPlayer);
+        bool player1Lost = PlayerHasLost(_gameManager.Player1);
+        bool player2Lost = PlayerHasLost(_gameManager.Player2);
         
-        if (localPlayerLost && opponentPlayerLost) {
+        if (player1Lost && player2Lost) {
             // Tie, because both players lost at the same time
             EndGame(null);
-        } else if (localPlayerLost) {
-            EndGame(opponentPlayer);
-        } else if (opponentPlayerLost) {
-            EndGame(localPlayer);
+        } else if (player1Lost) {
+            EndGame(_gameManager.Player2);
+        } else if (player2Lost) {
+            EndGame(_gameManager.Player1);
         }
     }
 

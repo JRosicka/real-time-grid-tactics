@@ -29,6 +29,7 @@ public class GameSetupManager : MonoBehaviour {
     [Header("Data")]
     public PlayerData Player1Data;
     public PlayerData Player2Data;
+    public PlayerData SpectatorData;
     public float CountdownTimeSeconds = 3f;
     public int GameOverDelayMillis = 5 * 1000;
     
@@ -110,7 +111,9 @@ public class GameSetupManager : MonoBehaviour {
         GameOver = true;
         if (winner == GameTeam.Neutral) {
             GameOverView.ShowTie();
-        } else if (winner == GameManager.LocalPlayer.Data.Team) {
+        } else if (GameManager.LocalTeam == GameTeam.Spectator) {
+            GameOverView.ShowSpectatorThatPlayerWon(GameManager.GetPlayerForTeam(winner));
+        } else if (winner == GameManager.LocalTeam) {
             GameOverView.ShowVictory();
         } else {
             GameOverView.ShowDefeat();
@@ -162,13 +165,13 @@ public class GameSetupManager : MonoBehaviour {
         ICommandManager commandManager = Instantiate(SPCommandManagerPrefab, transform);
         GameManager.SetupCommandManager(commandManager);
         
-        SPGamePlayer localPlayer = Instantiate(SPGamePlayerPrefab);
-        localPlayer.Data = Player1Data;
-        SPGamePlayer opponentPlayer = Instantiate(SPGamePlayerPrefab);
-        opponentPlayer.Data = Player2Data;
-        GameManager.SetPlayers(localPlayer, opponentPlayer);
+        SPGamePlayer player1 = Instantiate(SPGamePlayerPrefab);
+        player1.Data = Player1Data;
+        SPGamePlayer player2 = Instantiate(SPGamePlayerPrefab);
+        player2.Data = Player2Data;
+        GameManager.SetPlayers(player1, player2, GameTeam.Player1);
         
-        MapLoader.LoadMap(localPlayer.Data.Team);
+        MapLoader.LoadMap(player1.Data.Team);
         SpawnStartingUnits();
 
         PerformOnStartAbilities();
@@ -217,7 +220,8 @@ public class GameSetupManager : MonoBehaviour {
     /// </summary>
     [Server]
     public void SetupMPPlayer(GameNetworkPlayer networkPlayer, MPGamePlayer gamePlayer, int playerCount) {
-        if ((MPGamePlayer) GameManager.LocalPlayer == gamePlayer || (MPGamePlayer) GameManager.OpponentPlayer == gamePlayer) {
+        // TODO-spectate: Check for spectating players too
+        if ((MPGamePlayer) GameManager.Player1 == gamePlayer || (MPGamePlayer) GameManager.Player2 == gamePlayer) {
             Debug.LogError($"Game scene loaded for player {networkPlayer.DisplayName}, but we already detected the game scene loading for them.");
             return;
         }
@@ -231,12 +235,13 @@ public class GameSetupManager : MonoBehaviour {
         PlayerData data = networkPlayer.index switch {
             0 => Player1Data,
             1 => Player2Data,
-            _ => throw new IndexOutOfRangeException(
-                $"Tried to set up network player with invalid index ({networkPlayer.index})")
+            _ => SpectatorData
         };
 
         gamePlayer.Data = data;
         gamePlayer.DisplayName = networkPlayer.DisplayName;
+        
+        Debug.Log($"Player ({gamePlayer.DisplayName}) has been detected. Index ({networkPlayer.index}).");
 
         if (networkPlayer.isLocalPlayer) {
             // This is the server's local player. Since no other clients will notify us that this player joined, we should do it here

@@ -41,7 +41,7 @@ namespace Gameplay.Entities.Abilities {
 
         private bool DoTargetFireEffect() {
             if (!GameManager.Instance.CommandManager.EntitiesOnGrid
-                .ActiveEntitiesForTeam(Performer.MyTeam)
+                .ActiveEntitiesForTeam(Performer.Team)
                 .Contains(Performer)) {
                 // The entity must be in the process of being killed since it is not present in the entities collection
                 return false;
@@ -122,7 +122,7 @@ namespace Gameplay.Entities.Abilities {
                 .ToList();
             // Only get the top entities - can't attack an entity behind another entity
             List<GridEntity> enemiesInRange = GameManager.Instance.CommandManager.EntitiesOnGrid.ActiveEntitiesForTeam(
-                        attacker.MyTeam.OpponentTeam(), true)
+                        attacker.Team.OpponentTeam(), true)
                     .Where(e => e.Location != null && cellsInRange.Contains(e.Location.Value))
                     .ToList();
             
@@ -165,7 +165,7 @@ namespace Gameplay.Entities.Abilities {
             AbilityAssignmentManager.PerformAbility(attacker, moveAbilityData, new MoveAbilityParameters {
                 Destination = nextMoveCell,
                 NextMoveCell = nextMoveCell,
-                SelectorTeam = attacker.MyTeam,
+                SelectorTeam = attacker.Team,
                 BlockedByOccupation = false
             }, true);
             return true;

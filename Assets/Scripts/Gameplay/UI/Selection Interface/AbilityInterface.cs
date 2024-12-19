@@ -24,8 +24,8 @@ namespace Gameplay.UI {
         
         public void SetUpForEntity(GridEntity entity) {
             ClearInfo();
-            
-            if (entity.MyTeam != GameManager.Instance.LocalPlayer.Data.Team) {
+
+            if (!entity.InteractBehavior.IsLocalTeam) {
                 // Don't display anything here
                 return;
             }

@@ -7,6 +7,8 @@ namespace Gameplay.Entities {
     /// <see cref="IInteractBehavior"/> for clicking on a friendly entity under the local player's control
     /// </summary>
     public class OwnerInteractBehavior : IInteractBehavior {
+        public bool IsLocalTeam => true;
+
         public void Select(GridEntity entity) {
             GameManager.Instance.EntitySelectionManager.SelectEntity(entity);
         }
@@ -31,9 +33,9 @@ namespace Gameplay.Entities {
             GridEntity targetEntity = GameManager.Instance.GetEntitiesAtLocation(targetCell)?.GetTopEntity()?.Entity;
 
             // See if we should target this entity
-            if (targetEntity != null && targetEntity.MyTeam == GameTeam.Neutral) {
+            if (targetEntity != null && targetEntity.Team == GameTeam.Neutral) {
                 thisEntity.TryMoveToCell(targetCell, false);
-            } else if (targetEntity != null && thisEntity.MyTeam != targetEntity.MyTeam) {
+            } else if (targetEntity != null && thisEntity.Team != targetEntity.Team) {
                 TryTargetEntity(thisEntity, targetEntity, targetCell);
             } else if (targetEntity == null || targetEntity.EntityData.FriendlyUnitsCanShareCell) {
                 thisEntity.TryMoveToCell(targetCell, false);

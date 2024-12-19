@@ -145,7 +145,7 @@ public class EntitySelectionManager {
     public bool TryUseTargetableAbility(Vector2Int clickedCell) {
         if (_selectedTargetableAbility == null) return false;
 
-        if (!_selectedTargetableAbility.CanTargetCell(clickedCell, SelectedEntity, _gameManager.LocalPlayer.Data.Team, _targetData)) {
+        if (!_selectedTargetableAbility.CanTargetCell(clickedCell, SelectedEntity, _gameManager.LocalTeam, _targetData)) {
             // We clicked on a cell that the ability cannot be used on. Deselect the ability. 
             DeselectTargetableAbility();
             return false;
@@ -166,7 +166,7 @@ public class EntitySelectionManager {
         }
 
         // This targetable ability will get queued
-        _selectedTargetableAbility.DoTargetableAbility(clickedCell, SelectedEntity, _gameManager.LocalPlayer.Data.Team, _targetData);
+        _selectedTargetableAbility.DoTargetableAbility(clickedCell, SelectedEntity, _gameManager.LocalTeam, _targetData);
         DeselectTargetableAbility();
         return true;
     }
@@ -177,7 +177,7 @@ public class EntitySelectionManager {
         if (SelectedEntity == null) return;
         if (!_gameManager.CommandManager.EntitiesOnGrid.IsEntityOnGrid(SelectedEntity)) return; // May be in the middle of getting unregistered
         if (!SelectedEntity.CanMoveOrRally && !SelectedEntity.TargetLocationLogic.Value.CanRally) return;
-        if (SelectedEntity.MyTeam != _gameManager.LocalPlayer.Data.Team) return;
+        if (SelectedEntity.Team != _gameManager.LocalTeam) return;
 
         PathfinderService.Path path = PathfinderService.FindPath(SelectedEntity, newValue.CurrentTarget);
         GridController.VisualizePath(path);

@@ -5,6 +5,7 @@ using Gameplay.Entities;
 using Gameplay.Grid;
 using Gameplay.Managers;
 using Gameplay.UI;
+using JetBrains.Annotations;
 using Mirror;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -33,9 +34,15 @@ public class GameManager : MonoBehaviour {
     public GameEndManager GameEndManager;
     public DisconnectionHandler DisconnectionHandler;
     public AbilityAssignmentManager AbilityAssignmentManager;
-    
+
+    public IGamePlayer Player1;
+    public IGamePlayer Player2;
+    public GameTeam LocalTeam { get; private set; }
+    /// <summary>
+    /// Null if the local player is a spectator
+    /// </summary>
+    [CanBeNull]
     public IGamePlayer LocalPlayer { get; private set; }
-    public IGamePlayer OpponentPlayer { get; private set; }
     
     private void Awake() {
         if (Instance != null) {
@@ -71,10 +78,10 @@ public class GameManager : MonoBehaviour {
     }
 
     public IGamePlayer GetPlayerForTeam(GameTeam team) {
-        if (LocalPlayer.Data.Team == team) {
-            return LocalPlayer;
-        } else if (OpponentPlayer.Data.Team == team) {
-            return OpponentPlayer;
+        if (Player1.Data.Team == team) {
+            return Player1;
+        } else if (Player2.Data.Team == team) {
+            return Player2;
         } else {
             return null;
         }
@@ -82,13 +89,22 @@ public class GameManager : MonoBehaviour {
 
     #region Game setup
     
-    public void SetPlayers(IGamePlayer localPlayer, IGamePlayer opponentPlayer) {
-        LocalPlayer = localPlayer;
-        localPlayer.Initialize(Configuration.GetUpgrades(), Configuration);
+    public void SetPlayers(IGamePlayer player1, IGamePlayer player2, GameTeam localTeam) {
+        LocalTeam = localTeam;
+        
+        Player1 = player1;
+        player1.Initialize(Configuration.GetUpgrades(), Configuration);
 
-        OpponentPlayer = opponentPlayer;
-        opponentPlayer.Initialize(Configuration.GetUpgrades(), Configuration);
+        Player2 = player2;
+        player2.Initialize(Configuration.GetUpgrades(), Configuration);
 
+        if (localTeam == GameTeam.Player1) {
+            LocalPlayer = player1;
+        } else if (localTeam == GameTeam.Player2) {
+            LocalPlayer = player2;
+        }   // Else this is a spectator, so there is no local player
+
+        // TODO-spectate: I need to allow for swapping between player resources by clicking on a player. Or displaying both at once. 
         ResourcesInterface.Initialize(LocalPlayer.ResourcesController);
     }
 

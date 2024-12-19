@@ -73,7 +73,7 @@ namespace Gameplay.UI {
             
             ToggleViews(true);
 
-            if (entity.MyTeam == GameManager.Instance.LocalPlayer.Data.Team) {
+            if (entity.Team == GameManager.Instance.LocalTeam) {
                 PerformAutoSelectionAbilities(entity);
             }
         }
@@ -145,7 +145,7 @@ namespace Gameplay.UI {
             EntityData entityData = _displayedEntity.EntityData;
             EntityIcon.sprite = entityData.BaseSpriteIconOverride == null ? entityData.BaseSprite : entityData.BaseSpriteIconOverride;
             EntityColorsIcon.sprite = entityData.TeamColorSprite;
-            IGamePlayer player = GameManager.Instance.GetPlayerForTeam(_displayedEntity.MyTeam);
+            IGamePlayer player = GameManager.Instance.GetPlayerForTeam(_displayedEntity.Team);
             EntityColorsIcon.color = player != null ? player.Data.TeamColor : Color.clear;
 
             NameField.text = _displayedEntity.DisplayName;

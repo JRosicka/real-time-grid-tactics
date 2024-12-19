@@ -23,7 +23,7 @@ namespace Gameplay.Managers {
             }
 
             // Do we own the requirements for this ability?
-            List<PurchasableData> ownedPurchasables = GameManager.Instance.GetPlayerForTeam(entity.MyTeam)
+            List<PurchasableData> ownedPurchasables = GameManager.Instance.GetPlayerForTeam(entity.Team)
                 .OwnedPurchasablesController.OwnedPurchasables;
             if (data.Requirements.Any(r => !ownedPurchasables.Contains(r))) {
                 return false;
@@ -161,7 +161,7 @@ namespace Gameplay.Managers {
             entity.CreateAbilityTimer(new MoveAbility(moveAbilityData, new MoveAbilityParameters {
                 Destination = location.Value,
                 NextMoveCell = location.Value,
-                SelectorTeam = entity.MyTeam,
+                SelectorTeam = entity.Team,
                 BlockedByOccupation = false
             }, entity), timeToAdd);
         }

@@ -361,6 +361,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b968ef76f2b442c98a5442b6062c1f41, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  SurrenderButton: {fileID: 8858053734481259311}
 --- !u!1 &2859267506732360727
 GameObject:
   m_ObjectHideFlags: 0

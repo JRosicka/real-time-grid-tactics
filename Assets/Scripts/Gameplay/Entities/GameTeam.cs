@@ -6,6 +6,7 @@ namespace Gameplay.Entities {
     /// </summary>
     public enum GameTeam {
         Neutral = -1,
+        Spectator = 0,
         Player1 = 1,
         Player2 = 2
     }
@@ -17,6 +18,7 @@ namespace Gameplay.Entities {
         public static GameTeam OpponentTeam(this GameTeam myTeam) {
             return myTeam switch {
                 GameTeam.Neutral => GameTeam.Neutral,
+                GameTeam.Spectator => GameTeam.Spectator,
                 GameTeam.Player1 => GameTeam.Player2,
                 GameTeam.Player2 => GameTeam.Player1,
                 _ => throw new ArgumentOutOfRangeException(nameof(myTeam), myTeam, null)

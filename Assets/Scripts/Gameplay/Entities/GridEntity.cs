@@ -30,7 +30,7 @@ namespace Gameplay.Entities {
 
         [Header("Config")] 
         public string UnitName;
-        public GameTeam MyTeam;
+        public GameTeam Team;
         public string DisplayName => EntityData.ID;
         public List<EntityData.EntityTag> Tags => EntityData.Tags;
         public IEnumerable<IAbilityData> Abilities => EntityData.Abilities.Select(a => a.Content);
@@ -48,7 +48,8 @@ namespace Gameplay.Entities {
         public NetworkableField<TargetLocationLogic> TargetLocationLogic;
         private NetworkableField<NetworkableVector2IntegerValue> _location;
         public IBuildQueue BuildQueue;
-        
+        public IInteractBehavior InteractBehavior;
+
         // Abilities
         /// <summary>
         /// This entity's active abilities.
@@ -92,7 +93,6 @@ namespace Gameplay.Entities {
         // Client flag
         private bool _unregistered;
         private GridEntityView _view;
-        private IInteractBehavior _interactBehavior;
         
         // Events
         public event Action<IAbility, AbilityCooldownTimer> AbilityPerformedEvent;
@@ -124,7 +124,7 @@ namespace Gameplay.Entities {
         /// </summary>
         public void ServerInitialize(EntityData data, GameTeam team, Vector2Int spawnLocation) {
             EntityData = data;
-            MyTeam = team;
+            Team = team;
             
             // We call this later on the client, but we need the stats set up immediately on the server too (at least for rallying) 
             SetupStats();
@@ -148,15 +148,17 @@ namespace Gameplay.Entities {
         /// </summary>
         public void ClientInitialize(EntityData data, GameTeam team) {
             EntityData = data;
-            MyTeam = team;
-            GameTeam playerTeam = GameManager.Instance.LocalPlayer.Data.Team;
+            Team = team;
+            GameTeam localPlayerTeam = GameManager.Instance.LocalTeam;
 
-            if (MyTeam == GameTeam.Neutral) {
-                _interactBehavior = new NeutralInteractBehavior();
-            } else if (MyTeam == playerTeam) {
-                _interactBehavior = new OwnerInteractBehavior();
+            if (localPlayerTeam == GameTeam.Spectator) {
+                InteractBehavior = new UnownedInteractBehavior();
+            } else if (Team == GameTeam.Neutral) {
+                InteractBehavior = new UnownedInteractBehavior();
+            } else if (Team == localPlayerTeam) {
+                InteractBehavior = new OwnerInteractBehavior();
             } else {
-                _interactBehavior = new EnemyInteractBehavior();
+                InteractBehavior = new EnemyInteractBehavior();
             }
 
             BuildQueue = data.CanBuild 
@@ -246,7 +248,7 @@ namespace Gameplay.Entities {
         
         public void Select() {
             if (!Interactable) return;
-            _interactBehavior.Select(this);
+            InteractBehavior.Select(this);
             SelectedEvent?.Invoke();
         }
 
@@ -255,7 +257,7 @@ namespace Gameplay.Entities {
         /// </summary>
         public void InteractWithCell(Vector2Int location) {
             if (!Interactable) return;
-            _interactBehavior.TargetCellWithUnit(this, location);
+            InteractBehavior.TargetCellWithUnit(this, location);
         }
 
         #endregion
@@ -379,7 +381,7 @@ namespace Gameplay.Entities {
             if (AbilityAssignmentManager.PerformAbility(this, data, new MoveAbilityParameters {
                     Destination = targetCell, 
                     NextMoveCell = targetCell, 
-                    SelectorTeam = MyTeam,
+                    SelectorTeam = Team,
                     BlockedByOccupation = blockedByOccupation
                 }, true)) {
                 SetTargetLocation(targetCell, null);
@@ -457,11 +459,11 @@ namespace Gameplay.Entities {
         }
 
         private static TargetType GetTargetType(GridEntity originEntity, GridEntity targetEntity) {
-            if (targetEntity.MyTeam == GameTeam.Neutral || originEntity.MyTeam == GameTeam.Neutral) {
+            if (targetEntity.Team == GameTeam.Neutral || originEntity.Team == GameTeam.Neutral) {
                 return TargetType.Neutral;
             }
 
-            return originEntity.MyTeam == targetEntity.MyTeam ? TargetType.Ally : TargetType.Enemy;
+            return originEntity.Team == targetEntity.Team ? TargetType.Ally : TargetType.Enemy;
         }
 
         public void ReceiveAttackFromEntity(GridEntity sourceEntity) {

@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace Gameplay.Entities {
@@ -7,6 +5,8 @@ namespace Gameplay.Entities {
     /// <see cref="IInteractBehavior"/> for clicking on an enemy entity
     /// </summary>
     public class EnemyInteractBehavior : IInteractBehavior {
+        public bool IsLocalTeam => false;
+
         public void Select(GridEntity entity) {
             GameManager.Instance.EntitySelectionManager.SelectEntity(entity);
         }

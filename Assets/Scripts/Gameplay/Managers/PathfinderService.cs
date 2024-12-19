@@ -61,7 +61,7 @@ public class PathfinderService {
 
         int maxSearch = MaxCellsToSearch;
         if (!entity.CanPathFindToTile(GridController.GridData.GetCell(destination).Tile) 
-                || !CanEntityEnterCell(destination, entity.EntityData, entity.MyTeam)) {
+                || !CanEntityEnterCell(destination, entity.EntityData, entity.Team)) {
             // Can't go to destination, so let's not overdo the search since we're just gonna pick the best available choice anyway
             maxSearch = MaxCellsToSearchWhenWeKnowNoPathExists;
         }
@@ -181,11 +181,11 @@ public class PathfinderService {
             // TODO Check to see if tile type allows for this entity
             return true;
         }
-        if (entitiesAtLocation.Any(e => e.MyTeam != entityTeam && e.MyTeam != GameTeam.Neutral)) {
+        if (entitiesAtLocation.Any(e => e.Team != entityTeam && e.Team != GameTeam.Neutral)) {
             // There are enemies here
             return false;
         }
-        if (entitiesAtLocation.Any(e => e.MyTeam == entityTeam && !e.EntityData.FriendlyUnitsCanShareCell)) {
+        if (entitiesAtLocation.Any(e => e.Team == entityTeam && !e.EntityData.FriendlyUnitsCanShareCell)) {
             // Can only enter a friendly entity's cell if they are specifically configured to allow for that
             // or if we are set to ignore that entity.
             // Note that this means that structures can not be built on cells that contain units! This is intentional. 

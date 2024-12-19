@@ -97,7 +97,7 @@ namespace Gameplay.Config.Abilities {
                 GridEntity entityAtCell = locationsWithEntities
                     .FirstOrDefault(l => l.Location == cell.Location)
                     ?.GetTopEntity()?.Entity;
-                if (entityAtCell != null && (entityAtCell.MyTeam != selector.MyTeam || !entityAtCell.EntityData.IsStructure)) {
+                if (entityAtCell != null && (entityAtCell.Team != selector.Team || !entityAtCell.EntityData.IsStructure)) {
                     cachedBlockerCells.Add(cell);
                     return true;
                 }
@@ -121,7 +121,7 @@ namespace Gameplay.Config.Abilities {
                     ?.GetTopEntity()?.Entity;
                 if (entityAtCell != null) {
                     // If the target has an entity in it, it had better be an enemy
-                    if (entityAtCell.MyTeam == selector.MyTeam) {
+                    if (entityAtCell.Team == selector.Team) {
                         continue;
                     }
                 } else if (selector.InaccessibleTiles.Contains(cell.Tile) || selector.SlowTiles.Contains(cell.Tile)) {

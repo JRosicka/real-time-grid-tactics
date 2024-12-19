@@ -2,9 +2,12 @@ using UnityEngine;
 
 namespace Gameplay.Entities {
     /// <summary>
-    /// <see cref="IInteractBehavior"/> for clicking on a neutral entity under no player's control
+    /// <see cref="IInteractBehavior"/> for clicking on an entity that is not under the local player's control. Either
+    /// this entity is neutral or the local player is a spectator.  
     /// </summary>
-    public class NeutralInteractBehavior : IInteractBehavior {
+    public class UnownedInteractBehavior : IInteractBehavior {
+        public bool IsLocalTeam => false;
+
         public void Select(GridEntity entity) {
             GameManager.Instance.EntitySelectionManager.SelectEntity(entity);
         }

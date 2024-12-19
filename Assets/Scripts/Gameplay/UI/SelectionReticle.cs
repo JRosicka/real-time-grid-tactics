@@ -50,12 +50,12 @@ namespace Gameplay.UI {
         private void UpdateColor(GridEntity entityAtLocation) {
             if (!GameManager.Instance.GameSetupManager.GameInitialized) return;
 
-            GameTeam localTeam = GameManager.Instance.LocalPlayer.Data.Team;
+            GameTeam localTeam = GameManager.Instance.LocalTeam;
             Color selectionColor = NeutralSelectionColor;
-            if (entityAtLocation && entityAtLocation.MyTeam == localTeam) {
+            if (entityAtLocation && entityAtLocation.Team == localTeam) {
                 selectionColor = AllySelectionColor;
-            } else if (entityAtLocation && entityAtLocation.MyTeam != GameTeam.Neutral
-                                        && entityAtLocation.MyTeam != localTeam) {
+            } else if (entityAtLocation && entityAtLocation.Team != GameTeam.Neutral
+                                        && entityAtLocation.Team != localTeam) {
                 selectionColor = EnemySelectionColor;
             }
             ReticleComponents.ForEach(r => r.color = selectionColor);

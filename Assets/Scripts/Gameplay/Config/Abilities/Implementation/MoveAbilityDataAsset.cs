@@ -47,7 +47,7 @@ namespace Gameplay.Config.Abilities {
         }
 
         public bool CanTargetCell(Vector2Int cellPosition, GridEntity selectedEntity, GameTeam selectorTeam, System.Object targetData) {
-            if (selectedEntity == null || selectedEntity.MyTeam != selectorTeam) return false;
+            if (selectedEntity == null || selectedEntity.Team != selectorTeam) return false;
 
             if (selectedEntity.Location == cellPosition) {
                 // Bro you're already here

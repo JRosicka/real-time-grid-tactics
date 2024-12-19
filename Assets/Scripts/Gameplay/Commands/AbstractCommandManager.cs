@@ -128,14 +128,14 @@ public abstract class AbstractCommandManager : NetworkBehaviour, ICommandManager
         _entitiesOnGrid.RegisterEntity(entity, position, data.GetStackOrder(), entityToIgnore);
         entity.Registered = true;
         SyncEntityCollection();
-        EntityRegisteredEvent?.Invoke(entity.MyTeam);
+        EntityRegisteredEvent?.Invoke(entity.Team);
     }
 
     protected void DoUnRegisterEntity(GridEntity entity) {
         entity.BuildQueue.CancelAllBuilds();
         _entitiesOnGrid.UnRegisterEntity(entity);
         SyncEntityCollection();
-        EntityUnregisteredEvent?.Invoke(entity.MyTeam);
+        EntityUnregisteredEvent?.Invoke(entity.Team);
     }
 
     protected void DoMarkEntityUnregistered(GridEntity entity, bool showDeathAnimation) {

@@ -55,7 +55,7 @@ namespace Gameplay.UI {
         }
 
         public virtual AbilitySlot.AvailabilityResult GetAvailability() {
-            IGamePlayer player = GameManager.Instance.GetPlayerForTeam(SelectedEntity.MyTeam);
+            IGamePlayer player = GameManager.Instance.GetPlayerForTeam(SelectedEntity.Team);
             List<PurchasableData> ownedPurchasables = player.OwnedPurchasablesController.OwnedPurchasables;
 
             if (Buildable is UpgradeData && (ownedPurchasables.Contains(Buildable) 
@@ -63,7 +63,7 @@ namespace Gameplay.UI {
                 // Upgrade that we already own or are currently building somewhere
                 return AbilitySlot.AvailabilityResult.Unavailable;
             } else if (AbilityAssignmentManager.CanEntityUseAbility(SelectedEntity, _buildAbilityData, AbilityData.SelectableWhenBlocked)
-                       && GameManager.Instance.GetPlayerForTeam(SelectedEntity.MyTeam).ResourcesController.CanAfford(Buildable.Cost)
+                       && player.ResourcesController.CanAfford(Buildable.Cost)
                        && Buildable.Requirements.All(r => ownedPurchasables.Contains(r))) {
                 // This entity can build this and we can afford this
                 return AbilitySlot.AvailabilityResult.Selectable;
@@ -79,7 +79,7 @@ namespace Gameplay.UI {
                 teamColorsCanvas.sortingOrder = 1;
             } else {
                 secondaryAbilityImage.sprite = Buildable.TeamColorSprite;
-                secondaryAbilityImage.color = GameManager.Instance.GetPlayerForTeam(SelectedEntity.MyTeam).Data.TeamColor;
+                secondaryAbilityImage.color = GameManager.Instance.GetPlayerForTeam(SelectedEntity.Team).Data.TeamColor;
                 secondaryAbilityImage.gameObject.SetActive(true);
                 teamColorsCanvas.sortingOrder = Buildable.DisplayTeamColorOverMainSprite ? 2 : 1;
             }
@@ -105,7 +105,7 @@ namespace Gameplay.UI {
                     continue;
                 }
                 if (!entities.Entities.Any(e =>
-                        (e.Entity.MyTeam != SelectedEntity.MyTeam && e.Entity.MyTeam != GameTeam.Neutral) || e.Entity.EntityData.IsStructure)) {
+                        (e.Entity.Team != SelectedEntity.Team && e.Entity.Team != GameTeam.Neutral) || e.Entity.EntityData.IsStructure)) {
                     // Entities there, but none of them are opponents or friendly structures, so eligible
                     ret.Add(viableTarget);
                 }

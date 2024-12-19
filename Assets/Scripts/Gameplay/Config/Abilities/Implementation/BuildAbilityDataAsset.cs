@@ -38,7 +38,7 @@ namespace Gameplay.Config.Abilities {
         // TODO: You know, it seems like the only ability that has this cost consideration is the build ability. So maybe we just get rid of the PayCostUpFront field and consider that the default logic for... the one ability that has a cost. 
         public override bool CanPayCost(IAbilityParameters parameters, GridEntity entity) {
             BuildAbilityParameters buildParameters = (BuildAbilityParameters) parameters;
-            IGamePlayer player = GameManager.Instance.GetPlayerForTeam(entity.MyTeam);
+            IGamePlayer player = GameManager.Instance.GetPlayerForTeam(entity.Team);
             if (!player.ResourcesController.CanAfford(buildParameters.Buildable.Cost)) {
                 Debug.Log($"Not building ({buildParameters.Buildable.ID}) because we can't pay the cost");
                 return false;
@@ -48,7 +48,7 @@ namespace Gameplay.Config.Abilities {
         }
 
         protected override bool AbilityLegalImpl(BuildAbilityParameters parameters, GridEntity entity) {
-            IGamePlayer player = GameManager.Instance.GetPlayerForTeam(entity.MyTeam);
+            IGamePlayer player = GameManager.Instance.GetPlayerForTeam(entity.Team);
             List<PurchasableData> ownedPurchasables = player.OwnedPurchasablesController.OwnedPurchasables;
             if (parameters.Buildable.Requirements.Any(r => !ownedPurchasables.Contains(r))) {
                 Debug.Log($"Not building ({parameters.Buildable.ID}) because we don't have the proper requirements");
@@ -58,8 +58,8 @@ namespace Gameplay.Config.Abilities {
             if (parameters.Buildable is EntityData { IsStructure: true } buildable) {
                 // We need the space to be empty (except for the builder) in order to build a new structure there
                 List<GridEntity> performer = new List<GridEntity> { entity };
-                bool buildableCanEnterCell = PathfinderService.CanEntityEnterCell(parameters.BuildLocation, buildable, entity.MyTeam, performer);
-                bool performerCanEnterCell = PathfinderService.CanEntityEnterCell(parameters.BuildLocation, entity.EntityData, entity.MyTeam, performer);
+                bool buildableCanEnterCell = PathfinderService.CanEntityEnterCell(parameters.BuildLocation, buildable, entity.Team, performer);
+                bool performerCanEnterCell = PathfinderService.CanEntityEnterCell(parameters.BuildLocation, entity.EntityData, entity.Team, performer);
                 if (!buildableCanEnterCell || !performerCanEnterCell) {
                     return false;
                 }

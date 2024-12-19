@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 
 namespace Gameplay.UI {
@@ -8,12 +9,15 @@ namespace Gameplay.UI {
         public GameObject VictoryText;
         public GameObject DefeatText;
         public GameObject TieText;
+        public TMP_Text ResultTextForSpectator;
+        public string ResultTextForSpectatorText = "Game over. {0} won!";
         
         public void ShowVictory() {
             gameObject.SetActive(true);
             VictoryText.SetActive(true);
             DefeatText.SetActive(false);
             TieText.SetActive(false);
+            ResultTextForSpectator.gameObject.SetActive(false);
         }
         
         public void ShowDefeat() {
@@ -21,6 +25,7 @@ namespace Gameplay.UI {
             VictoryText.SetActive(false);
             DefeatText.SetActive(true);
             TieText.SetActive(false);
+            ResultTextForSpectator.gameObject.SetActive(false);
         }
 
         public void ShowTie() {
@@ -28,6 +33,16 @@ namespace Gameplay.UI {
             VictoryText.SetActive(false);
             DefeatText.SetActive(false);
             TieText.SetActive(true);
+            ResultTextForSpectator.gameObject.SetActive(false);
+        }
+
+        public void ShowSpectatorThatPlayerWon(IGamePlayer winner) {
+            gameObject.SetActive(true);
+            VictoryText.SetActive(false);
+            DefeatText.SetActive(false);
+            TieText.SetActive(false);
+            ResultTextForSpectator.gameObject.SetActive(true);
+            ResultTextForSpectator.text = string.Format(ResultTextForSpectatorText, winner);
         }
     }
 }

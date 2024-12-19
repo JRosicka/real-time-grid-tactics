@@ -142,7 +142,7 @@ namespace Gameplay.Entities {
         }
 
         public List<GridEntity> ActiveEntitiesForTeam(GameTeam team, bool justTop = false) {
-            return AllEntities(justTop).Where(e => e.MyTeam == team).ToList();
+            return AllEntities(justTop).Where(e => e.Team == team).ToList();
         }
 
         public List<GridEntity> AllEntities(bool justTop = false) {
@@ -162,7 +162,7 @@ namespace Gameplay.Entities {
             if (otherEntities == null) return true;
             if (otherEntities.Entities.IsNullOrEmpty()) return true;
             List<GridEntity> entitiesToIgnore = entityToIgnore != null ? new List<GridEntity> {entityToIgnore} : null;
-            if (PathfinderService.CanEntityEnterCell(otherEntities.Location, entity.EntityData, entity.MyTeam, entitiesToIgnore)) return true;
+            if (PathfinderService.CanEntityEnterCell(otherEntities.Location, entity.EntityData, entity.Team, entitiesToIgnore)) return true;
             return false;
         }
         

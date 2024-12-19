@@ -1,6 +1,6 @@
-using System;
 using System.Collections.Generic;
 using Gameplay.Config;
+using Gameplay.Entities;
 using Mirror;
 using Sirenix.OdinInspector;
 using UnityEngine;
@@ -28,7 +28,7 @@ namespace Gameplay.Managers {
         public EntityData Unit1;
         [Button]
         public void SpawnUnit1() {
-            IGamePlayer player = Unit1_LocalTeam ? GameManagerInstance.LocalPlayer : GameManagerInstance.OpponentPlayer;
+            IGamePlayer player = GetTargetPlayer(Unit1_LocalTeam);
             GameManagerInstance.CommandManager.SpawnEntity(Unit1, player.Data.SpawnLocation, player.Data.Team, null);
         }
 
@@ -37,7 +37,7 @@ namespace Gameplay.Managers {
         public EntityData Unit2;
         [Button]
         public void SpawnUnit2() {
-            IGamePlayer player = Unit2_LocalTeam ? GameManagerInstance.LocalPlayer : GameManagerInstance.OpponentPlayer;
+            IGamePlayer player = GetTargetPlayer(Unit2_LocalTeam);
             GameManagerInstance.CommandManager.SpawnEntity(Unit2, player.Data.SpawnLocation, player.Data.Team, null);
         }
 
@@ -46,7 +46,7 @@ namespace Gameplay.Managers {
         public EntityData Unit3;
         [Button]
         public void SpawnUnit3() {
-            IGamePlayer player = Unit3_LocalTeam ? GameManagerInstance.LocalPlayer : GameManagerInstance.OpponentPlayer;
+            IGamePlayer player = GetTargetPlayer(Unit3_LocalTeam);
             GameManagerInstance.CommandManager.SpawnEntity(Unit3, player.Data.SpawnLocation, player.Data.Team, null);
         }
         
@@ -55,7 +55,8 @@ namespace Gameplay.Managers {
         public int SetMoney_Amount = 10000;
         [Button]
         public void SetMoney() {
-            PlayerResourcesController resourcesController = SetMoney_LocalTeam ? GameManagerInstance.LocalPlayer.ResourcesController : GameManagerInstance.OpponentPlayer.ResourcesController;
+            IGamePlayer player = GetTargetPlayer(SetMoney_LocalTeam);
+            PlayerResourcesController resourcesController = player.ResourcesController;
             foreach (ResourceType resourceType in new[] { ResourceType.Basic, ResourceType.Advanced }) {
                 int currentAmount = resourcesController.GetBalance(resourceType).Amount;
                 if (currentAmount < SetMoney_Amount) {
@@ -92,6 +93,14 @@ namespace Gameplay.Managers {
         [Button]
         public void ThrowNetworkedException() {
             NeedsToDisconnect = true;
+        }
+
+        private IGamePlayer GetTargetPlayer(bool forLocalTeam) {
+            GameTeam team = GameManagerInstance.LocalTeam == GameTeam.Spectator
+                ? GameTeam.Player1
+                : GameManagerInstance.LocalTeam;
+            GameTeam targetTeam = forLocalTeam ? team : team.OpponentTeam();
+            return GameManagerInstance.GetPlayerForTeam(targetTeam);
         }
     }
 }

@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Gameplay.Entities;
 using Mirror;
+using UnityEngine;
 
 /// <summary>
 /// Object for <see cref="GameSetupManager"/> to delegate any NetworkBehaviour-specific multiplayer initialization. This way, 
@@ -29,13 +30,18 @@ public class MultiplayerGameSetupHandler : NetworkBehaviour {
     
     [ClientRpc]
     public void RpcAssignPlayers() {
-        List<MPGamePlayer> players = FindObjectsOfType<MPGamePlayer>().ToList();
-        MPGamePlayer localPlayer = players.FirstOrDefault(p => p.isLocalPlayer);
-        MPGamePlayer opponentPlayer = players.FirstOrDefault(p => !p.isLocalPlayer);
         ICommandManager commandManager = FindObjectOfType<MPCommandManager>();
-        
         GameManager.Instance.CommandManager = commandManager;
-        GameManager.Instance.SetPlayers(localPlayer, opponentPlayer);
+
+        List<MPGamePlayer> players = FindObjectsOfType<MPGamePlayer>().ToList();
+        MPGamePlayer player1 = players.FirstOrDefault(p => p.Data.Team == GameTeam.Player1);
+        MPGamePlayer player2 = players.FirstOrDefault(p => p.Data.Team == GameTeam.Player2);
+        MPGamePlayer localPlayer = players.FirstOrDefault(p => p.isLocalPlayer);
+        if (localPlayer == null) { 
+            Debug.LogError("Could not find local player");
+            return;
+        }
+        GameManager.Instance.SetPlayers(player1, player2, localPlayer.Data.Team);
         
         // Let the server know we are done
         CmdNotifyPlayerAssigned();

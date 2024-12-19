@@ -60,7 +60,7 @@ namespace Gameplay.Entities {
             _mainImage.sprite = entity.EntityData.BaseSprite;
             _mainImage.GetComponent<Canvas>().sortingOrder += stackOrder;
             _teamColorImage.sprite = entity.EntityData.TeamColorSprite;
-            IGamePlayer player = GameManager.Instance.GetPlayerForTeam(entity.MyTeam);
+            IGamePlayer player = GameManager.Instance.GetPlayerForTeam(entity.Team);
             if (player != null) {
                 _teamColorImage.color = player.Data.TeamColor;
                 _teamColorImage.GetComponent<Canvas>().sortingOrder += stackOrder;

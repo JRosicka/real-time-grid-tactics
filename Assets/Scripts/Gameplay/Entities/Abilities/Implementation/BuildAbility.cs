@@ -28,23 +28,23 @@ namespace Gameplay.Entities.Abilities {
         public override void Cancel() {
             // Refund the amount spent on the build
             foreach (ResourceAmount resources in AbilityParameters.Buildable.Cost) {
-                GameManager.Instance.GetPlayerForTeam(Performer.MyTeam).ResourcesController.Earn(resources);
+                GameManager.Instance.GetPlayerForTeam(Performer.Team).ResourcesController.Earn(resources);
             }
 
             if (AbilityParameters.Buildable is UpgradeData upgradeData) {
                 // Cancel the upgrade
-                GameManager.Instance.GetPlayerForTeam(Performer.MyTeam).OwnedPurchasablesController.CancelInProgressUpgrade(upgradeData);
+                GameManager.Instance.GetPlayerForTeam(Performer.Team).OwnedPurchasablesController.CancelInProgressUpgrade(upgradeData);
             }
         }
 
         protected override bool CompleteCooldownImpl() {
             switch (AbilityParameters.Buildable) {
                 case EntityData entityData:
-                    if (PathfinderService.CanEntityEnterCell(AbilityParameters.BuildLocation, entityData, Performer.MyTeam, new List<GridEntity>{Performer})) {
+                    if (PathfinderService.CanEntityEnterCell(AbilityParameters.BuildLocation, entityData, Performer.Team, new List<GridEntity>{Performer})) {
                         // The location is open to put this entity, so go ahead and spawn it.
                         // Note that we mark the performer entity as being ignorable since it will probably not be unregistered via
                         // the below command before we check if it's legal to spawn this new one. 
-                        GameManager.Instance.CommandManager.SpawnEntity(entityData, AbilityParameters.BuildLocation, Performer.MyTeam, Performer);
+                        GameManager.Instance.CommandManager.SpawnEntity(entityData, AbilityParameters.BuildLocation, Performer.Team, Performer);
                         if (entityData.IsStructure) {
                             // Destroy the builder.
                             GameManager.Instance.CommandManager.UnRegisterEntity(Performer, false);
@@ -55,7 +55,7 @@ namespace Gameplay.Entities.Abilities {
                         return false;
                     }
                 case UpgradeData upgradeData:
-                    GameManager.Instance.CommandManager.AddUpgrade(upgradeData, Performer.MyTeam);
+                    GameManager.Instance.CommandManager.AddUpgrade(upgradeData, Performer.Team);
                     return true;
                 default:
                     throw new Exception("Unexpected purchasable data type: " + AbilityParameters.Buildable.GetType());
@@ -65,13 +65,13 @@ namespace Gameplay.Entities.Abilities {
 
         protected override void PayCostImpl() {
             // Pay resource cost
-            GameManager.Instance.GetPlayerForTeam(Performer.MyTeam).ResourcesController.Spend(AbilityParameters.Buildable.Cost);
+            GameManager.Instance.GetPlayerForTeam(Performer.Team).ResourcesController.Spend(AbilityParameters.Buildable.Cost);
         }
         
         public override bool DoAbilityEffect() {
             if (AbilityParameters.Buildable is UpgradeData upgradeData) {
                 // Mark the upgrade as in-progress
-                GameManager.Instance.GetPlayerForTeam(Performer.MyTeam).OwnedPurchasablesController.AddInProgressUpgrade(upgradeData);
+                GameManager.Instance.GetPlayerForTeam(Performer.Team).OwnedPurchasablesController.AddInProgressUpgrade(upgradeData);
             }
 
             return true;
