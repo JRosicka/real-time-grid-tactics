@@ -15,7 +15,6 @@ public class PlayerSlot : MonoBehaviour {
     public Button KickButton;
     public TMP_Text ReadyText;
     public TMP_Text NotReadyText;
-    public RoomMenu RoomMenu;
     
     [Header("Config")]
     public Color PlayerColor;
@@ -23,12 +22,18 @@ public class PlayerSlot : MonoBehaviour {
     public GameNetworkPlayer AssignedPlayer;
     public bool SpectatorSlot;
 
+    private RoomMenu _roomMenu;
+
     public void Start() {
         // Configure
         Color.color = PlayerColor;
         
         // Show as empty
         DisplayActive(false);
+    }
+
+    public void Initialize(RoomMenu roomMenu) {
+        _roomMenu = roomMenu;
     }
 
     public void AssignPlayer(GameNetworkPlayer player, bool kickable) {
@@ -56,7 +61,7 @@ public class PlayerSlot : MonoBehaviour {
 
     public void SwapToSlot() {
         if (AssignedPlayer != null) return;
-        RoomMenu.SwapLocalPlayerToSlot(this);
+        _roomMenu.SwapLocalPlayerToSlot(this);
     }
 
     public void KickPlayer() {

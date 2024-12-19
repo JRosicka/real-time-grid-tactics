@@ -285,7 +285,6 @@ MonoBehaviour:
   KickButton: {fileID: 7177279168426993412}
   ReadyText: {fileID: 4933963204786395950}
   NotReadyText: {fileID: 1995091982445343207}
-  RoomMenu: {fileID: 0}
   PlayerColor: {r: 0, g: 0, b: 0, a: 0}
   SlotIndex: 0
   AssignedPlayer: {fileID: 0}
@@ -903,7 +902,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 511874818467024743}
         m_TargetAssemblyTypeName: PlayerSlot, Assembly-CSharp
         m_MethodName: KickPlayer
         m_Mode: 1

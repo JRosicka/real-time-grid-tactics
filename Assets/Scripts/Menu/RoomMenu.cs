@@ -24,12 +24,12 @@ public class RoomMenu : MonoBehaviour {
     public Animator CopiedToClipboardAnimator;
     
     private GameNetworkManager _gameNetworkManager;
-    private SteamLobbyService steamLobbyService => SteamLobbyService.Instance;
+    private SteamLobbyService SteamLobbyService => SteamLobbyService.Instance;
     private string _joinCode;
 
     private List<GameNetworkPlayer> PlayersInLobby => FindObjectsOfType<GameNetworkPlayer>().ToList();
     private GameNetworkPlayer _cachedGameNetworkPlayer;
-    private GameNetworkPlayer _localPlayer {
+    private GameNetworkPlayer LocalPlayer {
         get {
             if (_cachedGameNetworkPlayer == null) {
                 _cachedGameNetworkPlayer = PlayersInLobby.First(player => player.isLocalPlayer);
@@ -47,6 +47,8 @@ public class RoomMenu : MonoBehaviour {
     }
 
     void Start() {
+        AllPlayerSlots.ForEach(s => s.Initialize(this));
+        
         StartButton.gameObject.SetActive(false);
         _gameNetworkManager = FindObjectOfType<GameNetworkManager>();
         _gameNetworkManager.RoomServerPlayersReadyAction += TryShowStartButton;
@@ -79,11 +81,11 @@ public class RoomMenu : MonoBehaviour {
     }
 
     public void SetRandomMetadata() {
-        steamLobbyService.UpdateCurrentLobbyMetadata("dummyData", "69");
+        SteamLobbyService.UpdateCurrentLobbyMetadata("dummyData", "69");
     }
 
     public void SetRandomPlayerMetadata() {
-        steamLobbyService.UpdateCurrentLobbyPlayerMetadata("color", "very red");
+        SteamLobbyService.UpdateCurrentLobbyPlayerMetadata("color", "very red");
     }
 
     public void ExitRoom() {
@@ -168,7 +170,7 @@ public class RoomMenu : MonoBehaviour {
     }
 
     public void SwapLocalPlayerToSlot(PlayerSlot playerSlot) {
-        _localPlayer.CmdSwapToSlot(playerSlot.SlotIndex);
+        LocalPlayer.CmdSwapToSlot(playerSlot.SlotIndex);
     }
 
     // Client event
@@ -206,12 +208,12 @@ public class RoomMenu : MonoBehaviour {
     }
 
     public void ToggleReady() {
-        if (_localPlayer.readyToBegin) {
+        if (LocalPlayer.readyToBegin) {
             ToggleReadyButtonText.text = "Ready";
-            _localPlayer.CmdChangeReadyState(false);
+            LocalPlayer.CmdChangeReadyState(false);
         } else {
             ToggleReadyButtonText.text = "Cancel";
-            _localPlayer.CmdChangeReadyState(true);
+            LocalPlayer.CmdChangeReadyState(true);
         }
     }
 
@@ -225,7 +227,7 @@ public class RoomMenu : MonoBehaviour {
             ToggleReadyButton.gameObject.SetActive(false);
         } else {
             ToggleReadyButton.gameObject.SetActive(true);
-            ToggleReadyButtonText.text = _localPlayer.readyToBegin ? "Cancel" : "Ready";
+            ToggleReadyButtonText.text = LocalPlayer.readyToBegin ? "Cancel" : "Ready";
         }
     }
     
@@ -235,11 +237,11 @@ public class RoomMenu : MonoBehaviour {
     /// </summary>
     private void UpdateLobbyOpenStatus() {
         bool isInGameScene = NetworkManager.IsSceneActive(_gameNetworkManager.GameplayScene);
-        steamLobbyService.UpdateCurrentLobbyMetadata(SteamLobbyService.LobbyGameActiveKey, isInGameScene.ToString());
+        SteamLobbyService.UpdateCurrentLobbyMetadata(SteamLobbyService.LobbyGameActiveKey, isInGameScene.ToString());
     }
 
     public void StartGame() {
-        steamLobbyService.UpdateCurrentLobbyMetadata(SteamLobbyService.LobbyGameActiveKey, true.ToString());
+        SteamLobbyService.UpdateCurrentLobbyMetadata(SteamLobbyService.LobbyGameActiveKey, true.ToString());
         _gameNetworkManager.ServerChangeScene(_gameNetworkManager.GameplayScene);
     }
 }

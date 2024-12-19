@@ -23,7 +23,7 @@ namespace Game.Network
         public static event Action PlayerSteamInfoDetermined;
         public event Action<ulong, int> PlayerSwappedToSlot;
 
-        [Command]
+        [Command(requiresAuthority = false)]
         private void CmdSetSteamIDs(CSteamID newSteamID, string newDisplayName) {
             SteamID = newSteamID;
             DisplayName = newDisplayName;
@@ -44,12 +44,12 @@ namespace Game.Network
             CmdDoKick();
         }
 
-        [Command]
+        [Command(requiresAuthority = false)]
         private void CmdDoKick() {
             netIdentity.connectionToClient.Disconnect();
         }
 
-        [Command]
+        [Command(requiresAuthority = false)]
         public void CmdSwapToSlot(int slotIndex) {
             // Swapping un-readies the player 
             CmdChangeReadyState(false);
