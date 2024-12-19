@@ -128,11 +128,11 @@ public class RoomMenu : MonoBehaviour {
         
         // Assign any unassigned players
         foreach (GameNetworkPlayer player in players.Where(player => !AllPlayerSlots.Select(s => s.AssignedPlayer).Contains(player))) {
-            PlayerSlot nextEmptySlot = GetNextEmptySlot();
-            if (nextEmptySlot == null) {
+            PlayerSlot slotToAssign = GetSlotForIndex(player.index);
+            if (slotToAssign == null) {
                 Debug.LogError("A new player joined, but we don't have any slots for them!");
             } else {
-                nextEmptySlot.AssignPlayer(player, PlayerIsKickable(player));
+                slotToAssign.AssignPlayer(player, PlayerIsKickable(player));
                 player.PlayerSwappedToSlot += HandlePlayerSwappedToSlot;
             }
         }
@@ -142,10 +142,8 @@ public class RoomMenu : MonoBehaviour {
         // TODO: If players can update their info for their slots, do so here
     }
 
-    private PlayerSlot GetNextEmptySlot() {
-        return PlayerSlot1.AssignedPlayer == null ? PlayerSlot1
-            : PlayerSlot2.AssignedPlayer == null ? PlayerSlot2
-            : SpectatorSlots.FirstOrDefault(s => s.AssignedPlayer == null);
+    private PlayerSlot GetSlotForIndex(int index) {
+        return AllPlayerSlots.First(s => s.SlotIndex == index);
     }
 
     private List<PlayerSlot> AllPlayerSlots => new List<PlayerSlot> { PlayerSlot1, PlayerSlot2 }.Concat(SpectatorSlots).ToList();
@@ -175,7 +173,7 @@ public class RoomMenu : MonoBehaviour {
 
     // Client event
     private void HandlePlayerSwappedToSlot(ulong steamID, int slotIndex) {
-        PlayerSlot slotToSwapTo = AllPlayerSlots.First(s => s.SlotIndex == slotIndex);
+        PlayerSlot slotToSwapTo = GetSlotForIndex(slotIndex);
         if (slotToSwapTo.AssignedPlayer != null) {
             Debug.LogWarning($"Tried to swap to a slot that already contains a player! Slot: {slotIndex}.");
             return;
