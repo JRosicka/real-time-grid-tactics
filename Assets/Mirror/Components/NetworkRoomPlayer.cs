@@ -50,11 +50,11 @@ namespace Mirror
                 // have undesirable effects.
                 if (room.dontDestroyOnLoad)
                     DontDestroyOnLoad(gameObject);
-
-                room.roomSlots.Add(this);
-
+                
                 if (NetworkServer.active)
-                    room.RecalculateRoomPlayerIndices();
+                    room.AssignPlayerIndex(this);
+                
+                room.roomSlots.Add(this);
 
                 if (NetworkClient.active)
                     room.CallOnClientEnterRoom();

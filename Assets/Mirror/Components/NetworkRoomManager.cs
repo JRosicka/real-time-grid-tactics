@@ -336,20 +336,16 @@ namespace Mirror
         }
 
         [Server]
-        public void RecalculateRoomPlayerIndices()
-        {
-            if (roomSlots.Count > 0)
-            {
-                for (int i = 0; i < roomSlots.Count; i++) {
-                    // Assign an index that is different than any of the previous room slots 
-                    List<int> priorRoomSlotIndices = roomSlots.GetRange(0, i).Select(p => p.index).ToList();
-                    for (int j = 0; j <= i; j++) {
-                        if (priorRoomSlotIndices.Contains(j)) continue;
-                        roomSlots[i].index = j;
-                        break;
-                    }
-                }
+        public void AssignPlayerIndex(NetworkRoomPlayer newPlayer) {
+            // Assign an index that is different than any of the other room slots
+            List<int> roomSlotIndices = roomSlots.Select(p => p.index).ToList();
+            for (int i = 0; i <= roomSlots.Count; i++) {
+                if (roomSlotIndices.Contains(i)) continue;
+                newPlayer.index = i;
+                return;
             }
+
+            throw new Exception($"Could not assign index to player. Room slots already assigned: {roomSlots.Count}.");
         }
 
         /// <summary>
