@@ -38,6 +38,7 @@ namespace Gameplay.Managers {
         }
 
         private void Update() {
+            if (!GameManager.Instance.GameSetupManager.GameInitialized) return;
             if (GameManager.Instance.GameSetupManager.GameOver) return;
 
             HandleEscape();
@@ -67,7 +68,6 @@ namespace Gameplay.Managers {
         }
 
         private void HandleEscape() {
-            // TODO-spectate: I think this might cause problems with detecting players if the game has not started yet. Put a check for that here. 
             if (!_playerInput.GetButtonDown(EscapeAction)) return;
 
             // If paused, prioritize resuming
