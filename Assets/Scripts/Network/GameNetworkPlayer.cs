@@ -52,11 +52,11 @@ namespace Game.Network
 
         [Command(requiresAuthority = false)]
         public void CmdSwapToSlot(int slotIndex) {
+            index = slotIndex;
+            RpcSwapToSlot(slotIndex);
+            
             // Swapping un-readies the player 
             CmdChangeReadyState(false);
-            index = slotIndex;
-            
-            RpcSwapToSlot(slotIndex);
         }
 
         [ClientRpc]
