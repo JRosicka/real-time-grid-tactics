@@ -230,10 +230,6 @@ namespace Mirror
             return activeScene.path == scene || activeScene.name == scene;
         }
 
-        protected virtual bool IsTryingToJoinLobbyWhileAlreadyInLobby(string newSceneName) {
-            return false;
-        }
-
         // full server setup code, without spawning objects yet
         void SetupServer()
         {
@@ -800,13 +796,6 @@ namespace Mirror
             if (string.IsNullOrWhiteSpace(newSceneName))
             {
                 Debug.LogError("ClientChangeScene empty scene name");
-                return;
-            }
-
-            // Bug fix for joining a scene after the same player previously left. Ignore repeat messages to join the lobby  
-            // if we already joined it. 
-            if (IsTryingToJoinLobbyWhileAlreadyInLobby(newSceneName)) {
-                Debug.Log("Ignoring duplicate scene change message - we are already in the lobby");
                 return;
             }
 

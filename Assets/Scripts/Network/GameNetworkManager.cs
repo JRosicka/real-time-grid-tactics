@@ -153,10 +153,6 @@ namespace Game.Network {
             return true;
         }
 
-        protected override bool IsTryingToJoinLobbyWhileAlreadyInLobby(string newSceneName) {
-            return IsSceneActive(newSceneName) && newSceneName == RoomScene;
-        }
-        
         public event Action ServerErrorAction;
         public override void OnServerError(NetworkConnectionToClient conn, Exception exception) {
             DebugLog($"{nameof(OnServerError)}: Exception: {exception}");
