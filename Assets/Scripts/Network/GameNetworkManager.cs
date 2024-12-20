@@ -152,6 +152,10 @@ namespace Game.Network {
             gameManager.GameSetupManager.SetupMPPlayer(gameNetworkPlayer, mpGamePlayer, numPlayers);
             return true;
         }
+
+        protected override bool IsTryingToJoinLobbyWhileAlreadyInLobby(string newSceneName) {
+            return IsSceneActive(newSceneName) && newSceneName == RoomScene;
+        }
         
         public event Action ServerErrorAction;
         public override void OnServerError(NetworkConnectionToClient conn, Exception exception) {
