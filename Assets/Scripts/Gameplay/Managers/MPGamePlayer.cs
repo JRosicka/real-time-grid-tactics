@@ -9,6 +9,7 @@ using UnityEngine;
 public class MPGamePlayer : NetworkBehaviour, IGamePlayer {
     [field: SyncVar]
     public PlayerData Data { get; set; }
+    [field: SyncVar]
     public string DisplayName { get; set; }
     [SerializeField]
     private PlayerResourcesController _resourcesController;
