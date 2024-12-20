@@ -184,7 +184,7 @@ public class RoomMenu : MonoBehaviour {
         PlayerSlot slotToSwapTo = GetSlotForIndex(slotIndex);
         if (slotToSwapTo.AssignedPlayer != null) {
             // This is probably because the player slot already updated locally
-            ResetReadyButton();
+            ResetReadyButton(true);
             TryShowStartButton();
             return;
         }
@@ -209,7 +209,7 @@ public class RoomMenu : MonoBehaviour {
         slotToSwapTo.AssignPlayer(playerToAssign, PlayerIsKickable(playerToAssign));
         
         // If the local player just swapped, then we might want to toggle the availability of the ready/cancel button
-        ResetReadyButton();
+        ResetReadyButton(true);
         
         // Swapping players out of/into a player slot could affect whether we can start the game
         TryShowStartButton();
@@ -230,12 +230,16 @@ public class RoomMenu : MonoBehaviour {
     /// room, then call this to reset the text on the ready button to reflect the actual ready state
     /// </summary>
     private void ResetReadyButton() {
+        ResetReadyButton(false);
+    }
+
+    private void ResetReadyButton(bool forceNotReady) {
         PlayerSlot localSlot = LocalPlayerSlot;
         if (localSlot == null || localSlot.SpectatorSlot) { 
             ToggleReadyButton.gameObject.SetActive(false);
         } else {
             ToggleReadyButton.gameObject.SetActive(true);
-            ToggleReadyButtonText.text = LocalPlayer.readyToBegin ? "Cancel" : "Ready";
+            ToggleReadyButtonText.text = !forceNotReady && LocalPlayer.readyToBegin ? "Cancel" : "Ready";
         }
     }
     
