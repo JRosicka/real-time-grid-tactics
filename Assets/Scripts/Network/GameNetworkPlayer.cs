@@ -55,7 +55,7 @@ namespace Game.Network
             index = slotIndex;
             
             // Swapping un-readies the player 
-            CmdChangeReadyState(false);
+            ChangeReadyState(false);
             
             RpcSwapToSlot(slotIndex);
         }
