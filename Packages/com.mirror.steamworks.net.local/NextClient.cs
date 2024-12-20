@@ -152,6 +152,11 @@ namespace Mirror.FizzySteam
         {
             cancelToken?.Cancel();
             Dispose();
+
+            // NOTE: Added manually. If I update the Steamworks library in the future, make sure this change does not get reverted
+            if (Connected) {
+                InternalDisconnect();
+            }
             
             if (HostConnection.m_HSteamNetConnection != 0)
             {
