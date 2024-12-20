@@ -23,7 +23,7 @@ public class RoomMenu : MonoBehaviour {
 
     public Animator CopiedToClipboardAnimator;
     
-    private GameNetworkManager _gameNetworkManager;
+    private static GameNetworkManager NetworkManager => (GameNetworkManager)Mirror.NetworkManager.singleton;
     private SteamLobbyService SteamLobbyService => SteamLobbyService.Instance;
     private string _joinCode;
 
@@ -56,11 +56,10 @@ public class RoomMenu : MonoBehaviour {
         AllPlayerSlots.ForEach(s => s.Initialize(this));
         
         StartButton.gameObject.SetActive(false);
-        _gameNetworkManager = FindObjectOfType<GameNetworkManager>();
-        _gameNetworkManager.RoomServerPlayersReadyAction += TryShowStartButton;
-        _gameNetworkManager.RoomServerPlayersNotReadyAction += HideStartButton;
-        _gameNetworkManager.RoomServerSceneChangedAction += UpdateLobbyOpenStatus;
-        _gameNetworkManager.RoomClientSceneChangedAction += AddUnassignedPlayers;
+        NetworkManager.RoomServerPlayersReadyAction += TryShowStartButton;
+        NetworkManager.RoomServerPlayersNotReadyAction += HideStartButton;
+        NetworkManager.RoomServerSceneChangedAction += UpdateLobbyOpenStatus;
+        NetworkManager.RoomClientSceneChangedAction += AddUnassignedPlayers;
         GameNetworkPlayer.PlayerSteamInfoDetermined += AddUnassignedPlayers;
         GameNetworkPlayer.PlayerReadyStatusChanged += UpdatePlayerReadyStatus;
         GameNetworkPlayer.PlayerExitedRoom += UpdatePlayers;
@@ -78,11 +77,11 @@ public class RoomMenu : MonoBehaviour {
         GameNetworkPlayer.PlayerReadyStatusChanged -= UpdatePlayerReadyStatus;
         GameNetworkPlayer.PlayerExitedRoom -= UpdatePlayers;
         GameNetworkPlayer.PlayerExitedRoom -= ResetReadyButton;
-        if (_gameNetworkManager != null) {
-            _gameNetworkManager.RoomServerPlayersReadyAction -= TryShowStartButton;
-            _gameNetworkManager.RoomServerPlayersNotReadyAction -= HideStartButton;
-            _gameNetworkManager.RoomServerSceneChangedAction -= UpdateLobbyOpenStatus;
-            _gameNetworkManager.RoomClientSceneChangedAction -= AddUnassignedPlayers;
+        if (NetworkManager != null) {
+            NetworkManager.RoomServerPlayersReadyAction -= TryShowStartButton;
+            NetworkManager.RoomServerPlayersNotReadyAction -= HideStartButton;
+            NetworkManager.RoomServerSceneChangedAction -= UpdateLobbyOpenStatus;
+            NetworkManager.RoomClientSceneChangedAction -= AddUnassignedPlayers;
         }
 
         foreach (GameNetworkPlayer player in AllPlayerSlots.Select(s => s.AssignedPlayer)
@@ -103,10 +102,10 @@ public class RoomMenu : MonoBehaviour {
         DisconnectFeedbackService.SetDisconnectReason(DisconnectFeedbackService.DisconnectReason.ClientDisconnect);
         if (NetworkServer.active) {
             // We're the host, so stop the whole server
-            _gameNetworkManager.StopHost();
+            NetworkManager.StopHost();
         } else {
             // We're just a little baby client, so just stop the client
-            _gameNetworkManager.StopClient();
+            NetworkManager.StopClient();
         }
     }
 
@@ -158,7 +157,7 @@ public class RoomMenu : MonoBehaviour {
     }
 
     private void UpdatePlayers() {
-        List<GameNetworkPlayer> players = _gameNetworkManager.roomSlots.ConvertAll(player => (GameNetworkPlayer)player);
+        List<GameNetworkPlayer> players = NetworkManager.roomSlots.ConvertAll(player => (GameNetworkPlayer)player);
 
         // Unassign any players who have disconnected
         foreach (PlayerSlot playerSlot in AllPlayerSlots) {
@@ -170,7 +169,7 @@ public class RoomMenu : MonoBehaviour {
     }
 
     private bool PlayerIsKickable(GameNetworkPlayer player) {
-        return _gameNetworkManager.IsHosting() && !player.isLocalPlayer;
+        return NetworkManager.IsHosting() && !player.isLocalPlayer;
     }
 
     public void SwapLocalPlayerToSlot(PlayerSlot playerSlot) {
@@ -242,12 +241,12 @@ public class RoomMenu : MonoBehaviour {
     /// This should be done only on the server. 
     /// </summary>
     private void UpdateLobbyOpenStatus() {
-        bool isInGameScene = NetworkManager.IsSceneActive(_gameNetworkManager.GameplayScene);
+        bool isInGameScene = Mirror.NetworkManager.IsSceneActive(NetworkManager.GameplayScene);
         SteamLobbyService.UpdateCurrentLobbyMetadata(SteamLobbyService.LobbyGameActiveKey, isInGameScene.ToString());
     }
 
     public void StartGame() {
         SteamLobbyService.UpdateCurrentLobbyMetadata(SteamLobbyService.LobbyGameActiveKey, true.ToString());
-        _gameNetworkManager.ServerChangeScene(_gameNetworkManager.GameplayScene);
+        NetworkManager.ServerChangeScene(NetworkManager.GameplayScene);
     }
 }

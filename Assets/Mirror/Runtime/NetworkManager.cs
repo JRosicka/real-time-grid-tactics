@@ -803,7 +803,7 @@ namespace Mirror
                 return;
             }
 
-            // Bug fix for joining a scene after the same player previously left. Ignore repeat messages to join the lobby 
+            // Bug fix for joining a scene after the same player previously left. Ignore repeat messages to join the lobby  
             // if we already joined it. 
             if (IsTryingToJoinLobbyWhileAlreadyInLobby(newSceneName)) {
                 Debug.Log("Ignoring duplicate scene change message - we are already in the lobby");

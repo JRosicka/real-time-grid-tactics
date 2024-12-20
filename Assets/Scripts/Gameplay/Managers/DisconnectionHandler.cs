@@ -30,7 +30,7 @@ namespace Gameplay.Managers {
 
             await Task.Delay(TimeSpan.FromSeconds(3));
             
-            GameNetworkManager gameNetworkManager = Object.FindObjectOfType<GameNetworkManager>();
+            GameNetworkManager gameNetworkManager = (GameNetworkManager)NetworkManager.singleton;
             gameNetworkManager.ServerChangeScene(gameNetworkManager.RoomScene); 
 
             DisconnectFeedbackService.SetDisconnectReason(DisconnectFeedbackService.DisconnectReason.Unknown);

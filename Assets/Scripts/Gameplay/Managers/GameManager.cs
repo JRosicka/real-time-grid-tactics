@@ -121,7 +121,7 @@ public class GameManager : MonoBehaviour {
         }
 
         // MP, so return to the lobby
-        GameNetworkManager gameNetworkManager = FindObjectOfType<GameNetworkManager>();
+        GameNetworkManager gameNetworkManager = (GameNetworkManager)NetworkManager.singleton;
         gameNetworkManager.ServerChangeScene(gameNetworkManager.RoomScene);
     }
 
