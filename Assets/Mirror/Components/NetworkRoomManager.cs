@@ -126,20 +126,22 @@ namespace Mirror
 
         public void ReadyStatusChanged()
         {
-            int CurrentPlayers = 0;
-            int ReadyPlayers = 0;
+            int currentNonSpectatorCount = 0;
+            int readyPlayersCount = 0;
 
-            foreach (NetworkRoomPlayer item in roomSlots)
+            foreach (NetworkRoomPlayer player in roomSlots)
             {
-                if (item != null)
-                {
-                    CurrentPlayers++;
-                    if (item.readyToBegin)
-                        ReadyPlayers++;
+                if (player != null) {
+                    // This player does not count towards the total if they are a spectator (not player 1 or 2)
+                    if (player.index > 1) continue;
+                    
+                    currentNonSpectatorCount++;
+                    if (player.readyToBegin)
+                        readyPlayersCount++;
                 }
             }
 
-            if (CurrentPlayers == ReadyPlayers)
+            if (currentNonSpectatorCount == readyPlayersCount)
                 CheckReadyToBegin();
             else
                 allPlayersReady = false;

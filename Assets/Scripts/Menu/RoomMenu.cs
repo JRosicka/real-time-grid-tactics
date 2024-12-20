@@ -115,6 +115,9 @@ public class RoomMenu : MonoBehaviour {
     }
 
     private void TryShowStartButton() {
+        // Can only show the start button for the host
+        if (!NetworkServer.active) return;
+        
         if (PlayerSlot1.AssignedPlayer == null && PlayerSlot2.AssignedPlayer == null) {
             // Need at least one filled team slot to start a game
             StartButton.gameObject.SetActive(false);

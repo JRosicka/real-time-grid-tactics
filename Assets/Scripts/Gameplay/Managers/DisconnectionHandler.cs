@@ -3,7 +3,6 @@ using System.Threading.Tasks;
 using Game.Network;
 using Mirror;
 using UnityEngine.SceneManagement;
-using Object = UnityEngine.Object;
 
 namespace Gameplay.Managers {
     /// <summary>
