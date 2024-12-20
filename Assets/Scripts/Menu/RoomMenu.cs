@@ -175,7 +175,9 @@ public class RoomMenu : MonoBehaviour {
     private void HandlePlayerSwappedToSlot(ulong steamID, int slotIndex) {
         PlayerSlot slotToSwapTo = GetSlotForIndex(slotIndex);
         if (slotToSwapTo.AssignedPlayer != null) {
-            Debug.LogWarning($"Tried to swap to a slot that already contains a player! Slot: {slotIndex}.");
+            // This is probably because the player slot already updated locally
+            ResetReadyButton();
+            TryShowStartButton();
             return;
         }
 
