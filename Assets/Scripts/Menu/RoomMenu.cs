@@ -84,6 +84,11 @@ public class RoomMenu : MonoBehaviour {
             _gameNetworkManager.RoomServerSceneChangedAction -= UpdateLobbyOpenStatus;
             _gameNetworkManager.RoomClientSceneChangedAction -= AddUnassignedPlayers;
         }
+
+        foreach (GameNetworkPlayer player in AllPlayerSlots.Select(s => s.AssignedPlayer)
+                     .Where(p => p != null)) {
+            player.PlayerSwappedToSlot -= HandlePlayerSwappedToSlot;
+        }
     }
 
     public void SetRandomMetadata() {
@@ -158,6 +163,7 @@ public class RoomMenu : MonoBehaviour {
         // Unassign any players who have disconnected
         foreach (PlayerSlot playerSlot in AllPlayerSlots) {
             if (playerSlot.AssignedPlayer != null && !players.Contains(playerSlot.AssignedPlayer)) {
+                playerSlot.AssignedPlayer.PlayerSwappedToSlot -= HandlePlayerSwappedToSlot;
                 playerSlot.UnassignPlayer();
             }
         }
