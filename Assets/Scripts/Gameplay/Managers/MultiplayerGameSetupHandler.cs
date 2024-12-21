@@ -29,14 +29,10 @@ public class MultiplayerGameSetupHandler : NetworkBehaviour {
     }
     
     [ClientRpc]
-    public void RpcAssignPlayers() {
+    public void RpcAssignPlayers(MPGamePlayer player1, MPGamePlayer player2, MPGamePlayer localPlayer) {
         ICommandManager commandManager = FindObjectOfType<MPCommandManager>();
         GameManager.Instance.CommandManager = commandManager;
 
-        List<MPGamePlayer> players = FindObjectsOfType<MPGamePlayer>().ToList();
-        MPGamePlayer player1 = players.FirstOrDefault(p => p.Data.Team == GameTeam.Player1);
-        MPGamePlayer player2 = players.FirstOrDefault(p => p.Data.Team == GameTeam.Player2);
-        MPGamePlayer localPlayer = players.FirstOrDefault(p => p.isLocalPlayer);
         if (localPlayer == null) { 
             Debug.LogError("Could not find local player");
             return;

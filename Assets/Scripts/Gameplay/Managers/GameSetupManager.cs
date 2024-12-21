@@ -24,6 +24,7 @@ public class GameSetupManager : MonoBehaviour {
 
     [Header("Prefabs")]
     public SPGamePlayer SPGamePlayerPrefab;
+    public MPGamePlayer MPGamePlayerPrefab;
     public MPCommandManager MPCommandManagerPrefab;
     public SPCommandManager SPCommandManagerPrefab;
 
@@ -292,13 +293,31 @@ public class GameSetupManager : MonoBehaviour {
             return;
         }
         
+        // If we are missing any players (due to no one picking those slots), set them up as dummy players now 
+        List<MPGamePlayer> players = FindObjectsOfType<MPGamePlayer>().ToList();
+        MPGamePlayer player1 = players.FirstOrDefault(p => p.Data.Team == GameTeam.Player1);
+        MPGamePlayer player2 = players.FirstOrDefault(p => p.Data.Team == GameTeam.Player2);
+        MPGamePlayer localPlayer = players.FirstOrDefault(p => p.isLocalPlayer);
+        if (!player1) {
+            player1 = Instantiate(MPGamePlayerPrefab, default(Vector3), default);
+            NetworkServer.Spawn(player1.gameObject);
+            player1.Data = Player1Data;
+            player1.DisplayName = "Player 1";
+        }
+        if (!player2) {
+            player2 = Instantiate(MPGamePlayerPrefab, default(Vector3), default);
+            NetworkServer.Spawn(player2.gameObject);
+            player2.Data = Player2Data;
+            player2.DisplayName = "Player 2";
+        }
+        
         // Set up the command controller - only done on the server
         MPCommandManager newManager = Instantiate(MPCommandManagerPrefab, transform);
         NetworkServer.Spawn(newManager.gameObject);
         GameManager.SetupCommandManager(newManager);
 
         // Tell clients to look for the command controller and player GameObjects
-        MPSetupHandler.RpcAssignPlayers();
+        MPSetupHandler.RpcAssignPlayers(player1, player2, localPlayer);
     }
 
     /// <summary>

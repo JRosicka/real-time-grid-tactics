@@ -1266,6 +1266,7 @@ MonoBehaviour:
   GameOverView: {fileID: 1681351945}
   _pauseMenu: {fileID: 1723025850449871020}
   SPGamePlayerPrefab: {fileID: 8195557163812692593, guid: c33bd22bbff2db8479bf24a64400fd19, type: 3}
+  MPGamePlayerPrefab: {fileID: 1108950147278443221, guid: 55db1d50132c69d4fb591de75d649982, type: 3}
   MPCommandManagerPrefab: {fileID: 5189142770249109527, guid: a96b27fb42ce1f942b78aa1e1b407640, type: 3}
   SPCommandManagerPrefab: {fileID: 1915109481469686083, guid: 51021b11e3159ad4ba95364f5dac7e44, type: 3}
   Player1Data: {fileID: 11400000, guid: db81b6365297c4740954a5fc43742225, type: 2}
