@@ -299,15 +299,15 @@ public class GameSetupManager : MonoBehaviour {
         MPGamePlayer player2 = players.FirstOrDefault(p => p.Data.Team == GameTeam.Player2);
         if (!player1) {
             player1 = Instantiate(MPGamePlayerPrefab, default(Vector3), default);
-            NetworkServer.Spawn(player1.gameObject);
             player1.Data = Player1Data;
             player1.DisplayName = "Player 1";
+            NetworkServer.Spawn(player1.gameObject);
         }
         if (!player2) {
             player2 = Instantiate(MPGamePlayerPrefab, default(Vector3), default);
-            NetworkServer.Spawn(player2.gameObject);
             player2.Data = Player2Data;
             player2.DisplayName = "Player 2";
+            NetworkServer.Spawn(player2.gameObject);
         }
         
         // Set up the command controller - only done on the server
