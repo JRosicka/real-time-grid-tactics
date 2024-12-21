@@ -297,7 +297,6 @@ public class GameSetupManager : MonoBehaviour {
         List<MPGamePlayer> players = FindObjectsOfType<MPGamePlayer>().ToList();
         MPGamePlayer player1 = players.FirstOrDefault(p => p.Data.Team == GameTeam.Player1);
         MPGamePlayer player2 = players.FirstOrDefault(p => p.Data.Team == GameTeam.Player2);
-        MPGamePlayer localPlayer = players.FirstOrDefault(p => p.isLocalPlayer);
         if (!player1) {
             player1 = Instantiate(MPGamePlayerPrefab, default(Vector3), default);
             NetworkServer.Spawn(player1.gameObject);
@@ -317,7 +316,7 @@ public class GameSetupManager : MonoBehaviour {
         GameManager.SetupCommandManager(newManager);
 
         // Tell clients to look for the command controller and player GameObjects
-        MPSetupHandler.RpcAssignPlayers(player1, player2, localPlayer);
+        MPSetupHandler.RpcAssignPlayers();
     }
 
     /// <summary>
