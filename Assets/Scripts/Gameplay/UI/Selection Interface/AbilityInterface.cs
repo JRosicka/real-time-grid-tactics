@@ -51,11 +51,10 @@ namespace Gameplay.UI {
         
         public void SelectAbility(AbilitySlot slot) {
             if (!slot.Selectable) return;
+            
+            // Don't allow interaction with the slot unless the local player owns this entity
             GridEntity selectedEntity = SelectedEntity;
-            if (selectedEntity == null || !selectedEntity.InteractBehavior.IsLocalTeam) {
-                // Don't display anything here
-                return;
-            }
+            if (selectedEntity == null || !selectedEntity.InteractBehavior.IsLocalTeam) return;
             
             // Deselect current targetable ability
             GameManager.Instance.EntitySelectionManager.DeselectTargetableAbility();
