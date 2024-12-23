@@ -21,14 +21,10 @@ namespace Gameplay.UI {
         public bool BuildMenuOpenFromSelection { get; private set; }
 
         private AbilitySlot _selectedSlot;
+        private GridEntity SelectedEntity => GameManager.Instance.EntitySelectionManager.SelectedEntity;
         
         public void SetUpForEntity(GridEntity entity) {
             ClearInfo();
-
-            if (!entity.InteractBehavior.IsLocalTeam) {
-                // Don't display anything here
-                return;
-            }
 
             // Set up each ability slot
             foreach (IAbilityData abilityData in entity.Abilities.Where(a => a.Selectable)) {
@@ -55,6 +51,11 @@ namespace Gameplay.UI {
         
         public void SelectAbility(AbilitySlot slot) {
             if (!slot.Selectable) return;
+            GridEntity selectedEntity = SelectedEntity;
+            if (selectedEntity == null || !selectedEntity.InteractBehavior.IsLocalTeam) {
+                // Don't display anything here
+                return;
+            }
             
             // Deselect current targetable ability
             GameManager.Instance.EntitySelectionManager.DeselectTargetableAbility();
