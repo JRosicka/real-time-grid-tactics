@@ -87,7 +87,7 @@ namespace Gameplay.Managers {
                 return;
             }
 
-            if (EntitySelectionManager.SelectedEntity != null) {
+            if (EntitySelectionManager.SelectedEntity != null && EntitySelectionManager.SelectedEntity.InteractBehavior.IsLocalTeam) {
                 // Otherwise clear the last build in the selected entity's build queue if there is one
                 IBuildQueue buildQueue = EntitySelectionManager.SelectedEntity.BuildQueue;
                 if (buildQueue != null && buildQueue.Queue.Count > 0) {
