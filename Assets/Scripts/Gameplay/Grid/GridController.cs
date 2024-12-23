@@ -83,10 +83,6 @@ namespace Gameplay.Grid {
         }
 
         public void HoverOverCell(Vector2Int cell) {
-            if (_selectableCells != null && !_selectableCells.Contains(cell)) {
-                return;
-            }
-            
             _mouseReticle.SelectTile(cell, GameManager.Instance.GetTopEntityAtLocation(cell));
             
             // Show/hide the invalid icon depending on if we can use the ability here
