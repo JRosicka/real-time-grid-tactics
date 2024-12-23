@@ -42,7 +42,7 @@ namespace Gameplay.UI {
             DefeatText.SetActive(false);
             TieText.SetActive(false);
             ResultTextForSpectator.gameObject.SetActive(true);
-            ResultTextForSpectator.text = string.Format(ResultTextForSpectatorText, winner);
+            ResultTextForSpectator.text = string.Format(ResultTextForSpectatorText, winner.DisplayName);
         }
     }
 }
