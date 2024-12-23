@@ -1,3 +1,4 @@
+using Gameplay.UI;
 using UnityEngine;
 
 namespace Gameplay.Entities {
@@ -12,6 +13,7 @@ namespace Gameplay.Entities {
         /// Only show paths for spectators
         /// </summary>
         public bool AllowedToSeeTargetLocation => GameManager.Instance.LocalTeam == GameTeam.Spectator;
+        public SelectionReticle.ReticleSelection ReticleSelection => SelectionReticle.ReticleSelection.Neutral;
 
         public void Select(GridEntity entity) {
             GameManager.Instance.EntitySelectionManager.SelectEntity(entity);

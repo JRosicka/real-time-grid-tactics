@@ -1,5 +1,6 @@
 using Gameplay.Config.Abilities;
 using Gameplay.Entities.Abilities;
+using Gameplay.UI;
 using UnityEngine;
 
 namespace Gameplay.Entities {
@@ -9,6 +10,7 @@ namespace Gameplay.Entities {
     public class OwnerInteractBehavior : IInteractBehavior {
         public bool IsLocalTeam => true;
         public bool AllowedToSeeTargetLocation => true;
+        public SelectionReticle.ReticleSelection ReticleSelection => SelectionReticle.ReticleSelection.Ally;
 
         public void Select(GridEntity entity) {
             GameManager.Instance.EntitySelectionManager.SelectEntity(entity);

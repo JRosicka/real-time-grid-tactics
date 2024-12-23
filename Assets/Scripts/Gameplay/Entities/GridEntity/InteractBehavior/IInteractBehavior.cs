@@ -1,3 +1,4 @@
+using Gameplay.UI;
 using UnityEngine;
 
 namespace Gameplay.Entities {
@@ -14,6 +15,11 @@ namespace Gameplay.Entities {
         /// Whether we should show the path to the entity's target location
         /// </summary>
         bool AllowedToSeeTargetLocation { get; }
+        
+        /// <summary>
+        /// The type of reticle selection for this entity
+        /// </summary>
+        SelectionReticle.ReticleSelection ReticleSelection { get; }
         
         /// <summary>
         /// The user clicked to select this unit

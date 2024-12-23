@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Gameplay.Entities;
 using UnityEngine;
@@ -10,6 +11,12 @@ namespace Gameplay.UI {
     public class SelectionReticle : MonoBehaviour {
         private static readonly Vector2Int DefaultLocation = new Vector2Int(10000, 10000);
 
+        public enum ReticleSelection {
+            Ally,
+            Enemy,
+            Neutral
+        }
+        
         public Color AllySelectionColor;
         public Color EnemySelectionColor;
         public Color NeutralSelectionColor;
@@ -50,14 +57,15 @@ namespace Gameplay.UI {
         private void UpdateColor(GridEntity entityAtLocation) {
             if (!GameManager.Instance.GameSetupManager.GameInitialized) return;
 
-            GameTeam localTeam = GameManager.Instance.LocalTeam;
-            Color selectionColor = NeutralSelectionColor;
-            if (entityAtLocation && entityAtLocation.Team == localTeam) {
-                selectionColor = AllySelectionColor;
-            } else if (entityAtLocation && entityAtLocation.Team != GameTeam.Neutral
-                                        && entityAtLocation.Team != localTeam) {
-                selectionColor = EnemySelectionColor;
-            }
+            ReticleSelection reticleSelection = entityAtLocation == null
+                ? ReticleSelection.Neutral
+                : entityAtLocation.InteractBehavior.ReticleSelection;
+            Color selectionColor = reticleSelection switch {
+                ReticleSelection.Ally => AllySelectionColor,
+                ReticleSelection.Enemy => EnemySelectionColor,
+                ReticleSelection.Neutral => NeutralSelectionColor,
+                _ => throw new ArgumentOutOfRangeException()
+            };
             ReticleComponents.ForEach(r => r.color = selectionColor);
         }
 

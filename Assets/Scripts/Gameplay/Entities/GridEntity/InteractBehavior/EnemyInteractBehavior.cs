@@ -1,3 +1,4 @@
+using Gameplay.UI;
 using UnityEngine;
 
 namespace Gameplay.Entities {
@@ -7,6 +8,7 @@ namespace Gameplay.Entities {
     public class EnemyInteractBehavior : IInteractBehavior {
         public bool IsLocalTeam => false;
         public bool AllowedToSeeTargetLocation => false;
+        public SelectionReticle.ReticleSelection ReticleSelection => SelectionReticle.ReticleSelection.Enemy;
 
         public void Select(GridEntity entity) {
             GameManager.Instance.EntitySelectionManager.SelectEntity(entity);
