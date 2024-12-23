@@ -19,7 +19,7 @@ namespace Gameplay.Config.Abilities {
         public override bool CancelableWhileQueued => true;
 
         public override void SelectAbility(GridEntity selector) {
-            GameManager.Instance.EntitySelectionManager.SelectTargetableAbility(this, null);
+            GameManager.Instance.EntitySelectionManager.SelectTargetableAbility(this, selector.Team, null);
         }
 
         public override bool CanPayCost(IAbilityParameters parameters, GridEntity entity) {
@@ -67,5 +67,8 @@ namespace Gameplay.Config.Abilities {
         }
 
         public bool MoveToTargetCellFirst => true;
+        public GameObject CreateIconForTargetedCell(GameTeam selectorTeam, object targetData) {
+            return null;
+        }
     }
 }

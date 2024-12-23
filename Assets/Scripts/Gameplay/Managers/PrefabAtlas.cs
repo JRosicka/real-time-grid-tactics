@@ -7,5 +7,6 @@ namespace Gameplay.Managers {
     /// </summary>
     public class PrefabAtlas : MonoBehaviour {
         public ArcherArrow ArcherArrow;
+        public InProgressBuildingView StructureImagesView;
     }
 }

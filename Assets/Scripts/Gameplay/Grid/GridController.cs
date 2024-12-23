@@ -4,6 +4,7 @@ using Gameplay.UI;
 using Sirenix.Utilities;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using UnityEngine.UI;
 
 namespace Gameplay.Grid {
     /// <summary>
@@ -24,6 +25,7 @@ namespace Gameplay.Grid {
         
         // Reticle for where the mouse is currently hovering
         [SerializeField] private SelectionReticle _mouseReticle;
+        [SerializeField] private Image _invalidTargetedAbilityLocationIcon;
         
         // Reticle for the selected unit
         [SerializeField] private SelectionReticle _selectedUnitReticle;
@@ -34,7 +36,10 @@ namespace Gameplay.Grid {
         private SelectionReticleEntityTracker _targetUnitTracker = new SelectionReticleEntityTracker();
 
         private List<Vector2Int> _selectableCells;
-
+        /// <summary>
+        /// GameObject to hover over the selected cell to indicate the selected targetable ability
+        /// </summary>
+        private GameObject _targetedIcon;
         private MapLoader _mapLoader;
 
         public GridData GridData { get; private set; }
@@ -47,6 +52,7 @@ namespace Gameplay.Grid {
             _selectedUnitTracker.Initialize(_selectedUnitReticle);
             _targetUnitTracker.Initialize(_targetUnitReticle);
             _selectableCells = null;    // Not sure why this is necessary, but it seems to be
+            _invalidTargetedAbilityLocationIcon.gameObject.SetActive(false);
         }
         
         public void TrackEntity(GridEntity entity) {
@@ -82,10 +88,33 @@ namespace Gameplay.Grid {
             }
             
             _mouseReticle.SelectTile(cell, GameManager.Instance.GetTopEntityAtLocation(cell));
+            
+            // Show/hide the invalid icon depending on if we can use the ability here
+            if (_selectableCells != null && !_selectableCells.Contains(cell)) {
+                _invalidTargetedAbilityLocationIcon.gameObject.SetActive(true);
+            } else {
+                _invalidTargetedAbilityLocationIcon.gameObject.SetActive(false);
+            }
         }
 
         public void StopHovering() {
             _mouseReticle.Hide();
+        }
+
+        public void SetTargetedIcon(GameObject targetedIcon) {
+            _targetedIcon = targetedIcon;
+            if (targetedIcon) {
+                targetedIcon.transform.SetParent(_mouseReticle.transform, false);
+                // Make sure that the invalid icon appears above the targeted icon
+                _invalidTargetedAbilityLocationIcon.transform.SetAsLastSibling();
+            }
+        }
+
+        public void ClearTargetedIcon() {
+            if (_targetedIcon) {
+                Destroy(_targetedIcon);
+            }
+            _targetedIcon = null;
         }
 
         public void ClearPath() {

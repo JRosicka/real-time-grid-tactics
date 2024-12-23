@@ -243,6 +243,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _buildingVisual_mainImage: {fileID: 5248606837115402715}
   _buildingVisual_teamColorImage: {fileID: 674138572882021337}
+  _dimmedAlpha: 0.7
 --- !u!1 &6516231157501853936
 GameObject:
   m_ObjectHideFlags: 0
@@ -291,7 +292,6 @@ GameObject:
   m_Component:
   - component: {fileID: 5015977159259570676}
   - component: {fileID: 3993497331096572533}
-  - component: {fileID: 2781985486802785963}
   - component: {fileID: 1322594226872795490}
   m_Layer: 0
   m_Name: Scaler
@@ -341,20 +341,6 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &2781985486802785963
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8128014074009858341}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: becbef8de94743d4b23000ebc67006e2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _buildingVisual_mainImage: {fileID: 5248606837115402715}
-  _buildingVisual_teamColorImage: {fileID: 674138572882021337}
 --- !u!223 &1322594226872795490
 Canvas:
   m_ObjectHideFlags: 0

@@ -29,7 +29,7 @@ namespace Gameplay.Config.Abilities {
         public override void SelectAbility(GridEntity selector) {
             List<Vector2Int> viableTargets = GetViableTargets(selector);
             GridController.UpdateSelectableCells(viableTargets, selector);
-            EntitySelectionManager.SelectTargetableAbility(this, null);
+            EntitySelectionManager.SelectTargetableAbility(this, selector.Team, null);
         }
 
         public override bool CanPayCost(IAbilityParameters parameters, GridEntity entity) {
@@ -64,6 +64,9 @@ namespace Gameplay.Config.Abilities {
         }
 
         public bool MoveToTargetCellFirst => false;
+        public GameObject CreateIconForTargetedCell(GameTeam selectorTeam, object targetData) {
+            return null;
+        }
 
         // TODO find some way to cache this, probably
         private List<Vector2Int> GetViableTargets(GridEntity selector) {

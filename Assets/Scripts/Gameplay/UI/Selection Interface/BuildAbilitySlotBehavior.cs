@@ -34,7 +34,7 @@ namespace Gameplay.UI {
         
         public virtual void SelectSlot() {
             if (_buildAbilityData.Targetable) {
-                GameManager.Instance.EntitySelectionManager.SelectTargetableAbility(_buildAbilityData, Buildable);
+                GameManager.Instance.EntitySelectionManager.SelectTargetableAbility(_buildAbilityData, SelectedEntity.Team, Buildable);
                 GameManager.Instance.SelectionInterface.TooltipView.ToggleForTargetableAbility(_buildAbilityData, this);
                 List<Vector2Int> viableTargets = GetViableTargets();
                 if (viableTargets != null) {

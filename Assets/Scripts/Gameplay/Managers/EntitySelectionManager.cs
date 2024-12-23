@@ -5,6 +5,7 @@ using Gameplay.Entities;
 using Gameplay.Grid;
 using Gameplay.UI;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 /// <summary>
 /// Handles selecting and keeping track of entities and abilities
@@ -119,9 +120,10 @@ public class EntitySelectionManager {
     
     #region Targetable Abilities
     
-    public void SelectTargetableAbility(ITargetableAbilityData abilityData, object data) {
+    public void SelectTargetableAbility(ITargetableAbilityData abilityData, GameTeam selectorTeam, object data) {
         _selectedTargetableAbility = abilityData;
         _targetData = data;
+        GridController.SetTargetedIcon(abilityData.CreateIconForTargetedCell(selectorTeam, data));
     }
 
     /// <returns>True if there was actually a selected targetable ability that gets canceled, otherwise false</returns>
@@ -129,6 +131,7 @@ public class EntitySelectionManager {
         bool targetableAbilityWasSelected = _selectedTargetableAbility != null;
         _selectedTargetableAbility = null;
         _targetData = null;
+        GridController.ClearTargetedIcon();
         SelectionInterface.DeselectActiveAbility();
         ClearSelectableTiles();
         return targetableAbilityWasSelected;
