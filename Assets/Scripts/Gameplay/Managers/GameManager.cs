@@ -134,7 +134,7 @@ public class GameManager : MonoBehaviour {
 
         // MP, so return to the main menu
         GameNetworkManager gameNetworkManager = (GameNetworkManager)NetworkManager.singleton;
-        gameNetworkManager.ServerChangeScene(gameNetworkManager.offlineScene);
+        gameNetworkManager.StopClient();
     }
 
     #endregion
