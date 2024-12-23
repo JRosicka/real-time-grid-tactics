@@ -125,5 +125,17 @@ public class GameManager : MonoBehaviour {
         gameNetworkManager.ServerChangeScene(gameNetworkManager.RoomScene);
     }
 
+    public void ReturnToMainMenu() {
+        if (!NetworkClient.active) {
+            // SP. Just reload the game scene
+            SceneManager.LoadScene("MainMenu");
+            return;
+        }
+
+        // MP, so return to the main menu
+        GameNetworkManager gameNetworkManager = (GameNetworkManager)NetworkManager.singleton;
+        gameNetworkManager.ServerChangeScene(gameNetworkManager.offlineScene);
+    }
+
     #endregion
 }
