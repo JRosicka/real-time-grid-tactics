@@ -8,6 +8,7 @@ namespace Gameplay.Entities {
     /// </summary>
     public class OwnerInteractBehavior : IInteractBehavior {
         public bool IsLocalTeam => true;
+        public bool AllowedToSeeTargetLocation => true;
 
         public void Select(GridEntity entity) {
             GameManager.Instance.EntitySelectionManager.SelectEntity(entity);

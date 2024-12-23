@@ -7,6 +7,11 @@ namespace Gameplay.Entities {
     /// </summary>
     public class UnownedInteractBehavior : IInteractBehavior {
         public bool IsLocalTeam => false;
+        
+        /// <summary>
+        /// Only show paths for spectators
+        /// </summary>
+        public bool AllowedToSeeTargetLocation => GameManager.Instance.LocalTeam == GameTeam.Spectator;
 
         public void Select(GridEntity entity) {
             GameManager.Instance.EntitySelectionManager.SelectEntity(entity);

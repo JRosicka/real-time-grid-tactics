@@ -6,6 +6,7 @@ namespace Gameplay.Entities {
     /// </summary>
     public class EnemyInteractBehavior : IInteractBehavior {
         public bool IsLocalTeam => false;
+        public bool AllowedToSeeTargetLocation => false;
 
         public void Select(GridEntity entity) {
             GameManager.Instance.EntitySelectionManager.SelectEntity(entity);

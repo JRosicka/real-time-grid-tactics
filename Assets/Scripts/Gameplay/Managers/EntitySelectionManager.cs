@@ -177,7 +177,7 @@ public class EntitySelectionManager {
         if (SelectedEntity == null) return;
         if (!_gameManager.CommandManager.EntitiesOnGrid.IsEntityOnGrid(SelectedEntity)) return; // May be in the middle of getting unregistered
         if (!SelectedEntity.CanMoveOrRally && !SelectedEntity.TargetLocationLogic.Value.CanRally) return;
-        if (SelectedEntity.Team != _gameManager.LocalTeam) return;
+        if (!SelectedEntity.InteractBehavior.AllowedToSeeTargetLocation) return;
 
         PathfinderService.Path path = PathfinderService.FindPath(SelectedEntity, newValue.CurrentTarget);
         GridController.VisualizePath(path);

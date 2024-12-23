@@ -11,6 +11,11 @@ namespace Gameplay.Entities {
         bool IsLocalTeam { get; }
         
         /// <summary>
+        /// Whether we should show the path to the entity's target location
+        /// </summary>
+        bool AllowedToSeeTargetLocation { get; }
+        
+        /// <summary>
         /// The user clicked to select this unit
         /// </summary>
         void Select(GridEntity entity);
