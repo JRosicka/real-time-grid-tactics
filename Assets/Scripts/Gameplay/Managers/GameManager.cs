@@ -117,8 +117,8 @@ public class GameManager : MonoBehaviour {
 
     public void ReturnToLobby() {
         if (!NetworkClient.active) {
-            // SP. Just reload the game scene
-            SceneManager.LoadScene("GamePlay");
+            // SP. Just load to the main menu. 
+            SceneManager.LoadScene("MainMenu");
             return;
         }
 
