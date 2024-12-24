@@ -100,7 +100,7 @@ public class EntitySelectionManager {
         if (_selectedTargetableAbility != null && SelectedEntity != null) {
             // TODO I don't like that we do this every time an entity spawns/despawns/moves. That's a lot of calculating,
             // especially for expensive calculations like the charge ability selection. 
-            _selectedTargetableAbility.RecalculateTargetableAbilitySelection(SelectedEntity);
+            _selectedTargetableAbility.RecalculateTargetableAbilitySelection(SelectedEntity, _targetData);
         }
     }
 

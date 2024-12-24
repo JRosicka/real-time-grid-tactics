@@ -14,7 +14,7 @@ namespace Gameplay.Entities.Abilities {
         
         public override void Cancel() {
             if (AbilityParameters.Target != null) {
-                AbilityParameters.Target.KilledEvent -= TargetEntityNoLongerValid;
+                AbilityParameters.Target.KilledEvent -= TargetEntityKilled;
                 AbilityParameters.Target.EntityMovedEvent -= TargetEntityNoLongerValid;
             }
         }
@@ -26,7 +26,7 @@ namespace Gameplay.Entities.Abilities {
             }
 
             if (AbilityParameters.Target != null) {
-                AbilityParameters.Target.KilledEvent -= TargetEntityNoLongerValid;
+                AbilityParameters.Target.KilledEvent -= TargetEntityKilled;
                 AbilityParameters.Target.EntityMovedEvent -= TargetEntityNoLongerValid;
             } 
 
@@ -38,15 +38,19 @@ namespace Gameplay.Entities.Abilities {
         }
         
         public override bool DoAbilityEffect() {
-            AbilityParameters.Target.KilledEvent += TargetEntityNoLongerValid;
+            AbilityParameters.Target.KilledEvent += TargetEntityKilled;
             AbilityParameters.Target.EntityMovedEvent += TargetEntityNoLongerValid;
 
             // Otherwise nothing to do - need to wait until cooldown completes
             return true;
         }
+
+        private void TargetEntityKilled() {
+            TargetEntityNoLongerValid();
+        }
         
         private void TargetEntityNoLongerValid() {
-            AbilityParameters.Target.KilledEvent -= TargetEntityNoLongerValid;
+            AbilityParameters.Target.KilledEvent -= TargetEntityKilled;
             AbilityParameters.Target.EntityMovedEvent -= TargetEntityNoLongerValid;
 
             // Cancel the ability since the target is no longer heal-able

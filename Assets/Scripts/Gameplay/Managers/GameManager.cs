@@ -35,6 +35,7 @@ public class GameManager : MonoBehaviour {
     public GameEndManager GameEndManager;
     public DisconnectionHandler DisconnectionHandler;
     public AbilityAssignmentManager AbilityAssignmentManager;
+    public QueuedStructureBuildsManager QueuedStructureBuildsManager;
 
     public IGamePlayer Player1;
     public IGamePlayer Player2;
@@ -49,6 +50,7 @@ public class GameManager : MonoBehaviour {
         GameEndManager = new GameEndManager(this);
         DisconnectionHandler = new DisconnectionHandler();
         AbilityAssignmentManager = new AbilityAssignmentManager();
+        QueuedStructureBuildsManager = new QueuedStructureBuildsManager(this);
     }
 
     private void Start() {

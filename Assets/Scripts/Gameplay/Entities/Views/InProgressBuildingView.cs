@@ -32,7 +32,7 @@ namespace Gameplay.Entities {
             _buildingVisual_teamColorImage.GetComponent<Canvas>().sortingOrder += entityData.GetStackOrder();
         }
 
-        private void RemoveView() {
+        public void RemoveView() {
             if (!this) return;
             Destroy(gameObject);
         }

@@ -57,7 +57,7 @@ namespace Gameplay.Config.Abilities {
             }, true, true, false);
         }
 
-        public void RecalculateTargetableAbilitySelection(GridEntity selector) {
+        public void RecalculateTargetableAbilitySelection(GridEntity selector, object targetData) {
             // TODO Really only need to invalidate the cache and recalculate if anything moves/spawns/dies/finishes building *in range* of the charge.
             List<Vector2Int> viableTargets = GetViableTargets(selector);
             GridController.UpdateSelectableCells(viableTargets, selector);

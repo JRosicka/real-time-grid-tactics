@@ -58,7 +58,7 @@ namespace Gameplay.Config.Abilities {
             selectedEntity.SetTargetLocation(cellPosition, target);
         }
 
-        public void RecalculateTargetableAbilitySelection(GridEntity selector) {
+        public void RecalculateTargetableAbilitySelection(GridEntity selector, object targetData) {
             // Nothing to do
         }
 

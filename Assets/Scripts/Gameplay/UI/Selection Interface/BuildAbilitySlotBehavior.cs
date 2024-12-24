@@ -23,7 +23,6 @@ namespace Gameplay.UI {
         public bool CaresAboutAbilityChannels => false;
         public bool IsAbilityTargetable => _buildAbilityData.Targeted;
         private GridController GridController => GameManager.Instance.GridController;
-        private GridEntityCollection EntitiesOnGrid => GameManager.Instance.CommandManager.EntitiesOnGrid;
         private AbilityAssignmentManager AbilityAssignmentManager => GameManager.Instance.AbilityAssignmentManager;
 
         public BuildAbilitySlotBehavior(BuildAbilityData buildData, PurchasableData buildable, GridEntity selectedEntity) {
@@ -36,7 +35,7 @@ namespace Gameplay.UI {
             if (_buildAbilityData.Targetable) {
                 GameManager.Instance.EntitySelectionManager.SelectTargetableAbility(_buildAbilityData, SelectedEntity.Team, Buildable);
                 GameManager.Instance.SelectionInterface.TooltipView.ToggleForTargetableAbility(_buildAbilityData, this);
-                List<Vector2Int> viableTargets = GetViableTargets();
+                List<Vector2Int> viableTargets = _buildAbilityData.GetViableTargets(SelectedEntity, Buildable);
                 if (viableTargets != null) {
                     GridController.UpdateSelectableCells(viableTargets, SelectedEntity);
                 }
@@ -83,35 +82,6 @@ namespace Gameplay.UI {
                 secondaryAbilityImage.gameObject.SetActive(true);
                 teamColorsCanvas.sortingOrder = Buildable.DisplayTeamColorOverMainSprite ? 2 : 1;
             }
-        }
-        
-        private List<Vector2Int> GetViableTargets() {
-            if (Buildable is not EntityData buildableEntity) return null;
-            
-            List<Vector2Int> viableTargets = new List<Vector2Int>();
-            
-            // Add each cell with a tile that the structure can be built on
-            foreach (GameplayTile tile in buildableEntity.EligibleStructureLocations) {
-                viableTargets.AddRange(GridController.GridData.GetCells(tile).Select(c => c.Location));
-            }
-
-            // Remove any cells that have opponent entities or friendly structures
-            List<Vector2Int> ret = new List<Vector2Int>();
-            foreach (Vector2Int viableTarget in viableTargets) {
-                var entities = EntitiesOnGrid.EntitiesAtLocation(viableTarget);
-                if (entities?.Entities == null) {
-                    // No entities there, so it is eligible
-                    ret.Add(viableTarget);
-                    continue;
-                }
-                if (!entities.Entities.Any(e =>
-                        (e.Entity.Team != SelectedEntity.Team && e.Entity.Team != GameTeam.Neutral) || e.Entity.EntityData.IsStructure)) {
-                    // Entities there, but none of them are opponents or friendly structures, so eligible
-                    ret.Add(viableTarget);
-                }
-            }
-
-            return ret;
         }
     }
 }

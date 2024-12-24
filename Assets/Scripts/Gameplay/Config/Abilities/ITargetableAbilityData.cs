@@ -19,7 +19,7 @@ namespace Gameplay.Config.Abilities {
         /// <summary>
         /// Redo any on-selection calculations that need to be updated when the map state changes
         /// </summary>
-        void RecalculateTargetableAbilitySelection(GridEntity selector);
+        void RecalculateTargetableAbilitySelection(GridEntity selector, object targetData);
         /// <summary>
         /// Whether we should move to the target cell before attempting to do the ability
         /// </summary>

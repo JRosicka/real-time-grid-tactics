@@ -62,7 +62,7 @@ namespace Gameplay.Config.Abilities {
             // is the only thing we're trying to do with this ability
         }
 
-        public void RecalculateTargetableAbilitySelection(GridEntity selector) {
+        public void RecalculateTargetableAbilitySelection(GridEntity selector, object targetData) {
             // Nothing to do
         }
 

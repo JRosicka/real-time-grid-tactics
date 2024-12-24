@@ -345,6 +345,7 @@ namespace Gameplay.Entities {
         
         public void UpdateAbilityQueue(List<IAbility> newAbilityQueue) {
             QueuedAbilities = newAbilityQueue;
+            GameManager.Instance.QueuedStructureBuildsManager.UnregisterNoLongerQueuedBuildsForEntity(this);
             AbilityQueueUpdatedEvent?.Invoke(newAbilityQueue);
         }
         
@@ -355,6 +356,10 @@ namespace Gameplay.Entities {
             AbilityCooldownTimer cooldownTimer = ActiveTimers.FirstOrDefault(t => t.Ability.UID == abilityInstance.UID);
             if (cooldownTimer == null) {
                 return;
+            }
+
+            if (abilityInstance is BuildAbility) {
+                GameManager.Instance.QueuedStructureBuildsManager.UnregisterNoLongerQueuedBuildsForEntity(this); 
             }
 
             AbilityPerformedEvent?.Invoke(abilityInstance, cooldownTimer);
