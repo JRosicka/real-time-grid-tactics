@@ -93,11 +93,6 @@ namespace Gameplay.Config.Abilities {
             BuildAbilityParameters buildParameters = new BuildAbilityParameters {Buildable = purchasableData, BuildLocation = cellPosition};
             GameManager.Instance.AbilityAssignmentManager.QueueAbility(selectedEntity, this, buildParameters, true, false, false);
             selectedEntity.SetTargetLocation(cellPosition, null);
-
-            if (purchasableData is EntityData { IsStructure: true }) {
-                // Track and display the queued structure build
-                GameManager.Instance.QueuedStructureBuildsManager.RegisterQueuedStructure(buildParameters, selectedEntity);
-            }
             
             if (GameManager.Instance.SelectionInterface.BuildMenuOpenFromSelection) {
                 // Leave the build menu
