@@ -26,12 +26,8 @@ namespace Gameplay.UI {
             }
             gameObject.SetActive(Paused);
 
-            if (!NetworkClient.active) {
-                // SP, so show both buttons
-                SurrenderButton.gameObject.SetActive(true);
-                ReturnToMenuButton.gameObject.SetActive(true);
-            } else if (GameManager.LocalTeam == GameTeam.Spectator) {
-                // Can't surrender if we are just a spectator. Instead, add a return-to-menu button. 
+            if (!NetworkClient.active || GameManager.LocalTeam == GameTeam.Spectator) {
+                // SP or spectator, so show a return-to-menu button
                 SurrenderButton.gameObject.SetActive(false);
                 ReturnToMenuButton.gameObject.SetActive(true);
             } else {
