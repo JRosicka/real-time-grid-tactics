@@ -10,6 +10,7 @@ namespace Gameplay.Entities {
     public class OwnerInteractBehavior : IInteractBehavior {
         public bool IsLocalTeam => true;
         public bool AllowedToSeeTargetLocation => true;
+        public bool AllowedToSeeQueuedStructures => true;
         public SelectionReticle.ReticleSelection ReticleSelection => SelectionReticle.ReticleSelection.Ally;
 
         public void Select(GridEntity entity) {

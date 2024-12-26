@@ -15,7 +15,12 @@ namespace Gameplay.Entities {
         /// Whether we should show the path to the entity's target location
         /// </summary>
         bool AllowedToSeeTargetLocation { get; }
-        
+
+        /// <summary>
+        /// Whether we should show queued structures for this entity
+        /// </summary>
+        bool AllowedToSeeQueuedStructures { get; }
+
         /// <summary>
         /// The type of reticle selection for this entity
         /// </summary>
