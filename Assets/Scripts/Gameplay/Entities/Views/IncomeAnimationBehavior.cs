@@ -21,7 +21,7 @@ namespace Gameplay.Entities {
 
         public void Initialize(GridEntity entity) {
             _entity = entity;
-            ToggleOutOfResourcesIcon();
+            ToggleOutOfResourcesIcon(false);
         }
         
         public void DoIncomeAnimation(IncomeAbilityData data) {
@@ -29,13 +29,13 @@ namespace Gameplay.Entities {
             _incomeText.color = _textColor;
             _animator.Play("ShowIncome");
             
-            ToggleOutOfResourcesIcon();
+            ToggleOutOfResourcesIcon(_entity.InteractBehavior is { IsLocalTeam: true });
         }
 
         /// <summary>
         /// See if we should show the out-of-resources icon, and show/hide it accordingly
         /// </summary>
-        private void ToggleOutOfResourcesIcon() {
+        private void ToggleOutOfResourcesIcon(bool displayAlertIfOut) {
             if (_entity.Location == null) {
                 Debug.LogWarning("No performer location? This should not happen.");
                 return;
@@ -49,7 +49,11 @@ namespace Gameplay.Entities {
                 return;
             }
 
-            _outOfResourcesIcon.SetActive(resourceEntity.CurrentResources.Value.Amount <= 0);
+            bool outOfResources = resourceEntity.CurrentResources.Value.Amount <= 0;
+            _outOfResourcesIcon.SetActive(outOfResources);
+            if (outOfResources && displayAlertIfOut) {
+                GameManager.Instance.AlertTextDisplayer.DisplayAlert($"One of your {_entity.DisplayName.ToLower()}s has harvested all of its resources.");
+            }
         }
     }
 }
