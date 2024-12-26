@@ -50,7 +50,7 @@ namespace Gameplay.UI {
         /// </summary>
         public IAbilitySlotBehavior SlotBehavior { get; private set; }
 
-        public bool Selectable { get; private set; }
+        public AvailabilityResult Availability { get; private set; }
 
         /// <summary>
         /// Update this ability slot to set its state/appearance
@@ -71,7 +71,7 @@ namespace Gameplay.UI {
 
         private void Hide() {
             CanvasGroup.alpha = 0;
-            Selectable = false;
+            Availability = AvailabilityResult.Unavailable;
         }
 
         public void Clear() {
@@ -81,20 +81,23 @@ namespace Gameplay.UI {
             SlotBehavior = null;
             _selectedEntity = null;
             _selected = false;
-            Selectable = false;
+            Availability = AvailabilityResult.Unavailable;
             gameObject.SetActive(false);
         }
         
         public void OnButtonClick() {
-            if (!Selectable) return;
             AbilityInterface.SelectAbility(this);
         }
 
         public void SelectAbility() {
-            if (!Selectable) return;
+            if (Availability != AvailabilityResult.Selectable) return;
             
             MarkSelected(true);
             SlotBehavior?.SelectSlot();
+        }
+
+        public void HandleFailedToSelect() {
+            SlotBehavior?.HandleFailedToSelect(Availability);
         }
 
         public void MarkSelected(bool selected) {
@@ -126,7 +129,7 @@ namespace Gameplay.UI {
 
             // Only deselect if we have not done anything else meaningful with this slot while waiting
             if (_shouldDeselectWhenTimerElapses) {
-                MarkSelectable(false);
+                MarkAvailability(AvailabilityResult.Unselectable);
                 MarkSelected(false);
             }
         }
@@ -140,25 +143,25 @@ namespace Gameplay.UI {
                     Hide();
                     break;
                 case AvailabilityResult.Selectable:
-                    MarkSelectable(true);
+                    MarkAvailability(AvailabilityResult.Selectable);
                     break;
                 case AvailabilityResult.Unselectable:
-                    MarkSelectable(false);
+                    MarkAvailability(AvailabilityResult.Unselectable);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
             }
             
-            if (_selected && Selectable) {
+            if (_selected && Availability == AvailabilityResult.Selectable) {
                 // Re-set the appearance to "selected" if we were selected and still can be
                 SlotFrame.color = SelectedColor;
             }
         }
 
-        private void MarkSelectable(bool available) {
-            SlotFrame.color = available ? SelectableColor : UnselectableColor;
+        private void MarkAvailability(AvailabilityResult availability) {
+            SlotFrame.color = availability == AvailabilityResult.Selectable ? SelectableColor : UnselectableColor;
             CanvasGroup.alpha = 1;
-            Selectable = available;
+            Availability = availability;
         }
         
         #region Listeners

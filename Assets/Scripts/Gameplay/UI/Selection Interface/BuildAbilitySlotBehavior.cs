@@ -53,6 +53,12 @@ namespace Gameplay.UI {
             }
         }
 
+        public void HandleFailedToSelect(AbilitySlot.AvailabilityResult availability) {
+            if (availability == AbilitySlot.AvailabilityResult.Unselectable) {
+                GameManager.Instance.AlertTextDisplayer.DisplayAlert("Can not afford.");
+            } // Otherwise it is unavailable - don't even acknowledge the selection attempt
+        }
+
         public virtual AbilitySlot.AvailabilityResult GetAvailability() {
             IGamePlayer player = GameManager.Instance.GetPlayerForTeam(SelectedEntity.Team);
             List<PurchasableData> ownedPurchasables = player.OwnedPurchasablesController.OwnedPurchasables;

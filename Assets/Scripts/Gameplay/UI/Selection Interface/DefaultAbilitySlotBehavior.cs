@@ -29,6 +29,10 @@ namespace Gameplay.UI {
             }
         }
 
+        public void HandleFailedToSelect(AbilitySlot.AvailabilityResult availability) {
+            // Nothing to do
+        }
+
         public AbilitySlot.AvailabilityResult GetAvailability() {
             return GameManager.Instance.AbilityAssignmentManager.CanEntityUseAbility(_selectedEntity, AbilityData, AbilityData.SelectableWhenBlocked) 
                 ? AbilitySlot.AvailabilityResult.Selectable 

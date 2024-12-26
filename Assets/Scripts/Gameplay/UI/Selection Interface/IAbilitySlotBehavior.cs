@@ -25,6 +25,10 @@ namespace Gameplay.UI {
         /// </summary>
         void SelectSlot();
         /// <summary>
+        /// We just received user input to select the slot, but we can not select it
+        /// </summary>
+        void HandleFailedToSelect(AbilitySlot.AvailabilityResult availability);
+        /// <summary>
         /// Whether the associated ability is currently available
         /// </summary>
         AbilitySlot.AvailabilityResult GetAvailability();

@@ -29,6 +29,7 @@ public class GameManager : MonoBehaviour {
     public PrefabAtlas PrefabAtlas;
     public Cheats Cheats;
     public DisconnectionDialog DisconnectionDialog;
+    public AlertTextDisplayer AlertTextDisplayer;
     
     public PathfinderService PathfinderService;
     public EntitySelectionManager EntitySelectionManager;

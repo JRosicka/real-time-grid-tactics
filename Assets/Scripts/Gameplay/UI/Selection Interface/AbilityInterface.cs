@@ -50,7 +50,10 @@ namespace Gameplay.UI {
         }
         
         public void SelectAbility(AbilitySlot slot) {
-            if (!slot.Selectable) return;
+            if (slot.Availability != AbilitySlot.AvailabilityResult.Selectable) {
+                slot.HandleFailedToSelect();
+                return;
+            }
             
             // Don't allow interaction with the slot unless the local player owns this entity
             GridEntity selectedEntity = SelectedEntity;
