@@ -25,6 +25,8 @@ namespace Gameplay.Managers {
         }
 
         public void UpdateQueuedBuildsForEntity(GridEntity builder) {
+            if (builder.InteractBehavior is not { IsLocalTeam: true }) return;
+            
             List<QueuedBuildInfo> queuedStructuresCopy = new List<QueuedBuildInfo>(_queuedStructures);
             List<BuildAbility> currentlyQueuedBuilds = builder.QueuedAbilities
                 .Where(a => a is BuildAbility)
@@ -57,11 +59,6 @@ namespace Gameplay.Managers {
         private void RegisterQueuedStructure(BuildAbilityParameters queuedBuild, GridEntity builder) {
             // TODO account for multiple?
             // builder.KilledEvent += UnregisterQueuedBuildsForEntity;
-
-            if (_queuedStructures.Any(s => s.BuildParameters.BuildLocation == queuedBuild.BuildLocation)) {
-                Debug.LogWarning("Tried to register a queued build for a location that already has one. This should not be allowed.");
-                return;
-            }
 
             InProgressBuildingView structureSilhouette = Object.Instantiate(_gameManager.PrefabAtlas.StructureImagesView, 
                 _gameManager.GridController.GetWorldPosition(queuedBuild.BuildLocation), 
