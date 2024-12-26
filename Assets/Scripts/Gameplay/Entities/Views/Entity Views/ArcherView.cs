@@ -6,6 +6,8 @@ namespace Gameplay.Entities {
     public class ArcherView : GridEntityParticularView {
         public GridEntityView EntityView;
         
+        public override void Initialize(GridEntity entity) { }
+
         public override bool DoAbility(IAbility ability, AbilityCooldownTimer cooldownTimer) {
             switch (ability.AbilityData) {
                 case AttackAbilityData _:

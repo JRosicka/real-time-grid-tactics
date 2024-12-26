@@ -76,6 +76,8 @@ namespace Gameplay.Entities {
             entity.KilledEvent += Killed;
             
             _healthBar.Initialize(new HealthBarLogic(entity));
+
+            _particularView.Initialize(entity);
         }
 
         private void OnDestroy() {

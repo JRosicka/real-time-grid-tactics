@@ -180,6 +180,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: IncomeAnimationBehavior
       objectReference: {fileID: 0}
+    - target: {fileID: 4765841005964944704, guid: 6e986d07040c6474fa0b72e98db67860, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4765841005964944704, guid: 6e986d07040c6474fa0b72e98db67860, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 7257307962244981539, guid: 6e986d07040c6474fa0b72e98db67860, type: 3}
       propertyPath: _textColor.b
       value: 1

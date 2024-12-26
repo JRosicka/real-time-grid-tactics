@@ -3,6 +3,7 @@ using UnityEngine;
 
 namespace Gameplay.Entities {
     public abstract class GridEntityParticularView : MonoBehaviour {
+        public abstract void Initialize(GridEntity entity);
         /// <summary>
         /// Perform any entity-specific animations for the given ability.
         /// </summary>

@@ -7,6 +7,8 @@ namespace Gameplay.Entities {
         [SerializeField] private Animator _animator;
         private InProgressBuildingView _buildingViewInstance;
 
+        public override void Initialize(GridEntity entity) { }
+
         public override bool DoAbility(IAbility ability, AbilityCooldownTimer cooldownTimer) {
             switch (ability) {
                 case BuildAbility buildAbility:
