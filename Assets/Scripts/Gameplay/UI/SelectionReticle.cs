@@ -57,7 +57,7 @@ namespace Gameplay.UI {
         private void UpdateColor(GridEntity entityAtLocation) {
             if (!GameManager.Instance.GameSetupManager.GameInitialized) return;
 
-            ReticleSelection reticleSelection = entityAtLocation == null
+            ReticleSelection reticleSelection = entityAtLocation == null || entityAtLocation.InteractBehavior == null
                 ? ReticleSelection.Neutral
                 : entityAtLocation.InteractBehavior.ReticleSelection;
             Color selectionColor = reticleSelection switch {

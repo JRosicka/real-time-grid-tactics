@@ -54,7 +54,7 @@ namespace Gameplay.UI {
             
             // Don't allow interaction with the slot unless the local player owns this entity
             GridEntity selectedEntity = SelectedEntity;
-            if (selectedEntity == null || !selectedEntity.InteractBehavior.IsLocalTeam) return;
+            if (selectedEntity == null || !selectedEntity.InteractBehavior!.IsLocalTeam) return;
             
             // Deselect current targetable ability
             GameManager.Instance.EntitySelectionManager.DeselectTargetableAbility();

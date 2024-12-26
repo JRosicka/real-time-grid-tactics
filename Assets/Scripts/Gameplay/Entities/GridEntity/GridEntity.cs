@@ -48,6 +48,7 @@ namespace Gameplay.Entities {
         public NetworkableField<TargetLocationLogic> TargetLocationLogic;
         private NetworkableField<NetworkableVector2IntegerValue> _location;
         public IBuildQueue BuildQueue;
+        [CanBeNull] // If not yet initialized on the client
         public IInteractBehavior InteractBehavior;
 
         // Abilities
@@ -248,8 +249,10 @@ namespace Gameplay.Entities {
         
         public void Select() {
             if (!Interactable) return;
-            InteractBehavior.Select(this);
-            SelectedEvent?.Invoke();
+            if (InteractBehavior != null) {
+                InteractBehavior.Select(this);
+                SelectedEvent?.Invoke();
+            }
         }
 
         /// <summary>
@@ -257,7 +260,7 @@ namespace Gameplay.Entities {
         /// </summary>
         public void InteractWithCell(Vector2Int location) {
             if (!Interactable) return;
-            InteractBehavior.TargetCellWithUnit(this, location);
+            InteractBehavior?.TargetCellWithUnit(this, location); 
         }
 
         #endregion
