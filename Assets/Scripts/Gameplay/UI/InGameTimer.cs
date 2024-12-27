@@ -12,10 +12,16 @@ namespace Gameplay.UI {
 
         private bool _timerStarted;
         private float _matchLength;
+
+        private GameSetupManager GameSetupManager => GameManager.Instance.GameSetupManager;
         
         private void Start() {
             SetText(TimeSpan.Zero);
-            GameManager.Instance.GameSetupManager.GameInitializedEvent += StartTimer;
+            if (GameSetupManager.GameInitialized) {
+                StartTimer();
+            } else {
+                GameManager.Instance.GameSetupManager.GameInitializedEvent += StartTimer;
+            }
         }
 
         private void Update() {
