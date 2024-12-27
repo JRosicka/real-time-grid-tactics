@@ -484,10 +484,18 @@ namespace Gameplay.Entities {
                 return;
             }
             
-            // TODO Could consider attack-moving to the target location if no abilities are queued and configured to attack by default.
-            // Necessary so that the entity doesn't just sit there if attacked by something outside of its range. 
-
             HPHandler.ReceiveAttackFromEntity(sourceEntity);
+
+            if (HPHandler.CurrentHP > 0 
+                    && EntityData.AttackByDefault 
+                    && QueuedAbilities.Count == 0 
+                    && sourceEntity.Location != null) {
+                // Attack-move to the target
+                AbilityAssignmentManager.PerformAbility(this, GetAbilityData<AttackAbilityData>(), new AttackAbilityParameters {
+                    TargetFire = false,
+                    Destination = sourceEntity.Location.Value
+                }, false);
+            }
         }
         
         #endregion
