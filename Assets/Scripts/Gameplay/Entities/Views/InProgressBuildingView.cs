@@ -1,6 +1,5 @@
 using Gameplay.Config;
 using Gameplay.Entities.Abilities;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -26,9 +25,13 @@ namespace Gameplay.Entities {
         public void Initialize(GameTeam team, EntityData entityData, bool dimmed) {
             _buildingVisual_mainImage.sprite = entityData.BaseSprite;
             _buildingVisual_mainImage.GetComponent<Canvas>().sortingOrder += entityData.GetStackOrder();
-            _buildingVisual_mainImage.color = _buildingVisual_mainImage.color.WithAlpha(dimmed ? _dimmedAlpha : 1);
+            Color mainImageColor = _buildingVisual_mainImage.color;
+            mainImageColor.a = dimmed ? _dimmedAlpha : 1;
+            _buildingVisual_mainImage.color = mainImageColor;
             _buildingVisual_teamColorImage.sprite = entityData.TeamColorSprite;
-            _buildingVisual_teamColorImage.color = GameManager.Instance.GetPlayerForTeam(team).Data.TeamColor.WithAlpha(dimmed ? _dimmedAlpha : 1);;
+            Color teamColorsImageColor = GameManager.Instance.GetPlayerForTeam(team).Data.TeamColor;
+            teamColorsImageColor.a = dimmed ? _dimmedAlpha : 1;
+            _buildingVisual_teamColorImage.color = teamColorsImageColor;
             _buildingVisual_teamColorImage.GetComponent<Canvas>().sortingOrder += entityData.GetStackOrder();
         }
 

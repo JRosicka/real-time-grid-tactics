@@ -205,12 +205,12 @@ public class MultiplayerMenu : MonoBehaviour {
                 return;
             }
 
-            Tilemap map = new Tilemap();
-            TileBase tile = map.GetTile(new Vector3Int(0, 1));
-            TileData data;
-            GameObject spawnedObject = map.GetInstantiatedObject(new Vector3Int(0, 1));
-            GameplayTile gameTile = (GameplayTile)tile;
-            Grid grid;
+            // Tilemap map = new Tilemap();
+            // TileBase tile = map.GetTile(new Vector3Int(0, 1));
+            // TileData data;
+            // GameObject spawnedObject = map.GetInstantiatedObject(new Vector3Int(0, 1));
+            // GameplayTile gameTile = (GameplayTile)tile;
+            // Grid grid;
             
 
             SteamLobbyService.Instance.JoinLobby(lobby.SteamID);
