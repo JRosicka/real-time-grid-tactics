@@ -21,12 +21,12 @@ namespace Gameplay.Entities {
         // Server flag?
         public bool MarkedForDeath { get; private set; }
 
-        public int CurrentHP => _currentHP?.Value.Value ?? 0;
+        public int CurrentHP => ((NetworkableIntegerValue)_currentHP?.Value)?.Value ?? 0;
         
-        private NetworkableField<NetworkableIntegerValue> _currentHP;
+        private NetworkableField _currentHP;
 
         private void Awake() {
-            _currentHP = new NetworkableField<NetworkableIntegerValue>(this, nameof(_currentHP), new NetworkableIntegerValue(0));
+            _currentHP = new NetworkableField(this, nameof(_currentHP), new NetworkableIntegerValue(0));
             _currentHP.ValueChanged += HPChanged;
         }
         
@@ -36,13 +36,15 @@ namespace Gameplay.Entities {
             _currentHP.UpdateValue(new NetworkableIntegerValue(newHP), fromGameEffect.ToString());
         }
 
-        private void HPChanged(NetworkableIntegerValue oldHP, NetworkableIntegerValue newHP, string metadata) {
+        private void HPChanged(INetworkableFieldValue oldHP, INetworkableFieldValue newHP, string metadata) {
+            NetworkableIntegerValue oldHPInt = (NetworkableIntegerValue)oldHP;
+            NetworkableIntegerValue newHPInt = (NetworkableIntegerValue)newHP;
             HPChangedEvent?.Invoke();
             
             bool fromGameEffect = Convert.ToBoolean(metadata);
-            if (fromGameEffect && oldHP.Value < newHP.Value) {
+            if (fromGameEffect && oldHPInt.Value < newHPInt.Value) {
                 HealedEvent?.Invoke();
-            } else if (fromGameEffect && oldHP.Value > newHP.Value) {
+            } else if (fromGameEffect && oldHPInt.Value > newHPInt.Value) {
                 AttackedEvent?.Invoke();
             }
         }

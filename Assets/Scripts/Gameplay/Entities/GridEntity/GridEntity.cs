@@ -44,9 +44,11 @@ namespace Gameplay.Entities {
         public int Damage;
 
         // NetworkableFields and composition objects
-        public NetworkableField<ResourceAmount> CurrentResources;
-        public NetworkableField<TargetLocationLogic> TargetLocationLogic;
-        private NetworkableField<NetworkableVector2IntegerValue> _location;
+        public NetworkableField CurrentResources;
+        public ResourceAmount CurrentResourcesValue => (ResourceAmount)CurrentResources.Value;
+        public NetworkableField TargetLocationLogic;
+        public TargetLocationLogic TargetLocationLogicValue => (TargetLocationLogic)TargetLocationLogic.Value;
+        private NetworkableField _location;
         public IBuildQueue BuildQueue;
         [CanBeNull] // If not yet initialized on the client
         public IInteractBehavior InteractBehavior;
@@ -79,7 +81,7 @@ namespace Gameplay.Entities {
                 if (_location == null || _location.Value == null) {
                     Debug.LogWarning("Location is null!!");
                 }
-                return _location?.Value?.Value;
+                return ((NetworkableVector2IntegerValue)_location?.Value)?.Value;
             }
         }
 
@@ -114,10 +116,9 @@ namespace Gameplay.Entities {
         #region Initialization
         
         private void Awake() {
-            CurrentResources = new NetworkableField<ResourceAmount>(this, nameof(CurrentResources), new ResourceAmount());
-            TargetLocationLogic = new NetworkableField<TargetLocationLogic>(this, nameof(TargetLocationLogic), new TargetLocationLogic());
-            _location = new NetworkableField<NetworkableVector2IntegerValue>(this, nameof(_location),
-                new NetworkableVector2IntegerValue(new Vector2Int(0, 0)));
+            CurrentResources = new NetworkableField(this, nameof(CurrentResources), new ResourceAmount());
+            TargetLocationLogic = new NetworkableField(this, nameof(TargetLocationLogic), new TargetLocationLogic());
+            _location = new NetworkableField(this, nameof(_location), new NetworkableVector2IntegerValue(new Vector2Int(0, 0)));
         }
 
         /// <summary>
@@ -206,8 +207,10 @@ namespace Gameplay.Entities {
         #endregion
         #region Target Location
         
-        private void TargetLocationLogicChanged(TargetLocationLogic oldValue, TargetLocationLogic newValue, object metadata) {
-            if (oldValue == null && newValue == null) return;
+        private void TargetLocationLogicChanged(INetworkableFieldValue oldValueBase, INetworkableFieldValue newValueBase, object metadata) {
+            if (oldValueBase == null && newValueBase == null) return;
+            TargetLocationLogic oldValue = (TargetLocationLogic)oldValueBase;
+            TargetLocationLogic newValue = (TargetLocationLogic)newValueBase;
 
             void TryUnSubscribe() {
                 if (oldValue.TargetEntity == null) return;
@@ -233,15 +236,15 @@ namespace Gameplay.Entities {
             }
         }
         private void TargetEntityUpdated() {
-            Vector2Int? newLocation = TargetLocationLogic.Value.TargetEntity == null ? null : TargetLocationLogic.Value.TargetEntity.Location;
+            Vector2Int? newLocation = TargetLocationLogicValue.TargetEntity == null ? null : TargetLocationLogicValue.TargetEntity.Location;
             if (newLocation == null) {
-                SetTargetLocation(TargetLocationLogic.Value.CurrentTarget, null);
+                SetTargetLocation(TargetLocationLogicValue.CurrentTarget, null);
             } else {
-                SetTargetLocation(newLocation.Value, TargetLocationLogic.Value.TargetEntity);
+                SetTargetLocation(newLocation.Value, TargetLocationLogicValue.TargetEntity);
             }
         }
         public void SetTargetLocation(Vector2Int newTargetLocation, GridEntity targetEntity) {
-            TargetLocationLogic.UpdateValue(new TargetLocationLogic(TargetLocationLogic.Value.CanRally, newTargetLocation, targetEntity));
+            TargetLocationLogic.UpdateValue(new TargetLocationLogic(TargetLocationLogicValue.CanRally, newTargetLocation, targetEntity));
         }
         
         #endregion

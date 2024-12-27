@@ -176,13 +176,13 @@ public class EntitySelectionManager {
     
     #endregion
 
-    private void TryFindPath(TargetLocationLogic oldValue, TargetLocationLogic newValue, object metadata) {
+    private void TryFindPath(INetworkableFieldValue oldValue, INetworkableFieldValue newValue, object metadata) {
         if (SelectedEntity == null) return;
         if (!_gameManager.CommandManager.EntitiesOnGrid.IsEntityOnGrid(SelectedEntity)) return; // May be in the middle of getting unregistered
-        if (!SelectedEntity.CanMoveOrRally && !SelectedEntity.TargetLocationLogic.Value.CanRally) return;
+        if (!SelectedEntity.CanMoveOrRally && !SelectedEntity.TargetLocationLogicValue.CanRally) return;
         if (SelectedEntity.InteractBehavior is not { AllowedToSeeTargetLocation: true }) return;
 
-        PathfinderService.Path path = PathfinderService.FindPath(SelectedEntity, newValue.CurrentTarget);
+        PathfinderService.Path path = PathfinderService.FindPath(SelectedEntity, ((TargetLocationLogic)newValue).CurrentTarget);
         GridController.VisualizePath(path);
     }
 }

@@ -36,8 +36,8 @@ namespace Gameplay.Config.Abilities {
                 .Select(e => e.Entity)
                 .FirstOrDefault(e => e.Tags.Contains(EntityData.EntityTag.Resource));
             if (resourceEntity == null) return false;
-            if (resourceEntity.CurrentResources.Value.Type != ResourceAmountIncome.Type) return false;
-            if (resourceEntity.CurrentResources.Value.Amount <= 0) return false;
+            if (resourceEntity.CurrentResourcesValue.Type != ResourceAmountIncome.Type) return false;
+            if (resourceEntity.CurrentResourcesValue.Amount <= 0) return false;
             return true;
         }
 

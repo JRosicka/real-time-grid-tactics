@@ -135,7 +135,7 @@ namespace Gameplay.UI {
             UpdateEntityInfo();
         }
 
-        private void OnEntityResourceAmountChanged(ResourceAmount oldValue, ResourceAmount newValue, object metadata) {
+        private void OnEntityResourceAmountChanged(INetworkableFieldValue oldValue, INetworkableFieldValue newValue, object metadata) {
             UpdateEntityInfo();
         }
 
@@ -176,8 +176,8 @@ namespace Gameplay.UI {
 
             if (entityData.StartingResourceSet.Amount > 0) {
                 ResourceRow.gameObject.SetActive(true);
-                ResourceLabel.text = $"{_displayedEntity.CurrentResources.Value.Type.DisplayName()}:";
-                ResourceField.text = _displayedEntity.CurrentResources.Value.Amount.ToString();
+                ResourceLabel.text = $"{_displayedEntity.CurrentResourcesValue.Type.DisplayName()}:";
+                ResourceField.text = _displayedEntity.CurrentResourcesValue.Amount.ToString();
             } else {
                 ResourceRow.gameObject.SetActive(false);
             }

@@ -101,13 +101,13 @@ public abstract class AbstractCommandManager : NetworkBehaviour, ICommandManager
         GridEntity entityInstance = spawnFunc();
         RegisterEntity(entityInstance, data, spawnLocation, spawnerEntity);
 
-        if (spawnerEntity != null && spawnerEntity.TargetLocationLogic.Value.CanRally) {
+        if (spawnerEntity != null && spawnerEntity.TargetLocationLogicValue.CanRally) {
             if (data.Tags.Contains(EntityData.EntityTag.Worker)) {
                 // Workers get move-commanded
-                entityInstance.TryMoveToCell(spawnerEntity.TargetLocationLogic.Value.CurrentTarget, false);
+                entityInstance.TryMoveToCell(spawnerEntity.TargetLocationLogicValue.CurrentTarget, false);
             } else {
                 // Everything else attack-moves
-                entityInstance.TryAttackMoveToCell(spawnerEntity.TargetLocationLogic.Value.CurrentTarget);
+                entityInstance.TryAttackMoveToCell(spawnerEntity.TargetLocationLogicValue.CurrentTarget);
             }
         }
         
@@ -253,7 +253,7 @@ public abstract class AbstractCommandManager : NetworkBehaviour, ICommandManager
         BindingFlags bindingFlags = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic;
         MemberInfo info = type.GetField(fieldName, bindingFlags) as MemberInfo 
                           ?? type.GetProperty(fieldName, bindingFlags); 
-        dynamic networkableField = info.GetMemberValue(parent);
+        NetworkableField networkableField = (NetworkableField)info.GetMemberValue(parent);
         networkableField.DoUpdateValue(newValue, metadata);
     }
     

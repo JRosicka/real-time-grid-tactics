@@ -24,11 +24,11 @@ namespace Gameplay.Entities.Abilities {
                 .Select(e => e.Entity)
                 .FirstOrDefault(e => e.Tags.Contains(EntityData.EntityTag.Resource));
             if (resourceEntity == null) return false;
-            if (resourceEntity.CurrentResources.Value.Type != Data.ResourceAmountIncome.Type) return false;
-            if (resourceEntity.CurrentResources.Value.Amount <= 0) return false;
+            if (resourceEntity.CurrentResourcesValue.Type != Data.ResourceAmountIncome.Type) return false;
+            if (resourceEntity.CurrentResourcesValue.Amount <= 0) return false;
 
             // Subtract the income amount from the resource entity
-            ResourceAmount resourceAmount = new ResourceAmount(resourceEntity.CurrentResources.Value);
+            ResourceAmount resourceAmount = new ResourceAmount(resourceEntity.CurrentResourcesValue);
             int amountToGain = Mathf.Min(Data.ResourceAmountIncome.Amount, resourceAmount.Amount);
             resourceAmount.Amount -= amountToGain;
             resourceEntity.CurrentResources.UpdateValue(resourceAmount);

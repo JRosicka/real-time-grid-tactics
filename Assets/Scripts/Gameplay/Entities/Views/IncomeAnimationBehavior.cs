@@ -49,7 +49,7 @@ namespace Gameplay.Entities {
                 return;
             }
 
-            bool outOfResources = resourceEntity.CurrentResources.Value.Amount <= 0;
+            bool outOfResources = resourceEntity.CurrentResourcesValue.Amount <= 0;
             _outOfResourcesIcon.SetActive(outOfResources);
             if (outOfResources && displayAlertIfOut) {
                 GameManager.Instance.AlertTextDisplayer.DisplayAlert($"One of your {_entity.DisplayName.ToLower()}s has harvested all of its resources.");
