@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fafa440752424124be5b9cbee86f1e06, type: 3}
-  m_Name: Base
+  m_Name: Keep
   m_EditorClassIdentifier: 
   ShortDescription: Home base.
-  Description: Home base - destroying this ends the game!
+  Description: Home base - destroying this ends the game! Produces Peasants.
   Cost: []
   Requirements: []
   BuildTime: 1
@@ -27,18 +27,21 @@ MonoBehaviour:
   Damage: 0
   BonusDamage: 0
   TagsToApplyBonusDamageTo: 
-  NormalMoveTime: 0
-  SlowMoveTime: 0
+  NormalMoveTime: 3
+  SlowMoveTime: 5
   Tags: 0100000005000000
-  Abilities: []
+  Abilities:
+  - {fileID: 11400000, guid: 5c3d4a15ccf544323ae1076ff64f26d0, type: 2}
+  - {fileID: 11400000, guid: 7417594f3892443608287a253299cecc, type: 2}
   FriendlyUnitsCanShareCell: 1
   AttackByDefault: 0
   IsResourceExtractor: 0
+  BuildQueueSize: 5
   EligibleStructureLocations:
   - {fileID: 11400000, guid: 25ec46ce372031f4d904f708f269dcb4, type: 2}
   SharedUnitDamageTakenModifier: 0.6
   SharedUnitDamageTakenModifierTags: 
-  CanRally: 0
+  CanRally: 1
   StartingResourceSet:
     Type: 0
     Amount: 0

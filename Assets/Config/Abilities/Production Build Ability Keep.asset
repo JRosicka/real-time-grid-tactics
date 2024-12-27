@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 575c0f3cd9a64c78aaf8481f645c83a4, type: 3}
-  m_Name: Production Build Ability Infantry
+  m_Name: Production Build Ability Keep
   m_EditorClassIdentifier: 
   Data:
-    _contentResourceID: Production Build Ability Infantry
+    _contentResourceID: Production Build Ability Keep
     _id: Build
-    _description: Build an infantry unit.
+    _description: Build a Peasant.
     _icon: {fileID: 21300000, guid: 3e43f24e145544e38ae08cda571ca32a, type: 3}
     _abilityTimerCooldownView: {fileID: 5971072852972127787, guid: 31b9abd5b640d9648bf03e6305a255b4, type: 3}
     _requirements: []
@@ -37,9 +37,5 @@ MonoBehaviour:
     _tryingToPerformCancelsBuilds: 0
     Targetable: 0
     Buildables:
-    - data: {fileID: 11400000, guid: 991ad2a1d6801ee40b831e7850e0ff35, type: 2}
+    - data: {fileID: 11400000, guid: b52e5f177d13b1b4580a21f9c5ad0bf1, type: 2}
       selectionKey: q
-    - data: {fileID: 11400000, guid: ad0f9c1b31a7e3646b82cdb0c91f407b, type: 2}
-      selectionKey: w
-    - data: {fileID: 11400000, guid: 938107a9fc68aa54586e46f7860fc6ff, type: 2}
-      selectionKey: e
