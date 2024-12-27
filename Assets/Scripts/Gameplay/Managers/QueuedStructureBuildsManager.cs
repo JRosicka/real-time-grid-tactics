@@ -28,21 +28,22 @@ namespace Gameplay.Managers {
             if (builder.InteractBehavior is not { AllowedToSeeQueuedStructures: true }) return;
             
             List<QueuedBuildInfo> queuedStructuresCopy = new List<QueuedBuildInfo>(_queuedStructures);
-            List<BuildAbility> currentlyQueuedBuilds = builder.QueuedAbilities
+            List<BuildAbility> currentlyQueuedStructureBuilds = builder.QueuedAbilities
                 .Where(a => a is BuildAbility)
                 .Cast<BuildAbility>()
+                .Where(a => a.AbilityParameters.Buildable is EntityData { IsStructure: true })
                 .ToList();
             // Remove queued builds for this builder...
             queuedStructuresCopy.Where(info => info.Builder == builder)
                     // but only those whose build locations are not present in the list of build locations for the builder's current queued builds
-                    .Where(info => currentlyQueuedBuilds.All(b => b.AbilityParameters.BuildLocation != info.BuildParameters.BuildLocation))
+                    .Where(info => currentlyQueuedStructureBuilds.All(b => b.AbilityParameters.BuildLocation != info.BuildParameters.BuildLocation))
                     .ForEach(info => {
                 _queuedStructures.Remove(info);
                 info.StructureSilhouette.RemoveView();
             });
             
             // Add the rest to the build queue if they are not already being tracked
-            foreach (BuildAbility buildAbility in currentlyQueuedBuilds) {
+            foreach (BuildAbility buildAbility in currentlyQueuedStructureBuilds) {
                 if (queuedStructuresCopy.Any(s => s.Builder == builder
                                                   && s.BuildParameters.BuildLocation ==
                                                   buildAbility.AbilityParameters.BuildLocation)) {
