@@ -48,7 +48,9 @@ namespace Gameplay.Entities {
                 .ToList() ?? new List<GridEntity>();
             GridEntity resourceEntity = entitiesAtLocation.FirstOrDefault(e => e.Tags.Contains(EntityData.EntityTag.Resource));
             if (resourceEntity == null) {
-                Debug.LogWarning("No resource entity found when doing income animation. This should not happen.");
+                if (GameManager.Instance.GameSetupManager.GameInitialized) {
+                    Debug.LogWarning("No resource entity found when doing income animation. This should not happen.");
+                }
                 return;
             }
 
