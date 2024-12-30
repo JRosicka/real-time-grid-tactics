@@ -68,10 +68,12 @@ public class GameManager : MonoBehaviour {
         DisconnectionHandler?.UnregisterListeners(); 
     }
 
+    [CanBeNull]
     public GridEntityCollection.PositionedGridEntityCollection GetEntitiesAtLocation(Vector2Int location) {
         return CommandManager?.GetEntitiesAtCell(location);
     }
 
+    [CanBeNull]
     public GridEntity GetTopEntityAtLocation(Vector2Int location) {
         return GetEntitiesAtLocation(location)?.GetTopEntity().Entity;
     }

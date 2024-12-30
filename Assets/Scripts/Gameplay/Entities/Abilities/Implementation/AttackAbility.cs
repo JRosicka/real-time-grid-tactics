@@ -178,7 +178,11 @@ namespace Gameplay.Entities.Abilities {
         private void DoAttack(Vector2Int location) {
             // Even though we have our target, we need to check if there is any viable target on top of the target. If so, 
             // then the attack needs to go towards whatever entity is on top of the stack. Them's the rules. 
-            GridEntity target = GameManager.Instance.CommandManager.GetEntitiesAtCell(location).GetTopEntity().Entity;
+            GridEntity target = GameManager.Instance.GetTopEntityAtLocation(location);
+            if (target == null) {
+                Debug.LogWarning("Unexpectedly failed to find the attack target");
+                return;
+            }
             
             IAttackLogic attackLogic = AttackAbilityLogicFactory.CreateAttackLogic(this);
             attackLogic.DoAttack(Performer, target);

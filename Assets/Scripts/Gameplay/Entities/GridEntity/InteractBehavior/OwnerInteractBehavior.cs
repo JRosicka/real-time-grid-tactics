@@ -34,7 +34,7 @@ namespace Gameplay.Entities {
             }
             
             // Target the top entity
-            GridEntity targetEntity = GameManager.Instance.GetEntitiesAtLocation(targetCell)?.GetTopEntity()?.Entity;
+            GridEntity targetEntity = GameManager.Instance.GetTopEntityAtLocation(targetCell);
 
             // See if we should target this entity
             if (targetEntity != null && targetEntity.Team == GameTeam.Neutral) {

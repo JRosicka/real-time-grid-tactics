@@ -32,7 +32,7 @@ namespace Gameplay.Config.Abilities {
             
             // We need an eligible resource entity on this cell in order to get income from it
             GridEntity resourceEntity = GameManager.Instance.GetEntitiesAtLocation(entityLocation.Value)
-                .Entities
+                ?.Entities
                 .Select(e => e.Entity)
                 .FirstOrDefault(e => e.Tags.Contains(EntityData.EntityTag.Resource));
             if (resourceEntity == null) return false;

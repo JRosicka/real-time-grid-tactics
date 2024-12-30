@@ -29,8 +29,7 @@ namespace Gameplay.Entities.Abilities {
 
         public override bool DoAbilityEffect() {
             // Determine if there is an enemy entity at the destination
-            GridEntityCollection.PositionedGridEntityCollection destinationEntities = CommandManager.EntitiesOnGrid.EntitiesAtLocation(AbilityParameters.Destination);
-            GridEntity targetEntity = destinationEntities?.GetTopEntity()?.Entity;
+            GridEntity targetEntity = GameManager.Instance.GetTopEntityAtLocation(AbilityParameters.Destination);
             if (targetEntity == null) {
                 // No entity there, so move there. Assume that AbilityLegal checked for movement legality. 
                 CommandManager.MoveEntityToCell(Performer, AbilityParameters.Destination);

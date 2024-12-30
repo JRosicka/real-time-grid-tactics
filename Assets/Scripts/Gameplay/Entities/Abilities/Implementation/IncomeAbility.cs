@@ -20,7 +20,7 @@ namespace Gameplay.Entities.Abilities {
             
             // Get the resource entity on this cell
             GridEntity resourceEntity = GameManager.Instance.GetEntitiesAtLocation(performerLocation.Value)
-                .Entities
+                ?.Entities
                 .Select(e => e.Entity)
                 .FirstOrDefault(e => e.Tags.Contains(EntityData.EntityTag.Resource));
             if (resourceEntity == null) return false;

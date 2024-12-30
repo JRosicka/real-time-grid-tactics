@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using Gameplay.Config;
 using Gameplay.Config.Abilities;
@@ -40,10 +41,12 @@ namespace Gameplay.Entities {
                 Debug.LogWarning("No performer location? This should not happen.");
                 return;
             }
-            GridEntity resourceEntity = GameManager.Instance.GetEntitiesAtLocation(_entity.Location.Value)
-                .Entities
-                .Select(e => e.Entity)
-                .FirstOrDefault(e => e.Tags.Contains(EntityData.EntityTag.Resource));
+
+            List<GridEntity> entitiesAtLocation = GameManager.Instance.GetEntitiesAtLocation(_entity.Location.Value)
+                ?.Entities
+                ?.Select(e => e.Entity)
+                .ToList() ?? new List<GridEntity>();
+            GridEntity resourceEntity = entitiesAtLocation.FirstOrDefault(e => e.Tags.Contains(EntityData.EntityTag.Resource));
             if (resourceEntity == null) {
                 Debug.LogWarning("No resource entity found when doing income animation. This should not happen.");
                 return;
