@@ -136,6 +136,7 @@ public class GameSetupManager : MonoBehaviour {
     private void SpawnPlayerStartingUnits(GameTeam team) {
         MapLoader.StartingEntitySet entitySet = MapLoader.UnitSpawns.First(s => s.Team == team);
         foreach (MapLoader.EntitySpawn entity in entitySet.Entities) {
+            Debug.Log($"Spawning starting unit: {entity.Entity.ID} ({entity.SpawnLocation})");
             GameManager.CommandManager.SpawnEntity(entity.Entity, entity.SpawnLocation, team, null);
         }
     }
