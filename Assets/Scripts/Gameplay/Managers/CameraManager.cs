@@ -25,7 +25,7 @@ public class CameraManager : MonoBehaviour {
     
     private bool InputAllowed => GameManager.Instance.GameSetupManager.InputAllowed;
     
-    private Vector2? _middleMousePanStartPosition;
+    private Vector2? _middleMouseDragLastPosition;
 
     private float _mapMinXBase, _mapMaxXBase, _mapMinYBase, _mapMaxYBase;
     private float MapMinX => _mapMinXBase - _boundaryBufferHorizontal;
@@ -48,11 +48,11 @@ public class CameraManager : MonoBehaviour {
     }
     
     public void StartMiddleMousePan(Vector2 startMousePosition) {
-        _middleMousePanStartPosition = startMousePosition;
+        _middleMouseDragLastPosition = startMousePosition;
     }
 
     public void StopMiddleMousePan() {
-        _middleMousePanStartPosition = null;
+        _middleMouseDragLastPosition = null;
     }
 
     public void MoveCameraOrthogonally(CameraDirection direction) {
@@ -83,10 +83,10 @@ public class CameraManager : MonoBehaviour {
         // This would allow us to avoid triggering scroll when the mouse is over UI elements. Not sure if we want that. 
         Vector2 mousePosition = Input.mousePosition;
         
-        // Middle mouse pan
-        if (_middleMousePanStartPosition != null) {
-            Vector2 difference = mousePosition - _middleMousePanStartPosition.Value;
-            Vector3 moveVector = new Vector3(difference.x, difference.y, 0) * Time.deltaTime * _cameraPanSpeed;
+        // Middle mouse drag
+        if (_middleMouseDragLastPosition != null) {
+            Vector2 difference = _middleMouseDragLastPosition.Value - mousePosition;
+            Vector3 moveVector = new Vector3(difference.x, difference.y, 0);
             _camera.transform.position = ClampCamera(_camera.transform.position + moveVector);
         }
         
