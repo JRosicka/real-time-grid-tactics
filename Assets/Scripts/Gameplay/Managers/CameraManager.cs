@@ -48,7 +48,7 @@ public class CameraManager : MonoBehaviour {
     }
     
     public void StartMiddleMousePan(Vector2 startMousePosition) {
-        _middleMouseDragLastPosition = startMousePosition;
+        _middleMouseDragLastPosition = _camera.ScreenToWorldPoint(startMousePosition);
     }
 
     public void StopMiddleMousePan() {
@@ -82,12 +82,16 @@ public class CameraManager : MonoBehaviour {
         // Note - rather than updating here, we could check for edge scroll via GridInputController when the mouse moves. 
         // This would allow us to avoid triggering scroll when the mouse is over UI elements. Not sure if we want that. 
         Vector2 mousePosition = Input.mousePosition;
+        Vector2 mousePositionInWorldSpace = _camera.ScreenToWorldPoint(mousePosition);
         
         // Middle mouse drag
         if (_middleMouseDragLastPosition != null) {
-            Vector2 difference = _middleMouseDragLastPosition.Value - mousePosition;
+            Vector2 difference = _middleMouseDragLastPosition.Value - mousePositionInWorldSpace;
             Vector3 moveVector = new Vector3(difference.x, difference.y, 0);
             _camera.transform.position = ClampCamera(_camera.transform.position + moveVector);
+            
+            // Now that the camera has moved, update the position
+            _middleMouseDragLastPosition = _camera.ScreenToWorldPoint(Input.mousePosition);;
         }
         
         // Edge scroll
