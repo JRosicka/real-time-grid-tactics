@@ -11,7 +11,9 @@ namespace Gameplay.Entities.Abilities {
         public HealAbility(HealAbilityData data, HealAbilityParameters parameters, GridEntity performer) : base(data, parameters, performer) {
             
         }
-        
+
+        public override bool ShouldShowCooldownTimer => true;
+
         public override void Cancel() {
             if (AbilityParameters.Target != null) {
                 AbilityParameters.Target.KilledEvent -= TargetEntityKilled;

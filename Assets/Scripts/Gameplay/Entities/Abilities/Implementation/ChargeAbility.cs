@@ -15,6 +15,8 @@ namespace Gameplay.Entities.Abilities {
         private static ICommandManager CommandManager => GameManager.Instance.CommandManager;
         
         public ChargeAbility(ChargeAbilityData data, IAbilityParameters abilityParameters, GridEntity performer) : base(data, abilityParameters, performer) { }
+        public override bool ShouldShowCooldownTimer => true;
+
         public override void Cancel() {
             // Nothing to do
         }

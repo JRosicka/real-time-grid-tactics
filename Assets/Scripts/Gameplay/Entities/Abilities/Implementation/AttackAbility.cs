@@ -17,6 +17,8 @@ namespace Gameplay.Entities.Abilities {
         
         public AttackAbility(AttackAbilityData data, AttackAbilityParameters parameters, GridEntity performer) : base(data, parameters, performer) { }
 
+        public override bool ShouldShowCooldownTimer => true;
+
         public override void Cancel() {
             // Nothing to do
         }

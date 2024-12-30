@@ -12,7 +12,9 @@ namespace Gameplay.Entities.Abilities {
         public RallyAbility(RallyAbilityData data, RallyAbilityParameters parameters, GridEntity performer) : base(data, parameters, performer) {
             
         }
-        
+
+        public override bool ShouldShowCooldownTimer => false;
+
         public override void Cancel() {
             // Nothing to do
         }

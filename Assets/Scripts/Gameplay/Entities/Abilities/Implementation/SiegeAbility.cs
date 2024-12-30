@@ -9,6 +9,8 @@ namespace Gameplay.Entities.Abilities {
         public SiegeAbility(SiegeAbilityData data, NullAbilityParameters parameters, GridEntity performer) : base(data, parameters, performer) {
         }
 
+        public override bool ShouldShowCooldownTimer => true;
+
         public override void Cancel() {
             // Nothing to do
         }

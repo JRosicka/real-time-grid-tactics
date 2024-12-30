@@ -17,9 +17,9 @@ namespace Gameplay.Entities {
         bool AllowedToSeeTargetLocation { get; }
 
         /// <summary>
-        /// Whether we should show queued structures for this entity
+        /// Whether we should show queued builds for this entity
         /// </summary>
-        bool AllowedToSeeQueuedStructures { get; }
+        bool AllowedToSeeQueuedBuilds { get; }
 
         /// <summary>
         /// The type of reticle selection for this entity

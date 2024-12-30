@@ -10,7 +10,9 @@ namespace Gameplay.Entities.Abilities {
         public HealOnStructureAbility(HealOnStructureAbilityData data, NullAbilityParameters parameters, GridEntity performer) : base(data, parameters, performer) {
             
         }
-        
+
+        public override bool ShouldShowCooldownTimer => false;
+
         public override void Cancel() {
             // Nothing to do
         }

@@ -29,6 +29,11 @@ namespace Gameplay.UI {
                 return;
             }
 
+            if (entity.EntityData.IsStructure && entity.InteractBehavior is not { AllowedToSeeQueuedBuilds: true }) {
+                // This is a structure whose builds we are not allowed to see
+                return;
+            }
+
             gameObject.SetActive(true);
             entity.BuildQueue.BuildQueueUpdated += UpdateBuildQueue;
             UpdateBuildQueue(entity.BuildQueue.Queue);

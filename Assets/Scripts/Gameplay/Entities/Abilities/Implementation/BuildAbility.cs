@@ -25,6 +25,15 @@ namespace Gameplay.Entities.Abilities {
         public override float CooldownDuration => GameManager.Instance.Cheats.RemoveBuildTime ? .1f 
             : AbilityParameters.Buildable.BuildTime;
 
+        public override bool ShouldShowCooldownTimer {
+            get {
+                // Always show the build progress for builder units
+                if (!Performer.EntityData.IsStructure) return true;
+                // We need to be a spectator or the performer's owner to see a structure's builds
+                return Performer.InteractBehavior is { AllowedToSeeQueuedBuilds: true };
+            }
+        }
+
         public override void Cancel() {
             // Refund the amount spent on the build
             foreach (ResourceAmount resources in AbilityParameters.Buildable.Cost) {

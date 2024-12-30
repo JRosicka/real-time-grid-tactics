@@ -26,6 +26,10 @@ namespace Gameplay.Entities.Abilities {
         bool WaitUntilLegal { get; set; }
         float CooldownDuration { get; }
         bool CompleteCooldown();
+        /// <summary>
+        /// Client-side method to determine whether the cooldown timer should be shown for the ability
+        /// </summary>
+        bool ShouldShowCooldownTimer { get; }
         void Cancel();
         /// <summary>
         /// Write the <see cref="IAbility"/>'s parameters to the provided writer so that it can be properly networked. Other than the data
