@@ -22,6 +22,12 @@ namespace Gameplay.Config {
             Worker = 6,
             Resource = 7,
         }
+
+        public enum TargetPriority {
+            Structure = 0,
+            Worker = 1,
+            Fighter = 2
+        }
         
         // Must be private so that Weaver does not try to make a reader and writer for this type. Mirror does this for all public fields, thanks Mirror. 
         [SerializeField]
@@ -44,6 +50,7 @@ namespace Gameplay.Config {
 
         [Space] 
         public List<EntityTag> Tags;
+        public TargetPriority AttackerTargetPriority;
         public List<AbilityDataScriptableObject> Abilities;
         [Tooltip("Whether friendly (non-structure) entities can enter (spawn, move, etc) a cell with this entity")]
         public bool FriendlyUnitsCanShareCell;

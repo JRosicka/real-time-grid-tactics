@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using Gameplay.Config;
 using Gameplay.Config.Abilities;
 using Gameplay.Grid;
 using Mirror;
@@ -129,6 +130,12 @@ namespace Gameplay.Entities.Abilities {
                     .ToList();
             
             if (enemiesInRange.Count == 0) return false;
+            
+            // Only consider the highest-priority targets
+            EntityData.TargetPriority highestPriority = enemiesInRange.Max(e => e.EntityData.AttackerTargetPriority);
+            enemiesInRange = enemiesInRange
+                .Where(e => e.EntityData.AttackerTargetPriority == highestPriority)
+                .ToList();
 
             // If there are multiple viable targets, then disregard the farther-away enemies
             // ReSharper disable PossibleInvalidOperationException      We already confirmed these values are not null
