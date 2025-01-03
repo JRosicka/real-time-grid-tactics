@@ -491,10 +491,11 @@ namespace Gameplay.Entities {
                     && QueuedAbilities.Count == 0 
                     && sourceEntity.Location != null) {
                 // Attack-move to the target
-                AbilityAssignmentManager.PerformAbility(this, GetAbilityData<AttackAbilityData>(), new AttackAbilityParameters {
+                AbilityAssignmentManager.QueueAbility(this, GetAbilityData<AttackAbilityData>(), new AttackAbilityParameters {
                     TargetFire = false,
                     Destination = sourceEntity.Location.Value
-                }, false);
+                }, false, false, false);
+                SetTargetLocation(sourceEntity.Location.Value, null);
             }
         }
         
