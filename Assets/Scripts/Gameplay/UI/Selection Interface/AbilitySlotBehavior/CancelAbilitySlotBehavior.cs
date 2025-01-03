@@ -10,7 +10,6 @@ namespace Gameplay.UI {
         private static GameConfiguration GameConfiguration => GameManager.Instance.Configuration;
         
         public bool IsAvailabilitySensitiveToResources => false;
-        public bool CaresAboutAbilityChannels => false;
         public bool CaresAboutQueuedAbilities => true;
         public bool IsAbilityTargetable => false;
         
@@ -23,6 +22,7 @@ namespace Gameplay.UI {
         }
 
         public abstract AbilitySlotInfo AbilitySlotInfo { get; }
+        public abstract bool CaresAboutAbilityChannels { get; }
         public abstract void SelectSlot();
         public abstract AbilitySlot.AvailabilityResult GetAvailability();
     }

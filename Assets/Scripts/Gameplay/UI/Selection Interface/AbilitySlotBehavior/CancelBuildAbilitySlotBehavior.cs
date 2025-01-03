@@ -20,6 +20,8 @@ namespace Gameplay.UI {
         }
         
         public override AbilitySlotInfo AbilitySlotInfo => new AbilitySlotInfo("Cancel", _cancelButtonDescription);
+        public override bool CaresAboutAbilityChannels => true;
+
         public override void SelectSlot() {
             // Move out of a nested build menu if we are in one
             if (_canMoveOutOfBuildMenu) {

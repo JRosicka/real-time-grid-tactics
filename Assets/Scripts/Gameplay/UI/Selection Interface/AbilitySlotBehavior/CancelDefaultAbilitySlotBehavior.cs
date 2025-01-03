@@ -18,6 +18,8 @@ namespace Gameplay.UI {
         }
         
         public override AbilitySlotInfo AbilitySlotInfo => new AbilitySlotInfo("Cancel", "Cancels the current command");
+        public override bool CaresAboutAbilityChannels => false;
+
         public override void SelectSlot() {
             // Deselect the selected targetable ability if there is one
             if (EntitySelectionManager.DeselectTargetableAbility()) {

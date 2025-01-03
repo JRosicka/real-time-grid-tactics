@@ -204,7 +204,7 @@ namespace Gameplay.UI {
 
         private void OnQueuedAbilitiesChanged(List<IAbility> abilities) {
             if (SlotBehavior == null) return; 
-            if (SlotBehavior.CaresAboutAbilityChannels) {
+            if (SlotBehavior.CaresAboutQueuedAbilities) {
                 CheckAvailability();
             }
         }
