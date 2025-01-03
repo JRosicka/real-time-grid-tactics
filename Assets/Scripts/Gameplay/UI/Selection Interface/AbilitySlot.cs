@@ -18,7 +18,7 @@ namespace Gameplay.UI {
     public class AbilitySlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler {
         public enum AvailabilityResult {
             // The slot's associated action is not available again
-            Unavailable,
+            Hidden,
             // The slot is currently selectable
             Selectable,
             // The slot is visible but not currently selectable
@@ -71,7 +71,7 @@ namespace Gameplay.UI {
 
         private void Hide() {
             CanvasGroup.alpha = 0;
-            Availability = AvailabilityResult.Unavailable;
+            Availability = AvailabilityResult.Hidden;
         }
 
         public void Clear() {
@@ -81,7 +81,7 @@ namespace Gameplay.UI {
             SlotBehavior = null;
             _selectedEntity = null;
             _selected = false;
-            Availability = AvailabilityResult.Unavailable;
+            Availability = AvailabilityResult.Hidden;
             gameObject.SetActive(false);
         }
         
@@ -105,7 +105,7 @@ namespace Gameplay.UI {
             _shouldDeselectWhenTimerElapses = false;
             if (selected) {
                 SlotFrame.color = SelectedColor;
-                if (SlotBehavior != null && SlotBehavior.IsAbilityTargetable) {
+                if (SlotBehavior is { IsAbilityTargetable: true }) {
                     // We want this slot to keep appearing as selected until we do something else, so don't auto-unmark it.
                 } else {
                     StartCoroutine(DeselectLater());
@@ -139,7 +139,7 @@ namespace Gameplay.UI {
             
             AvailabilityResult availability = SlotBehavior.GetAvailability();
             switch (availability) {
-                case AvailabilityResult.Unavailable:
+                case AvailabilityResult.Hidden:
                     Hide();
                     break;
                 case AvailabilityResult.Selectable:

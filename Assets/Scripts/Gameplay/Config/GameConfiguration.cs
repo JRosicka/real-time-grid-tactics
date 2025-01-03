@@ -9,11 +9,15 @@ namespace Gameplay.Config {
     /// </summary>
     [CreateAssetMenu(menuName = "Configuration/GameConfiguration", fileName = "GameConfiguration")]
     public class GameConfiguration : ScriptableObject {
+        [Header("Config")]
         public AudioFileConfiguration AudioConfiguration;
-        
+        public Sprite CancelButtonSprite;
+
+        [Header("Gameplay settings")]
         public int StartingGoldAmount;
         public int StartingAmberAmount;
         
+        [Header("Gameplay ScriptableObjects")]
         public List<PurchasableData> Purchasables;
         public List<AbilityDataScriptableObject> Abilities;
         public List<GameplayTile> Tiles;

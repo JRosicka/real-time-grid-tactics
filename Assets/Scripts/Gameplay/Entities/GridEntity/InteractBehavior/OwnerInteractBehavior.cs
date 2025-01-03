@@ -22,8 +22,6 @@ namespace Gameplay.Entities {
                 return;
             }
             
-            GameManager.Instance.SelectionInterface.DeselectActiveAbility();
-            
             // If this entity can rally (i.e. it is a production structure), do that
             if (thisEntity.TargetLocationLogicValue.CanRally) {
                 RallyAbilityData data = thisEntity.GetAbilityData<RallyAbilityData>();
@@ -44,6 +42,8 @@ namespace Gameplay.Entities {
             } else if (targetEntity == null || targetEntity.EntityData.FriendlyUnitsCanShareCell) {
                 thisEntity.TryMoveToCell(targetCell, false);
             }
+            
+            GameManager.Instance.SelectionInterface.DeselectActiveAbility();
         }
         
         private void TryTargetEntity(GridEntity thisEntity, GridEntity targetEntity, Vector2Int targetCell) {

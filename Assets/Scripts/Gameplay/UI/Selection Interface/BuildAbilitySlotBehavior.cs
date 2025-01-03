@@ -66,7 +66,7 @@ namespace Gameplay.UI {
             if (Buildable is UpgradeData && (ownedPurchasables.Contains(Buildable) 
                                              || player.OwnedPurchasablesController.InProgressUpgrades.Contains(Buildable))) {
                 // Upgrade that we already own or are currently building somewhere
-                return AbilitySlot.AvailabilityResult.Unavailable;
+                return AbilitySlot.AvailabilityResult.Hidden;
             } else if (AbilityAssignmentManager.CanEntityUseAbility(SelectedEntity, _buildAbilityData, _buildAbilityData.SelectableWhenBlocked)
                        && player.ResourcesController.CanAfford(Buildable.Cost)
                        && Buildable.Requirements.All(r => ownedPurchasables.Contains(r))) {

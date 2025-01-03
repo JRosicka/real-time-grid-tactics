@@ -65,6 +65,8 @@ namespace Gameplay.UI {
                     // No ability selected, so go back to showing the selected entity if we have one
                     ToggleForEntity(_selectedEntity);
                 }
+            } else if (abilitySlotBehavior.GetAvailability() == AbilitySlot.AvailabilityResult.Hidden) {
+                // The hovered ability slot is hidden - do not react
             } else {
                 ToggleTooltip(true);
                 SetUpAbilityView(abilityInfo, abilitySlotBehavior, abilitySlotBehavior is QueuedBuildAbilitySlotBehavior);

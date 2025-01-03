@@ -137,6 +137,10 @@ public class EntitySelectionManager {
         return targetableAbilityWasSelected;
     }
 
+    public bool IsTargetableAbilitySelected() {
+        return _selectedTargetableAbility != null;
+    }
+
     private void ClearSelectableTiles() {
         GridController.UpdateSelectableCells(null, SelectedEntity);
     }

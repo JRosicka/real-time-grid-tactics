@@ -12,6 +12,8 @@ namespace Gameplay.UI {
     /// Handles displaying a selected <see cref="GridEntity"/>'s <see cref="IAbility"/>s and allowing the player to use them
     /// </summary>
     public class AbilityInterface : MonoBehaviour {
+        private const AbilitySlotLocation CancelSlot = AbilitySlotLocation.Row3Col4;
+        
         public List<AbilitySlot> AbilitySlots;
         public TooltipView TooltipView;
         
@@ -32,6 +34,11 @@ namespace Gameplay.UI {
                 DefaultAbilitySlotBehavior abilityBehavior = new DefaultAbilitySlotBehavior(abilityData, entity);
                 slot.SetUpSlot(abilityBehavior, entity);
             }
+            
+            // Set up the cancel button
+            AbilitySlot cancelSlot = AbilitySlots.First(s => s.SlotLocation == CancelSlot);
+            CancelDefaultAbilitySlotBehavior cancelBehavior = new CancelDefaultAbilitySlotBehavior(entity);
+            cancelSlot.SetUpSlot(cancelBehavior, entity);
         }
 
         public void ClearInfo() {
@@ -83,6 +90,11 @@ namespace Gameplay.UI {
                 BuildAbilitySlotBehavior buildBehavior = new BuildAbilitySlotBehavior(buildData, purchasableDataWithSelectionKey.data, selectedEntity);
                 slot.SetUpSlot(buildBehavior, selectedEntity);
             }
+            
+            // Set up the cancel button
+            AbilitySlot cancelSlot = AbilitySlots.First(s => s.SlotLocation == CancelSlot);
+            CancelBuildAbilitySlotBehavior cancelBehavior = new CancelBuildAbilitySlotBehavior(selectedEntity, !buildData.AutoSelect);
+            cancelSlot.SetUpSlot(cancelBehavior, selectedEntity);
         }
 
         private void DeselectUnselectedSlots() {
