@@ -171,6 +171,7 @@ namespace Gameplay.UI {
             
             _selectedEntity.CooldownTimerExpiredEvent += OnAbilityTimersChanged;
             _selectedEntity.AbilityPerformedEvent += OnAbilityTimersChanged;
+            _selectedEntity.AbilityQueueUpdatedEvent += OnQueuedAbilitiesChanged;
 
             if (_selectedEntity.Team is GameTeam.Player1 or GameTeam.Player2) {
                 // Track resources and owned changes for the player
@@ -196,11 +197,18 @@ namespace Gameplay.UI {
 
         private void OnAbilityTimersChanged(IAbility ability, AbilityCooldownTimer timer) {
             if (SlotBehavior == null) return; 
-            if (!SlotBehavior.CaresAboutAbilityChannels || timer.Ability.AbilityData.SlotLocation == SlotLocation) {
+            if (SlotBehavior.CaresAboutAbilityChannels || timer.Ability.AbilityData.SlotLocation == SlotLocation) {
                 CheckAvailability();
             }
         }
-        
+
+        private void OnQueuedAbilitiesChanged(List<IAbility> abilities) {
+            if (SlotBehavior == null) return; 
+            if (SlotBehavior.CaresAboutAbilityChannels) {
+                CheckAvailability();
+            }
+        }
+
         /// <summary>
         /// When the player gains or spends resources
         /// </summary>
