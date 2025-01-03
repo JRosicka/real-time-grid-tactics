@@ -10,7 +10,9 @@ namespace Audio {
     /// Handles playing and canceling audio instances, and keeping track of audio state. Also handles creating and moving
     /// audio objects to an audio scene. 
     /// </summary>
+#if UNITY_EDITOR
     [InitializeOnLoad]
+#endif
     public class AudioManager : MonoBehaviour {
         public const string SoundEffectVolumeKey = "SoundEffectsVolume";
         public const string MusicVolumeKey = "MusicVolume";
@@ -21,6 +23,7 @@ namespace Audio {
         
         private static AudioManager _instance;
 
+#if UNITY_EDITOR
         static AudioManager() {
             EditorApplication.playModeStateChanged += ResetStaticFields;
         }
@@ -29,6 +32,7 @@ namespace Audio {
                 _instance = null;
             }
         }
+#endif
 
         private int _sourceCount;
         private readonly List<OneShotAudio> _bufferOneShot = new List<OneShotAudio>();
