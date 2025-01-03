@@ -8,23 +8,24 @@ namespace Gameplay.UI {
     /// Handles generic non-ability behavior for an <see cref="AbilitySlot"/>
     /// </summary>
     public class DefaultAbilitySlotBehavior : IAbilitySlotBehavior {
+        private readonly IAbilityData _abilityData;
         private readonly GridEntity _selectedEntity;
         
         public DefaultAbilitySlotBehavior(IAbilityData abilityData, GridEntity selectedEntity) {
-            AbilityData = abilityData;
+            _abilityData = abilityData;
             _selectedEntity = selectedEntity;
         }
 
-        public IAbilityData AbilityData { get; }
+        public AbilitySlotInfo AbilitySlotInfo => _abilityData.AbilitySlotInfo;
         public bool IsAvailabilitySensitiveToResources => false;
         public bool CaresAboutAbilityChannels => true;
-        public bool IsAbilityTargetable => AbilityData.Targeted;
+        public bool IsAbilityTargetable => _abilityData.Targeted;
 
         public void SelectSlot() {
-            if (AbilityData == null) return;
+            if (_abilityData == null) return;
             
-            AbilityData.SelectAbility(_selectedEntity);
-            if (AbilityData is ITargetableAbilityData targetableAbilityData) {
+            _abilityData.SelectAbility(_selectedEntity);
+            if (_abilityData is ITargetableAbilityData targetableAbilityData) {
                 GameManager.Instance.SelectionInterface.TooltipView.ToggleForTargetableAbility(targetableAbilityData, this);
             }
         }
@@ -34,13 +35,13 @@ namespace Gameplay.UI {
         }
 
         public AbilitySlot.AvailabilityResult GetAvailability() {
-            return GameManager.Instance.AbilityAssignmentManager.CanEntityUseAbility(_selectedEntity, AbilityData, AbilityData.SelectableWhenBlocked) 
+            return GameManager.Instance.AbilityAssignmentManager.CanEntityUseAbility(_selectedEntity, _abilityData, _abilityData.SelectableWhenBlocked) 
                 ? AbilitySlot.AvailabilityResult.Selectable 
                 : AbilitySlot.AvailabilityResult.Unselectable;
         }
 
         public void SetUpSprites(Image abilityImage, Image secondaryAbilityImage, Canvas teamColorsCanvas) {
-            abilityImage.sprite = AbilityData.Icon;
+            abilityImage.sprite = _abilityData.Icon;
             secondaryAbilityImage.sprite = null;
             secondaryAbilityImage.gameObject.SetActive(false);
             teamColorsCanvas.sortingOrder = 1;

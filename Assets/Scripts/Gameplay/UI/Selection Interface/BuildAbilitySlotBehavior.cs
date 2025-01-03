@@ -18,7 +18,7 @@ namespace Gameplay.UI {
         private readonly BuildAbilityData _buildAbilityData;
         protected readonly GridEntity SelectedEntity;
 
-        public IAbilityData AbilityData => _buildAbilityData;
+        public AbilitySlotInfo AbilitySlotInfo => _buildAbilityData.AbilitySlotInfo;
         public bool IsAvailabilitySensitiveToResources => true;
         public bool CaresAboutAbilityChannels => false;
         public bool IsAbilityTargetable => _buildAbilityData.Targeted;
@@ -67,7 +67,7 @@ namespace Gameplay.UI {
                                              || player.OwnedPurchasablesController.InProgressUpgrades.Contains(Buildable))) {
                 // Upgrade that we already own or are currently building somewhere
                 return AbilitySlot.AvailabilityResult.Unavailable;
-            } else if (AbilityAssignmentManager.CanEntityUseAbility(SelectedEntity, _buildAbilityData, AbilityData.SelectableWhenBlocked)
+            } else if (AbilityAssignmentManager.CanEntityUseAbility(SelectedEntity, _buildAbilityData, _buildAbilityData.SelectableWhenBlocked)
                        && player.ResourcesController.CanAfford(Buildable.Cost)
                        && Buildable.Requirements.All(r => ownedPurchasables.Contains(r))) {
                 // This entity can build this and we can afford this

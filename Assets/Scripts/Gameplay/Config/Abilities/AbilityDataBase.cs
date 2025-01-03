@@ -19,10 +19,9 @@ namespace Gameplay.Config.Abilities {
 
         [SerializeField]
         private string _id;
-        public string ID => _id;
         [SerializeField]
         private string _description;
-        public string Description => _description;
+        public AbilitySlotInfo AbilitySlotInfo => new AbilitySlotInfo(_id, _description);
 
         /// <summary>
         /// This gets set automatically in an editor script to match the name of the <see cref="BaseAbilityDataAsset{T,P}"/>

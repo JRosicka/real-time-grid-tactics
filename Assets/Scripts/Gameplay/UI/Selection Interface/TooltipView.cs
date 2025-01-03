@@ -50,14 +50,14 @@ namespace Gameplay.UI {
                 ToggleForEntity(_selectedEntity);
             } else {
                 ToggleTooltip(true);
-                SetUpAbilityView(ability, abilitySlotBehavior, false);
+                SetUpAbilityView(ability.AbilitySlotInfo, abilitySlotBehavior, false);
                 _selectedTargetableAbility = ability;
                 _selectedTargetableAbilitySlotBehavior = abilitySlotBehavior;
             }
         }
 
-        public void ToggleForHoveredAbility(IAbilityData ability, IAbilitySlotBehavior abilitySlotBehavior) {
-            if (ability == null) {
+        public void ToggleForHoveredAbility(AbilitySlotInfo abilityInfo, IAbilitySlotBehavior abilitySlotBehavior) {
+            if (abilityInfo == null) {
                 // No ability hovered, so go back to showing the selected ability if we have one
                 if (_selectedTargetableAbility != null) {
                     ToggleForTargetableAbility(_selectedTargetableAbility, _selectedTargetableAbilitySlotBehavior);
@@ -67,7 +67,7 @@ namespace Gameplay.UI {
                 }
             } else {
                 ToggleTooltip(true);
-                SetUpAbilityView(ability, abilitySlotBehavior, abilitySlotBehavior is QueuedBuildAbilitySlotBehavior);
+                SetUpAbilityView(abilityInfo, abilitySlotBehavior, abilitySlotBehavior is QueuedBuildAbilitySlotBehavior);
             }
         }
         
@@ -98,10 +98,10 @@ namespace Gameplay.UI {
         private void SetUpForInProgressBuild(BuildAbility buildAbility, GridEntity entity) {
             BuildAbilityData buildData = (BuildAbilityData) buildAbility.AbilityData;
             BuildAbilitySlotBehavior buildBehavior = new BuildAbilitySlotBehavior(buildData, buildAbility.AbilityParameters.Buildable, entity);
-            SetUpAbilityView(buildData, buildBehavior, true);
+            SetUpAbilityView(buildData.AbilitySlotInfo, buildBehavior, true);
         }
 
-        private void SetUpAbilityView(IAbilityData ability, IAbilitySlotBehavior abilitySlotBehavior, bool includeInProgressMessage) {
+        private void SetUpAbilityView(AbilitySlotInfo abilityInfo, IAbilitySlotBehavior abilitySlotBehavior, bool includeInProgressMessage) {
             abilitySlotBehavior.SetUpSprites(_icon, _secondaryIcon, _teamColorsCanvas);
             if (abilitySlotBehavior is BuildAbilitySlotBehavior buildAbilitySlotBehavior) {
                 _name.text = buildAbilitySlotBehavior.Buildable.ID + (includeInProgressMessage ? " (constructing)" : "");
@@ -114,8 +114,8 @@ namespace Gameplay.UI {
                 _advancedResourceCostContainer.SetActive(advancedCost > 0);
                 _advancedResourceCostAmount.text = advancedCost.ToString();
             } else {
-                _name.text = ability.ID;
-                _description.text = ability.Description;
+                _name.text = abilityInfo.ID;
+                _description.text = abilityInfo.Description;
                 _basicResourceCostContainer.SetActive(false);
                 _advancedResourceCostContainer.SetActive(false);
             }

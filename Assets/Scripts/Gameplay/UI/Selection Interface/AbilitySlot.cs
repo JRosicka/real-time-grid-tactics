@@ -222,7 +222,7 @@ namespace Gameplay.UI {
 
         public void OnPointerEnter(PointerEventData eventData) {
             if (SlotBehavior == null) return;
-            AbilityInterface.TooltipView.ToggleForHoveredAbility(SlotBehavior.AbilityData, SlotBehavior);
+            AbilityInterface.TooltipView.ToggleForHoveredAbility(SlotBehavior.AbilitySlotInfo, SlotBehavior);
         }
 
         public void OnPointerExit(PointerEventData eventData) {

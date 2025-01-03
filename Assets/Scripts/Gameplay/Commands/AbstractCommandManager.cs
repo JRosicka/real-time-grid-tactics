@@ -159,7 +159,7 @@ public abstract class AbstractCommandManager : NetworkBehaviour, ICommandManager
             // abilities. This is necessary because in PerformAbility we don't know where the cost might have been payed, 
             // so we need to do it here. 
             if (!ability.AbilityData.CanPayCost(ability.BaseParameters, ability.Performer)) {
-                Debug.Log($"Tried to pay the cost up front while performing the ability {ability.AbilityData.ID}, but we are not able to pay the cost.");
+                Debug.Log($"Tried to pay the cost up front while performing the ability {ability.AbilityData.AbilitySlotInfo.ID}, but we are not able to pay the cost.");
                 if (ability.WaitUntilLegal) {
                     QueueAbility(ability, false, false);
                 }
@@ -191,7 +191,7 @@ public abstract class AbstractCommandManager : NetworkBehaviour, ICommandManager
 
         if (ability.AbilityData.PayCostUpFront) {
             if (!ability.AbilityData.CanPayCost(ability.BaseParameters, ability.Performer)) {
-                Debug.Log($"Tried to pay the cost up front while queueing the ability {ability.AbilityData.ID}, but we are not able to pay the cost. No op.");
+                Debug.Log($"Tried to pay the cost up front while queueing the ability {ability.AbilityData.AbilitySlotInfo.ID}, but we are not able to pay the cost. No op.");
                 return;
             }
             ability.PayCost(true);

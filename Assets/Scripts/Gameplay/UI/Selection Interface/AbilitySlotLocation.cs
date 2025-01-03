@@ -15,6 +15,6 @@ namespace Gameplay.UI {
         Row3Col1 = 9,
         Row3Col2 = 10,
         Row3Col3 = 11,
-        Row3Col4 = 12,
+        Row3Col4 = 12 // reserved for the cancel button
     }
 }

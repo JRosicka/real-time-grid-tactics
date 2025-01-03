@@ -12,8 +12,7 @@ namespace Gameplay.Config.Abilities {
     /// handles the actual performing of the ability which is the part that needs to be sent to the server. 
     /// </summary>
     public interface IAbilityData {
-        string ID { get; }
-        string Description { get; }
+        AbilitySlotInfo AbilitySlotInfo { get; }
         string ContentResourceID { get; set; }
         Sprite Icon { get; }
         AbilityTimerCooldownView AbilityTimerCooldownViewPrefab { get; }
