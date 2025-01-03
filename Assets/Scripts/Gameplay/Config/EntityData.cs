@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Audio;
 using Gameplay.Config.Abilities;
 using Gameplay.Entities;
 using Gameplay.UI;
@@ -33,6 +34,11 @@ namespace Gameplay.Config {
         [SerializeField]
         private GridEntityView _viewPrefab;
         public GridEntityView ViewPrefab => _viewPrefab;
+
+        [Header("Audio")] 
+        public AudioFile SelectionSound;
+        public AudioFile OrderSound;
+        public AudioFile AttackSound;
         
         [Header("Stats")] 
         public int HP;

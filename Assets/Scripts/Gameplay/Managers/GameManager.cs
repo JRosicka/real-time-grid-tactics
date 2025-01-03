@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using Audio;
 using Game.Network;
 using Gameplay.Config;
 using Gameplay.Entities;
@@ -37,6 +39,18 @@ public class GameManager : MonoBehaviour {
     public DisconnectionHandler DisconnectionHandler;
     public AbilityAssignmentManager AbilityAssignmentManager;
     public QueuedStructureBuildsManager QueuedStructureBuildsManager;
+    public GameAudioPlayer GameAudioPlayer;
+    
+    private AudioPlayer _audioPlayer;
+    public AudioPlayer AudioPlayer {
+        get {
+            if (_audioPlayer == null) {
+                List<AudioPlayer> audioPlayers = FindObjectsOfType<AudioPlayer>().ToList();
+                _audioPlayer = audioPlayers.First(a => a.ActivePlayer);
+            }
+            return _audioPlayer;
+        }
+    }
 
     public IGamePlayer Player1;
     public IGamePlayer Player2;
@@ -62,10 +76,12 @@ public class GameManager : MonoBehaviour {
         EntitySelectionManager = new EntitySelectionManager(this);
         GridInputController.Initialize(EntitySelectionManager, this);
         DisconnectionDialog.Initialize(DisconnectionHandler);
+        GameAudioPlayer.Initialize(AudioPlayer, GameSetupManager, Configuration.AudioConfiguration);
     }
 
     private void OnDestroy() {
         DisconnectionHandler?.UnregisterListeners(); 
+        GameAudioPlayer.UnregisterListeners();
     }
 
     [CanBeNull]

@@ -7,8 +7,10 @@ namespace Gameplay.Config {
     /// <summary>
     /// A collection of all of the game's statically-configured data assets
     /// </summary>
-    [CreateAssetMenu(menuName = "GameConfiguration", fileName = "GameConfiguration", order = 0)]
+    [CreateAssetMenu(menuName = "Configuration/GameConfiguration", fileName = "GameConfiguration")]
     public class GameConfiguration : ScriptableObject {
+        public AudioFileConfiguration AudioConfiguration;
+        
         public int StartingGoldAmount;
         public int StartingAmberAmount;
         

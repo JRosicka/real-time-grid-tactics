@@ -24,6 +24,21 @@ MonoBehaviour:
   TeamColorSprite: {fileID: 21300000, guid: 244bb6413a5a3e845bc7016a88fbd132, type: 3}
   BaseSpriteIconOverride: {fileID: 0}
   _viewPrefab: {fileID: 7504026570216467247, guid: c58f0c96c2c0e8f4fbf691600e98b9b6, type: 3}
+  SelectionSound:
+    Clip: {fileID: 8300000, guid: 26b29f37495e2458789951bdb5aa54fd, type: 3}
+    Volume: 1
+    AudioLayer: 0
+    Interruptible: 1
+  OrderSound:
+    Clip: {fileID: 0}
+    Volume: 0
+    AudioLayer: 0
+    Interruptible: 0
+  AttackSound:
+    Clip: {fileID: 0}
+    Volume: 0
+    AudioLayer: 0
+    Interruptible: 0
   HP: 14
   Range: 1
   Damage: 4

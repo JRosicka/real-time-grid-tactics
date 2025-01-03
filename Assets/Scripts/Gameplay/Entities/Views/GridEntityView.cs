@@ -104,7 +104,11 @@ namespace Gameplay.Entities {
             }
         }
 
-        private void Selected() { }
+        private void Selected() {
+            if (Entity.EntityData.SelectionSound.Clip != null) {
+                GameManager.Instance.AudioPlayer.TryPlaySFX(Entity.EntityData.SelectionSound);
+            }
+        }
 
         private async void AttackReceived() {
             // Delay so that the shake times up with the attacker's animation
