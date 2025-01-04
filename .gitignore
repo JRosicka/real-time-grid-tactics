@@ -111,6 +111,7 @@ StyleCopReport.xml
 *.iobj
 *.pch
 *.pdb
+*.pdb.meta
 *.ipdb
 *.pgc
 *.pgd
