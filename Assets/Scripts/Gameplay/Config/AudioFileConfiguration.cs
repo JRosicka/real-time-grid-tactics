@@ -7,6 +7,7 @@ namespace Gameplay.Config {
     /// </summary>
     [CreateAssetMenu(menuName = "Configuration/AudioFileConfiguration", fileName = "AudioFileConfiguration")]
     public class AudioFileConfiguration : ScriptableObject {
+        public bool AudioEnabled;
         public AudioFile GameMusic;
     }
 }
