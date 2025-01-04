@@ -22,7 +22,7 @@ MonoBehaviour:
     _requirements:
     - {fileID: 11400000, guid: 296d8ee10b07046139c9c76a5378fa05, type: 2}
     _performDuration: 0
-    _cooldownDuration: 20
+    _cooldownDuration: 10
     _channel: {fileID: 11400000, guid: feaeb05e30f0b1b439e4f27b75aba8b6, type: 2}
     _channelBlockers:
     - {fileID: 11400000, guid: feaeb05e30f0b1b439e4f27b75aba8b6, type: 2}
