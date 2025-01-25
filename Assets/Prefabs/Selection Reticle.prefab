@@ -442,7 +442,7 @@ MonoBehaviour:
     m_Top: 0
     m_Bottom: 0
   m_ChildAlignment: 0
-  fDistance: 0.46
+  fDistance: 0.475
   fAngleOffset: -90
   fChildScale: 0.2
   MinAngle: 0
