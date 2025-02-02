@@ -15,13 +15,18 @@ namespace Gameplay.Entities {
         private bool _waitForServerEvent;
 
         // TODO: Hmm, I think I would always want waitForServerEvent to be true? As long as it doesn't look janky locally with timers appearing/disappearing on clients. 
-        public void Initialize(AbilityCooldownTimer cooldownTimer, bool destroyWhenExpired, bool waitForServerEvent) {
-            Canvas.overrideSorting = true;
-            Canvas.sortingOrder = CanvasSortingOrderMap.TimerView;
+        public void Initialize(AbilityCooldownTimer cooldownTimer, bool destroyWhenExpired, bool waitForServerEvent, AbilityTimerFill fillOverride = null) {
+            if (Canvas != null) {
+                Canvas.overrideSorting = true;
+                Canvas.sortingOrder = CanvasSortingOrderMap.TimerView;
+            }
             gameObject.SetActive(true);
             _cooldownTimer = cooldownTimer;
             _destroyWhenExpired = destroyWhenExpired;
             _waitForServerEvent = waitForServerEvent;
+            if (fillOverride != null) {
+                AbilityTimerFill = fillOverride;
+            }
 
             if (_waitForServerEvent) {
                 _cooldownTimer.ExpiredEvent += OnTimerExpired;

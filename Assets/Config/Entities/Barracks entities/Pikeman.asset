@@ -25,6 +25,21 @@ MonoBehaviour:
   TeamColorSprite: {fileID: 21300000, guid: 323101067c0905a43b6cbdcf36403bee, type: 3}
   BaseSpriteIconOverride: {fileID: 0}
   _viewPrefab: {fileID: 7504026570216467247, guid: 970946a288018114aba70df866efc53d, type: 3}
+  SelectionSound:
+    Clip: {fileID: 0}
+    Volume: 0
+    AudioLayer: 0
+    Interruptible: 0
+  OrderSound:
+    Clip: {fileID: 0}
+    Volume: 0
+    AudioLayer: 0
+    Interruptible: 0
+  AttackSound:
+    Clip: {fileID: 0}
+    Volume: 0
+    AudioLayer: 0
+    Interruptible: 0
   HP: 14
   Range: 1
   Damage: 2
@@ -40,6 +55,7 @@ MonoBehaviour:
   FriendlyUnitsCanShareCell: 0
   AttackByDefault: 1
   IsResourceExtractor: 0
+  MovementAndAttackUI: 1
   BuildQueueSize: 5
   EligibleStructureLocations: []
   SharedUnitDamageTakenModifier: 1
