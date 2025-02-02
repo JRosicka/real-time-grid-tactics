@@ -17,25 +17,19 @@ namespace Gameplay.Entities {
     /// </summary>
     public sealed class GridEntityView : MonoBehaviour {
         [Header("References")] 
-        [SerializeField]
-        private Image _mainImage;
-        [SerializeField] 
-        private Image _teamColorImage;
-        [SerializeField]
-        private GridEntityParticularView _particularView;
-        [SerializeField]
-        private Transform _moveTimerLocation;
-        [SerializeField]
-        private Transform _attackTimerLocation;
+        [SerializeField] private Image _mainImage;
+        [SerializeField] private Image _teamColorImage;
+        [SerializeField] private GridEntityParticularView _particularView;
+        [SerializeField] private GameObject _bottomUISection;
+        [SerializeField] private AbilityTimerFill _moveTimerFill;
+        [SerializeField] private AbilityTimerFill _attackTimerFill;
         [SerializeField] private Transform _buildTimerLocation;
         [SerializeField] private Transform _uniqueAbilityTimerLocation;
         [FormerlySerializedAs("UnitAnimator")] [SerializeField] private Animator _unitAnimator;
         [SerializeField] private Animator _healAnimator;
         [SerializeField] private Transform _directionContainer;
-        [SerializeField]
-        private PerlinShakeBehaviour ShakeBehaviour;
-        [SerializeField]
-        private VisualBar _healthBar;
+        [SerializeField] private PerlinShakeBehaviour ShakeBehaviour;
+        [SerializeField] private VisualBar _healthBar;
         
         [Header("Config")]
         [FormerlySerializedAs("SecondsToMoveToAdjacentCell")]
@@ -76,6 +70,7 @@ namespace Gameplay.Entities {
             entity.KilledEvent += Killed;
             
             _healthBar.Initialize(new HealthBarLogic(entity));
+            _bottomUISection.SetActive(entity.EntityData.MovementAndAttackUI);
 
             _particularView.Initialize(entity);
         }
@@ -258,13 +253,18 @@ namespace Gameplay.Entities {
             if (ability.AbilityData.AbilityTimerCooldownViewPrefab == null) return;
 
             Transform timerLocation = cooldownTimer.Ability switch {
-                AttackAbility => _attackTimerLocation,
+                AttackAbility => transform,
                 BuildAbility when cooldownTimer.Ability.AbilityData.Targeted => _buildTimerLocation,
-                MoveAbility => _moveTimerLocation,
+                MoveAbility => transform,
                 _ => _uniqueAbilityTimerLocation
             };
+            AbilityTimerFill timerFill = cooldownTimer.Ability switch {
+                AttackAbility => _attackTimerFill,
+                MoveAbility => _moveTimerFill,
+                _ => null
+            };
             AbilityTimerCooldownView cooldownView = Instantiate(ability.AbilityData.AbilityTimerCooldownViewPrefab, timerLocation);
-            cooldownView.Initialize(cooldownTimer, true, true);
+            cooldownView.Initialize(cooldownTimer, true, true, timerFill);
         }
 
         public void SetFacingDirection(Vector2 currentPosition, Vector2 targetPosition) {

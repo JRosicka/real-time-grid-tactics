@@ -40,6 +40,7 @@ MonoBehaviour:
   FriendlyUnitsCanShareCell: 0
   AttackByDefault: 0
   IsResourceExtractor: 0
+  MovementAndAttackUI: 1
   BuildQueueSize: 5
   EligibleStructureLocations: []
   SharedUnitDamageTakenModifier: 1
