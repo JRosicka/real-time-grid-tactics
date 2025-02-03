@@ -26,13 +26,28 @@ MonoBehaviour:
   TeamColorSprite: {fileID: 21300000, guid: 66d970995ee99364288261e3c02b3d71, type: 3}
   BaseSpriteIconOverride: {fileID: 0}
   _viewPrefab: {fileID: 7504026570216467247, guid: 578b7f995f51c3845914f63ae14fc166, type: 3}
+  SelectionSound:
+    Clip: {fileID: 0}
+    Volume: 0
+    AudioLayer: 0
+    Interruptible: 0
+  OrderSound:
+    Clip: {fileID: 0}
+    Volume: 0
+    AudioLayer: 0
+    Interruptible: 0
+  AttackSound:
+    Clip: {fileID: 0}
+    Volume: 0
+    AudioLayer: 0
+    Interruptible: 0
   HP: 12
   Range: 2
-  Damage: 4
+  Damage: 3
   BonusDamage: 0
   TagsToApplyBonusDamageTo: 
-  NormalMoveTime: 2.5
-  SlowMoveTime: 4
+  NormalMoveTime: 3
+  SlowMoveTime: 5
   Tags: 03000000
   AttackerTargetPriority: 2
   Abilities:
