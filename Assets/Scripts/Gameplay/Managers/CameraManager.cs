@@ -22,6 +22,7 @@ public class CameraManager : MonoBehaviour {
     private float EdgeScrollThreshold => Screen.height * _edgeScrollNormalThreshold;
     private CameraDirection? _currentEdgeScrollDirection_horizontal;
     private CameraDirection? _currentEdgeScrollDirection_vertical;
+    private bool _edgeScrollEnabled;
     
     private bool InputAllowed => GameManager.Instance.GameSetupManager.InputAllowed;
     
@@ -33,18 +34,28 @@ public class CameraManager : MonoBehaviour {
     private float MapMinY => _mapMinYBase - _boundaryBufferVertical - _additionalBoundaryBufferDown;
     private float MapMaxY => _mapMaxYBase + _boundaryBufferVertical;
 
-    public void SetBoundaries(float boundaryLeft, float boundaryRight, float boundaryUp, float boundaryDown) {
+    public void Initialize(Vector3 startPosition, float boundaryLeft, float boundaryRight, float boundaryUp, float boundaryDown) {
+        SetBoundaries(boundaryLeft, boundaryRight, boundaryUp, boundaryDown);
+        SetCameraStartPosition(startPosition);
+        _edgeScrollEnabled = PlayerPrefs.GetInt(PlayerPrefsKeys.EdgeScrollKey, 1) == 1;
+    }
+    
+    private void SetBoundaries(float boundaryLeft, float boundaryRight, float boundaryUp, float boundaryDown) {
         _mapMinXBase = boundaryLeft;
         _mapMaxXBase = boundaryRight;
         _mapMinYBase = boundaryDown;
         _mapMaxYBase = boundaryUp;
     }
 
-    public void SetCameraStartPosition(Vector3 startPosition) {
+    private void SetCameraStartPosition(Vector3 startPosition) {
         Vector3 cameraStartPosition = _camera.transform.position;
         Vector3 newPosition = ClampCamera(startPosition);
         newPosition.z = cameraStartPosition.z;
         _camera.transform.position = newPosition;
+    }
+
+    public void ToggleEdgeScroll(bool enable) {
+        _edgeScrollEnabled = enable;
     }
     
     public void StartMiddleMousePan(Vector2 startMousePosition) {
@@ -105,6 +116,12 @@ public class CameraManager : MonoBehaviour {
     }
 
     private void CheckForEdgeScroll(Vector2 mouseScreenPosition) {
+        if (!_edgeScrollEnabled) {
+            _currentEdgeScrollDirection_horizontal = null;
+            _currentEdgeScrollDirection_vertical = null;
+            return;
+        }
+        
         // Horizontal
         if (mouseScreenPosition.x < EdgeScrollThreshold) {
             _currentEdgeScrollDirection_horizontal = CameraDirection.Left;

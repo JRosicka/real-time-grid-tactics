@@ -32,6 +32,7 @@ public class GameManager : MonoBehaviour {
     public Cheats Cheats;
     public DisconnectionDialog DisconnectionDialog;
     public AlertTextDisplayer AlertTextDisplayer;
+    public CameraManager CameraManager;
     
     public PathfinderService PathfinderService;
     public EntitySelectionManager EntitySelectionManager;

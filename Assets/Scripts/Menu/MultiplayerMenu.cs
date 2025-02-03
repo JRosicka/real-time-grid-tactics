@@ -1,5 +1,6 @@
 using System;
 using Game.Network;
+using Gameplay.UI;
 using Steamworks;
 using TMPro;
 using UnityEngine;
@@ -25,6 +26,8 @@ public class MultiplayerMenu : MonoBehaviour {
     public GameObject FailureFeedbackDialog;
     public TMP_Text FailureFeedbackText;
     public GameObject SinglePlayerConfirmationDialog;
+    
+    public SettingsMenu SettingsMenu;
     
     public TMP_Text LobbyStatusText;
 
@@ -168,6 +171,11 @@ public class MultiplayerMenu : MonoBehaviour {
         CancelButton.gameObject.SetActive(false);
         
         // TODO cancel logic
+    }
+
+    public void OnSettingsClicked() {
+        ResetMultiplayerMenu();
+        SettingsMenu.Open();
     }
 
     public void OnQuitClicked() {

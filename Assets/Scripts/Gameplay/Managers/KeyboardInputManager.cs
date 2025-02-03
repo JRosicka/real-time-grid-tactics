@@ -64,6 +64,10 @@ namespace Gameplay.Managers {
 
         private void HandleEscape() {
             if (!_playerInput.GetButtonDown(EscapeAction)) return;
+            if (PauseMenu.SettingsMenu.Active) {
+                PauseMenu.SettingsMenu.Close();
+                return;
+            }
             PauseMenu.TogglePauseMenu();
         }
     }
