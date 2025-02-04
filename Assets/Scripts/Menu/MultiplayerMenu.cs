@@ -19,6 +19,7 @@ public class MultiplayerMenu : MonoBehaviour {
     public Button StopHostButton;
     public Button QuitButton;
     public Button SinglePlayerButton;
+    public Button SettingsButton;
     
     public LobbyListMenu LobbyListMenu;
     public GameObject JoinByIDMenu;
@@ -87,10 +88,12 @@ public class MultiplayerMenu : MonoBehaviour {
         ToggleButton(JoinByIDButton, true);
         ToggleButton(QuitButton, true);
         ToggleButton(SinglePlayerButton, true);
+        ToggleButton(SettingsButton, true);
         CancelButton.gameObject.SetActive(false);
         LobbyTypeSelection.gameObject.SetActive(false);
         JoinByIDMenu.gameObject.SetActive(false);
         SinglePlayerButton.gameObject.SetActive(true);
+        SettingsButton.gameObject.SetActive(true);
         SinglePlayerConfirmationDialog.SetActive(false);
         JoinByIDField.text = "";
         HideLobbyMenu();
@@ -129,6 +132,7 @@ public class MultiplayerMenu : MonoBehaviour {
         CancelButton.gameObject.SetActive(false);
         QuitButton.gameObject.SetActive(false); 
         SinglePlayerButton.gameObject.SetActive(false);
+        SettingsButton.gameObject.SetActive(false);
     }
 
     public void OnStartSinglePlayerGameClicked() {

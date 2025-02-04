@@ -2995,6 +2995,7 @@ MonoBehaviour:
   StopHostButton: {fileID: 1694436505}
   QuitButton: {fileID: 514607221}
   SinglePlayerButton: {fileID: 2118225607}
+  SettingsButton: {fileID: 1072394607}
   LobbyListMenu: {fileID: 1324623174}
   JoinByIDMenu: {fileID: 625439146}
   JoinByIDField: {fileID: 355398398}
