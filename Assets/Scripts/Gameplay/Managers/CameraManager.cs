@@ -1,4 +1,5 @@
 using System;
+using Rewired;
 using UnityEngine;
 
 /// <summary>
@@ -33,11 +34,15 @@ public class CameraManager : MonoBehaviour {
     private float MapMaxX => _mapMaxXBase + _boundaryBufferHorizontal;
     private float MapMinY => _mapMinYBase - _boundaryBufferVertical - _additionalBoundaryBufferDown;
     private float MapMaxY => _mapMaxYBase + _boundaryBufferVertical;
+    
+    private Player _playerInput;
 
     public void Initialize(Vector3 startPosition, float boundaryLeft, float boundaryRight, float boundaryUp, float boundaryDown) {
         SetBoundaries(boundaryLeft, boundaryRight, boundaryUp, boundaryDown);
         SetCameraStartPosition(startPosition);
         _edgeScrollEnabled = PlayerPrefs.GetInt(PlayerPrefsKeys.EdgeScrollKey, 1) == 1;
+        
+        _playerInput = ReInput.players.GetPlayer(0);
     }
     
     private void SetBoundaries(float boundaryLeft, float boundaryRight, float boundaryUp, float boundaryDown) {
@@ -86,6 +91,11 @@ public class CameraManager : MonoBehaviour {
     
     private void Update() {
         if (!InputAllowed) {
+            StopMiddleMousePan();
+            return;
+        }
+
+        if (_playerInput.GetButtonUp("MiddleMouse")) {
             StopMiddleMousePan();
             return;
         }
