@@ -6,6 +6,7 @@ using Gameplay.Config.Abilities;
 using Gameplay.Entities.Abilities;
 using Gameplay.Entities.BuildQueue;
 using Gameplay.Managers;
+using Gameplay.UI;
 using JetBrains.Annotations;
 using Mirror;
 using UnityEngine;
@@ -19,6 +20,7 @@ namespace Gameplay.Entities {
         // GameManager getters
         private static ICommandManager CommandManager => GameManager.Instance.CommandManager;
         private static AbilityAssignmentManager AbilityAssignmentManager => GameManager.Instance.AbilityAssignmentManager;
+        private static InGameTimer InGameTimer => GameManager.Instance.InGameTimer;
 
         #region Fields
         
@@ -195,6 +197,7 @@ namespace Gameplay.Entities {
         private void SetupView() {
             int stackOrder = EntityData.GetStackOrder();
             ViewCanvas.sortingOrder = stackOrder;
+            Debug.Log($"[{InGameTimer.MatchLengthString}] Instantiating view for {EntityData.ID}");
             _view = Instantiate(EntityData.ViewPrefab, ViewCanvas.transform);
             _view.Initialize(this, stackOrder);
         }
