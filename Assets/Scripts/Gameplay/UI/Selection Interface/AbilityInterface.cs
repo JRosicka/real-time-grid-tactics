@@ -64,7 +64,8 @@ namespace Gameplay.UI {
             
             // Don't allow interaction with the slot unless the local player owns this entity
             GridEntity selectedEntity = SelectedEntity;
-            if (selectedEntity == null || !selectedEntity.InteractBehavior!.IsLocalTeam) return;
+            if (selectedEntity == null) return;
+            if (!selectedEntity.InteractBehavior!.IsLocalTeam && !slot.AnyPlayerCanSelect) return;
             
             // Deselect current targetable ability
             GameManager.Instance.EntitySelectionManager.DeselectTargetableAbility();
@@ -75,7 +76,7 @@ namespace Gameplay.UI {
             DeselectUnselectedSlots();
         }
 
-        public void SelectBuildAbility(BuildAbilityData buildData, GridEntity selectedEntity) {
+        public void SetUpBuildSelection(BuildAbilityData buildData, GridEntity selectedEntity) {
             ClearInfo();
             if (!buildData.AutoSelect) {
                 BuildMenuOpenFromSelection = true;

@@ -23,6 +23,7 @@ namespace Gameplay.UI {
         public bool CaresAboutAbilityChannels => false;
         public bool CaresAboutQueuedAbilities => false;
         public bool IsAbilityTargetable => _buildAbilityData.Targeted;
+        public bool AnyPlayerCanSelect => false;
         private GridController GridController => GameManager.Instance.GridController;
         private AbilityAssignmentManager AbilityAssignmentManager => GameManager.Instance.AbilityAssignmentManager;
 

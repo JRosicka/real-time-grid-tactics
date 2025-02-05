@@ -14,13 +14,10 @@ namespace Gameplay.Config.Abilities {
     /// </summary>
     [Serializable]
     public abstract class AbilityDataBase<T> : IAbilityData where T : IAbilityParameters, new() {
-        [SerializeField] [HideInInspector]
-        private string _contentResourceID;
+        [HideInInspector][SerializeField] private string _contentResourceID;
 
-        [SerializeField]
-        private string _id;
-        [SerializeField]
-        private string _description;
+        [SerializeField] private string _id;
+        [SerializeField] private string _description;
         public AbilitySlotInfo AbilitySlotInfo => new AbilitySlotInfo(_id, _description);
 
         /// <summary>
@@ -29,83 +26,68 @@ namespace Gameplay.Config.Abilities {
         /// </summary>
         public string ContentResourceID { get => _contentResourceID; set => _contentResourceID = value; }
 
-        [SerializeField] 
-        private Sprite _icon;
+        [SerializeField] private Sprite _icon;
         public Sprite Icon => _icon;
 
         [SerializeField] private AbilityTimerCooldownView _abilityTimerCooldownView;
         public AbilityTimerCooldownView AbilityTimerCooldownViewPrefab => _abilityTimerCooldownView;
 
         [Tooltip("All of these must be owned in order to perform the ability")]
-        [SerializeField]
-        private List<PurchasableData> _requirements;
+        [SerializeField] private List<PurchasableData> _requirements;
         public List<PurchasableData> Requirements => _requirements;
         
         // TODO no functionality for this yet
         [Range(0f, 10f)]
-        [SerializeField]
-        private float _performDuration;
+        [SerializeField] private float _performDuration;
         public float PerformDuration => _performDuration;
         
         [Range(0f, 20f)]
-        [SerializeField]
-        private float _cooldownDuration;
+        [SerializeField] private float _cooldownDuration;
         public float CooldownDuration => _cooldownDuration;
 
-        [SerializeField]
-        private AbilityChannel _channel;
+        [SerializeField] private AbilityChannel _channel;
         public AbilityChannel Channel => _channel;
         
         [Tooltip("Collection of any AbilityChannels that usage of this ability blocks")]
-        [SerializeField]
-        private List<AbilityChannel> _channelBlockers = new List<AbilityChannel>();
+        [SerializeField] private List<AbilityChannel> _channelBlockers = new List<AbilityChannel>();
         public List<AbilityChannel> ChannelBlockers => _channelBlockers;
-        [SerializeField] 
-        private AbilitySlotLocation _slotLocation;
+        [SerializeField] private AbilitySlotLocation _slotLocation;
         public AbilitySlotLocation SlotLocation => _slotLocation;
 
         [Tooltip("How much time is added to the entity's movement cooldown timer after performing this ability. " +
                  "If there is an active cooldown timer for movement when this ability is performed, then this amount " +
                  "is added to that timer. Otherwise, a new cooldown timer is added with this amount.")]
         [Range(0f, 5f)]
-        [SerializeField] 
-        private float _addedMovementTime;
+        [SerializeField] private float _addedMovementTime;
         public float AddedMovementTime => _addedMovementTime;
 
-        [SerializeField] 
-        private bool _performOnStart;
+        [SerializeField] private bool _performOnStart;
         public bool PerformOnStart => _performOnStart;
         
-        [SerializeField] 
-        private bool _payCostUpFront;
+        [SerializeField] private bool _payCostUpFront;
         public bool PayCostUpFront => _payCostUpFront;
 
-        [SerializeField] 
-        private bool _repeatForeverAfterStartEvenWhenFailed;
+        [SerializeField] private bool _repeatForeverAfterStartEvenWhenFailed;
         public bool RepeatForeverAfterStartEvenWhenFailed => _repeatForeverAfterStartEvenWhenFailed;
         public abstract bool CanBeCanceled { get; }
         public abstract bool CancelableWhileActive { get; }
         public abstract bool CancelableWhileQueued { get; }
 
-        [SerializeField]
-        private bool _repeatWhenCooldownFinishes;
+        [SerializeField] private bool _repeatWhenCooldownFinishes;
         public bool RepeatWhenCooldownFinishes => _repeatWhenCooldownFinishes;
-        [SerializeField] 
-        private bool _animateWhenCooldownComplete;
+        [SerializeField] private bool _animateWhenCooldownComplete;
         public bool AnimateWhenCooldownComplete => _animateWhenCooldownComplete;
 
-        [SerializeField] 
-        private bool _selectable;
+        [SerializeField] private bool _selectable;
         public bool Selectable => _selectable;
-        [SerializeField] 
-        private bool _selectableWhenBlocked;
+        [SerializeField] private bool _selectableWhenBlocked;
         public bool SelectableWhenBlocked => _selectableWhenBlocked;
-        [SerializeField] 
-        private bool _autoSelect;
+        [SerializeField] private bool _autoSelect;
         public bool AutoSelect => _autoSelect;
+        [SerializeField] private bool _selectableForAllPlayers;
+        public bool SelectableForAllPlayers => _selectableForAllPlayers;
         public virtual bool Targeted => this is ITargetableAbilityData;
-        [SerializeField] 
-        private bool _tryingToPerformCancelsBuilds;
+        [SerializeField] private bool _tryingToPerformCancelsBuilds;
         public bool TryingToPerformCancelsBuilds => _tryingToPerformCancelsBuilds;
 
         /// <summary>

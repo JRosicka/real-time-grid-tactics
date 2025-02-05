@@ -25,6 +25,11 @@ namespace Gameplay.UI {
         /// </summary>
         bool IsAbilityTargetable { get; }
         /// <summary>
+        /// Whether this slot can be selected by any player, not just the owner
+        /// </summary>
+        /// <returns></returns>
+        bool AnyPlayerCanSelect { get; }
+        /// <summary>
         /// We just received user input to use the associated ability - do it
         /// </summary>
         void SelectSlot();
