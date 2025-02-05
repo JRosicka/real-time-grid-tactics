@@ -62,6 +62,10 @@ namespace Gameplay.UI {
         }
 
         public virtual AbilitySlot.AvailabilityResult GetAvailability() {
+            if (!SelectedEntity.InteractBehavior!.IsLocalTeam) {
+                return AbilitySlot.AvailabilityResult.Unselectable;
+            }
+            
             IGamePlayer player = GameManager.Instance.GetPlayerForTeam(SelectedEntity.Team);
             List<PurchasableData> ownedPurchasables = player.OwnedPurchasablesController.OwnedPurchasables;
 

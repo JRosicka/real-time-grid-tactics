@@ -41,6 +41,10 @@ namespace Gameplay.UI {
         }
 
         public override AbilitySlot.AvailabilityResult GetAvailability() {
+            if (!_selectedEntity.InteractBehavior!.IsLocalTeam) {
+                return AbilitySlot.AvailabilityResult.Hidden;
+            }
+            
             if (EntitySelectionManager.IsTargetableAbilitySelected() 
                     || _selectedEntity.GetCancelableAbilities().Count > 0) {
                 return AbilitySlot.AvailabilityResult.Selectable;

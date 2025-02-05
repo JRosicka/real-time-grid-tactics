@@ -37,6 +37,9 @@ namespace Gameplay.UI {
         }
 
         public AbilitySlot.AvailabilityResult GetAvailability() {
+            if (!_selectedEntity.InteractBehavior!.IsLocalTeam && !_abilityData.SelectableForAllPlayers) {
+                return AbilitySlot.AvailabilityResult.Unselectable;
+            }
             return GameManager.Instance.AbilityAssignmentManager.CanEntityUseAbility(_selectedEntity, _abilityData, _abilityData.SelectableWhenBlocked) 
                 ? AbilitySlot.AvailabilityResult.Selectable 
                 : AbilitySlot.AvailabilityResult.Unselectable;
