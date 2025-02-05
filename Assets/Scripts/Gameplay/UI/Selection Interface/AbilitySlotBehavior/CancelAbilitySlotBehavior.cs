@@ -12,7 +12,6 @@ namespace Gameplay.UI {
         public bool IsAvailabilitySensitiveToResources => false;
         public bool CaresAboutQueuedAbilities => true;
         public bool IsAbilityTargetable => false;
-        public bool AnyPlayerCanSelect => false;
 
         public void HandleFailedToSelect(AbilitySlot.AvailabilityResult availability) {
             // Nothing to do
@@ -22,6 +21,7 @@ namespace Gameplay.UI {
             abilityImage.sprite = GameConfiguration.CancelButtonSprite;
         }
 
+        public abstract bool AnyPlayerCanSelect { get; }
         public abstract AbilitySlotInfo AbilitySlotInfo { get; }
         public abstract bool CaresAboutAbilityChannels { get; }
         public abstract void SelectSlot();

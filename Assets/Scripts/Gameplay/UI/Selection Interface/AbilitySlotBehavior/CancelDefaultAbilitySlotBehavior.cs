@@ -17,6 +17,7 @@ namespace Gameplay.UI {
             _selectedEntity = selectedEntity;
         }
         
+        public override bool AnyPlayerCanSelect => false;
         public override AbilitySlotInfo AbilitySlotInfo => new AbilitySlotInfo("Cancel", "Cancels the current command");
         public override bool CaresAboutAbilityChannels => false;
 
