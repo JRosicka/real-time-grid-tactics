@@ -72,8 +72,8 @@ namespace Gameplay.Entities.Abilities {
             }
             
             // Otherwise move closer to the target and try again
-            StepTowardsDestination(Performer, targetLocation.Value);
             ReQueue();
+            StepTowardsDestination(Performer, targetLocation.Value, false);
             return false;
         }
         
@@ -106,9 +106,7 @@ namespace Gameplay.Entities.Abilities {
             }
             
             // No one in range to attack, so move a cell closer to our destination and re-queue
-            if (StepTowardsDestination(Performer, AbilityParameters.Destination)) {
-                ReQueue();
-            }
+            StepTowardsDestination(Performer, AbilityParameters.Destination, true);
             return false;
         }
 
@@ -163,25 +161,27 @@ namespace Gameplay.Entities.Abilities {
         /// <summary>
         /// Move a single cell towards the destination
         /// </summary>
-        /// <returns>True if we moved a cell, otherwise false if there is no path which actually brings us closer</returns>
-        private bool StepTowardsDestination(GridEntity attacker, Vector2Int destination) {
+        private void StepTowardsDestination(GridEntity attacker, Vector2Int destination, bool reQueueIfPossible) {
             PathfinderService.Path path = GameManager.Instance.PathfinderService.FindPath(Performer, destination);
             if (path.Nodes.Count < 2) {
-                return false;
+                return;
             }
+            
+            // We want the attack move to happen again after the move command, so queue it to the front first
+            ReQueue();
+            
             Vector2Int nextMoveCell = path.Nodes[1].Location;
             MoveAbilityData moveAbilityData = attacker.GetAbilityData<MoveAbilityData>();
-            AbilityAssignmentManager.PerformAbility(attacker, moveAbilityData, new MoveAbilityParameters {
+            AbilityAssignmentManager.QueueAbility(attacker, moveAbilityData, new MoveAbilityParameters {
                 Destination = nextMoveCell,
                 NextMoveCell = nextMoveCell,
                 SelectorTeam = attacker.Team,
                 BlockedByOccupation = false
-            }, true);
-            return true;
+            }, true, false, true);
         }
 
         private void ReQueue() {
-            AbilityAssignmentManager.QueueAbility(Performer, Data, AbilityParameters, true, false, false);
+            AbilityAssignmentManager.QueueAbility(Performer, Data, AbilityParameters, true, false, true);
         }
 
         private void DoAttack(Vector2Int location) {

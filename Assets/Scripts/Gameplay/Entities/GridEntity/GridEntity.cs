@@ -489,16 +489,22 @@ namespace Gameplay.Entities {
             
             HPHandler.ReceiveAttackFromEntity(sourceEntity);
 
+            bool queuedAbilitiesAllowResponse = QueuedAbilities.Count == 0 || QueuedAbilities.All(a =>
+                a is AttackAbility attackAbility && !attackAbility.AbilityParameters.TargetFire);
+            bool hasAttackMoveTargetLocation = QueuedAbilities.Count > 0;
+
             if (HPHandler.CurrentHP > 0 
                     && EntityData.AttackByDefault 
-                    && QueuedAbilities.Count == 0 
+                    && queuedAbilitiesAllowResponse 
                     && sourceEntity.Location != null) {
                 // Attack-move to the target
                 AbilityAssignmentManager.QueueAbility(this, GetAbilityData<AttackAbilityData>(), new AttackAbilityParameters {
                     TargetFire = false,
                     Destination = sourceEntity.Location.Value
-                }, false, false, false);
-                SetTargetLocation(sourceEntity.Location.Value, null);
+                }, false, false, true);
+                if (!hasAttackMoveTargetLocation) {
+                    SetTargetLocation(sourceEntity.Location.Value, null);
+                }
             }
         }
         
