@@ -10,6 +10,8 @@ namespace Gameplay.UI {
     public class InGameTimer : MonoBehaviour {
         public TMP_Text TimerText;
 
+        public string MatchLengthString => TimeSpan.FromSeconds(_matchLength).ToString("g");
+        
         private bool _timerStarted;
         private float _matchLength;
 

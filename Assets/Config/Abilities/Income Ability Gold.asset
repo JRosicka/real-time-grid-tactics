@@ -33,6 +33,7 @@ MonoBehaviour:
     _selectable: 0
     _selectableWhenBlocked: 0
     _autoSelect: 0
+    _selectableForAllPlayers: 0
     _tryingToPerformCancelsBuilds: 0
     ResourceAmountIncome:
       Type: 0

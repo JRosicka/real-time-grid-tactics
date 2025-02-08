@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 963fcddd75f04ce9b5bc31d538b6df7f, type: 3}
   m_Name: AudioFileConfiguration
   m_EditorClassIdentifier: 
+  AudioEnabled: 0
   GameMusic:
     Clip: {fileID: 8300000, guid: e2f961b079f5c4b6799395bc43ff8db6, type: 3}
     Volume: 0.7

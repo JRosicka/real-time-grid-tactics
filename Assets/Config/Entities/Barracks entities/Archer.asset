@@ -43,11 +43,11 @@ MonoBehaviour:
     Interruptible: 0
   HP: 12
   Range: 2
-  Damage: 4
+  Damage: 3
   BonusDamage: 0
   TagsToApplyBonusDamageTo: 
-  NormalMoveTime: 2.5
-  SlowMoveTime: 4
+  NormalMoveTime: 3
+  SlowMoveTime: 5
   Tags: 03000000
   AttackerTargetPriority: 2
   Abilities:

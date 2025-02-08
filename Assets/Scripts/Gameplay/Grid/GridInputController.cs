@@ -97,13 +97,10 @@ namespace Gameplay.Grid {
                     // Otherwise select whatever is at the clicked cell
                     _entitySelectionManager.SelectEntityAtCell(clickPosition);
                     break;
-                case MouseClick.Middle:
-                    // If we were holding down the middle mouse button to pan the camera, then make sure we stop now
-                    _cameraManager.StopMiddleMousePan();
-                    break;
                 case MouseClick.Right:
                     _entitySelectionManager.TryInteractWithCell(clickPosition);
                     break;
+                case MouseClick.Middle:
                 case MouseClick.None:
                     // We cover the hover action elsewhere, so nothing else to do
                     break;

@@ -34,6 +34,7 @@ MonoBehaviour:
     _selectable: 1
     _selectableWhenBlocked: 1
     _autoSelect: 1
+    _selectableForAllPlayers: 1
     _tryingToPerformCancelsBuilds: 0
     Targetable: 0
     Buildables:

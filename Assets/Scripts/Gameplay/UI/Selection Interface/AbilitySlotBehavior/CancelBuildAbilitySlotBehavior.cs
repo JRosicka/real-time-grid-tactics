@@ -18,7 +18,8 @@ namespace Gameplay.UI {
             _canMoveOutOfBuildMenu = canMoveOutOfBuildMenu;
             _cancelButtonDescription = canMoveOutOfBuildMenu ? "Leave the build menu" : "Cancel the last build in the queue";
         }
-        
+
+        public override bool AnyPlayerCanSelect => _canMoveOutOfBuildMenu;
         public override AbilitySlotInfo AbilitySlotInfo => new AbilitySlotInfo("Cancel", _cancelButtonDescription);
         public override bool CaresAboutAbilityChannels => true;
 

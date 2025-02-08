@@ -13,6 +13,7 @@ namespace Gameplay.UI {
         public RectTransform RootRectTransform;
         public RectTransform ButtonsRectTransform;
         public CanvasGroup CanvasGroup;
+        public SettingsMenu SettingsMenu;
         
         private GameManager GameManager => GameManager.Instance;
         
@@ -43,6 +44,10 @@ namespace Gameplay.UI {
 
         public void ReturnToGame() {
             TogglePauseMenu();
+        }
+
+        public void Settings() {
+            SettingsMenu.Open();
         }
 
         public void Surrender() {

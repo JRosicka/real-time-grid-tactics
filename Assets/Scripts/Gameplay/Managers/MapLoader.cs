@@ -51,8 +51,8 @@ public class MapLoader : MonoBehaviour {
         float xMin = lowerLeftWorldPosition.x - (needAdditionalHalfCellAtLeft ? GridController.CellWidth / 2 : 0);
         bool needAdditionalHalfCellAtRight = WideRightSide;
         float xMax = upperRightWorldPosition.x + (needAdditionalHalfCellAtRight ? GridController.CellWidth / 2 : 0);
-        CameraManager.SetBoundaries(xMin, xMax, upperRightWorldPosition.y, lowerLeftWorldPosition.y);
-        CameraManager.SetCameraStartPosition(GridController.GetWorldPosition(GetHomeBaseLocation(team)));
+        CameraManager.Initialize(GridController.GetWorldPosition(GetHomeBaseLocation(team)), 
+            xMin, xMax, upperRightWorldPosition.y, lowerLeftWorldPosition.y);
     }
 
     private Vector2Int GetHomeBaseLocation(GameTeam team) {

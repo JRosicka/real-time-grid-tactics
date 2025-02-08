@@ -25,6 +25,21 @@ MonoBehaviour:
   TeamColorSprite: {fileID: 21300000, guid: a712e8d461dd0ce4e9b0361a6361fd1b, type: 3}
   BaseSpriteIconOverride: {fileID: 21300000, guid: e79918f010dacef45aaf15f7b634492b, type: 3}
   _viewPrefab: {fileID: 7504026570216467247, guid: 7dc0a13730d5c56438a0306afc8a0823, type: 3}
+  SelectionSound:
+    Clip: {fileID: 0}
+    Volume: 0
+    AudioLayer: 0
+    Interruptible: 0
+  OrderSound:
+    Clip: {fileID: 0}
+    Volume: 0
+    AudioLayer: 0
+    Interruptible: 0
+  AttackSound:
+    Clip: {fileID: 0}
+    Volume: 0
+    AudioLayer: 0
+    Interruptible: 0
   HP: 40
   Range: 0
   Damage: 0
@@ -33,6 +48,7 @@ MonoBehaviour:
   NormalMoveTime: 0
   SlowMoveTime: 0
   Tags: 01000000
+  AttackerTargetPriority: 0
   Abilities:
   - {fileID: 11400000, guid: bdf047dc1be4f44418a904a085034a1e, type: 2}
   - {fileID: 11400000, guid: dc6b93f0d31da45a8949c673df2c6fa2, type: 2}
@@ -40,10 +56,11 @@ MonoBehaviour:
   FriendlyUnitsCanShareCell: 1
   AttackByDefault: 0
   IsResourceExtractor: 1
+  MovementAndAttackUI: 0
   BuildQueueSize: 5
   EligibleStructureLocations:
   - {fileID: 11400000, guid: be8d7ccbdc543194e9649f8f9fadbf2b, type: 2}
-  SharedUnitDamageTakenModifier: 1
+  SharedUnitDamageTakenModifier: 0.75
   SharedUnitDamageTakenModifierTags: 
   CanRally: 0
   StartingResourceSet:

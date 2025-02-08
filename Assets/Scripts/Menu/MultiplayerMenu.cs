@@ -1,5 +1,6 @@
 using System;
 using Game.Network;
+using Gameplay.UI;
 using Steamworks;
 using TMPro;
 using UnityEngine;
@@ -18,6 +19,7 @@ public class MultiplayerMenu : MonoBehaviour {
     public Button StopHostButton;
     public Button QuitButton;
     public Button SinglePlayerButton;
+    public Button SettingsButton;
     
     public LobbyListMenu LobbyListMenu;
     public GameObject JoinByIDMenu;
@@ -25,6 +27,8 @@ public class MultiplayerMenu : MonoBehaviour {
     public GameObject FailureFeedbackDialog;
     public TMP_Text FailureFeedbackText;
     public GameObject SinglePlayerConfirmationDialog;
+    
+    public SettingsMenu SettingsMenu;
     
     public TMP_Text LobbyStatusText;
 
@@ -84,10 +88,12 @@ public class MultiplayerMenu : MonoBehaviour {
         ToggleButton(JoinByIDButton, true);
         ToggleButton(QuitButton, true);
         ToggleButton(SinglePlayerButton, true);
+        ToggleButton(SettingsButton, true);
         CancelButton.gameObject.SetActive(false);
         LobbyTypeSelection.gameObject.SetActive(false);
         JoinByIDMenu.gameObject.SetActive(false);
         SinglePlayerButton.gameObject.SetActive(true);
+        SettingsButton.gameObject.SetActive(true);
         SinglePlayerConfirmationDialog.SetActive(false);
         JoinByIDField.text = "";
         HideLobbyMenu();
@@ -126,6 +132,7 @@ public class MultiplayerMenu : MonoBehaviour {
         CancelButton.gameObject.SetActive(false);
         QuitButton.gameObject.SetActive(false); 
         SinglePlayerButton.gameObject.SetActive(false);
+        SettingsButton.gameObject.SetActive(false);
     }
 
     public void OnStartSinglePlayerGameClicked() {
@@ -168,6 +175,11 @@ public class MultiplayerMenu : MonoBehaviour {
         CancelButton.gameObject.SetActive(false);
         
         // TODO cancel logic
+    }
+
+    public void OnSettingsClicked() {
+        ResetMultiplayerMenu();
+        SettingsMenu.Open();
     }
 
     public void OnQuitClicked() {

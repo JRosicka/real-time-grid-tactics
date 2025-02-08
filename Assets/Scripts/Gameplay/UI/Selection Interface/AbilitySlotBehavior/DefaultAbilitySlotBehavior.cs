@@ -21,6 +21,7 @@ namespace Gameplay.UI {
         public bool CaresAboutAbilityChannels => true;
         public bool CaresAboutQueuedAbilities => false;
         public bool IsAbilityTargetable => _abilityData.Targeted;
+        public bool AnyPlayerCanSelect => _abilityData.SelectableForAllPlayers;
 
         public void SelectSlot() {
             if (_abilityData == null) return;
@@ -36,6 +37,9 @@ namespace Gameplay.UI {
         }
 
         public AbilitySlot.AvailabilityResult GetAvailability() {
+            if (!_selectedEntity.InteractBehavior!.IsLocalTeam && !_abilityData.SelectableForAllPlayers) {
+                return AbilitySlot.AvailabilityResult.Unselectable;
+            }
             return GameManager.Instance.AbilityAssignmentManager.CanEntityUseAbility(_selectedEntity, _abilityData, _abilityData.SelectableWhenBlocked) 
                 ? AbilitySlot.AvailabilityResult.Selectable 
                 : AbilitySlot.AvailabilityResult.Unselectable;

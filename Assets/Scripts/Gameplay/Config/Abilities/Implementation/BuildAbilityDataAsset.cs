@@ -36,7 +36,7 @@ namespace Gameplay.Config.Abilities {
         public override bool Targeted => Targetable;
 
         public override void SelectAbility(GridEntity selector) {
-            GameManager.Instance.SelectionInterface.SelectBuildAbility(this);
+            GameManager.Instance.SelectionInterface.SetUpBuildSelection(this);
         }
 
         // TODO: You know, it seems like the only ability that has this cost consideration is the build ability. So maybe we just get rid of the PayCostUpFront field and consider that the default logic for... the one ability that has a cost. 

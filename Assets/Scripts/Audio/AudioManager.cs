@@ -14,14 +14,10 @@ namespace Audio {
     [InitializeOnLoad]
 #endif
     public class AudioManager : MonoBehaviour {
-        public const string SoundEffectVolumeKey = "SoundEffectsVolume";
-        public const string MusicVolumeKey = "MusicVolume";
-
         // Loudness (perceptually) ~doubles every 10 decibels -> 10/ln(2)
         private const float DecibelCoefficient = 14.4269504089f;
-        private const float DefaultVolume = 1f;
         
-        private static AudioManager _instance;
+        public static AudioManager Instance;
 
 #if UNITY_EDITOR
         static AudioManager() {
@@ -29,7 +25,7 @@ namespace Audio {
         }
         private static void ResetStaticFields(PlayModeStateChange state) {
             if (state == PlayModeStateChange.ExitingPlayMode) {
-                _instance = null;
+                Instance = null;
             }
         }
 #endif
@@ -55,18 +51,18 @@ namespace Audio {
         /// </summary>
         /// <returns>True if this is the active player, otherwise false if this is getting destroyed</returns>
         public bool Initialize() {
-            if (_instance != null && _instance != this) {
+            if (Instance != null && Instance != this) {
                 Destroy(gameObject);
                 return false;
             }
             
             Mixer = Resources.Load<AudioMixer>("Mixer");
 
-            SetSoundEffectVolume(PlayerPrefs.GetFloat(SoundEffectVolumeKey, DefaultVolume));
-            SetMusicVolume(PlayerPrefs.GetFloat(MusicVolumeKey, DefaultVolume));
+            SetSoundEffectVolume(PlayerPrefs.GetFloat(PlayerPrefsKeys.SoundEffectVolumeKey, PlayerPrefsKeys.DefaultVolume));
+            SetMusicVolume(PlayerPrefs.GetFloat(PlayerPrefsKeys.MusicVolumeKey, PlayerPrefsKeys.DefaultVolume));
             
             DontDestroyOnLoad(gameObject);
-            _instance = this;
+            Instance = this;
             return true;
         }
         
@@ -117,7 +113,7 @@ namespace Audio {
                 return null;
             }
 
-            if (_instance == null) {
+            if (Instance == null) {
                 Debug.LogWarning("Make sure to initialize the Audio Manager before trying to play sounds with it!");
                 return null;
             }
@@ -174,11 +170,11 @@ namespace Audio {
         }
 
         public void SetSoundEffectVolume(float newVolume) {
-            Mixer.SetFloat(SoundEffectVolumeKey, ToDecibels(newVolume));
+            Mixer.SetFloat(PlayerPrefsKeys.SoundEffectVolumeKey, ToDecibels(newVolume));
         }
         
         public void SetMusicVolume(float newVolume) {
-            Mixer.SetFloat(MusicVolumeKey, ToDecibels(newVolume));
+            Mixer.SetFloat(PlayerPrefsKeys.MusicVolumeKey, ToDecibels(newVolume));
         }
 
         /// <summary> 

@@ -14,6 +14,9 @@ namespace Gameplay.UI {
             if (GameSetupManager.GameOver) return;
 
             PauseMenu.TogglePauseMenu();
+            if (PauseMenu.SettingsMenu.Active) {
+                PauseMenu.SettingsMenu.Close();
+            }
         }
     }
 }

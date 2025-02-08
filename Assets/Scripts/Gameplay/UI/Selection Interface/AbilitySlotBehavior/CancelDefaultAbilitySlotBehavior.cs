@@ -17,6 +17,7 @@ namespace Gameplay.UI {
             _selectedEntity = selectedEntity;
         }
         
+        public override bool AnyPlayerCanSelect => false;
         public override AbilitySlotInfo AbilitySlotInfo => new AbilitySlotInfo("Cancel", "Cancels the current command");
         public override bool CaresAboutAbilityChannels => false;
 
@@ -41,6 +42,10 @@ namespace Gameplay.UI {
         }
 
         public override AbilitySlot.AvailabilityResult GetAvailability() {
+            if (!_selectedEntity.InteractBehavior!.IsLocalTeam) {
+                return AbilitySlot.AvailabilityResult.Hidden;
+            }
+            
             if (EntitySelectionManager.IsTargetableAbilitySelected() 
                     || _selectedEntity.GetCancelableAbilities().Count > 0) {
                 return AbilitySlot.AvailabilityResult.Selectable;

@@ -23,6 +23,7 @@ namespace Gameplay.UI {
         public bool CaresAboutAbilityChannels => false;
         public bool CaresAboutQueuedAbilities => false;
         public bool IsAbilityTargetable => _buildAbilityData.Targeted;
+        public bool AnyPlayerCanSelect => false;
         private GridController GridController => GameManager.Instance.GridController;
         private AbilityAssignmentManager AbilityAssignmentManager => GameManager.Instance.AbilityAssignmentManager;
 
@@ -61,6 +62,10 @@ namespace Gameplay.UI {
         }
 
         public virtual AbilitySlot.AvailabilityResult GetAvailability() {
+            if (!SelectedEntity.InteractBehavior!.IsLocalTeam) {
+                return AbilitySlot.AvailabilityResult.Unselectable;
+            }
+            
             IGamePlayer player = GameManager.Instance.GetPlayerForTeam(SelectedEntity.Team);
             List<PurchasableData> ownedPurchasables = player.OwnedPurchasablesController.OwnedPurchasables;
 

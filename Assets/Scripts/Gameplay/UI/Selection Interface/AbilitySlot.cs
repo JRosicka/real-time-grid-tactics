@@ -48,15 +48,17 @@ namespace Gameplay.UI {
         /// <summary>
         /// Delegation of implementation-specific behaviour conducted through here
         /// </summary>
-        public IAbilitySlotBehavior SlotBehavior { get; private set; }
+        private IAbilitySlotBehavior _slotBehavior;
 
         public AvailabilityResult Availability { get; private set; }
+        
+        public bool AnyPlayerCanSelect => _slotBehavior.AnyPlayerCanSelect;
 
         /// <summary>
         /// Update this ability slot to set its state/appearance
         /// </summary>
         public void SetUpSlot(IAbilitySlotBehavior slotBehavior, GridEntity selectedEntity) {
-            SlotBehavior = slotBehavior;
+            _slotBehavior = slotBehavior;
             _selectedEntity = selectedEntity;
             slotBehavior.SetUpSprites(AbilityImage, SecondaryAbilityImage, TeamColorsCanvas);
             
@@ -78,7 +80,7 @@ namespace Gameplay.UI {
             RemoveListeners();
             _shouldDeselectWhenTimerElapses = false;
 
-            SlotBehavior = null;
+            _slotBehavior = null;
             _selectedEntity = null;
             _selected = false;
             Availability = AvailabilityResult.Hidden;
@@ -93,11 +95,11 @@ namespace Gameplay.UI {
             if (Availability != AvailabilityResult.Selectable) return;
             
             MarkSelected(true);
-            SlotBehavior?.SelectSlot();
+            _slotBehavior?.SelectSlot();
         }
 
         public void HandleFailedToSelect() {
-            SlotBehavior?.HandleFailedToSelect(Availability);
+            _slotBehavior?.HandleFailedToSelect(Availability);
         }
 
         public void MarkSelected(bool selected) {
@@ -105,7 +107,7 @@ namespace Gameplay.UI {
             _shouldDeselectWhenTimerElapses = false;
             if (selected) {
                 SlotFrame.color = SelectedColor;
-                if (SlotBehavior is { IsAbilityTargetable: true }) {
+                if (_slotBehavior is { IsAbilityTargetable: true }) {
                     // We want this slot to keep appearing as selected until we do something else, so don't auto-unmark it.
                 } else {
                     StartCoroutine(DeselectLater());
@@ -135,9 +137,9 @@ namespace Gameplay.UI {
         }
 
         private void CheckAvailability() {
-            if (SlotBehavior == null || _selectedEntity == null) return;
+            if (_slotBehavior == null || _selectedEntity == null) return;
             
-            AvailabilityResult availability = SlotBehavior.GetAvailability();
+            AvailabilityResult availability = _slotBehavior.GetAvailability();
             switch (availability) {
                 case AvailabilityResult.Hidden:
                     Hide();
@@ -196,15 +198,15 @@ namespace Gameplay.UI {
         }
 
         private void OnAbilityTimersChanged(IAbility ability, AbilityCooldownTimer timer) {
-            if (SlotBehavior == null) return; 
-            if (SlotBehavior.CaresAboutAbilityChannels || timer.Ability.AbilityData.SlotLocation == SlotLocation) {
+            if (_slotBehavior == null) return; 
+            if (_slotBehavior.CaresAboutAbilityChannels || timer.Ability.AbilityData.SlotLocation == SlotLocation) {
                 CheckAvailability();
             }
         }
 
         private void OnQueuedAbilitiesChanged(List<IAbility> abilities) {
-            if (SlotBehavior == null) return; 
-            if (SlotBehavior.CaresAboutQueuedAbilities) {
+            if (_slotBehavior == null) return; 
+            if (_slotBehavior.CaresAboutQueuedAbilities) {
                 CheckAvailability();
             }
         }
@@ -213,8 +215,8 @@ namespace Gameplay.UI {
         /// When the player gains or spends resources
         /// </summary>
         private void OnPlayerResourcesBalanceChanged(List<ResourceAmount> resourceAmounts) {
-            if (SlotBehavior == null) return; 
-            if (SlotBehavior.IsAvailabilitySensitiveToResources) {
+            if (_slotBehavior == null) return; 
+            if (_slotBehavior.IsAvailabilitySensitiveToResources) {
                 CheckAvailability();
             }
         }
@@ -229,12 +231,12 @@ namespace Gameplay.UI {
         #endregion
 
         public void OnPointerEnter(PointerEventData eventData) {
-            if (SlotBehavior == null) return;
-            AbilityInterface.TooltipView.ToggleForHoveredAbility(SlotBehavior.AbilitySlotInfo, SlotBehavior);
+            if (_slotBehavior == null) return;
+            AbilityInterface.TooltipView.ToggleForHoveredAbility(_slotBehavior.AbilitySlotInfo, _slotBehavior);
         }
 
         public void OnPointerExit(PointerEventData eventData) {
-            if (SlotBehavior == null) return; 
+            if (_slotBehavior == null) return; 
             AbilityInterface.TooltipView.ToggleForHoveredAbility(null, null);
         }
     }

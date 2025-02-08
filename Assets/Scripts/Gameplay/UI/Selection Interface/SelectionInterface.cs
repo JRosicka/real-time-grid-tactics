@@ -72,10 +72,8 @@ namespace Gameplay.UI {
             entity.CurrentResources.ValueChanged += OnEntityResourceAmountChanged;
             
             ToggleViews(true);
-
-            if (entity.Team == GameManager.Instance.LocalTeam) {
-                PerformAutoSelectionAbilities(entity);
-            }
+            
+            PerformAutoSelectionAbilities(entity);
         }
 
         public void HandleAbilityHotkey(string input) {
@@ -93,8 +91,8 @@ namespace Gameplay.UI {
             }
         }
 
-        public void SelectBuildAbility(BuildAbilityData buildData) {
-            AbilityInterface.SelectBuildAbility(buildData, _displayedEntity);
+        public void SetUpBuildSelection(BuildAbilityData buildData) {
+            AbilityInterface.SetUpBuildSelection(buildData, _displayedEntity);
         }
 
         private void DeselectCurrentEntity() {
@@ -198,7 +196,9 @@ namespace Gameplay.UI {
         /// </summary>
         private static void PerformAutoSelectionAbilities(GridEntity entity) {
             foreach (IAbilityData abilityData in entity.Abilities.Where(a => a.AutoSelect)) {
-                abilityData.SelectAbility(entity);
+                if (abilityData.SelectableForAllPlayers || entity.Team == GameManager.Instance.LocalTeam) {
+                    abilityData.SelectAbility(entity);
+                }
             }
         }
     }

@@ -71,6 +71,10 @@ namespace Gameplay.Config.Abilities {
         /// </summary>
         bool AutoSelect { get; }
         /// <summary>
+        /// Whether we should do the on-select ability effect when selected by any player, not just by the owner
+        /// </summary>
+        bool SelectableForAllPlayers { get; }
+        /// <summary>
         /// Whether this ability requires a cell to be targeted when using it
         /// </summary>
         bool Targeted { get; }

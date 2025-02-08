@@ -6,6 +6,7 @@ using Gameplay.Config.Abilities;
 using Gameplay.Entities.Abilities;
 using Gameplay.Entities.BuildQueue;
 using Gameplay.Managers;
+using Gameplay.UI;
 using JetBrains.Annotations;
 using Mirror;
 using UnityEngine;
@@ -19,6 +20,7 @@ namespace Gameplay.Entities {
         // GameManager getters
         private static ICommandManager CommandManager => GameManager.Instance.CommandManager;
         private static AbilityAssignmentManager AbilityAssignmentManager => GameManager.Instance.AbilityAssignmentManager;
+        private static InGameTimer InGameTimer => GameManager.Instance.InGameTimer;
 
         #region Fields
         
@@ -195,6 +197,7 @@ namespace Gameplay.Entities {
         private void SetupView() {
             int stackOrder = EntityData.GetStackOrder();
             ViewCanvas.sortingOrder = stackOrder;
+            Debug.Log($"[{InGameTimer.MatchLengthString}] Instantiating view for {EntityData.ID}");
             _view = Instantiate(EntityData.ViewPrefab, ViewCanvas.transform);
             _view.Initialize(this, stackOrder);
         }
@@ -486,16 +489,22 @@ namespace Gameplay.Entities {
             
             HPHandler.ReceiveAttackFromEntity(sourceEntity);
 
+            bool queuedAbilitiesAllowResponse = QueuedAbilities.Count == 0 || QueuedAbilities.All(a =>
+                a is AttackAbility attackAbility && !attackAbility.AbilityParameters.TargetFire);
+            bool hasAttackMoveTargetLocation = QueuedAbilities.Count > 0;
+
             if (HPHandler.CurrentHP > 0 
                     && EntityData.AttackByDefault 
-                    && QueuedAbilities.Count == 0 
+                    && queuedAbilitiesAllowResponse 
                     && sourceEntity.Location != null) {
                 // Attack-move to the target
                 AbilityAssignmentManager.QueueAbility(this, GetAbilityData<AttackAbilityData>(), new AttackAbilityParameters {
                     TargetFire = false,
                     Destination = sourceEntity.Location.Value
-                }, false, false, false);
-                SetTargetLocation(sourceEntity.Location.Value, null);
+                }, false, false, true);
+                if (!hasAttackMoveTargetLocation) {
+                    SetTargetLocation(sourceEntity.Location.Value, null);
+                }
             }
         }
         
