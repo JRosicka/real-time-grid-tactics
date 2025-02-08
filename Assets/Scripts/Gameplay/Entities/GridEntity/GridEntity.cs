@@ -493,6 +493,12 @@ namespace Gameplay.Entities {
                 a is AttackAbility attackAbility && !attackAbility.AbilityParameters.TargetFire);
             bool hasAttackMoveTargetLocation = QueuedAbilities.Count > 0;
 
+            // TODO:
+            // - Don't respond with an attack move if there is already a responding attack move queued
+            // - Add an attack ability parameter flag to track whether it is a response attack move
+            // - For reacting attack abilities, have the attack ability step behavior move towards its destination only if its attacker is still alive. Need a new ability parameter field for tracking that.
+            // -- When the attacker is no longer alive, have the attack ability step behavior complete when finished. 
+            
             if (HPHandler.CurrentHP > 0 
                     && EntityData.AttackByDefault 
                     && queuedAbilitiesAllowResponse 
