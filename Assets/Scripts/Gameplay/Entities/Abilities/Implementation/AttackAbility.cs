@@ -105,11 +105,13 @@ namespace Gameplay.Entities.Abilities {
                 return false;
             }
 
-            if (AbilityParameters.Reaction && (
-                    AbilityParameters.ReactionTarget == null || AbilityParameters.ReactionTarget.DeadOrDying)
-                ) {
-                // Don't step towards the destination since the reaction target is dead. Just return so we can keep 
-                // going with the next queued ability
+            if (AbilityParameters.Reaction) {
+                if (AbilityParameters.ReactionTarget != null
+                        && !AbilityParameters.ReactionTarget.DeadOrDying
+                        && AbilityParameters.ReactionTarget.Location != null) {
+                    // No one in range to attack, so move a cell closer to our destination and re-queue
+                    StepTowardsDestination(Performer, AbilityParameters.ReactionTarget.Location.Value, true);
+                } // Otherwise don't step towards the destination since the reaction target is dead. Just return so we can keep going with the next queued ability
                 return false;
             }
             
@@ -136,13 +138,19 @@ namespace Gameplay.Entities.Abilities {
                     .ToList();
             
             if (enemiesInRange.Count == 0) return false;
-            
+
             // Only consider the highest-priority targets
             EntityData.TargetPriority highestPriority = enemiesInRange.Max(e => e.EntityData.AttackerTargetPriority);
             enemiesInRange = enemiesInRange
                 .Where(e => e.EntityData.AttackerTargetPriority == highestPriority)
                 .ToList();
-
+            if (AbilityParameters.Reaction && AbilityParameters.ReactionTarget != null && !AbilityParameters.ReactionTarget.DeadOrDying) {
+                // Potential targets must have a priority at least as high as the attacker we are reacting to
+                enemiesInRange.RemoveAll(e => e.EntityData.AttackerTargetPriority <
+                                              AbilityParameters.ReactionTarget.EntityData.AttackerTargetPriority);
+            }
+            if (enemiesInRange.Count == 0) return false;
+            
             // If there are multiple viable targets, then disregard the farther-away enemies
             // ReSharper disable PossibleInvalidOperationException      We already confirmed these values are not null
             int closestDistance = enemiesInRange.Min(e => CellDistanceLogic.DistanceBetweenCells(attackerLocation.Value, e.Location.Value));
@@ -174,9 +182,11 @@ namespace Gameplay.Entities.Abilities {
             if (path.Nodes.Count < 2) {
                 return;
             }
-            
-            // We want the attack move to happen again after the move command, so queue it to the front first
-            ReQueue();
+
+            if (reQueueIfPossible) {
+                // We want the attack move to happen again after the move command, so queue it to the front first
+                ReQueue();
+            }
             
             Vector2Int nextMoveCell = path.Nodes[1].Location;
             MoveAbilityData moveAbilityData = attacker.GetAbilityData<MoveAbilityData>();

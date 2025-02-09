@@ -511,7 +511,7 @@ namespace Gameplay.Entities {
                     Destination = sourceEntity.Location.Value,
                     Reaction = true,
                     ReactionTarget = sourceEntity
-                }, false, false, true);
+                }, true, false, true);
                 if (!hasAttackMoveTargetLocation) {
                     SetTargetLocation(sourceEntity.Location.Value, null);
                 }
