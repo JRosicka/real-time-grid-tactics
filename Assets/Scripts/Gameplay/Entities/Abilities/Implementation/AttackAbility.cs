@@ -104,6 +104,14 @@ namespace Gameplay.Entities.Abilities {
                 ReQueue();
                 return false;
             }
+
+            if (AbilityParameters.Reaction && (
+                    AbilityParameters.ReactionTarget == null || AbilityParameters.ReactionTarget.DeadOrDying)
+                ) {
+                // Don't step towards the destination since the reaction target is dead. Just return so we can keep 
+                // going with the next queued ability
+                return false;
+            }
             
             // No one in range to attack, so move a cell closer to our destination and re-queue
             StepTowardsDestination(Performer, AbilityParameters.Destination, true);
@@ -202,16 +210,22 @@ namespace Gameplay.Entities.Abilities {
         public bool TargetFire;
         public GridEntity Target;    // only used for targeting a specific unit
         public Vector2Int Destination; // only used for attack-moves
+        public bool Reaction;   // Whether this attack was made in reaction to some other entity
+        public GridEntity ReactionTarget;   // Only used for reaction attacks
         public void Serialize(NetworkWriter writer) {
             writer.WriteBool(TargetFire);
             writer.Write(Target);
             writer.Write(Destination);
+            writer.Write(Reaction);
+            writer.Write(ReactionTarget);
         }
 
         public void Deserialize(NetworkReader reader) {
             TargetFire = reader.ReadBool();
             Target = reader.Read<GridEntity>();
             Destination = reader.Read<Vector2Int>();
+            Reaction = reader.ReadBool();
+            ReactionTarget = reader.Read<GridEntity>();
         }
     }
 }

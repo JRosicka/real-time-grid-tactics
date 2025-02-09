@@ -490,7 +490,9 @@ namespace Gameplay.Entities {
             HPHandler.ReceiveAttackFromEntity(sourceEntity);
 
             bool queuedAbilitiesAllowResponse = QueuedAbilities.Count == 0 || QueuedAbilities.All(a =>
-                a is AttackAbility attackAbility && !attackAbility.AbilityParameters.TargetFire);
+                a is AttackAbility attackAbility // No response if there are any queued non-attack abilities
+                    && !attackAbility.AbilityParameters.TargetFire      // Or if any of those queued attacks are target-fire
+                    && !attackAbility.AbilityParameters.Reaction);      // Or if any are reactions
             bool hasAttackMoveTargetLocation = QueuedAbilities.Count > 0;
 
             // TODO:
@@ -506,7 +508,9 @@ namespace Gameplay.Entities {
                 // Attack-move to the target
                 AbilityAssignmentManager.QueueAbility(this, GetAbilityData<AttackAbilityData>(), new AttackAbilityParameters {
                     TargetFire = false,
-                    Destination = sourceEntity.Location.Value
+                    Destination = sourceEntity.Location.Value,
+                    Reaction = true,
+                    ReactionTarget = sourceEntity
                 }, false, false, true);
                 if (!hasAttackMoveTargetLocation) {
                     SetTargetLocation(sourceEntity.Location.Value, null);
