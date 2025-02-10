@@ -71,15 +71,8 @@ namespace Gameplay.Entities {
         public bool Registered;
         [HideInInspector] 
         public EntityData EntityData;
-        // TODO network this
-        private GridEntity _lastAttackedEntity;
-        public GridEntity LastAttackedEntity {
-            get => _lastAttackedEntity;
-            set {
-                _lastAttackedEntity = value;
-                UpdateAttackTarget();
-            }
-        }
+        public NetworkableField LastAttackedEntity;
+        public GridEntity LastAttackedEntityValue => ((NetworkableGridEntityValue)LastAttackedEntity.Value)?.Value;
         public bool Interactable { get; private set; }
         public bool CanTargetThings => Range > 0;
         public bool CanMoveOrRally => MoveTime > 0;
@@ -132,6 +125,7 @@ namespace Gameplay.Entities {
             CurrentResources = new NetworkableField(this, nameof(CurrentResources), new ResourceAmount());
             TargetLocationLogic = new NetworkableField(this, nameof(TargetLocationLogic), new TargetLocationLogic());
             _location = new NetworkableField(this, nameof(_location), new NetworkableVector2IntegerValue(new Vector2Int(0, 0)));
+            LastAttackedEntity = new NetworkableField(this, nameof(LastAttackedEntity), new NetworkableGridEntityValue(null));
         }
 
         /// <summary>
@@ -150,6 +144,7 @@ namespace Gameplay.Entities {
             _location.UpdateValue(new NetworkableVector2IntegerValue(spawnLocation));
             TargetLocationLogic.ValueChanged += TargetLocationLogicChanged;
             TargetLocationLogic.UpdateValue(new TargetLocationLogic(EntityData.CanRally, spawnLocation, null));
+            LastAttackedEntity.UpdateValue(new NetworkableGridEntityValue(null));
         }
         
         [ClientRpc]
@@ -186,6 +181,7 @@ namespace Gameplay.Entities {
             InitializationStatusHandler.Initialize(null);
             InitializationStatusHandler.SetLocalClientReady();
             DeathStatusHandler.Initialize(OnEntityReadyToDie);
+            LastAttackedEntity.ValueChanged += UpdateAttackTarget;
             
             Interactable = true;
         } 
@@ -259,10 +255,10 @@ namespace Gameplay.Entities {
         }
         public void SetTargetLocation(Vector2Int newTargetLocation, GridEntity targetEntity) {
             TargetLocationLogic.UpdateValue(new TargetLocationLogic(TargetLocationLogicValue.CanRally, newTargetLocation, targetEntity));
-            UpdateAttackTarget();
+            UpdateAttackTarget(null, null, null);
         }
 
-        private void UpdateAttackTarget() {
+        private void UpdateAttackTarget(INetworkableFieldValue oldValue, INetworkableFieldValue newValue, string metadata) {
             AttackTargetUpdated?.Invoke(this, GetAttackTarget());
         }
 
@@ -271,9 +267,9 @@ namespace Gameplay.Entities {
                 return TargetLocationLogicValue.TargetEntity;
             }
 
-            if (LastAttackedEntity != null) {
-                AttackTargetUpdated?.Invoke(this, LastAttackedEntity);
-                return LastAttackedEntity;
+            if (LastAttackedEntityValue != null) {
+                AttackTargetUpdated?.Invoke(this, LastAttackedEntityValue);
+                return LastAttackedEntityValue;
             }
 
             return null;
@@ -510,7 +506,7 @@ namespace Gameplay.Entities {
         }
 
         public void ReceiveAttackFromEntity(GridEntity sourceEntity) {
-            sourceEntity.LastAttackedEntity = this;
+            sourceEntity.LastAttackedEntity.UpdateValue(new NetworkableGridEntityValue(this));
             if (Location == null) {
                 Debug.LogWarning("Entity received attack but it is not registered or unregistered");
                 return;

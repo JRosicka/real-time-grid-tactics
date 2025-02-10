@@ -91,7 +91,7 @@ namespace Gameplay.Entities.Abilities {
             } 
             
             // We are not immediately doing an attack when it is available, so clear the last attack target
-            Performer.LastAttackedEntity = null;
+            Performer.LastAttackedEntity.UpdateValue(null);
             
             // If we are at the destination, then the attack-move has completed
             if (attackerLocation == AbilityParameters.Destination) {
@@ -159,9 +159,9 @@ namespace Gameplay.Entities.Abilities {
                 .ToList();
 
             // If the attacker's last target is a viable target, then pick that one
-            Vector2Int? lastAttackedEntityLocation = attacker.LastAttackedEntity == null ? null : attacker.LastAttackedEntity.Location;
-            if (lastAttackedEntityLocation != null && enemiesInRange.Contains(attacker.LastAttackedEntity)) {
-                AbilityParameters.Target = attacker.LastAttackedEntity;
+            Vector2Int? lastAttackedEntityLocation = attacker.LastAttackedEntityValue == null ? null : attacker.LastAttackedEntityValue.Location;
+            if (lastAttackedEntityLocation != null && enemiesInRange.Contains(attacker.LastAttackedEntityValue)) {
+                AbilityParameters.Target = attacker.LastAttackedEntityValue;
                 DoAttack(lastAttackedEntityLocation.Value);
             } else {
                 // Otherwise arbitrarily pick one to attack.

@@ -63,7 +63,7 @@ namespace Gameplay.Managers {
                     QueueAbility(entity, abilityData, parameters, true, clearQueueFirst, false);
                     if (abilityData is not AttackAbilityData) {
                         // Clear the targeted entity since we are telling this entity to do something else
-                        entity.LastAttackedEntity = null;
+                        entity.LastAttackedEntity.UpdateValue(null);
                     }
                     return true;
                 }
@@ -74,7 +74,7 @@ namespace Gameplay.Managers {
             
             if (abilityData is not AttackAbilityData) {
                 // Clear the targeted entity since we are telling this entity to do something else
-                entity.LastAttackedEntity = null;
+                entity.LastAttackedEntity.UpdateValue(null);
             }
             
             IAbility abilityInstance = abilityData.CreateAbility(parameters, entity);

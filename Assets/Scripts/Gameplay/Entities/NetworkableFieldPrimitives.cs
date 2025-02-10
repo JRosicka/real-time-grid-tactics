@@ -38,4 +38,22 @@ namespace Gameplay.Entities {
             return new NetworkableVector2IntegerValue(reader.ReadVector2Int());
         }
     }
+    
+    [Serializable]
+    public class NetworkableGridEntityValue : INetworkableFieldValue {
+        public GridEntity Value;
+        public NetworkableGridEntityValue(GridEntity value) {
+            Value = value;
+        }
+
+        public string ID => nameof(NetworkableGridEntityValue);
+
+        public void SerializeValue(NetworkWriter writer) {
+            writer.Write(Value);
+        }
+
+        public static NetworkableGridEntityValue Deserialize(NetworkReader reader) {
+            return new NetworkableGridEntityValue(reader.Read<GridEntity>());
+        }
+    }
 }
