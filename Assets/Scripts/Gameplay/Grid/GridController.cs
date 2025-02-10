@@ -32,7 +32,7 @@ namespace Gameplay.Grid {
         private SelectionReticleEntityTracker _selectedUnitTracker = new SelectionReticleEntityTracker();
         
         // Reticle for the target unit (The place where the selected unit is moving towards or attacking)
-        [SerializeField] private SelectionReticle _targetUnitReticle;    // TODO not currently doing anything with this. Call associated method in this class when we move or attack.
+        [SerializeField] private SelectionReticle _targetUnitReticle;
         private SelectionReticleEntityTracker _targetUnitTracker = new SelectionReticleEntityTracker();
 
         private List<Vector2Int> _selectableCells;
@@ -58,14 +58,22 @@ namespace Gameplay.Grid {
         public void TrackEntity(GridEntity entity) {
             _selectedUnitTracker.TrackEntity(entity);
             _overlayTilemap.UpdateCellOverlaysForEntity(entity);
+            if (entity) {
+                entity.AttackTargetUpdated += UpdateTargetEntity;
+            }
+            UpdateTargetEntity(entity, entity?.GetAttackTarget());
+        }
+
+        public void UnTrackEntity(GridEntity entity) {
+            entity.AttackTargetUpdated -= UpdateTargetEntity;
         }
 
         private void UpdateCellOverlaysForAbility(List<Vector2Int> cells, GridEntity entity) {
             _overlayTilemap.UpdateCellOverlaysForAbility(cells, entity);
         }
 
-        public void TargetEntity(GridEntity entity) {
-            _targetUnitTracker.TrackEntity(entity);
+        private void UpdateTargetEntity(GridEntity trackedEntity, GridEntity targetedEntity) {
+            _targetUnitTracker.TrackEntity(targetedEntity);
         }
 
         /// <summary>

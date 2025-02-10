@@ -5,6 +5,7 @@ using Gameplay.Config;
 using Gameplay.Config.Abilities;
 using Gameplay.Entities.Abilities;
 using Gameplay.Entities.BuildQueue;
+using Gameplay.Grid;
 using Gameplay.Managers;
 using Gameplay.UI;
 using JetBrains.Annotations;
@@ -70,7 +71,15 @@ namespace Gameplay.Entities {
         public bool Registered;
         [HideInInspector] 
         public EntityData EntityData;
-        public GridEntity LastAttackedEntity;
+        // TODO network this
+        private GridEntity _lastAttackedEntity;
+        public GridEntity LastAttackedEntity {
+            get => _lastAttackedEntity;
+            set {
+                _lastAttackedEntity = value;
+                UpdateAttackTarget();
+            }
+        }
         public bool Interactable { get; private set; }
         public bool CanTargetThings => Range > 0;
         public bool CanMoveOrRally => MoveTime > 0;
@@ -113,6 +122,8 @@ namespace Gameplay.Entities {
         /// Only triggered on server
         /// </summary>
         public event Action EntityMovedEvent;
+
+        public event Action<GridEntity, GridEntity> AttackTargetUpdated;
         
         #endregion
         #region Initialization
@@ -248,6 +259,24 @@ namespace Gameplay.Entities {
         }
         public void SetTargetLocation(Vector2Int newTargetLocation, GridEntity targetEntity) {
             TargetLocationLogic.UpdateValue(new TargetLocationLogic(TargetLocationLogicValue.CanRally, newTargetLocation, targetEntity));
+            UpdateAttackTarget();
+        }
+
+        private void UpdateAttackTarget() {
+            AttackTargetUpdated?.Invoke(this, GetAttackTarget());
+        }
+
+        public GridEntity GetAttackTarget() {
+            if (TargetLocationLogicValue.TargetEntity != null) {
+                return TargetLocationLogicValue.TargetEntity;
+            }
+
+            if (LastAttackedEntity != null) {
+                AttackTargetUpdated?.Invoke(this, LastAttackedEntity);
+                return LastAttackedEntity;
+            }
+
+            return null;
         }
         
         #endregion
