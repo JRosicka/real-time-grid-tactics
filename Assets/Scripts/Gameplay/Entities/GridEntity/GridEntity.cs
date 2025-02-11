@@ -244,6 +244,9 @@ namespace Gameplay.Entities {
                 TryUnSubscribe();
                 TrySubscribe();
             }
+            
+            // Also check to see if we should update the attack target
+            UpdateAttackTarget(null, null, null);
         }
         private void TargetEntityUpdated() {
             Vector2Int? newLocation = TargetLocationLogicValue.TargetEntity == null ? null : TargetLocationLogicValue.TargetEntity.Location;
@@ -255,7 +258,6 @@ namespace Gameplay.Entities {
         }
         public void SetTargetLocation(Vector2Int newTargetLocation, GridEntity targetEntity) {
             TargetLocationLogic.UpdateValue(new TargetLocationLogic(TargetLocationLogicValue.CanRally, newTargetLocation, targetEntity));
-            UpdateAttackTarget(null, null, null);
         }
 
         private void UpdateAttackTarget(INetworkableFieldValue oldValue, INetworkableFieldValue newValue, string metadata) {
