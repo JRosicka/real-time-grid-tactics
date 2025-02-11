@@ -61,7 +61,7 @@ namespace Gameplay.Managers {
                         return false;
                     }
                     QueueAbility(entity, abilityData, parameters, true, clearQueueFirst, false);
-                    if (abilityData is not AttackAbilityData) {
+                    if (abilityData is not AttackAbilityData && entity.LastAttackedEntityValue is not null) {
                         // Clear the targeted entity since we are telling this entity to do something else
                         entity.LastAttackedEntity.UpdateValue(new NetworkableGridEntityValue(null));
                     }
@@ -72,7 +72,7 @@ namespace Gameplay.Managers {
                 return false;
             }
             
-            if (abilityData is not AttackAbilityData) {
+            if (abilityData is not AttackAbilityData && entity.LastAttackedEntityValue is not null) {
                 // Clear the targeted entity since we are telling this entity to do something else
                 entity.LastAttackedEntity.UpdateValue(new NetworkableGridEntityValue(null));
             }

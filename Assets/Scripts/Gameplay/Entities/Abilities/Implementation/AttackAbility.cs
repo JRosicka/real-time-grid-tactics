@@ -88,11 +88,13 @@ namespace Gameplay.Entities.Abilities {
             if (AttackInRange(Performer, attackerLocation.Value)) {
                 ReQueue();
                 return true;
-            } 
-            
-            // We are not immediately doing an attack when it is available, so clear the last attack target
-            Performer.LastAttackedEntity.UpdateValue(new NetworkableGridEntityValue(null));
-            
+            }
+
+            if (Performer.LastAttackedEntityValue is not null) {
+                // We are not immediately doing an attack when it is available, so clear the last attack target
+                Performer.LastAttackedEntity.UpdateValue(new NetworkableGridEntityValue(null));
+            }
+
             // If we are at the destination, then the attack-move has completed
             if (attackerLocation == AbilityParameters.Destination) {
                 return false;
