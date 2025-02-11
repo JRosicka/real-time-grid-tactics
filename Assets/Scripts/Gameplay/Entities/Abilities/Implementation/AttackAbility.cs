@@ -91,7 +91,7 @@ namespace Gameplay.Entities.Abilities {
             } 
             
             // We are not immediately doing an attack when it is available, so clear the last attack target
-            Performer.LastAttackedEntity.UpdateValue(null);
+            Performer.LastAttackedEntity.UpdateValue(new NetworkableGridEntityValue(null));
             
             // If we are at the destination, then the attack-move has completed
             if (attackerLocation == AbilityParameters.Destination) {
