@@ -182,6 +182,7 @@ namespace Gameplay.Entities {
             InitializationStatusHandler.SetLocalClientReady();
             DeathStatusHandler.Initialize(OnEntityReadyToDie);
             LastAttackedEntity.ValueChanged += UpdateAttackTarget;
+            TargetLocationLogic.ValueChanged += UpdateAttackTarget;
             
             Interactable = true;
         } 
@@ -244,9 +245,6 @@ namespace Gameplay.Entities {
                 TryUnSubscribe();
                 TrySubscribe();
             }
-            
-            // Also check to see if we should update the attack target
-            UpdateAttackTarget(null, null, null);
         }
         private void TargetEntityUpdated() {
             Vector2Int? newLocation = TargetLocationLogicValue.TargetEntity == null ? null : TargetLocationLogicValue.TargetEntity.Location;
