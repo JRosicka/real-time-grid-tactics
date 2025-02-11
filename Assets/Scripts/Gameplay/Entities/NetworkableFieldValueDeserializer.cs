@@ -13,6 +13,7 @@ namespace Gameplay.Entities {
                 nameof(NetworkableVector2IntegerValue) => NetworkableVector2IntegerValue.Deserialize(reader),
                 nameof(ResourceAmount) => ResourceAmount.Deserialize(reader),
                 nameof(TargetLocationLogic) => TargetLocationLogic.Deserialize(reader),
+                nameof(GridEntity.LastAttackedEntity) => NetworkableGridEntityValue.Deserialize(reader),
                 _ => throw new Exception($"No deserializer found for {nameof(INetworkableFieldValue)} with ID {id}")
             };
         }
