@@ -268,7 +268,6 @@ namespace Gameplay.Entities {
             }
 
             if (LastAttackedEntityValue != null) {
-                AttackTargetUpdated?.Invoke(this, LastAttackedEntityValue);
                 return LastAttackedEntityValue;
             }
 
