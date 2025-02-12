@@ -263,7 +263,7 @@ namespace Gameplay.Entities {
         }
 
         public GridEntity GetAttackTarget() {
-            if (TargetLocationLogicValue.TargetEntity != null) {
+            if (TargetLocationLogicValue.TargetEntity != null && TargetLocationLogicValue.TargetEntity.Team != GameTeam.Neutral) {
                 return TargetLocationLogicValue.TargetEntity;
             }
 

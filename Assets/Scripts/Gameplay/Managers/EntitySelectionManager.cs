@@ -49,8 +49,8 @@ public class EntitySelectionManager {
             // Unregister the un-registration event for the previously selected entity
             SelectedEntity.TargetLocationLogic.ValueChanged -= TryFindPath;
             SelectedEntity.UnregisteredEvent -= DeselectEntity;
-            GridController.UnTrackEntity(SelectedEntity);
         }
+        GridController.UnTrackEntity(SelectedEntity);
         
         SelectedEntity = entity;
         _selectedEntityCurrentLocation = entity == null ? null : entity.Location;

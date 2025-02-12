@@ -58,14 +58,19 @@ namespace Gameplay.Grid {
         public void TrackEntity(GridEntity entity) {
             _selectedUnitTracker.TrackEntity(entity);
             _overlayTilemap.UpdateCellOverlaysForEntity(entity);
-            if (entity) {
+            if (entity != null) {
                 entity.AttackTargetUpdated += UpdateTargetEntity;
+                if (entity.InteractBehavior is { AllowedToSeeTargetLocation: true }) {
+                    UpdateTargetEntity(entity, entity.GetAttackTarget());
+                }
             }
-            UpdateTargetEntity(entity, entity?.GetAttackTarget());
         }
 
         public void UnTrackEntity(GridEntity entity) {
-            entity.AttackTargetUpdated -= UpdateTargetEntity;
+            if (entity != null) {
+                entity.AttackTargetUpdated -= UpdateTargetEntity;
+            }
+            UpdateTargetEntity(null, null);
         }
 
         private void UpdateCellOverlaysForAbility(List<Vector2Int> cells, GridEntity entity) {
