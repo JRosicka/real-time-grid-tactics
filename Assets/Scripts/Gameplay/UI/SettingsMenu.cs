@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using Audio;
@@ -18,6 +17,7 @@ namespace Gameplay.UI {
         [SerializeField] private SettingSlider _sfxVolumeSlider;
         [SerializeField] private SettingSlider _musicVolumeSlider;
         [SerializeField] private SettingToggle _edgeScrollToggle;
+        [SerializeField] private SettingDropdownList _displayList;
         [SerializeField] private SettingDropdownList _resourcesUIList;
 
         [Tooltip("Whether this is a settings menu instance that appears in-game")]
@@ -33,6 +33,7 @@ namespace Gameplay.UI {
             int sfxVolume = ToVolumeInt(PlayerPrefs.GetFloat(PlayerPrefsKeys.SoundEffectVolumeKey, PlayerPrefsKeys.DefaultVolume));
             int musicVolume = ToVolumeInt(PlayerPrefs.GetFloat(PlayerPrefsKeys.MusicVolumeKey, PlayerPrefsKeys.DefaultVolume));
             bool edgeScroll = PlayerPrefs.GetInt(PlayerPrefsKeys.EdgeScrollKey, 1) == 1;
+            int chosenDisplay = PlayerPrefs.GetInt(PlayerPrefsKeys.ChosenDisplayKey, 0);
             // _resourcesUILocation = PlayerPrefs.GetInt(PlayerPrefsKeys.ResourcesUILocationKey, 0);
             
             _sfxVolumeSlider.Initialize(sfxVolume);
@@ -43,6 +44,10 @@ namespace Gameplay.UI {
             
             _edgeScrollToggle.Initialize(edgeScroll);
             _edgeScrollToggle.ValueChanged += EdgeScrollChanged;
+
+            List<string> displayStrings = Display.displays.Take(8).Select((d, i) => $"Display {i + 1}").ToList();
+            _displayList.Initialize(chosenDisplay, displayStrings);
+            _displayList.ValueChanged += ChosenDisplayChanged;
             
             // _resourcesUIList.Initialize(_resourcesUILocation, _resourcesCornerLocations);
             // _resourcesUIList.ValueChanged += ResourcesUILocationChanged;
@@ -64,6 +69,13 @@ namespace Gameplay.UI {
             PlayerPrefs.SetInt(PlayerPrefsKeys.EdgeScrollKey, edgeScroll ? 1 : 0);
             if (_inGame) {
                 GameManager.CameraManager.ToggleEdgeScroll(edgeScroll);
+            }
+        }
+
+        private void ChosenDisplayChanged(int display) {
+            PlayerPrefs.SetInt(PlayerPrefsKeys.ChosenDisplayKey, display);
+            if (Camera.main != null) {
+                Camera.main.targetDisplay = display;
             }
         }
 
