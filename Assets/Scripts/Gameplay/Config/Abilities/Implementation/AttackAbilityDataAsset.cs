@@ -44,12 +44,16 @@ namespace Gameplay.Config.Abilities {
             if (selector == null) return false;
             if (target == null) return true;    // This is just an a-move, so can always do that
             if (target.Team == GameTeam.Neutral) return true;  // Can attack (or at least a-move to) neutral entities
+            if (target == selector) return true;  // We can issue an attack move to the selected entity's cell
             
             return target.Team != selector.Team;    // Can not attack friendly entities
         }
 
         public void DoTargetableAbility(Vector2Int cellPosition, GridEntity selectedEntity, GameTeam selectorTeam, System.Object targetData) {
             GridEntity target = GameManager.Instance.GetTopEntityAtLocation(cellPosition);    // Only able to target the top entity!
+            if (target == selectedEntity) {
+                target = null;
+            }
             GameManager.Instance.AbilityAssignmentManager.QueueAbility(selectedEntity, this, new AttackAbilityParameters {
                     TargetFire = target != null && target.Team != GameTeam.Neutral, 
                     Target = target, 

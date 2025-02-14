@@ -28,17 +28,7 @@ namespace Gameplay.UI {
             }
 
             // Otherwise cancel all selected entity's in-progress/queued abilities if there are any
-            List<IAbility> cancelableAbilities = _selectedEntity.GetCancelableAbilities();
-            if (cancelableAbilities.Count > 0) {
-                cancelableAbilities.ForEach(a => CommandManager.CancelAbility(a));
-                    
-                // Update the rally point
-                var currentLocation = _selectedEntity.Location;
-                if (currentLocation != null) {
-                    // The location might be null if the entity is being destroyed 
-                    _selectedEntity.SetTargetLocation(currentLocation.Value, null);
-                }
-            }
+            _selectedEntity.CancelAllAbilities();
         }
 
         public override AbilitySlot.AvailabilityResult GetAvailability() {

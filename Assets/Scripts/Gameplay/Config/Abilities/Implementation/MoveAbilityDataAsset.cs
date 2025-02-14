@@ -46,20 +46,15 @@ namespace Gameplay.Config.Abilities {
             return new MoveAbility(this, parameters, performer);
         }
 
-        public bool CanTargetCell(Vector2Int cellPosition, GridEntity selectedEntity, GameTeam selectorTeam, System.Object targetData) {
+        public bool CanTargetCell(Vector2Int cellPosition, GridEntity selectedEntity, GameTeam selectorTeam, object targetData) {
             if (selectedEntity == null || selectedEntity.Team != selectorTeam) return false;
-
-            if (selectedEntity.Location == cellPosition) {
-                // Bro you're already here
-                return false;
-            }
-
             return true;
         }
         
-        public void DoTargetableAbility(Vector2Int cellPosition, GridEntity selectedEntity, GameTeam selectorTeam, System.Object targetData) {
-            // Nothing to do here - the caller is responsible for moving the entity to the destination first anyway, which 
-            // is the only thing we're trying to do with this ability
+        public void DoTargetableAbility(Vector2Int cellPosition, GridEntity selectedEntity, GameTeam selectorTeam, object targetData) {
+            // No actual moving to do here - the caller is responsible for moving the entity to the destination first
+            // anyway, which is the only thing we're trying to do with this ability. 
+            selectedEntity.SetTargetLocation(cellPosition, null);
         }
 
         public void RecalculateTargetableAbilitySelection(GridEntity selector, object targetData) {

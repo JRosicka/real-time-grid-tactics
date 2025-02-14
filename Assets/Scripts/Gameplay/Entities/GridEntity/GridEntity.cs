@@ -375,6 +375,20 @@ namespace Gameplay.Entities {
 
             return abilities;
         }
+
+        public void CancelAllAbilities() {
+            List<IAbility> cancelableAbilities = GetCancelableAbilities();
+            if (cancelableAbilities.Count > 0) {
+                cancelableAbilities.ForEach(a => CommandManager.CancelAbility(a));
+                    
+                // Update the rally point
+                var currentLocation = Location;
+                if (currentLocation != null) {
+                    // The location might be null if the entity is being destroyed 
+                    SetTargetLocation(currentLocation.Value, null);
+                }
+            }
+        }
         
         public void UpdateAbilityQueue(List<IAbility> newAbilityQueue) {
             QueuedAbilities = newAbilityQueue;
