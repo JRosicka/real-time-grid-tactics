@@ -26,7 +26,7 @@ namespace Gameplay.UI {
         /// <summary>
         /// Lay out a set of <see cref="DirectionalLine"/>s along a path
         /// </summary>
-        public void Visualize(PathfinderService.Path path) {
+        public void Visualize(PathfinderService.Path path, bool attack) {
             ClearPath();
             List<GridNode> pathNodes = path.Nodes;
             
@@ -41,33 +41,26 @@ namespace Gameplay.UI {
                 
                 // Reveal the line and move it in place
                 line.gameObject.SetActive(true);
+                line.SetColor(attack);
                 line.transform.position = GridController.GetWorldPosition(pathNodes[i].Location);
                 
                 // Rotate the line to link to the next cell in the path
                 var previousAngle = currentAngle;
                 currentAngle = PathfinderService.AngleBetweenCells(pathNodes[i].Location, pathNodes[i + 1].Location);
-                line.transform.rotation = Quaternion.Euler(0, 0, currentAngle);
+                line.SetRotation(currentAngle);
                 
                 // Hide/adjust parts of the line if this is the first or last cell in the path. 
                 if (i == 0) {
                     line.SetMask(DirectionalLine.LineType.StartHalf);
-                    if (pathNodes.Count == 2 && !path.ContainsRequestedDestination) {
-                        // This is the only line being displayed, and the destination is a backup one different from the 
-                        // reticle location. So we should show the end dot. 
-                        line.ToggleEndDot(true);
+                    if (pathNodes.Count == 2) {
+                        // This is the only line being displayed, so we should show the destination icon. 
+                        line.ShowDestinationIcon(attack);
                     }
                 } else if (i == pathNodes.Count - 2) {
                     // This is the last node we care about visualizing
-                    if (path.ContainsRequestedDestination) {
-                        line.SetMask(DirectionalLine.LineType.Full);
-                    } else {
-                        // We don't want to show the path to the destination
-                        line.SetMask(DirectionalLine.LineType.Full);
-                        line.ToggleEndDot(true);
-                    }
+                    line.SetMask(DirectionalLine.LineType.Full);
+                    line.ShowDestinationIcon(attack);
                     
-                    line.ToggleEndDot(true);
-
                     // Hide/show the previous line's dot if it has a different angle than this one.
                     _currentlyDisplayedLines[i-1].ToggleEndDot(!Mathf.Approximately(currentAngle, previousAngle));
                 } else {
@@ -80,6 +73,7 @@ namespace Gameplay.UI {
 
         public void ClearPath() {
             foreach (DirectionalLine line in _currentlyDisplayedLines) {
+                line.Discard();
                 _linePool.AddAndHideObject(line);
             }
             _currentlyDisplayedLines.Clear();

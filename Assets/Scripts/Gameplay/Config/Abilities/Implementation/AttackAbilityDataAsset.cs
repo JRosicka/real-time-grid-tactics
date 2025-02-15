@@ -60,7 +60,7 @@ namespace Gameplay.Config.Abilities {
                     Target = target, 
                     Destination = cellPosition
                 }, true, true, false);
-            selectedEntity.SetTargetLocation(cellPosition, target);
+            selectedEntity.SetTargetLocation(cellPosition, target, true);
         }
 
         public void RecalculateTargetableAbilitySelection(GridEntity selector, object targetData) {

@@ -5,7 +5,6 @@ using Gameplay.Entities;
 using Gameplay.Grid;
 using Gameplay.UI;
 using UnityEngine;
-using Object = UnityEngine.Object;
 
 /// <summary>
 /// Handles selecting and keeping track of entities and abilities
@@ -187,7 +186,8 @@ public class EntitySelectionManager {
         if (!SelectedEntity.CanMoveOrRally && !SelectedEntity.TargetLocationLogicValue.CanRally) return;
         if (SelectedEntity.InteractBehavior is not { AllowedToSeeTargetLocation: true }) return;
 
-        PathfinderService.Path path = PathfinderService.FindPath(SelectedEntity, ((TargetLocationLogic)newValue).CurrentTarget);
-        GridController.VisualizePath(path);
+        TargetLocationLogic targetLocationLogic = (TargetLocationLogic)newValue;
+        PathfinderService.Path path = PathfinderService.FindPath(SelectedEntity, targetLocationLogic.CurrentTarget);
+        GridController.VisualizePath(path, targetLocationLogic.Attacking);
     }
 }

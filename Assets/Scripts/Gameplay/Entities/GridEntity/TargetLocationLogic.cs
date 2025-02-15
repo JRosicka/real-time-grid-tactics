@@ -13,6 +13,8 @@ namespace Gameplay.Entities {
         /// </summary>
         public bool CanRally { get; }
         
+        public bool Attacking { get; }
+        
         /// <summary>
         /// Values only set on the server!
         /// </summary>
@@ -23,22 +25,24 @@ namespace Gameplay.Entities {
         /// </summary>
         public GridEntity TargetEntity { get; set; }
 
-        public TargetLocationLogic() : this(false, new Vector2Int(0, 0), null) { }
-        public TargetLocationLogic(bool canRally, Vector2Int initialTargetLocation, GridEntity targetEntity) {
+        public TargetLocationLogic() : this(false, new Vector2Int(0, 0), null, false) { }
+        public TargetLocationLogic(bool canRally, Vector2Int initialTargetLocation, GridEntity targetEntity, bool attacking) {
             CanRally = canRally;
             CurrentTarget = initialTargetLocation;
             TargetEntity = targetEntity;
+            Attacking = attacking;
         }
 
         public void SerializeValue(NetworkWriter writer) {
             writer.WriteBool(CanRally);
             writer.WriteVector2Int(CurrentTarget);
             writer.Write(TargetEntity);
+            writer.WriteBool(Attacking);
         }
 
         public static TargetLocationLogic Deserialize(NetworkReader reader) {
             return new TargetLocationLogic(reader.ReadBool(), reader.ReadVector2Int(),
-                reader.Read<GridEntity>());
+                reader.Read<GridEntity>(), reader.ReadBool());
         }
     }
     
@@ -58,7 +62,7 @@ namespace Gameplay.Entities {
             if (reader.ReadBool()) {
                 return new TargetLocationLogic(reader.ReadBool(),
                     reader.ReadVector2Int(),
-                    reader.Read<GridEntity>());
+                    reader.Read<GridEntity>(), reader.ReadBool());
             }
             
             return null;

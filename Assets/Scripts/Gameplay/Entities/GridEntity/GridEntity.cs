@@ -143,7 +143,7 @@ namespace Gameplay.Entities {
             CurrentResources.UpdateValue(EntityData.StartingResourceSet);
             _location.UpdateValue(new NetworkableVector2IntegerValue(spawnLocation));
             TargetLocationLogic.ValueChanged += TargetLocationLogicChanged;
-            TargetLocationLogic.UpdateValue(new TargetLocationLogic(EntityData.CanRally, spawnLocation, null));
+            TargetLocationLogic.UpdateValue(new TargetLocationLogic(EntityData.CanRally, spawnLocation, null, false));
             LastAttackedEntity.UpdateValue(new NetworkableGridEntityValue(null));
         }
         
@@ -249,13 +249,13 @@ namespace Gameplay.Entities {
         private void TargetEntityUpdated() {
             Vector2Int? newLocation = TargetLocationLogicValue.TargetEntity == null ? null : TargetLocationLogicValue.TargetEntity.Location;
             if (newLocation == null) {
-                SetTargetLocation(TargetLocationLogicValue.CurrentTarget, null);
+                SetTargetLocation(TargetLocationLogicValue.CurrentTarget, null, TargetLocationLogicValue.Attacking);
             } else {
-                SetTargetLocation(newLocation.Value, TargetLocationLogicValue.TargetEntity);
+                SetTargetLocation(newLocation.Value, TargetLocationLogicValue.TargetEntity, TargetLocationLogicValue.Attacking);
             }
         }
-        public void SetTargetLocation(Vector2Int newTargetLocation, GridEntity targetEntity) {
-            TargetLocationLogic.UpdateValue(new TargetLocationLogic(TargetLocationLogicValue.CanRally, newTargetLocation, targetEntity));
+        public void SetTargetLocation(Vector2Int newTargetLocation, GridEntity targetEntity, bool attacking) {
+            TargetLocationLogic.UpdateValue(new TargetLocationLogic(TargetLocationLogicValue.CanRally, newTargetLocation, targetEntity, attacking));
         }
 
         private void UpdateAttackTarget(INetworkableFieldValue oldValue, INetworkableFieldValue newValue, string metadata) {
@@ -383,9 +383,9 @@ namespace Gameplay.Entities {
                     
                 // Update the rally point
                 var currentLocation = Location;
+                // The location might be null if the entity is being destroyed 
                 if (currentLocation != null) {
-                    // The location might be null if the entity is being destroyed 
-                    SetTargetLocation(currentLocation.Value, null);
+                    SetTargetLocation(currentLocation.Value, null, false);
                 }
             }
         }
@@ -436,7 +436,7 @@ namespace Gameplay.Entities {
                     SelectorTeam = Team,
                     BlockedByOccupation = blockedByOccupation
                 }, true)) {
-                SetTargetLocation(targetCell, null);
+                SetTargetLocation(targetCell, null, false);
             }
             return true;
         }
@@ -486,7 +486,7 @@ namespace Gameplay.Entities {
                         TargetFire = false
                     },
                     true)) {
-                SetTargetLocation(targetCell, null);
+                SetTargetLocation(targetCell, null, true);
             }
         }
         
@@ -506,7 +506,7 @@ namespace Gameplay.Entities {
                     TargetFire = true,
                     Destination = targetCell
                 }, true)) {
-                SetTargetLocation(targetCell, targetEntity);
+                SetTargetLocation(targetCell, targetEntity, true);
             }
         }
 
@@ -551,7 +551,7 @@ namespace Gameplay.Entities {
                     ReactionTarget = sourceEntity
                 }, true, false, true);
                 if (!hasAttackMoveTargetLocation) {
-                    SetTargetLocation(sourceEntity.Location.Value, null);
+                    SetTargetLocation(sourceEntity.Location.Value, null, true);
                 }
             }
         }

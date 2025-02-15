@@ -92,7 +92,7 @@ namespace Gameplay.Config.Abilities {
             PurchasableData purchasableData = (PurchasableData)targetData;
             BuildAbilityParameters buildParameters = new BuildAbilityParameters {Buildable = purchasableData, BuildLocation = cellPosition};
             GameManager.Instance.AbilityAssignmentManager.QueueAbility(selectedEntity, this, buildParameters, true, false, false);
-            selectedEntity.SetTargetLocation(cellPosition, null);
+            selectedEntity.SetTargetLocation(cellPosition, null, false);
             
             if (GameManager.Instance.SelectionInterface.BuildMenuOpenFromSelection) {
                 // Leave the build menu

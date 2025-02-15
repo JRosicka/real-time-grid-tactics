@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 073a3dda96ee46d19a17c46265e4d896, type: 3}
-  m_Name: Rally Ability
+  m_Name: Rally Ability Keep
   m_EditorClassIdentifier: 
   Data:
-    _contentResourceID: Rally Ability
+    _contentResourceID: Rally Ability Keep
     _id: Rally
     _description: 
     _icon: {fileID: 0}
@@ -35,3 +35,4 @@ MonoBehaviour:
     _autoSelect: 0
     _selectableForAllPlayers: 0
     _tryingToPerformCancelsBuilds: 0
+    UseAttackIconOnPath: 0

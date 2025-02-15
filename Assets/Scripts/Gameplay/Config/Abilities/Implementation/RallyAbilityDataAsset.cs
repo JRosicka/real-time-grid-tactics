@@ -18,6 +18,7 @@ namespace Gameplay.Config.Abilities {
         public override bool CanBeCanceled => false;
         public override bool CancelableWhileActive => false;
         public override bool CancelableWhileQueued => false;
+        public bool UseAttackIconOnPath;
 
         public override void SelectAbility(GridEntity selector) {
             // Nothing to do

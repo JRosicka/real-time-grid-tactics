@@ -49,7 +49,7 @@ namespace Gameplay.Config.Abilities {
         }
 
         public void DoTargetableAbility(Vector2Int cellPosition, GridEntity selectedEntity, GameTeam selectorTeam, object targetData) {
-            selectedEntity.SetTargetLocation(cellPosition, null);
+            selectedEntity.SetTargetLocation(cellPosition, null, true);
             GameManager.Instance.AbilityAssignmentManager.QueueAbility(selectedEntity, this, new ChargeAbilityParameters {
                 Destination = cellPosition,
                 MoveDestination = cellPosition,

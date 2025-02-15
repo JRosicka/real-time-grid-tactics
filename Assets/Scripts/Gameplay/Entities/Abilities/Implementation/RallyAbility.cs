@@ -28,7 +28,7 @@ namespace Gameplay.Entities.Abilities {
         }
         
         public override bool DoAbilityEffect() {
-            Performer.SetTargetLocation(AbilityParameters.Destination, null);
+            Performer.SetTargetLocation(AbilityParameters.Destination, null, Data.UseAttackIconOnPath);
             return true;
         }
     }

@@ -35,7 +35,7 @@ namespace Gameplay.Entities.Abilities {
             if (targetEntity == null) {
                 // No entity there, so move there. Assume that AbilityLegal checked for movement legality. 
                 CommandManager.MoveEntityToCell(Performer, AbilityParameters.Destination);
-                Performer.SetTargetLocation(AbilityParameters.Destination, null);
+                Performer.SetTargetLocation(AbilityParameters.Destination, null, false);
                 return true;
             }
             
@@ -60,7 +60,7 @@ namespace Gameplay.Entities.Abilities {
                 Target = targetEntity,
                 Destination = AbilityParameters.Destination
             }, true, false, true);
-            Performer.SetTargetLocation(AbilityParameters.Destination, targetEntity);
+            Performer.SetTargetLocation(AbilityParameters.Destination, targetEntity, true);
             return true;
         }
     }

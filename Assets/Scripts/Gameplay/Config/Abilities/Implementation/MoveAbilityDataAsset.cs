@@ -55,7 +55,7 @@ namespace Gameplay.Config.Abilities {
         public void DoTargetableAbility(Vector2Int cellPosition, GridEntity selectedEntity, GameTeam selectorTeam, object targetData) {
             // No actual moving to do here - the caller is responsible for moving the entity to the destination first
             // anyway, which is the only thing we're trying to do with this ability. 
-            selectedEntity.SetTargetLocation(cellPosition, null);
+            selectedEntity.SetTargetLocation(cellPosition, null, false);
         }
 
         public void RecalculateTargetableAbilitySelection(GridEntity selector, object targetData) {
