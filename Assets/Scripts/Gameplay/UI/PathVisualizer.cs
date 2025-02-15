@@ -26,12 +26,14 @@ namespace Gameplay.UI {
         /// <summary>
         /// Lay out a set of <see cref="DirectionalLine"/>s along a path
         /// </summary>
-        public void Visualize(PathfinderService.Path path, bool attack) {
+        public void Visualize(PathfinderService.Path path, bool attack, bool hidePathDestination) {
             ClearPath();
             List<GridNode> pathNodes = path.Nodes;
             
             // If the path is too short, then no need to place any lines
-            if (pathNodes.Count < 1 || (pathNodes.Count < 2 && path.ContainsRequestedDestination)) return;
+            if (pathNodes.Count < 1 
+                || (pathNodes.Count < 2 && path.ContainsRequestedDestination) 
+                || (pathNodes.Count < 3 && hidePathDestination)) return;
             
             // No need to visualise for the final cell
             float currentAngle = -1f;
@@ -58,8 +60,12 @@ namespace Gameplay.UI {
                     }
                 } else if (i == pathNodes.Count - 2) {
                     // This is the last node we care about visualizing
-                    line.SetMask(DirectionalLine.LineType.Full);
-                    line.ShowDestinationIcon(attack);
+                    if (hidePathDestination) {
+                        line.SetMask(DirectionalLine.LineType.EndHalf);
+                    } else {
+                        line.SetMask(DirectionalLine.LineType.Full);
+                        line.ShowDestinationIcon(attack);
+                    }
                     
                     // Hide/show the previous line's dot if it has a different angle than this one.
                     _currentlyDisplayedLines[i-1].ToggleEndDot(!Mathf.Approximately(currentAngle, previousAngle));

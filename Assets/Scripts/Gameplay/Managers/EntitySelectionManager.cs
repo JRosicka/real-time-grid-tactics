@@ -188,6 +188,6 @@ public class EntitySelectionManager {
 
         TargetLocationLogic targetLocationLogic = (TargetLocationLogic)newValue;
         PathfinderService.Path path = PathfinderService.FindPath(SelectedEntity, targetLocationLogic.CurrentTarget);
-        GridController.VisualizePath(path, targetLocationLogic.Attacking);
+        GridController.VisualizePath(path, targetLocationLogic.Attacking, targetLocationLogic.HidePathDestination);
     }
 }

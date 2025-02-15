@@ -5,7 +5,6 @@ using Gameplay.Config;
 using Gameplay.Config.Abilities;
 using Gameplay.Entities.Abilities;
 using Gameplay.Entities.BuildQueue;
-using Gameplay.Grid;
 using Gameplay.Managers;
 using Gameplay.UI;
 using JetBrains.Annotations;
@@ -60,11 +59,11 @@ namespace Gameplay.Entities {
         /// <summary>
         /// This entity's active abilities.
         /// </summary>
-        public List<AbilityCooldownTimer> ActiveTimers = new List<AbilityCooldownTimer>();
+        public List<AbilityCooldownTimer> ActiveTimers = new();
         /// <summary>
         /// This entity's current ability queue.
         /// </summary>
-        public List<IAbility> QueuedAbilities = new List<IAbility>();
+        public List<IAbility> QueuedAbilities = new();
 
         // Misc fields and properties
         [HideInInspector] 
@@ -143,7 +142,7 @@ namespace Gameplay.Entities {
             CurrentResources.UpdateValue(EntityData.StartingResourceSet);
             _location.UpdateValue(new NetworkableVector2IntegerValue(spawnLocation));
             TargetLocationLogic.ValueChanged += TargetLocationLogicChanged;
-            TargetLocationLogic.UpdateValue(new TargetLocationLogic(EntityData.CanRally, spawnLocation, null, false));
+            TargetLocationLogic.UpdateValue(new TargetLocationLogic(EntityData.CanRally, spawnLocation, null, false, false));
             LastAttackedEntity.UpdateValue(new NetworkableGridEntityValue(null));
         }
         
@@ -254,8 +253,8 @@ namespace Gameplay.Entities {
                 SetTargetLocation(newLocation.Value, TargetLocationLogicValue.TargetEntity, TargetLocationLogicValue.Attacking);
             }
         }
-        public void SetTargetLocation(Vector2Int newTargetLocation, GridEntity targetEntity, bool attacking) {
-            TargetLocationLogic.UpdateValue(new TargetLocationLogic(TargetLocationLogicValue.CanRally, newTargetLocation, targetEntity, attacking));
+        public void SetTargetLocation(Vector2Int newTargetLocation, GridEntity targetEntity, bool attacking, bool hidePathDestination = false) {
+            TargetLocationLogic.UpdateValue(new TargetLocationLogic(TargetLocationLogicValue.CanRally, newTargetLocation, targetEntity, attacking, hidePathDestination));
         }
 
         private void UpdateAttackTarget(INetworkableFieldValue oldValue, INetworkableFieldValue newValue, string metadata) {

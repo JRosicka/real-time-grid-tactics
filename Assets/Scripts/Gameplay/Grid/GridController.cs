@@ -130,8 +130,8 @@ namespace Gameplay.Grid {
             _pathVisualizer.ClearPath();
         }
 
-        public void VisualizePath(PathfinderService.Path path, bool attack) {
-            _pathVisualizer.Visualize(path, attack);
+        public void VisualizePath(PathfinderService.Path path, bool attack, bool hidePathDestination) {
+            _pathVisualizer.Visualize(path, attack, hidePathDestination);
         }
 
         private List<Vector2Int> _allCellsInBounds;

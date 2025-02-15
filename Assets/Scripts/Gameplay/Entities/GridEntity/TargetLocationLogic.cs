@@ -15,6 +15,8 @@ namespace Gameplay.Entities {
         
         public bool Attacking { get; }
         
+        public bool HidePathDestination { get; }
+        
         /// <summary>
         /// Values only set on the server!
         /// </summary>
@@ -25,12 +27,13 @@ namespace Gameplay.Entities {
         /// </summary>
         public GridEntity TargetEntity { get; set; }
 
-        public TargetLocationLogic() : this(false, new Vector2Int(0, 0), null, false) { }
-        public TargetLocationLogic(bool canRally, Vector2Int initialTargetLocation, GridEntity targetEntity, bool attacking) {
+        public TargetLocationLogic() : this(false, new Vector2Int(0, 0), null, false, false) { }
+        public TargetLocationLogic(bool canRally, Vector2Int initialTargetLocation, GridEntity targetEntity, bool attacking, bool hidePathDestination) {
             CanRally = canRally;
             CurrentTarget = initialTargetLocation;
             TargetEntity = targetEntity;
             Attacking = attacking;
+            HidePathDestination = hidePathDestination;
         }
 
         public void SerializeValue(NetworkWriter writer) {
@@ -38,11 +41,12 @@ namespace Gameplay.Entities {
             writer.WriteVector2Int(CurrentTarget);
             writer.Write(TargetEntity);
             writer.WriteBool(Attacking);
+            writer.WriteBool(HidePathDestination);
         }
 
         public static TargetLocationLogic Deserialize(NetworkReader reader) {
             return new TargetLocationLogic(reader.ReadBool(), reader.ReadVector2Int(),
-                reader.Read<GridEntity>(), reader.ReadBool());
+                reader.Read<GridEntity>(), reader.ReadBool(), reader.ReadBool());
         }
     }
     
@@ -56,13 +60,15 @@ namespace Gameplay.Entities {
             writer.WriteBool(logic.CanRally);
             writer.WriteVector2Int(logic.CurrentTarget);
             writer.Write(logic.TargetEntity);
+            writer.WriteBool(logic.Attacking);
+            writer.WriteBool(logic.HidePathDestination);
         }
 
         public static TargetLocationLogic ReadTargetLocationLogic(this NetworkReader reader) {
             if (reader.ReadBool()) {
                 return new TargetLocationLogic(reader.ReadBool(),
                     reader.ReadVector2Int(),
-                    reader.Read<GridEntity>(), reader.ReadBool());
+                    reader.Read<GridEntity>(), reader.ReadBool(), reader.ReadBool());
             }
             
             return null;
