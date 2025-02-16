@@ -55,7 +55,7 @@ public class MapLoader : MonoBehaviour {
             xMin, xMax, upperRightWorldPosition.y, lowerLeftWorldPosition.y);
     }
 
-    private Vector2Int GetHomeBaseLocation(GameTeam team) {
+    public Vector2Int GetHomeBaseLocation(GameTeam team) {
         // If the player is a spectator, just focus them on player 1's home base
         team = team == GameTeam.Spectator ? GameTeam.Player1 : team;
         return UnitSpawns

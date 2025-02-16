@@ -19,6 +19,7 @@ public class GameSetupManager : MonoBehaviour {
     public MultiplayerGameSetupHandler MPSetupHandler;
     public MapLoader MapLoader;
     public CountdownTimerView CountdownTimer;
+    public StartLocationIndicator StartLocationIndicator;
     public GameOverView GameOverView;
     [SerializeField] private InGamePauseMenu _pauseMenu;
 
@@ -146,6 +147,13 @@ public class GameSetupManager : MonoBehaviour {
     /// </summary>
     public void StartCountdownTimerView() {
         CountdownTimer.StartCountdown(CountdownTimeSeconds);
+        GameTeam localTeam = GameManager.LocalTeam;
+        if (localTeam != GameTeam.Spectator) {
+            Vector2Int keepLocation = MapLoader.GetHomeBaseLocation(localTeam);
+            StartLocationIndicator.PlayBlinkingAnimation(GameManager.GridController.GetWorldPosition(keepLocation), 
+                GameManager.GetPlayerForTeam(localTeam).Data.TeamColor, 
+                CountdownTimeSeconds);
+        }
     }
 
     /// <summary>
