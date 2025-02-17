@@ -64,18 +64,11 @@ public class PlayerResourcesController : NetworkBehaviour {
         BalanceChangedEvent?.Invoke(newValue);
     }
 
-    public void Initialize(GameConfiguration gameConfiguration) {
-        if (gameConfiguration.StartingGoldAmount > 0) {
+    public void Initialize(CurrencyConfiguration currencyConfiguration) {
+        foreach (CurrencyConfiguration.Currency currency in currencyConfiguration.Currencies.Where(currency => currency.StartingAmount > 0)) {
             Earn(new ResourceAmount {
-                Type = ResourceType.Basic,
-                Amount = gameConfiguration.StartingGoldAmount
-            });
-        }
-
-        if (gameConfiguration.StartingAmberAmount > 0) {
-            Earn(new ResourceAmount {
-                Type = ResourceType.Advanced,
-                Amount = gameConfiguration.StartingAmberAmount
+                Type = currency.Type,
+                Amount = currency.StartingAmount
             });
         }
     }

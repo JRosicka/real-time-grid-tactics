@@ -13,6 +13,6 @@ public class SPGamePlayer : MonoBehaviour, IGamePlayer {
     public PlayerOwnedPurchasablesController OwnedPurchasablesController => _ownedPurchasablesController;
     public void Initialize(List<UpgradeData> upgradesToRegister, GameConfiguration gameConfiguration) {
         _ownedPurchasablesController.Initialize(Data.Team, upgradesToRegister);
-        _resourcesController.Initialize(gameConfiguration);
+        _resourcesController.Initialize(gameConfiguration.CurrencyConfiguration);
     }
 }

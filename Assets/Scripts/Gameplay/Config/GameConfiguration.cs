@@ -11,11 +11,10 @@ namespace Gameplay.Config {
     public class GameConfiguration : ScriptableObject {
         [Header("Config")]
         public AudioFileConfiguration AudioConfiguration;
+        public CurrencyConfiguration CurrencyConfiguration;
+        
+        [Header("Misc Sprites")]
         public Sprite CancelButtonSprite;
-
-        [Header("Gameplay settings")]
-        public int StartingGoldAmount;
-        public int StartingAmberAmount;
         
         [Header("Gameplay ScriptableObjects")]
         public List<PurchasableData> Purchasables;

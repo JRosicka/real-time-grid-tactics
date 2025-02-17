@@ -6,7 +6,7 @@ namespace Gameplay.Entities {
         public IncomeAnimationBehavior IncomeAnimationBehavior;
 
         public override void Initialize(GridEntity entity) {
-            IncomeAnimationBehavior.Initialize(entity);
+            IncomeAnimationBehavior.Initialize(entity, ResourceType.Basic);
         }
 
         public override bool DoAbility(IAbility ability, AbilityCooldownTimer cooldownTimer) {

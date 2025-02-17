@@ -4,6 +4,7 @@ using Gameplay.Config;
 using Gameplay.Config.Abilities;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Gameplay.Entities {
     /// <summary>
@@ -14,19 +15,25 @@ namespace Gameplay.Entities {
         [SerializeField] private TMP_Text _incomeText;
         
         [SerializeField] private Color _textColor;
-        [SerializeField] private string _incomeTextFormat = "+{0}";
+        [SerializeField] private string _incomeTextFormat = "+{0} <size=125%><sprite name=\"{1}\"></size>";
 
         [SerializeField] private GameObject _outOfResourcesIcon;
+        [SerializeField] private Image _outOfResourcesImage;
 
         private GridEntity _entity;
+        private string _textIconGlyph;
 
-        public void Initialize(GridEntity entity) {
+        public void Initialize(GridEntity entity, ResourceType resourceType) {
             _entity = entity;
+            CurrencyConfiguration.Currency currency = GameManager.Instance.Configuration.CurrencyConfiguration.Currencies.First(c => c.Type == resourceType);
+            _outOfResourcesImage.sprite = currency.Icon;
+            _textIconGlyph = currency.TextIconGlyph;
+            
             ToggleOutOfResourcesIcon(false);
         }
         
         public void DoIncomeAnimation(IncomeAbilityData data) {
-            _incomeText.text = string.Format(_incomeTextFormat, data.ResourceAmountIncome.Amount);
+            _incomeText.text = string.Format(_incomeTextFormat, data.ResourceAmountIncome.Amount, _textIconGlyph);
             _incomeText.color = _textColor;
             _animator.Play("ShowIncome");
             

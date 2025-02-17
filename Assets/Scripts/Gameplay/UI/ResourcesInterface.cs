@@ -25,7 +25,7 @@ namespace Gameplay.UI {
             foreach (IGamePlayer player in resourcesObserver.ObservedPlayers) {
                 PlayerResourcesView resourcesView = Instantiate(_playerResourcesViewPrefab, _resourcesViewParent);
                 resourcesView.SetPlayerDetails(player.DisplayName, player.Data.TeamColor);
-                resourcesView.UpdateAmounts(GameConfiguration.StartingGoldAmount, GameConfiguration.StartingAmberAmount);
+                resourcesView.UpdateAmounts(GameConfiguration.CurrencyConfiguration.StartingGoldAmount, GameConfiguration.CurrencyConfiguration.StartingAmberAmount);
                 _playerResourcesViews.Add(player.Data.Team, resourcesView);
             }
         }
