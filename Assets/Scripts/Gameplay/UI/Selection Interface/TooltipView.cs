@@ -1,8 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
-using Gameplay.Config;
 using Gameplay.Config.Abilities;
-using Gameplay.Entities;
 using Gameplay.Entities.Abilities;
 using TMPro;
 using UnityEngine;
@@ -25,19 +23,21 @@ namespace Gameplay.UI {
         [SerializeField] private GameObject _advancedResourceCostContainer;
         [SerializeField] private TMP_Text _advancedResourceCostAmount;
 
-        private GridEntity _selectedEntity;
+        private ISelectableObjectLogic _selectedObject;
         private ITargetableAbilityData _selectedTargetableAbility;
         private IAbilitySlotBehavior _selectedTargetableAbilitySlotBehavior;
 
-        public void ToggleForEntity(GridEntity entity) {
-            if (_selectedEntity != null) {
-                _selectedEntity.BuildQueue.BuildQueueUpdated -= SelectedEntityBuildQueueUpdated;
+        public void ToggleForSelectable(ISelectableObjectLogic selectableObject) {
+            if (_selectedObject is { BuildQueue: not null }) {
+                _selectedObject.BuildQueue.BuildQueueUpdated -= SelectedEntityBuildQueueUpdated;
             }
-            _selectedEntity = entity;
-            ToggleTooltip(entity != null);
-            if (entity != null) {
-                _selectedEntity.BuildQueue.BuildQueueUpdated += SelectedEntityBuildQueueUpdated;
-                SetUpEntityView(entity);
+            _selectedObject = selectableObject;
+            ToggleTooltip(selectableObject != null);
+            if (selectableObject != null) {
+                if (_selectedObject.BuildQueue != null) {
+                    _selectedObject.BuildQueue.BuildQueueUpdated += SelectedEntityBuildQueueUpdated;
+                }
+                SetUpEntityView(selectableObject);
             }
         }
         
@@ -47,7 +47,7 @@ namespace Gameplay.UI {
                 _selectedTargetableAbilitySlotBehavior = null;
 
                 // No ability selected, so go back to showing the selected entity if we have one
-                ToggleForEntity(_selectedEntity);
+                ToggleForSelectable(_selectedObject);
             } else {
                 ToggleTooltip(true);
                 SetUpAbilityView(ability.AbilitySlotInfo, abilitySlotBehavior, false);
@@ -63,7 +63,7 @@ namespace Gameplay.UI {
                     ToggleForTargetableAbility(_selectedTargetableAbility, _selectedTargetableAbilitySlotBehavior);
                 } else {
                     // No ability selected, so go back to showing the selected entity if we have one
-                    ToggleForEntity(_selectedEntity);
+                    ToggleForSelectable(_selectedObject);
                 }
             } else if (abilitySlotBehavior.GetAvailability() == AbilitySlot.AvailabilityResult.Hidden) {
                 // The hovered ability slot is hidden - do not react
@@ -73,33 +73,25 @@ namespace Gameplay.UI {
             }
         }
         
-        private void SetUpEntityView(GridEntity entity) {
-            List<BuildAbility> buildQueue = entity.BuildQueue.Queue;
-            if (!entity.EntityData.IsStructure && buildQueue.Count > 0 && !entity.QueuedAbilities.Select(a => a.UID).Contains(buildQueue[0].UID)) {
-                // This is a non-structure builder that is actively building something. Show that. 
-                SetUpForInProgressBuild(entity.BuildQueue.Queue[0], entity);
+        private void SetUpEntityView(ISelectableObjectLogic selectableObject) {
+            BuildAbility inProgressBuild = selectableObject.InProgressBuild;
+            if (inProgressBuild != null) {
+                SetUpForInProgressBuild(inProgressBuild);
                 return;
             }
             
-            EntityData entityData = entity.EntityData;
+            selectableObject.SetUpIcons(_icon, _secondaryIcon, _teamColorsCanvas, 1);
             
-            _icon.sprite = entityData.BaseSpriteIconOverride == null ? entityData.BaseSprite : entityData.BaseSpriteIconOverride;
-            _secondaryIcon.sprite = entityData.TeamColorSprite;
-            IGamePlayer player = GameManager.Instance.GetPlayerForTeam(entity.Team);
-            _secondaryIcon.color = player != null ? player.Data.TeamColor : Color.clear;
-            _secondaryIcon.gameObject.SetActive(true);
-            _teamColorsCanvas.sortingOrder = 1;
-            
-            _name.text = entityData.ID;
-            _description.text = entityData.Description;
+            _name.text = selectableObject.Name;
+            _description.text = selectableObject.LongDescription;
             
             _basicResourceCostContainer.SetActive(false);
             _advancedResourceCostContainer.SetActive(false);
         }
 
-        private void SetUpForInProgressBuild(BuildAbility buildAbility, GridEntity entity) {
+        private void SetUpForInProgressBuild(BuildAbility buildAbility) {
             BuildAbilityData buildData = (BuildAbilityData) buildAbility.AbilityData;
-            BuildAbilitySlotBehavior buildBehavior = new BuildAbilitySlotBehavior(buildData, buildAbility.AbilityParameters.Buildable, entity);
+            BuildAbilitySlotBehavior buildBehavior = new BuildAbilitySlotBehavior(buildData, buildAbility.AbilityParameters.Buildable, buildAbility.Performer);
             SetUpAbilityView(buildData.AbilitySlotInfo, buildBehavior, true);
         }
 
@@ -129,7 +121,7 @@ namespace Gameplay.UI {
 
         private void SelectedEntityBuildQueueUpdated(List<BuildAbility> buildAbilities) {
             if (_selectedTargetableAbility == null && _selectedTargetableAbilitySlotBehavior == null) {
-                SetUpEntityView(_selectedEntity);
+                SetUpEntityView(_selectedObject);
             }
         }
     }

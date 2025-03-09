@@ -1,5 +1,4 @@
 using System.Linq;
-using Gameplay.Config;
 using Gameplay.Config.Abilities;
 using Gameplay.Entities;
 using Gameplay.Entities.Abilities;
@@ -40,29 +39,27 @@ namespace Gameplay.UI {
         
         // TODO Row of icons representing upgrades? Hoverable to get info about them?
         
-        // TODO Player name at bottom, text color == team color
-
         [SerializeField] private AbilityInterface AbilityInterface;
 
-        private GridEntity _displayedEntity;
-        private AbilityCooldownTimer _activeMoveCooldownTimer;
+        private ISelectableObjectLogic _displayedSelectable;
 
         public bool BuildMenuOpenFromSelection => AbilityInterface.BuildMenuOpenFromSelection;
         
         public void Initialize() {
-            ToggleViews(false);
+            ToggleViews(false, null);
         }
 
         /// <summary>
         /// Update the view to display the new selected entity
         /// </summary>
         public void UpdateSelectedEntity(GridEntity entity) {
-            DeselectCurrentEntity();
+            DeselectCurrentSelectable();
             if (entity == null) return;
             
-            _displayedEntity = entity;
             _healthDisplay.SetTarget(entity);
 
+            SelectableGridEntityLogic selectedEntity = new SelectableGridEntityLogic(entity);
+            _displayedSelectable = selectedEntity;
             UpdateEntityInfo();
             
             AbilityInterface.SetUpForEntity(entity);
@@ -71,9 +68,23 @@ namespace Gameplay.UI {
             entity.CooldownTimerExpiredEvent += OnEntityAbilityCooldownExpired;
             entity.CurrentResources.ValueChanged += OnEntityResourceAmountChanged;
             
-            ToggleViews(true);
+            ToggleViews(true, selectedEntity);
             
             PerformAutoSelectionAbilities(entity);
+        }
+
+        /// <summary>
+        /// Update the view to display the new selected terrain
+        /// </summary>
+        public void UpdateSelectedTerrain(GameplayTile tile) {
+            DeselectCurrentSelectable();
+
+            SelectableGameplayTileLogic selectedTile = new SelectableGameplayTileLogic(tile);
+            _displayedSelectable = selectedTile;
+            UpdateEntityInfo();
+            AbilityInterface.ClearInfo();
+
+            ToggleViews(true, selectedTile);
         }
 
         public void HandleAbilityHotkey(string input) {
@@ -86,37 +97,38 @@ namespace Gameplay.UI {
         }
 
         public void DeselectBuildAbility() {
-            if (_displayedEntity != null) {
-                AbilityInterface.SetUpForEntity(_displayedEntity);
+            if (_displayedSelectable != null) {
+                AbilityInterface.SetUpForEntity(_displayedSelectable.Entity);
             }
         }
 
         public void SetUpBuildSelection(BuildAbilityData buildData) {
-            AbilityInterface.SetUpBuildSelection(buildData, _displayedEntity);
+            AbilityInterface.SetUpBuildSelection(buildData, _displayedSelectable.Entity);
         }
 
-        private void DeselectCurrentEntity() {
-            if (_displayedEntity == null) return;
-            
-            _displayedEntity.AbilityPerformedEvent -= OnEntityAbilityPerformed;
-            _displayedEntity.CooldownTimerExpiredEvent -= OnEntityAbilityCooldownExpired;
-            _displayedEntity.CurrentResources.ValueChanged -= OnEntityResourceAmountChanged;
+        private void DeselectCurrentSelectable() {
+            if (_displayedSelectable == null) return;
 
-            _activeMoveCooldownTimer = null;
-            _displayedEntity = null;
+            if (_displayedSelectable.Entity != null) {
+                _displayedSelectable.Entity.AbilityPerformedEvent -= OnEntityAbilityPerformed;
+                _displayedSelectable.Entity.CooldownTimerExpiredEvent -= OnEntityAbilityCooldownExpired;
+                _displayedSelectable.Entity.CurrentResources.ValueChanged -= OnEntityResourceAmountChanged;
+            }
+
+            _displayedSelectable = null;
             if (MoveTimer != null) {
                 MoveTimer.UnsubscribeFromTimers();
             }
             
             // Hide everything
-            ToggleViews(false);
+            ToggleViews(false, null);
             
             DeselectActiveAbility();
         }
 
-        private void ToggleViews(bool active) {
+        private void ToggleViews(bool active, ISelectableObjectLogic selectableObject) {
             View.SetActive(active);
-            _tooltipView.ToggleForEntity(_displayedEntity);
+            _tooltipView.ToggleForSelectable(selectableObject);
 
             if (!active) {
                 AbilityInterface.ClearInfo();
@@ -138,56 +150,19 @@ namespace Gameplay.UI {
         }
 
         private void UpdateEntityInfo() {
-            if (_displayedEntity == null) return;
+            if (_displayedSelectable == null) return;
 
-            EntityData entityData = _displayedEntity.EntityData;
-            EntityIcon.sprite = entityData.BaseSpriteIconOverride == null ? entityData.BaseSprite : entityData.BaseSpriteIconOverride;
-            EntityColorsIcon.sprite = entityData.TeamColorSprite;
-            IGamePlayer player = GameManager.Instance.GetPlayerForTeam(_displayedEntity.Team);
-            EntityColorsIcon.color = player != null ? player.Data.TeamColor : Color.clear;
+            _displayedSelectable.SetUpIcons(EntityIcon, EntityColorsIcon, null, -1);
 
-            NameField.text = _displayedEntity.DisplayName;
-            DescriptionField.text = entityData.ShortDescription;
-            TagsField.text = string.Join(", ", entityData.Tags);
+            NameField.text = _displayedSelectable.Name;
+            DescriptionField.text = _displayedSelectable.ShortDescription;
+            TagsField.text = _displayedSelectable.Tags;
 
-            _healthDisplay.gameObject.SetActive(entityData.HP > 0);
-
-            if (_displayedEntity.CanMove) {
-                MovesRow.SetActive(true);
-                MovesField.text = $"{_displayedEntity.MoveTime}";
-                if (GameManager.Instance.AbilityAssignmentManager.IsAbilityChannelOnCooldownForEntity(_displayedEntity, MoveChannel, out _activeMoveCooldownTimer)) {
-                    MoveTimer.gameObject.SetActive(true);
-                    MoveTimer.Initialize(_activeMoveCooldownTimer, false, true);
-                } else {
-                    MoveTimer.gameObject.SetActive(false);
-                }
-            } else {
-                MovesRow.SetActive(false);
-            }
-
-            if (entityData.Damage > 0) {
-                AttackRow.SetActive(true);
-                AttackField.text = _displayedEntity.Damage.ToString();
-            } else {
-                AttackRow.SetActive(false);
-            }
-
-            if (entityData.StartingResourceSet.Amount > 0) {
-                ResourceRow.gameObject.SetActive(true);
-                ResourceLabel.text = $"{_displayedEntity.CurrentResourcesValue.Type.DisplayName()}:";
-                ResourceField.text = _displayedEntity.CurrentResourcesValue.Amount.ToString();
-            } else {
-                ResourceRow.gameObject.SetActive(false);
-            }
-            
-            // Build queue
-            if (entityData.CanBuild) {
-                if (entityData.IsStructure) {
-                    _buildQueueForStructure.SetUpForEntity(_displayedEntity);
-                } else {
-                    _buildQueueForWorker.SetUpForEntity(_displayedEntity);
-                }
-            }
+            _healthDisplay.gameObject.SetActive(_displayedSelectable.DisplayHP);
+            _displayedSelectable.SetUpMoveView(MovesRow, MovesField, MoveTimer, MoveChannel);
+            _displayedSelectable.SetUpAttackView(AttackRow, AttackField);
+            _displayedSelectable.SetUpResourceView(ResourceRow, ResourceLabel, ResourceField);
+            _displayedSelectable.SetUpBuildQueueView(_buildQueueForStructure, _buildQueueForWorker);
         }
         
         /// <summary>

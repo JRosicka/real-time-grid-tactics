@@ -66,23 +66,45 @@ public class EntitySelectionManager {
     }
 
     /// <summary>
-    /// Select whatever entity is at the given cell, if any. Cycle through the multiple entities on the cell with
-    /// subsequent calls.
+    /// Select whatever entity is at the given cell, otherwise select the cell itself. Cycle through the multiple
+    /// choices with subsequent calls.
     /// </summary>
-    public void SelectEntityAtCell(Vector2Int cell) {
+    public void SelectCell(Vector2Int cell) {
         GridEntity lastSelectedEntity = SelectedEntity;
         DeselectEntity();
 
         GridEntityCollection.PositionedGridEntityCollection entitiesAtLocation = _gameManager.GetEntitiesAtLocation(cell);
-        if (entitiesAtLocation != null) {
+        if (entitiesAtLocation == null) {
+            // There are no entities at this location. Select the cell itself
+            SelectCellTerrain(cell);
+        } else {
             // Select the top entity, or the next entity if we are already selecting an entity at this location
             GridEntityCollection.OrderedGridEntity orderedEntity = entitiesAtLocation.Entities.FirstOrDefault(c => c.Entity == lastSelectedEntity);
             if (orderedEntity == null) {
                 entitiesAtLocation.GetTopEntity().Entity.Select();
             } else {
-                entitiesAtLocation.GetEntityAfter(orderedEntity).Entity.Select();
+                GridEntity nextEntity = entitiesAtLocation.GetEntityAfter(orderedEntity)?.Entity;
+                if (nextEntity != null) {
+                    nextEntity.Select();
+                } else if (!SelectCellTerrain(cell)) {  // There is no next entity. Try selecting the cell itself.
+                    // The cell is not selectable. Loop back around and select the first entity in the stack. 
+                    entitiesAtLocation.GetTopEntity().Entity.Select();
+                }
             }
         }
+    }
+
+    /// <summary>
+    /// Try selecting the cell
+    /// </summary>
+    /// <returns>True if the cell was selected, otherwise false if it is not a cell that can be selected</returns>
+    private bool SelectCellTerrain(Vector2Int cell) {
+        GameplayTile tile = GridController.GridData.GetCell(cell).Tile;
+        
+        if (!tile.Selectable) return false;
+        
+        SelectionInterface.UpdateSelectedTerrain(tile);
+        return true;
     }
 
     public void TryInteractWithCell(Vector2Int cell) {

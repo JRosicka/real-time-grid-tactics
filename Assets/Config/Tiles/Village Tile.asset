@@ -30,6 +30,10 @@ MonoBehaviour:
     m_NeighborPositions: []
     m_RuleTransform: 0
   m_FlatTop: 0
+  Selectable: 0
+  DisplayName: Village Site
+  ShortDescription: 
+  LongDescription: 
   SlowTags: 
   InaccessibleTags: 
   _defenseModifier: 1

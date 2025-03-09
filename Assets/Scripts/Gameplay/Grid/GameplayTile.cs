@@ -7,6 +7,10 @@ using UnityEngine.Tilemaps;
 
 [CreateAssetMenu(fileName = "Gameplay Tile", menuName = "Tiles/Rule Tile")]
 public class GameplayTile : HexagonalRuleTile<GameplayTile.Neighbor> {
+    public bool Selectable;
+    public string DisplayName;
+    public string ShortDescription;
+    public string LongDescription;
     /// <summary>
     /// Any entities with these tags will be slowed when trying to move into cells of this tile type
     /// </summary>

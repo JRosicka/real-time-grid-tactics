@@ -95,7 +95,7 @@ namespace Gameplay.Grid {
                         return;
                     }
                     // Otherwise select whatever is at the clicked cell
-                    _entitySelectionManager.SelectEntityAtCell(clickPosition);
+                    _entitySelectionManager.SelectCell(clickPosition);
                     break;
                 case MouseClick.Right:
                     _entitySelectionManager.TryInteractWithCell(clickPosition);

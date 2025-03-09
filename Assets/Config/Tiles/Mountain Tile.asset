@@ -30,6 +30,10 @@ MonoBehaviour:
     m_NeighborPositions: []
     m_RuleTransform: 0
   m_FlatTop: 0
+  Selectable: 1
+  DisplayName: Mountain
+  ShortDescription: Impassible terrain.
+  LongDescription: None shall pass.
   SlowTags: 
   InaccessibleTags: 020000000300000001000000
   _defenseModifier: 1

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using JetBrains.Annotations;
 using Mirror;
 using Sirenix.Utilities;
 using Unity.VisualScripting;
@@ -33,16 +34,12 @@ namespace Gameplay.Entities {
                 return Entities.IsNullOrEmpty() ? null : Entities.OrderByDescending(o => o.Order).ToArray()[0];
             }
 
+            [CanBeNull]
             public OrderedGridEntity GetEntityAfter(OrderedGridEntity previousEntity) {
                 if (Entities.IsNullOrEmpty()) return null;
                 List<OrderedGridEntity> orderedList = Entities.OrderByDescending(o => o.Order).ToList();
                 OrderedGridEntity nextEntity = orderedList.FirstOrDefault(o => o.Order < previousEntity.Order);
-                if (nextEntity == null) {
-                    // We must have gone through the whole entity stack, so loop back around to the top
-                    return orderedList[0];
-                } else {
-                    return nextEntity;
-                }
+                return nextEntity;
             }
         }
 

@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ShortDescription: Resource patch for <sprite name="amber">.
   Description: Resource patch for <sprite name="amber">. Build an Amber Mine here
-    to harvest.
+    with a peasant to harvest.
   Cost: []
   Requirements: []
   BuildTime: 0
