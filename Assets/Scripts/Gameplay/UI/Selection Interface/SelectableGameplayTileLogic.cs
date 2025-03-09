@@ -40,7 +40,11 @@ namespace Gameplay.UI {
             attackRow.SetActive(false);
         }
         public void SetUpResourceView(GameObject resourceRow, TMP_Text resourceLabel, TMP_Text resourceField) {
-            resourceRow.gameObject.SetActive(false);
+            resourceRow.SetActive(false);
+        }
+
+        public void SetUpRangeView(GameObject rangeRow, TMP_Text rangeField) {
+            rangeRow.SetActive(false);
         }
 
         public void SetUpBuildQueueView(BuildQueueView buildQueueForStructure, BuildQueueView buildQueueForWorker) {

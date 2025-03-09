@@ -92,15 +92,24 @@ namespace Gameplay.UI {
             }
             
             if (resourceAmount == null) {
-                resourceRow.gameObject.SetActive(false);
+                resourceRow.SetActive(false);
             } else {
                 // There are indeed resources to be shown here
-                resourceRow.gameObject.SetActive(true);
+                resourceRow.SetActive(true);
                 resourceLabel.text = $"Remaining {resourceAmount.Type.DisplayIcon()}:";
                 resourceField.text = resourceAmount.Amount.ToString();
             }
         }
-        
+
+        public void SetUpRangeView(GameObject rangeRow, TMP_Text rangeField) {
+            if (Entity.EntityData.Range > 0) {
+                rangeRow.SetActive(true);
+                rangeField.text = Entity.EntityData.Range.ToString();
+            } else {
+                rangeRow.SetActive(false);
+            }
+        }
+
         public void SetUpBuildQueueView(BuildQueueView buildQueueForStructure, BuildQueueView buildQueueForWorker) {
             if (!Entity.EntityData.CanBuild) return;
             

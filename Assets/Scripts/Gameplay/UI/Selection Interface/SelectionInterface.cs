@@ -4,6 +4,7 @@ using Gameplay.Entities;
 using Gameplay.Entities.Abilities;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 namespace Gameplay.UI {
@@ -33,6 +34,8 @@ namespace Gameplay.UI {
         [SerializeField] private GameObject ResourceRow;
         [SerializeField] private TMP_Text ResourceLabel;
         [SerializeField] private TMP_Text ResourceField;
+        [SerializeField] private GameObject _rangeRow;
+        [SerializeField] private TMP_Text _rangeField;
 
         [SerializeField] private BuildQueueView _buildQueueForStructure;
         [SerializeField] private BuildQueueView _buildQueueForWorker;
@@ -161,6 +164,7 @@ namespace Gameplay.UI {
             _healthDisplay.gameObject.SetActive(_displayedSelectable.DisplayHP);
             _displayedSelectable.SetUpMoveView(MovesRow, MovesField, MoveTimer, MoveChannel);
             _displayedSelectable.SetUpAttackView(AttackRow, AttackField);
+            _displayedSelectable.SetUpRangeView(_rangeRow, _rangeField);
             _displayedSelectable.SetUpResourceView(ResourceRow, ResourceLabel, ResourceField);
             _displayedSelectable.SetUpBuildQueueView(_buildQueueForStructure, _buildQueueForWorker);
         }
