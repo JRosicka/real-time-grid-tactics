@@ -19,6 +19,14 @@ public static class ResourceTypeExtensions {
             _ => throw new ArgumentOutOfRangeException(nameof(resourceType), resourceType, null)
         };
     }
+    
+    public static string DisplayIcon(this ResourceType resourceType) {
+        return resourceType switch {
+            ResourceType.Basic => TextIcons.Gold,
+            ResourceType.Advanced => TextIcons.Amber,
+            _ => throw new ArgumentOutOfRangeException(nameof(resourceType), resourceType, null)
+        };
+    }
 }
     
 [Serializable]

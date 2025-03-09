@@ -73,15 +73,34 @@ namespace Gameplay.UI {
                 attackRow.SetActive(false);
             }
         }
+        
         public void SetUpResourceView(GameObject resourceRow, TMP_Text resourceLabel, TMP_Text resourceField) {
+            ResourceAmount resourceAmount = null;
+            
+            // If this entity has starting resources, display for those
             if (Entity.EntityData.StartingResourceSet.Amount > 0) {
-                resourceRow.gameObject.SetActive(true);
-                resourceLabel.text = $"{Entity.CurrentResourcesValue.Type.DisplayName()}:";
-                resourceField.text = Entity.CurrentResourcesValue.Amount.ToString();
-            } else {
+                resourceAmount = Entity.CurrentResourcesValue;
+            }
+
+            if (resourceAmount == null && Entity.EntityData.IsResourceExtractor) {
+                // Find the resource set for the resource provider on this cell
+                GridEntityCollection.PositionedGridEntityCollection entitiesAtLocation = GameManager.Instance.GetEntitiesAtLocation(Entity.Location!.Value);
+                GridEntity resourceProvider = entitiesAtLocation?.Entities.FirstOrDefault(e => e.Entity.EntityData.StartingResourceSet is { Amount: > 0 })?.Entity;
+                if (resourceProvider != null) {
+                    resourceAmount = resourceProvider.CurrentResourcesValue;
+                }
+            }
+            
+            if (resourceAmount == null) {
                 resourceRow.gameObject.SetActive(false);
+            } else {
+                // There are indeed resources to be shown here
+                resourceRow.gameObject.SetActive(true);
+                resourceLabel.text = $"Remaining {resourceAmount.Type.DisplayIcon()}:";
+                resourceField.text = resourceAmount.Amount.ToString();
             }
         }
+        
         public void SetUpBuildQueueView(BuildQueueView buildQueueForStructure, BuildQueueView buildQueueForWorker) {
             if (!Entity.EntityData.CanBuild) return;
             
