@@ -33,7 +33,7 @@ MonoBehaviour:
   Selectable: 1
   DisplayName: Mountain
   ShortDescription: Impassible terrain.
-  LongDescription: None shall pass.
+  LongDescription: Impassible terrain.
   SlowTags: 
   InaccessibleTags: 020000000300000001000000
   _defenseModifier: 1
