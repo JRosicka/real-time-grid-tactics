@@ -59,7 +59,7 @@ namespace Gameplay.Config.Abilities {
                     TargetFire = target != null && target.Team != GameTeam.Neutral, 
                     Target = target, 
                     Destination = cellPosition
-                }, true, true, false);
+                }, true, true, false, true);
             selectedEntity.SetTargetLocation(cellPosition, target, true);
         }
 

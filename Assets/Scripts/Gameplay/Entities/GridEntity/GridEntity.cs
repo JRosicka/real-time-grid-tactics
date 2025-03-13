@@ -76,6 +76,7 @@ namespace Gameplay.Entities {
         public bool CanTargetThings => Range > 0;
         public bool CanMoveOrRally => MoveTime > 0;
         public bool CanMove => CanMoveOrRally && !EntityData.IsStructure;
+        public bool HoldingPosition { get; private set; }
         /// <summary>
         /// Null if the entity is unregistered (or not yet registered)
         /// </summary>
@@ -387,6 +388,9 @@ namespace Gameplay.Entities {
                     SetTargetLocation(currentLocation.Value, null, false);
                 }
             }
+            
+            // Also stop holding position
+            ToggleHoldPosition(false);
         }
         
         public void UpdateAbilityQueue(List<IAbility> newAbilityQueue) {
@@ -434,7 +438,7 @@ namespace Gameplay.Entities {
                     NextMoveCell = targetCell, 
                     SelectorTeam = Team,
                     BlockedByOccupation = blockedByOccupation
-                }, true)) {
+                }, true, true)) {
                 SetTargetLocation(targetCell, null, false);
             }
             return true;
@@ -472,6 +476,23 @@ namespace Gameplay.Entities {
 
             return EntityData.NormalMoveTime;
         }
+
+        public void ToggleHoldPosition(bool holdPosition) {
+            HoldingPosition = holdPosition;
+
+            if (!holdPosition) return;
+            
+            // Cancel any queued moves and attacks
+            List<IAbility> abilities = QueuedAbilities.Where(a => a is MoveAbility or AttackAbility).ToList();
+            abilities.ForEach(a => CommandManager.CancelAbility(a));
+
+            // Update the rally point
+            var currentLocation = Location;
+            // The location might be null if the entity is being destroyed 
+            if (currentLocation != null) {
+                SetTargetLocation(currentLocation.Value, null, false);
+            }
+        }
         
         #endregion
         #region Attacking
@@ -483,8 +504,7 @@ namespace Gameplay.Entities {
             if (AbilityAssignmentManager.PerformAbility(this, data, new AttackAbilityParameters {
                         Destination = targetCell, 
                         TargetFire = false
-                    },
-                    true)) {
+                    }, true, true)) {
                 SetTargetLocation(targetCell, null, true);
             }
         }
@@ -504,7 +524,7 @@ namespace Gameplay.Entities {
                     Target = targetEntity, 
                     TargetFire = true,
                     Destination = targetCell
-                }, true)) {
+                }, true, true)) {
                 SetTargetLocation(targetCell, targetEntity, true);
             }
         }
@@ -525,33 +545,34 @@ namespace Gameplay.Entities {
             }
             
             HPHandler.ReceiveAttackFromEntity(sourceEntity);
+            TryRespondToAttack(sourceEntity);
+        }
 
+        private void TryRespondToAttack(GridEntity sourceEntity) {
+            // If we dead, no response
+            if (HPHandler.CurrentHP <= 0) return;
+            // If we not an attacker, no response
+            if (!EntityData.AttackByDefault) return;
+            // If somehow no location (not registered), no response
+            if (sourceEntity.Location == null) return;
+            
+            // Determine whether we should respond with an attack
             bool queuedAbilitiesAllowResponse = QueuedAbilities.Count == 0 || QueuedAbilities.All(a =>
                 a is AttackAbility attackAbility // No response if there are any queued non-attack abilities
-                    && !attackAbility.AbilityParameters.TargetFire      // Or if any of those queued attacks are target-fire
-                    && !attackAbility.AbilityParameters.Reaction);      // Or if any are reactions
+                && !attackAbility.AbilityParameters.TargetFire      // Or if any of those queued attacks are target-fire
+                && !attackAbility.AbilityParameters.Reaction);      // Or if any are reactions
             bool hasAttackMoveTargetLocation = QueuedAbilities.Count > 0;
-
-            // TODO:
-            // - Don't respond with an attack move if there is already a responding attack move queued
-            // - Add an attack ability parameter flag to track whether it is a response attack move
-            // - For reacting attack abilities, have the attack ability step behavior move towards its destination only if its attacker is still alive. Need a new ability parameter field for tracking that.
-            // -- When the attacker is no longer alive, have the attack ability step behavior complete when finished. 
+            if (!queuedAbilitiesAllowResponse) return;
             
-            if (HPHandler.CurrentHP > 0 
-                    && EntityData.AttackByDefault 
-                    && queuedAbilitiesAllowResponse 
-                    && sourceEntity.Location != null) {
-                // Attack-move to the target
-                AbilityAssignmentManager.QueueAbility(this, GetAbilityData<AttackAbilityData>(), new AttackAbilityParameters {
-                    TargetFire = false,
-                    Destination = sourceEntity.Location.Value,
-                    Reaction = true,
-                    ReactionTarget = sourceEntity
-                }, true, false, true);
-                if (!hasAttackMoveTargetLocation) {
-                    SetTargetLocation(sourceEntity.Location.Value, null, true);
-                }
+            // Attack-move to the target
+            AbilityAssignmentManager.QueueAbility(this, GetAbilityData<AttackAbilityData>(), new AttackAbilityParameters {
+                TargetFire = false,
+                Destination = sourceEntity.Location.Value,
+                Reaction = true,
+                ReactionTarget = sourceEntity
+            }, true, false, true, false);
+            if (!hasAttackMoveTargetLocation && !HoldingPosition) {
+                SetTargetLocation(sourceEntity.Location.Value, null, true);
             }
         }
         

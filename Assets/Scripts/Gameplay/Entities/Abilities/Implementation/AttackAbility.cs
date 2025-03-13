@@ -100,6 +100,11 @@ namespace Gameplay.Entities.Abilities {
                 return false;
             }
             
+            // If the attacker is holding position, then don't try to move closer. Just stop the attack. 
+            if (Performer.HoldingPosition) {
+                return false;
+            }
+            
             // If no move available, re-queue this ability for later so that the above check for seeing if anything is 
             // in range is re-performed on the next ability queue update. 
             if (Performer.ActiveTimers.Any(t => t.Ability is MoveAbility)) {
@@ -197,11 +202,11 @@ namespace Gameplay.Entities.Abilities {
                 NextMoveCell = nextMoveCell,
                 SelectorTeam = attacker.Team,
                 BlockedByOccupation = false
-            }, true, false, true);
+            }, true, false, true, false);
         }
 
         private void ReQueue() {
-            AbilityAssignmentManager.QueueAbility(Performer, Data, AbilityParameters, true, false, true);
+            AbilityAssignmentManager.QueueAbility(Performer, Data, AbilityParameters, true, false, true, false);
         }
 
         private void DoAttack(Vector2Int location) {

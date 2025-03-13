@@ -51,7 +51,7 @@ namespace Gameplay.Entities.Abilities {
             GameManager.Instance.CommandManager.MoveEntityToCell(Performer, pathNodes[1].Location);
             if (pathNodes.Count > 2 || (AbilityParameters.BlockedByOccupation && pathNodes[1].Location != AbilityParameters.Destination)) {
                 // There is more distance to travel, so put a new movement at the front of the queue
-                AbilityAssignmentManager.QueueAbility(Performer, Data, AbilityParameters, WaitUntilLegal, false, true);
+                AbilityAssignmentManager.QueueAbility(Performer, Data, AbilityParameters, WaitUntilLegal, false, true, false);
             }
 
             return true;

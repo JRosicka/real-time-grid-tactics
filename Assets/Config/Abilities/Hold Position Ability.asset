@@ -1,0 +1,38 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a70f834599b54fe9a168991dea685e5f, type: 3}
+  m_Name: Hold Position Ability
+  m_EditorClassIdentifier: 
+  Data:
+    _contentResourceID: Hold Position Ability
+    _id: Hold Position
+    _description: Stay still in the current location - don't reactively move towards
+      attackers.
+    _icon: {fileID: 21300000, guid: d7e756b3628ac4cedb7aa7649ad68f9a, type: 3}
+    _abilityTimerCooldownView: {fileID: 0}
+    _requirements: []
+    _performDuration: 0
+    _cooldownDuration: 0
+    _channel: {fileID: 11400000, guid: 70c958272c64b493db9ae06467d77ebf, type: 2}
+    _channelBlockers: []
+    _slotLocation: 7
+    _addedMovementTime: 0
+    _performOnStart: 0
+    _payCostUpFront: 0
+    _repeatForeverAfterStartEvenWhenFailed: 0
+    _repeatWhenCooldownFinishes: 0
+    _animateWhenCooldownComplete: 0
+    _selectable: 1
+    _selectableWhenBlocked: 0
+    _autoSelect: 0
+    _selectableForAllPlayers: 0
+    _tryingToPerformCancelsBuilds: 1

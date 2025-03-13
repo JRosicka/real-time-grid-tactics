@@ -75,7 +75,7 @@ public class AbilityQueueExecutor : MonoBehaviour {
             return false;
         }
             
-        _commandManager.PerformAbility(ability, false, false);
+        _commandManager.PerformAbility(ability, false, false, false);
         return true;
     }
     
@@ -90,6 +90,6 @@ public class AbilityQueueExecutor : MonoBehaviour {
         _abilityAssignmentManager.PerformAbility(entity, data, new AttackAbilityParameters {
             TargetFire = false,
             Destination = location.Value
-        }, true);
+        }, false, true);
     }
 }

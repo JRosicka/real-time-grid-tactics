@@ -42,16 +42,16 @@ public class SPCommandManager : AbstractCommandManager {
         Destroy(entity.gameObject);
     }
 
-    public override void PerformAbility(IAbility ability, bool clearQueueFirst, bool handleCost) {
-        if (DoPerformAbility(ability, clearQueueFirst, handleCost)) {
+    public override void PerformAbility(IAbility ability, bool clearQueueFirst, bool handleCost, bool fromInput) {
+        if (DoPerformAbility(ability, clearQueueFirst, handleCost, fromInput)) {
             DoAbilityPerformed(ability);
         } else if (!ability.WaitUntilLegal) {
             DoAbilityFailed(ability);
         }
     }
 
-    public override void QueueAbility(IAbility ability, bool clearQueueFirst, bool insertAtFront) {
-        DoQueueAbility(ability, clearQueueFirst, insertAtFront);
+    public override void QueueAbility(IAbility ability, bool clearQueueFirst, bool insertAtFront, bool fromInput) {
+        DoQueueAbility(ability, clearQueueFirst, insertAtFront, fromInput);
         DoUpdateAbilityQueue(ability.Performer, ability.Performer.QueuedAbilities);
     }
 

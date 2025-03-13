@@ -41,14 +41,14 @@ public class MPCommandManager : AbstractCommandManager {
         CmdDestroyEntity(entity);
     }
 
-    public override void PerformAbility(IAbility ability, bool clearQueueFirst, bool handleCost) {
+    public override void PerformAbility(IAbility ability, bool clearQueueFirst, bool handleCost, bool fromInput) {
         LogTimestamp(nameof(PerformAbility));
-        CmdPerformAbility(ability, clearQueueFirst, handleCost);
+        CmdPerformAbility(ability, clearQueueFirst, handleCost, fromInput);
     }
 
-    public override void QueueAbility(IAbility ability, bool clearQueueFirst, bool insertAtFront) {
+    public override void QueueAbility(IAbility ability, bool clearQueueFirst, bool insertAtFront, bool fromInput) {
         LogTimestamp(nameof(QueueAbility));
-        CmdQueueAbility(ability, clearQueueFirst, insertAtFront);
+        CmdQueueAbility(ability, clearQueueFirst, insertAtFront, fromInput);
     }
 
     public override void RemoveAbilityFromQueue(GridEntity entity, IAbility queuedAbility) {
@@ -122,7 +122,7 @@ public class MPCommandManager : AbstractCommandManager {
     }
     
     [Command(requiresAuthority = false)]
-    private void CmdPerformAbility(IAbility ability, bool clearQueueFirst, bool handleCost) {
+    private void CmdPerformAbility(IAbility ability, bool clearQueueFirst, bool handleCost, bool fromInput) {
         LogTimestamp(nameof(CmdPerformAbility));
         
         if (Cheats.NeedsToDisconnect) {
@@ -130,7 +130,7 @@ public class MPCommandManager : AbstractCommandManager {
             throw new Exception("Forced exception from cheats");
         }
         
-        bool success = DoPerformAbility(ability, clearQueueFirst, handleCost);
+        bool success = DoPerformAbility(ability, clearQueueFirst, handleCost, fromInput);
         if (success) {
             RpcAbilityPerformed(ability);
         } else if (!ability.WaitUntilLegal) {
@@ -145,9 +145,9 @@ public class MPCommandManager : AbstractCommandManager {
     }
 
     [Command(requiresAuthority = false)]
-    private void CmdQueueAbility(IAbility ability, bool clearQueueFirst, bool insertAtFront) {
+    private void CmdQueueAbility(IAbility ability, bool clearQueueFirst, bool insertAtFront, bool fromInput) {
         LogTimestamp(nameof(CmdQueueAbility));
-        DoQueueAbility(ability, clearQueueFirst, insertAtFront);
+        DoQueueAbility(ability, clearQueueFirst, insertAtFront, fromInput);
         RpcUpdateAbilityQueue(ability.Performer, ability.Performer.QueuedAbilities);
     }
     

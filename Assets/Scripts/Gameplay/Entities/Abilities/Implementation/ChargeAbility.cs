@@ -59,7 +59,7 @@ namespace Gameplay.Entities.Abilities {
                 TargetFire = true,
                 Target = targetEntity,
                 Destination = AbilityParameters.Destination
-            }, true, false, true);
+            }, true, false, true, false);
             Performer.SetTargetLocation(AbilityParameters.Destination, targetEntity, true);
             return true;
         }

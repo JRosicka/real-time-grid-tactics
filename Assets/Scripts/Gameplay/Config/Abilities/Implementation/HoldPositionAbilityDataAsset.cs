@@ -4,17 +4,18 @@ using Gameplay.Entities.Abilities;
 using UnityEngine;
 
 namespace Gameplay.Config.Abilities {
-    [CreateAssetMenu(menuName = "Abilities/SiegeAbilityData")]
-    public class SiegeAbilityDataAsset : BaseAbilityDataAsset<SiegeAbilityData, NullAbilityParameters> { }
-    
+    [CreateAssetMenu(menuName = "Abilities/HoldPositionAbilityData")]
+    public class HoldPositionAbilityDataAsset : BaseAbilityDataAsset<HoldPositionAbilityData, NullAbilityParameters> { }
+
     /// <summary>
-    /// A <see cref="AbilityDataBase{T}"/> configuration for the ability to enter/exit siege mode
+    /// A <see cref="AbilityDataBase{T}"/> configuration for making a <see cref="GridEntity"/> hold position, not reacting
+    /// to being attacked. 
     /// </summary>
     [Serializable]
-    public class SiegeAbilityData : AbilityDataBase<NullAbilityParameters> {
-        public override bool CanBeCanceled => true;
+    public class HoldPositionAbilityData : AbilityDataBase<NullAbilityParameters> {
+        public override bool CanBeCanceled => false;
         public override bool CancelableWhileActive => false;
-        public override bool CancelableWhileQueued => true;
+        public override bool CancelableWhileQueued => false;
 
         public override void SelectAbility(GridEntity selector) {
             GameManager.Instance.AbilityAssignmentManager.PerformAbility(selector, this, new NullAbilityParameters(), true, false);
@@ -29,7 +30,7 @@ namespace Gameplay.Config.Abilities {
         }
 
         protected override IAbility CreateAbilityImpl(NullAbilityParameters parameters, GridEntity performer) {
-            return new SiegeAbility(this, parameters, performer);
+            return new HoldPositionAbility(this, parameters, performer);
         }
     }
 }

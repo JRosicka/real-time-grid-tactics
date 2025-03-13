@@ -37,7 +37,8 @@ namespace Gameplay.UI {
             }
             
             if (EntitySelectionManager.IsTargetableAbilitySelected() 
-                    || _selectedEntity.GetCancelableAbilities().Count > 0) {
+                    || _selectedEntity.GetCancelableAbilities().Count > 0
+                    || _selectedEntity.HoldingPosition) {
                 return AbilitySlot.AvailabilityResult.Selectable;
             }
 

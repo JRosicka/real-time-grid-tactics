@@ -23,8 +23,8 @@ public interface ICommandManager {
     void DestroyEntity(GridEntity entity);
     void MoveEntityToCell(GridEntity entity, Vector2Int destination);
     GridEntityCollection.PositionedGridEntityCollection GetEntitiesAtCell(Vector2Int location);
-    void PerformAbility(IAbility ability, bool clearQueueFirst, bool handleCost);
-    void QueueAbility(IAbility ability, bool clearQueueFirst, bool insertAtFront);
+    void PerformAbility(IAbility ability, bool clearQueueFirst, bool handleCost, bool fromInput);
+    void QueueAbility(IAbility ability, bool clearQueueFirst, bool insertAtFront, bool fromInput);
     void RemoveAbilityFromQueue(GridEntity entity, IAbility queuedAbility);
     void ClearAbilityQueue(GridEntity entity);
     void MarkAbilityCooldownExpired(IAbility ability);

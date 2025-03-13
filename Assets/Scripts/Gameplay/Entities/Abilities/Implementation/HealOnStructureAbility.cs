@@ -35,7 +35,7 @@ namespace Gameplay.Entities.Abilities {
             AbilityAssignmentManager.PerformAbility(Performer, Data.HealAbility.Content, new HealAbilityParameters {
                 Target = target,
                 HealAmount = Data.HealAmount
-            }, true, false);
+            }, false, true, false);
             
             return true;
         }

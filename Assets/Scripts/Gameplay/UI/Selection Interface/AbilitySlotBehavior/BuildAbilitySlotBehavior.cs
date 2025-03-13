@@ -51,7 +51,7 @@ namespace Gameplay.UI {
                 AbilityAssignmentManager.PerformAbility(SelectedEntity, _buildAbilityData, new BuildAbilityParameters {
                     Buildable = Buildable, 
                     BuildLocation = selectedEntityLocation.Value
-                }, true, false);
+                }, true, true, false);
             }
         }
 

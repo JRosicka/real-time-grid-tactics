@@ -85,8 +85,8 @@ public abstract class AbstractCommandManager : NetworkBehaviour, ICommandManager
         return _entitiesOnGrid.EntitiesAtLocation(location);
     }
 
-    public abstract void PerformAbility(IAbility ability, bool clearQueueFirst, bool handleCost);
-    public abstract void QueueAbility(IAbility ability, bool clearQueueFirst, bool insertAtFront);
+    public abstract void PerformAbility(IAbility ability, bool clearQueueFirst, bool handleCost, bool fromInput);
+    public abstract void QueueAbility(IAbility ability, bool clearQueueFirst, bool insertAtFront, bool fromInput);
     public abstract void RemoveAbilityFromQueue(GridEntity entity, IAbility queuedAbility);
     public abstract void ClearAbilityQueue(GridEntity entity);
 
@@ -142,9 +142,13 @@ public abstract class AbstractCommandManager : NetworkBehaviour, ICommandManager
         entity.OnUnregistered(showDeathAnimation);
     }
     
-    protected bool DoPerformAbility(IAbility ability, bool clearQueueFirst, bool handleCost) {
+    protected bool DoPerformAbility(IAbility ability, bool clearQueueFirst, bool handleCost, bool fromInput) {
         // Don't do anything if the performer has been killed 
         if (ability.Performer == null) return false;
+
+        if (fromInput) {
+            ability.Performer.ToggleHoldPosition(false);
+        }
         
         if (clearQueueFirst) {
             ClearAbilityQueue(ability.Performer); 
@@ -161,7 +165,7 @@ public abstract class AbstractCommandManager : NetworkBehaviour, ICommandManager
             if (!ability.AbilityData.CanPayCost(ability.BaseParameters, ability.Performer)) {
                 Debug.Log($"Tried to pay the cost up front while performing the ability {ability.AbilityData.AbilitySlotInfo.ID}, but we are not able to pay the cost.");
                 if (ability.WaitUntilLegal) {
-                    QueueAbility(ability, false, false);
+                    QueueAbility(ability, false, false, false);
                 }
                 return false;
             }
@@ -173,15 +177,19 @@ public abstract class AbstractCommandManager : NetworkBehaviour, ICommandManager
         }
 
         if (ability.WaitUntilLegal) {
-            QueueAbility(ability, false, false);
+            QueueAbility(ability, false, false, false);
         }
 
         return false;
     }
 
-    protected void DoQueueAbility(IAbility ability, bool clearQueueFirst, bool insertAtFront) {
+    protected void DoQueueAbility(IAbility ability, bool clearQueueFirst, bool insertAtFront, bool fromInput) {
         if (clearQueueFirst) {
             ClearAbilityQueue(ability.Performer);
+        }
+
+        if (fromInput) {
+            ability.Performer.ToggleHoldPosition(false);
         }
 
         // Assign a UID here since this is guaranteed to be on the server (if MP)

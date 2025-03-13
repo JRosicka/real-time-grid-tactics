@@ -27,7 +27,7 @@ namespace Gameplay.Entities {
                 RallyAbilityData data = thisEntity.GetAbilityData<RallyAbilityData>();
                 GameManager.Instance.AbilityAssignmentManager.PerformAbility(thisEntity, data, new RallyAbilityParameters {
                     Destination = targetCell
-                }, false, false);
+                }, true, false, false);
                 return;
             }
             

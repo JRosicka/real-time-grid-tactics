@@ -45,7 +45,7 @@ namespace Gameplay.Managers {
         #endregion
         #region Perform/Queue
 
-        public bool PerformAbility(GridEntity entity, IAbilityData abilityData, IAbilityParameters parameters, 
+        public bool PerformAbility(GridEntity entity, IAbilityData abilityData, IAbilityParameters parameters, bool fromInput,
                                     bool queueIfNotLegal, bool clearQueueFirst = true) {
             if (entity.BuildQueue != null && abilityData.TryingToPerformCancelsBuilds) {
                 entity.BuildQueue.CancelAllBuilds();
@@ -60,7 +60,7 @@ namespace Gameplay.Managers {
                         entity.AbilityFailed(abilityData);
                         return false;
                     }
-                    QueueAbility(entity, abilityData, parameters, true, clearQueueFirst, false);
+                    QueueAbility(entity, abilityData, parameters, true, clearQueueFirst, false, fromInput);
                     if (abilityData is not AttackAbilityData && entity.LastAttackedEntityValue is not null) {
                         // Clear the targeted entity since we are telling this entity to do something else
                         entity.LastAttackedEntity.UpdateValue(new NetworkableGridEntityValue(null));
@@ -79,20 +79,20 @@ namespace Gameplay.Managers {
             
             IAbility abilityInstance = abilityData.CreateAbility(parameters, entity);
             abilityInstance.WaitUntilLegal = queueIfNotLegal;
-            CommandManager.PerformAbility(abilityInstance, clearQueueFirst, true);
+            CommandManager.PerformAbility(abilityInstance, clearQueueFirst, true, fromInput);
             return true;
         }
         
         public void QueueAbility(GridEntity entity, IAbilityData abilityData, IAbilityParameters parameters, 
-                                bool waitUntilLegal, bool clearQueueFirst, bool insertAtFront) {
+                                bool waitUntilLegal, bool clearQueueFirst, bool insertAtFront, bool fromInput) {
             IAbility abilityInstance = abilityData.CreateAbility(parameters, entity);
             abilityInstance.WaitUntilLegal = waitUntilLegal;
-            CommandManager.QueueAbility(abilityInstance, clearQueueFirst, insertAtFront);
+            CommandManager.QueueAbility(abilityInstance, clearQueueFirst, insertAtFront, fromInput);
         }
 
         public void PerformOnStartAbilitiesForEntity(GridEntity entity) {
             foreach (IAbilityData abilityData in entity.Abilities.Where(a => a.PerformOnStart)) {
-                PerformAbility(entity, abilityData, new NullAbilityParameters(), abilityData.RepeatForeverAfterStartEvenWhenFailed);
+                PerformAbility(entity, abilityData, new NullAbilityParameters(), false, abilityData.RepeatForeverAfterStartEvenWhenFailed);
             }
         }
         

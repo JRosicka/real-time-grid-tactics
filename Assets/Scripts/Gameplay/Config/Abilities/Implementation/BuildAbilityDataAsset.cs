@@ -91,7 +91,7 @@ namespace Gameplay.Config.Abilities {
         public void DoTargetableAbility(Vector2Int cellPosition, GridEntity selectedEntity, GameTeam selectorTeam, System.Object targetData) {
             PurchasableData purchasableData = (PurchasableData)targetData;
             BuildAbilityParameters buildParameters = new BuildAbilityParameters {Buildable = purchasableData, BuildLocation = cellPosition};
-            GameManager.Instance.AbilityAssignmentManager.QueueAbility(selectedEntity, this, buildParameters, true, false, false);
+            GameManager.Instance.AbilityAssignmentManager.QueueAbility(selectedEntity, this, buildParameters, true, false, false, true);
             selectedEntity.SetTargetLocation(cellPosition, null, false, true);
             
             if (GameManager.Instance.SelectionInterface.BuildMenuOpenFromSelection) {
