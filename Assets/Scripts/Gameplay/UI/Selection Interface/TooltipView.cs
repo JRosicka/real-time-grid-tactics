@@ -22,6 +22,11 @@ namespace Gameplay.UI {
         [SerializeField] private TMP_Text _basicResourceCostAmount;
         [SerializeField] private GameObject _advancedResourceCostContainer;
         [SerializeField] private TMP_Text _advancedResourceCostAmount;
+        [SerializeField] private GameObject _buildTimeContainer;
+        [SerializeField] private TMP_Text _buildTimeAmount;
+        
+        [Header("Config")]
+        [SerializeField] private string _buildTimeFormat = "{0}s";
 
         private ISelectableObjectLogic _selectedObject;
         private ITargetableAbilityData _selectedTargetableAbility;
@@ -87,6 +92,7 @@ namespace Gameplay.UI {
             
             _basicResourceCostContainer.SetActive(false);
             _advancedResourceCostContainer.SetActive(false);
+            _buildTimeContainer.SetActive(false);
         }
 
         private void SetUpForInProgressBuild(BuildAbility buildAbility) {
@@ -107,11 +113,14 @@ namespace Gameplay.UI {
                 _basicResourceCostAmount.text = basicCost.ToString();
                 _advancedResourceCostContainer.SetActive(advancedCost > 0);
                 _advancedResourceCostAmount.text = advancedCost.ToString();
+                _buildTimeContainer.SetActive(true);
+                _buildTimeAmount.text = string.Format(_buildTimeFormat, buildAbilitySlotBehavior.Buildable.BuildTime);
             } else {
                 _name.text = abilityInfo.ID;
                 _description.text = abilityInfo.Description;
                 _basicResourceCostContainer.SetActive(false);
                 _advancedResourceCostContainer.SetActive(false);
+                _buildTimeContainer.SetActive(false);
             }
         }
         
