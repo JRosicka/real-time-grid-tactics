@@ -27,5 +27,8 @@ namespace Gameplay.UI {
         void SetUpResourceView(GameObject resourceRow, TMP_Text resourceLabel, TMP_Text resourceField);
         void SetUpRangeView(GameObject rangeRow, TMP_Text rangeField);
         void SetUpBuildQueueView(BuildQueueView buildQueueForStructure, BuildQueueView buildQueueForWorker);
+        void SetUpKillCountView(GameObject killCountRow, TMP_Text killCountField);
+
+        void UnregisterListeners();
     }
 }

@@ -17,6 +17,11 @@ namespace Gameplay.UI {
     public class SelectableGridEntityLogic : ISelectableObjectLogic {
         public SelectableGridEntityLogic(GridEntity entity) {
             Entity = entity;
+            
+            entity.AbilityPerformedEvent += OnEntityAbilityPerformed;
+            entity.CooldownTimerExpiredEvent += OnEntityAbilityCooldownExpired;
+            entity.CurrentResources.ValueChanged += OnEntityResourceAmountChanged;
+            entity.KillCountChanged += KillCountChanged;
         }
 
         [NotNull] public GridEntity Entity { get; }
@@ -50,7 +55,16 @@ namespace Gameplay.UI {
             }
         }
 
+        private GameObject _movesRow;
+        private TMP_Text _movesField;
+        private AbilityTimerCooldownView _moveTimer;
+        private AbilityChannel _moveChannel;
         public void SetUpMoveView(GameObject movesRow, TMP_Text movesField, AbilityTimerCooldownView moveTimer, AbilityChannel moveChannel) {
+            _movesRow = movesRow;
+            _movesField = movesField;
+            _moveTimer = moveTimer;
+            _moveChannel = moveChannel;
+            
             if (Entity.CanMove) {
                 movesRow.SetActive(true);
                 movesField.text = $"{Entity.MoveTime}";
@@ -74,7 +88,14 @@ namespace Gameplay.UI {
             }
         }
         
+        private GameObject _resourceRow;
+        private TMP_Text _resourceLabel;
+        private TMP_Text _resourceField;
         public void SetUpResourceView(GameObject resourceRow, TMP_Text resourceLabel, TMP_Text resourceField) {
+            _resourceRow = resourceRow;
+            _resourceLabel = resourceLabel;
+            _resourceField = resourceField;
+            
             ResourceAmount resourceAmount = null;
             
             // If this entity has starting resources, display for those
@@ -118,6 +139,46 @@ namespace Gameplay.UI {
             } else {
                 buildQueueForWorker.SetUpForEntity(Entity);
             }
+        }
+        
+        private TMP_Text _killCountField;
+        public void SetUpKillCountView(GameObject killCountRow, TMP_Text killCountField) {
+            _killCountField = killCountField;
+            
+            bool tracksKills = Entity.EntityData.Damage > 0;
+            killCountRow.SetActive(tracksKills);
+            if (tracksKills) {
+                killCountRow.SetActive(true);
+                killCountField.text = Entity.KillCount.ToString();
+            } else {
+                killCountRow.SetActive(false);
+                killCountField.text = string.Empty;
+            }
+        }
+
+        public void UnregisterListeners() {
+            Entity.AbilityPerformedEvent -= OnEntityAbilityPerformed;
+            Entity.CooldownTimerExpiredEvent -= OnEntityAbilityCooldownExpired;
+            Entity.CurrentResources.ValueChanged -= OnEntityResourceAmountChanged;
+            Entity.KillCountChanged -= KillCountChanged;
+        }
+        
+        private void OnEntityAbilityPerformed(IAbility iAbility, AbilityCooldownTimer abilityCooldownTimer) {
+            SetUpMoveView(_movesRow, _movesField, _moveTimer, _moveChannel);
+            SetUpResourceView(_resourceRow, _resourceLabel, _resourceField);
+        }
+
+        private void OnEntityAbilityCooldownExpired(IAbility ability, AbilityCooldownTimer abilityCooldownTimer) {
+            SetUpMoveView(_movesRow, _movesField, _moveTimer, _moveChannel);
+        }
+
+        private void OnEntityResourceAmountChanged(INetworkableFieldValue oldValue, INetworkableFieldValue newValue, object metadata) {
+            SetUpResourceView(_resourceRow, _resourceLabel, _resourceField);
+        }
+
+        private void KillCountChanged(int newKillCount) {
+            if (!_killCountField) return;
+            _killCountField.text = newKillCount.ToString();
         }
     }
 }

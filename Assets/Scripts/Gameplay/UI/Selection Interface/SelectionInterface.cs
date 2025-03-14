@@ -4,7 +4,6 @@ using Gameplay.Entities;
 using Gameplay.Entities.Abilities;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 namespace Gameplay.UI {
@@ -36,6 +35,8 @@ namespace Gameplay.UI {
         [SerializeField] private TMP_Text ResourceField;
         [SerializeField] private GameObject _rangeRow;
         [SerializeField] private TMP_Text _rangeField;
+        [SerializeField] private GameObject _killCountRow;
+        [SerializeField] private TMP_Text _killCountField;
 
         [SerializeField] private BuildQueueView _buildQueueForStructure;
         [SerializeField] private BuildQueueView _buildQueueForWorker;
@@ -66,10 +67,6 @@ namespace Gameplay.UI {
             UpdateEntityInfo();
             
             AbilityInterface.SetUpForEntity(entity);
-
-            entity.AbilityPerformedEvent += OnEntityAbilityPerformed;
-            entity.CooldownTimerExpiredEvent += OnEntityAbilityCooldownExpired;
-            entity.CurrentResources.ValueChanged += OnEntityResourceAmountChanged;
             
             ToggleViews(true, selectedEntity);
             
@@ -112,11 +109,7 @@ namespace Gameplay.UI {
         private void DeselectCurrentSelectable() {
             if (_displayedSelectable == null) return;
 
-            if (_displayedSelectable.Entity != null) {
-                _displayedSelectable.Entity.AbilityPerformedEvent -= OnEntityAbilityPerformed;
-                _displayedSelectable.Entity.CooldownTimerExpiredEvent -= OnEntityAbilityCooldownExpired;
-                _displayedSelectable.Entity.CurrentResources.ValueChanged -= OnEntityResourceAmountChanged;
-            }
+            _displayedSelectable.UnregisterListeners();
 
             _displayedSelectable = null;
             if (MoveTimer != null) {
@@ -140,18 +133,6 @@ namespace Gameplay.UI {
             }
         }
 
-        private void OnEntityAbilityPerformed(IAbility iAbility, AbilityCooldownTimer abilityCooldownTimer) {
-            UpdateEntityInfo();
-        }
-
-        private void OnEntityAbilityCooldownExpired(IAbility ability, AbilityCooldownTimer abilityCooldownTimer) {
-            UpdateEntityInfo();
-        }
-
-        private void OnEntityResourceAmountChanged(INetworkableFieldValue oldValue, INetworkableFieldValue newValue, object metadata) {
-            UpdateEntityInfo();
-        }
-
         private void UpdateEntityInfo() {
             if (_displayedSelectable == null) return;
 
@@ -167,6 +148,7 @@ namespace Gameplay.UI {
             _displayedSelectable.SetUpRangeView(_rangeRow, _rangeField);
             _displayedSelectable.SetUpResourceView(ResourceRow, ResourceLabel, ResourceField);
             _displayedSelectable.SetUpBuildQueueView(_buildQueueForStructure, _buildQueueForWorker);
+            _displayedSelectable.SetUpKillCountView(_killCountRow, _killCountField);
         }
         
         /// <summary>

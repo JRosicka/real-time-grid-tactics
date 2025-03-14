@@ -50,8 +50,9 @@ namespace Gameplay.Entities {
         }
         
         #endregion
-
-        public void ReceiveAttackFromEntity(GridEntity sourceEntity) {
+        
+        /// <returns>True if this results in the entity dying, otherwise false</returns>
+        public bool ReceiveAttackFromEntity(GridEntity sourceEntity) {
             // Get base damage
             float damage = sourceEntity.Damage;
             
@@ -79,7 +80,10 @@ namespace Gameplay.Entities {
 
             if (CurrentHP <= 0) {
                 Kill();
+                return true;
             }
+
+            return false;
         }
         
         public void Heal(int healAmount) {

@@ -54,6 +54,8 @@ namespace Gameplay.Entities {
         public IBuildQueue BuildQueue;
         [CanBeNull] // If not yet initialized on the client
         public IInteractBehavior InteractBehavior;
+        private NetworkableField _killCountField;
+        public int KillCount => ((NetworkableIntegerValue)_killCountField?.Value)?.Value ?? 0;
 
         // Abilities
         /// <summary>
@@ -110,6 +112,7 @@ namespace Gameplay.Entities {
         public event Action UnregisteredEvent;
         // Needs to happen right after UnregisteredEvent, probably. Keep separate. 
         public event Action KilledEvent;
+        public event Action<int> KillCountChanged;
         public event Action<List<IAbility>> AbilityQueueUpdatedEvent;
         /// <summary>
         /// Only triggered on server
@@ -126,6 +129,7 @@ namespace Gameplay.Entities {
             TargetLocationLogic = new NetworkableField(this, nameof(TargetLocationLogic), new TargetLocationLogic());
             _location = new NetworkableField(this, nameof(_location), new NetworkableVector2IntegerValue(new Vector2Int(0, 0)));
             LastAttackedEntity = new NetworkableField(this, nameof(LastAttackedEntity), new NetworkableGridEntityValue(null));
+            _killCountField = new NetworkableField(this, nameof(_killCountField), new NetworkableIntegerValue(0));
         }
 
         /// <summary>
@@ -183,6 +187,7 @@ namespace Gameplay.Entities {
             DeathStatusHandler.Initialize(OnEntityReadyToDie);
             LastAttackedEntity.ValueChanged += UpdateAttackTarget;
             TargetLocationLogic.ValueChanged += UpdateAttackTarget;
+            _killCountField.ValueChanged += (_, _, _) => KillCountChanged?.Invoke(KillCount);
             
             Interactable = true;
         } 
@@ -508,6 +513,10 @@ namespace Gameplay.Entities {
                 SetTargetLocation(targetCell, null, true);
             }
         }
+
+        private void IncrementKillCount() {
+            _killCountField.UpdateValue(new NetworkableIntegerValue(KillCount + 1));
+        }
         
         private enum TargetType {
             Enemy = 1,
@@ -544,8 +553,13 @@ namespace Gameplay.Entities {
                 return;
             }
             
-            HPHandler.ReceiveAttackFromEntity(sourceEntity);
+            bool killed = HPHandler.ReceiveAttackFromEntity(sourceEntity);
             TryRespondToAttack(sourceEntity);
+
+            // TODO would be better to put this in a more central attack module. It should gather a total amount of kills in the given instant in order to account for multiple kills at once (splash damage)
+            if (killed) {
+                sourceEntity.IncrementKillCount();
+            }
         }
 
         private void TryRespondToAttack(GridEntity sourceEntity) {

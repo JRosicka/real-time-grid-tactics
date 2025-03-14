@@ -50,5 +50,14 @@ namespace Gameplay.UI {
         public void SetUpBuildQueueView(BuildQueueView buildQueueForStructure, BuildQueueView buildQueueForWorker) {
             // Nothing to do
         }
+
+        public void SetUpKillCountView(GameObject killCountRow, TMP_Text killCountField) {
+            killCountRow.SetActive(false);
+            killCountField.text = string.Empty;
+        }
+
+        public void UnregisterListeners() {
+            // Nothing to do
+        }
     }
 }
