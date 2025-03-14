@@ -21,9 +21,9 @@ MonoBehaviour:
     Amount: 50
   Requirements: []
   BuildTime: 30
-  DisplayTeamColorOverMainSprite: 0
-  BaseSprite: {fileID: 21300000, guid: 9a8fb5c77c0d9eb4aa88a5037b35906e, type: 3}
-  TeamColorSprite: {fileID: 21300000, guid: 9a8fb5c77c0d9eb4aa88a5037b35906e, type: 3}
+  DisplayTeamColorOverMainSprite: 1
+  BaseSprite: {fileID: 21300000, guid: dc422b89f56f690458d7456e8575b743, type: 3}
+  TeamColorSprite: {fileID: 21300000, guid: 38b6968502ab8a04e9740d46c7916c03, type: 3}
   BaseSpriteIconOverride: {fileID: 0}
   _viewPrefab: {fileID: 7504026570216467247, guid: 578b7f995f51c3845914f63ae14fc166, type: 3}
   SelectionSound:
