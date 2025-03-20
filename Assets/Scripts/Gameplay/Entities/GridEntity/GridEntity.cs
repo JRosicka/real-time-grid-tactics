@@ -202,7 +202,7 @@ namespace Gameplay.Entities {
             // Add any tiles that have at least one of our tags in its inaccessible tags list
             InaccessibleTiles = tiles.Where(t => t.InaccessibleTags.Intersect(Tags).Any()).ToList();
             // Add any tiles that have at least one of our tags in its slow tags list, and is not an inaccessible tile
-            SlowTiles = tiles.Where(t => t.SlowTags.Intersect(Tags).Any())
+            SlowTiles = tiles.Where(t => t.SlowTags.Select(s => s.Tag).Intersect(Tags).Any())
                 .Where(t => !InaccessibleTiles.Contains(t))
                 .ToList();
         }
@@ -475,11 +475,7 @@ namespace Gameplay.Entities {
                 return -1;
             }
 
-            if (SlowTiles.Contains(tile)) {
-                return EntityData.SlowMoveTime;
-            }
-
-            return EntityData.NormalMoveTime;
+            return EntityData.NormalMoveTime * tile.GetMoveModifier(Tags);
         }
 
         public void ToggleHoldPosition(bool holdPosition) {
@@ -560,6 +556,28 @@ namespace Gameplay.Entities {
             if (killed) {
                 sourceEntity.IncrementKillCount();
             }
+        }
+        
+        public float GetStructureDefenseModifier() {
+            if (EntityData.IsStructure) {
+                return EntityData.SharedUnitDamageTakenModifier;
+            }
+
+            List<GridEntity> structuresAtLocation = GameManager.Instance.CommandManager.EntitiesOnGrid.EntitiesAtLocation(Location!.Value)?.Entities
+                ?.Select(e => e.Entity).Where(e => e.EntityData.IsStructure).ToList() ?? new List<GridEntity>();
+            foreach (GridEntity structure in structuresAtLocation) {
+                // Return the damage modifier of any structures whose modifier should be applied to this entity
+                if (structure.EntityData.SharedUnitDamageTakenModifierTags.Count == 0
+                    || structure.EntityData.SharedUnitDamageTakenModifierTags.Any(t => EntityData.Tags.Contains(t))) {
+                    return structure.EntityData.SharedUnitDamageTakenModifier;
+                }
+            }
+
+            return 1f;
+        }
+
+        public float GetTerrainDefenseModifier() {
+            return CurrentTileType!.GetDefenseModifier(EntityData);
         }
 
         private void TryRespondToAttack(GridEntity sourceEntity) {

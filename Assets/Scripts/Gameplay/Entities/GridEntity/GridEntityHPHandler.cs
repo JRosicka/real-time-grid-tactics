@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using Gameplay.Config;
 using Mirror;
@@ -62,18 +61,11 @@ namespace Gameplay.Entities {
                 : 0;
             
             // Apply any multiplicative defense modifiers from terrain
-            damage *= _gridEntity.CurrentTileType!.GetDefenseModifier(EntityData);
+            damage *= _gridEntity.GetTerrainDefenseModifier();
 
             // Apply any multiplicative defense modifiers from structures (as long as this is not a structure)
             if (!EntityData.IsStructure) {
-                List<GridEntity> structuresAtLocation = GameManager.Instance.CommandManager.EntitiesOnGrid.EntitiesAtLocation(_gridEntity.Location!.Value)?.Entities
-                    ?.Select(e => e.Entity).Where(e => e.EntityData.IsStructure).ToList() ?? new List<GridEntity>();
-                foreach (GridEntity structure in structuresAtLocation) {
-                    if (structure.EntityData.SharedUnitDamageTakenModifierTags.Count == 0
-                        || structure.EntityData.SharedUnitDamageTakenModifierTags.Any(t => EntityData.Tags.Contains(t))) {
-                        damage *= structure.EntityData.SharedUnitDamageTakenModifier;
-                    }
-                }
+                damage *= _gridEntity.GetStructureDefenseModifier();
             }
             
             SetCurrentHP(CurrentHP - Mathf.RoundToInt(damage), true);

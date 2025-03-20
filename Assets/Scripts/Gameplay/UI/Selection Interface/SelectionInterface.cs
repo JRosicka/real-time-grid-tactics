@@ -38,6 +38,10 @@ namespace Gameplay.UI {
         [SerializeField] private GameObject _killCountRow;
         [SerializeField] private TMP_Text _killCountField;
 
+        [SerializeField] private HoverableInfoIcon _defenseHoverableInfoIcon;
+        [SerializeField] private HoverableInfoIcon _attackHoverableInfoIcon;
+        [SerializeField] private HoverableInfoIcon _moveHoverableInfoIcon;
+
         [SerializeField] private BuildQueueView _buildQueueForStructure;
         [SerializeField] private BuildQueueView _buildQueueForWorker;
         
@@ -107,6 +111,9 @@ namespace Gameplay.UI {
         }
 
         private void DeselectCurrentSelectable() {
+            _defenseHoverableInfoIcon.HideIcon();
+            _attackHoverableInfoIcon.HideIcon();
+            _moveHoverableInfoIcon.HideIcon();
             if (_displayedSelectable == null) return;
 
             _displayedSelectable.UnregisterListeners();
@@ -130,6 +137,10 @@ namespace Gameplay.UI {
                 AbilityInterface.ClearInfo();
                 _buildQueueForStructure.Clear();
                 _buildQueueForWorker.Clear();
+                
+                _defenseHoverableInfoIcon.HideIcon();
+                _attackHoverableInfoIcon.HideIcon();
+                _moveHoverableInfoIcon.HideIcon();
             }
         }
 
@@ -149,6 +160,7 @@ namespace Gameplay.UI {
             _displayedSelectable.SetUpResourceView(ResourceRow, ResourceLabel, ResourceField);
             _displayedSelectable.SetUpBuildQueueView(_buildQueueForStructure, _buildQueueForWorker);
             _displayedSelectable.SetUpKillCountView(_killCountRow, _killCountField);
+            _displayedSelectable.SetUpHoverableInfo(_defenseHoverableInfoIcon, _attackHoverableInfoIcon, _moveHoverableInfoIcon);
         }
         
         /// <summary>

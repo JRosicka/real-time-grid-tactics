@@ -156,6 +156,27 @@ namespace Gameplay.UI {
             }
         }
 
+        private HoverableInfoIcon _defenseHoverableInfoIcon;
+        private HoverableInfoIcon _attackHoverableInfoIcon;
+        public void SetUpHoverableInfo(HoverableInfoIcon defenseHoverableInfoIcon, HoverableInfoIcon attackHoverableInfoIcon, HoverableInfoIcon moveHoverableInfoIcon) {
+            _defenseHoverableInfoIcon = defenseHoverableInfoIcon;
+            _attackHoverableInfoIcon = attackHoverableInfoIcon;
+            
+            string defenseTooltip = GetDefenseTooltip();
+            if (!string.IsNullOrEmpty(defenseTooltip)) {
+                defenseHoverableInfoIcon.ShowIcon(defenseTooltip);
+            } else {
+                defenseHoverableInfoIcon.HideIcon();
+            }
+            
+            string attackTooltip = GetAttackTooltip();
+            if (!string.IsNullOrEmpty(attackTooltip)) {
+                attackHoverableInfoIcon.ShowIcon(attackTooltip);
+            } else {
+                attackHoverableInfoIcon.HideIcon();
+            }
+        }
+
         public void UnregisterListeners() {
             Entity.AbilityPerformedEvent -= OnEntityAbilityPerformed;
             Entity.CooldownTimerExpiredEvent -= OnEntityAbilityCooldownExpired;
@@ -166,6 +187,7 @@ namespace Gameplay.UI {
         private void OnEntityAbilityPerformed(IAbility iAbility, AbilityCooldownTimer abilityCooldownTimer) {
             SetUpMoveView(_movesRow, _movesField, _moveTimer, _moveChannel);
             SetUpResourceView(_resourceRow, _resourceLabel, _resourceField);
+            SetUpHoverableInfo(_defenseHoverableInfoIcon, _attackHoverableInfoIcon, null);
         }
 
         private void OnEntityAbilityCooldownExpired(IAbility ability, AbilityCooldownTimer abilityCooldownTimer) {
@@ -180,5 +202,65 @@ namespace Gameplay.UI {
             if (!_killCountField) return;
             _killCountField.text = newKillCount.ToString();
         }
+        
+        #region Tooltips
+        
+        private const string DefenseFormatStructure = "Provides a {0}% defense bonus for {1} units.";
+        private const string DefenseFormatUnit = "Receives a {0}% defense bonus from friendly structure.";
+        private const string DefenseFormatTerrain = "Receives a {0}% defense bonus from terrain.";
+        private string GetDefenseTooltip() {
+            float defenseModifier = Entity.GetStructureDefenseModifier();
+            // ReSharper disable once CompareOfFloatsByEqualityOperator
+            if (defenseModifier != 1f) {
+                // Defense modifier from structure (friendly or itself)
+                if (Entity.EntityData.IsStructure) {
+                    string entitiesReceivingDefense = "all";
+                    if (Entity.EntityData.SharedUnitDamageTakenModifierTags.Count > 0) {
+                        entitiesReceivingDefense = GetStringListForEntityTags(Entity.EntityData.SharedUnitDamageTakenModifierTags);
+                    }
+                    return string.Format(DefenseFormatStructure, (1 - defenseModifier) * 100, entitiesReceivingDefense);
+                }
+            
+                return string.Format(DefenseFormatUnit, (1 - defenseModifier) * 100);
+            }
+            
+            defenseModifier = Entity.GetTerrainDefenseModifier();
+            // ReSharper disable once CompareOfFloatsByEqualityOperator
+            if (defenseModifier != 1f) {
+                // Defense modifier from terrain
+                return string.Format(DefenseFormatTerrain, (1 - defenseModifier) * 100);
+            }
+            
+            return "";
+        }
+        
+        private const string AttackFormat = "Deals {0} additional damage to {1} units.";
+        private string GetAttackTooltip() {
+            return Entity.EntityData.BonusDamage == 0 
+                ? "" 
+                : string.Format(AttackFormat, Entity.EntityData.BonusDamage, GetStringListForEntityTags(Entity.EntityData.TagsToApplyBonusDamageTo));
+        }
+
+        private static string GetStringListForEntityTags(List<EntityData.EntityTag> tags) {
+            string ret = "";
+            for (int i = 0; i < tags.Count; i++) {
+                ret += tags[i];
+                if (i == tags.Count - 1) {
+                    // Nothing to add
+                } else if (i == tags.Count - 2) {
+                    if (tags.Count > 2) {
+                        ret += ", and ";
+                    } else {
+                        ret += " and ";
+                    }
+                } else {
+                    ret += ", ";
+                }
+            }
+
+            return ret;
+        }
+        
+        #endregion
     }
 }

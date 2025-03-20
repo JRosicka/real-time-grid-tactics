@@ -56,6 +56,18 @@ namespace Gameplay.UI {
             killCountField.text = string.Empty;
         }
 
+        public void SetUpHoverableInfo(HoverableInfoIcon defenseHoverableInfoIcon, HoverableInfoIcon attackHoverableInfoIcon, HoverableInfoIcon moveHoverableInfoIcon) {
+            string defenseTooltip = _tile.GetDefenseTooltip();
+            if (!string.IsNullOrEmpty(defenseTooltip)) {
+                defenseHoverableInfoIcon.ShowIcon(defenseTooltip);
+            }
+
+            string movementTooltip = _tile.GetMovementTooltip();
+            if (!string.IsNullOrEmpty(movementTooltip)) {
+                moveHoverableInfoIcon.ShowIcon(movementTooltip);
+            }
+        }
+
         public void UnregisterListeners() {
             // Nothing to do
         }
