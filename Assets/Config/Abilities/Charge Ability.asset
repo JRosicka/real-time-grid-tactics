@@ -27,14 +27,14 @@ MonoBehaviour:
     _channelBlockers:
     - {fileID: 11400000, guid: feaeb05e30f0b1b439e4f27b75aba8b6, type: 2}
     _slotLocation: 1
-    _addedMovementTime: 1.5
+    _addedMovementTime: 1
     _performOnStart: 0
     _payCostUpFront: 0
     _repeatForeverAfterStartEvenWhenFailed: 0
     _repeatWhenCooldownFinishes: 0
     _animateWhenCooldownComplete: 0
     _selectable: 1
-    _selectableWhenBlocked: 1
+    _selectableWhenBlocked: 0
     _autoSelect: 0
     _selectableForAllPlayers: 0
     _tryingToPerformCancelsBuilds: 1
