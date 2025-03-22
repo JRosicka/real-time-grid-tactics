@@ -27,8 +27,6 @@ namespace Gameplay.Config.Abilities {
         public override bool CancelableWhileQueued => true;
 
         public override void SelectAbility(GridEntity selector) {
-            List<Vector2Int> viableTargets = GetViableTargets(selector);
-            GridController.UpdateSelectableCells(viableTargets, selector);
             EntitySelectionManager.SelectTargetableAbility(this, selector.Team, null);
         }
 

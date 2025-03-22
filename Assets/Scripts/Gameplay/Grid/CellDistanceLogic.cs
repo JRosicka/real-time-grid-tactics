@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -17,8 +18,20 @@ namespace Gameplay.Grid {
             UpLeft = new Vector2Int(-1, 1),
             UpRight = new Vector2Int(1, 1);
 
-        private static readonly Vector2Int[] DirectionsWhenYIsEven = { Left, Right, Down, DownLeft, Up, UpLeft };
-        private static readonly Vector2Int[] DirectionsWhenYIsOdd = { Left, Right, Down, DownRight, Up, UpRight };
+        /// <summary>
+        /// The angle of each given hex direction in relation to Vector.Right
+        /// </summary>
+        public enum DirectionAngle {
+            Right = 0,
+            UpRight = 60,
+            UpLeft = 120,
+            Left = 180,
+            DownLeft = 240,
+            DownRight = 300
+        }
+
+        private static readonly Vector2Int[] DirectionsWhenYIsEven = { Right, Up, UpLeft, Left, DownLeft, Down };
+        private static readonly Vector2Int[] DirectionsWhenYIsOdd = { Right, UpRight, Up, Left, Down, DownRight };
 
         /// <summary>
         /// Gets the set of cells that neighbor the given one. These cells may or may not actually exist - we always
@@ -27,6 +40,19 @@ namespace Gameplay.Grid {
         public static IEnumerable<Vector2Int> Neighbors(Vector2Int cell) {
             Vector2Int[] directions = cell.y % 2 == 0 ? DirectionsWhenYIsEven : DirectionsWhenYIsOdd;
             return directions.Select(direction => cell + direction);
+        }
+
+        private static Vector2Int NeighborInDirection(Vector2Int cell, DirectionAngle direction) {
+            Vector2Int[] directions = cell.y % 2 == 0 ? DirectionsWhenYIsEven : DirectionsWhenYIsOdd;
+            return direction switch {
+                DirectionAngle.Right => directions[0],
+                DirectionAngle.UpRight => directions[1],
+                DirectionAngle.UpLeft => directions[2],
+                DirectionAngle.Left => directions[3],
+                DirectionAngle.DownLeft => directions[4],
+                DirectionAngle.DownRight => directions[5],
+                _ => throw new ArgumentOutOfRangeException(nameof(direction), direction, "Invalid direction")
+            };
         }
 
         /// <summary>
@@ -96,6 +122,71 @@ namespace Gameplay.Grid {
             }
             cells.Add(targetCell);
             return cells;
+        }
+
+        /// <summary>
+        /// Gets either one or two of the closest <see cref="DirectionAngle"/>s from the origin to the target.
+        /// - If the target cell is along the line of a given direction, then only that direction will be returned.
+        /// - Otherwise the two directions of the lines on either side of the line between the origin and target are returned.
+        /// </summary>
+        public static List<DirectionAngle> GetClosestDirections(Vector2Int originCell, Vector2Int targetCell) {
+            float lineAngleRad = Mathf.Atan2(targetCell.y - originCell.y, targetCell.x - originCell.x);
+            float lineAngleDeg = Mathf.Rad2Deg * lineAngleRad;
+            if (lineAngleDeg < 0) lineAngleDeg += 360;
+
+            if (Mathf.Approximately(lineAngleDeg, (float)DirectionAngle.Right)) {
+                return new List<DirectionAngle> { DirectionAngle.Right };
+            }
+            if (Mathf.Approximately(lineAngleDeg, (float)DirectionAngle.UpRight)) {
+                return new List<DirectionAngle> { DirectionAngle.UpRight };
+            }
+            if (Mathf.Approximately(lineAngleDeg, (float)DirectionAngle.UpLeft)) {
+                return new List<DirectionAngle> { DirectionAngle.UpLeft };
+            }
+            if (Mathf.Approximately(lineAngleDeg, (float)DirectionAngle.Left)) {
+                return new List<DirectionAngle> { DirectionAngle.Left };
+            }
+            if (Mathf.Approximately(lineAngleDeg, (float)DirectionAngle.DownLeft)) {
+                return new List<DirectionAngle> { DirectionAngle.DownLeft };
+            }
+            if (Mathf.Approximately(lineAngleDeg, (float)DirectionAngle.DownRight)) {
+                return new List<DirectionAngle> { DirectionAngle.DownRight };
+            }
+
+            return lineAngleDeg switch {
+                < 60f => new List<DirectionAngle> { DirectionAngle.Right, DirectionAngle.UpRight },
+                < 120f => new List<DirectionAngle> { DirectionAngle.UpRight, DirectionAngle.UpLeft },
+                < 180f => new List<DirectionAngle> { DirectionAngle.UpLeft, DirectionAngle.Left },
+                < 240f => new List<DirectionAngle> { DirectionAngle.Left, DirectionAngle.DownLeft },
+                < 300f => new List<DirectionAngle> { DirectionAngle.DownLeft, DirectionAngle.DownRight },
+                < 360f => new List<DirectionAngle> { DirectionAngle.DownRight, DirectionAngle.Right },
+                _ => throw new Exception($"Failed to find direction angle between origin ({originCell.x}, {originCell.y}) and target ({targetCell.x}, {targetCell.y}) cells.")
+            };
+        }
+        
+        /// <summary>
+        /// Gets either one or two lists of cell locations in the closest straight lines from the origin to the target.
+        /// - If the target cell is along the line of a given direction, then only cells in that direction will be returned.
+        /// - Otherwise cells in the two directions of the lines on either side of the line between the origin and target are returned.
+        ///
+        /// The origin cell is not included in the returned list(s).
+        /// </summary>
+        public static (List<Vector2Int>, List<Vector2Int>) GetCellsInClosestStraightLines(Vector2Int origin, Vector2Int target, int range) {
+            List<DirectionAngle> directions = GetClosestDirections(origin, target);
+            List<List<Vector2Int>> cellSets = new();
+
+            foreach (DirectionAngle direction in directions) {
+                List<Vector2Int> cellsInLine = new();
+                Vector2Int searchingCell = origin;
+                for (int i = 0; i < range; i++) {
+                    searchingCell = NeighborInDirection(searchingCell, direction);
+                    cellsInLine.Add(searchingCell);
+                }
+                
+                cellSets.Add(cellsInLine);
+            }
+            
+            return (cellSets[0], cellSets.Count > 1 ? cellSets[1] : null);
         }
         
         private static Vector3Int OffsetToCubic(Vector2Int cell) {

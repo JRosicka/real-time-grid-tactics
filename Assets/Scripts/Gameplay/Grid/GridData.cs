@@ -75,7 +75,7 @@ namespace Gameplay.Grid {
         }
 
         /// <summary>
-        /// Returns a list of all cells within range (up to x cells away) from the specified range. The list includes
+        /// Returns a list of all cells within range (up to x cells away) from the specified location. The list includes
         /// the provided location.
         /// </summary>
         public List<CellData> GetCellsInRange(Vector2Int location, int range) {
