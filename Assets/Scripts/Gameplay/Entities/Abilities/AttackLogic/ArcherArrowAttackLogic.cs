@@ -11,7 +11,7 @@ namespace Gameplay.Entities.Abilities {
         private ArcherArrow ArrowPrefab => GameManager.Instance.PrefabAtlas.ArcherArrow;
         private GridController GridController => GameManager.Instance.GridController;
         
-        public void DoAttack(GridEntity attacker, GridEntity target) {
+        public void DoAttack(GridEntity attacker, GridEntity target, int bonusDamage) {
             Vector2Int? attackLocation = attacker.Location;
             if (attackLocation == null) return;
             
@@ -23,10 +23,10 @@ namespace Gameplay.Entities.Abilities {
             if (NetworkClient.active) {
                 // MP Server
                 NetworkServer.Spawn(arrow.gameObject);
-                arrow.Initialize(attacker, target);
+                arrow.Initialize(attacker, target, bonusDamage);
             } else if (!NetworkClient.active) {
                 // SP
-                arrow.Initialize(attacker, target);
+                arrow.Initialize(attacker, target, bonusDamage);
             }
         }
     }

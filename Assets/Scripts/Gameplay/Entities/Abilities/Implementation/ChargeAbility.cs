@@ -54,13 +54,7 @@ namespace Gameplay.Entities.Abilities {
             }   // Otherwise if the count is one, then we are already one cell away from the target, so don't move
 
             // ...then attack it
-            AttackAbilityData attackAbilityData = Performer.GetAbilityData<AttackAbilityData>();
-            AbilityAssignmentManager.QueueAbility(Performer, attackAbilityData, new AttackAbilityParameters {
-                TargetFire = true,
-                Target = targetEntity,
-                Destination = AbilityParameters.Destination
-            }, true, false, true, false);
-            Performer.SetTargetLocation(AbilityParameters.Destination, targetEntity, true);
+            GameManager.Instance.AttackManager.PerformAttack(Performer, targetEntity, 0, true);
             return true;
         }
     }

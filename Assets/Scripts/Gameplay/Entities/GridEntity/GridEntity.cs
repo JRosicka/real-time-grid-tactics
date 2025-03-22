@@ -542,14 +542,14 @@ namespace Gameplay.Entities {
             return originEntity.Team == targetEntity.Team ? TargetType.Ally : TargetType.Enemy;
         }
 
-        public void ReceiveAttackFromEntity(GridEntity sourceEntity) {
+        public void ReceiveAttackFromEntity(GridEntity sourceEntity, int bonusDamage) {
             sourceEntity.LastAttackedEntity.UpdateValue(new NetworkableGridEntityValue(this));
             if (Location == null) {
                 Debug.LogWarning("Entity received attack but it is not registered or unregistered");
                 return;
             }
             
-            bool killed = HPHandler.ReceiveAttackFromEntity(sourceEntity);
+            bool killed = HPHandler.ReceiveAttackFromEntity(sourceEntity, bonusDamage);
             TryRespondToAttack(sourceEntity);
 
             // TODO would be better to put this in a more central attack module. It should gather a total amount of kills in the given instant in order to account for multiple kills at once (splash damage)

@@ -42,6 +42,7 @@ public class GameManager : MonoBehaviour {
     public AbilityAssignmentManager AbilityAssignmentManager;
     public QueuedStructureBuildsManager QueuedStructureBuildsManager;
     public GameAudioPlayer GameAudioPlayer;
+    public AttackManager AttackManager;
     
     private AudioPlayer _audioPlayer;
     public AudioPlayer AudioPlayer {
@@ -79,6 +80,7 @@ public class GameManager : MonoBehaviour {
         GridInputController.Initialize(EntitySelectionManager, this);
         DisconnectionDialog.Initialize(DisconnectionHandler);
         GameAudioPlayer.Initialize(AudioPlayer, GameSetupManager, Configuration.AudioConfiguration);
+        AttackManager = new AttackManager();
     }
 
     private void OnDestroy() {

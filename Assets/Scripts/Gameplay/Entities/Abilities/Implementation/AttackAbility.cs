@@ -218,8 +218,7 @@ namespace Gameplay.Entities.Abilities {
                 return;
             }
             
-            IAttackLogic attackLogic = AttackAbilityLogicFactory.CreateAttackLogic(this);
-            attackLogic.DoAttack(Performer, target);
+            GameManager.Instance.AttackManager.PerformAttack(Performer, target, 0, false);
         }
     }
 

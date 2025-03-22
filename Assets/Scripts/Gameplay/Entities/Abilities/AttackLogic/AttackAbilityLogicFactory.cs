@@ -6,8 +6,8 @@ namespace Gameplay.Entities.Abilities {
     /// Instantiates <see cref="IAttackLogic"/> objects
     /// </summary>
     public static class AttackAbilityLogicFactory {
-        public static IAttackLogic CreateAttackLogic(AttackAbility attackAbility) {
-            return ((AttackAbilityData)attackAbility.AbilityData).AttackType switch {
+        public static IAttackLogic CreateAttackLogic(AttackAbilityLogicType attackType) {
+            return attackType switch {
                 AttackAbilityLogicType.None => null,
                 AttackAbilityLogicType.NormalMelee => new MeleeAttackLogic(),
                 AttackAbilityLogicType.ArcherArrow => new ArcherArrowAttackLogic(),

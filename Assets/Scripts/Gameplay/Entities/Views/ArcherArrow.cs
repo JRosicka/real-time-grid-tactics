@@ -25,13 +25,15 @@ namespace Gameplay.Entities {
         private float _startingDistance;
         private bool _stopLobbing;
         private int _signInt;
-        private bool _initialized; 
+        private bool _initialized;
+        private int _bonusDamage;
 
         /// <summary>
         /// Should only be called on the server/SP. Sets up logic for moving the arrow to the target. 
         /// </summary>
-        public void Initialize(GridEntity attacker, GridEntity target) {
+        public void Initialize(GridEntity attacker, GridEntity target, int bonusDamage) {
             _initialized = true;
+            _bonusDamage = bonusDamage;
             DoInitialize(attacker, target, true);
             if (NetworkClient.active) {
                 RpcInitialize(attacker, target);
@@ -114,7 +116,7 @@ namespace Gameplay.Entities {
         
         private void HitTarget() {
             if (_actuallyDamageTarget) {
-                _target.ReceiveAttackFromEntity(_attacker);
+                _target.ReceiveAttackFromEntity(_attacker, _bonusDamage);
             }
             Destroy(gameObject);
         }

@@ -3,8 +3,8 @@ namespace Gameplay.Entities.Abilities {
     /// <see cref="IAttackLogic"/> for a generic melee attack
     /// </summary>
     public class MeleeAttackLogic : IAttackLogic {
-        public void DoAttack(GridEntity attacker, GridEntity target) {
-            target.ReceiveAttackFromEntity(attacker);
+        public void DoAttack(GridEntity attacker, GridEntity target, int bonusDamage) {
+            target.ReceiveAttackFromEntity(attacker, bonusDamage);
         }
     }
 }

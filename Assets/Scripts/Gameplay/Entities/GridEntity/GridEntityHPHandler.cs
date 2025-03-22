@@ -51,9 +51,12 @@ namespace Gameplay.Entities {
         #endregion
         
         /// <returns>True if this results in the entity dying, otherwise false</returns>
-        public bool ReceiveAttackFromEntity(GridEntity sourceEntity) {
+        public bool ReceiveAttackFromEntity(GridEntity sourceEntity, int bonusDamage) {
             // Get base damage
             float damage = sourceEntity.Damage;
+            
+            // Apply bonus damange
+            damage += bonusDamage;
             
             // Apply any additive attack modifiers based on tags
             damage += sourceEntity.EntityData.TagsToApplyBonusDamageTo.Any(t => EntityData.Tags.Contains(t))
