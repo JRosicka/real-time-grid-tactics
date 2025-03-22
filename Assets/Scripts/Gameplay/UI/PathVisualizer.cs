@@ -9,24 +9,29 @@ namespace Gameplay.UI {
     /// Handles creating (from a pool) a bunch of directional arrows pointing from tile to tile to visualize a path
     /// </summary>
     public class PathVisualizer : MonoBehaviour {
-        [SerializeField] private DirectionalLine _directionalLinePrefab;
+        [SerializeField] private AbstractDirectionalLine _directionalLinePrefab;
+        [SerializeField] private AbstractDirectionalLine _thickDirectionalLinePrefab;
         [SerializeField] private Transform _lineBucket;
-        [SerializeField] private int _poolSize;
+        [SerializeField] private int _directionalLinePoolSize;
+        [SerializeField] private int _thickDirectionalLinePoolSize;
 
-        private GameObjectPool<DirectionalLine> _linePool;
-        private readonly List<DirectionalLine> _currentlyDisplayedLines = new List<DirectionalLine>();
+        private GameObjectPool<AbstractDirectionalLine> _linePool;
+        private GameObjectPool<AbstractDirectionalLine> _thickLinePool;
+        private readonly List<AbstractDirectionalLine> _currentlyDisplayedLines = new();
+        private GameObjectPool<AbstractDirectionalLine> _currentlyDisplayedLinesPool;
 
         private GridController GridController => GameManager.Instance.GridController;
         private PathfinderService PathfinderService => GameManager.Instance.PathfinderService;
 
         public void Initialize() {
-            _linePool = new GameObjectPool<DirectionalLine>(_directionalLinePrefab, _lineBucket, _poolSize);
+            _linePool = new GameObjectPool<AbstractDirectionalLine>(_directionalLinePrefab, _lineBucket, _directionalLinePoolSize);
+            _thickLinePool = new GameObjectPool<AbstractDirectionalLine>(_thickDirectionalLinePrefab, _lineBucket, _thickDirectionalLinePoolSize);
         }
 
         /// <summary>
-        /// Lay out a set of <see cref="DirectionalLine"/>s along a path
+        /// Lay out a set of <see cref="AbstractDirectionalLine"/>s along a path
         /// </summary>
-        public void Visualize(PathfinderService.Path path, bool attack, bool hidePathDestination) {
+        public void Visualize(PathfinderService.Path path, bool attack, bool hidePathDestination, bool thickLines) {
             ClearPath();
             List<GridNode> pathNodes = path.Nodes;
             
@@ -35,10 +40,13 @@ namespace Gameplay.UI {
                 || (pathNodes.Count < 2 && path.ContainsRequestedDestination) 
                 || (pathNodes.Count < 3 && hidePathDestination)) return;
             
+            var linePool = thickLines ? _thickLinePool : _linePool;
+            _currentlyDisplayedLinesPool = linePool;
+            
             // No need to visualise for the final cell
             float currentAngle = -1f;
             for (int i = 0; i < pathNodes.Count - 1; i++) {
-                DirectionalLine line = _linePool.GetObject();
+                AbstractDirectionalLine line = linePool.GetObject();
                 _currentlyDisplayedLines.Add(line);
                 
                 // Reveal the line and move it in place
@@ -53,7 +61,7 @@ namespace Gameplay.UI {
                 
                 // Hide/adjust parts of the line if this is the first or last cell in the path. 
                 if (i == 0) {
-                    line.SetMask(DirectionalLine.LineType.StartHalf);
+                    line.SetMask(AbstractDirectionalLine.LineType.StartHalf);
                     if (pathNodes.Count == 2) {
                         // This is the only line being displayed, so we should show the destination icon. 
                         line.ShowDestinationIcon(attack);
@@ -61,16 +69,16 @@ namespace Gameplay.UI {
                 } else if (i == pathNodes.Count - 2) {
                     // This is the last node we care about visualizing
                     if (hidePathDestination) {
-                        line.SetMask(DirectionalLine.LineType.EndHalf);
+                        line.SetMask(AbstractDirectionalLine.LineType.EndHalf);
                     } else {
-                        line.SetMask(DirectionalLine.LineType.Full);
+                        line.SetMask(AbstractDirectionalLine.LineType.Full);
                         line.ShowDestinationIcon(attack);
                     }
                     
                     // Hide/show the previous line's dot if it has a different angle than this one.
                     _currentlyDisplayedLines[i-1].ToggleEndDot(!Mathf.Approximately(currentAngle, previousAngle));
                 } else {
-                    line.SetMask(DirectionalLine.LineType.Full);
+                    line.SetMask(AbstractDirectionalLine.LineType.Full);
                     // Hide/show the previous line's dot if it has a different angle than this one.
                     _currentlyDisplayedLines[i-1].ToggleEndDot(!Mathf.Approximately(currentAngle, previousAngle));
                 }
@@ -78,9 +86,9 @@ namespace Gameplay.UI {
         }
 
         public void ClearPath() {
-            foreach (DirectionalLine line in _currentlyDisplayedLines) {
+            foreach (AbstractDirectionalLine line in _currentlyDisplayedLines) {
                 line.Discard();
-                _linePool.AddAndHideObject(line);
+                _currentlyDisplayedLinesPool.AddAndHideObject(line);
             }
             _currentlyDisplayedLines.Clear();
         }

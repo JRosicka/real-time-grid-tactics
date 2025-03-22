@@ -88,6 +88,12 @@ namespace Gameplay.Managers {
             Unit3_LocalTeam = !Unit3_LocalTeam;
             SetMoney_LocalTeam = !SetMoney_LocalTeam;
         }
+        
+        [Button]
+        public void ShowChargePathVisual() {
+            PathfinderService.Path path = GameManagerInstance.PathfinderService.FindPath(GameManagerInstance.EntitySelectionManager.SelectedEntity, new Vector2Int(0, -3));
+            GameManagerInstance.GridController.VisualizePath(path, false, true, true);
+        }
 
         public static bool NeedsToDisconnect { get; set; }
         [Button]

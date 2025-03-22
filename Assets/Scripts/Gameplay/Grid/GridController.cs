@@ -12,6 +12,7 @@ namespace Gameplay.Grid {
     /// </summary>
     public class GridController : MonoBehaviour {
         public const float CellWidth = 0.8659766f;
+        public const float CellWidthWithBuffer = 0.88f;
     
         [SerializeField] private UnityEngine.Grid _grid;
         [SerializeField] private Tilemap _gameplayTilemap;
@@ -130,8 +131,8 @@ namespace Gameplay.Grid {
             _pathVisualizer.ClearPath();
         }
 
-        public void VisualizePath(PathfinderService.Path path, bool attack, bool hidePathDestination) {
-            _pathVisualizer.Visualize(path, attack, hidePathDestination);
+        public void VisualizePath(PathfinderService.Path path, bool attack, bool hidePathDestination, bool thickLines) {
+            _pathVisualizer.Visualize(path, attack, hidePathDestination, thickLines);
         }
 
         private List<Vector2Int> _allCellsInBounds;

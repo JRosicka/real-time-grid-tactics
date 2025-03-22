@@ -1061,12 +1061,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad8c13648371345a0b7288e23587e731, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MaskTransform: {fileID: 5910571140299457898}
-  EndDot: {fileID: 1573779306634511731}
-  AttackDestinationIcon: {fileID: 1359529858793870869}
-  MoveDestinationIcon: {fileID: 1529219270986066009}
-  ImageColorsToChange:
-  - {fileID: 8616718190059775518}
+  DefaultColor: {r: 1, g: 1, b: 1, a: 1}
+  _attackColor: {r: 1, g: 0, b: 0, a: 1}
+  _moveColor: {r: 0.05490196, g: 0.4862745, b: 0.67058825, a: 1}
+  _maskTransform: {fileID: 5910571140299457898}
+  _imageColorsToChange:
   - {fileID: 4858786438069101986}
   - {fileID: 7413231665196834305}
   - {fileID: 8040234262782717727}
@@ -1076,10 +1075,11 @@ MonoBehaviour:
   - {fileID: 8207972793436676323}
   - {fileID: 3809631883698755776}
   - {fileID: 1721987697293219900}
+  - {fileID: 8616718190059775518}
   - {fileID: 1573779306634511731}
-  DefaultColor: {r: 1, g: 1, b: 1, a: 1}
-  AttackColor: {r: 1, g: 0, b: 0, a: 1}
-  MoveColor: {r: 0.05371129, g: 0.4863922, b: 0.6698113, a: 1}
+  _endDot: {fileID: 1573779306634511731}
+  _attackDestinationIcon: {fileID: 1359529858793870869}
+  _moveDestinationIcon: {fileID: 1529219270986066009}
 --- !u!95 &2595929354444759405
 Animator:
   serializedVersion: 5
