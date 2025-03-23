@@ -63,17 +63,20 @@ namespace Gameplay.Entities.Abilities {
         public Vector2Int Destination;
         // Same as Destination if not attacking a target there, otherwise this is the cell right before Destination in line
         public Vector2Int MoveDestination;
+        public Vector2Int ClickLocation;
         public GameTeam SelectorTeam;
 
         public void Serialize(NetworkWriter writer) {
             writer.Write(Destination);
             writer.Write(MoveDestination);
+            writer.Write(ClickLocation);
             writer.Write(SelectorTeam);
         }
 
         public void Deserialize(NetworkReader reader) {
             Destination = reader.Read<Vector2Int>();
             MoveDestination = reader.Read<Vector2Int>();
+            ClickLocation = reader.Read<Vector2Int>();
             SelectorTeam = reader.Read<GameTeam>();
         }
     }

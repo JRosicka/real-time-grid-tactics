@@ -64,7 +64,7 @@ namespace Gameplay.Grid {
         /// Gets all of the cells adjacent to the passed-in cell
         /// </summary>
         public CellData GetCell(Vector2Int location) {
-            return _cells.TryGetValue(location, out CellData cell) ? cell : null;
+            return _cells.GetValueOrDefault(location);
         }
         
         /// <summary>

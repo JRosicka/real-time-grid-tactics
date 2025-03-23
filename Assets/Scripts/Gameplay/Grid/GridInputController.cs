@@ -20,7 +20,7 @@ namespace Gameplay.Grid {
         private EntitySelectionManager _entitySelectionManager;
         private GameManager _gameManager;
         
-        private Vector2Int? _currentHoveredCell;
+        public Vector2Int? CurrentHoveredCell { get; private set; }
 
         public void Initialize(EntitySelectionManager entitySelectionManager, GameManager gameManager) {
             _entitySelectionManager = entitySelectionManager;
@@ -40,27 +40,27 @@ namespace Gameplay.Grid {
         
         public void ProcessMouseMove(PointerEventData eventData) {
             Vector2Int mousePos = _gridController.GetCellPosition(eventData.pointerCurrentRaycast.worldPosition);
-            if (mousePos == _currentHoveredCell) return;
+            if (mousePos == CurrentHoveredCell) return;
             if (!_gridController.IsInBounds(mousePos)) return;
-            _currentHoveredCell = mousePos;
+            CurrentHoveredCell = mousePos;
             
             _gridController.HoverOverCell(mousePos);
         }
 
         public void ReProcessMousePosition() {
-            if (_currentHoveredCell == null) return;
-            if (!_gridController.IsInBounds(_currentHoveredCell.Value)) return;
-            _gridController.HoverOverCell(_currentHoveredCell.Value);
+            if (CurrentHoveredCell == null) return;
+            if (!_gridController.IsInBounds(CurrentHoveredCell.Value)) return;
+            _gridController.HoverOverCell(CurrentHoveredCell.Value);
         }
 
         public void ProcessMouseExit() {
-            _currentHoveredCell = null;
+            CurrentHoveredCell = null;
             _gridController.StopHovering();
         }
         
         private void UpdateSelectedEntityPath() {
-            if (_currentHoveredCell == null) return;
-            _gridController.HoverOverCell((Vector2Int)_currentHoveredCell);
+            if (CurrentHoveredCell == null) return;
+            _gridController.HoverOverCell((Vector2Int)CurrentHoveredCell);
         }
         
         /// <summary>

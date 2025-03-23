@@ -4,6 +4,7 @@ using System.Linq;
 using Gameplay.Entities;
 using Gameplay.Entities.Abilities;
 using Gameplay.Grid;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace Gameplay.Config.Abilities {
@@ -22,12 +23,13 @@ namespace Gameplay.Config.Abilities {
         public EntitySelectionManager EntitySelectionManager => GameManager.Instance.EntitySelectionManager;
         public ICommandManager CommandManager => GameManager.Instance.CommandManager;
         
-        public override bool CanBeCanceled => true;
+        public override bool CanBeCanceled => false;
         public override bool CancelableWhileActive => false;
-        public override bool CancelableWhileQueued => true;
+        public override bool CancelableWhileQueued => false;
 
         public override void SelectAbility(GridEntity selector) {
             EntitySelectionManager.SelectTargetableAbility(this, selector.Team, null);
+            UpdateChargePathVisual(selector);
         }
 
         public override bool CanPayCost(IAbilityParameters parameters, GridEntity entity) {
@@ -47,50 +49,99 @@ namespace Gameplay.Config.Abilities {
         }
 
         public void DoTargetableAbility(Vector2Int cellPosition, GridEntity selectedEntity, GameTeam selectorTeam, object targetData) {
+            Vector2Int? destination = DetermineChargeDestination(selectedEntity, cellPosition);
+            if (destination == null) {
+                Debug.LogWarning("No viable charge location found, that's unexpected.");
+                return;
+            }
             selectedEntity.SetTargetLocation(cellPosition, null, true);
-            GameManager.Instance.AbilityAssignmentManager.QueueAbility(selectedEntity, this, new ChargeAbilityParameters {
-                Destination = cellPosition,
-                MoveDestination = cellPosition,
+            GameManager.Instance.AbilityAssignmentManager.PerformAbility(selectedEntity, this, new ChargeAbilityParameters {
+                Destination = destination.Value,
+                MoveDestination = destination.Value,
+                ClickLocation = cellPosition,
                 SelectorTeam = selectorTeam
-            }, true, true, false, true);
+            }, true, false);
         }
 
         public void RecalculateTargetableAbilitySelection(GridEntity selector, object targetData) {
-            // TODO Really only need to invalidate the cache and recalculate if anything moves/spawns/dies/finishes building *in range* of the charge.
-            List<Vector2Int> viableTargets = GetViableTargets(selector);
-            GridController.UpdateSelectableCells(viableTargets, selector);
+            UpdateChargePathVisual(selector);
         }
 
         public bool MoveToTargetCellFirst => false;
         public GameObject CreateIconForTargetedCell(GameTeam selectorTeam, object targetData) {
             return null;
         }
-
-        // TODO find some way to cache this, probably
-        private List<Vector2Int> GetViableTargets(GridEntity selector) {
+        
+        #region Charge logic
+        
+        private bool CanChargeToCell(GridEntity selector, Vector2Int cell) {
+            return DetermineChargeDestination(selector, cell) != null;
+        }
+        
+        /// <summary>
+        /// Given a target cell, determine the destination that a charge would land on.
+        /// </summary>
+        /// <returns>The destination cell, or null if no viable destination exists</returns>
+        private Vector2Int? DetermineChargeDestination(GridEntity selector, Vector2Int targetCell) {
             Vector2Int? selectorLocation = selector.Location;
-            if (selectorLocation == null) return new List<Vector2Int>();
-            
-            List<GridData.CellData> cells = GetViableCellsWithoutConsideringTerrainOrEntities(selector);
-            
+            if (selectorLocation == null) return null;
+
+            (List<Vector2Int> line1, List<Vector2Int> line2, bool equidistant) = CellDistanceLogic.GetCellsInClosestStraightLines(selectorLocation.Value, targetCell, ChargeRange);
+            List<GridData.CellData> line1Cells = line1.Select(c => GridController.GridData.GetCell(c)).NotNull().ToList();
+            List<GridData.CellData> line2Cells = line2 == null 
+                ? new List<GridData.CellData>() 
+                : line2.Select(c => GridController.GridData.GetCell(c)).NotNull().ToList();
+
+            if (line1Cells.Count == 0 && line2Cells.Count == 0) return null;
+            (Vector2Int? closestCellFromLine1, int distance1) = GetClosestLegalCell(targetCell, line1Cells, selector);
+            (Vector2Int? closestCellFromLine2, int distance2) = GetClosestLegalCell(targetCell, line2Cells, selector);
+
+            if (closestCellFromLine1 == null && closestCellFromLine2 == null) return null;
+            if (closestCellFromLine1 == null) return closestCellFromLine2;
+            if (closestCellFromLine2 == null) return closestCellFromLine1;
+            // Pick the closer line regardless of distance if one of the lines has a closer angle
+            if (!equidistant) return closestCellFromLine1;
+            if (distance1 < distance2) return closestCellFromLine1;
+            if (distance1 > distance2) return closestCellFromLine2;
+            // The two closest cells are the same distance, so just pick the first one
+            return closestCellFromLine1;
+        }
+
+        /// <summary>
+        /// Given a set of a straight line of cells, get the closest cell (that can be legally traveled to) to the given
+        /// origin, along with the distance. Ties are broken by whichever cell is father along the path. 
+        /// </summary>
+        private (Vector2Int?, int) GetClosestLegalCell(Vector2Int origin, List<GridData.CellData> cells, GridEntity selector) {
+            List<Vector2Int> viableCells = GetViableCells(cells, selector);
+            if (viableCells.Count == 0) return (null, 0);
+
+            Vector2Int? closestCell = null;
+            int closestDistance = int.MaxValue;
+            foreach (Vector2Int cell in viableCells) {
+                int distance = CellDistanceLogic.DistanceBetweenCells(origin, cell);
+                // Use <= instead of < so that the further cell along the path breaks any ties
+                if (distance <= closestDistance) {
+                    closestCell = cell;
+                    closestDistance = distance;
+                }
+            }
+            return (closestCell, closestDistance);
+        }
+
+        /// <summary>
+        /// Given a set of cells in a line away from the origin, return the subset of cells that the selected
+        /// <see cref="GridEntity"/> can legally travel through. 
+        /// </summary>
+        private List<Vector2Int> GetViableCells(List<GridData.CellData> cells, GridEntity selector) {
             // Caches and helper function for blocker calculations
             List<GridEntityCollection.PositionedGridEntityCollection> locationsWithEntities = cells
                 .Select(c => CommandManager.EntitiesOnGrid.EntitiesAtLocation(c.Location))
                 .Where(p => p != null)
                 .ToList();
             
-            // For viable cells, leave out adjacent cells
-            cells = cells.Except(GridController.GridData.GetAdjacentCells(selectorLocation.Value)).ToList();
-
-            List<GridData.CellData> cachedBlockerCells = new List<GridData.CellData>();
-            List<GridData.CellData> cachedNotBlockerCells = new List<GridData.CellData>();
             bool DoesCellBlock(GridData.CellData cell) {
-                if (cachedBlockerCells.Contains(cell)) return true;
-                if (cachedNotBlockerCells.Contains(cell)) return false;
-                
                 // Can not go through a cell if it hinders movement 
                 if (selector.InaccessibleTiles.Contains(cell.Tile) || selector.SlowTiles.Contains(cell.Tile)) {
-                    cachedBlockerCells.Add(cell);
                     return true;
                 }
                 
@@ -99,22 +150,20 @@ namespace Gameplay.Config.Abilities {
                     .FirstOrDefault(l => l.Location == cell.Location)
                     ?.GetTopEntity()?.Entity;
                 if (entityAtCell != null && (entityAtCell.Team != selector.Team || !entityAtCell.EntityData.IsStructure)) {
-                    cachedBlockerCells.Add(cell);
                     return true;
                 }
 
-                cachedNotBlockerCells.Add(cell);
                 return false;
             }
 
-            // Leave out cells that do not have clear straight paths
+            // Iterate through each cell until we find a blocker
             List<GridData.CellData> viableCells = new List<GridData.CellData>();
-            foreach (GridData.CellData cell in cells) {
-                List<Vector2Int> cellsInPath = CellDistanceLogic.GetCellsInStraightLine(selectorLocation.Value, cell.Location);
-                // Only look for blockers in the cells leading up to the target, not the target itself
-                if (cellsInPath.SkipLast(1)
-                    .Any(c => DoesCellBlock(GridController.GridData.GetCell(c)))) {
-                    continue;
+            for (int i = 0; i < cells.Count; i++) {
+                GridData.CellData cell = cells[i];
+                bool stopIterating = DoesCellBlock(cell);
+                if (stopIterating && i == 0) {
+                    // The first cell in the path is a blocker, so we can't charge down this line. Need to be able to move at least one cell. 
+                    break;
                 }
                 
                 GridEntity entityAtCell = locationsWithEntities
@@ -123,38 +172,53 @@ namespace Gameplay.Config.Abilities {
                 if (entityAtCell != null) {
                     // If the target has an entity in it, it had better be an enemy
                     if (entityAtCell.Team == selector.Team) {
-                        continue;
+                        break;
                     }
                 } else if (selector.InaccessibleTiles.Contains(cell.Tile) || selector.SlowTiles.Contains(cell.Tile)) {
                     // Otherwise can not charge to an empty cell if it hinders movement
-                    cachedBlockerCells.Add(cell);
-                    continue;
+                    break;
                 }
                 viableCells.Add(cell);
+                
+                if (stopIterating) {
+                    break;
+                }
             }
 
             return viableCells.Select(c => c.Location).ToList();
         }
         
-        private List<GridData.CellData> GetViableCellsWithoutConsideringTerrainOrEntities(GridEntity selector) {
-            Vector2Int? selectorLocation = selector.Location;
-            if (selectorLocation == null) return new List<GridData.CellData>();
+        #endregion
+        #region Visuals
 
-            // Get all cells in range
-            List<GridData.CellData> cells = GridController.GridData.GetCellsInRange(selectorLocation.Value, ChargeRange);
-            
-            // Leave out the current cell
-            cells = cells.Where(c => c.Location != selector.Location).ToList();
-            
-            // Leave out any cells that are not in a straight line from the selector
-            return cells.Where(c => CellDistanceLogic.AreCellsInStraightLine(selectorLocation.Value, c.Location)).ToList();
+        private void UpdateChargePathVisual(GridEntity selector) {
+            Vector2Int? currentlyHoveredCell = GameManager.Instance.GridInputController.CurrentHoveredCell;
+            if (currentlyHoveredCell == null) {
+                HideChargePathVisual();
+            } else {
+                Vector2Int? destination = DetermineChargeDestination(selector, currentlyHoveredCell.Value);
+                if (destination == null) {
+                    HideChargePathVisual();
+                } else {
+                    ShowChargePathVisual(selector, destination.Value);
+                }
+            }
         }
 
-        private bool CanChargeToCell(GridEntity selector, Vector2Int cell) {
-            // TODO if we move this viability calculation logic to a business logic class with a more proper cache, then we 
-            // can break GetViableTargets up a bit and allow us to forego checking every single cell in range. That would 
-            // be nice. 
-            return GetViableTargets(selector).Contains(cell);
+        private void HideChargePathVisual() {
+            GameManager.Instance.GridController.ClearPath();
         }
+        
+        private void ShowChargePathVisual(GridEntity selector, Vector2Int destination) {
+            GridEntity entityAtDestination = GameManager.Instance.GetTopEntityAtLocation(destination);
+            bool enemyEntityPresent = entityAtDestination != null && entityAtDestination.InteractBehavior is {
+                IsLocalTeam: false
+            };
+            
+            PathfinderService.Path path = GameManager.Instance.PathfinderService.FindPath(selector, destination);
+            GameManager.Instance.GridController.VisualizePath(path, enemyEntityPresent, enemyEntityPresent, true);
+        }
+
+        #endregion
     }
 }

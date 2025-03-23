@@ -8,6 +8,8 @@ namespace Gameplay.Grid {
     /// Logic for determining cell distances and adjacency. Since we work with hex cells, this can be a little unintuitive.
     /// </summary>
     public static class CellDistanceLogic {
+        private const float FloatTolerance = 0.1f;
+        
         private static readonly Vector2Int
             Left = new Vector2Int(-1, 0),
             Right = new Vector2Int(1, 0),
@@ -45,12 +47,12 @@ namespace Gameplay.Grid {
         private static Vector2Int NeighborInDirection(Vector2Int cell, DirectionAngle direction) {
             Vector2Int[] directions = cell.y % 2 == 0 ? DirectionsWhenYIsEven : DirectionsWhenYIsOdd;
             return direction switch {
-                DirectionAngle.Right => directions[0],
-                DirectionAngle.UpRight => directions[1],
-                DirectionAngle.UpLeft => directions[2],
-                DirectionAngle.Left => directions[3],
-                DirectionAngle.DownLeft => directions[4],
-                DirectionAngle.DownRight => directions[5],
+                DirectionAngle.Right => cell + directions[0],
+                DirectionAngle.UpRight => cell + directions[1],
+                DirectionAngle.UpLeft => cell + directions[2],
+                DirectionAngle.Left => cell + directions[3],
+                DirectionAngle.DownLeft => cell + directions[4],
+                DirectionAngle.DownRight => cell + directions[5],
                 _ => throw new ArgumentOutOfRangeException(nameof(direction), direction, "Invalid direction")
             };
         }
@@ -128,38 +130,67 @@ namespace Gameplay.Grid {
         /// Gets either one or two of the closest <see cref="DirectionAngle"/>s from the origin to the target.
         /// - If the target cell is along the line of a given direction, then only that direction will be returned.
         /// - Otherwise the two directions of the lines on either side of the line between the origin and target are returned.
+        /// Also returns a bool flag indicating whether the angle of the origin-to-target line is equidistant from the
+        /// angles of the return lines
         /// </summary>
-        public static List<DirectionAngle> GetClosestDirections(Vector2Int originCell, Vector2Int targetCell) {
-            float lineAngleRad = Mathf.Atan2(targetCell.y - originCell.y, targetCell.x - originCell.x);
+        private static (List<DirectionAngle>, bool) GetClosestDirections(Vector2Int originCell, Vector2Int targetCell) {
+            Vector2 originWorldPosition = GameManager.Instance.GridController.GetWorldPosition(originCell);
+            Vector2 targetWorldPosition = GameManager.Instance.GridController.GetWorldPosition(targetCell);
+            float lineAngleRad = Mathf.Atan2(targetWorldPosition.y - originWorldPosition.y, targetWorldPosition.x - originWorldPosition.x);
             float lineAngleDeg = Mathf.Rad2Deg * lineAngleRad;
             if (lineAngleDeg < 0) lineAngleDeg += 360;
 
-            if (Mathf.Approximately(lineAngleDeg, (float)DirectionAngle.Right)) {
-                return new List<DirectionAngle> { DirectionAngle.Right };
+            if (Math.Abs(lineAngleDeg - (float)DirectionAngle.Right) < FloatTolerance) {
+                return (new List<DirectionAngle> { DirectionAngle.Right }, true);
             }
-            if (Mathf.Approximately(lineAngleDeg, (float)DirectionAngle.UpRight)) {
-                return new List<DirectionAngle> { DirectionAngle.UpRight };
+            if (Math.Abs(lineAngleDeg - (float)DirectionAngle.UpRight) < FloatTolerance) {
+                return (new List<DirectionAngle> { DirectionAngle.UpRight }, true);
             }
-            if (Mathf.Approximately(lineAngleDeg, (float)DirectionAngle.UpLeft)) {
-                return new List<DirectionAngle> { DirectionAngle.UpLeft };
+            if (Math.Abs(lineAngleDeg - (float)DirectionAngle.UpLeft) < FloatTolerance) {
+                return (new List<DirectionAngle> { DirectionAngle.UpLeft }, true);
             }
-            if (Mathf.Approximately(lineAngleDeg, (float)DirectionAngle.Left)) {
-                return new List<DirectionAngle> { DirectionAngle.Left };
+            if (Math.Abs(lineAngleDeg - (float)DirectionAngle.Left) < FloatTolerance) {
+                return (new List<DirectionAngle> { DirectionAngle.Left }, true);
             }
-            if (Mathf.Approximately(lineAngleDeg, (float)DirectionAngle.DownLeft)) {
-                return new List<DirectionAngle> { DirectionAngle.DownLeft };
+            if (Math.Abs(lineAngleDeg - (float)DirectionAngle.DownLeft) < FloatTolerance) {
+                return (new List<DirectionAngle> { DirectionAngle.DownLeft }, true);
             }
-            if (Mathf.Approximately(lineAngleDeg, (float)DirectionAngle.DownRight)) {
-                return new List<DirectionAngle> { DirectionAngle.DownRight };
+            if (Math.Abs(lineAngleDeg - (float)DirectionAngle.DownRight) < FloatTolerance) {
+                return (new List<DirectionAngle> { DirectionAngle.DownRight }, true);
             }
 
+            if (Math.Abs(lineAngleDeg - 30f) < FloatTolerance) {
+                return (new List<DirectionAngle> { DirectionAngle.Right, DirectionAngle.UpRight }, true);
+            }
+            if (Math.Abs(lineAngleDeg - 90f) < FloatTolerance) {
+                return (new List<DirectionAngle> { DirectionAngle.UpRight, DirectionAngle.UpLeft }, true);
+            }
+            if (Math.Abs(lineAngleDeg - 150f) < FloatTolerance) {
+                return (new List<DirectionAngle> { DirectionAngle.UpLeft, DirectionAngle.Left }, true);
+            }
+            if (Math.Abs(lineAngleDeg - 210f) < FloatTolerance) {
+                return (new List<DirectionAngle> { DirectionAngle.Left, DirectionAngle.DownLeft }, true);
+            }
+            if (Math.Abs(lineAngleDeg - 270f) < FloatTolerance) {
+                return (new List<DirectionAngle> { DirectionAngle.DownLeft, DirectionAngle.DownRight }, true);
+            }
+            if (Math.Abs(lineAngleDeg - 330f) < FloatTolerance) {
+                return (new List<DirectionAngle> { DirectionAngle.DownRight, DirectionAngle.Right }, true);
+            }
+            
             return lineAngleDeg switch {
-                < 60f => new List<DirectionAngle> { DirectionAngle.Right, DirectionAngle.UpRight },
-                < 120f => new List<DirectionAngle> { DirectionAngle.UpRight, DirectionAngle.UpLeft },
-                < 180f => new List<DirectionAngle> { DirectionAngle.UpLeft, DirectionAngle.Left },
-                < 240f => new List<DirectionAngle> { DirectionAngle.Left, DirectionAngle.DownLeft },
-                < 300f => new List<DirectionAngle> { DirectionAngle.DownLeft, DirectionAngle.DownRight },
-                < 360f => new List<DirectionAngle> { DirectionAngle.DownRight, DirectionAngle.Right },
+                < 30f => (new List<DirectionAngle> { DirectionAngle.Right, DirectionAngle.UpRight }, false),
+                < 60f => (new List<DirectionAngle> { DirectionAngle.UpRight, DirectionAngle.Right }, false),
+                < 90f => (new List<DirectionAngle> { DirectionAngle.UpRight, DirectionAngle.UpLeft }, false),
+                < 120f => (new List<DirectionAngle> { DirectionAngle.UpLeft, DirectionAngle.UpRight }, false),
+                < 150f => (new List<DirectionAngle> { DirectionAngle.UpLeft, DirectionAngle.Left }, false),
+                < 180f => (new List<DirectionAngle> { DirectionAngle.Left, DirectionAngle.UpLeft }, false),
+                < 210f => (new List<DirectionAngle> { DirectionAngle.Left, DirectionAngle.DownLeft }, false),
+                < 240f => (new List<DirectionAngle> { DirectionAngle.DownLeft, DirectionAngle.Left }, false),
+                < 270f => (new List<DirectionAngle> { DirectionAngle.DownLeft, DirectionAngle.DownRight }, false),
+                < 300f => (new List<DirectionAngle> { DirectionAngle.DownRight, DirectionAngle.DownLeft }, false),
+                < 330f => (new List<DirectionAngle> { DirectionAngle.DownRight, DirectionAngle.Right }, false),
+                < 360f => (new List<DirectionAngle> { DirectionAngle.Right, DirectionAngle.DownRight }, false),
                 _ => throw new Exception($"Failed to find direction angle between origin ({originCell.x}, {originCell.y}) and target ({targetCell.x}, {targetCell.y}) cells.")
             };
         }
@@ -168,11 +199,12 @@ namespace Gameplay.Grid {
         /// Gets either one or two lists of cell locations in the closest straight lines from the origin to the target.
         /// - If the target cell is along the line of a given direction, then only cells in that direction will be returned.
         /// - Otherwise cells in the two directions of the lines on either side of the line between the origin and target are returned.
-        ///
+        /// Also returns a bool flag indicating whether the angle of the origin-to-target line is equidistant from the
+        /// angles of the return lines
         /// The origin cell is not included in the returned list(s).
         /// </summary>
-        public static (List<Vector2Int>, List<Vector2Int>) GetCellsInClosestStraightLines(Vector2Int origin, Vector2Int target, int range) {
-            List<DirectionAngle> directions = GetClosestDirections(origin, target);
+        public static (List<Vector2Int>, List<Vector2Int>, bool) GetCellsInClosestStraightLines(Vector2Int origin, Vector2Int target, int range) {
+            (List<DirectionAngle> directions, bool equidistant) = GetClosestDirections(origin, target);
             List<List<Vector2Int>> cellSets = new();
 
             foreach (DirectionAngle direction in directions) {
@@ -186,7 +218,7 @@ namespace Gameplay.Grid {
                 cellSets.Add(cellsInLine);
             }
             
-            return (cellSets[0], cellSets.Count > 1 ? cellSets[1] : null);
+            return (cellSets[0], cellSets.Count > 1 ? cellSets[1] : null, equidistant);
         }
         
         private static Vector3Int OffsetToCubic(Vector2Int cell) {
