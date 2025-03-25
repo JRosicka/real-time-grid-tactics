@@ -17,8 +17,7 @@ namespace Gameplay.UI {
 
         private GameObjectPool<AbstractDirectionalLine> _linePool;
         private GameObjectPool<AbstractDirectionalLine> _thickLinePool;
-        private readonly List<AbstractDirectionalLine> _currentlyDisplayedLines = new();
-        private GameObjectPool<AbstractDirectionalLine> _currentlyDisplayedLinesPool;
+        private readonly Dictionary<string, List<AbstractDirectionalLine>> _currentlyDisplayedLines = new();
 
         private GridController GridController => GameManager.Instance.GridController;
         private PathfinderService PathfinderService => GameManager.Instance.PathfinderService;
@@ -32,7 +31,7 @@ namespace Gameplay.UI {
         /// Lay out a set of <see cref="AbstractDirectionalLine"/>s along a path
         /// </summary>
         public void Visualize(PathfinderService.Path path, bool attack, bool hidePathDestination, bool thickLines) {
-            ClearPath();
+            ClearPath(thickLines);
             List<GridNode> pathNodes = path.Nodes;
             
             // If the path is too short, then no need to place any lines
@@ -40,14 +39,13 @@ namespace Gameplay.UI {
                 || (pathNodes.Count < 2 && path.ContainsRequestedDestination) 
                 || (pathNodes.Count < 3 && hidePathDestination)) return;
             
-            var linePool = thickLines ? _thickLinePool : _linePool;
-            _currentlyDisplayedLinesPool = linePool;
+            (List<AbstractDirectionalLine> lines, GameObjectPool<AbstractDirectionalLine> linePool) = GetLineGroup(thickLines);
             
             // No need to visualise for the final cell
             float currentAngle = -1f;
             for (int i = 0; i < pathNodes.Count - 1; i++) {
                 AbstractDirectionalLine line = linePool.GetObject();
-                _currentlyDisplayedLines.Add(line);
+                lines.Add(line);
                 
                 // Reveal the line and move it in place
                 line.gameObject.SetActive(true);
@@ -76,21 +74,31 @@ namespace Gameplay.UI {
                     }
                     
                     // Hide/show the previous line's dot if it has a different angle than this one.
-                    _currentlyDisplayedLines[i-1].ToggleEndDot(!Mathf.Approximately(currentAngle, previousAngle));
+                    lines[i-1].ToggleEndDot(!Mathf.Approximately(currentAngle, previousAngle));
                 } else {
                     line.SetMask(AbstractDirectionalLine.LineType.Full);
                     // Hide/show the previous line's dot if it has a different angle than this one.
-                    _currentlyDisplayedLines[i-1].ToggleEndDot(!Mathf.Approximately(currentAngle, previousAngle));
+                    lines[i-1].ToggleEndDot(!Mathf.Approximately(currentAngle, previousAngle));
                 }
             }
         }
 
-        public void ClearPath() {
-            foreach (AbstractDirectionalLine line in _currentlyDisplayedLines) {
+        public void ClearPath(bool thickLines) {
+            (List<AbstractDirectionalLine> lines, GameObjectPool<AbstractDirectionalLine> linePool) = GetLineGroup(thickLines);
+            foreach (AbstractDirectionalLine line in lines) {
                 line.Discard();
-                _currentlyDisplayedLinesPool.AddAndHideObject(line);
+                linePool.AddAndHideObject(line);
             }
-            _currentlyDisplayedLines.Clear();
+            lines.Clear();
+        }
+
+        private (List<AbstractDirectionalLine>, GameObjectPool<AbstractDirectionalLine>) GetLineGroup(bool thickLines) {
+            string key = thickLines ? "thickLines" : "defaultLines";
+            if (!_currentlyDisplayedLines.TryGetValue(key, out List<AbstractDirectionalLine> lineGroup)) {
+                _currentlyDisplayedLines.Add(key, lineGroup = new List<AbstractDirectionalLine>());
+            }
+            GameObjectPool<AbstractDirectionalLine> linePool = thickLines ? _thickLinePool : _linePool;
+            return (lineGroup, linePool);
         }
     }
 }

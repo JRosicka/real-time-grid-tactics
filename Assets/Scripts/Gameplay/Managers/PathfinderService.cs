@@ -121,6 +121,31 @@ public class PathfinderService {
         return ConstructBestAlternativePath(processed, startNode);
     }
 
+    /// <summary>
+    /// Construct a path, but in a straight line from the indicated entity's current location and the target.
+    /// Does not account for whether the entity can actually enter every cell along the path. 
+    /// </summary>
+    public Path GetPathInStraightLine(GridEntity entity, Vector2Int destination) {
+        Vector2Int? entityLocation = entity.Location;
+        if (entityLocation == null) {
+            return new Path {
+                Nodes = new List<GridNode>(),
+                ContainsRequestedDestination = false
+            };
+        }
+
+        List<GridNode> pathNodes = new() { new GridNode(entity, GridController.GridData.GetCell(entityLocation.Value)) };
+        foreach (Vector2Int cell in CellDistanceLogic.GetCellsInStraightLine(entityLocation.Value, destination)) {
+            pathNodes.Add(new GridNode(entity, GridController.GridData.GetCell(cell)));
+        }
+        
+        return new Path {
+            Nodes = pathNodes,
+            ContainsRequestedDestination = true
+        };
+
+    }
+
     private Path ConstructPath(GridNode startNode, GridNode current, bool originalDestination) {
         GridNode currentPathNode = current;
         List<GridNode> pathNodes = new List<GridNode>();

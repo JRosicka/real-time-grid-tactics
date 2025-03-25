@@ -133,8 +133,11 @@ namespace Gameplay.Grid {
             _targetedIcon = null;
         }
 
-        public void ClearPath() {
-            _pathVisualizer.ClearPath();
+        public void ClearPath(bool onlyClearThickLines) {
+            _pathVisualizer.ClearPath(true);
+            if (!onlyClearThickLines) {
+                _pathVisualizer.ClearPath(false);
+            }
         }
 
         public void VisualizePath(PathfinderService.Path path, bool attack, bool hidePathDestination, bool thickLines) {

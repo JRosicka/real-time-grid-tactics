@@ -61,7 +61,7 @@ public class EntitySelectionManager {
             entity.TargetLocationLogic.ValueChanged += TryFindPath;
             entity.UnregisteredEvent += DeselectEntity;
         } else {
-            GridController.ClearPath();
+            GridController.ClearPath(false);
         }
     }
 

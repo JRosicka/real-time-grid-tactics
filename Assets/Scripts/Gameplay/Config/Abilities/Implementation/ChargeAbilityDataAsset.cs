@@ -221,14 +221,14 @@ namespace Gameplay.Config.Abilities {
         }
 
         private void HideChargePathVisual() {
-            GameManager.Instance.GridController.ClearPath();
+            GameManager.Instance.GridController.ClearPath(true);
         }
         
         private void ShowChargePathVisual(GridEntity selector, Vector2Int destination) {
             GridEntity entityAtDestination = GameManager.Instance.GetTopEntityAtLocation(destination);
             bool enemyEntityPresent = selector.GetTargetType(entityAtDestination) == GridEntity.TargetType.Enemy;
             
-            PathfinderService.Path path = GameManager.Instance.PathfinderService.FindPath(selector, destination);
+            PathfinderService.Path path = GameManager.Instance.PathfinderService.GetPathInStraightLine(selector, destination);
             GameManager.Instance.GridController.VisualizePath(path, enemyEntityPresent, enemyEntityPresent, true);
         }
 
