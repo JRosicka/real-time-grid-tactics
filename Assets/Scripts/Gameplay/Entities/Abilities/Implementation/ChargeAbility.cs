@@ -36,7 +36,7 @@ namespace Gameplay.Entities.Abilities {
                 // No entity there (or it's a friendly entity that we can share a cell with), so move there.
                 // Assume that AbilityLegal checked for movement legality. 
                 CommandManager.MoveEntityToCell(Performer, AbilityParameters.Destination);
-                Performer.SetTargetLocation(AbilityParameters.Destination, null, false);
+                QueueFollowUpAttackMove(null);
                 return true;
             }
             
@@ -56,7 +56,30 @@ namespace Gameplay.Entities.Abilities {
 
             // ...then attack it
             GameManager.Instance.AttackManager.PerformAttack(Performer, targetEntity, 0, true);
+            QueueFollowUpAttackMove(targetEntity);
             return true;
+        }
+
+        private void QueueFollowUpAttackMove(GridEntity targetEntity) {
+            if (targetEntity != null && targetEntity.DeadOrDying) {
+                // Could happen if we just did a charge-attack on this entity and that attack killed it
+                targetEntity = null;
+            }
+            
+            if (AbilityParameters.Destination != AbilityParameters.ClickLocation) {
+                // Don't target-fire the charge-attacked entity unless we specifically clicked on it with the charge
+                targetEntity = null;
+            }
+            
+            AttackAbilityData attackData = Performer.GetAbilityData<AttackAbilityData>();
+            AbilityAssignmentManager.QueueAbility(Performer, attackData, new AttackAbilityParameters {
+                TargetFire = targetEntity != null,
+                Target = targetEntity,
+                Destination = AbilityParameters.ClickLocation,
+                Reaction = false,
+                ReactionTarget = null
+            }, true, true, false, false);
+            Performer.SetTargetLocation(AbilityParameters.ClickLocation, targetEntity, true);
         }
     }
 
