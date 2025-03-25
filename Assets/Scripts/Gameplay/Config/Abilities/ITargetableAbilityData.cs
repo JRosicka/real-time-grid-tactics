@@ -25,6 +25,10 @@ namespace Gameplay.Config.Abilities {
         /// </summary>
         void UpdateHoveredCell(GridEntity selector, Vector2Int? cell);
         /// <summary>
+        /// Triggered when the owned purchasables collection for the local player has been updated
+        /// </summary>
+        void OwnedPurchasablesChanged(GridEntity selector);
+        /// <summary>
         /// The targetable ability was just deselected. Occurs both when being selected due to the ability being performed
         /// and when being deselected via canceling. 
         /// </summary>

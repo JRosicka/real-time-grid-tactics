@@ -18,6 +18,9 @@ namespace Gameplay.Config.Abilities {
     public class ChargeAbilityData : AbilityDataBase<ChargeAbilityParameters>, ITargetableAbilityData {
         [Header("Charge configuration")]
         public int ChargeRange;
+        public int ChargeRangeWithUpgrade;
+        public int BonusDamageFromUpgrade;
+        public UpgradeData ChargeUpgrade;
 
         public GridController GridController => GameManager.Instance.GridController;
         public EntitySelectionManager EntitySelectionManager => GameManager.Instance.EntitySelectionManager;
@@ -26,6 +29,12 @@ namespace Gameplay.Config.Abilities {
         public override bool CanBeCanceled => false;
         public override bool CancelableWhileActive => false;
         public override bool CancelableWhileQueued => false;
+
+        public override string GetAttackTooltipMessage(GameTeam team) {
+            return HasChargeUpgrade(team)
+                ? $"Deals {BonusDamageFromUpgrade} additional damage at the end of a charge."
+                : "";
+        }
 
         public override void SelectAbility(GridEntity selector) {
             EntitySelectionManager.SelectTargetableAbility(this, selector.Team, null);
@@ -73,6 +82,16 @@ namespace Gameplay.Config.Abilities {
             UpdateChargePathVisual(selector, cell);
         }
 
+        public void OwnedPurchasablesChanged(GridEntity selector) {
+            Vector2Int? currentlyHoveredCell = GameManager.Instance.GridInputController.CurrentHoveredCell;
+            UpdateChargePathVisual(selector, currentlyHoveredCell);
+        }
+
+        private bool HasChargeUpgrade(GameTeam team) {
+            IGamePlayer player = GameManager.Instance.GetPlayerForTeam(team);
+            return player.OwnedPurchasablesController.HasUpgrade(ChargeUpgrade);
+        }
+
         public void Deselect() {
             HideChargePathVisual();
         }
@@ -80,6 +99,10 @@ namespace Gameplay.Config.Abilities {
         public bool MoveToTargetCellFirst => false;
         public GameObject CreateIconForTargetedCell(GameTeam selectorTeam, object targetData) {
             return null;
+        }
+
+        public int GetBonusDamage(GameTeam team) {
+            return HasChargeUpgrade(team) ? BonusDamageFromUpgrade : 0;
         }
         
         #region Charge logic
@@ -96,7 +119,8 @@ namespace Gameplay.Config.Abilities {
             Vector2Int? selectorLocation = selector.Location;
             if (selectorLocation == null) return null;
 
-            (List<Vector2Int> line1, List<Vector2Int> line2, bool equidistant) = CellDistanceLogic.GetCellsInClosestStraightLines(selectorLocation.Value, targetCell, ChargeRange);
+            int range = GetMaxChargeRange(selector.Team);
+            (List<Vector2Int> line1, List<Vector2Int> line2, bool equidistant) = CellDistanceLogic.GetCellsInClosestStraightLines(selectorLocation.Value, targetCell, range);
             List<GridData.CellData> line1Cells = line1.Select(c => GridController.GridData.GetCell(c)).NotNull().ToList();
             List<GridData.CellData> line2Cells = line2 == null 
                 ? new List<GridData.CellData>() 
@@ -115,6 +139,10 @@ namespace Gameplay.Config.Abilities {
             if (distance1 > distance2) return closestCellFromLine2;
             // The two closest cells are the same distance, so just pick the first one
             return closestCellFromLine1;
+        }
+
+        private int GetMaxChargeRange(GameTeam team) {
+            return HasChargeUpgrade(team) ? ChargeRangeWithUpgrade : ChargeRange;
         }
 
         /// <summary>

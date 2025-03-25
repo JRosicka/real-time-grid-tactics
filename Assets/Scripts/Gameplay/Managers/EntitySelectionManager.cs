@@ -39,6 +39,10 @@ public class EntitySelectionManager {
 
     private void RegisterEvents() {
         _gameManager.CommandManager.EntityCollectionChangedEvent += EntityCollectionChanged;
+        IGamePlayer player = GameManager.Instance.GetPlayerForTeam(GameManager.Instance.LocalTeam);
+        if (player != null) {
+            player.OwnedPurchasablesController.OwnedPurchasablesChangedEvent += OwnedPurchasablesChanged;
+        }
     }
 
     #region Entity Selection
@@ -176,6 +180,10 @@ public class EntitySelectionManager {
 
     public void StopHovering() {
         _selectedTargetableAbility?.UpdateHoveredCell(SelectedEntity, null);
+    }
+
+    public void OwnedPurchasablesChanged() {
+        _selectedTargetableAbility?.OwnedPurchasablesChanged(SelectedEntity);
     }
 
     /// <summary>

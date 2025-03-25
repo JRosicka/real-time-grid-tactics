@@ -90,6 +90,14 @@ namespace Gameplay.Config.Abilities {
         [SerializeField] private bool _tryingToPerformCancelsBuilds;
         public bool TryingToPerformCancelsBuilds => _tryingToPerformCancelsBuilds;
 
+        public virtual string GetAttackTooltipMessage() {
+            return "";
+        }
+
+        public virtual string GetAttackTooltipMessage(GameTeam team) {
+            return "";
+        }
+
         /// <summary>
         /// Respond to the user input intending to use this ability. Do not actually perform the ability (unless there is
         /// nothing else to do first) - rather, handle any client-side stuff by sending events to prompt for further input.

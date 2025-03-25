@@ -55,7 +55,8 @@ namespace Gameplay.Entities.Abilities {
             }   // Otherwise if the count is one, then we are already one cell away from the target, so don't move
 
             // ...then attack it
-            GameManager.Instance.AttackManager.PerformAttack(Performer, targetEntity, 0, true);
+            int bonusDamage = Data.GetBonusDamage(Performer.Team);
+            GameManager.Instance.AttackManager.PerformAttack(Performer, targetEntity, bonusDamage, true);
             QueueFollowUpAttackMove(targetEntity);
             return true;
         }

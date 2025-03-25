@@ -38,6 +38,10 @@ public class PlayerOwnedPurchasablesController : NetworkBehaviour {
         }
     }
 
+    public bool HasUpgrade(UpgradeData upgrade) {
+        return _upgrades.GetOwnedUpgrades().Contains(upgrade);
+    }
+
     public List<UpgradeData> InProgressUpgrades => _upgrades.GetInProgressUpgrades();
 
     public void AddUpgrade(UpgradeData upgrade) {

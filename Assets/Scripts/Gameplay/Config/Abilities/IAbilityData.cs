@@ -83,6 +83,7 @@ namespace Gameplay.Config.Abilities {
         /// tries to issue the ability command
         /// </summary>
         bool TryingToPerformCancelsBuilds { get; }
+        string GetAttackTooltipMessage(GameTeam team);
         /// <summary>
         /// Respond to the user input intending to use this ability. Do not actually perform the ability (unless there is
         /// nothing else to do first) - rather, handle any client-side stuff by sending events to prompt for further input. 

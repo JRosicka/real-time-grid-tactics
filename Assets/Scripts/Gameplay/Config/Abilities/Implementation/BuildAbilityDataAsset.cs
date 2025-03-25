@@ -109,6 +109,10 @@ namespace Gameplay.Config.Abilities {
             // Nothing to do
         }
 
+        public void OwnedPurchasablesChanged(GridEntity selector) {
+            // Nothing to do
+        }
+
         public void Deselect() {
             // Nothing to do
         }

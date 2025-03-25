@@ -556,6 +556,21 @@ namespace Gameplay.Entities {
             }
         }
         
+        public string GetAttackTooltipMessageFromAbilities() {
+            string tooltipMessage = "";
+            foreach (IAbilityData abilityData in Abilities) {
+                string attackTooltipMessage = abilityData.GetAttackTooltipMessage(Team);
+                if (string.IsNullOrEmpty(attackTooltipMessage)) continue;
+
+                if (!string.IsNullOrEmpty(tooltipMessage)) {
+                    tooltipMessage += "<br>";
+                }
+                tooltipMessage += attackTooltipMessage;
+            }
+
+            return tooltipMessage;
+        }
+        
         public float GetStructureDefenseModifier() {
             if (EntityData.IsStructure) {
                 return EntityData.SharedUnitDamageTakenModifier;

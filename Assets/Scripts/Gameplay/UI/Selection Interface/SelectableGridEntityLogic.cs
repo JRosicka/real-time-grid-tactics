@@ -22,6 +22,11 @@ namespace Gameplay.UI {
             entity.CooldownTimerExpiredEvent += OnEntityAbilityCooldownExpired;
             entity.CurrentResources.ValueChanged += OnEntityResourceAmountChanged;
             entity.KillCountChanged += KillCountChanged;
+            
+            IGamePlayer player = GameManager.Instance.GetPlayerForTeam(entity.Team);
+            if (player != null) {
+                player.OwnedPurchasablesController.OwnedPurchasablesChangedEvent += OnOwnedPurchasablesChanged;
+            }
         }
 
         [NotNull] public GridEntity Entity { get; }
@@ -182,6 +187,10 @@ namespace Gameplay.UI {
             Entity.CooldownTimerExpiredEvent -= OnEntityAbilityCooldownExpired;
             Entity.CurrentResources.ValueChanged -= OnEntityResourceAmountChanged;
             Entity.KillCountChanged -= KillCountChanged;
+            IGamePlayer player = GameManager.Instance.GetPlayerForTeam(Entity.Team);
+            if (player != null) {
+                player.OwnedPurchasablesController.OwnedPurchasablesChangedEvent -= OnOwnedPurchasablesChanged;
+            }
         }
         
         private void OnEntityAbilityPerformed(IAbility iAbility, AbilityCooldownTimer abilityCooldownTimer) {
@@ -196,6 +205,10 @@ namespace Gameplay.UI {
 
         private void OnEntityResourceAmountChanged(INetworkableFieldValue oldValue, INetworkableFieldValue newValue, object metadata) {
             SetUpResourceView(_resourceRow, _resourceLabel, _resourceField);
+        }
+
+        private void OnOwnedPurchasablesChanged() {
+            SetUpHoverableInfo(_defenseHoverableInfoIcon, _attackHoverableInfoIcon, null);
         }
 
         private void KillCountChanged(int newKillCount) {
@@ -236,9 +249,14 @@ namespace Gameplay.UI {
         
         private const string AttackFormat = "Deals {0} additional damage to {1} units.";
         private string GetAttackTooltip() {
-            return Entity.EntityData.BonusDamage == 0 
+            string tooltipMessage = Entity.GetAttackTooltipMessageFromAbilities();
+            string bonusDamage = Entity.EntityData.BonusDamage == 0 
                 ? "" 
                 : string.Format(AttackFormat, Entity.EntityData.BonusDamage, GetStringListForEntityTags(Entity.EntityData.TagsToApplyBonusDamageTo));
+            if (!string.IsNullOrEmpty(tooltipMessage) && !string.IsNullOrEmpty(bonusDamage)) {
+                tooltipMessage += "<br>";
+            }
+            return tooltipMessage + bonusDamage;
         }
 
         private static string GetStringListForEntityTags(List<EntityData.EntityTag> tags) {

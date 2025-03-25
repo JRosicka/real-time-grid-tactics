@@ -57,7 +57,8 @@ namespace Gameplay.UI {
 
         public void HandleFailedToSelect(AbilitySlot.AvailabilityResult availability) {
             if (availability == AbilitySlot.AvailabilityResult.Unselectable) {
-                GameManager.Instance.AlertTextDisplayer.DisplayAlert("Can not afford.");
+                string alertMessage = FulfillsRequirementsToBuild() ? "Can not afford." : "Requirements not met.";
+                GameManager.Instance.AlertTextDisplayer.DisplayAlert(alertMessage);
             } // Otherwise it is unavailable - don't even acknowledge the selection attempt
         }
 
@@ -69,18 +70,34 @@ namespace Gameplay.UI {
             IGamePlayer player = GameManager.Instance.GetPlayerForTeam(SelectedEntity.Team);
             List<PurchasableData> ownedPurchasables = player.OwnedPurchasablesController.OwnedPurchasables;
 
-            if (Buildable is UpgradeData && (ownedPurchasables.Contains(Buildable) 
-                                             || player.OwnedPurchasablesController.InProgressUpgrades.Contains(Buildable))) {
+            UpgradeData upgradeData = Buildable as UpgradeData;
+            if (upgradeData != null && (ownedPurchasables.Contains(Buildable) 
+                                || player.OwnedPurchasablesController.InProgressUpgrades.Contains(Buildable))) {
                 // Upgrade that we already own or are currently building somewhere
                 return AbilitySlot.AvailabilityResult.Hidden;
-            } else if (AbilityAssignmentManager.CanEntityUseAbility(SelectedEntity, _buildAbilityData, _buildAbilityData.SelectableWhenBlocked)
+            }
+
+            if (!FulfillsRequirementsToBuild()) {
+                // Upgrade that we do not fulfill the requirements for
+                return AbilitySlot.AvailabilityResult.Unselectable;
+            }
+            
+            if (AbilityAssignmentManager.CanEntityUseAbility(SelectedEntity, _buildAbilityData, _buildAbilityData.SelectableWhenBlocked)
                        && player.ResourcesController.CanAfford(Buildable.Cost)
                        && Buildable.Requirements.All(r => ownedPurchasables.Contains(r))) {
                 // This entity can build this and we can afford this
                 return AbilitySlot.AvailabilityResult.Selectable;
-            } else {
-                return AbilitySlot.AvailabilityResult.Unselectable;
             }
+            
+            return AbilitySlot.AvailabilityResult.Unselectable;
+        }
+
+        private bool FulfillsRequirementsToBuild() {
+            if (Buildable is not UpgradeData upgradeData) return true;
+            
+            IGamePlayer player = GameManager.Instance.GetPlayerForTeam(SelectedEntity.Team);
+            List<PurchasableData> ownedPurchasables = player.OwnedPurchasablesController.OwnedPurchasables;
+            return upgradeData.Requirements.All(r => ownedPurchasables.Contains(r));
         }
 
         public void SetUpSprites(Image abilityImage, Image secondaryAbilityImage, Canvas teamColorsCanvas) {
