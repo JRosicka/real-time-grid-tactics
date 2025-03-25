@@ -75,8 +75,8 @@ public class GameManager : MonoBehaviour {
         GameSetupManager.Initialize();
         SelectionInterface.Initialize();
         PathfinderService = new PathfinderService();
-        GridController.Initialize();
         EntitySelectionManager = new EntitySelectionManager(this);
+        GridController.Initialize(EntitySelectionManager);
         GridInputController.Initialize(EntitySelectionManager, this);
         DisconnectionDialog.Initialize(DisconnectionHandler);
         GameAudioPlayer.Initialize(AudioPlayer, GameSetupManager, Configuration.AudioConfiguration);

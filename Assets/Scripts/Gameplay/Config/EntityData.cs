@@ -100,10 +100,6 @@ namespace Gameplay.Config {
                     .ToList().Count) {
                 string channelNames = Abilities.Select(a => a.Content.SlotLocation).Aggregate("", (current, slotLocation) => current + slotLocation + ", ");
                 Debug.LogError($"{name}: Detected abilities with the same slot location, don't do that! {channelNames}");
-            } 
-
-            if (FriendlyUnitsCanShareCell && !IsStructure) {
-                Debug.LogError($"{name}: Woah woah woah buddy, if you want this entity to be able to share a cell with other entities, then it's gotta be a structure!");
             }
         }
     }

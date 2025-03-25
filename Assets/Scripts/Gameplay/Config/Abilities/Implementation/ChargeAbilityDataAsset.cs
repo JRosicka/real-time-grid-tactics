@@ -29,7 +29,8 @@ namespace Gameplay.Config.Abilities {
 
         public override void SelectAbility(GridEntity selector) {
             EntitySelectionManager.SelectTargetableAbility(this, selector.Team, null);
-            UpdateChargePathVisual(selector);
+            Vector2Int? currentlyHoveredCell = GameManager.Instance.GridInputController.CurrentHoveredCell;
+            UpdateChargePathVisual(selector, currentlyHoveredCell);
         }
 
         public override bool CanPayCost(IAbilityParameters parameters, GridEntity entity) {
@@ -64,7 +65,16 @@ namespace Gameplay.Config.Abilities {
         }
 
         public void RecalculateTargetableAbilitySelection(GridEntity selector, object targetData) {
-            UpdateChargePathVisual(selector);
+            Vector2Int? currentlyHoveredCell = GameManager.Instance.GridInputController.CurrentHoveredCell;
+            UpdateChargePathVisual(selector, currentlyHoveredCell);
+        }
+
+        public void UpdateHoveredCell(GridEntity selector, Vector2Int? cell) {
+            UpdateChargePathVisual(selector, cell);
+        }
+
+        public void Deselect() {
+            HideChargePathVisual();
         }
 
         public bool MoveToTargetCellFirst => false;
@@ -149,11 +159,17 @@ namespace Gameplay.Config.Abilities {
                 GridEntity entityAtCell = locationsWithEntities
                     .FirstOrDefault(l => l.Location == cell.Location)
                     ?.GetTopEntity()?.Entity;
-                if (entityAtCell != null && (entityAtCell.Team != selector.Team || !entityAtCell.EntityData.IsStructure)) {
+                if (entityAtCell == null) {
+                    return false;
+                }
+                if (entityAtCell.Team == selector.Team.OpponentTeam()) {
                     return true;
+                } 
+                if (entityAtCell.EntityData.IsStructure || entityAtCell.EntityData.Tags.Contains(EntityData.EntityTag.Resource)) {
+                    return false;
                 }
 
-                return false;
+                return true;
             }
 
             // Iterate through each cell until we find a blocker
@@ -170,8 +186,8 @@ namespace Gameplay.Config.Abilities {
                     .FirstOrDefault(l => l.Location == cell.Location)
                     ?.GetTopEntity()?.Entity;
                 if (entityAtCell != null) {
-                    // If the target has an entity in it, it had better be an enemy
-                    if (entityAtCell.Team == selector.Team) {
+                    // Can not target a cell with a friendly unit that we can't share the cell with
+                    if (entityAtCell.Team == selector.Team && !entityAtCell.EntityData.FriendlyUnitsCanShareCell) {
                         break;
                     }
                 } else if (selector.InaccessibleTiles.Contains(cell.Tile) || selector.SlowTiles.Contains(cell.Tile)) {
@@ -191,8 +207,7 @@ namespace Gameplay.Config.Abilities {
         #endregion
         #region Visuals
 
-        private void UpdateChargePathVisual(GridEntity selector) {
-            Vector2Int? currentlyHoveredCell = GameManager.Instance.GridInputController.CurrentHoveredCell;
+        private void UpdateChargePathVisual(GridEntity selector, Vector2Int? currentlyHoveredCell) {
             if (currentlyHoveredCell == null) {
                 HideChargePathVisual();
             } else {
@@ -211,9 +226,7 @@ namespace Gameplay.Config.Abilities {
         
         private void ShowChargePathVisual(GridEntity selector, Vector2Int destination) {
             GridEntity entityAtDestination = GameManager.Instance.GetTopEntityAtLocation(destination);
-            bool enemyEntityPresent = entityAtDestination != null && entityAtDestination.InteractBehavior is {
-                IsLocalTeam: false
-            };
+            bool enemyEntityPresent = selector.GetTargetType(entityAtDestination) == GridEntity.TargetType.Enemy;
             
             PathfinderService.Path path = GameManager.Instance.PathfinderService.FindPath(selector, destination);
             GameManager.Instance.GridController.VisualizePath(path, enemyEntityPresent, enemyEntityPresent, true);

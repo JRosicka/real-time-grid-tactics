@@ -48,7 +48,7 @@ MonoBehaviour:
   Tags: 07000000
   AttackerTargetPriority: 0
   Abilities: []
-  FriendlyUnitsCanShareCell: 0
+  FriendlyUnitsCanShareCell: 1
   AttackByDefault: 0
   IsResourceExtractor: 0
   MovementAndAttackUI: 0

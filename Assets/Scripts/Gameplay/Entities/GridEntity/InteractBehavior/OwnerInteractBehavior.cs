@@ -46,7 +46,7 @@ namespace Gameplay.Entities {
                 thisEntity.TryMoveToCell(targetCell, false);
             }
             
-            GameManager.Instance.SelectionInterface.DeselectActiveAbility();
+            GameManager.Instance.EntitySelectionManager.DeselectTargetableAbility();
         }
         
         private void TryTargetEntity(GridEntity thisEntity, GridEntity targetEntity, Vector2Int targetCell) {

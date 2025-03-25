@@ -151,6 +151,9 @@ public class EntitySelectionManager {
     /// <returns>True if there was actually a selected targetable ability that gets canceled, otherwise false</returns>
     public bool DeselectTargetableAbility() {
         bool targetableAbilityWasSelected = _selectedTargetableAbility != null;
+        if (targetableAbilityWasSelected) {
+            _selectedTargetableAbility.Deselect();
+        }
         _selectedTargetableAbility = null;
         _targetData = null;
         GridController.ClearTargetedIcon();
@@ -165,6 +168,14 @@ public class EntitySelectionManager {
 
     private void ClearSelectableTiles() {
         GridController.UpdateSelectableCells(null, SelectedEntity);
+    }
+
+    public void HoverOverCell(Vector2Int cell) {
+        _selectedTargetableAbility?.UpdateHoveredCell(SelectedEntity, cell);
+    }
+
+    public void StopHovering() {
+        _selectedTargetableAbility?.UpdateHoveredCell(SelectedEntity, null);
     }
 
     /// <summary>

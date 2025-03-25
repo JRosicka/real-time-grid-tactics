@@ -67,6 +67,14 @@ namespace Gameplay.Config.Abilities {
             // Nothing to do
         }
 
+        public void UpdateHoveredCell(GridEntity selector, Vector2Int? cell) {
+            // Nothing to do
+        }
+
+        public void Deselect() {
+            // Nothing to do
+        }
+
         public bool MoveToTargetCellFirst => false;
         public GameObject CreateIconForTargetedCell(GameTeam selectorTeam, object targetData) {
             return null;

@@ -514,14 +514,14 @@ namespace Gameplay.Entities {
             _killCountField.UpdateValue(new NetworkableIntegerValue(KillCount + 1));
         }
         
-        private enum TargetType {
+        public enum TargetType {
             Enemy = 1,
             Ally = 2,
             Neutral = 3
         }
 
         public void TryTargetEntity(GridEntity targetEntity, Vector2Int targetCell) {
-            TargetType targetType = GetTargetType(this, targetEntity);
+            TargetType targetType = GetTargetType(targetEntity);
 
             if (targetType != TargetType.Enemy) return;
             AttackAbilityData data = GetAbilityData<AttackAbilityData>();
@@ -534,12 +534,10 @@ namespace Gameplay.Entities {
             }
         }
 
-        private static TargetType GetTargetType(GridEntity originEntity, GridEntity targetEntity) {
-            if (targetEntity.Team == GameTeam.Neutral || originEntity.Team == GameTeam.Neutral) {
-                return TargetType.Neutral;
-            }
-
-            return originEntity.Team == targetEntity.Team ? TargetType.Ally : TargetType.Enemy;
+        public TargetType GetTargetType(GridEntity targetEntity) {
+            if (targetEntity == null) return TargetType.Neutral;
+            if (targetEntity.Team == GameTeam.Neutral || Team == GameTeam.Neutral) return TargetType.Neutral;
+            return Team == targetEntity.Team ? TargetType.Ally : TargetType.Enemy;
         }
 
         public void ReceiveAttackFromEntity(GridEntity sourceEntity, int bonusDamage) {

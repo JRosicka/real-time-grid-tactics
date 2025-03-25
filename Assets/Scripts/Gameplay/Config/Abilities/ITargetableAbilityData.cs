@@ -21,6 +21,15 @@ namespace Gameplay.Config.Abilities {
         /// </summary>
         void RecalculateTargetableAbilitySelection(GridEntity selector, object targetData);
         /// <summary>
+        /// Perform any ability selection logic in response to the player hovering the mouse over a different cell
+        /// </summary>
+        void UpdateHoveredCell(GridEntity selector, Vector2Int? cell);
+        /// <summary>
+        /// The targetable ability was just deselected. Occurs both when being selected due to the ability being performed
+        /// and when being deselected via canceling. 
+        /// </summary>
+        void Deselect();
+        /// <summary>
         /// Whether we should move to the target cell before attempting to do the ability
         /// </summary>
         bool MoveToTargetCellFirst { get; }

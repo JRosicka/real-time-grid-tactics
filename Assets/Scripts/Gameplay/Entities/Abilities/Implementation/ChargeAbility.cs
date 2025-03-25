@@ -32,8 +32,9 @@ namespace Gameplay.Entities.Abilities {
         public override bool DoAbilityEffect() {
             // Determine if there is an enemy entity at the destination
             GridEntity targetEntity = GameManager.Instance.GetTopEntityAtLocation(AbilityParameters.Destination);
-            if (targetEntity == null) {
-                // No entity there, so move there. Assume that AbilityLegal checked for movement legality. 
+            if (targetEntity == null || (Performer.GetTargetType(targetEntity) != GridEntity.TargetType.Enemy && targetEntity.EntityData.FriendlyUnitsCanShareCell)) {
+                // No entity there (or it's a friendly entity that we can share a cell with), so move there.
+                // Assume that AbilityLegal checked for movement legality. 
                 CommandManager.MoveEntityToCell(Performer, AbilityParameters.Destination);
                 Performer.SetTargetLocation(AbilityParameters.Destination, null, false);
                 return true;

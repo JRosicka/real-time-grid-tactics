@@ -36,6 +36,8 @@ namespace Gameplay.Grid {
         [SerializeField] private SelectionReticle _targetUnitReticle;
         private SelectionReticleEntityTracker _targetUnitTracker = new SelectionReticleEntityTracker();
 
+        private EntitySelectionManager _entitySelectionManager;
+
         private List<Vector2Int> _selectableCells;
         /// <summary>
         /// GameObject to hover over the selected cell to indicate the selected targetable ability
@@ -45,7 +47,8 @@ namespace Gameplay.Grid {
 
         public GridData GridData { get; private set; }
 
-        public void Initialize() {
+        public void Initialize(EntitySelectionManager entitySelectionManager) {
+            _entitySelectionManager = entitySelectionManager;
             _pathVisualizer.Initialize();
             _mapLoader = GameManager.Instance.GameSetupManager.MapLoader;
             GridData = new GridData(_gameplayTilemap, this);
@@ -105,10 +108,13 @@ namespace Gameplay.Grid {
             } else {
                 _invalidTargetedAbilityLocationIcon.gameObject.SetActive(false);
             }
+
+            _entitySelectionManager.HoverOverCell(cell);
         }
 
         public void StopHovering() {
             _mouseReticle.Hide();
+            _entitySelectionManager.StopHovering();
         }
 
         public void SetTargetedIcon(GameObject targetedIcon) {

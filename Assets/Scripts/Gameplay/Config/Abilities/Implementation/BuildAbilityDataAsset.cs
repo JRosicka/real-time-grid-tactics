@@ -104,7 +104,15 @@ namespace Gameplay.Config.Abilities {
             List<Vector2Int> viableTargets = GetViableTargets(selector, (PurchasableData)targetData);
             GridController.UpdateSelectableCells(viableTargets, selector);
         }
-        
+
+        public void UpdateHoveredCell(GridEntity selector, Vector2Int? cell) {
+            // Nothing to do
+        }
+
+        public void Deselect() {
+            // Nothing to do
+        }
+
         public List<Vector2Int> GetViableTargets(GridEntity selector, PurchasableData buildable) {
             if (buildable is not EntityData buildableEntity) return null;
             

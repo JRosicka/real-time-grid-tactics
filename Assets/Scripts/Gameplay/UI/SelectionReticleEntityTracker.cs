@@ -10,6 +10,7 @@ namespace Gameplay.UI {
     public class SelectionReticleEntityTracker {
         private SelectionReticle _reticle;
         private GridEntity _entity;
+        private Vector2Int? _lastTrackedLocation;
 
         public void Initialize(SelectionReticle reticle) {
             _reticle = reticle;
@@ -40,21 +41,28 @@ namespace Gameplay.UI {
             } else {
                 _reticle.SelectTile(newLocation, _entity); 
             }
+            _lastTrackedLocation = newLocation;
         }
 
         private void UpdateReticle(GridEntity gridEntity) {
             Vector2Int? entityLocation = gridEntity == null ? null : gridEntity.Location;
             if (entityLocation == null) {
                 _reticle.Hide();
+                _lastTrackedLocation = null;
                 return;
             }
             UpdateReticle(entityLocation.Value);
         }
 
         private void OnAbilityPerformed(IAbility ability, AbilityCooldownTimer timer) {
-            // We only care about the entity moving
+            // Special move ability handling
             if (ability is MoveAbility moveAbility) {
                 UpdateReticle(moveAbility.AbilityParameters.NextMoveCell);
+                return;
+            }
+
+            if (_entity != null && _entity.Location != null && _entity.Location != _lastTrackedLocation) {
+                UpdateReticle(_entity.Location.Value);
             }
         }
 
