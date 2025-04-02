@@ -17,6 +17,8 @@ namespace Gameplay.Config.Abilities {
     [Serializable]
     public class ChargeAbilityData : AbilityDataBase<ChargeAbilityParameters>, ITargetableAbilityData {
         [Header("Charge configuration")]
+        [Tooltip("How long of a cooldown to add when performing an attack at the end of a charge")]
+        public float AddedAttackTime;
         public int ChargeRange;
         public int ChargeRangeWithUpgrade;
         public int BonusDamageFromUpgrade;

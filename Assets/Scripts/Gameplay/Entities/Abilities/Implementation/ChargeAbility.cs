@@ -55,10 +55,15 @@ namespace Gameplay.Entities.Abilities {
             }   // Otherwise if the count is one, then we are already one cell away from the target, so don't move
 
             // ...then attack it
+            AttackTargetAtEndOfCharge(targetEntity);
+            return true;
+        }
+
+        private void AttackTargetAtEndOfCharge(GridEntity targetEntity) {
             int bonusDamage = Data.GetBonusDamage(Performer.Team);
             GameManager.Instance.AttackManager.PerformAttack(Performer, targetEntity, bonusDamage, true);
+            GameManager.Instance.AbilityAssignmentManager.AddAttackTime(Performer, Data.AddedAttackTime);
             QueueFollowUpAttackMove(targetEntity);
-            return true;
         }
 
         private void QueueFollowUpAttackMove(GridEntity targetEntity) {

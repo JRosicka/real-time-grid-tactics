@@ -37,6 +37,7 @@ MonoBehaviour:
     _autoSelect: 0
     _selectableForAllPlayers: 0
     _tryingToPerformCancelsBuilds: 1
+    AddedAttackTime: 3
     ChargeRange: 2
     ChargeRangeWithUpgrade: 3
     BonusDamageFromUpgrade: 2

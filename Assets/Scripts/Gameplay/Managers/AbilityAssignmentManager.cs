@@ -4,7 +4,9 @@ using Gameplay.Config;
 using Gameplay.Config.Abilities;
 using Gameplay.Entities;
 using Gameplay.Entities.Abilities;
+using Mirror;
 using UnityEngine;
+using Util;
 
 namespace Gameplay.Managers {
     /// <summary>
@@ -144,26 +146,53 @@ namespace Gameplay.Managers {
             Vector2Int? location = entity.Location;
             if (location == null) return;
             
-            List<AbilityCooldownTimer> activeTimersCopy = new List<AbilityCooldownTimer>(entity.ActiveTimers);
-            AbilityCooldownTimer movementTimer = activeTimersCopy.FirstOrDefault(t => t.Ability is MoveAbility);
-            if (movementTimer != null) {
-                if (movementTimer.Expired) {
-                    Debug.LogWarning("Tried to add movement cooldown timer time from another ability, but that " +
-                                     "timer is expired. Adding new movement cooldown timer instead. This might not behave correctly.");
-                } else {
-                    // Add this time to the current movement cooldown timer
-                    entity.AddTimeToAbilityTimer(movementTimer.Ability, timeToAdd);
-                    return;
-                }
-            }
-            
-            // Add a new movement cooldown timer
-            entity.CreateAbilityTimer(new MoveAbility(moveAbilityData, new MoveAbilityParameters {
+            MoveAbility newAbility = new MoveAbility(moveAbilityData, new MoveAbilityParameters {
                 Destination = location.Value,
                 NextMoveCell = location.Value,
                 SelectorTeam = entity.Team,
                 BlockedByOccupation = false
-            }, entity), timeToAdd);
+            }, entity);
+            
+            AddToCooldownTimer(entity, newAbility, timeToAdd);
+        }
+        
+        /// <summary>
+        /// Add time to the attack cooldown timer due to another ability being performed.
+        /// If there is an active cooldown timer, then this amount is added to that timer.
+        /// Otherwise, a new cooldown timer is added with this amount.
+        /// </summary>
+        public void AddAttackTime(GridEntity entity, float timeToAdd) {
+            AttackAbilityData attackAbilityData = entity.GetAbilityData<AttackAbilityData>();
+            if (attackAbilityData == null) return;
+
+            AttackAbility newAbility = new AttackAbility(attackAbilityData, new AttackAbilityParameters(), entity);
+            AddToCooldownTimer(entity, newAbility, timeToAdd);
+        }
+        
+        private void AddToCooldownTimer(GridEntity entity, IAbility ability, float timeToAdd) {
+            List<AbilityCooldownTimer> activeTimersCopy = new List<AbilityCooldownTimer>(entity.ActiveTimers);
+            AbilityCooldownTimer timer = activeTimersCopy.FirstOrDefault(t => t.Ability.GetType() == ability.GetType());
+            if (timer != null) {
+                if (timer.Expired) {
+                    Debug.LogWarning($"Tried to add {ability.GetType()} cooldown timer time from another ability, but that " +
+                                     "timer is expired. Adding new cooldown timer instead. This might not behave correctly.");
+                } else {
+                    // Add this time to the current cooldown timer
+                    entity.AddTimeToAbilityTimer(timer.Ability, timeToAdd);
+                    return;
+                }
+            }
+            
+            // Since we won't actually be performing this ability, we need to generate a UID for it now
+            int uid = IDUtil.GenerateUID();
+            if (NetworkClient.active && !NetworkServer.active) {
+                // MP client. Hack - use a different set of UIDs than what the server creates
+                uid *= -1;
+            }
+            ability.UID = uid;
+            
+            // Add a new cooldown timer
+            entity.CreateAbilityTimer(ability, timeToAdd);
         }
     }
 }
