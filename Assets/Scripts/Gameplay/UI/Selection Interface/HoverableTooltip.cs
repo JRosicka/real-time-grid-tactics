@@ -15,7 +15,6 @@ namespace Gameplay.UI {
         
         public void Initialize(string text) {
             _text.text = text;
-            _canvasGroup.alpha = 0;
             
             _contentSizeFitter.SetLayoutVertical();
             _layoutGroup.CalculateLayoutInputVertical();
