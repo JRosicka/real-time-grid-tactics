@@ -122,15 +122,16 @@ namespace Gameplay.Config.Abilities {
             if (selectorLocation == null) return null;
 
             int range = GetMaxChargeRange(selector.Team);
-            (List<Vector2Int> line1, List<Vector2Int> line2, bool equidistant) = CellDistanceLogic.GetCellsInClosestStraightLines(selectorLocation.Value, targetCell, range);
+            // Get the charge line(s). Use range + 1 in order to consider one more cell at the end of a line if it has an enemy on it. 
+            (List<Vector2Int> line1, List<Vector2Int> line2, bool equidistant) = CellDistanceLogic.GetCellsInClosestStraightLines(selectorLocation.Value, targetCell, range + 1);
             List<GridData.CellData> line1Cells = line1.Select(c => GridController.GridData.GetCell(c)).NotNull().ToList();
             List<GridData.CellData> line2Cells = line2 == null 
                 ? new List<GridData.CellData>() 
                 : line2.Select(c => GridController.GridData.GetCell(c)).NotNull().ToList();
 
             if (line1Cells.Count == 0 && line2Cells.Count == 0) return null;
-            (Vector2Int? closestCellFromLine1, int distance1) = GetClosestLegalCell(targetCell, line1Cells, selector);
-            (Vector2Int? closestCellFromLine2, int distance2) = GetClosestLegalCell(targetCell, line2Cells, selector);
+            (Vector2Int? closestCellFromLine1, int distance1) = GetClosestLegalCell(targetCell, line1Cells, selector, range);
+            (Vector2Int? closestCellFromLine2, int distance2) = GetClosestLegalCell(targetCell, line2Cells, selector, range);
 
             if (closestCellFromLine1 == null && closestCellFromLine2 == null) return null;
             if (closestCellFromLine1 == null) return closestCellFromLine2;
@@ -151,20 +152,36 @@ namespace Gameplay.Config.Abilities {
         /// Given a set of a straight line of cells, get the closest cell (that can be legally traveled to) to the given
         /// origin, along with the distance. Ties are broken by whichever cell is father along the path. 
         /// </summary>
-        private (Vector2Int?, int) GetClosestLegalCell(Vector2Int origin, List<GridData.CellData> cells, GridEntity selector) {
+        private (Vector2Int?, int) GetClosestLegalCell(Vector2Int origin, List<GridData.CellData> cells, GridEntity selector, int range) {
             List<Vector2Int> viableCells = GetViableCells(cells, selector);
             if (viableCells.Count == 0) return (null, 0);
 
             Vector2Int? closestCell = null;
             int closestDistance = int.MaxValue;
-            foreach (Vector2Int cell in viableCells) {
+            int indexAlongLine = 0;
+            for (int i = 0; i < viableCells.Count; i++) {
+                if (i >= range) break;  // Don't consider cells further than the range, at least not for this step
+                
+                Vector2Int cell = viableCells[i];
                 int distance = CellDistanceLogic.DistanceBetweenCells(origin, cell);
                 // Use <= instead of < so that the further cell along the path breaks any ties
                 if (distance <= closestDistance) {
                     closestCell = cell;
                     closestDistance = distance;
+                    indexAlongLine = i;
                 }
             }
+            
+            // Consider the situation where we try to charge and can potentially attack an enemy one cell further
+            if (viableCells.Count > indexAlongLine + 1) {
+                Vector2Int oneFurtherCell = viableCells[indexAlongLine + 1];
+                GridEntity entityAtCell = CommandManager.GetEntitiesAtCell(oneFurtherCell)?.GetTopEntity()?.Entity;
+                if (entityAtCell != null && entityAtCell.Team == selector.Team.OpponentTeam()) {
+                    closestCell = oneFurtherCell;
+                    closestDistance = CellDistanceLogic.DistanceBetweenCells(origin, oneFurtherCell);
+                }
+            }
+            
             return (closestCell, closestDistance);
         }
 
