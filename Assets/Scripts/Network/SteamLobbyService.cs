@@ -61,6 +61,8 @@ public class SteamLobbyService : MonoBehaviour {
         PlayerType,
         Color
     }
+
+    public bool SteamEnabled => gameObject.activeSelf;
     
     private CallResult<LobbyCreated_t> _lobbyCreated;                      // When creating a lobby
     private CallResult<LobbyMatchList_t> _lobbyMatchList;                  // When getting a list of lobbies
@@ -257,6 +259,8 @@ public class SteamLobbyService : MonoBehaviour {
     /// Takes a while to complete - listen for the passed-in action for completion.
     /// </summary>
     public void GetAllOpenLobbies(Action<uint, bool, string> onLobbiesReturned) {
+        if (!SteamEnabled) return;
+
         if (SteamMatchmakingServers.IsRefreshing(_currentServerListRequest)) {
             Debug.LogError("Attempted to retrieve lobby list when we are already requesting lobbies!");
             _isCurrentlyRequestingLobbies = false;

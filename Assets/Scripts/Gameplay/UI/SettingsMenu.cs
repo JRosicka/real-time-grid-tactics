@@ -75,7 +75,9 @@ namespace Gameplay.UI {
         private void ChosenDisplayChanged(int display) {
             PlayerPrefs.SetInt(PlayerPrefsKeys.ChosenDisplayKey, display);
             if (Camera.main != null) {
-                Camera.main.targetDisplay = display;
+                List<DisplayInfo> displays = new List<DisplayInfo>();
+                Screen.GetDisplayLayout(displays);
+                Screen.MoveMainWindowTo(displays[display], new Vector2Int(0, 0));
             }
         }
 

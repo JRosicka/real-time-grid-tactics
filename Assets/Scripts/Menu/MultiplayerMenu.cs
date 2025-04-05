@@ -38,6 +38,8 @@ public class MultiplayerMenu : MonoBehaviour {
     public Color EnabledTextColor;
 
     private void Start() {
+        if (SteamLobbyService.Instance == null || !SteamLobbyService.Instance.SteamEnabled) return;
+        
         SteamLobbyService.Instance.OnLobbyJoinComplete += OnLobbyJoinComplete;
         LobbyListEntry.LobbyJoinAttemptStarted += PromptJoinIDForLobby;
         
@@ -45,6 +47,8 @@ public class MultiplayerMenu : MonoBehaviour {
     }
 
     private void OnDestroy() {
+        if (SteamLobbyService.Instance == null || !SteamLobbyService.Instance.SteamEnabled) return;
+
         SteamLobbyService.Instance.OnLobbyJoinComplete -= OnLobbyJoinComplete;
         LobbyListEntry.LobbyJoinAttemptStarted -= PromptJoinIDForLobby;
     }
