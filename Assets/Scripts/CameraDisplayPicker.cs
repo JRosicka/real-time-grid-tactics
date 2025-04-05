@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
@@ -7,6 +8,10 @@ public class CameraDisplayPicker : MonoBehaviour {
     [SerializeField] private Camera _camera;
 
     private void Awake() {
-        _camera.targetDisplay = PlayerPrefs.GetInt(PlayerPrefsKeys.ChosenDisplayKey, 0);
+        int displayIndex = PlayerPrefs.GetInt(PlayerPrefsKeys.ChosenDisplayKey, 0);
+        
+        List<DisplayInfo> displays = new List<DisplayInfo>();
+        Screen.GetDisplayLayout(displays);
+        Screen.MoveMainWindowTo(displays[displayIndex], new Vector2Int(0, 0));
     }
 }
