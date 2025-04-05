@@ -18,10 +18,25 @@ MonoBehaviour:
   Requirements: []
   BuildTime: 1
   DisplayTeamColorOverMainSprite: 0
-  BaseSprite: {fileID: 21300000, guid: 847b813419222e9478ec0690c09fe38c, type: 3}
-  TeamColorSprite: {fileID: 21300000, guid: 992393911caff794fa26699f882af973, type: 3}
+  BaseSprite: {fileID: 21300000, guid: 95f910cbfb2fc0b4483c1dac27c90993, type: 3}
+  TeamColorSprite: {fileID: 0}
   BaseSpriteIconOverride: {fileID: 0}
   _viewPrefab: {fileID: 6373076591908856349, guid: cdbe6c86ea1b88240bef1c5186eaa238, type: 3}
+  SelectionSound:
+    Clip: {fileID: 0}
+    Volume: 0
+    AudioLayer: 0
+    Interruptible: 0
+  OrderSound:
+    Clip: {fileID: 0}
+    Volume: 0
+    AudioLayer: 0
+    Interruptible: 0
+  AttackSound:
+    Clip: {fileID: 0}
+    Volume: 0
+    AudioLayer: 0
+    Interruptible: 0
   HP: 50
   Range: 0
   Damage: 0
@@ -30,12 +45,14 @@ MonoBehaviour:
   NormalMoveTime: 3
   SlowMoveTime: 5
   Tags: 0100000005000000
+  AttackerTargetPriority: 0
   Abilities:
   - {fileID: 11400000, guid: 5c3d4a15ccf544323ae1076ff64f26d0, type: 2}
   - {fileID: 11400000, guid: 7417594f3892443608287a253299cecc, type: 2}
   FriendlyUnitsCanShareCell: 1
   AttackByDefault: 0
   IsResourceExtractor: 0
+  MovementAndAttackUI: 0
   BuildQueueSize: 5
   EligibleStructureLocations:
   - {fileID: 11400000, guid: 25ec46ce372031f4d904f708f269dcb4, type: 2}
