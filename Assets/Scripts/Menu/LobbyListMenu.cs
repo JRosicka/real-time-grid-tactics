@@ -23,10 +23,14 @@ public class LobbyListMenu : MonoBehaviour {
     }
     
     private void OnDestroy() {
+        if (SteamLobbyService.Instance == null || !SteamLobbyService.Instance.SteamEnabled) return;
+
         SteamLobbyService.Instance.OnLobbyEntryConstructed -= DisplayLobby;
     }
 
     public void LeaveMenu() {
+        if (SteamLobbyService.Instance == null || !SteamLobbyService.Instance.SteamEnabled) return;
+
         SteamLobbyService.Instance.OnLobbyEntryConstructed -= DisplayLobby;
         _retrievingLobbies = false;
         NoLobbiesFoundMessage.SetActive(false);
