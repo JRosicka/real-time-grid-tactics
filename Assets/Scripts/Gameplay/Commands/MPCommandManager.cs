@@ -17,9 +17,9 @@ public class MPCommandManager : AbstractCommandManager {
         AbilityQueueExecutor.Initialize(this, gameEndManager, abilityAssignmentManager);
     }
 
-    public override void SpawnEntity(EntityData data, Vector2Int spawnLocation, GameTeam team, GridEntity spawnerEntity) {
+    public override void SpawnEntity(EntityData data, Vector2Int spawnLocation, GameTeam team, GridEntity spawnerEntity, bool movementOnCooldown) {
         LogTimestamp(nameof(SpawnEntity));
-        CmdSpawnEntity(data, spawnLocation, team, spawnerEntity);
+        CmdSpawnEntity(data, spawnLocation, team, spawnerEntity, movementOnCooldown);
     }
 
     public override void AddUpgrade(UpgradeData data, GameTeam team) {
@@ -77,7 +77,7 @@ public class MPCommandManager : AbstractCommandManager {
 
 
     [Command(requiresAuthority = false)] // TODO this should definitely require authority
-    private void CmdSpawnEntity(EntityData data, Vector2Int spawnLocation, GameTeam team, GridEntity entityToIgnore) {
+    private void CmdSpawnEntity(EntityData data, Vector2Int spawnLocation, GameTeam team, GridEntity entityToIgnore, bool movementOnCooldown) {
         LogTimestamp(nameof(CmdSpawnEntity));
         DoSpawnEntity(data, spawnLocation, () => {
             GridEntity entityInstance = Instantiate(GridEntityPrefab, GridController.GetWorldPosition(spawnLocation), Quaternion.identity, SpawnBucket);
@@ -87,7 +87,7 @@ public class MPCommandManager : AbstractCommandManager {
             entityInstance.RpcInitialize(data, team);
             
             return entityInstance;
-        }, team, entityToIgnore);
+        }, team, entityToIgnore, movementOnCooldown);
     }
 
     [Command(requiresAuthority = false)]

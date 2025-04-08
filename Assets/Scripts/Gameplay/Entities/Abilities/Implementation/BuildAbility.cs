@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gameplay.Config;
 using Gameplay.Config.Abilities;
 using Mirror;
@@ -53,16 +54,23 @@ namespace Gameplay.Entities.Abilities {
                         // The location is open to put this entity, so go ahead and spawn it.
                         // Note that we mark the performer entity as being ignorable since it will probably not be unregistered via
                         // the below command before we check if it's legal to spawn this new one. 
-                        GameManager.Instance.CommandManager.SpawnEntity(entityData, AbilityParameters.BuildLocation, Performer.Team, Performer);
-                        if (entityData.IsStructure) {
-                            // Destroy the builder.
-                            GameManager.Instance.CommandManager.UnRegisterEntity(Performer, false);
-                        }
+                        SpawnEntity(entityData, AbilityParameters.BuildLocation, true);
                         return true;
-                    } else {
-                        // The build location is occupied, so we can not yet complete the ability
+                    }
+                    
+                    if (!Data.Targetable) {
+                        // We can potentially still complete the ability. See if we can send the unit to an adjacent cell.
+                        Vector2Int? adjacentCell = GetBestAdjacentCellToSpawn(entityData);
+                        if (adjacentCell != null) {
+                            SpawnEntity(entityData, adjacentCell.Value, false);
+                            
+                            return true;
+                        }
                         return false;
                     }
+                    
+                    // The build location(s) is/are occupied, so we can not yet complete the ability
+                    return false;
                 case UpgradeData upgradeData:
                     GameManager.Instance.CommandManager.AddUpgrade(upgradeData, Performer.Team);
                     return true;
@@ -71,6 +79,33 @@ namespace Gameplay.Entities.Abilities {
             }
         }
 
+        private void SpawnEntity(EntityData entityData, Vector2Int buildLocation, bool originalBuildLocation) {
+            GameManager.Instance.CommandManager.SpawnEntity(entityData, buildLocation, Performer.Team, Performer, !originalBuildLocation);
+            if (entityData.IsStructure) {
+                // Destroy the builder.
+                GameManager.Instance.CommandManager.UnRegisterEntity(Performer, false);
+            }
+        }
+
+        /// <summary>
+        /// Search all adjacent (to the performer) cells and return the cell closest to the first point along the rally
+        /// point, but only if the buildable can enter the cell. 
+        /// </summary>
+        /// <returns>The location of the best viable cell, or null if no cells are viable.</returns>
+        private Vector2Int? GetBestAdjacentCellToSpawn(EntityData entityData) {
+            PathfinderService.Path path = GameManager.Instance.PathfinderService.FindPath(Performer, Performer.TargetLocationLogicValue.CurrentTarget);
+            if (path.Nodes.Count < 2) {
+                return null;
+            }
+            Vector2Int firstCellAlongRallyPoint = path.Nodes[1].Location;
+            
+            if (GameManager.Instance.GridController.GridData.GetCell(firstCellAlongRallyPoint).Tile.InaccessibleTags.Any(t => entityData.Tags.Contains(t))
+                    || !PathfinderService.CanEntityEnterCell(firstCellAlongRallyPoint, entityData, Performer.Team)) {
+                return null;
+            }
+
+            return firstCellAlongRallyPoint;
+        }
 
         protected override void PayCostImpl() {
             // Pay resource cost

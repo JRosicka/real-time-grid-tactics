@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
@@ -70,8 +71,9 @@ namespace Gameplay.Grid {
         /// <summary>
         /// Gets all of the cells adjacent to the passed-in location
         /// </summary>
+        [NotNull]
         public List<CellData> GetAdjacentCells(Vector2Int location) {
-            return GetCell(location)?.Neighbors;
+            return GetCell(location)?.Neighbors ?? new List<CellData>();
         }
 
         /// <summary>

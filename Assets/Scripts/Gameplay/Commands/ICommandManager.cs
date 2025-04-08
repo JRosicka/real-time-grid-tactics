@@ -12,7 +12,7 @@ using UnityEngine;
 /// </summary>
 public interface ICommandManager {
     void Initialize(Transform spawnBucketPrefab, GameEndManager gameEndManager, AbilityAssignmentManager abilityAssignmentManager);
-    void SpawnEntity(EntityData data, Vector2Int spawnLocation, GameTeam team, GridEntity spawnerEntity);
+    void SpawnEntity(EntityData data, Vector2Int spawnLocation, GameTeam team, GridEntity spawnerEntity, bool movementOnCooldown);
     void AddUpgrade(UpgradeData data, GameTeam team);
     /// <summary>
     /// Stop keeping track of an entity and also destroy it.

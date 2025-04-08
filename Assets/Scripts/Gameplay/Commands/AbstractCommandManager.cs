@@ -57,7 +57,7 @@ public abstract class AbstractCommandManager : NetworkBehaviour, ICommandManager
     /// Attempts to spawn a new instance of the provided <see cref="GridEntity"/> at the specified location on the game
     /// grid. No-op if another entity already exists in the specified location. 
     /// </summary>
-    public abstract void SpawnEntity(EntityData data, Vector2Int spawnLocation, GameTeam team, GridEntity spawnerEntity);
+    public abstract void SpawnEntity(EntityData data, Vector2Int spawnLocation, GameTeam team, GridEntity spawnerEntity, bool movementOnCooldown);
     // TODO I don't think this needs to be in CommandManager since this is only called by the server and it doesn't contain any RPC calls
     public abstract void AddUpgrade(UpgradeData data, GameTeam team);
 
@@ -92,7 +92,7 @@ public abstract class AbstractCommandManager : NetworkBehaviour, ICommandManager
 
     public abstract void MarkAbilityCooldownExpired(IAbility ability);
 
-    protected void DoSpawnEntity(EntityData data, Vector2Int spawnLocation, Func<GridEntity> spawnFunc, GameTeam team, GridEntity spawnerEntity) {
+    protected void DoSpawnEntity(EntityData data, Vector2Int spawnLocation, Func<GridEntity> spawnFunc, GameTeam team, GridEntity spawnerEntity, bool movementOnCooldown) {
         List<GridEntity> entitiesToIgnore = spawnerEntity != null ? new List<GridEntity> {spawnerEntity} : null;
         if (!PathfinderService.CanEntityEnterCell(spawnLocation, data, team, entitiesToIgnore)) {
             return;
@@ -101,6 +101,12 @@ public abstract class AbstractCommandManager : NetworkBehaviour, ICommandManager
         GridEntity entityInstance = spawnFunc();
         RegisterEntity(entityInstance, data, spawnLocation, spawnerEntity);
 
+        if (movementOnCooldown) {
+            GameplayTile tile = GameManager.Instance.GridController.GridData.GetCell(spawnLocation)!.Tile;
+            GameManager.Instance.AbilityAssignmentManager.AddMovementTime(entityInstance, entityInstance.MoveTimeToTile(tile));
+        }
+        
+        // Handle starting movement
         if (spawnerEntity != null && spawnerEntity.TargetLocationLogicValue.CanRally) {
             if (data.Tags.Contains(EntityData.EntityTag.Worker)) {
                 // Workers get move-commanded
