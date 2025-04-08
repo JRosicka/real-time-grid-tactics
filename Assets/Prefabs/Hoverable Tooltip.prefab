@@ -59,6 +59,7 @@ MonoBehaviour:
   _canvasGroup: {fileID: 1396270349742655511}
   _layoutGroup: {fileID: 3712335783929941658}
   _contentSizeFitter: {fileID: 1024946650662784351}
+  _tooltipContentSizeFitter: {fileID: 1882168114999895148}
 --- !u!114 &3712335783929941658
 MonoBehaviour:
   m_ObjectHideFlags: 0

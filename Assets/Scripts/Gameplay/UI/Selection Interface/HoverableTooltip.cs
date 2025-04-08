@@ -1,3 +1,4 @@
+using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -12,12 +13,15 @@ namespace Gameplay.UI {
         [SerializeField] private CanvasGroup _canvasGroup;
         [SerializeField] private VerticalLayoutGroup _layoutGroup;
         [SerializeField] private ContentSizeFitter _contentSizeFitter;
+        [SerializeField] private ContentSizeFitter _tooltipContentSizeFitter;
         
-        public void Initialize(string text) {
+        public async void Initialize(string text) {
             _text.text = text;
             
             _contentSizeFitter.SetLayoutVertical();
+            await Task.Delay(TimeSpan.FromSeconds(0.1f));
             _layoutGroup.CalculateLayoutInputVertical();
+            _tooltipContentSizeFitter.SetLayoutVertical();
         }
 
         public void ShowTooltip() {
