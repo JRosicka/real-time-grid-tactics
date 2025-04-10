@@ -22,7 +22,6 @@ namespace Gameplay.Grid {
         private OverlayTilemap _overlayTilemap;
         [SerializeField] private Tilemap _overlayMap;
         [SerializeField] private Tile _inaccessibleTile;
-        [SerializeField] private Tile _slowMovementTile;
         
         // Reticle for where the mouse is currently hovering
         [SerializeField] private SelectionReticle _mouseReticle;
@@ -52,7 +51,7 @@ namespace Gameplay.Grid {
             _pathVisualizer.Initialize();
             _mapLoader = GameManager.Instance.GameSetupManager.MapLoader;
             GridData = new GridData(_gameplayTilemap, this);
-            _overlayTilemap = new OverlayTilemap(_overlayMap, this, _inaccessibleTile, _slowMovementTile);
+            _overlayTilemap = new OverlayTilemap(_overlayMap, this, _inaccessibleTile);
             _selectedUnitTracker.Initialize(_selectedUnitReticle);
             _targetUnitTracker.Initialize(_targetUnitReticle);
             _selectableCells = null;    // Not sure why this is necessary, but it seems to be

@@ -14,18 +14,17 @@ namespace Gameplay.Grid {
     public class OverlayTilemap {
         private readonly Tilemap _overlayMap;
         private readonly Tile _inaccessibleTile;
-        private readonly Tile _slowMovementTile;
+        private readonly Tile _slightlyDarkenedTile;
         private readonly GridController _gridController;
         
         private GridEntity _entity;
 
         private GridData GridData => _gridController.GridData;
 
-        public OverlayTilemap(Tilemap overlayMap, GridController gridController, Tile inaccessibleTile, Tile slowMovementTile) {
+        public OverlayTilemap(Tilemap overlayMap, GridController gridController, Tile inaccessibleTile) {
             _overlayMap = overlayMap;
             _gridController = gridController;
             _inaccessibleTile = inaccessibleTile;
-            _slowMovementTile = slowMovementTile;
         }
 
         public void UpdateCellOverlaysForAbility(List<Vector2Int> cells, GridEntity entity) {
@@ -42,7 +41,7 @@ namespace Gameplay.Grid {
 
             if (cells != null) {
                 // Darken all cells
-                SetAllTiles(_slowMovementTile);
+                SetAllTiles(_inaccessibleTile);
                 // Un-darken the specified cells
                 SetTiles(cells, null);
             } else {
@@ -69,9 +68,10 @@ namespace Gameplay.Grid {
 
             if (_entity == null) return;
 
-            // Apply any tile-specific overlays to tiles based on the selected entity's movement restrictions
-            SetTiles(_entity.InaccessibleTiles, _inaccessibleTile);
-            SetTiles(_entity.SlowTiles, _slowMovementTile);
+            if (_entity.CanMoveOrRally) {
+                // Apply any tile-specific overlays to tiles based on the selected entity's movement restrictions
+                SetTiles(_entity.InaccessibleTiles, _inaccessibleTile);
+            }
         }
 
         /// <summary>
