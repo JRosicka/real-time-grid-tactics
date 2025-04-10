@@ -39,6 +39,10 @@ namespace Gameplay.Entities {
                 if (Entities.IsNullOrEmpty()) return null;
                 List<OrderedGridEntity> orderedList = Entities.OrderByDescending(o => o.Order).ToList();
                 OrderedGridEntity nextEntity = orderedList.FirstOrDefault(o => o.Order < previousEntity.Order);
+                if (nextEntity == null) {
+                    // We must have gone through the whole entity stack, so loop back around to the top
+                    return orderedList[0];
+                }
                 return nextEntity;
             }
         }

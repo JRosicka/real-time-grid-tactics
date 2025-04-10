@@ -90,9 +90,6 @@ public class EntitySelectionManager {
                 GridEntity nextEntity = entitiesAtLocation.GetEntityAfter(orderedEntity)?.Entity;
                 if (nextEntity != null) {
                     nextEntity.Select();
-                } else if (!SelectCellTerrain(cell)) {  // There is no next entity. Try selecting the cell itself.
-                    // The cell is not selectable. Loop back around and select the first entity in the stack. 
-                    entitiesAtLocation.GetTopEntity().Entity.Select();
                 }
             }
         }
@@ -101,14 +98,11 @@ public class EntitySelectionManager {
     /// <summary>
     /// Try selecting the cell
     /// </summary>
-    /// <returns>True if the cell was selected, otherwise false if it is not a cell that can be selected</returns>
-    private bool SelectCellTerrain(Vector2Int cell) {
+    private void SelectCellTerrain(Vector2Int cell) {
         GameplayTile tile = GridController.GridData.GetCell(cell).Tile;
-        
-        if (!tile.Selectable) return false;
+        if (!tile.Selectable) return;
         
         SelectionInterface.UpdateSelectedTerrain(tile);
-        return true;
     }
 
     public void TryInteractWithCell(Vector2Int cell) {
