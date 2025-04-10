@@ -15,7 +15,7 @@ public static class ResourceTypeExtensions {
     public static string DisplayName(this ResourceType resourceType) {
         return resourceType switch {
             ResourceType.Basic => "Gold",
-            ResourceType.Advanced => "Amber",
+            ResourceType.Advanced => "Spirit-Amber",
             _ => throw new ArgumentOutOfRangeException(nameof(resourceType), resourceType, null)
         };
     }

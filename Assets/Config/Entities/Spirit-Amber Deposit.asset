@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fafa440752424124be5b9cbee86f1e06, type: 3}
-  m_Name: Amber Patch
+  m_Name: Spirit-Amber Deposit
   m_EditorClassIdentifier: 
   ShortDescription: Resource patch for <sprite name="amber">.
   Description: Resource patch for <sprite name="amber">. Build an Amber Mine here

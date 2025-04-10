@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ShortDescription: Resource collector for <sprite name="amber">.
   Description: Resource collector for <sprite name="amber">. Buildable on an empty
-    Amber Patch.
+    Spirit-Amber Deposit.
   Cost:
   - Type: 0
     Amount: 50
