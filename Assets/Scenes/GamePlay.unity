@@ -1379,7 +1379,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _camera: {fileID: 1050066544}
-  _cameraMoveSpeed: 7
+  _cameraMoveSpeed: 10
   _cameraPanSpeed: 0.05
   _boundaryBufferHorizontal: 0.6
   _boundaryBufferVertical: 0.6
@@ -2764,7 +2764,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 4.4
+  orthographic size: 3.9
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
