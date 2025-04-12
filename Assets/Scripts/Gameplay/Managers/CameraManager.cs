@@ -6,6 +6,8 @@ using UnityEngine;
 /// Handles camera movement/zoom
 /// </summary>
 public class CameraManager : MonoBehaviour {
+    private const float GameWindowAspectRatio = 1.77778f; // 16/9
+    
     public enum CameraDirection {
         Left,
         Right,
@@ -153,7 +155,7 @@ public class CameraManager : MonoBehaviour {
     
     private Vector3 ClampCamera(Vector3 targetPosition) {
         float cameraHeight = _camera.orthographicSize;
-        float cameraWidth = cameraHeight * _camera.aspect;
+        float cameraWidth = cameraHeight * GameWindowAspectRatio;
         
         float minX = MapMinX + cameraWidth;
         float maxX = MapMaxX - cameraWidth;
