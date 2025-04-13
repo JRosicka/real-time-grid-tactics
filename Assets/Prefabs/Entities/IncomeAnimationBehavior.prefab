@@ -66,7 +66,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: +100 <size=125%><sprite name="gold"></size>
+  m_text: +100 <sprite name="gold">
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -93,8 +93,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 17
-  m_fontSizeBase: 17
+  m_fontSize: 16.2
+  m_fontSizeBase: 16.2
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -289,7 +289,7 @@ MonoBehaviour:
   _animator: {fileID: 2978642359309320189}
   _incomeText: {fileID: 7919372442432786424}
   _textColor: {r: 1, g: 1, b: 1, a: 1}
-  _incomeTextFormat: +{0} <size=125%><sprite name="{1}"></size>
+  _incomeTextFormat: +{0} <sprite name="{1}">
   _outOfResourcesIcon: {fileID: 7155468894047991439}
   _outOfResourcesImage: {fileID: 1419848069030367892}
 --- !u!95 &2978642359309320189

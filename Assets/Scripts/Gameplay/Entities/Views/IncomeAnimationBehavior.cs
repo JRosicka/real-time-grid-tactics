@@ -15,7 +15,7 @@ namespace Gameplay.Entities {
         [SerializeField] private TMP_Text _incomeText;
         
         [SerializeField] private Color _textColor;
-        [SerializeField] private string _incomeTextFormat = "+{0} <size=125%><sprite name=\"{1}\"></size>";
+        [SerializeField] private string _incomeTextFormat = "+{0} <sprite name=\"{1}\">";
 
         [SerializeField] private GameObject _outOfResourcesIcon;
         [SerializeField] private Image _outOfResourcesImage;
