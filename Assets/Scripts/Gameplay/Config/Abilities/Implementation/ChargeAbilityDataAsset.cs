@@ -120,6 +120,7 @@ namespace Gameplay.Config.Abilities {
         private Vector2Int? DetermineChargeDestination(GridEntity selector, Vector2Int targetCell) {
             Vector2Int? selectorLocation = selector.Location;
             if (selectorLocation == null) return null;
+            if (selectorLocation.Value == targetCell) return null;
 
             int range = GetMaxChargeRange(selector.Team);
             // Get the charge line(s). Use range + 1 in order to consider one more cell at the end of a line if it has an enemy on it. 
