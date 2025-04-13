@@ -119,6 +119,14 @@ namespace Gameplay.Entities.Abilities {
                     // No one in range to attack, so move a cell closer to our destination and re-queue
                     StepTowardsDestination(Performer, AbilityParameters.ReactionTarget.Location.Value, true);
                 } // Otherwise don't step towards the destination since the reaction target is dead. Just return so we can keep going with the next queued ability
+                else if (Performer.QueuedAbilities.All(a => a == this || (a is not MoveAbility && a is not AttackAbility))) {
+                    // But first, reset the target location if since don't have any other queued moves or attacks
+                    Vector2Int? currentLocation = Performer.Location;
+                    // The location might be null if the entity is being destroyed 
+                    if (currentLocation != null) {
+                        Performer.SetTargetLocation(currentLocation.Value, null, false);
+                    }
+                }
                 return false;
             }
             
