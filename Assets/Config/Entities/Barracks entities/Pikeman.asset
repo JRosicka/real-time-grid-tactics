@@ -43,7 +43,7 @@ MonoBehaviour:
   HP: 28
   Range: 1
   Damage: 4
-  BonusDamage: 12
+  BonusDamage: 9
   TagsToApplyBonusDamageTo: 02000000
   NormalMoveTime: 4
   SlowMoveTime: 6.666
