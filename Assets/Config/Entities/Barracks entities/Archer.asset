@@ -41,9 +41,9 @@ MonoBehaviour:
     Volume: 0
     AudioLayer: 0
     Interruptible: 0
-  HP: 12
+  HP: 24
   Range: 2
-  Damage: 3
+  Damage: 6
   BonusDamage: 0
   TagsToApplyBonusDamageTo: 
   NormalMoveTime: 3

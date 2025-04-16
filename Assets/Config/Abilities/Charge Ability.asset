@@ -40,5 +40,5 @@ MonoBehaviour:
     AddedAttackTime: 3
     ChargeRange: 2
     ChargeRangeWithUpgrade: 3
-    BonusDamageFromUpgrade: 2
+    BonusDamageFromUpgrade: 4
     ChargeUpgrade: {fileID: 11400000, guid: 296d8ee10b07046139c9c76a5378fa05, type: 2}

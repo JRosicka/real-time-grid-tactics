@@ -36,7 +36,7 @@ namespace Gameplay.UI {
         public float MaxValue => _gridEntity.MaxHP;
         
         // TODO eventually configure these somewhere else
-        public float MinConfigurableValue => 10;
-        public float MaxConfigurableValue => 50;
+        public float MinConfigurableValue => 20;
+        public float MaxConfigurableValue => 100;
     }
 }

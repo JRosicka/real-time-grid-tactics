@@ -41,7 +41,7 @@ MonoBehaviour:
     Volume: 0
     AudioLayer: 0
     Interruptible: 0
-  HP: 40
+  HP: 80
   Range: 0
   Damage: 0
   BonusDamage: 0

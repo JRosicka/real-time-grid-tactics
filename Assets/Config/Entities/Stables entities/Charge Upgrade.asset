@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Charge Upgrade
   m_EditorClassIdentifier: 
   ShortDescription: Range and damage upgrade for the cavaly charge ability
-  Description: Adds +1 range and +2 attack damage to the cavalry charge ability.
+  Description: Adds +1 range and +4 attack damage to the cavalry charge ability.
     Requires a stable.
   Cost:
   - Type: 0
