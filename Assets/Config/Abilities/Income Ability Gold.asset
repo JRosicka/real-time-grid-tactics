@@ -20,7 +20,7 @@ MonoBehaviour:
     _abilityTimerCooldownView: {fileID: 0}
     _requirements: []
     _performDuration: 0
-    _cooldownDuration: 6
+    _cooldownDuration: 3
     _channel: {fileID: 11400000, guid: e53d1693004b22b4aaf5ee5caa8e749d, type: 2}
     _channelBlockers: []
     _slotLocation: 0
@@ -37,4 +37,4 @@ MonoBehaviour:
     _tryingToPerformCancelsBuilds: 0
     ResourceAmountIncome:
       Type: 0
-      Amount: 10
+      Amount: 5
