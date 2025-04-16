@@ -594,8 +594,6 @@ namespace Gameplay.Entities {
         }
 
         private void TryRespondToAttack(GridEntity sourceEntity) {
-            // If we dead, no response
-            if (HPHandler.CurrentHP <= 0) return;
             // If we not an attacker, no response
             if (!EntityData.AttackByDefault) return;
             // If somehow no location (not registered), no response
