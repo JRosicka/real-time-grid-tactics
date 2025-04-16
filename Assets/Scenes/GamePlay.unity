@@ -1586,7 +1586,7 @@ MonoBehaviour:
       SpawnLocation: {x: -9, y: -4}
     - Entity: {fileID: 11400000, guid: 5d9e30910c9795b49bea0c2c257e60eb, type: 2}
       SpawnLocation: {x: -6, y: -5}
-    - Entity: {fileID: 11400000, guid: 43174010eb096460f944f7aa4f3b1791, type: 2}
+    - Entity: {fileID: 11400000, guid: b52e5f177d13b1b4580a21f9c5ad0bf1, type: 2}
       SpawnLocation: {x: -8, y: -5}
   - Team: 2
     Entities:
@@ -1596,7 +1596,7 @@ MonoBehaviour:
       SpawnLocation: {x: 8, y: 5}
     - Entity: {fileID: 11400000, guid: 5d9e30910c9795b49bea0c2c257e60eb, type: 2}
       SpawnLocation: {x: 5, y: 6}
-    - Entity: {fileID: 11400000, guid: 43174010eb096460f944f7aa4f3b1791, type: 2}
+    - Entity: {fileID: 11400000, guid: b52e5f177d13b1b4580a21f9c5ad0bf1, type: 2}
       SpawnLocation: {x: 7, y: 6}
   LowerLeftCell: {x: -9, y: -5}
   UpperRightCell: {x: 8, y: 6}

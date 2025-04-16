@@ -17,7 +17,7 @@ MonoBehaviour:
     DisplayName: Gold
     Icon: {fileID: 21300000, guid: a7e6cb48d72b74aa0a1679a961dc6f10, type: 3}
     TextIconGlyph: gold
-    StartingAmount: 50
+    StartingAmount: 150
   - Type: 1
     DisplayName: Spirit Amber
     Icon: {fileID: 21300000, guid: 176fa3504053b45e4a626bbe7e84c071, type: 3}
