@@ -16,9 +16,9 @@ MonoBehaviour:
   Description: Worker unit. Can build resource collection and unit production structures.
   Cost:
   - Type: 0
-    Amount: 50
+    Amount: 25
   Requirements: []
-  BuildTime: 18
+  BuildTime: 20
   DisplayTeamColorOverMainSprite: 0
   BaseSprite: {fileID: 21300000, guid: 4ca17f5ec0dca7646beda1d4252b2352, type: 3}
   TeamColorSprite: {fileID: 21300000, guid: 7aae10f09dfd95e48942463fb6487d92, type: 3}
