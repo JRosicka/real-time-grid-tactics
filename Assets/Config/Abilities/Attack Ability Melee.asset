@@ -21,12 +21,12 @@ MonoBehaviour:
     _abilityTimerCooldownView: {fileID: 3613232002330387423, guid: f40c3d65f7969d74995aff7c067ce52a, type: 3}
     _requirements: []
     _performDuration: 0
-    _cooldownDuration: 3
+    _cooldownDuration: 4
     _channel: {fileID: 11400000, guid: 98e93cf2e89779d4494a08d38620b523, type: 2}
     _channelBlockers:
     - {fileID: 11400000, guid: 98e93cf2e89779d4494a08d38620b523, type: 2}
     _slotLocation: 5
-    _addedMovementTime: 1.8
+    _addedMovementTime: 2.4
     _performOnStart: 0
     _payCostUpFront: 0
     _repeatForeverAfterStartEvenWhenFailed: 0

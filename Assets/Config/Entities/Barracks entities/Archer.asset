@@ -20,7 +20,7 @@ MonoBehaviour:
   - Type: 1
     Amount: 50
   Requirements: []
-  BuildTime: 30
+  BuildTime: 40
   DisplayTeamColorOverMainSprite: 0
   BaseSprite: {fileID: 21300000, guid: a77b97fdf550bfa4fa43e066eff192ee, type: 3}
   TeamColorSprite: {fileID: 21300000, guid: 66d970995ee99364288261e3c02b3d71, type: 3}
@@ -46,8 +46,8 @@ MonoBehaviour:
   Damage: 6
   BonusDamage: 0
   TagsToApplyBonusDamageTo: 
-  NormalMoveTime: 3
-  SlowMoveTime: 5
+  NormalMoveTime: 4
+  SlowMoveTime: 6.666
   Tags: 03000000
   AttackerTargetPriority: 2
   Abilities:

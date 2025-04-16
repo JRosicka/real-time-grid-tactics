@@ -21,12 +21,12 @@ MonoBehaviour:
     _abilityTimerCooldownView: {fileID: 5971072852972127787, guid: 31b9abd5b640d9648bf03e6305a255b4, type: 3}
     _requirements: []
     _performDuration: 0
-    _cooldownDuration: 18
+    _cooldownDuration: 24
     _channel: {fileID: 11400000, guid: feaeb05e30f0b1b439e4f27b75aba8b6, type: 2}
     _channelBlockers:
     - {fileID: 11400000, guid: feaeb05e30f0b1b439e4f27b75aba8b6, type: 2}
     _slotLocation: 1
-    _addedMovementTime: 1
+    _addedMovementTime: 1.333
     _performOnStart: 0
     _payCostUpFront: 0
     _repeatForeverAfterStartEvenWhenFailed: 0
@@ -37,7 +37,7 @@ MonoBehaviour:
     _autoSelect: 0
     _selectableForAllPlayers: 0
     _tryingToPerformCancelsBuilds: 1
-    AddedAttackTime: 3
+    AddedAttackTime: 4
     ChargeRange: 2
     ChargeRangeWithUpgrade: 3
     BonusDamageFromUpgrade: 4
