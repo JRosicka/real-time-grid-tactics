@@ -150,7 +150,7 @@ public class GameSetupManager : MonoBehaviour {
         GameTeam localTeam = GameManager.LocalTeam;
         if (localTeam != GameTeam.Spectator) {
             Vector2Int keepLocation = MapLoader.GetHomeBaseLocation(localTeam);
-            StartLocationIndicator.PlayBlinkingAnimation(GameManager.GridController.GetWorldPosition(keepLocation), 
+            StartLocationIndicator.PlayMovingAnimation(GameManager.GridController.GetWorldPosition(keepLocation), 
                 GameManager.GetPlayerForTeam(localTeam).Data.TeamColor, 
                 CountdownTimeSeconds);
         }

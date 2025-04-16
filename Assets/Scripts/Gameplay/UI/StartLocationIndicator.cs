@@ -13,10 +13,10 @@ namespace Gameplay.UI {
 
         [SerializeField] private float _topPadding;
         
-        public void PlayBlinkingAnimation(Vector2 worldPosition, Color teamColor, float countdownTimeSeconds) {
+        public void PlayMovingAnimation(Vector2 worldPosition, Color teamColor, float countdownTimeSeconds) {
             gameObject.SetActive(true);
             transform.position = Camera.main!.WorldToScreenPoint(worldPosition + new Vector2(0, _topPadding));
-            _animator.Play("StartLocationIndicatorBlinking");
+            _animator.Play("StartLocationIndicatorMoving");
             
             _background.color = teamColor;
             
