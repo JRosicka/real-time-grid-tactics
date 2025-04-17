@@ -34,7 +34,7 @@ MonoBehaviour:
   DisplayName: Amber Patch
   ShortDescription: 
   LongDescription: 
-  SlowTags: 
+  SlowTags: []
   InaccessibleTags: 
-  _defenseModifier: 1
+  _armorBonus: 0
   _defenseBoostTags: 

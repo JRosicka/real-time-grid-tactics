@@ -40,5 +40,5 @@ MonoBehaviour:
   - Tag: 2
     SlowFactor: 2
   InaccessibleTags: 
-  _defenseModifier: 0.75
+  _armorBonus: 2
   _defenseBoostTags: 03000000

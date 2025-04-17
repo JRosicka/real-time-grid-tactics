@@ -73,9 +73,9 @@ namespace Gameplay.Config {
         [Header("Structure config")]
         [Tooltip("Where this can be build. Relevant for structures only.")]
         public List<GameplayTile> EligibleStructureLocations;
-        [Tooltip("Damage multiplier for units on the structure who are taking damage. Relevant for structures only.")]
-        [Range(0, 1)]
-        public float SharedUnitDamageTakenModifier = 1;
+        [Tooltip("Armor bonus for units on the structure who are taking damage. Relevant for structures only.")]
+        [Range(0, 6)]
+        public int SharedUnitArmorBonus;
         [Tooltip("Tags that shared unit damage taken modifier gets applied to, for units sharing this cell. An empty list makes the damage modifier get applied to everyone. Relevant for structures only.")]
         public List<EntityTag> SharedUnitDamageTakenModifierTags;
         public bool CanRally;

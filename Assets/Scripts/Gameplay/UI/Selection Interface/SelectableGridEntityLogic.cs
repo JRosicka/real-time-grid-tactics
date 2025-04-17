@@ -218,30 +218,29 @@ namespace Gameplay.UI {
         
         #region Tooltips
         
-        private const string DefenseFormatStructure = "Provides a {0}% defense bonus for {1} units.";
-        private const string DefenseFormatUnit = "Receives a {0}% defense bonus from friendly structure.";
-        private const string DefenseFormatTerrain = "Receives a {0}% defense bonus from terrain.";
+        private const string DefenseFormatStructure = "Reduces incoming attack damage by {0} for {1} units.";
+        private const string DefenseFormatUnit = "Friendly structure reduces incoming attack damage by {0}.";
+        private const string DefenseFormatTerrain = "Terrain reduces incoming attack damage by {0}.";
         private string GetDefenseTooltip() {
-            float defenseModifier = Entity.GetStructureDefenseModifier();
-            // ReSharper disable once CompareOfFloatsByEqualityOperator
-            if (defenseModifier != 1f) {
+            int defenseModifier = Entity.GetStructureDefenseModifier();
+            if (defenseModifier != 0) {
                 // Defense modifier from structure (friendly or itself)
                 if (Entity.EntityData.IsStructure) {
                     string entitiesReceivingDefense = "all";
                     if (Entity.EntityData.SharedUnitDamageTakenModifierTags.Count > 0) {
                         entitiesReceivingDefense = GetStringListForEntityTags(Entity.EntityData.SharedUnitDamageTakenModifierTags);
                     }
-                    return string.Format(DefenseFormatStructure, (1 - defenseModifier) * 100, entitiesReceivingDefense);
+                    return string.Format(DefenseFormatStructure, defenseModifier, entitiesReceivingDefense);
                 }
             
-                return string.Format(DefenseFormatUnit, (1 - defenseModifier) * 100);
+                return string.Format(DefenseFormatUnit, defenseModifier);
             }
             
             defenseModifier = Entity.GetTerrainDefenseModifier();
             // ReSharper disable once CompareOfFloatsByEqualityOperator
-            if (defenseModifier != 1f) {
+            if (defenseModifier != 0) {
                 // Defense modifier from terrain
-                return string.Format(DefenseFormatTerrain, (1 - defenseModifier) * 100);
+                return string.Format(DefenseFormatTerrain, defenseModifier);
             }
             
             return "";

@@ -53,7 +53,7 @@ namespace Gameplay.Entities {
         /// <returns>True if this results in the entity dying, otherwise false</returns>
         public bool ReceiveAttackFromEntity(GridEntity sourceEntity, int bonusDamage) {
             // Get base damage
-            float damage = sourceEntity.Damage;
+            int damage = sourceEntity.Damage;
             
             // Apply bonus damange
             damage += bonusDamage;
@@ -63,13 +63,16 @@ namespace Gameplay.Entities {
                 ? sourceEntity.EntityData.BonusDamage
                 : 0;
             
-            // Apply any multiplicative defense modifiers from terrain
-            damage *= _gridEntity.GetTerrainDefenseModifier();
+            // Apply any defense modifiers from terrain
+            damage -= _gridEntity.GetTerrainDefenseModifier();
 
-            // Apply any multiplicative defense modifiers from structures (as long as this is not a structure)
+            // Apply any defense modifiers from structures (as long as this is not a structure)
             if (!EntityData.IsStructure) {
-                damage *= _gridEntity.GetStructureDefenseModifier();
+                damage -= _gridEntity.GetStructureDefenseModifier();
             }
+            
+            // Minimum of 1 damage
+            damage = Mathf.Max(1, damage);
             
             SetCurrentHP(CurrentHP - Mathf.RoundToInt(damage), true);
 

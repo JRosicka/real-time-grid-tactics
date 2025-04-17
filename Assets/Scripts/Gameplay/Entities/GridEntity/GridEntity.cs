@@ -571,9 +571,9 @@ namespace Gameplay.Entities {
             return tooltipMessage;
         }
         
-        public float GetStructureDefenseModifier() {
+        public int GetStructureDefenseModifier() {
             if (EntityData.IsStructure) {
-                return EntityData.SharedUnitDamageTakenModifier;
+                return EntityData.SharedUnitArmorBonus;
             }
 
             List<GridEntity> structuresAtLocation = GameManager.Instance.CommandManager.EntitiesOnGrid.EntitiesAtLocation(Location!.Value)?.Entities
@@ -582,14 +582,14 @@ namespace Gameplay.Entities {
                 // Return the damage modifier of any structures whose modifier should be applied to this entity
                 if (structure.EntityData.SharedUnitDamageTakenModifierTags.Count == 0
                     || structure.EntityData.SharedUnitDamageTakenModifierTags.Any(t => EntityData.Tags.Contains(t))) {
-                    return structure.EntityData.SharedUnitDamageTakenModifier;
+                    return structure.EntityData.SharedUnitArmorBonus;
                 }
             }
 
-            return 1f;
+            return 0;
         }
 
-        public float GetTerrainDefenseModifier() {
+        public int GetTerrainDefenseModifier() {
             return CurrentTileType!.GetDefenseModifier(EntityData);
         }
 

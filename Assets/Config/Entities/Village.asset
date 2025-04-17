@@ -60,7 +60,7 @@ MonoBehaviour:
   BuildQueueSize: 5
   EligibleStructureLocations:
   - {fileID: 11400000, guid: be8d7ccbdc543194e9649f8f9fadbf2b, type: 2}
-  SharedUnitDamageTakenModifier: 0.75
+  SharedUnitArmorBonus: 2
   SharedUnitDamageTakenModifierTags: 
   CanRally: 0
   StartingResourceSet:

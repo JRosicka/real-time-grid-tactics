@@ -26,17 +26,17 @@ public class GameplayTile : HexagonalRuleTile<GameplayTile.Neighbor> {
     public List<EntityData.EntityTag> InaccessibleTags;
 
     [Space] 
-    [Range(0, 1)]
-    [Tooltip("Percentage of base damage that affected units take when attacked on this tile. E.g. a value of .75 means that affected units take 75% of the damage they normally would.")]
+    [Range(0, 6)]
+    [Tooltip("Armor bonus (damage reduction per incoming attack) to apply to units that contain a defense boost tag")]
     [SerializeField]
-    private float _defenseModifier = 1f;
+    private int _armorBonus;
     /// <summary>
     /// Any entities with these tags will receive the defense bonus
     /// </summary>
     [SerializeField]
     private List<EntityData.EntityTag> _defenseBoostTags;
-    public float GetDefenseModifier(EntityData entityData) {
-        return entityData.Tags.Any(tag => _defenseBoostTags.Contains(tag)) ? _defenseModifier : 1f;
+    public int GetDefenseModifier(EntityData entityData) {
+        return entityData.Tags.Any(tag => _defenseBoostTags.Contains(tag)) ? _armorBonus : 0;
     }
 
     public float GetMoveModifier(List<EntityData.EntityTag> tags) {
@@ -44,14 +44,13 @@ public class GameplayTile : HexagonalRuleTile<GameplayTile.Neighbor> {
         return slowedTag?.SlowFactor ?? 1f;
     }
 
-    private const string DefenseFormat = "Provides a {0}% defense bonus for {1} units.";
+    private const string DefenseFormat = "Reduces incoming attack damage by {0} for {1} units.";
     public string GetDefenseTooltip() {
-        // ReSharper disable once CompareOfFloatsByEqualityOperator
-        if (_defenseBoostTags.Count == 0 || _defenseModifier == 1) return "";
+        if (_defenseBoostTags.Count == 0 || _armorBonus == 0) return "";
 
         string tooltip = "";
         for (int i = 0; i < _defenseBoostTags.Count; i++) {
-            tooltip += string.Format(DefenseFormat, Mathf.RoundToInt((1f / _defenseModifier - 1) * 100), _defenseBoostTags[i].ToString());
+            tooltip += string.Format(DefenseFormat, _armorBonus, _defenseBoostTags[i].ToString());
             if (i < _defenseBoostTags.Count - 1) tooltip += "<br>";
         }
         return tooltip;
