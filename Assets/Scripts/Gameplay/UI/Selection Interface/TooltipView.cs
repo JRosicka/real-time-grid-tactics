@@ -85,7 +85,7 @@ namespace Gameplay.UI {
                 return;
             }
             
-            selectableObject.SetUpIcons(_icon, _secondaryIcon, _teamColorsCanvas, 1);
+            selectableObject.SetUpIcons(_icon, _secondaryIcon, _teamColorsCanvas, 2);
             
             _name.text = selectableObject.Name;
             _description.text = selectableObject.LongDescription;
