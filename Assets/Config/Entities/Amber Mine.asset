@@ -47,7 +47,7 @@ MonoBehaviour:
   TagsToApplyBonusDamageTo: 
   NormalMoveTime: 0
   SlowMoveTime: 0
-  Tags: 01000000
+  Tags: 0100000008000000
   AttackerTargetPriority: 0
   Abilities:
   - {fileID: 11400000, guid: 565aab4902261724f81a563d917e3d01, type: 2}
@@ -58,7 +58,7 @@ MonoBehaviour:
   BuildQueueSize: 5
   EligibleStructureLocations:
   - {fileID: 11400000, guid: d2abf14400b53b645a0af4f3676cfbb2, type: 2}
-  SharedUnitDamageTakenModifier: 1
+  SharedUnitArmorBonus: 0
   SharedUnitDamageTakenModifierTags: 
   CanRally: 0
   StartingResourceSet:

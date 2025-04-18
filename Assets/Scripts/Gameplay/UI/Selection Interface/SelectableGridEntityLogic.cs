@@ -218,7 +218,7 @@ namespace Gameplay.UI {
         
         #region Tooltips
         
-        private const string DefenseFormatStructure = "Reduces incoming attack damage by {0} for {1} units.";
+        private const string DefenseFormatStructure = "Reduces incoming attack damage by {0} for {1}.";
         private const string DefenseFormatUnit = "Friendly structure reduces incoming attack damage by {0}.";
         private const string DefenseFormatTerrain = "Terrain reduces incoming attack damage by {0}.";
         private string GetDefenseTooltip() {
@@ -226,7 +226,7 @@ namespace Gameplay.UI {
             if (defenseModifier != 0) {
                 // Defense modifier from structure (friendly or itself)
                 if (Entity.EntityData.IsStructure) {
-                    string entitiesReceivingDefense = "all";
+                    string entitiesReceivingDefense = "all units";
                     if (Entity.EntityData.SharedUnitDamageTakenModifierTags.Count > 0) {
                         entitiesReceivingDefense = GetStringListForEntityTags(Entity.EntityData.SharedUnitDamageTakenModifierTags);
                     }
@@ -246,7 +246,7 @@ namespace Gameplay.UI {
             return "";
         }
         
-        private const string AttackFormat = "Deals {0} additional damage to {1} units.";
+        private const string AttackFormat = "Deals {0} additional damage to {1}.";
         private string GetAttackTooltip() {
             string tooltipMessage = Entity.GetAttackTooltipMessageFromAbilities();
             string bonusDamage = Entity.EntityData.BonusDamage == 0 
@@ -258,10 +258,10 @@ namespace Gameplay.UI {
             return tooltipMessage + bonusDamage;
         }
 
-        private static string GetStringListForEntityTags(List<EntityData.EntityTag> tags) {
+        private static string GetStringListForEntityTags(List<EntityTag> tags) {
             string ret = "";
             for (int i = 0; i < tags.Count; i++) {
-                ret += tags[i];
+                ret += tags[i].UnitDescriptorPlural();
                 if (i == tags.Count - 1) {
                     // Nothing to add
                 } else if (i == tags.Count - 2) {

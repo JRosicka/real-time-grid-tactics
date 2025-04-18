@@ -24,7 +24,7 @@ namespace Gameplay.Entities.Abilities {
             GridEntity resourceEntity = GameManager.Instance.GetEntitiesAtLocation(performerLocation.Value)
                 ?.Entities
                 .Select(e => e.Entity)
-                .FirstOrDefault(e => e.Tags.Contains(EntityData.EntityTag.Resource));
+                .FirstOrDefault(e => e.Tags.Contains(EntityTag.Resource));
             if (resourceEntity == null) return false;
             if (resourceEntity.CurrentResourcesValue.Type != Data.ResourceAmountIncome.Type) return false;
             if (resourceEntity.CurrentResourcesValue.Amount <= 0) return false;

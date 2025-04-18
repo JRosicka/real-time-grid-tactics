@@ -14,16 +14,6 @@ namespace Gameplay.Config {
     /// </summary>
     [CreateAssetMenu(menuName = "Grid Entities/EntityData", fileName = "EntityData", order = 0)]
     public class EntityData : PurchasableData {
-        public enum EntityTag {
-            Structure = 1,
-            Cavalry = 2, 
-            Infantry = 3,
-            Flying = 4,
-            HomeBase = 5,
-            Worker = 6,
-            Resource = 7,
-        }
-
         public enum TargetPriority {
             Structure = 0,
             Worker = 1,

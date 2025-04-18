@@ -108,7 +108,7 @@ public abstract class AbstractCommandManager : NetworkBehaviour, ICommandManager
         
         // Handle starting movement
         if (spawnerEntity != null && spawnerEntity.TargetLocationLogicValue.CanRally) {
-            if (data.Tags.Contains(EntityData.EntityTag.Worker)) {
+            if (data.Tags.Contains(EntityTag.Worker)) {
                 // Workers get move-commanded
                 entityInstance.TryMoveToCell(spawnerEntity.TargetLocationLogicValue.CurrentTarget, false);
             } else {

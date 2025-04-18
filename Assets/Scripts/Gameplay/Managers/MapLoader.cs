@@ -61,7 +61,7 @@ public class MapLoader : MonoBehaviour {
         return UnitSpawns
             .First(u => u.Team == team)
             .Entities
-            .First(e => e.Entity.Tags.Contains(EntityData.EntityTag.HomeBase))
+            .First(e => e.Entity.Tags.Contains(EntityTag.HomeBase))
             .SpawnLocation;
     }
 }

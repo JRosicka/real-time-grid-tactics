@@ -34,7 +34,7 @@ namespace Gameplay.Entities {
         public string UnitName;
         public GameTeam Team;
         public string DisplayName => EntityData.ID;
-        public List<EntityData.EntityTag> Tags => EntityData.Tags;
+        public List<EntityTag> Tags => EntityData.Tags;
         public IEnumerable<IAbilityData> Abilities => EntityData.Abilities.Select(a => a.Content);
         public List<GameplayTile> SlowTiles;
         public List<GameplayTile> InaccessibleTiles;

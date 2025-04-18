@@ -52,6 +52,6 @@ public class GameEndManager {
     }
     
     private bool PlayerHasLost(IGamePlayer player) {
-        return !EntityCollection.ActiveEntitiesForTeam(player.Data.Team).Any(e => e.Tags.Contains(EntityData.EntityTag.HomeBase));
+        return !EntityCollection.ActiveEntitiesForTeam(player.Data.Team).Any(e => e.Tags.Contains(EntityTag.HomeBase));
     }
 }

@@ -213,7 +213,7 @@ namespace Gameplay.Config.Abilities {
                 if (entityAtCell.Team == selector.Team.OpponentTeam()) {
                     return true;
                 } 
-                if (entityAtCell.EntityData.IsStructure || entityAtCell.EntityData.Tags.Contains(EntityData.EntityTag.Resource)) {
+                if (entityAtCell.EntityData.IsStructure || entityAtCell.EntityData.Tags.Contains(EntityTag.Resource)) {
                     return false;
                 }
 

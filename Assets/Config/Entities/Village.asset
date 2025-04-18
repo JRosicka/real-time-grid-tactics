@@ -47,7 +47,7 @@ MonoBehaviour:
   TagsToApplyBonusDamageTo: 
   NormalMoveTime: 0
   SlowMoveTime: 0
-  Tags: 01000000
+  Tags: 0100000008000000
   AttackerTargetPriority: 0
   Abilities:
   - {fileID: 11400000, guid: bdf047dc1be4f44418a904a085034a1e, type: 2}
