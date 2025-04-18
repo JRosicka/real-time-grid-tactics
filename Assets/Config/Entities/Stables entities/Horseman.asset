@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Horseman
   m_EditorClassIdentifier: 
   ShortDescription: Speedy cavalry unit.
-  Description: Speedy cavalry unit.
+  Description: Speedy cavalry unit. Deals extra damage to Villages and Amber Mines.
   Cost:
   - Type: 0
     Amount: 75
@@ -44,8 +44,8 @@ MonoBehaviour:
   HP: 44
   Range: 1
   Damage: 8
-  BonusDamage: 0
-  TagsToApplyBonusDamageTo: 
+  BonusDamage: 6
+  TagsToApplyBonusDamageTo: 08000000
   NormalMoveTime: 2.1333
   SlowMoveTime: 6.666
   Tags: 02000000
@@ -61,7 +61,7 @@ MonoBehaviour:
   MovementAndAttackUI: 1
   BuildQueueSize: 5
   EligibleStructureLocations: []
-  SharedUnitDamageTakenModifier: 1
+  SharedUnitArmorBonus: 0
   SharedUnitDamageTakenModifierTags: 
   CanRally: 0
   StartingResourceSet:
