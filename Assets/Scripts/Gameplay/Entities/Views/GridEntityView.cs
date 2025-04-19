@@ -29,6 +29,7 @@ namespace Gameplay.Entities {
         [SerializeField] private Animator _healAnimator;
         [SerializeField] private Transform _directionContainer;
         [SerializeField] private PerlinShakeBehaviour ShakeBehaviour;
+        [SerializeField] private ColorFlashBehaviour ColorFlashBehaviour;
         [SerializeField] private VisualBar _healthBar;
         
         [Header("Config")]
@@ -109,6 +110,7 @@ namespace Gameplay.Entities {
             // Delay so that the shake times up with the attacker's animation
             await Task.Delay((int)(_attackShakeTriggerTime * 1000));
             ShakeBehaviour.Shake();
+            ColorFlashBehaviour.Flash();
         }
 
         private void HealReceived() {

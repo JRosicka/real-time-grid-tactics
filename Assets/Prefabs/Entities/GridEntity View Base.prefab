@@ -916,6 +916,7 @@ MonoBehaviour:
   _healAnimator: {fileID: 7010898409609744855}
   _directionContainer: {fileID: 4630265928891351562}
   ShakeBehaviour: {fileID: 8158837482416130505}
+  ColorFlashBehaviour: {fileID: 1530196826150473110}
   _healthBar: {fileID: 6561127938962363668}
   _secondsToMoveToAdjacentCell: 0.15
   _attackAnimationIntro_lengthSeconds: 0.25
@@ -1613,6 +1614,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8864968320501638181}
   - component: {fileID: 8158837482416130505}
+  - component: {fileID: 1530196826150473110}
   m_Layer: 0
   m_Name: Shakeable
   m_TagString: Untagged
@@ -1659,6 +1661,72 @@ MonoBehaviour:
   _traumaRotMag: 12
   _traumaDecay: 5
   _returnTime: 0.1
+--- !u!114 &1530196826150473110
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6954449473842564710}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4b7eb5e6429d47cfbd845abb728e4153, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _flashInLengthSeconds: 0.05
+  _flashOutLengthSeconds: 0.4
+  _targetColor: {r: 1, g: 0, b: 0, a: 1}
+  _flashInCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 1
+      outSlope: 1
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 1
+      outSlope: 1
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  _flashOutCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0.9996918
+      inSlope: -1.5466629
+      outSlope: -1.5466629
+      tangentMode: 0
+      weightedMode: 3
+      inWeight: 0.33333334
+      outWeight: 0.3970742
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: -0.02166596
+      outSlope: -0.02166596
+      tangentMode: 0
+      weightedMode: 3
+      inWeight: 0.42215258
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  _images:
+  - {fileID: 133772266710080777}
+  - {fileID: 6941450737904846212}
 --- !u!1001 &767484979325194853
 PrefabInstance:
   m_ObjectHideFlags: 0
