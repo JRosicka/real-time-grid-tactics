@@ -33,7 +33,7 @@ public class SPCommandManager : AbstractCommandManager {
     }
 
     public override async void UnRegisterEntity(GridEntity entity, bool showDeathAnimation) {
-        await Task.Delay(TimeSpan.FromSeconds(AbilityQueueExecutor.UpdateFrequency));
+        await Task.Delay(TimeSpan.FromSeconds(AbilityQueueExecutor.UpdateFrequency * 2));
         DoMarkEntityUnregistered(entity, showDeathAnimation);
         DoUnRegisterEntity(entity);
     }
