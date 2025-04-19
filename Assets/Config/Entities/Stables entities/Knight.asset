@@ -22,8 +22,8 @@ MonoBehaviour:
   Requirements: []
   BuildTime: 45
   DisplayTeamColorOverMainSprite: 0
-  BaseSprite: {fileID: 21300000, guid: 2ad50d51a120ea6449778ce20e3a0547, type: 3}
-  TeamColorSprite: {fileID: 21300000, guid: 42a36b0e8795a1740ac2f2c246405dba, type: 3}
+  BaseSprite: {fileID: 21300000, guid: 39af4f5fcf6309945b217e525c572273, type: 3}
+  TeamColorSprite: {fileID: 21300000, guid: e8c167ea0d633c84789928cf9ff2549b, type: 3}
   BaseSpriteIconOverride: {fileID: 0}
   _viewPrefab: {fileID: 7504026570216467247, guid: 756acdd55b6cc334791cee33d2ee90d3, type: 3}
   SelectionSound:
@@ -61,7 +61,7 @@ MonoBehaviour:
   MovementAndAttackUI: 1
   BuildQueueSize: 5
   EligibleStructureLocations: []
-  SharedUnitDamageTakenModifier: 1
+  SharedUnitArmorBonus: 0
   SharedUnitDamageTakenModifierTags: 
   CanRally: 0
   StartingResourceSet:
