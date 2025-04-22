@@ -55,7 +55,7 @@ namespace Gameplay.UI {
                 ToggleForSelectable(_selectedObject);
             } else {
                 ToggleTooltip(true);
-                SetUpAbilityView(ability.AbilitySlotInfo, abilitySlotBehavior, false);
+                SetUpAbilityView(ability.AbilitySlotInfo, abilitySlotBehavior);
                 _selectedTargetableAbility = ability;
                 _selectedTargetableAbilitySlotBehavior = abilitySlotBehavior;
             }
@@ -74,7 +74,7 @@ namespace Gameplay.UI {
                 // The hovered ability slot is hidden - do not react
             } else {
                 ToggleTooltip(true);
-                SetUpAbilityView(abilityInfo, abilitySlotBehavior, abilitySlotBehavior is QueuedBuildAbilitySlotBehavior);
+                SetUpAbilityView(abilityInfo, abilitySlotBehavior);
             }
         }
         
@@ -98,13 +98,13 @@ namespace Gameplay.UI {
         private void SetUpForInProgressBuild(BuildAbility buildAbility) {
             BuildAbilityData buildData = (BuildAbilityData) buildAbility.AbilityData;
             BuildAbilitySlotBehavior buildBehavior = new BuildAbilitySlotBehavior(buildData, buildAbility.AbilityParameters.Buildable, buildAbility.Performer);
-            SetUpAbilityView(buildData.AbilitySlotInfo, buildBehavior, true);
+            SetUpAbilityView(buildData.AbilitySlotInfo, buildBehavior);
         }
 
-        private void SetUpAbilityView(AbilitySlotInfo abilityInfo, IAbilitySlotBehavior abilitySlotBehavior, bool includeInProgressMessage) {
+        private void SetUpAbilityView(AbilitySlotInfo abilityInfo, IAbilitySlotBehavior abilitySlotBehavior) {
             abilitySlotBehavior.SetUpSprites(_icon, _secondaryIcon, _teamColorsCanvas);
             if (abilitySlotBehavior is BuildAbilitySlotBehavior buildAbilitySlotBehavior) {
-                _name.text = buildAbilitySlotBehavior.Buildable.ID + (includeInProgressMessage ? " (constructing)" : "");
+                _name.text = buildAbilitySlotBehavior.Buildable.ID;
                 _description.text = buildAbilitySlotBehavior.Buildable.Description;
 
                 int basicCost = buildAbilitySlotBehavior.Buildable.Cost.FirstOrDefault(r => r.Type == ResourceType.Basic)?.Amount ?? 0;
