@@ -19,7 +19,7 @@ namespace Gameplay.Entities {
             
             Initialize(team, entityData, false);
 
-            buildAbility.Performer.KilledEvent += RemoveView;
+            buildAbility.Performer.UnregisteredEvent += RemoveView;
         }
 
         public void Initialize(GameTeam team, EntityData entityData, bool dimmed) {

@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
+using Gameplay.Config;
 using Gameplay.Config.Abilities;
 using Gameplay.Entities.Abilities;
 using Gameplay.UI;
@@ -31,6 +33,9 @@ namespace Gameplay.Entities {
         [SerializeField] private PerlinShakeBehaviour ShakeBehaviour;
         [SerializeField] private ColorFlashBehaviour ColorFlashBehaviour;
         [SerializeField] private VisualBar _healthBar;
+        [SerializeField] private List<CanvasGroup> _thingsToHideWhenDying;
+        [SerializeField] private CanvasGroup _mainImageGroup;
+        [SerializeField] private ParticleSystem _deathParticleSystem;
         
         [Header("Config")]
         [FormerlySerializedAs("SecondsToMoveToAdjacentCell")]
@@ -43,6 +48,7 @@ namespace Gameplay.Entities {
         [SerializeField] private float _attackAnimationOutro_lengthSeconds;
         [SerializeField] private AnimationCurve _attackAnimationOutro_curve;
         [SerializeField] private float _attackShakeTriggerTime;
+        [SerializeField] private float _timeToDisappearWhenDying = .5f;
 
         [HideInInspector] 
         public GridEntity Entity;
@@ -91,6 +97,7 @@ namespace Gameplay.Entities {
             UpdateMove();
             // Need to do attack after movement in order to properly handle when both are happening
             UpdateAttack();
+            UpdateDeath();
         }
 
         private void DoAbility(IAbility ability, AbilityCooldownTimer cooldownTimer) {
@@ -115,15 +122,6 @@ namespace Gameplay.Entities {
 
         private void HealReceived() {
             _healAnimator.Play("Heal");
-        }
-
-        private void Killed() {
-            // TODO wait until we actually do a kill animation before calling this
-            KillAnimationFinished();
-        }
-
-        private void KillAnimationFinished() {
-            KillAnimationFinishedEvent?.Invoke();
         }
 
         /// <summary>
@@ -184,7 +182,6 @@ namespace Gameplay.Entities {
         }
         
         #endregion
-        
         #region Attacking
 
         private Vector2 _attackStartPosition;
@@ -244,6 +241,50 @@ namespace Gameplay.Entities {
 
             if (_attackTime > _attackAnimationIntro_lengthSeconds + _attackAnimationOutro_lengthSeconds) {
                 _attacking = false;
+            }
+        }
+        
+        #endregion
+        #region Death
+
+        private bool _dying;
+        private float _dyingTime;
+
+        private async void Killed() {
+            _dying = true;
+            
+            // Hide UI elements
+            _thingsToHideWhenDying.ForEach(t => t.alpha = 0);
+            
+            // Play death particles
+            SetDeathParticleColors();
+            _deathParticleSystem.Play();
+            
+            // Mark as dead after the death particles have had some time to do their thing
+            await Task.Delay(TimeSpan.FromSeconds(2f));
+            KillAnimationFinished();
+        }
+
+        private void KillAnimationFinished() {
+            KillAnimationFinishedEvent?.Invoke();
+        }
+
+        private void SetDeathParticleColors() {
+            ParticleSystem.MainModule main = _deathParticleSystem.main;
+            ParticleSystem.MinMaxGradient colors = _deathParticleSystem.main.startColor;
+            PlayerData playerData = GameManager.Instance.GetPlayerForTeam(Entity.Team).Data;
+            colors.colorMin = playerData.DeathParticlesColor1;
+            colors.colorMax = playerData.DeathParticlesColor2;
+            main.startColor = colors;
+        }
+
+        private void UpdateDeath() {
+            if (!_dying) return;
+
+            _dyingTime += Time.deltaTime;
+            _mainImageGroup.alpha = Mathf.Lerp(1, 0, _dyingTime / _timeToDisappearWhenDying);
+            if (_dyingTime > _timeToDisappearWhenDying) {
+                _dying = false;
             }
         }
         

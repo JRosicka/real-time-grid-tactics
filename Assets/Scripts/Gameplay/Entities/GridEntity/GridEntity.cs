@@ -640,8 +640,10 @@ namespace Gameplay.Entities {
             }
 
             _unregistered = true;
-            UnregisteredEvent?.Invoke(); 
-            KilledEvent?.Invoke();
+            UnregisteredEvent?.Invoke();
+            if (showDeathAnimation) {
+                KilledEvent?.Invoke();
+            }
         }
         
         private void DisallowInteraction() {
