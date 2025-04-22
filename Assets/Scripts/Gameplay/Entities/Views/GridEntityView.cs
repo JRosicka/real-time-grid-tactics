@@ -200,8 +200,6 @@ namespace Gameplay.Entities {
             if (performerLocation == null || targetLocation == null) return;
             
             _attackFromMove = _moving;
-            _moving = false;
-            
             _attackStartPosition = transform.position;    // Might be different from the entity location if we are in the middle of a move animation
             _attackReturnPosition = GameManager.Instance.GridController.GetWorldPosition(performerLocation.Value);
             
@@ -226,11 +224,11 @@ namespace Gameplay.Entities {
             if (_attackTime <= _attackAnimationIntro_lengthSeconds) {
                 AnimationCurve curve = _attackFromMove ? _attackAnimationIntro_curveFromMove : _attackAnimationIntro_curveFromNoMove;
                 float evaluationProgress = curve.Evaluate(_attackTime / _attackAnimationIntro_lengthSeconds);
-                transform.position = Vector2.LerpUnclamped(_attackStartPosition, _attackTargetPosition, evaluationProgress);
+                _mainImageGroup.transform.position = Vector2.Lerp(_attackStartPosition, _attackTargetPosition, evaluationProgress);
             } else {
                 float time = _attackTime - _attackAnimationIntro_lengthSeconds;
                 float evaluationProgress = _attackAnimationOutro_curve.Evaluate(time / _attackAnimationOutro_lengthSeconds);
-                transform.position = Vector2.LerpUnclamped(_attackReturnPosition, _attackTargetPosition, evaluationProgress);
+                _mainImageGroup.transform.position = Vector2.Lerp(_attackReturnPosition, _attackTargetPosition, evaluationProgress);
             }
             
             // Attack shake
