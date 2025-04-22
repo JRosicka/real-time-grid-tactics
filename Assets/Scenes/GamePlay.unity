@@ -1379,11 +1379,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _camera: {fileID: 1050066544}
-  _cameraMoveSpeed: 10
+  _cameraMoveSpeed: 11
   _cameraPanSpeed: 0.05
   _boundaryBufferHorizontal: 0.6
   _boundaryBufferVertical: 0.6
-  _additionalBoundaryBufferDown: 2.25
+  _additionalBoundaryBufferDown: 1.9
   _edgeScrollNormalThreshold: 0.06
 --- !u!1 &527040124
 GameObject:
@@ -2764,7 +2764,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 3.9
+  orthographic size: 3.65
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
