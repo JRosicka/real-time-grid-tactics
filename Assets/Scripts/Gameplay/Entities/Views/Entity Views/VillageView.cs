@@ -5,16 +5,22 @@ namespace Gameplay.Entities {
     public class VillageView : GridEntityParticularView {
         public IncomeAnimationBehavior IncomeAnimationBehavior;
 
+        private GridEntity _entity;
         private GridEntity _resourceEntity;
+        private bool _dying;
 
         public override void Initialize(GridEntity entity) {
+            _entity = entity;
+            GameManager.Instance.CommandManager.EntityCollectionChangedEvent += EntityCollectionChanged;
+            
             IncomeAnimationBehavior.Initialize(entity, ResourceType.Basic);
-            _resourceEntity = GameManager.Instance.ResourceEntityFinder.GetMatchingResourceEntity(entity, entity.EntityData);
-            _resourceEntity?.ToggleView(false);
+            CheckForResourceEntity();
         }
         
         public override void LethalDamageReceived() {
+            _dying = true;
             _resourceEntity?.ToggleView(true);
+            GameManager.Instance.CommandManager.EntityCollectionChangedEvent -= EntityCollectionChanged;
         }
 
         public override bool DoAbility(IAbility ability, AbilityCooldownTimer cooldownTimer) {
@@ -25,6 +31,16 @@ namespace Gameplay.Entities {
                 default:
                     return true;
             }
+        }
+
+        private void EntityCollectionChanged() {
+            if (_dying) return;
+            CheckForResourceEntity();
+        }
+
+        private void CheckForResourceEntity() {
+            _resourceEntity = GameManager.Instance.ResourceEntityFinder.GetMatchingResourceEntity(_entity, _entity.EntityData);
+            _resourceEntity?.ToggleView(false);
         }
     }
 }
