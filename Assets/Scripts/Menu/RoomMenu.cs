@@ -20,6 +20,8 @@ public class RoomMenu : MonoBehaviour {
     public Button ToggleReadyButton;
     public TMP_Text ToggleReadyButtonText;
     public TMP_Text JoinCodeText;
+    
+    public CanvasWidthSetter CanvasWidthSetter;
 
     public Animator CopiedToClipboardAnimator;
     
@@ -53,6 +55,8 @@ public class RoomMenu : MonoBehaviour {
     }
 
     void Start() {
+        CanvasWidthSetter.Initialize();
+
         AllPlayerSlots.ForEach(s => s.Initialize(this));
         
         StartButton.gameObject.SetActive(false);

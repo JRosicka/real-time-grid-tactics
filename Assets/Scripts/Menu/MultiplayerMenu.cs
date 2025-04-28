@@ -37,8 +37,12 @@ public class MultiplayerMenu : MonoBehaviour {
 
     public Color DisabledTextColor;
     public Color EnabledTextColor;
+    
+    public CanvasWidthSetter CanvasWidthSetter;
 
     private void Start() {
+        CanvasWidthSetter.Initialize();
+
         if (SteamLobbyService.Instance == null || !SteamLobbyService.Instance.SteamEnabled) return;
         
         SteamLobbyService.Instance.OnLobbyJoinComplete += OnLobbyJoinComplete;

@@ -35,6 +35,7 @@ public class GameManager : MonoBehaviour {
     public CameraManager CameraManager;
     public InGameTimer InGameTimer;
     public ResourceEntityFinder ResourceEntityFinder;
+    public CanvasWidthSetter CanvasWidthSetter;
     
     public PathfinderService PathfinderService;
     public EntitySelectionManager EntitySelectionManager;
@@ -82,6 +83,7 @@ public class GameManager : MonoBehaviour {
         DisconnectionDialog.Initialize(DisconnectionHandler);
         GameAudioPlayer.Initialize(AudioPlayer, GameSetupManager, Configuration.AudioConfiguration);
         AttackManager = new AttackManager();
+        CanvasWidthSetter.Initialize();
     }
 
     private void OnDestroy() {

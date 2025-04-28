@@ -6,7 +6,7 @@ using UnityEngine;
 /// Handles camera movement/zoom
 /// </summary>
 public class CameraManager : MonoBehaviour {
-    private const float GameWindowAspectRatio = 1.77778f; // 16/9
+    private const float MaxGameWindowAspectRatio = 1.77778f; // 16/9
     
     public enum CameraDirection {
         Left,
@@ -22,7 +22,10 @@ public class CameraManager : MonoBehaviour {
     [Tooltip("To account for the bottom-screen UI that would otherwise get in the way")]
     [SerializeField] private float _additionalBoundaryBufferDown;
     [SerializeField] [Range(0, .1f)] private float _edgeScrollNormalThreshold;
-    private float EdgeScrollThreshold => Screen.height * _edgeScrollNormalThreshold;
+    [SerializeField] private RectTransform _gameWindow;
+    [SerializeField] private RectTransform _cameraWindow;
+    private float VerticalEdgeScrollThreshold => _gameWindow.rect.height * _edgeScrollNormalThreshold;
+    private float HorizontalEdgeScrollThreshold => _gameWindow.rect.width * _edgeScrollNormalThreshold;
     private CameraDirection? _currentEdgeScrollDirection_horizontal;
     private CameraDirection? _currentEdgeScrollDirection_vertical;
     private bool _edgeScrollEnabled;
@@ -114,7 +117,7 @@ public class CameraManager : MonoBehaviour {
             _camera.transform.position = ClampCamera(_camera.transform.position + moveVector);
             
             // Now that the camera has moved, update the position
-            _middleMouseDragLastPosition = _camera.ScreenToWorldPoint(Input.mousePosition);;
+            _middleMouseDragLastPosition = _camera.ScreenToWorldPoint(Input.mousePosition);
         }
         
         // Edge scroll
@@ -134,19 +137,23 @@ public class CameraManager : MonoBehaviour {
             return;
         }
         
+        Vector2 mouseGameWindowPosition = mouseScreenPosition * _cameraWindow.rect.width / Screen.width;
+        
         // Horizontal
-        if (mouseScreenPosition.x < EdgeScrollThreshold) {
+        float gameWindowOffset = (_cameraWindow.rect.width - _gameWindow.rect.width) / 2f;
+        float cameraWindowMouseX = mouseGameWindowPosition.x - gameWindowOffset;
+        if (cameraWindowMouseX < HorizontalEdgeScrollThreshold) {
             _currentEdgeScrollDirection_horizontal = CameraDirection.Left;
-        } else if (mouseScreenPosition.x > Screen.width - EdgeScrollThreshold) {
+        } else if (cameraWindowMouseX > _gameWindow.rect.width - HorizontalEdgeScrollThreshold) {
             _currentEdgeScrollDirection_horizontal = CameraDirection.Right;
         } else {
             _currentEdgeScrollDirection_horizontal = null;
         }
         
         // Vertical
-        if (mouseScreenPosition.y < EdgeScrollThreshold) {
+        if (mouseGameWindowPosition.y < VerticalEdgeScrollThreshold) {
             _currentEdgeScrollDirection_vertical = CameraDirection.Down;
-        } else if (mouseScreenPosition.y > Screen.height - EdgeScrollThreshold) {
+        } else if (mouseGameWindowPosition.y > _gameWindow.rect.height - VerticalEdgeScrollThreshold) {
             _currentEdgeScrollDirection_vertical = CameraDirection.Up;
         } else {
             _currentEdgeScrollDirection_vertical = null;
@@ -155,7 +162,8 @@ public class CameraManager : MonoBehaviour {
     
     private Vector3 ClampCamera(Vector3 targetPosition) {
         float cameraHeight = _camera.orthographicSize;
-        float cameraWidth = cameraHeight * GameWindowAspectRatio;
+        // Make the camera as wide as needed, but don't go over the standard 16/9
+        float cameraWidth = cameraHeight * Mathf.Min(_camera.aspect, MaxGameWindowAspectRatio);
         
         float minX = MapMinX + cameraWidth;
         float maxX = MapMaxX - cameraWidth;

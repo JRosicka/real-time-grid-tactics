@@ -4143,6 +4143,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1732580023}
   - component: {fileID: 1732580024}
+  - component: {fileID: 1732580025}
   m_Layer: 5
   m_Name: RoomMenu
   m_TagString: Untagged
@@ -4166,10 +4167,10 @@ RectTransform:
   m_Father: {fileID: 5757235}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 1920, y: 1080}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1732580024
 MonoBehaviour:
@@ -4206,7 +4207,21 @@ MonoBehaviour:
   ToggleReadyButton: {fileID: 16179781}
   ToggleReadyButtonText: {fileID: 1978654485}
   JoinCodeText: {fileID: 1606361363}
+  CanvasWidthSetter: {fileID: 1732580025}
   CopiedToClipboardAnimator: {fileID: 1426736406}
+--- !u!114 &1732580025
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1732580022}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f7b3293d19ce4bd09ec7a9903f5c42e1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _rectTransform: {fileID: 1732580023}
 --- !u!1001 &1756506418
 PrefabInstance:
   m_ObjectHideFlags: 0
