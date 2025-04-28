@@ -21,7 +21,6 @@ public class ResourceEntityFinder : MonoBehaviour {
 
         var entities = GameManager.Instance.GetEntitiesAtLocation(entityAtLocation.Location.Value);
         if (entities == null) {
-            Debug.LogWarning($"No entities found at location ({entityAtLocation.Location.Value})!");
             return null;
         }
 
@@ -33,7 +32,6 @@ public class ResourceEntityFinder : MonoBehaviour {
         GridEntity resourceEntity = entities.Entities.Select(o => o.Entity)
             .FirstOrDefault(e => e.EntityData.ID == matchingResourceData.ID);
         if (resourceEntity == null) {
-            Debug.LogWarning("Matching resource entity not found!");
             return null;
         }
 
