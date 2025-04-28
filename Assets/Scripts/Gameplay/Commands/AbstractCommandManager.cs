@@ -92,7 +92,7 @@ public abstract class AbstractCommandManager : NetworkBehaviour, ICommandManager
 
     public abstract void MarkAbilityCooldownExpired(IAbility ability);
 
-    protected void DoSpawnEntity(EntityData data, Vector2Int spawnLocation, Func<GridEntity> spawnFunc, GameTeam team, GridEntity spawnerEntity, bool movementOnCooldown) {
+    protected void DoSpawnEntity(EntityData data, Vector2Int spawnLocation, Func<GridEntity> spawnFunc, Action<GridEntity> clientInitializeAction, GameTeam team, GridEntity spawnerEntity, bool movementOnCooldown) {
         List<GridEntity> entitiesToIgnore = spawnerEntity != null ? new List<GridEntity> {spawnerEntity} : null;
         if (!PathfinderService.CanEntityEnterCell(spawnLocation, data, team, entitiesToIgnore)) {
             return;
@@ -100,6 +100,7 @@ public abstract class AbstractCommandManager : NetworkBehaviour, ICommandManager
 
         GridEntity entityInstance = spawnFunc();
         RegisterEntity(entityInstance, data, spawnLocation, spawnerEntity);
+        clientInitializeAction(entityInstance);
 
         if (movementOnCooldown) {
             GameplayTile tile = GameManager.Instance.GridController.GridData.GetCell(spawnLocation)!.Tile;

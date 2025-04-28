@@ -80,13 +80,14 @@ public class MPCommandManager : AbstractCommandManager {
     private void CmdSpawnEntity(EntityData data, Vector2Int spawnLocation, GameTeam team, GridEntity entityToIgnore, bool movementOnCooldown) {
         LogTimestamp(nameof(CmdSpawnEntity));
         DoSpawnEntity(data, spawnLocation, () => {
-            GridEntity entityInstance = Instantiate(GridEntityPrefab, GridController.GetWorldPosition(spawnLocation), Quaternion.identity, SpawnBucket);
+            GridEntity entityInstance = Instantiate(GridEntityPrefab, GridController.GetWorldPosition(spawnLocation),
+                Quaternion.identity, SpawnBucket);
             NetworkServer.Spawn(entityInstance.gameObject);
             
             entityInstance.ServerInitialize(data, team, spawnLocation);
-            entityInstance.RpcInitialize(data, team);
-            
             return entityInstance;
+        }, entityInstance => {
+            entityInstance.RpcInitialize(data, team);
         }, team, entityToIgnore, movementOnCooldown);
     }
 
