@@ -8531,8 +8531,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_text: <u>Gold</u> is used to build just about anything. It can be collected over
-    time by using a <u>Peasant</u> to construct a <u>Village</u> on a <u>Village
-    Site</u>.
+    time by using a <u>Peasant</u> to construct a <u>Village</u> on a <u>Wheat Field</u>.
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}

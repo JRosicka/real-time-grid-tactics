@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fafa440752424124be5b9cbee86f1e06, type: 3}
-  m_Name: Village Site
+  m_Name: Wheat Field
   m_EditorClassIdentifier: 
   ShortDescription: Resource patch for <sprite name="gold">.
   Description: Resource patch for <sprite name="gold">. Build a Village here with

@@ -1,7 +1,7 @@
 using Gameplay.Entities.Abilities;
 
 namespace Gameplay.Entities {
-    public class AmberMineResourceView : GridEntityParticularView {
+    public class AmberDepositView : GridEntityParticularView {
         public override void Initialize(GridEntity entity) { }
         public override void LethalDamageReceived() { }
 
