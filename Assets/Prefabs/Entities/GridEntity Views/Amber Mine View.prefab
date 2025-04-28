@@ -164,6 +164,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   IncomeAnimationBehavior: {fileID: 3553170526627626221}
+  AmberMineResourceEntity: {fileID: 11400000, guid: dfb82f31371a84690ae123195a14bf64, type: 2}
 --- !u!224 &6256655248658328015 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 8610170292872399313, guid: 9d77d3ce03b813d42b6c2efebbdefd02, type: 3}

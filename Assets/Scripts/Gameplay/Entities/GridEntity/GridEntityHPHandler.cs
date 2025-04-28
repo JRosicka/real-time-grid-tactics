@@ -11,7 +11,8 @@ namespace Gameplay.Entities {
     /// </summary>
     public class GridEntityHPHandler : NetworkBehaviour {
         public event Action HPChangedEvent;
-        public event Action AttackedEvent;
+        // Parameter is true if lethal damage is received, otherwise false
+        public event Action<bool> AttackedEvent;
         public event Action HealedEvent;
         
         [SerializeField] private GridEntity _gridEntity;
@@ -44,7 +45,7 @@ namespace Gameplay.Entities {
             if (fromGameEffect && oldHPInt.Value < newHPInt.Value) {
                 HealedEvent?.Invoke();
             } else if (fromGameEffect && oldHPInt.Value > newHPInt.Value) {
-                AttackedEvent?.Invoke();
+                AttackedEvent?.Invoke(newHPInt.Value <= 0);
             }
         }
         

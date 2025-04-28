@@ -206,6 +206,14 @@ namespace Gameplay.Entities {
                 .Where(t => !InaccessibleTiles.Contains(t))
                 .ToList();
         }
+        
+        private void Update() {
+            List<AbilityCooldownTimer> activeTimersCopy = new List<AbilityCooldownTimer>(ActiveTimers);
+            activeTimersCopy.ForEach(t => t.UpdateTimer(Time.deltaTime));
+        }
+
+        #endregion
+        #region View
 
         private void SetupView() {
             int stackOrder = EntityData.GetStackOrder();
@@ -214,12 +222,11 @@ namespace Gameplay.Entities {
             _view = Instantiate(EntityData.ViewPrefab, ViewCanvas.transform);
             _view.Initialize(this, stackOrder);
         }
-        
-        private void Update() {
-            List<AbilityCooldownTimer> activeTimersCopy = new List<AbilityCooldownTimer>(ActiveTimers);
-            activeTimersCopy.ForEach(t => t.UpdateTimer(Time.deltaTime));
-        }
 
+        public void ToggleView(bool show) {
+            _view.ToggleView(show);
+        }
+        
         #endregion
         #region Target Location
         

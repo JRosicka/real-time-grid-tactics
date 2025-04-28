@@ -8,6 +8,7 @@ namespace Gameplay.Entities {
         private InProgressBuildingView _buildingViewInstance;
 
         public override void Initialize(GridEntity entity) { }
+        public override void LethalDamageReceived() { }
 
         public override bool DoAbility(IAbility ability, AbilityCooldownTimer cooldownTimer) {
             switch (ability) {

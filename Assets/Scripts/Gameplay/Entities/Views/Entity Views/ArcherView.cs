@@ -7,6 +7,7 @@ namespace Gameplay.Entities {
         public GridEntityView EntityView;
         
         public override void Initialize(GridEntity entity) { }
+        public override void LethalDamageReceived() { }
 
         public override bool DoAbility(IAbility ability, AbilityCooldownTimer cooldownTimer) {
             switch (ability.AbilityData) {

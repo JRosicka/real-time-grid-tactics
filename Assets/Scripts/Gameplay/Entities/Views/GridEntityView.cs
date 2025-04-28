@@ -19,6 +19,7 @@ namespace Gameplay.Entities {
     /// </summary>
     public sealed class GridEntityView : MonoBehaviour {
         [Header("References")] 
+        [SerializeField] private CanvasGroup _mainCanvasGroup;
         [SerializeField] private Image _mainImage;
         [SerializeField] private Image _teamColorImage;
         [SerializeField] private GridEntityParticularView _particularView;
@@ -82,6 +83,10 @@ namespace Gameplay.Entities {
             _particularView.Initialize(entity);
         }
 
+        public void ToggleView(bool show) {
+            _mainCanvasGroup.alpha = show ? 1 : 0;
+        }
+
         private void OnDestroy() {
             if (Entity == null) return;
             
@@ -91,6 +96,8 @@ namespace Gameplay.Entities {
             Entity.HPHandler.AttackedEvent -= AttackReceived;
             Entity.HPHandler.HealedEvent -= HealReceived;
             Entity.KilledEvent -= Killed;
+            
+            _particularView.LethalDamageReceived();
         }
 
         private void Update() {
@@ -113,11 +120,14 @@ namespace Gameplay.Entities {
             }
         }
 
-        private async void AttackReceived() {
+        private async void AttackReceived(bool lethal) {
             // Delay so that the shake times up with the attacker's animation
             await Task.Delay((int)(_attackShakeTriggerTime * 1000));
             ShakeBehaviour.Shake();
             ColorFlashBehaviour.Flash();
+            if (lethal) {
+                _particularView.LethalDamageReceived();
+            }
         }
 
         private void HealReceived() {
