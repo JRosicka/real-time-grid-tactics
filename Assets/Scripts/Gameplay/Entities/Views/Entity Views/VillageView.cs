@@ -1,20 +1,16 @@
-using System.Linq;
-using Gameplay.Config;
 using Gameplay.Config.Abilities;
 using Gameplay.Entities.Abilities;
-using UnityEngine;
 
 namespace Gameplay.Entities {
     public class VillageView : GridEntityParticularView {
         public IncomeAnimationBehavior IncomeAnimationBehavior;
-        public EntityData VillageResourceEntity;
 
         private GridEntity _resourceEntity;
 
         public override void Initialize(GridEntity entity) {
             IncomeAnimationBehavior.Initialize(entity, ResourceType.Basic);
-            RecordMatchingResourceEntity(entity);
-            _resourceEntity.ToggleView(false);
+            _resourceEntity = GameManager.Instance.ResourceEntityFinder.GetMatchingResourceEntity(entity, entity.EntityData);
+            _resourceEntity?.ToggleView(false);
         }
         
         public override void LethalDamageReceived() {
@@ -28,24 +24,6 @@ namespace Gameplay.Entities {
                     return false;
                 default:
                     return true;
-            }
-        }
-
-        private void RecordMatchingResourceEntity(GridEntity entity) {
-            if (entity.Location == null) {
-                Debug.LogWarning($"{entity.EntityData.ID} location is null!");
-                return;
-            }
-
-            var entities = GameManager.Instance.GetEntitiesAtLocation(entity.Location.Value);
-            if (entities == null) {
-                Debug.LogWarning($"No entities found at location ({entity.Location.Value})!");
-                return;
-            }
-
-            _resourceEntity = entities.Entities.Select(o => o.Entity).FirstOrDefault(e => e.EntityData.ID == VillageResourceEntity.ID);
-            if (_resourceEntity == null) {
-                Debug.LogWarning("Matching village resource entity not found!");
             }
         }
     }

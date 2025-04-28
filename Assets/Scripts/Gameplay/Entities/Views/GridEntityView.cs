@@ -96,8 +96,10 @@ namespace Gameplay.Entities {
             Entity.HPHandler.AttackedEvent -= AttackReceived;
             Entity.HPHandler.HealedEvent -= HealReceived;
             Entity.KilledEvent -= Killed;
-            
-            _particularView.LethalDamageReceived();
+
+            if (_dying) {
+                _particularView.LethalDamageReceived();
+            }
         }
 
         private void Update() {

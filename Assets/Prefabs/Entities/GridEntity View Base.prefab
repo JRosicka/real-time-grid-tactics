@@ -5771,7 +5771,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8610170292872399313}
   - component: {fileID: 5299271008241535793}
-  - component: {fileID: 838662373361506941}
+  - component: {fileID: 2233979341856810367}
   m_Layer: 0
   m_Name: GridEntity View Base
   m_TagString: Untagged
@@ -5815,7 +5815,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f3f2619e2dd54d80a04603ba7a2b366c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _mainCanvasGroup: {fileID: 838662373361506941}
+  _mainCanvasGroup: {fileID: 2233979341856810367}
   _mainImage: {fileID: 133772266710080777}
   _teamColorImage: {fileID: 6941450737904846212}
   _particularView: {fileID: 0}
@@ -5951,7 +5951,7 @@ MonoBehaviour:
   _attackShakeTriggerTime: 0.12
   _timeToDisappearWhenDying: 0.4
   Entity: {fileID: 0}
---- !u!225 &838662373361506941
+--- !u!225 &2233979341856810367
 CanvasGroup:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

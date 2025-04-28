@@ -34,6 +34,7 @@ public class GameManager : MonoBehaviour {
     public AlertTextDisplayer AlertTextDisplayer;
     public CameraManager CameraManager;
     public InGameTimer InGameTimer;
+    public ResourceEntityFinder ResourceEntityFinder;
     
     public PathfinderService PathfinderService;
     public EntitySelectionManager EntitySelectionManager;

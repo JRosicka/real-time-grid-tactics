@@ -35,7 +35,8 @@ namespace Gameplay.Entities.Abilities {
         }
         
         public bool Expired;
-        public event Action ExpiredEvent;
+        // Bool parameter indicates whether the ability was canceled
+        public event Action<bool> ExpiredEvent;
         
         public float TimeRemaining { get; private set; }
         public float InitialTimeRemaining { get; private set; }
@@ -85,10 +86,10 @@ namespace Gameplay.Entities.Abilities {
         /// We just received word that the timer has expired on the server, so we should mark it as completed here regardless
         /// of whatever state it's at on our end. 
         /// </summary>
-        public void Expire() {
+        public void Expire(bool canceled) {
             TimeRemaining = 0f;
             Expired = true;
-            ExpiredEvent?.Invoke();
+            ExpiredEvent?.Invoke(canceled);
         }
     }
 }

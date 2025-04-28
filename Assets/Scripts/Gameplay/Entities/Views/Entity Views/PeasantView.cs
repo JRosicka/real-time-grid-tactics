@@ -1,3 +1,4 @@
+using Gameplay.Config;
 using Gameplay.Entities.Abilities;
 using UnityEngine;
 
@@ -6,9 +7,19 @@ namespace Gameplay.Entities {
         [SerializeField] private InProgressBuildingView _buildingViewPrefab;
         [SerializeField] private Animator _animator;
         private InProgressBuildingView _buildingViewInstance;
+        private GridEntity _entity;
+        private GridEntity _currentResourceEntityBeingBuiltOn;
 
-        public override void Initialize(GridEntity entity) { }
-        public override void LethalDamageReceived() { }
+        public override void Initialize(GridEntity entity) {
+            _entity = entity;
+        }
+
+        public override void LethalDamageReceived() {
+            if (_currentResourceEntityBeingBuiltOn != null) {
+                _currentResourceEntityBeingBuiltOn.ToggleView(true);
+                _currentResourceEntityBeingBuiltOn = null;
+            }
+        }
 
         public override bool DoAbility(IAbility ability, AbilityCooldownTimer cooldownTimer) {
             switch (ability) {
@@ -27,16 +38,29 @@ namespace Gameplay.Entities {
             _buildingViewInstance.Initialize(buildAbility);
             timer.ExpiredEvent += BuildAbilityCompleted;
             
+            // Hide the matching resource entity
+            EntityData buildableData = (EntityData)buildAbility.AbilityParameters.Buildable;
+            _currentResourceEntityBeingBuiltOn = GameManager.Instance.ResourceEntityFinder.GetMatchingResourceEntity(_entity, buildableData);
+            if (_currentResourceEntityBeingBuiltOn != null) {
+                _currentResourceEntityBeingBuiltOn.ToggleView(false);
+            }
+            
             // Animate the peasant view with the build animation
             _animator.Play("WorkerBuild");
         }
 
-        private void BuildAbilityCompleted() {
+        private void BuildAbilityCompleted(bool canceled) {
             // Hide the temporary building visual
             Destroy(_buildingViewInstance.gameObject);
 
             // Stop the peasant build animation
             _animator.Play("Idle");
+            
+            // Show the matching resource entity
+            if (canceled && _currentResourceEntityBeingBuiltOn != null) {
+                _currentResourceEntityBeingBuiltOn.ToggleView(true);
+                _currentResourceEntityBeingBuiltOn = null;
+            }
         }
     }
 }

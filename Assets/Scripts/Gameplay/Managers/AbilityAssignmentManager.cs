@@ -126,7 +126,7 @@ namespace Gameplay.Managers {
             if (cooldownTimer == null) return false;
             
             // The ability is indeed active, so cancel it
-            cooldownTimer.Expire();
+            cooldownTimer.Expire(canceled);
             entity.ActiveTimers.Remove(cooldownTimer);
             entity.TriggerAbilityCooldownExpired(ability, cooldownTimer, canceled);
 
