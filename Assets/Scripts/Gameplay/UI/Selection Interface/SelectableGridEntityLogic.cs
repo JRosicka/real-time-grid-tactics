@@ -72,7 +72,7 @@ namespace Gameplay.UI {
             
             if (Entity.CanMove) {
                 movesRow.SetActive(true);
-                movesField.text = Entity.MoveTime.ToString("N2");
+                movesField.text = $"{Entity.MoveTime:N2}s";
                 if (GameManager.Instance.AbilityAssignmentManager.IsAbilityChannelOnCooldownForEntity(Entity, moveChannel, out AbilityCooldownTimer activeMoveCooldownTimer)) {
                     moveTimer.gameObject.SetActive(true);
                     moveTimer.Initialize(activeMoveCooldownTimer, false, true);
