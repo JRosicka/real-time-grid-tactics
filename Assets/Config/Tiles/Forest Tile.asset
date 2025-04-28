@@ -12,20 +12,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b75f0e543e98e3e47903f7afef645e13, type: 3}
   m_Name: Forest Tile
   m_EditorClassIdentifier: 
-  m_DefaultSprite: {fileID: 21300000, guid: f4394a50d256aef4d924a37ca15fe688, type: 3}
+  m_DefaultSprite: {fileID: 21300000, guid: cf2a7b899fd2146cab899cbeb557357d, type: 3}
   m_DefaultGameObject: {fileID: 0}
   m_DefaultColliderType: 1
   m_TilingRules:
   - m_Id: 0
     m_Sprites:
-    - {fileID: 21300000, guid: f4394a50d256aef4d924a37ca15fe688, type: 3}
+    - {fileID: 21300000, guid: cf2a7b899fd2146cab899cbeb557357d, type: 3}
     m_GameObject: {fileID: 0}
     m_MinAnimationSpeed: 1
     m_MaxAnimationSpeed: 1
     m_PerlinScale: 0.5
-    m_Output: 0
+    m_Output: 1
     m_ColliderType: 1
-    m_RandomTransform: 0
+    m_RandomTransform: 2
     m_Neighbors: 
     m_NeighborPositions: []
     m_RuleTransform: 0
