@@ -89,6 +89,7 @@ public class GameManager : MonoBehaviour {
     private void OnDestroy() {
         DisconnectionHandler?.UnregisterListeners(); 
         GameAudioPlayer.UnregisterListeners();
+        Instance = null;
     }
 
     [CanBeNull]

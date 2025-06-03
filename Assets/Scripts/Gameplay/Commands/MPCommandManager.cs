@@ -125,11 +125,6 @@ public class MPCommandManager : AbstractCommandManager {
     private void CmdPerformAbility(IAbility ability, bool clearQueueFirst, bool handleCost, bool fromInput) {
         LogTimestamp(nameof(CmdPerformAbility));
         
-        if (Cheats.NeedsToDisconnect) {
-            Cheats.NeedsToDisconnect = false;
-            throw new Exception("Forced exception from cheats");
-        }
-        
         bool success = DoPerformAbility(ability, clearQueueFirst, handleCost, fromInput);
         if (success) {
             RpcAbilityPerformed(ability);
