@@ -58,7 +58,9 @@ namespace Gameplay.Entities.Abilities {
             
             // If the target no longer exists, then it must have been killed or turned into a structure or something. 
             // Do a normal attack move in this case.
-            Vector2Int? targetLocation = AbilityParameters.Target == null ? null : AbilityParameters.Target.Location;
+            Vector2Int? targetLocation = AbilityParameters.Target == null || AbilityParameters.Target.DeadOrDying 
+                ? null 
+                : AbilityParameters.Target.Location;
             if (targetLocation == null) {
                 AbilityParameters.TargetFire = false;
                 return DoAttackMoveEffect();
