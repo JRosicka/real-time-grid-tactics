@@ -33,6 +33,7 @@ namespace Gameplay.Config {
                 ApplyCheats();
             }
         }
+
         public bool RemoveBuildTime {
             get => _currentCheats.RemoveBuildTime;
             set {
@@ -41,11 +42,13 @@ namespace Gameplay.Config {
             }
         }
 
+        public event Action<bool> ControlAllPlayersToggled;
         public bool ControlAllPlayers {
             get => _currentCheats.ControlAllPlayers;
             set {
                 _currentCheats.ControlAllPlayers = value;
                 ApplyCheats();
+                ControlAllPlayersToggled?.Invoke(value);
             }
         }
 

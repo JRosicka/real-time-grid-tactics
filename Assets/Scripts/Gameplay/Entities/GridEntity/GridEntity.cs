@@ -54,6 +54,7 @@ namespace Gameplay.Entities {
         public IBuildQueue BuildQueue;
         [CanBeNull] // If not yet initialized on the client
         public IInteractBehavior InteractBehavior;
+        private bool _normallyWouldBeAnEnemyButIsControllableDueToCheats;
         private NetworkableField _killCountField;
         public int KillCount => ((NetworkableIntegerValue)_killCountField?.Value)?.Value ?? 0;
 
@@ -170,6 +171,9 @@ namespace Gameplay.Entities {
             } else if (Team == GameTeam.Neutral) {
                 InteractBehavior = new UnownedInteractBehavior();
             } else if (Team == localPlayerTeam) {
+                InteractBehavior = new OwnerInteractBehavior();
+            } else if (GameManager.Instance.Cheats.ControlAllPlayers) {
+                _normallyWouldBeAnEnemyButIsControllableDueToCheats = true;
                 InteractBehavior = new OwnerInteractBehavior();
             } else {
                 InteractBehavior = new EnemyInteractBehavior();
@@ -303,6 +307,19 @@ namespace Gameplay.Entities {
         public void InteractWithCell(Vector2Int location) {
             if (!Interactable) return;
             InteractBehavior?.TargetCellWithUnit(this, location); 
+        }
+
+        public void ToggleControlFromCheat(bool controlEverything) {
+            if (InteractBehavior == null) {
+                Debug.LogWarning("Unset interact behavior, cheat will not work properly");
+                return;
+            }
+            if (controlEverything && InteractBehavior is EnemyInteractBehavior) {
+                _normallyWouldBeAnEnemyButIsControllableDueToCheats = true;
+                InteractBehavior = new OwnerInteractBehavior();
+            } else if (!controlEverything && _normallyWouldBeAnEnemyButIsControllableDueToCheats) {
+                InteractBehavior = new EnemyInteractBehavior();
+            }
         }
 
         #endregion

@@ -16,6 +16,14 @@ namespace Gameplay.Managers {
         public bool ControlAllPlayers => _cheatConfiguration.CheatsEnabled && _cheatConfiguration.ControlAllPlayers;
         private List<EntitySpawnData> SpawnData => _cheatConfiguration.CheatsEnabled ? _cheatConfiguration.SpawnData : new List<EntitySpawnData>();
 
+        void Start() {
+            _cheatConfiguration.ControlAllPlayersToggled += ToggleControlAllPlayers;
+        }
+
+        void OnDestroy() {
+            _cheatConfiguration.ControlAllPlayersToggled -= ToggleControlAllPlayers;
+        }
+        
         public void SetMoney(int amount) {
             SetMoneyForTeam(GameTeam.Player1, amount);
             SetMoneyForTeam(GameTeam.Player2, amount);
@@ -45,6 +53,15 @@ namespace Gameplay.Managers {
         public void SpawnUnits() {
             foreach (EntitySpawnData entitySpawnData in SpawnData) {
                 GameManager.Instance.CommandManager.SpawnEntity(entitySpawnData.Data, entitySpawnData.SpawnLocation, entitySpawnData.Team, null, false);
+            }
+        }
+
+        /// <summary>
+        /// Update each registered entity with the corresponding IInteractBehavior
+        /// </summary>
+        private void ToggleControlAllPlayers(bool controlEverything) {
+            foreach (GridEntity entity in GameManager.Instance.CommandManager.EntitiesOnGrid.AllEntities()) {
+                entity.ToggleControlFromCheat(controlEverything);
             }
         }
     }
