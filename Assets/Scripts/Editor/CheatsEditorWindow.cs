@@ -9,12 +9,20 @@ using Sirenix.OdinInspector.Editor;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
-using UnityEngine.Serialization;
+using Task = System.Threading.Tasks.Task;
 
 /// <summary>
 /// Editor window for cheats, scene navigation, etc. Handles persisting cheat state between sessions for convenience. 
 /// </summary>
+[InitializeOnLoad]
 public class CheatsEditorWindow : OdinEditorWindow {
+    static CheatsEditorWindow() {
+        // Ran whenever recompiling the project
+        EditorApplication.delayCall += () => {
+            Instance.LoadCheatData();
+        };
+    }
+    
     private static CheatConfiguration _cheatConfiguration;
     private static CheatConfiguration CheatConfiguration {
         get {
@@ -40,14 +48,46 @@ public class CheatsEditorWindow : OdinEditorWindow {
         }
     }
 
-    private static CheatsEditorWindow Window => GetWindow<CheatsEditorWindow>();
-    
+    private static CheatsEditorWindow _instance;
+    private static CheatsEditorWindow Instance {
+        get {
+            if (_instance == null) {
+                _instance = GetWindow<CheatsEditorWindow>();
+            }
+            return _instance;
+        }
+    }
+
     /// <summary>
     /// The '%g' allows for the keyboard shortcut CTRL + G for opening the window. 
     /// </summary>
     [MenuItem("Tools/Scene Navigation %g")]
     private static void OpenWindow() {
-        Window.Show();
+        Instance.LoadCheatData();
+        Instance.Show();
+    }
+
+    private static bool _loadingCheatData;
+    private void LoadCheatData() {
+        _loadingCheatData = true;
+
+        _cheatsEnabled = CheatConfiguration.CheatsEnabled;
+        _playerMoney = CheatConfiguration.PlayerMoney;
+        _removeBuildTime = CheatConfiguration.RemoveBuildTime;
+        _controlAllPlayers = CheatConfiguration.ControlAllPlayers;
+        _spawnData = CheatConfiguration.SpawnData;
+        SetSpawnDataListeners();
+        
+        RegisterConfigurationChangeListener();
+    }
+
+    private async void RegisterConfigurationChangeListener() {
+        // Delay 10ms so that the caller event finishes being invoked before re-registering to that event
+        await Task.Delay(10);
+        CheatConfiguration.CheatConfigurationChanged -= LoadCheatData;
+        CheatConfiguration.CheatConfigurationChanged += LoadCheatData;
+        
+        _loadingCheatData = false;
     }
 
     #region Scene Navigation
@@ -115,7 +155,9 @@ public class CheatsEditorWindow : OdinEditorWindow {
     [SerializeField]
     private bool _cheatsEnabled;
     private void CheatsToggled() {
-        CheatConfiguration.CheatsEnabled = _cheatsEnabled;
+        if (!_loadingCheatData) {
+            CheatConfiguration.CheatsEnabled = _cheatsEnabled;
+        }
     }
     
     [Title("")]
@@ -141,7 +183,9 @@ public class CheatsEditorWindow : OdinEditorWindow {
     [SerializeField]
     private int _playerMoney;
     private void PlayerMoneyChanged() {
-        CheatConfiguration.PlayerMoney = _playerMoney;
+        if (!_loadingCheatData) {
+            CheatConfiguration.PlayerMoney = _playerMoney;
+        }
     }
     
     [Button]
@@ -156,7 +200,9 @@ public class CheatsEditorWindow : OdinEditorWindow {
     [SerializeField]
     private bool _removeBuildTime;
     private void RemoveBuildTimeToggled() {
-        CheatConfiguration.RemoveBuildTime = _removeBuildTime;
+        if (!_loadingCheatData) {
+            CheatConfiguration.RemoveBuildTime = _removeBuildTime;
+        }
     }
     
     [PropertyOrder(4)]
@@ -164,7 +210,9 @@ public class CheatsEditorWindow : OdinEditorWindow {
     [SerializeField]
     private bool _controlAllPlayers;
     private void ControlAllPlayersToggled() {
-        CheatConfiguration.ControlAllPlayers = _controlAllPlayers;
+        if (!_loadingCheatData) {
+            CheatConfiguration.ControlAllPlayers = _controlAllPlayers;
+        }
     }
     
     [PropertyOrder(5)]
@@ -173,7 +221,16 @@ public class CheatsEditorWindow : OdinEditorWindow {
     [SerializeField]
     private List<EntitySpawnData> _spawnData = new List<EntitySpawnData>();
     private void SpawnDataChanged() {
-        CheatConfiguration.SpawnData = _spawnData;
+        if (!_loadingCheatData) {
+            CheatConfiguration.SpawnData = _spawnData;
+            SetSpawnDataListeners();
+        }
+    }
+    private void SetSpawnDataListeners() {
+        foreach (EntitySpawnData entitySpawnData in _spawnData) {
+            entitySpawnData.SpawnLocationUpdated -= SpawnDataChanged;
+            entitySpawnData.SpawnLocationUpdated += SpawnDataChanged;
+        }
     }
     
     [PropertyOrder(6)]

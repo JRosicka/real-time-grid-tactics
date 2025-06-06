@@ -1,4 +1,5 @@
 using System;
+using Gameplay.Config;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -30,6 +31,24 @@ namespace Gameplay.Grid {
             } else {
                 gameManager.GameSetupManager.GameInitializedEvent += RegisterEvents;
             }
+        }
+
+        private EntitySpawnData _entitySpawnDataBeingSet;
+        public void ToggleSetSpawnData(EntitySpawnData entitySpawnData) {
+            if (_entitySpawnDataBeingSet == entitySpawnData) {
+                _entitySpawnDataBeingSet = null;
+            } else {
+                _entitySpawnDataBeingSet = entitySpawnData;
+            }
+        }
+
+        /// <summary>
+        /// If we are configuring the spawn point of an entity in the editor, then send the new location to the spawn data. 
+        /// </summary>
+        private void UpdateEntitySpawnConfiguration(Vector2Int cell) {
+            if (_entitySpawnDataBeingSet == null) return;
+            _entitySpawnDataBeingSet.UpdateSpawnLocation(cell);
+            _entitySpawnDataBeingSet = null;
         }
 
         private void RegisterEvents() {
@@ -90,6 +109,9 @@ namespace Gameplay.Grid {
         private void TryClickOnCell(MouseClick clickType, Vector2Int clickPosition) {
             switch (clickType) {
                 case MouseClick.Left:
+#if UNITY_EDITOR                    
+                    UpdateEntitySpawnConfiguration(clickPosition);
+#endif
                     // See if we have a targetable ability we want to use. If so, use it.
                     if (_entitySelectionManager.TryUseTargetableAbility(clickPosition)) {
                         return;
