@@ -73,10 +73,19 @@ public class PlayerResourcesController : NetworkBehaviour {
     }
 
     public void Initialize(CurrencyConfiguration currencyConfiguration) {
-        foreach (CurrencyConfiguration.Currency currency in currencyConfiguration.Currencies.Where(currency => currency.StartingAmount > 0)) {
+        int startingGold = currencyConfiguration.StartingGoldAmount;
+        if (startingGold > 0) {
             Earn(new ResourceAmount {
-                Type = currency.Type,
-                Amount = currency.StartingAmount
+                Type = ResourceType.Basic,
+                Amount = startingGold
+            });
+        }
+
+        int startingAmber = currencyConfiguration.StartingAmberAmount;
+        if (startingAmber > 0) {
+            Earn(new ResourceAmount {
+                Type = ResourceType.Advanced,
+                Amount = startingAmber
             });
         }
     }

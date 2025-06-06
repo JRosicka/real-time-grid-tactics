@@ -188,6 +188,7 @@ public class CheatsEditorWindow : OdinEditorWindow {
         }
     }
     
+    [PropertyOrder(3)]
     [Button]
     public void SetMoney() {
         ThrowExceptionIfNotInGame();
@@ -195,7 +196,7 @@ public class CheatsEditorWindow : OdinEditorWindow {
         GameManager.Instance.Cheats.SetMoney(CheatConfiguration.PlayerMoney);
     }
     
-    [PropertyOrder(3)]
+    [PropertyOrder(4)]
     [OnValueChanged("RemoveBuildTimeToggled")]
     [SerializeField]
     private bool _removeBuildTime;
@@ -205,7 +206,7 @@ public class CheatsEditorWindow : OdinEditorWindow {
         }
     }
     
-    [PropertyOrder(4)]
+    [PropertyOrder(5)]
     [OnValueChanged("ControlAllPlayersToggled")]
     [SerializeField]
     private bool _controlAllPlayers;
@@ -215,8 +216,7 @@ public class CheatsEditorWindow : OdinEditorWindow {
         }
     }
     
-    [PropertyOrder(5)]
-    [ListDrawerSettings(ShowFoldout = false)]
+    [PropertyOrder(6)]
     [OnValueChanged("SpawnDataChanged")]
     [SerializeField]
     private List<EntitySpawnData> _spawnData = new List<EntitySpawnData>();
@@ -233,12 +233,12 @@ public class CheatsEditorWindow : OdinEditorWindow {
         }
     }
     
-    [PropertyOrder(6)]
+    [PropertyOrder(7)]
     [Button]
     public void SpawnUnits() {
         ThrowExceptionIfNotInGame();
         
-        GameManager.Instance.Cheats.SpawnUnits(CheatConfiguration.SpawnData);
+        GameManager.Instance.Cheats.SpawnUnits();
     }
 
     private static void ThrowExceptionIfNotInGame() {

@@ -14,7 +14,7 @@ namespace Gameplay.Managers {
         public bool RemoveBuildTime => _cheatConfiguration.CheatsEnabled && _cheatConfiguration.RemoveBuildTime;
         public int? PlayerMoneyFromCheats => _cheatConfiguration.CheatsEnabled ? _cheatConfiguration.PlayerMoney : null;
         public bool ControlAllPlayers => _cheatConfiguration.CheatsEnabled && _cheatConfiguration.ControlAllPlayers;
-        public List<EntitySpawnData> SpawnData => _cheatConfiguration.CheatsEnabled ? _cheatConfiguration.SpawnData : null;
+        private List<EntitySpawnData> SpawnData => _cheatConfiguration.CheatsEnabled ? _cheatConfiguration.SpawnData : new List<EntitySpawnData>();
 
         public void SetMoney(int amount) {
             SetMoneyForTeam(GameTeam.Player1, amount);
@@ -42,9 +42,10 @@ namespace Gameplay.Managers {
             }
         }
 
-        public void SpawnUnits(List<EntitySpawnData> spawnData) {
-            // TODO
-            //     GameManagerInstance.CommandManager.SpawnEntity(Unit1, player.Data.SpawnLocation, player.Data.Team, null, false);
+        public void SpawnUnits() {
+            foreach (EntitySpawnData entitySpawnData in SpawnData) {
+                GameManager.Instance.CommandManager.SpawnEntity(entitySpawnData.Data, entitySpawnData.SpawnLocation, entitySpawnData.Team, null, false);
+            }
         }
     }
 }

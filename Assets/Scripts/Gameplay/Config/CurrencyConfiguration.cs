@@ -20,7 +20,13 @@ namespace Gameplay.Config {
         
         public List<Currency> Currencies;
         
-        public int StartingGoldAmount => Currencies.First(c => c.Type == ResourceType.Basic).StartingAmount;
-        public int StartingAmberAmount => Currencies.First(c => c.Type == ResourceType.Advanced).StartingAmount;
+        
+        public int StartingGoldAmount => GameManager.Instance?.Cheats.PlayerMoneyFromCheats != null 
+                    ? GameManager.Instance.Cheats.PlayerMoneyFromCheats.Value 
+                    : Currencies.First(c => c.Type == ResourceType.Basic).StartingAmount;
+
+        public int StartingAmberAmount => GameManager.Instance?.Cheats.PlayerMoneyFromCheats != null 
+                    ? GameManager.Instance.Cheats.PlayerMoneyFromCheats.Value 
+                    : Currencies.First(c => c.Type == ResourceType.Advanced).StartingAmount;
     }
 }

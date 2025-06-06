@@ -132,6 +132,9 @@ public class GameSetupManager : MonoBehaviour {
         // Then spawn player starting units
         SpawnPlayerStartingUnits(Player1Data.Team);
         SpawnPlayerStartingUnits(Player2Data.Team);
+        
+        // Then spawn any units from cheats
+        GameManager.Cheats.SpawnUnits();
     }
 
     private void SpawnPlayerStartingUnits(GameTeam team) {
