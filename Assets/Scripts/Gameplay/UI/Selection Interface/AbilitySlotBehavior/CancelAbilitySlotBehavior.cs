@@ -19,6 +19,7 @@ namespace Gameplay.UI {
         
         public void SetUpSprites(Image abilityImage, Image secondaryAbilityImage, Canvas teamColorsCanvas) {
             abilityImage.sprite = GameConfiguration.CancelButtonSprite;
+            secondaryAbilityImage.gameObject.SetActive(false);
         }
 
         public abstract bool AnyPlayerCanSelect { get; }

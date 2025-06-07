@@ -105,6 +105,7 @@ namespace Gameplay.UI {
 
             if (Buildable.TeamColorSprite == null) {
                 teamColorsCanvas.sortingOrder = 1;
+                secondaryAbilityImage.gameObject.SetActive(false);
             } else {
                 secondaryAbilityImage.sprite = Buildable.TeamColorSprite;
                 secondaryAbilityImage.color = GameManager.Instance.GetPlayerForTeam(SelectedEntity.Team).Data.TeamColor;
