@@ -217,6 +217,14 @@ public class CheatsEditorWindow : OdinEditorWindow {
     }
     
     [PropertyOrder(6)]
+    [Button]
+    public void SpawnUnits() {
+        ThrowExceptionIfNotInGame();
+        
+        GameManager.Instance.Cheats.SpawnUnits();
+    }
+    
+    [PropertyOrder(7)]
     [OnValueChanged("SpawnDataChanged")]
     [SerializeField]
     private List<EntitySpawnData> _spawnData = new List<EntitySpawnData>();
@@ -231,14 +239,6 @@ public class CheatsEditorWindow : OdinEditorWindow {
             entitySpawnData.SpawnLocationUpdated -= SpawnDataChanged;
             entitySpawnData.SpawnLocationUpdated += SpawnDataChanged;
         }
-    }
-    
-    [PropertyOrder(7)]
-    [Button]
-    public void SpawnUnits() {
-        ThrowExceptionIfNotInGame();
-        
-        GameManager.Instance.Cheats.SpawnUnits();
     }
 
     private static void ThrowExceptionIfNotInGame() {

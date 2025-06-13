@@ -27,6 +27,9 @@ MonoBehaviour:
     - Data: {fileID: 11400000, guid: 991ad2a1d6801ee40b831e7850e0ff35, type: 2}
       Team: 1
       SpawnLocation: {x: 2, y: -1}
+    - Data: {fileID: 11400000, guid: ab21f1dc552bf344ba9f886807dcb498, type: 2}
+      Team: 1
+      SpawnLocation: {x: 3, y: -1}
   _savedCheats:
     CheatsEnabled: 1
     PlayerMoney: 4978
