@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Gameplay.Config;
 using Gameplay.Config.Abilities;
 using Gameplay.Entities.Abilities;
+using Gameplay.Grid;
 using Gameplay.UI;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -180,9 +181,6 @@ namespace Gameplay.Entities {
 
             // Face the x-direction that we are going
             SetFacingDirection(_movementStartPosition, _movementTargetPosition);
-            
-            // Animate
-            _unitAnimator.Play("GenericMove");
         }
 
         private void UpdateMove() {
@@ -199,9 +197,7 @@ namespace Gameplay.Entities {
         #endregion
         #region Attacking
 
-        private Vector2 _attackStartPosition;
-        private Vector2 _attackTargetPosition;
-        private Vector2 _attackReturnPosition;
+        private Vector2 _attackTargetLocalPosition;
         private float _attackTime;
         private bool _attacking;
         // If true, then our attack animation is going straight from the middle of a move. Use a different animation curve so it don't look like garb.
@@ -214,23 +210,25 @@ namespace Gameplay.Entities {
         
         private void DoGenericAttackAnimation(Vector2Int? targetLocation) {
             Vector2Int? performerLocation = Entity.Location;
-            Vector2Int? targetLocation = attackAbility.AbilityParameters.Target.Location;
             if (performerLocation == null || targetLocation == null) return;
             
             _attackFromMove = _moving;
-            _attackStartPosition = transform.position;    // Might be different from the entity location if we are in the middle of a move animation
-            _attackReturnPosition = GameManager.Instance.GridController.GetWorldPosition(performerLocation.Value);
+            
+            // Figure out the direction from the performer location to the target location, and convert that to the distance of one cell in world space
+            Vector2 performerWorldPosition = GameManager.Instance.GridController.GetWorldPosition(performerLocation.Value);
+            Vector2 targetWorldPosition = GameManager.Instance.GridController.GetWorldPosition(targetLocation.Value);
+            Vector2 normalizedRelativeDirection = (targetWorldPosition - performerWorldPosition).normalized;
+            Vector2 targetRelativeLocation = normalizedRelativeDirection * GridController.CellWidth;
             
             // We don't want to go all the way to the target location, just part of the way
-            Vector2 targetWorldLocation = GameManager.Instance.GridController.GetWorldPosition(targetLocation.Value);
-            _attackTargetPosition = Vector2.Lerp(_attackReturnPosition, targetWorldLocation, _distanceTowardsTargetToMove);
+            _attackTargetLocalPosition = Vector2.Lerp(Vector2.zero, targetRelativeLocation, _distanceTowardsTargetToMove);
             
             _attackTime = 0;
             _attacking = true;
             _triggeredAttackShake = false;
             
             // Face the x-direction that we are attacking
-            SetFacingDirection(_attackReturnPosition, _attackTargetPosition);
+            SetFacingDirection(performerLocation.Value, targetLocation.Value);
         }
         
         private void UpdateAttack() {
@@ -239,15 +237,22 @@ namespace Gameplay.Entities {
             _attackTime += Time.deltaTime;
             
             // Attack animation
+            Vector3 newLocalPosition;
             if (_attackTime <= _attackAnimationIntro_lengthSeconds) {
                 AnimationCurve curve = _attackFromMove ? _attackAnimationIntro_curveFromMove : _attackAnimationIntro_curveFromNoMove;
                 float evaluationProgress = curve.Evaluate(_attackTime / _attackAnimationIntro_lengthSeconds);
-                _mainImageGroup.transform.position = Vector2.Lerp(_attackStartPosition, _attackTargetPosition, evaluationProgress);
+                newLocalPosition = Vector2.Lerp(Vector2.zero, _attackTargetLocalPosition, evaluationProgress) / _mainImageGroup.transform.lossyScale;
             } else {
                 float time = _attackTime - _attackAnimationIntro_lengthSeconds;
                 float evaluationProgress = _attackAnimationOutro_curve.Evaluate(time / _attackAnimationOutro_lengthSeconds);
-                _mainImageGroup.transform.position = Vector2.Lerp(_attackReturnPosition, _attackTargetPosition, evaluationProgress);
+                newLocalPosition = Vector2.Lerp(Vector2.zero, _attackTargetLocalPosition, evaluationProgress) / _mainImageGroup.transform.lossyScale;
             }
+
+            // For the purpose of this translation, reverse the direction if mirrored
+            if (_directionContainer.localScale.x < 0) {
+                newLocalPosition.x *= -1;
+            }
+            _mainImageGroup.transform.localPosition = newLocalPosition;
             
             // Attack shake
             if (!_triggeredAttackShake && _attackTime > _attackShakeTriggerTime) {
@@ -256,6 +261,7 @@ namespace Gameplay.Entities {
             }
 
             if (_attackTime > _attackAnimationIntro_lengthSeconds + _attackAnimationOutro_lengthSeconds) {
+                _mainImageGroup.transform.localPosition = Vector2.zero;
                 _attacking = false;
             }
         }
