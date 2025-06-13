@@ -70,8 +70,10 @@ public class SPCommandManager : AbstractCommandManager {
     }
 
     public override void CancelAbility(IAbility ability) {
-        DoCancelAbility(ability);
-        DoMarkAbilityCooldownExpired(ability, true);
+        bool success = DoCancelAbility(ability);
+        if (success) {
+            DoMarkAbilityCooldownExpired(ability, true);
+        }
     }
 
     public override void UpdateNetworkableField(NetworkBehaviour parent, string fieldName, INetworkableFieldValue newValue, string metadata) {

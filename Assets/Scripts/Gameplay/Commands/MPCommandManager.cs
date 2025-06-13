@@ -175,8 +175,10 @@ public class MPCommandManager : AbstractCommandManager {
     
     [Command(requiresAuthority = false)]
     private void CmdCancelAbility(IAbility ability) {
-        DoCancelAbility(ability);
-        RpcMarkAbilityCanceled(ability);
+        bool success = DoCancelAbility(ability);
+        if (success) {
+            RpcMarkAbilityCanceled(ability);
+        }
     }
 
     [ClientRpc]

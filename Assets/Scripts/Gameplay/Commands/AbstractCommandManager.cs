@@ -24,6 +24,11 @@ public abstract class AbstractCommandManager : NetworkBehaviour, ICommandManager
     public AbilityQueueExecutor AbilityQueueExecutor;
 
     public GridEntity GridEntityPrefab;
+    
+    // Server only
+    private List<int> _canceledAbilities = new List<int>();
+    // Server only
+    private bool AbilityAlreadyCanceled(IAbility ability) => _canceledAbilities.Contains(ability.UID);
 
     protected GridController GridController => GameManager.Instance.GridController;
     private AbilityAssignmentManager AbilityAssignmentManager => GameManager.Instance.AbilityAssignmentManager;
@@ -248,9 +253,17 @@ public abstract class AbstractCommandManager : NetworkBehaviour, ICommandManager
         } 
     }
 
-    protected void DoCancelAbility(IAbility ability) {
-        if (!ability.AbilityData.CanBeCanceled) return;
+    /// <summary>
+    /// Try to cancel the given ability
+    /// </summary>
+    /// <returns>True if successfully canceled, otherwise false if can't be canceled or already canceled</returns>
+    protected bool DoCancelAbility(IAbility ability) {
+        if (!ability.AbilityData.CanBeCanceled) return false;
+        if (AbilityAlreadyCanceled(ability)) return false;
+
+        _canceledAbilities.Add(ability.UID);
         AbilityAssignmentManager.ExpireAbility(ability.Performer, ability, true);
+        return true;
     }
 
     protected void DoAbilityFailed(IAbility ability) {
