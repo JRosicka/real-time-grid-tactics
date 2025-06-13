@@ -61,8 +61,11 @@ namespace Gameplay.Entities.Abilities {
 
         private void AttackTargetAtEndOfCharge(GridEntity targetEntity) {
             int bonusDamage = Data.GetBonusDamage(Performer.Team);
-            GameManager.Instance.AttackManager.PerformAttack(Performer, targetEntity, bonusDamage, true);
-            GameManager.Instance.AbilityAssignmentManager.AddAttackTime(Performer, Data.AddedAttackTime);
+            bool attacked = GameManager.Instance.AttackManager.PerformAttack(Performer, targetEntity, bonusDamage, true);
+            if (attacked) {
+                GameManager.Instance.AbilityAssignmentManager.AddAttackTime(Performer, Data.AddedAttackTime);
+                AbilityParameters.Attacking = true;
+            }
             QueueFollowUpAttackMove(targetEntity);
         }
 
@@ -90,17 +93,21 @@ namespace Gameplay.Entities.Abilities {
     }
 
     public class ChargeAbilityParameters : IAbilityParameters {
+        // The location where we are attacking at the end of a charge, or the move destination if we are not performing an attack with this charge
         public Vector2Int Destination;
         // Same as Destination if not attacking a target there, otherwise this is the cell right before Destination in line
         public Vector2Int MoveDestination;
         public Vector2Int ClickLocation;
         public GameTeam SelectorTeam;
+        // Whether this charge results in an attack. Gets set when resolving the charge. 
+        public bool Attacking;
 
         public void Serialize(NetworkWriter writer) {
             writer.Write(Destination);
             writer.Write(MoveDestination);
             writer.Write(ClickLocation);
             writer.Write(SelectorTeam);
+            writer.WriteBool(Attacking);
         }
 
         public void Deserialize(NetworkReader reader) {
@@ -108,6 +115,7 @@ namespace Gameplay.Entities.Abilities {
             MoveDestination = reader.Read<Vector2Int>();
             ClickLocation = reader.Read<Vector2Int>();
             SelectorTeam = reader.Read<GameTeam>();
+            Attacking = reader.ReadBool();
         }
     }
 }

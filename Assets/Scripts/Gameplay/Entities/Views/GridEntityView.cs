@@ -149,7 +149,7 @@ namespace Gameplay.Entities {
                     DoGenericMoveAnimation((MoveAbility)ability);
                     break;
                 case AttackAbilityData:
-                    DoGenericAttackAnimation((AttackAbility) ability);
+                    DoAttackAnimationFromAttackAbility((AttackAbility) ability);
                     break;
             }
         }
@@ -162,7 +162,10 @@ namespace Gameplay.Entities {
         private bool _moving;
 
         private void DoGenericChargeAnimation(ChargeAbility chargeAbility) {
-            DoMoveAnimation(chargeAbility.AbilityParameters.MoveDestination); 
+            DoMoveAnimation(chargeAbility.AbilityParameters.MoveDestination);
+            if (chargeAbility.AbilityParameters.Attacking) {
+                DoGenericAttackAnimation(chargeAbility.AbilityParameters.Destination);
+            }
         }
         
         private void DoGenericMoveAnimation(MoveAbility moveAbility) {
@@ -204,9 +207,12 @@ namespace Gameplay.Entities {
         // If true, then our attack animation is going straight from the middle of a move. Use a different animation curve so it don't look like garb.
         private bool _attackFromMove;
         private bool _triggeredAttackShake;
+
+        private void DoAttackAnimationFromAttackAbility(AttackAbility attackAbility) {
+            DoGenericAttackAnimation(attackAbility.AbilityParameters.Target.Location);
+        }
         
-        private void DoGenericAttackAnimation(AttackAbility attackAbility) {
-            if (attackAbility.AbilityParameters.Target.DeadOrDying) return;
+        private void DoGenericAttackAnimation(Vector2Int? targetLocation) {
             Vector2Int? performerLocation = Entity.Location;
             Vector2Int? targetLocation = attackAbility.AbilityParameters.Target.Location;
             if (performerLocation == null || targetLocation == null) return;
