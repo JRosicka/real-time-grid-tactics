@@ -92,10 +92,10 @@ namespace Game.Network {
             base.OnRoomServerConnect(conn);
         }
 
-        public event Action RoomServerDisconnectAction;
+        public event Action<NetworkConnectionToClient> RoomServerDisconnectAction;
         public override void OnRoomServerDisconnect(NetworkConnectionToClient conn) {
             DebugLog(nameof(OnRoomServerDisconnect));
-            RoomServerDisconnectAction?.Invoke();
+            RoomServerDisconnectAction?.Invoke(conn);
             base.OnRoomServerDisconnect(conn);
         }
         

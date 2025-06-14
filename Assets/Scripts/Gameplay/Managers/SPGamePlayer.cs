@@ -5,6 +5,7 @@ using UnityEngine;
 public class SPGamePlayer : MonoBehaviour, IGamePlayer {
     public PlayerData Data { get; set; }
     public string DisplayName { get; set; }
+    public int Index { get; set; }
     [SerializeField]
     private PlayerResourcesController _resourcesController;
     public PlayerResourcesController ResourcesController => _resourcesController;

@@ -60,6 +60,7 @@ public class GameManager : MonoBehaviour {
     public IGamePlayer Player1;
     public IGamePlayer Player2;
     public GameTeam LocalTeam { get; private set; }
+    public int LocalPlayerIndex { get; private set; }
     
     private void Awake() {
         if (Instance != null) {
@@ -114,8 +115,9 @@ public class GameManager : MonoBehaviour {
 
     #region Game setup
     
-    public void SetPlayers(IGamePlayer player1, IGamePlayer player2, GameTeam localTeam) {
+    public void SetPlayers(IGamePlayer player1, IGamePlayer player2, GameTeam localTeam, int localIndex) {
         LocalTeam = localTeam;
+        LocalPlayerIndex = localIndex;
         
         // Set up players
         Player1 = player1;

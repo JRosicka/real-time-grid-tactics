@@ -11,6 +11,8 @@ public class MPGamePlayer : NetworkBehaviour, IGamePlayer {
     public PlayerData Data { get; set; }
     [field: SyncVar]
     public string DisplayName { get; set; }
+    public int Index { get; set; }
+    public bool Connected { get; set; }
     [SerializeField]
     private PlayerResourcesController _resourcesController;
     public PlayerResourcesController ResourcesController => _resourcesController;

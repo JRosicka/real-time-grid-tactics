@@ -39,7 +39,10 @@ public class GameSetupManager : MonoBehaviour {
     private static GameManager GameManager => GameManager.Instance;
     
     // Only assigned on server, and only for MP
-    private readonly List<IGamePlayer> _spectatorPlayers = new List<IGamePlayer>();
+    public readonly Dictionary<int, MPGamePlayer> AllPlayers = new Dictionary<int, MPGamePlayer>();
+    // Only assigned on server, and only for MP
+    private readonly List<MPGamePlayer> _spectatorPlayers = new List<MPGamePlayer>();
+    public int LocalPlayerIndex;
     // The total number of players in this game who have arrived in the game scene
     private int _readyPlayerCount;
     // The total number of players in this game who have had their gameobjects assigned
@@ -70,6 +73,9 @@ public class GameSetupManager : MonoBehaviour {
     public void TriggerGameInitializedEvent() {
         GameInitializedEvent?.Invoke();
     }
+
+    // Server event
+    public event Action PlayerDisconnected;
     
     public bool GameOver { get; private set; }
 
@@ -91,6 +97,11 @@ public class GameSetupManager : MonoBehaviour {
     
     // TODO it would be good to move all of this game over logic to GameEndManager, but we currently can't do server-side logic in that class
     private void HandleGameOver(IGamePlayer winner) {
+        GameNetworkManager gameNetworkManager = (GameNetworkManager)NetworkManager.singleton;
+        if (gameNetworkManager != null) {
+            gameNetworkManager.RoomServerDisconnectAction -= ReDetermineWhichPlayersAreConnected;
+        }
+
         GameTeam winningTeam = winner == null ? GameTeam.Neutral : winner.Data.Team;
         if (!NetworkClient.active) {
             ReturnToLobbyAsync();
@@ -99,6 +110,13 @@ public class GameSetupManager : MonoBehaviour {
             MPSetupHandler.CmdGameOver(winningTeam);
         }
     }
+
+    private void OnDestroy() {
+        GameNetworkManager gameNetworkManager = (GameNetworkManager)NetworkManager.singleton;
+        if (gameNetworkManager != null) {
+            gameNetworkManager.RoomServerDisconnectAction -= ReDetermineWhichPlayersAreConnected;
+        }
+    } 
     
     /// <summary>
     /// Server/SP logic for ending the game. Halts commands and returns to lobby shortly. (SP will just reload the game scene)
@@ -196,7 +214,7 @@ public class GameSetupManager : MonoBehaviour {
         }
         player2.DisplayName = "Opponent";
         
-        GameManager.SetPlayers(player1, player2, GameTeam.Player1);
+        GameManager.SetPlayers(player1, player2, GameTeam.Player1, 0);
         
         MapLoader.LoadMap(player1.Data.Team);
         SpawnStartingUnits();
@@ -260,14 +278,18 @@ public class GameSetupManager : MonoBehaviour {
 
         MPSetupHandler.PlayerCount = playerCount;
 
-        PlayerData data = networkPlayer.index switch {
+        int index = networkPlayer.index;
+        PlayerData data = index switch {
             0 => Player1Data,
             1 => Player2Data,
             _ => SpectatorData
         };
 
+        gamePlayer.Index = index;
         gamePlayer.Data = data;
         gamePlayer.DisplayName = networkPlayer.DisplayName;
+        gamePlayer.Connected = true;
+        AllPlayers[index] = gamePlayer;
         
         Debug.Log($"Player ({gamePlayer.DisplayName}) has been detected. Index ({networkPlayer.index}).");
         if (gamePlayer.Data.Team == GameTeam.Spectator) {
@@ -313,14 +335,22 @@ public class GameSetupManager : MonoBehaviour {
             player1 = Instantiate(MPGamePlayerPrefab, default(Vector3), default);
             player1.Data = Player1Data;
             player1.DisplayName = "Player 1";
+            player1.Connected = true;
+            player1.Index = 0;
             NetworkServer.Spawn(player1.gameObject);
         }
         if (!player2) {
             player2 = Instantiate(MPGamePlayerPrefab, default(Vector3), default);
             player2.Data = Player2Data;
             player2.DisplayName = "Player 2";
+            player2.Connected = true;
+            player2.Index = 1;
             NetworkServer.Spawn(player2.gameObject);
         }
+        
+        // Listen for disconnects
+        GameNetworkManager gameNetworkManager = (GameNetworkManager)NetworkManager.singleton;
+        gameNetworkManager.RoomServerDisconnectAction += ReDetermineWhichPlayersAreConnected;
         
         // Set up the command controller - only done on the server
         MPCommandManager newManager = Instantiate(MPCommandManagerPrefab, transform);
@@ -329,6 +359,13 @@ public class GameSetupManager : MonoBehaviour {
 
         // Tell clients to look for the command controller and player GameObjects
         MPSetupHandler.RpcAssignPlayers();
+    }
+
+    private void ReDetermineWhichPlayersAreConnected(NetworkConnectionToClient connection) {
+        GameNetworkPlayer player = connection.identity.gameObject.GetComponent<GameNetworkPlayer>();
+        
+        AllPlayers[player.index].Connected = false;
+        PlayerDisconnected?.Invoke();
     }
 
     /// <summary>
