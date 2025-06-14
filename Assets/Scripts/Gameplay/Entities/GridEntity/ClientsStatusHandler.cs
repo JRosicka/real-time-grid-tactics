@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 using Mirror;
 using UnityEngine;
 
@@ -10,14 +11,19 @@ namespace Gameplay.Entities {
     /// Considers SP and MP games. 
     /// </summary>
     public class ClientsStatusHandler : MonoBehaviour {
+        private const int SecondsToWaitForPlayersBeforeComplaining = 10;
+        
         public MPClientsStatusHandler MPClientsStatusHandler;
         private Action _performWhenAllPlayersReady;
         private int _readyPlayerCount;
         private int TotalPlayerCount => GameManager.Instance.GameSetupManager.MPSetupHandler.PlayerCount;
         private bool _localClientReady;
         private bool _done;
+        private bool _complainTimerStarted;
+        private string _handlerName;
 
-        public void Initialize(Action performWhenAllPlayersReady) {
+        public void Initialize(Action performWhenAllPlayersReady, string handlerName) {
+            _handlerName = handlerName; 
             if (!NetworkClient.active) {
                 // SP
                 _performWhenAllPlayersReady = performWhenAllPlayersReady;
@@ -49,6 +55,10 @@ namespace Gameplay.Entities {
             if (_readyPlayerCount >= TotalPlayerCount) {
                 PerformAction();
             }
+
+            if (!_complainTimerStarted) {
+                ComplainIfMissingPlayers();
+            }
         }
 
         private void PerformAction() {
@@ -56,6 +66,15 @@ namespace Gameplay.Entities {
             
             _performWhenAllPlayersReady?.Invoke();
             _done = true;
+        }
+
+        private async void ComplainIfMissingPlayers() {
+            _complainTimerStarted = true;
+            
+            await Task.Delay(SecondsToWaitForPlayersBeforeComplaining * 1000);
+            if (_done) return;
+            
+            Debug.LogWarning($"{_handlerName} waited {SecondsToWaitForPlayersBeforeComplaining}s for all players to report, but only {_readyPlayerCount} players reported!");
         }
     }
 }

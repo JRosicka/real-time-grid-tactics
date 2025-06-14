@@ -186,9 +186,9 @@ namespace Gameplay.Entities {
             SetupStats();
             SetupView();
             
-            InitializationStatusHandler.Initialize(null);
+            InitializationStatusHandler.Initialize(null, nameof(InitializationStatusHandler));
             InitializationStatusHandler.SetLocalClientReady();
-            DeathStatusHandler.Initialize(OnEntityReadyToDie);
+            DeathStatusHandler.Initialize(OnEntityReadyToDie, nameof(DeathStatusHandler));
             LastAttackedEntity.ValueChanged += UpdateAttackTarget;
             TargetLocationLogic.ValueChanged += UpdateAttackTarget;
             _killCountField.ValueChanged += (_, _, _) => KillCountChanged?.Invoke(KillCount);
@@ -671,7 +671,6 @@ namespace Gameplay.Entities {
         }
         
         private void DisallowInteraction() {
-            // Huh, actually I don't think there's anything to do here
             Interactable = false;
         }
 
