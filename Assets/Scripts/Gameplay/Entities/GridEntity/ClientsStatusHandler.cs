@@ -43,7 +43,8 @@ namespace Gameplay.Entities {
                 // MP server
                 _performWhenAllPlayersReady = performWhenAllPlayersReady;
                 MPClientsStatusHandler.ClientReadyEvent += MarkClientReady;
-                GameSetupManager.PlayerDisconnected += OnClientDisconnected;
+                GameSetupManager.PlayerDisconnected += CheckForDisconnectedClients;
+                CheckForDisconnectedClients();
             }
         }
 
@@ -72,7 +73,7 @@ namespace Gameplay.Entities {
             }
         }
 
-        private void OnClientDisconnected() {
+        private void CheckForDisconnectedClients() {
             for (int i = 0; i < TotalPlayerCount; i++) {
                 if (!GameSetupManager.AllPlayers[i].Connected) {
                     _playerReadyStatuses[i] = true;

@@ -362,9 +362,10 @@ public class GameSetupManager : MonoBehaviour {
     }
 
     private void ReDetermineWhichPlayersAreConnected(NetworkConnectionToClient connection) {
-        GameNetworkPlayer player = connection.identity.gameObject.GetComponent<GameNetworkPlayer>();
+        IGamePlayer gamePlayer = connection.identity.gameObject.GetComponent<IGamePlayer>();
+        int index = gamePlayer.Index;
         
-        AllPlayers[player.index].Connected = false;
+        AllPlayers[index].Connected = false;
         PlayerDisconnected?.Invoke();
     }
 
