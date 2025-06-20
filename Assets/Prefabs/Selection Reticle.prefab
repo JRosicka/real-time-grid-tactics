@@ -390,7 +390,6 @@ GameObject:
   m_Component:
   - component: {fileID: 3500445929556658314}
   - component: {fileID: 6405953263915932932}
-  - component: {fileID: 3256340096807328747}
   m_Layer: 0
   m_Name: Reticle Images
   m_TagString: Untagged
@@ -448,18 +447,6 @@ MonoBehaviour:
   MinAngle: 0
   MaxAngle: 360
   StartAngle: 30
---- !u!225 &3256340096807328747
-CanvasGroup:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5271863922662845816}
-  m_Enabled: 1
-  m_Alpha: 0
-  m_Interactable: 1
-  m_BlocksRaycasts: 1
-  m_IgnoreParentGroups: 0
 --- !u!1 &6134735785197917627
 GameObject:
   m_ObjectHideFlags: 0
@@ -547,6 +534,7 @@ GameObject:
   - component: {fileID: 4315847638165773433}
   - component: {fileID: 4916619601353602856}
   - component: {fileID: 2569501171651394577}
+  - component: {fileID: 5026783467978054062}
   m_Layer: 0
   m_Name: Selection Reticle
   m_TagString: Untagged
@@ -597,7 +585,7 @@ MonoBehaviour:
   - {fileID: 975368900195453810}
   - {fileID: 2481409920986594384}
   - {fileID: 3469179031135076454}
-  _canvasGroup: {fileID: 3256340096807328747}
+  _canvasGroup: {fileID: 5026783467978054062}
   _listenForEntityUpdates: 1
 --- !u!223 &2569501171651394577
 Canvas:
@@ -621,3 +609,15 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 6
   m_TargetDisplay: 0
+--- !u!225 &5026783467978054062
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6645029497310181911}
+  m_Enabled: 1
+  m_Alpha: 0
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
