@@ -25,6 +25,7 @@ MonoBehaviour:
     _channel: {fileID: 11400000, guid: 98e93cf2e89779d4494a08d38620b523, type: 2}
     _channelBlockers:
     - {fileID: 11400000, guid: 98e93cf2e89779d4494a08d38620b523, type: 2}
+    _executionType: 1
     _slotLocation: 5
     _addedMovementTime: 2.4
     _performOnStart: 0

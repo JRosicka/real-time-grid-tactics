@@ -55,8 +55,7 @@ public class SPCommandManager : AbstractCommandManager {
         DoUpdateAbilityQueue(ability.Performer, ability.Performer.QueuedAbilities);
     }
 
-    public override void RemoveAbilityFromQueue(GridEntity entity, IAbility queuedAbility) {
-        DoRemoveAbilityFromQueue(entity, queuedAbility.UID);
+    public override void UpdateAbilityQueue(GridEntity entity) {
         DoUpdateAbilityQueue(entity, entity.QueuedAbilities);
     }
 

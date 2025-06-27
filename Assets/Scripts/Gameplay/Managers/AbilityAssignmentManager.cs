@@ -112,8 +112,25 @@ namespace Gameplay.Managers {
             // The ability is queued, so remove it from the queue
             IAbility localAbility = entity.QueuedAbilities.FirstOrDefault(a => a.UID == ability.UID);
             if (localAbility != null) {
-                CommandManager.RemoveAbilityFromQueue(entity, localAbility);
+                if (RemoveAbilityFromQueue(entity, localAbility)) {
+                    CommandManager.UpdateAbilityQueue(entity);
+                }
             }
+        }
+        
+        /// <summary>
+        /// Remove the ability from the queue (here on the server)
+        /// </summary>
+        /// <returns>True if the ability was actually removed, otherwise false</returns>
+        private bool RemoveAbilityFromQueue(GridEntity entity, IAbility ability) {
+            IAbility queuedAbility = entity.QueuedAbilities.FirstOrDefault(t => t.UID == ability.UID);
+            if (queuedAbility == null) {
+                // This can happen if the whole queue was cleared between sending the remove command and now
+                return false;
+            }
+
+            entity.QueuedAbilities.Remove(queuedAbility);
+            return true;
         }
         
         /// <summary>

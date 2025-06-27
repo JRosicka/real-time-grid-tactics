@@ -51,6 +51,10 @@ namespace Gameplay.Config.Abilities {
         [Tooltip("Collection of any AbilityChannels that usage of this ability blocks")]
         [SerializeField] private List<AbilityChannel> _channelBlockers = new List<AbilityChannel>();
         public List<AbilityChannel> ChannelBlockers => _channelBlockers;
+        
+        [Space]
+        [SerializeField] private AbilityExecutionType _executionType;
+        public AbilityExecutionType ExecutionType => _executionType;
         [SerializeField] private AbilitySlotLocation _slotLocation;
         public AbilitySlotLocation SlotLocation => _slotLocation;
 

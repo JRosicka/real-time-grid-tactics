@@ -92,7 +92,7 @@ public abstract class AbstractCommandManager : NetworkBehaviour, ICommandManager
 
     public abstract void PerformAbility(IAbility ability, bool clearQueueFirst, bool handleCost, bool fromInput);
     public abstract void QueueAbility(IAbility ability, bool clearQueueFirst, bool insertAtFront, bool fromInput);
-    public abstract void RemoveAbilityFromQueue(GridEntity entity, IAbility queuedAbility);
+    public abstract void UpdateAbilityQueue(GridEntity entity);
     public abstract void ClearAbilityQueue(GridEntity entity);
 
     public abstract void MarkAbilityCooldownExpired(IAbility ability);
@@ -183,6 +183,16 @@ public abstract class AbstractCommandManager : NetworkBehaviour, ICommandManager
             ability.PayCost(true);
         }
 
+        // TODO-abilities: I think a few things I need to do here: 
+        // - Try to perform the ability, and have this return whether the ability succeeded (i.e. can be cleared) (and also keep returning whether a cost needs to be paid, so a tuple or enum). 
+        // - Re-evaluate WaitUntilLegal. Do I really want to re-queue the same ability at the end of the queue? Wouldn't it be better to just leave it where it is in the queue? Or might that block other things like for resource strucures? 
+        // - Separate out the functionality of "perform this ability on the server as a command" and "okay actually do the ability". The actual doing of the ability can happen in AbilityQueueExecutor, and the command to perform the ability should call a new method in AbilityQueueExecutor that queues it and instantly executes the ability queue.
+        // - The attack ability needs to stop doing a special re-queue of the same ability but with a different ID. It's seriously cringe. Like, stop it. Just stop. Instead, it should treat the ability as failed so that it tries again next queue exeuction (leaving it where it is in the queue? See two above.)
+        // - You know, all of this is maybe dancing around a more core issue, which is that I use the ability queue in different ways. One, to handle multi-tiered abilities (like attacking which queues movement abilities, or peasant build which queues movement abilities), and two, to handle multiple different pieces of functionality for an entity (like income and healing for a village).
+        // -- Maybe it would be better to treat the entity's ability queue more like a set of abilities that we are trying to perform, and to have the ability executor try to execute each one with each execution loop.
+        // -- So maybe an attack ability execution would look like: Try to attack, and if can't then do a movement ability effect. Don't queue the movement ability, just create and immediately do the effect since it is already running on the server. Still need to network it for clients. And then return false so we treat the ability as incomplete and keep it around for next execution loop.
+        // --- But wait, this goes against the principle I just created for executing abilities where I want all movement/spawning abilities to happen first before attack abilities start. 
+        // --- So instead maybe I need another step in the execution: Post-attack grid updates. And the attack ability execution would instead look like: Try to attack, and if can't then queue a movement ability effect marked as a post-attack grid update execution type. So then all those happen at once. 
         if (ability.PerformAbility()) {
             return true;
         }
@@ -226,17 +236,7 @@ public abstract class AbstractCommandManager : NetworkBehaviour, ICommandManager
     protected void DoUpdateAbilityQueue(GridEntity performer, List<IAbility> updatedAbilityQueue) {
         performer.UpdateAbilityQueue(updatedAbilityQueue);
     }
-
-    protected void DoRemoveAbilityFromQueue(GridEntity entity, int abilityID) {
-        IAbility queuedAbility = entity.QueuedAbilities.FirstOrDefault(t => t.UID == abilityID);
-        if (queuedAbility == null) {
-            // This can happen if the whole queue was cleared between sending the remove command and now
-            return;
-        }
-
-        entity.QueuedAbilities.Remove(queuedAbility);
-    }
-
+    
     protected void DoClearAbilityQueue(GridEntity entity) {
         List<IAbility> queuedAbilities = new List<IAbility>(entity.QueuedAbilities);
         queuedAbilities.ForEach(a => GameManager.Instance.CommandManager.CancelAbility(a));

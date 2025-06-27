@@ -51,11 +51,10 @@ public class MPCommandManager : AbstractCommandManager {
         CmdQueueAbility(ability, clearQueueFirst, insertAtFront, fromInput);
     }
 
-    public override void RemoveAbilityFromQueue(GridEntity entity, IAbility queuedAbility) {
-        LogTimestamp(nameof(RemoveAbilityFromQueue));
-        CmdRemoveAbilityFromQueue(entity, queuedAbility.UID);
+    public override void UpdateAbilityQueue(GridEntity entity) {
+        CmdUpdateAbilityQueue(entity);
     }
-
+    
     public override void ClearAbilityQueue(GridEntity entity) {
         LogTimestamp(nameof(ClearAbilityQueue));
         // I think this is safe to do?
@@ -152,8 +151,7 @@ public class MPCommandManager : AbstractCommandManager {
     }
 
     [Command(requiresAuthority = false)]
-    private void CmdRemoveAbilityFromQueue(GridEntity entity, int abilityID) {
-        DoRemoveAbilityFromQueue(entity, abilityID);
+    private void CmdUpdateAbilityQueue(GridEntity entity) {
         RpcUpdateAbilityQueue(entity, entity.QueuedAbilities);
     }
 

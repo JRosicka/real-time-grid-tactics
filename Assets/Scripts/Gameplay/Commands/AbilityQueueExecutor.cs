@@ -42,8 +42,8 @@ public class AbilityQueueExecutor : MonoBehaviour {
         if (_timeUntilNextUpdate <= 0) {
             _timeUntilNextUpdate += UpdateFrequency;
             
-            // Time for an update, so execute each entity's queue.
-            _commandManager.EntitiesOnGrid.AllEntities().ForEach(ExecuteQueue);
+            // Time for an update
+            ExecuteQueue();
             
             // Also perform a check for game end
             _gameEndManager.CheckForGameEnd();
@@ -51,21 +51,70 @@ public class AbilityQueueExecutor : MonoBehaviour {
     }
 
     /// <summary>
-    /// Execute the queue for a single <see cref="GridEntity"/>
+    /// Perform a full round of game updates on all entities
     /// </summary>
-    private void ExecuteQueue(GridEntity entity) {
+    private void ExecuteQueue() {
+        // First, execute abilities that involve updating the GridEntityCollection (or that don't depend on that)
+        List<GridEntity> allEntities = _commandManager.EntitiesOnGrid.AllEntities();
+        allEntities.ForEach(e => ExecuteQueueForEntity(e, AbilityExecutionType.DuringGridUpdates));
+        
+        // Second, execute abilities that rely on (but don't update) entity positions (i.e. attacking)
+        allEntities.ForEach(e => ExecuteQueueForEntity(e, AbilityExecutionType.AfterGridUpdates));
+        
+        // Third, apply damage from attacks
+        // TODO-abilities
+        
+        // Fourth, unregister any marked entities
+        // TODO-abilities
+    }
+
+    /// <summary>
+    /// Execute the queue for a single <see cref="GridEntity"/>. Runs through the queued abilities and tries to execute
+    /// the one at the front IFF it matches the execution type.
+    /// - If the ability matches and is completed (cleared from queue), immediately attempts to execute the next queued
+    ///   ability in the same fashion
+    /// - If the ability does not match, no-op even if there are later abilities in the queue that do match
+    /// </summary>
+    private void ExecuteQueueForEntity(GridEntity entity, AbilityExecutionType executionType) {
         List<IAbility> abilityQueue = entity.QueuedAbilities;
+
+        // Perform default ability if queue empty
         if (abilityQueue.IsNullOrEmpty()) {
-            PerformDefaultAbility(entity);
+            PerformDefaultAbility(entity, executionType);
             return;
         }
 
-        // Try to perform the next ability
-        IAbility nextAbility = abilityQueue[0];
-        if (PerformQueuedAbility(entity, nextAbility)) {
-            _commandManager.RemoveAbilityFromQueue(entity, nextAbility); // TODO Hmmm we remove the ability if we determine here on the client that it is performed successfully, but we don't yet know if it will actually be successfully performed on the server. Not sure if there is much to do about that. Well, actually, this only ever gets executed on the server, so maybe we could just skip the Command networking part and just directly do the ability. 
-        } else if (!nextAbility.WaitUntilLegal) {
-            _commandManager.RemoveAbilityFromQueue(entity, nextAbility);
+        // Cycle through the queued abilities, trying to perform each one until one does not get completed or removed
+        bool queueUpdated = false;
+        int lastAbilityID = -1;
+        while (true) {
+            // No-op if the queue is empty or the next queued ability does not match type
+            if (abilityQueue.IsNullOrEmpty()) {
+                break;
+            }
+            IAbility nextAbility = abilityQueue[0];
+            if (nextAbility.AbilityData.ExecutionType != executionType) {
+                break;
+            }
+            
+            // If this is the same ability that we tried to resolve last loop, then give up
+            if (nextAbility.UID == lastAbilityID) {
+                break;
+            }
+
+            // Try to perform the next ability
+            if (PerformQueuedAbility(entity, nextAbility) || !nextAbility.WaitUntilLegal) {
+                RemoveAbilityFromQueue(entity, nextAbility);
+                queueUpdated = true;
+                lastAbilityID = nextAbility.UID;
+            } else {
+                // The ability didn't get performed, and we need to wait. So our work here is done. 
+                break;
+            }
+        }
+        if (queueUpdated) {
+            // TODO-abilities would it be better to update each entity at the very end of the full queue execution? Since these RPC calls will go out after potentially multiple steps of updates finish on the server. 
+            _commandManager.UpdateAbilityQueue(entity); 
         }
     }
     
@@ -78,14 +127,27 @@ public class AbilityQueueExecutor : MonoBehaviour {
         _commandManager.PerformAbility(ability, false, false, false);
         return true;
     }
+
+    /// <summary>
+    /// Remove the ability from the queue (here on the server)
+    /// </summary>
+    private void RemoveAbilityFromQueue(GridEntity entity, IAbility ability) {
+        IAbility queuedAbility = entity.QueuedAbilities.FirstOrDefault(t => t.UID == ability.UID);
+        entity.QueuedAbilities.Remove(queuedAbility);
+    }
     
-    private void PerformDefaultAbility(GridEntity entity) {
+    /// <summary>
+    /// Perform the given entity's configured default ability, but only if that ability matches the passed in execution type.
+    /// Currently, this ability can only ever be attacking
+    /// </summary>
+    private void PerformDefaultAbility(GridEntity entity, AbilityExecutionType executionType) {
         if (!entity.EntityData.AttackByDefault) return;
         Vector2Int? location = entity.Location;
         if (location == null) return;
 
         AttackAbilityData data = entity.GetAbilityData<AttackAbilityData>();
         if (data == null) return;
+        if (data.ExecutionType != executionType) return;
             
         _abilityAssignmentManager.PerformAbility(entity, data, new AttackAbilityParameters {
             TargetFire = false,
