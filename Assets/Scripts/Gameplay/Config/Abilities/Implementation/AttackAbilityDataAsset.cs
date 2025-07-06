@@ -27,7 +27,7 @@ namespace Gameplay.Config.Abilities {
             return true;
         }
 
-        protected override bool AbilityLegalImpl(AttackAbilityParameters parameters, GridEntity entity) {
+        protected override (bool, AbilityResult?) AbilityLegalImpl(AttackAbilityParameters parameters, GridEntity entity) {
             return CanAttackTarget(parameters.Target, entity);
         }
 
@@ -37,17 +37,18 @@ namespace Gameplay.Config.Abilities {
 
         public bool CanTargetCell(Vector2Int cellPosition, GridEntity selectedEntity, GameTeam selectorTeam, System.Object targetData) {
             GridEntity target = GameManager.Instance.GetTopEntityAtLocation(cellPosition);
-            return CanAttackTarget(target, selectedEntity);
+            (bool canAttack, AbilityResult? _) = CanAttackTarget(target, selectedEntity);
+            return canAttack;
         }
 
-        private bool CanAttackTarget(GridEntity target, GridEntity selector) {
-            if (selector == null) return false;
-            if (target == null) return true;    // This is just an a-move, so can always do that
-            if (target.Team == GameTeam.Neutral) return true;  // Can attack (or at least a-move to) neutral entities
-            if (target == selector) return true;  // We can issue an attack move to the selected entity's cell
-            if (target.InteractBehavior is { IsLocalTeam: true } && target.EntityData.FriendlyUnitsCanShareCell) return true;   // We can a-move onto a friendly entity that friendly units can enter
-            
-            return target.Team != selector.Team;    // Can not attack friendly entities
+        private (bool, AbilityResult?) CanAttackTarget(GridEntity target, GridEntity selector) {
+            if (selector == null) return (false, AbilityResult.Failed);
+            if (target == null) return (true, null);    // This is just an a-move, so can always do that
+            if (target.Team == GameTeam.Neutral) return (true, null);  // Can attack (or at least a-move to) neutral entities
+            if (target == selector) return (true, null);  // We can issue an attack move to the selected entity's cell
+            if (target.InteractBehavior is { IsLocalTeam: true } && target.EntityData.FriendlyUnitsCanShareCell) return (true, null);   // We can a-move onto a friendly entity that friendly units can enter
+            if (target.Team == selector.Team) return (false, AbilityResult.Failed);     // Can not attack friendly entities
+            return (true, null);    
         }
 
         public void DoTargetableAbility(Vector2Int cellPosition, GridEntity selectedEntity, GameTeam selectorTeam, System.Object targetData) {
@@ -55,11 +56,11 @@ namespace Gameplay.Config.Abilities {
             if (target != null && target.Team == selectedEntity.Team) {
                 target = null;
             }
-            GameManager.Instance.AbilityAssignmentManager.QueueAbility(selectedEntity, this, new AttackAbilityParameters {
+            GameManager.Instance.AbilityAssignmentManager.PerformAbility(selectedEntity, this, new AttackAbilityParameters {
                     TargetFire = target != null && target.Team != GameTeam.Neutral, 
                     Target = target, 
                     Destination = cellPosition
-                }, true, true, false, true);
+                }, true, true, true);
             selectedEntity.SetTargetLocation(cellPosition, target, true);
         }
 

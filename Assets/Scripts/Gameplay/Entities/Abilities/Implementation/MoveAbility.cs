@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using Gameplay.Config.Abilities;
 using Gameplay.Pathfinding;
@@ -16,6 +15,10 @@ namespace Gameplay.Entities.Abilities {
             
         }
         
+        public override AbilityExecutionType ExecutionType => AbilityParameters.PerformAfterAttacks 
+                                                                ? AbilityExecutionType.PostInteractionGridUpdate 
+                                                                : AbilityExecutionType.PreInteractionGridUpdate;
+
         public override float CooldownDuration {
             get {
                 GameplayTile tile = GameManager.Instance.GridController.GridData.GetCell(AbilityParameters.NextMoveCell).Tile;
@@ -38,23 +41,26 @@ namespace Gameplay.Entities.Abilities {
             // Nothing to do
         }
         
-        public override bool DoAbilityEffect() {
+        protected override (bool, AbilityResult) DoAbilityEffect() {
             // Perform a single move towards the destination
             PathfinderService.Path path = GameManager.Instance.PathfinderService.FindPath(Performer, AbilityParameters.Destination);
             List<GridNode> pathNodes = path.Nodes;
             if (pathNodes.Count < 2) {
-                return false;
+                // We can not complete the move right now - don't give up skeleton, try again later
+                return (false, AbilityResult.IncompleteWithoutEffect);
             }
 
             AbilityParameters.NextMoveCell = pathNodes[1].Location;
             
             GameManager.Instance.CommandManager.MoveEntityToCell(Performer, pathNodes[1].Location);
             if (pathNodes.Count > 2 || (AbilityParameters.BlockedByOccupation && pathNodes[1].Location != AbilityParameters.Destination)) {
-                // There is more distance to travel, so put a new movement at the front of the queue
-                AbilityAssignmentManager.QueueAbility(Performer, Data, AbilityParameters, WaitUntilLegal, false, true, false);
+                // There is more distance to travel, so keep this ability for the next execution loop
+                AbilityParameters.PerformAfterAttacks = false;
+                return (true, AbilityResult.IncompleteWithEffect);
             }
 
-            return true;
+            // Ability complete
+            return (true, AbilityResult.CompletedWithEffect);
         }
     }
 
@@ -63,11 +69,13 @@ namespace Gameplay.Entities.Abilities {
         public Vector2Int NextMoveCell;
         public GameTeam SelectorTeam;
         public bool BlockedByOccupation;    // Whether we consider the move illegal when the target location is occupied
+        public bool PerformAfterAttacks;
         public void Serialize(NetworkWriter writer) {
             writer.Write(Destination);
             writer.Write(NextMoveCell);
             writer.Write(SelectorTeam);
             writer.WriteBool(BlockedByOccupation);
+            writer.WriteBool(PerformAfterAttacks);
         }
 
         public void Deserialize(NetworkReader reader) {
@@ -75,6 +83,7 @@ namespace Gameplay.Entities.Abilities {
             NextMoveCell = reader.Read<Vector2Int>();
             SelectorTeam = reader.Read<GameTeam>();
             BlockedByOccupation = reader.ReadBool();
+            PerformAfterAttacks = reader.ReadBool();
         }
     }
 }

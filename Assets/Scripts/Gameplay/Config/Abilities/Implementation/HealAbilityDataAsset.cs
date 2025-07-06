@@ -12,26 +12,22 @@ namespace Gameplay.Config.Abilities {
     /// </summary>
     [Serializable]
     public class HealAbilityData : AbilityDataBase<HealAbilityParameters> {
+        public int HealAmount;
         public override bool CanBeCanceled => true;
-        public override bool CancelableWhileActive => false;
+        public override bool CancelableWhileActive => true;
         public override bool CancelableWhileQueued => false;
+        public override IAbilityParameters OnStartParameters => new HealAbilityParameters { Target = null };
 
         public override void SelectAbility(GridEntity selector) {
             // Nothing to do
         }
-
-        public bool CanHeal(HealAbilityParameters parameters, GridEntity entity) {
-            return parameters.Target != null 
-                   && !parameters.Target.DeadOrDying
-                   && parameters.Target.HPHandler.CurrentHP < parameters.Target.MaxHP;
-        }
-
+        
         public override bool CanPayCost(IAbilityParameters parameters, GridEntity entity) {
             return true;
         }
 
-        protected override bool AbilityLegalImpl(HealAbilityParameters parameters, GridEntity entity) {
-            return CanHeal(parameters, entity);
+        protected override (bool, AbilityResult?) AbilityLegalImpl(HealAbilityParameters parameters, GridEntity entity) {
+            return (true, null);
         }
 
         protected override IAbility CreateAbilityImpl(HealAbilityParameters parameters, GridEntity performer) {

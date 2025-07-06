@@ -7,21 +7,15 @@ namespace Gameplay.Entities.Abilities {
     /// </summary>
     public interface IAbility {
         /// <summary>
-        /// Actually perform the ability. Returns false if we were not able to do so (<see cref="IAbilityData.AbilityLegal"/> false).
+        /// Try to actually perform the ability
         /// </summary>
-        bool PerformAbility();
+        AbilityResult PerformAbility();
         void PayCost(bool justSpecificCost);
         IAbilityData AbilityData { get; }
         IAbilityParameters BaseParameters { get; }
         int UID { get; set; }
         GridEntity Performer { get; }
-        /// <summary>
-        /// Whether we should wait until the ability is legal before executing. If false, discards the ability when attempting
-        /// to execute.
-        ///
-        /// By "wait", I mean "keep the ability queued, blocking other queued abilities from executing". 
-        /// </summary>
-        bool WaitUntilLegal { get; set; }
+        AbilityExecutionType ExecutionType { get; }
         float CooldownDuration { get; }
         bool CompleteCooldown();
         /// <summary>
@@ -43,19 +37,16 @@ namespace Gameplay.Entities.Abilities {
         public static void WriteAbility(this NetworkWriter writer, IAbility ability) {
             writer.WriteString(ability.AbilityData.ContentResourceID);
             writer.WriteInt(ability.UID);
-            writer.WriteBool(ability.WaitUntilLegal);
             ability.SerializeParameters(writer);
         }
 
         public static IAbility ReadAbility(this NetworkReader reader) {
             AbilityDataScriptableObject dataAsset = GameManager.Instance.Configuration.GetAbility(reader.ReadString());
             int uid = reader.ReadInt();
-            bool waitUntilLegal = reader.ReadBool();
 
             // Re-create the ability instance using the data asset we loaded
             IAbility abilityInstance = dataAsset.Content.DeserializeAbility(reader);
             abilityInstance.UID = uid;
-            abilityInstance.WaitUntilLegal = waitUntilLegal;
             return abilityInstance;
         }
     }

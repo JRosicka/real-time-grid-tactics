@@ -48,8 +48,12 @@ namespace Gameplay.Config.Abilities {
             return true;
         }
 
-        protected override bool AbilityLegalImpl(ChargeAbilityParameters parameters, GridEntity entity) {
-            return CanChargeToCell(entity, parameters.Destination);
+        protected override (bool, AbilityResult?) AbilityLegalImpl(ChargeAbilityParameters parameters, GridEntity entity) {
+            if (CanChargeToCell(entity, parameters.Destination)) {
+                return (true, null);
+            }
+
+            return (false, AbilityResult.Failed);
         }
 
         protected override IAbility CreateAbilityImpl(ChargeAbilityParameters parameters, GridEntity performer) {
@@ -72,7 +76,7 @@ namespace Gameplay.Config.Abilities {
                 MoveDestination = destination.Value,
                 ClickLocation = cellPosition,
                 SelectorTeam = selectorTeam
-            }, true, false);
+            }, true, false, true);
         }
 
         public void RecalculateTargetableAbilitySelection(GridEntity selector, object targetData) {

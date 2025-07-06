@@ -64,9 +64,10 @@ namespace Gameplay.Entities {
         /// </summary>
         public List<AbilityCooldownTimer> ActiveTimers = new();
         /// <summary>
-        /// This entity's current ability queue.
+        /// This entity's current ability queue. TODO-abilities rename to InProgressAbilities or something
         /// </summary>
         public List<IAbility> QueuedAbilities = new();
+        // TODO-abilities: I should change the concept of an ability queue to just cover user-queued abilities (just the build queue for now). Store that in the GridEntity and update it via RPCs, but don't try to execute it in AbilityQueueExecutor until the ability that the front entry depends on is complete.
 
         // Misc fields and properties
         [HideInInspector] 
@@ -458,7 +459,7 @@ namespace Gameplay.Entities {
         #endregion
         #region Moving
         
-        public bool TryMoveToCell(Vector2Int targetCell, bool blockedByOccupation) {
+        public bool TryMoveToCell(Vector2Int targetCell) {
             if (!CanMoveOrRally) return false;
 
             MoveAbilityData data = GetAbilityData<MoveAbilityData>();
@@ -466,8 +467,8 @@ namespace Gameplay.Entities {
                     Destination = targetCell, 
                     NextMoveCell = targetCell, 
                     SelectorTeam = Team,
-                    BlockedByOccupation = blockedByOccupation
-                }, true, true)) {
+                    BlockedByOccupation = true
+                }, true, true, true)) {
                 SetTargetLocation(targetCell, null, false);
             }
             return true;
@@ -529,7 +530,7 @@ namespace Gameplay.Entities {
             if (AbilityAssignmentManager.PerformAbility(this, data, new AttackAbilityParameters {
                         Destination = targetCell, 
                         TargetFire = false
-                    }, true, true)) {
+                    }, true, true, true)) {
                 SetTargetLocation(targetCell, null, true);
             }
         }
@@ -553,7 +554,7 @@ namespace Gameplay.Entities {
                     Target = targetEntity, 
                     TargetFire = true,
                     Destination = targetCell
-                }, true, true)) {
+                }, true, true, true)) {
                 SetTargetLocation(targetCell, targetEntity, true);
             }
         }
@@ -624,22 +625,37 @@ namespace Gameplay.Entities {
             if (sourceEntity.Location == null) return;
             
             // Determine whether we should respond with an attack
-            bool queuedAbilitiesAllowResponse = QueuedAbilities.Count == 0 || QueuedAbilities.All(a =>
-                a is AttackAbility attackAbility // No response if there are any queued non-attack abilities
-                && !attackAbility.AbilityParameters.TargetFire      // Or if any of those queued attacks are target-fire
-                && !attackAbility.AbilityParameters.Reaction);      // Or if any are reactions
-            bool hasAttackMoveTargetLocation = QueuedAbilities.Count > 0;
-            if (!queuedAbilitiesAllowResponse) return;
+            bool inProgressAbilitiesAllowResponse = QueuedAbilities.Count == 0;
+            if (!inProgressAbilitiesAllowResponse) {
+                if (!QueuedAbilities.Any(a => a is AttackAbility)) {
+                    // No response if there are no attack abilities in progress
+                } else if (!QueuedAbilities.All(a => a is AttackAbility or MoveAbility)) {
+                    // No response if there are any non-attack non-move abilities in progress
+                } else if (QueuedAbilities.Where(a => a is AttackAbility).Cast<AttackAbility>()
+                           .Any(a => a.AbilityParameters.TargetFire || a.AbilityParameters.Reaction)) {
+                    // No response if any of the in-progress attack abilities are target fire or reactive attacks
+                } else {
+                    inProgressAbilitiesAllowResponse = true;
+                }
+            }
+            if (!inProgressAbilitiesAllowResponse) return;
+            
+            // TODO-abilities: With this ability refactor, I will need to implement true ability queueing in order to
+            // properly re-implement the right attack response behavior. Instead of performing the attack and clearing
+            // other abilities, I will want to move the current attack move command (or a new move command to the
+            // current location, if not doing anything) to the queue so that it gets performed after completing this
+            // reactive attack. I also need to make sure that the reactive attack actually completes rather than
+            // continuing forever like normal attacks do. 
             
             // Attack-move to the target
-            AbilityAssignmentManager.QueueAbility(this, GetAbilityData<AttackAbilityData>(), new AttackAbilityParameters {
+            AbilityAssignmentManager.PerformAbility(this, GetAbilityData<AttackAbilityData>(), new AttackAbilityParameters {
                 TargetFire = false,
                 Destination = sourceEntity.Location.Value,
                 Reaction = true,
                 ReactionTarget = sourceEntity
-            }, true, false, true, false);
-            if (!hasAttackMoveTargetLocation && !HoldingPosition) {
-                SetTargetLocation(sourceEntity.Location.Value, null, true);
+            }, false, true, true);
+            if (!HoldingPosition) {
+                SetTargetLocation(sourceEntity.Location.Value, sourceEntity, true);
             }
         }
         

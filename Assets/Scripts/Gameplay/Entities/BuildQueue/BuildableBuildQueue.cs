@@ -27,6 +27,7 @@ namespace Gameplay.Entities.BuildQueue {
             DetermineBuildQueue();
         }
 
+        // TODO-abilities: Somehow this just works? Hmm. 
         public List<BuildAbility> Queue { get; private set; } = new();
 
         public bool HasSpace => Queue.Count < _maxSize;

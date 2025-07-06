@@ -18,6 +18,7 @@ namespace Gameplay.Entities.Abilities {
         
         public AttackAbility(AttackAbilityData data, AttackAbilityParameters parameters, GridEntity performer) : base(data, parameters, performer) { }
 
+        public override AbilityExecutionType ExecutionType => AbilityExecutionType.Interaction;
         public override bool ShouldShowCooldownTimer => true;
 
         public override void Cancel() {
@@ -34,7 +35,7 @@ namespace Gameplay.Entities.Abilities {
             // Nothing to do
         }
 
-        public override bool DoAbilityEffect() {
+        protected override (bool, AbilityResult) DoAbilityEffect() {
             if (AbilityParameters.TargetFire) {
                 return DoTargetFireEffect();
             } else {
@@ -42,18 +43,18 @@ namespace Gameplay.Entities.Abilities {
             }
         }
 
-        private bool DoTargetFireEffect() {
+        private (bool, AbilityResult) DoTargetFireEffect() {
             if (!GameManager.Instance.CommandManager.EntitiesOnGrid
                 .ActiveEntitiesForTeam(Performer.Team)
                 .Contains(Performer)) {
                 // The entity must be in the process of being killed since it is not present in the entities collection
-                return false;
+                return (false, AbilityResult.Failed);
             }
 
             // Check to make sure that the performer still exists
             Vector2Int? attackerLocation = Performer == null ? null : Performer.Location;
             if (attackerLocation == null) {
-                return false;
+                return (false, AbilityResult.Failed);
             }
             
             // If the target no longer exists, then it must have been killed or turned into a structure or something. 
@@ -63,33 +64,34 @@ namespace Gameplay.Entities.Abilities {
                 : AbilityParameters.Target.Location;
             if (targetLocation == null) {
                 AbilityParameters.TargetFire = false;
+                AbilityParameters.Target = null;
                 return DoAttackMoveEffect();
             } 
+            
+            // Update the destination to the new target location
+            AbilityParameters.Destination = targetLocation.Value;
             
             // Attack the target if it is in range
             if (CellDistanceLogic.DistanceBetweenCells(attackerLocation.Value, targetLocation.Value) <= Performer.Range) {
                 DoAttack(targetLocation.Value);
-                ReQueue();
-                return true;
+                return (true, AbilityResult.IncompleteWithEffect);
             }
             
             // Otherwise move closer to the target and try again
-            ReQueue();
-            StepTowardsDestination(Performer, targetLocation.Value, false);
-            return false;
+            StepTowardsDestination(Performer, targetLocation.Value);
+            return (false, AbilityResult.IncompleteWithoutEffect);
         }
         
-        private bool DoAttackMoveEffect() {
+        private (bool, AbilityResult) DoAttackMoveEffect() {
             Vector2Int? attackerLocation = Performer.Location;
             if (attackerLocation == null) {
                 // The entity must be in the process of being killed since it is not present in the entities collection
-                return false;
+                return (false, AbilityResult.Failed);
             }
             
             // First check to see if there is anything in range to attack
-            if (AttackInRange(Performer, attackerLocation.Value)) {
-                ReQueue();
-                return true;
+            if (AttackInRange(Performer, attackerLocation.Value)) { // TODO-abilities if this is too expensive to do every update tick when there are a lot of entities, then we might need to keep track of when the last collection update occurred, and cache that in the parameters and check it before performing this operation.  
+                return (true, AbilityResult.IncompleteWithEffect);
             }
 
             if (Performer.LastAttackedEntityValue is not null) {
@@ -97,21 +99,20 @@ namespace Gameplay.Entities.Abilities {
                 Performer.LastAttackedEntity.UpdateValue(new NetworkableGridEntityValue(null));
             }
 
-            // If we are at the destination, then the attack-move has completed
+            // If we are at the destination, then just keep performing the attack move at the current location in case 
+            // anything else comes in range
             if (attackerLocation == AbilityParameters.Destination) {
-                return false;
+                return (false, AbilityResult.IncompleteWithoutEffect);
             }
             
-            // If the attacker is holding position, then don't try to move closer. Just stop the attack. 
+            // If the attacker is holding position, then don't try to move closer
             if (Performer.HoldingPosition) {
-                return false;
+                return (false, AbilityResult.IncompleteWithoutEffect);
             }
             
-            // If no move available, re-queue this ability for later so that the above check for seeing if anything is 
-            // in range is re-performed on the next ability queue update. 
+            // If no move available, then don't do anything else for now
             if (Performer.ActiveTimers.Any(t => t.Ability is MoveAbility)) {
-                ReQueue();
-                return false;
+                return (false, AbilityResult.IncompleteWithoutEffect);
             }
 
             if (AbilityParameters.Reaction) {
@@ -119,22 +120,27 @@ namespace Gameplay.Entities.Abilities {
                         && !AbilityParameters.ReactionTarget.DeadOrDying
                         && AbilityParameters.ReactionTarget.Location != null) {
                     // No one in range to attack, so move a cell closer to our destination and re-queue
-                    StepTowardsDestination(Performer, AbilityParameters.ReactionTarget.Location.Value, true);
-                } // Otherwise don't step towards the destination since the reaction target is dead. Just return so we can keep going with the next queued ability
-                else if (Performer.QueuedAbilities.All(a => a == this || (a is not MoveAbility && a is not AttackAbility))) {
-                    // But first, reset the target location if since don't have any other queued moves or attacks
-                    Vector2Int? currentLocation = Performer.Location;
-                    // The location might be null if the entity is being destroyed 
-                    if (currentLocation != null) {
-                        Performer.SetTargetLocation(currentLocation.Value, null, false);
-                    }
+                    Vector2Int newTargetLocation = AbilityParameters.ReactionTarget.Location.Value;
+                    StepTowardsDestination(Performer, newTargetLocation);
+                    // Update the destination to the new target location
+                    AbilityParameters.Destination = newTargetLocation;
+                    return (false, AbilityResult.IncompleteWithoutEffect);
                 }
-                return false;
+                
+                // Otherwise don't step towards the destination since the reaction target is dead. Just complete the ability.
+                // But first, reset the target location
+                Vector2Int? currentLocation = Performer.Location;
+                // The location might be null if the entity is being destroyed 
+                if (currentLocation != null) {
+                    Performer.SetTargetLocation(currentLocation.Value, null, false);
+                }
+                
+                return (false, AbilityResult.CompletedWithoutEffect);
             }
             
             // No one in range to attack, so move a cell closer to our destination and re-queue
-            StepTowardsDestination(Performer, AbilityParameters.Destination, true);
-            return false;
+            StepTowardsDestination(Performer, AbilityParameters.Destination);
+            return (false, AbilityResult.IncompleteWithoutEffect);
         }
 
         /// <summary>
@@ -194,31 +200,23 @@ namespace Gameplay.Entities.Abilities {
         /// <summary>
         /// Move a single cell towards the destination
         /// </summary>
-        private void StepTowardsDestination(GridEntity attacker, Vector2Int destination, bool reQueueIfPossible) {
+        private void StepTowardsDestination(GridEntity attacker, Vector2Int destination) {
             PathfinderService.Path path = GameManager.Instance.PathfinderService.FindPath(Performer, destination);
             if (path.Nodes.Count < 2) {
                 return;
             }
-
-            if (reQueueIfPossible) {
-                // We want the attack move to happen again after the move command, so queue it to the front first
-                ReQueue();
-            }
             
             Vector2Int nextMoveCell = path.Nodes[1].Location;
             MoveAbilityData moveAbilityData = attacker.GetAbilityData<MoveAbilityData>();
-            AbilityAssignmentManager.QueueAbility(attacker, moveAbilityData, new MoveAbilityParameters {
+            AbilityAssignmentManager.PerformAbility(attacker, moveAbilityData, new MoveAbilityParameters {
                 Destination = nextMoveCell,
                 NextMoveCell = nextMoveCell,
                 SelectorTeam = attacker.Team,
-                BlockedByOccupation = false
-            }, true, false, true, false);
+                BlockedByOccupation = false,
+                PerformAfterAttacks = true
+            }, false, true, false);
         }
-
-        private void ReQueue() {
-            AbilityAssignmentManager.QueueAbility(Performer, Data, AbilityParameters, true, false, true, false);
-        }
-
+        
         private void DoAttack(Vector2Int location) {
             // Even though we have our target, we need to check if there is any viable target on top of the target. If so, 
             // then the attack needs to go towards whatever entity is on top of the stack. Them's the rules. 

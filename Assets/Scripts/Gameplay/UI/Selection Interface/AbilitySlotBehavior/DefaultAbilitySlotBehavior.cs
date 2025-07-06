@@ -1,5 +1,6 @@
 using Gameplay.Config.Abilities;
 using Gameplay.Entities;
+using Gameplay.Entities.Abilities;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -40,9 +41,8 @@ namespace Gameplay.UI {
             if (!_selectedEntity.InteractBehavior!.IsLocalTeam && !_abilityData.SelectableForAllPlayers) {
                 return AbilitySlot.AvailabilityResult.Unselectable;
             }
-            return GameManager.Instance.AbilityAssignmentManager.CanEntityUseAbility(_selectedEntity, _abilityData, _abilityData.SelectableWhenBlocked) 
-                ? AbilitySlot.AvailabilityResult.Selectable 
-                : AbilitySlot.AvailabilityResult.Unselectable;
+            (bool canUseAbility, AbilityResult? _) = GameManager.Instance.AbilityAssignmentManager.CanEntityUseAbility(_selectedEntity, _abilityData, _abilityData.SelectableWhenBlocked);
+            return canUseAbility ? AbilitySlot.AvailabilityResult.Selectable : AbilitySlot.AvailabilityResult.Unselectable;
         }
 
         public void SetUpSprites(Image abilityImage, Image secondaryAbilityImage, Canvas teamColorsCanvas) {

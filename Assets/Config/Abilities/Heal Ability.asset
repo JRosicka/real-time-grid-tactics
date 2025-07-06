@@ -24,16 +24,15 @@ MonoBehaviour:
     _channel: {fileID: 11400000, guid: a2bb18c2ded749a4e902028c24c166d0, type: 2}
     _channelBlockers:
     - {fileID: 11400000, guid: a2bb18c2ded749a4e902028c24c166d0, type: 2}
-    _executionType: 0
     _slotLocation: 0
     _addedMovementTime: 0
-    _performOnStart: 0
+    _performOnStart: 1
     _payCostUpFront: 0
-    _repeatForeverAfterStartEvenWhenFailed: 0
-    _repeatWhenCooldownFinishes: 0
+    _repeatWhenCooldownFinishes: 1
     _animateWhenCooldownComplete: 1
     _selectable: 0
     _selectableWhenBlocked: 0
     _autoSelect: 0
     _selectableForAllPlayers: 0
     _tryingToPerformCancelsBuilds: 0
+    HealAmount: 10

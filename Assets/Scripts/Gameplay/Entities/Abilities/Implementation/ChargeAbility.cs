@@ -15,6 +15,7 @@ namespace Gameplay.Entities.Abilities {
         private static ICommandManager CommandManager => GameManager.Instance.CommandManager;
         
         public ChargeAbility(ChargeAbilityData data, IAbilityParameters abilityParameters, GridEntity performer) : base(data, abilityParameters, performer) { }
+        public override AbilityExecutionType ExecutionType => AbilityExecutionType.PreInteractionGridUpdate;
         public override bool ShouldShowCooldownTimer => true;
 
         public override void Cancel() {
@@ -29,7 +30,7 @@ namespace Gameplay.Entities.Abilities {
             // Nothing to do
         }
 
-        public override bool DoAbilityEffect() {
+        protected override (bool, AbilityResult) DoAbilityEffect() {
             // Determine if there is an enemy entity at the destination
             GridEntity targetEntity = GameManager.Instance.GetTopEntityAtLocation(AbilityParameters.Destination);
             if (targetEntity == null || (Performer.GetTargetType(targetEntity) != GridEntity.TargetType.Enemy && targetEntity.EntityData.FriendlyUnitsCanShareCell)) {
@@ -37,7 +38,7 @@ namespace Gameplay.Entities.Abilities {
                 // Assume that AbilityLegal checked for movement legality. 
                 CommandManager.MoveEntityToCell(Performer, AbilityParameters.Destination);
                 QueueFollowUpAttackMove(null);
-                return true;
+                return (true, AbilityResult.CompletedWithEffect);
             }
             
             // Entity exists, so move to one cell away from it in a straight line (Assume that AbilityLegal checked for movement legality)...
@@ -46,7 +47,7 @@ namespace Gameplay.Entities.Abilities {
             List<Vector2Int> cellsInLine = CellDistanceLogic.GetCellsInStraightLine(performerLocation, AbilityParameters.Destination);
             if (cellsInLine == null || cellsInLine.Count == 0) {
                 Debug.LogError("Uhhh something about the charge ability movement got screwed up");
-                return false;
+                return (false, AbilityResult.Failed);
             }
             if (cellsInLine.Count > 1) {
                 Vector2Int oneAwayFromDestination = cellsInLine[^2];
@@ -56,7 +57,7 @@ namespace Gameplay.Entities.Abilities {
 
             // ...then attack it
             AttackTargetAtEndOfCharge(targetEntity);
-            return true;
+            return (true, AbilityResult.CompletedWithEffect);
         }
 
         private void AttackTargetAtEndOfCharge(GridEntity targetEntity) {
@@ -64,7 +65,7 @@ namespace Gameplay.Entities.Abilities {
             bool attacked = GameManager.Instance.AttackManager.PerformAttack(Performer, targetEntity, bonusDamage, true);
             if (attacked) {
                 GameManager.Instance.AbilityAssignmentManager.AddAttackTime(Performer, Data.AddedAttackTime);
-                AbilityParameters.Attacking = true;
+                AbilityParameters.Attacking = true; // TODO-abilities is this still necessary? Or will the attack animation be performed when resolving the attack ability that we just set to perform? 
             }
             QueueFollowUpAttackMove(targetEntity);
         }
@@ -81,13 +82,13 @@ namespace Gameplay.Entities.Abilities {
             }
             
             AttackAbilityData attackData = Performer.GetAbilityData<AttackAbilityData>();
-            AbilityAssignmentManager.QueueAbility(Performer, attackData, new AttackAbilityParameters {
+            AbilityAssignmentManager.PerformAbility(Performer, attackData, new AttackAbilityParameters {
                 TargetFire = targetEntity != null,
                 Target = targetEntity,
                 Destination = AbilityParameters.ClickLocation,
                 Reaction = false,
                 ReactionTarget = null
-            }, true, true, false, false);
+            }, false, true, true);
             Performer.SetTargetLocation(AbilityParameters.ClickLocation, targetEntity, true);
         }
     }

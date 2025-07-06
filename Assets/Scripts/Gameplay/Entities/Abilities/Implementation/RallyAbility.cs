@@ -13,6 +13,7 @@ namespace Gameplay.Entities.Abilities {
             
         }
 
+        public override AbilityExecutionType ExecutionType => AbilityExecutionType.PreInteractionGridUpdate;
         public override bool ShouldShowCooldownTimer => false;
 
         public override void Cancel() {
@@ -27,9 +28,9 @@ namespace Gameplay.Entities.Abilities {
             // Nothing to do
         }
         
-        public override bool DoAbilityEffect() {
+        protected override (bool, AbilityResult) DoAbilityEffect() {
             Performer.SetTargetLocation(AbilityParameters.Destination, null, Data.UseAttackIconOnPath);
-            return true;
+            return (true, AbilityResult.CompletedWithEffect);
         }
     }
 

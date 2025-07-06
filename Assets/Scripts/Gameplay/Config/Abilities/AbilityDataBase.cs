@@ -51,10 +51,8 @@ namespace Gameplay.Config.Abilities {
         [Tooltip("Collection of any AbilityChannels that usage of this ability blocks")]
         [SerializeField] private List<AbilityChannel> _channelBlockers = new List<AbilityChannel>();
         public List<AbilityChannel> ChannelBlockers => _channelBlockers;
-        
+
         [Space]
-        [SerializeField] private AbilityExecutionType _executionType;
-        public AbilityExecutionType ExecutionType => _executionType;
         [SerializeField] private AbilitySlotLocation _slotLocation;
         public AbilitySlotLocation SlotLocation => _slotLocation;
 
@@ -67,12 +65,11 @@ namespace Gameplay.Config.Abilities {
 
         [SerializeField] private bool _performOnStart;
         public bool PerformOnStart => _performOnStart;
-        
+        public virtual IAbilityParameters OnStartParameters => null;
+
         [SerializeField] private bool _payCostUpFront;
         public bool PayCostUpFront => _payCostUpFront;
 
-        [SerializeField] private bool _repeatForeverAfterStartEvenWhenFailed;
-        public bool RepeatForeverAfterStartEvenWhenFailed => _repeatForeverAfterStartEvenWhenFailed;
         public abstract bool CanBeCanceled { get; }
         public abstract bool CancelableWhileActive { get; }
         public abstract bool CancelableWhileQueued { get; }
@@ -116,14 +113,21 @@ namespace Gameplay.Config.Abilities {
         /// Should be checked on the client before creating the ability, and checked again on the server before performing
         /// the ability. If the server check fails, let the client know. 
         /// </summary>
-        public bool AbilityLegal(IAbilityParameters parameters, GridEntity entity) {
-            return GameManager.Instance.AbilityAssignmentManager.CanEntityUseAbility(entity, this, false) 
-                   && AbilityLegalImpl((T) parameters, entity);
+        /// <returns>
+        /// - True if legal, otherwise False
+        /// - Null if above value is True, otherwise the result of what to do with the ability
+        /// </returns>
+        public (bool, AbilityResult?) AbilityLegal(IAbilityParameters parameters, GridEntity entity) {
+            (bool success, AbilityResult? abilityResult) = GameManager.Instance.AbilityAssignmentManager.CanEntityUseAbility(entity, this, false) ;
+            if (!success) {
+                return (false, abilityResult);
+            }
+            return AbilityLegalImpl((T) parameters, entity);
         }
 
         public abstract bool CanPayCost(IAbilityParameters parameters, GridEntity entity);
 
-        protected abstract bool AbilityLegalImpl(T parameters, GridEntity entity);
+        protected abstract (bool, AbilityResult?) AbilityLegalImpl(T parameters, GridEntity entity);
 
         /// <summary>
         /// Create an instance of this ability, passing in any user input. This created instance should be passed to the

@@ -10,6 +10,7 @@ namespace Gameplay.Entities.Abilities {
     public class IncomeAbility : AbilityBase<IncomeAbilityData, NullAbilityParameters> {
         public IncomeAbility(IncomeAbilityData data, NullAbilityParameters parameters, GridEntity performer) : base(data, parameters, performer) { }
 
+        public override AbilityExecutionType ExecutionType => AbilityExecutionType.PreInteractionGridUpdate;
         public override bool ShouldShowCooldownTimer => false;
 
         public override void Cancel() {
@@ -49,10 +50,9 @@ namespace Gameplay.Entities.Abilities {
             // Nothing to do
         }
 
-        public override bool DoAbilityEffect() {
+        protected override (bool, AbilityResult) DoAbilityEffect() {
             // Does not do anything yet - need to wait for cooldown to complete
-            return true;
+            return (true, AbilityResult.CompletedWithEffect);
         }
-    
     }
 }

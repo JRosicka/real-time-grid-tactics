@@ -41,14 +41,18 @@ public class MPCommandManager : AbstractCommandManager {
         CmdDestroyEntity(entity);
     }
 
-    public override void PerformAbility(IAbility ability, bool clearQueueFirst, bool handleCost, bool fromInput) {
+    public override void PerformAbility(IAbility ability, bool clearOtherAbilities, bool fromInput) {
         LogTimestamp(nameof(PerformAbility));
-        CmdPerformAbility(ability, clearQueueFirst, handleCost, fromInput);
+        CmdPerformAbility(ability, clearOtherAbilities, fromInput);
     }
 
-    public override void QueueAbility(IAbility ability, bool clearQueueFirst, bool insertAtFront, bool fromInput) {
-        LogTimestamp(nameof(QueueAbility));
-        CmdQueueAbility(ability, clearQueueFirst, insertAtFront, fromInput);
+    [Server]
+    public override void AbilityEffectPerformed(IAbility ability) {
+        RpcAbilityEffectPerformed(ability);
+    }
+    [Server]
+    public override void AbilityFailed(IAbility ability) {
+        RpcAbilityFailed(ability);
     }
 
     public override void UpdateAbilityQueue(GridEntity entity) {
@@ -120,29 +124,17 @@ public class MPCommandManager : AbstractCommandManager {
         DoMarkEntityUnregistered(entity, showDeathAnimation);
     }
     
-    [Command(requiresAuthority = false)]
-    private void CmdPerformAbility(IAbility ability, bool clearQueueFirst, bool handleCost, bool fromInput) {
-        LogTimestamp(nameof(CmdPerformAbility));
-        
-        bool success = DoPerformAbility(ability, clearQueueFirst, handleCost, fromInput);
-        if (success) {
-            RpcAbilityPerformed(ability);
-        } else if (!ability.WaitUntilLegal) {
-            RpcAbilityFailed(ability);
-        }
-    }
-
     [ClientRpc]
-    private void RpcAbilityPerformed(IAbility ability) {
-        LogTimestamp(nameof(RpcAbilityPerformed));
-        DoAbilityPerformed(ability);
+    private void RpcAbilityEffectPerformed(IAbility ability) {
+        LogTimestamp(nameof(RpcAbilityEffectPerformed));
+        DoAbilityEffectPerformed(ability);
     }
 
     [Command(requiresAuthority = false)]
-    private void CmdQueueAbility(IAbility ability, bool clearQueueFirst, bool insertAtFront, bool fromInput) {
-        LogTimestamp(nameof(CmdQueueAbility));
-        DoQueueAbility(ability, clearQueueFirst, insertAtFront, fromInput);
-        RpcUpdateAbilityQueue(ability.Performer, ability.Performer.QueuedAbilities);
+    private void CmdPerformAbility(IAbility ability, bool clearOtherAbilities, bool fromInput) {
+        LogTimestamp(nameof(CmdPerformAbility));
+        DoPerformAbility(ability, clearOtherAbilities, fromInput);
+        RpcUpdateAbilityQueue(ability.Performer, ability.Performer.QueuedAbilities);    // TODO-abilities is this necessary?
     }
     
     [ClientRpc]

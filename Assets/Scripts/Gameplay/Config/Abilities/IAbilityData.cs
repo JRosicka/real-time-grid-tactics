@@ -21,7 +21,6 @@ namespace Gameplay.Config.Abilities {
         float CooldownDuration { get; }
         AbilityChannel Channel { get; }
         List<AbilityChannel> ChannelBlockers { get; }
-        AbilityExecutionType ExecutionType { get; }
         AbilitySlotLocation SlotLocation { get; }
         [Tooltip("How much time is added to the entity's movement cooldown timer after performing this ability. If there " +
                  "is an active cooldown timer for movement when this ability is performed, then this amount is added to " +
@@ -29,18 +28,14 @@ namespace Gameplay.Config.Abilities {
         float AddedMovementTime { get; }
         /// <summary>
         /// Whether to do the ability immediately after the associated <see cref="GridEntity"/> spawns. Note that
-        /// <see cref="NullAbilityParameters"/> will be sent as the parameters. 
+        /// <see cref="OnStartParameters"/> will be sent as the parameters. 
         /// </summary>
         bool PerformOnStart { get; }
+        IAbilityParameters OnStartParameters { get; }
         /// <summary>
         /// Whether to pay the cost of the ability up front, even when queueing the ability. 
         /// </summary>
         bool PayCostUpFront { get; }
-        /// <summary>
-        /// Only relevant if PerformOnStart is true. Whether to keep this ability in the queue and keep trying forever,
-        /// regardless of whether we ever fail to perform the ability. 
-        /// </summary>
-        bool RepeatForeverAfterStartEvenWhenFailed { get; }
         /// <summary>
         /// Whether this ability can ever be canceled from manual cancellation, clearing the queue, etc.
         /// </summary>
@@ -97,7 +92,11 @@ namespace Gameplay.Config.Abilities {
         /// Should be checked on the client before creating the ability, and checked again on the server before performing
         /// the ability. If the server check fails, let the client know. 
         /// </summary>
-        bool AbilityLegal(IAbilityParameters parameters, GridEntity entity);
+        /// <returns>
+        /// - True if legal, otherwise False
+        /// - Null if above value is True, otherwise the result of what to do with the ability
+        /// </returns>
+        (bool, AbilityResult?) AbilityLegal(IAbilityParameters parameters, GridEntity entity);
 
         /// <summary>
         /// Whether we are able to pay the cost for this ability

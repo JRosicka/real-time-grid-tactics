@@ -81,11 +81,11 @@ namespace Gameplay.UI {
                 // Upgrade that we do not fulfill the requirements for
                 return AbilitySlot.AvailabilityResult.Unselectable;
             }
-            
-            if (AbilityAssignmentManager.CanEntityUseAbility(SelectedEntity, _buildAbilityData, _buildAbilityData.SelectableWhenBlocked)
-                       && player.ResourcesController.CanAfford(Buildable.Cost)
-                       && Buildable.Requirements.All(r => ownedPurchasables.Contains(r))) {
-                // This entity can build this and we can afford this
+
+            (bool canUseAbility, AbilityResult? _) = AbilityAssignmentManager.CanEntityUseAbility(SelectedEntity, _buildAbilityData, _buildAbilityData.SelectableWhenBlocked);
+            if (canUseAbility && player.ResourcesController.CanAfford(Buildable.Cost)
+                              && Buildable.Requirements.All(r => ownedPurchasables.Contains(r))) {
+                    // This entity can build this and we can afford this
                 return AbilitySlot.AvailabilityResult.Selectable;
             }
             

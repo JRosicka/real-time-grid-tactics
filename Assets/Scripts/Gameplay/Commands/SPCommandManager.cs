@@ -42,17 +42,16 @@ public class SPCommandManager : AbstractCommandManager {
         Destroy(entity.gameObject);
     }
 
-    public override void PerformAbility(IAbility ability, bool clearQueueFirst, bool handleCost, bool fromInput) {
-        if (DoPerformAbility(ability, clearQueueFirst, handleCost, fromInput)) {
-            DoAbilityPerformed(ability);
-        } else if (!ability.WaitUntilLegal) {
-            DoAbilityFailed(ability);
-        }
+    public override void PerformAbility(IAbility ability, bool clearOtherAbilities, bool fromInput) {
+        DoPerformAbility(ability, clearOtherAbilities, fromInput);
+        DoUpdateAbilityQueue(ability.Performer, ability.Performer.QueuedAbilities);     // TODO-abilities is this necessary?
     }
 
-    public override void QueueAbility(IAbility ability, bool clearQueueFirst, bool insertAtFront, bool fromInput) {
-        DoQueueAbility(ability, clearQueueFirst, insertAtFront, fromInput);
-        DoUpdateAbilityQueue(ability.Performer, ability.Performer.QueuedAbilities);
+    public override void AbilityEffectPerformed(IAbility ability) {
+        DoAbilityEffectPerformed(ability);
+    }
+    public override void AbilityFailed(IAbility ability) {
+        DoAbilityFailed(ability);
     }
 
     public override void UpdateAbilityQueue(GridEntity entity) {

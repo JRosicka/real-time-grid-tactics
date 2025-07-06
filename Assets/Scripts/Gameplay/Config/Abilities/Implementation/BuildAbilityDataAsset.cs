@@ -51,12 +51,12 @@ namespace Gameplay.Config.Abilities {
             return true;
         }
 
-        protected override bool AbilityLegalImpl(BuildAbilityParameters parameters, GridEntity entity) {
+        protected override (bool, AbilityResult?) AbilityLegalImpl(BuildAbilityParameters parameters, GridEntity entity) {
             IGamePlayer player = GameManager.Instance.GetPlayerForTeam(entity.Team);
             List<PurchasableData> ownedPurchasables = player.OwnedPurchasablesController.OwnedPurchasables;
             if (parameters.Buildable.Requirements.Any(r => !ownedPurchasables.Contains(r))) {
                 Debug.Log($"Not building ({parameters.Buildable.ID}) because we don't have the proper requirements");
-                return false;
+                return (false, AbilityResult.Failed);
             }
 
             if (parameters.Buildable is EntityData { IsStructure: true } buildable) {
@@ -65,15 +65,19 @@ namespace Gameplay.Config.Abilities {
                 bool buildableCanEnterCell = PathfinderService.CanEntityEnterCell(parameters.BuildLocation, buildable, entity.Team, performer);
                 bool performerCanEnterCell = PathfinderService.CanEntityEnterCell(parameters.BuildLocation, entity.EntityData, entity.Team, performer);
                 if (!buildableCanEnterCell || !performerCanEnterCell) {
-                    return false;
+                    return (false, AbilityResult.IncompleteWithoutEffect);
                 }
             }
 
-            if (entity.Location == null || entity.Location.Value != parameters.BuildLocation) {
-                return false;
+            if (entity.Location == null) {
+                return (false, AbilityResult.Failed);
+            }
+            
+            if (entity.Location.Value != parameters.BuildLocation) {
+                return (false, AbilityResult.IncompleteWithoutEffect);
             }
 
-            return true;
+            return (true, null);
         }
 
         protected override IAbility CreateAbilityImpl(BuildAbilityParameters parameters, GridEntity performer) {
@@ -91,7 +95,7 @@ namespace Gameplay.Config.Abilities {
         public void DoTargetableAbility(Vector2Int cellPosition, GridEntity selectedEntity, GameTeam selectorTeam, System.Object targetData) {
             PurchasableData purchasableData = (PurchasableData)targetData;
             BuildAbilityParameters buildParameters = new BuildAbilityParameters {Buildable = purchasableData, BuildLocation = cellPosition};
-            GameManager.Instance.AbilityAssignmentManager.QueueAbility(selectedEntity, this, buildParameters, true, false, false, true);
+            GameManager.Instance.AbilityAssignmentManager.PerformAbility(selectedEntity, this, buildParameters, true, true, false);
             selectedEntity.SetTargetLocation(cellPosition, null, false, true);
             
             if (GameManager.Instance.SelectionInterface.BuildMenuOpenFromSelection) {

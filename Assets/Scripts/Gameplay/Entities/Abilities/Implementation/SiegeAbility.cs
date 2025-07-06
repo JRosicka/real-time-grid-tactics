@@ -9,6 +9,7 @@ namespace Gameplay.Entities.Abilities {
         public SiegeAbility(SiegeAbilityData data, NullAbilityParameters parameters, GridEntity performer) : base(data, parameters, performer) {
         }
 
+        public override AbilityExecutionType ExecutionType => AbilityExecutionType.PreInteractionGridUpdate;
         public override bool ShouldShowCooldownTimer => true;
 
         public override void Cancel() {
@@ -24,8 +25,8 @@ namespace Gameplay.Entities.Abilities {
             // Nothing to do
         }
 
-        public override bool DoAbilityEffect() {
-            return true;
+        protected override (bool, AbilityResult) DoAbilityEffect() {
+            return (true, AbilityResult.CompletedWithEffect);
         }
     }
 }

@@ -23,6 +23,8 @@ namespace Gameplay.Entities.Abilities {
             
         }
 
+        public override AbilityExecutionType ExecutionType => AbilityExecutionType.PreInteractionGridUpdate;
+
         public override float CooldownDuration => GameManager.Instance.Cheats.RemoveBuildTime ? .1f 
             : AbilityParameters.Buildable.BuildTime;
 
@@ -112,13 +114,13 @@ namespace Gameplay.Entities.Abilities {
             GameManager.Instance.GetPlayerForTeam(Performer.Team).ResourcesController.Spend(AbilityParameters.Buildable.Cost);
         }
         
-        public override bool DoAbilityEffect() {
+        protected override (bool, AbilityResult) DoAbilityEffect() {
             if (AbilityParameters.Buildable is UpgradeData upgradeData) {
                 // Mark the upgrade as in-progress
                 GameManager.Instance.GetPlayerForTeam(Performer.Team).OwnedPurchasablesController.AddInProgressUpgrade(upgradeData);
             }
 
-            return true;
+            return (true, AbilityResult.CompletedWithEffect);
         }
     }
 

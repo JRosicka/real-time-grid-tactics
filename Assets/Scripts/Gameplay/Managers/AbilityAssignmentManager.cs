@@ -18,25 +18,25 @@ namespace Gameplay.Managers {
 
         #region Availability checks
         
-        public bool CanEntityUseAbility(GridEntity entity, IAbilityData data, bool ignoreBlockingTimers) {
+        public (bool, AbilityResult?) CanEntityUseAbility(GridEntity entity, IAbilityData data, bool ignoreBlockingTimers) {
             // Is this entity set up to use this ability?
             if (!entity.Abilities.Contains(data)) {
-                return false;
+                return (false, AbilityResult.Failed);
             }
 
             // Do we own the requirements for this ability?
             List<PurchasableData> ownedPurchasables = GameManager.Instance.GetPlayerForTeam(entity.Team)
                 .OwnedPurchasablesController.OwnedPurchasables;
             if (data.Requirements.Any(r => !ownedPurchasables.Contains(r))) {
-                return false;
+                return (false, AbilityResult.Failed);
             }
             
             // Are there any active timers blocking this ability?
             if (!ignoreBlockingTimers && entity.ActiveTimers.Any(t => t.ChannelBlockers.Contains(data.Channel) && !t.Expired)) {
-                return false;
+                return (false, AbilityResult.IncompleteWithoutEffect);
             }
 
-            return true;
+            return (true, null);
         }
 
         public bool IsAbilityChannelOnCooldownForEntity(GridEntity entity, AbilityChannel channel, out AbilityCooldownTimer timer) {
@@ -47,31 +47,29 @@ namespace Gameplay.Managers {
         #endregion
         #region Perform/Queue
 
+        // TODO-abilities test to make sure that we are not triggering superfluous ability queue executions due to fromInput being true when it doesn't need to be
         public bool PerformAbility(GridEntity entity, IAbilityData abilityData, IAbilityParameters parameters, bool fromInput,
-                                    bool queueIfNotLegal, bool clearQueueFirst = true) {
+                                    bool performEvenIfNotLegal, bool clearOtherAbilities) {
+            
             if (entity.BuildQueue != null && abilityData.TryingToPerformCancelsBuilds) {
                 entity.BuildQueue.CancelAllBuilds();
             }
-            
-            if (!abilityData.AbilityLegal(parameters, entity)) {
-                if (queueIfNotLegal) {
-                    // We specified to perform the ability now, but we can't legally do that. So queue it if we can. 
+
+            // TODO-abilities: Hmm maybe we don't want this to return an AbilityResult. Instead we need to know what to do if not legal?
+            (bool success, AbilityResult? _) = abilityData.AbilityLegal(parameters, entity);
+            if (!success) {
+                if (performEvenIfNotLegal) {
+                    // We specified to perform the ability now, but we can't legally do that. Start performing it anyway. 
                     
                     // Don't try to queue it if we can't actually pay for it
                     if (abilityData.PayCostUpFront && !abilityData.CanPayCost(parameters, entity)) {
                         entity.AbilityFailed(abilityData);
                         return false;
                     }
-                    QueueAbility(entity, abilityData, parameters, true, clearQueueFirst, false, fromInput);
-                    if (abilityData is not AttackAbilityData && entity.LastAttackedEntityValue is not null) {
-                        // Clear the targeted entity since we are telling this entity to do something else
-                        entity.LastAttackedEntity.UpdateValue(new NetworkableGridEntityValue(null));
-                    }
-                    return true;
+                } else {
+                    entity.AbilityFailed(abilityData);
+                    return false;
                 }
-
-                entity.AbilityFailed(abilityData);
-                return false;
             }
             
             if (abilityData is not AttackAbilityData && entity.LastAttackedEntityValue is not null) {
@@ -80,21 +78,13 @@ namespace Gameplay.Managers {
             }
             
             IAbility abilityInstance = abilityData.CreateAbility(parameters, entity);
-            abilityInstance.WaitUntilLegal = queueIfNotLegal;
-            CommandManager.PerformAbility(abilityInstance, clearQueueFirst, true, fromInput);
+            CommandManager.PerformAbility(abilityInstance, clearOtherAbilities, fromInput);
             return true;
         }
         
-        public void QueueAbility(GridEntity entity, IAbilityData abilityData, IAbilityParameters parameters, 
-                                bool waitUntilLegal, bool clearQueueFirst, bool insertAtFront, bool fromInput) {
-            IAbility abilityInstance = abilityData.CreateAbility(parameters, entity);
-            abilityInstance.WaitUntilLegal = waitUntilLegal;
-            CommandManager.QueueAbility(abilityInstance, clearQueueFirst, insertAtFront, fromInput);
-        }
-
         public void PerformOnStartAbilitiesForEntity(GridEntity entity) {
             foreach (IAbilityData abilityData in entity.Abilities.Where(a => a.PerformOnStart)) {
-                PerformAbility(entity, abilityData, new NullAbilityParameters(), false, abilityData.RepeatForeverAfterStartEvenWhenFailed);
+                PerformAbility(entity, abilityData, abilityData.OnStartParameters, false, true, false);
             }
         }
         
@@ -105,9 +95,9 @@ namespace Gameplay.Managers {
         /// Server method. Clear the ability timer locally if the ability is active, otherwise remove it from the
         /// queue if queued.
         /// </summary>
-        public void ExpireAbility(GridEntity entity, IAbility ability, bool canceled) {
+        public void CancelAbility(GridEntity entity, IAbility ability) {
             ability.Cancel();
-            if (ExpireTimerForAbility(entity, ability, canceled)) return;
+            if (ExpireTimerForAbility(entity, ability, true)) return;
             
             // The ability is queued, so remove it from the queue
             IAbility localAbility = entity.QueuedAbilities.FirstOrDefault(a => a.UID == ability.UID);
@@ -141,6 +131,11 @@ namespace Gameplay.Managers {
             // since their abilities are we can use those. 
             AbilityCooldownTimer cooldownTimer = entity.ActiveTimers.FirstOrDefault(t => t.Ability.UID == ability.UID);
             if (cooldownTimer == null) return false;
+
+            if (canceled && !ability.AbilityData.CancelableWhileActive) {
+                // Can't cancel this ability's cooldown timer
+                return false;
+            }
             
             // The ability is indeed active, so cancel it
             cooldownTimer.Expire(canceled);

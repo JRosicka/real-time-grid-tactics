@@ -90,8 +90,9 @@ public abstract class AbstractCommandManager : NetworkBehaviour, ICommandManager
         return _entitiesOnGrid.EntitiesAtLocation(location);
     }
 
-    public abstract void PerformAbility(IAbility ability, bool clearQueueFirst, bool handleCost, bool fromInput);
-    public abstract void QueueAbility(IAbility ability, bool clearQueueFirst, bool insertAtFront, bool fromInput);
+    public abstract void PerformAbility(IAbility ability, bool clearOtherAbilities, bool fromInput);
+    public abstract void AbilityEffectPerformed(IAbility ability);
+    public abstract void AbilityFailed(IAbility ability);
     public abstract void UpdateAbilityQueue(GridEntity entity);
     public abstract void ClearAbilityQueue(GridEntity entity);
 
@@ -115,7 +116,7 @@ public abstract class AbstractCommandManager : NetworkBehaviour, ICommandManager
         if (spawnerEntity != null && spawnerEntity.TargetLocationLogicValue.CanRally) {
             if (data.Tags.Contains(EntityTag.Worker)) {
                 // Workers get move-commanded
-                entityInstance.TryMoveToCell(spawnerEntity.TargetLocationLogicValue.CurrentTarget, false);
+                entityInstance.TryMoveToCell(spawnerEntity.TargetLocationLogicValue.CurrentTarget);
             } else {
                 // Everything else attack-moves
                 entityInstance.TryAttackMoveToCell(spawnerEntity.TargetLocationLogicValue.CurrentTarget);
@@ -153,83 +154,37 @@ public abstract class AbstractCommandManager : NetworkBehaviour, ICommandManager
         entity.OnUnregistered(showDeathAnimation);
     }
     
-    protected bool DoPerformAbility(IAbility ability, bool clearQueueFirst, bool handleCost, bool fromInput) {
+    protected void DoPerformAbility(IAbility ability, bool clearOtherAbilities, bool fromInput) {
         // Don't do anything if the performer has been killed 
-        if (ability.Performer == null) return false;
+        if (ability.Performer == null || ability.Performer.DeadOrDying) return;
 
         if (fromInput) {
             ability.Performer.ToggleHoldPosition(false);
         }
         
-        if (clearQueueFirst) {
+        if (clearOtherAbilities) {
             ClearAbilityQueue(ability.Performer); 
         }
+        
         // Assign a UID here since this is guaranteed to be on the server (if MP)
         if (ability.UID == default) {
             ability.UID = IDUtil.GenerateUID();
         }
         
-        if (ability.AbilityData.PayCostUpFront && handleCost) {
+        if (ability.AbilityData.PayCostUpFront) {
             // We need to pay the cost now instead of in PerformAbility because we do not pay the cost there for up-front cost 
             // abilities. This is necessary because in PerformAbility we don't know where the cost might have been payed, 
             // so we need to do it here. 
             if (!ability.AbilityData.CanPayCost(ability.BaseParameters, ability.Performer)) {
-                Debug.Log($"Tried to pay the cost up front while performing the ability {ability.AbilityData.AbilitySlotInfo.ID}, but we are not able to pay the cost.");
-                if (ability.WaitUntilLegal) {
-                    QueueAbility(ability, false, false, false);
-                }
-                return false;
-            }
-            ability.PayCost(true);
-        }
-
-        // TODO-abilities: I think a few things I need to do here: 
-        // - Try to perform the ability, and have this return whether the ability succeeded (i.e. can be cleared) (and also keep returning whether a cost needs to be paid, so a tuple or enum). 
-        // - Re-evaluate WaitUntilLegal. Do I really want to re-queue the same ability at the end of the queue? Wouldn't it be better to just leave it where it is in the queue? Or might that block other things like for resource strucures? 
-        // - Separate out the functionality of "perform this ability on the server as a command" and "okay actually do the ability". The actual doing of the ability can happen in AbilityQueueExecutor, and the command to perform the ability should call a new method in AbilityQueueExecutor that queues it and instantly executes the ability queue.
-        // - The attack ability needs to stop doing a special re-queue of the same ability but with a different ID. It's seriously cringe. Like, stop it. Just stop. Instead, it should treat the ability as failed so that it tries again next queue exeuction (leaving it where it is in the queue? See two above.)
-        // - You know, all of this is maybe dancing around a more core issue, which is that I use the ability queue in different ways. One, to handle multi-tiered abilities (like attacking which queues movement abilities, or peasant build which queues movement abilities), and two, to handle multiple different pieces of functionality for an entity (like income and healing for a village).
-        // -- Maybe it would be better to treat the entity's ability queue more like a set of abilities that we are trying to perform, and to have the ability executor try to execute each one with each execution loop.
-        // -- So maybe an attack ability execution would look like: Try to attack, and if can't then do a movement ability effect. Don't queue the movement ability, just create and immediately do the effect since it is already running on the server. Still need to network it for clients. And then return false so we treat the ability as incomplete and keep it around for next execution loop.
-        // --- But wait, this goes against the principle I just created for executing abilities where I want all movement/spawning abilities to happen first before attack abilities start. 
-        // --- So instead maybe I need another step in the execution: Post-attack grid updates. And the attack ability execution would instead look like: Try to attack, and if can't then queue a movement ability effect marked as a post-attack grid update execution type. So then all those happen at once. 
-        if (ability.PerformAbility()) {
-            return true;
-        }
-
-        if (ability.WaitUntilLegal) {
-            QueueAbility(ability, false, false, false);
-        }
-
-        return false;
-    }
-
-    protected void DoQueueAbility(IAbility ability, bool clearQueueFirst, bool insertAtFront, bool fromInput) {
-        if (clearQueueFirst) {
-            ClearAbilityQueue(ability.Performer);
-        }
-
-        if (fromInput) {
-            ability.Performer.ToggleHoldPosition(false);
-        }
-
-        // Assign a UID here since this is guaranteed to be on the server (if MP)
-        if (ability.UID == default) {
-            ability.UID = IDUtil.GenerateUID();
-        }
-
-        if (ability.AbilityData.PayCostUpFront) {
-            if (!ability.AbilityData.CanPayCost(ability.BaseParameters, ability.Performer)) {
-                Debug.Log($"Tried to pay the cost up front while queueing the ability {ability.AbilityData.AbilitySlotInfo.ID}, but we are not able to pay the cost. No op.");
+                Debug.LogWarning($"Tried to pay the cost up front while performing the ability {ability.AbilityData.AbilitySlotInfo.ID}, but we are not able to pay the cost.");
                 return;
             }
             ability.PayCost(true);
         }
-        
-        if (insertAtFront) {
-            ability.Performer.QueuedAbilities.Insert(0, ability);
-        } else {
-            ability.Performer.QueuedAbilities.Add(ability);
+
+        ability.Performer.QueuedAbilities.Add(ability);
+        if (fromInput) {    // TODO-abilities: make sure all callers of this method use the proper value for this parameter
+            AbilityQueueExecutor.ExecuteQueue(true);
         }
     }
     
@@ -242,7 +197,7 @@ public abstract class AbstractCommandManager : NetworkBehaviour, ICommandManager
         queuedAbilities.ForEach(a => GameManager.Instance.CommandManager.CancelAbility(a));
     }
 
-    protected void DoAbilityPerformed(IAbility ability) {
+    protected void DoAbilityEffectPerformed(IAbility ability) {
         ability.Performer.AbilityPerformed(ability);
     }
 
@@ -262,7 +217,7 @@ public abstract class AbstractCommandManager : NetworkBehaviour, ICommandManager
         if (AbilityAlreadyCanceled(ability)) return false;
 
         _canceledAbilities.Add(ability.UID);
-        AbilityAssignmentManager.ExpireAbility(ability.Performer, ability, true);
+        AbilityAssignmentManager.CancelAbility(ability.Performer, ability);
         return true;
     }
 

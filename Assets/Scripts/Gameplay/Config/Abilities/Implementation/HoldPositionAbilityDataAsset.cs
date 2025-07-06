@@ -18,15 +18,15 @@ namespace Gameplay.Config.Abilities {
         public override bool CancelableWhileQueued => false;
 
         public override void SelectAbility(GridEntity selector) {
-            GameManager.Instance.AbilityAssignmentManager.PerformAbility(selector, this, new NullAbilityParameters(), true, false);
+            GameManager.Instance.AbilityAssignmentManager.PerformAbility(selector, this, new NullAbilityParameters(), true, false, true);
         }
 
         public override bool CanPayCost(IAbilityParameters parameters, GridEntity entity) {
             return true;
         }
 
-        protected override bool AbilityLegalImpl(NullAbilityParameters parameters, GridEntity entity) {
-            return true;
+        protected override (bool, AbilityResult?) AbilityLegalImpl(NullAbilityParameters parameters, GridEntity entity) {
+            return (true, null);
         }
 
         protected override IAbility CreateAbilityImpl(NullAbilityParameters parameters, GridEntity performer) {
