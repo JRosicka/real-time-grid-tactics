@@ -25,13 +25,13 @@ public interface ICommandManager {
     GridEntityCollection.PositionedGridEntityCollection GetEntitiesAtCell(Vector2Int location);
     // TODO-abilities Re-add QueueAbility as a user-queue action :)
     /// <summary>
-    /// Tell the server to start the process of performing an ability. Triggers an execution of active abilities in <see cref="AbilityQueueExecutor"/>
+    /// Tell the server to start the process of performing an ability. Triggers an execution of active abilities in <see cref="AbilityExecutor"/>
     /// </summary>
     void PerformAbility(IAbility ability, bool clearOtherAbilities, bool fromInput);
     void AbilityEffectPerformed(IAbility ability);
     void AbilityFailed(IAbility ability);
-    void UpdateAbilityQueue(GridEntity entity);
-    void ClearAbilityQueue(GridEntity entity);
+    void UpdateInProgressAbilities(GridEntity entity);
+    void ClearAbilities(GridEntity entity);
     void MarkAbilityCooldownExpired(IAbility ability);
     void CancelAbility(IAbility ability);
     void UpdateNetworkableField(NetworkBehaviour parent, string fieldName, INetworkableFieldValue newValue, string metaData);

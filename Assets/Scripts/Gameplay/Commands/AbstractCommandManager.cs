@@ -10,6 +10,7 @@ using Gameplay.Managers;
 using Mirror;
 using Sirenix.Utilities;
 using UnityEngine;
+using UnityEngine.Serialization;
 using Util;
 
 /// <summary>
@@ -21,7 +22,7 @@ using Util;
 public abstract class AbstractCommandManager : NetworkBehaviour, ICommandManager {
     [field:SyncVar]
     public Transform SpawnBucket { get; protected set; }
-    public AbilityQueueExecutor AbilityQueueExecutor;
+    [FormerlySerializedAs("AbilityQueueExecutor")] public AbilityExecutor AbilityExecutor;
 
     public GridEntity GridEntityPrefab;
     
@@ -93,8 +94,8 @@ public abstract class AbstractCommandManager : NetworkBehaviour, ICommandManager
     public abstract void PerformAbility(IAbility ability, bool clearOtherAbilities, bool fromInput);
     public abstract void AbilityEffectPerformed(IAbility ability);
     public abstract void AbilityFailed(IAbility ability);
-    public abstract void UpdateAbilityQueue(GridEntity entity);
-    public abstract void ClearAbilityQueue(GridEntity entity);
+    public abstract void UpdateInProgressAbilities(GridEntity entity);
+    public abstract void ClearAbilities(GridEntity entity);
 
     public abstract void MarkAbilityCooldownExpired(IAbility ability);
 
@@ -163,7 +164,7 @@ public abstract class AbstractCommandManager : NetworkBehaviour, ICommandManager
         }
         
         if (clearOtherAbilities) {
-            ClearAbilityQueue(ability.Performer); 
+            ClearAbilities(ability.Performer); 
         }
         
         // Assign a UID here since this is guaranteed to be on the server (if MP)
@@ -182,19 +183,19 @@ public abstract class AbstractCommandManager : NetworkBehaviour, ICommandManager
             ability.PayCost(true);
         }
 
-        ability.Performer.QueuedAbilities.Add(ability);
+        ability.Performer.InProgressAbilities.Add(ability);
         if (fromInput) {    // TODO-abilities: make sure all callers of this method use the proper value for this parameter
-            AbilityQueueExecutor.ExecuteQueue(true);
+            AbilityExecutor.ExecuteAbilities(true);
         }
     }
     
-    protected void DoUpdateAbilityQueue(GridEntity performer, List<IAbility> updatedAbilityQueue) {
-        performer.UpdateAbilityQueue(updatedAbilityQueue);
+    protected void DoUpdateInProgressAbilities(GridEntity performer, List<IAbility> updatedAbilitySet) {
+        performer.UpdateInProgressAbilities(updatedAbilitySet);
     }
     
-    protected void DoClearAbilityQueue(GridEntity entity) {
-        List<IAbility> queuedAbilities = new List<IAbility>(entity.QueuedAbilities);
-        queuedAbilities.ForEach(a => GameManager.Instance.CommandManager.CancelAbility(a));
+    protected void DoClearAbilities(GridEntity entity) {
+        List<IAbility> abilities = new List<IAbility>(entity.InProgressAbilities);
+        abilities.ForEach(a => GameManager.Instance.CommandManager.CancelAbility(a));
     }
 
     protected void DoAbilityEffectPerformed(IAbility ability) {

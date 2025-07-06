@@ -27,7 +27,7 @@ namespace Gameplay.UI {
                 return;
             }
 
-            // Otherwise cancel all selected entity's in-progress/queued abilities if there are any
+            // Otherwise cancel all selected entity's in-progress abilities if there are any
             _selectedEntity.CancelAllAbilities();
         }
 
@@ -43,7 +43,7 @@ namespace Gameplay.UI {
             }
 
             if (_selectedEntity.Abilities.Any(a => a.SlotLocation != AbilitySlotLocation.Unpicked)) {
-                // There are displayed abilities, we just don't have any queued or set up right now
+                // There are displayed abilities, we just don't have any in progress or set up right now
                 return AbilitySlot.AvailabilityResult.Unselectable;
             }
 

@@ -119,7 +119,7 @@ namespace Gameplay.Entities.Abilities {
                 if (AbilityParameters.ReactionTarget != null
                         && !AbilityParameters.ReactionTarget.DeadOrDying
                         && AbilityParameters.ReactionTarget.Location != null) {
-                    // No one in range to attack, so move a cell closer to our destination and re-queue
+                    // No one in range to attack, so move a cell closer to our destination
                     Vector2Int newTargetLocation = AbilityParameters.ReactionTarget.Location.Value;
                     StepTowardsDestination(Performer, newTargetLocation);
                     // Update the destination to the new target location
@@ -138,7 +138,7 @@ namespace Gameplay.Entities.Abilities {
                 return (false, AbilityResult.CompletedWithoutEffect);
             }
             
-            // No one in range to attack, so move a cell closer to our destination and re-queue
+            // No one in range to attack, so move a cell closer to our destination
             StepTowardsDestination(Performer, AbilityParameters.Destination);
             return (false, AbilityResult.IncompleteWithoutEffect);
         }

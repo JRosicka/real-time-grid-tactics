@@ -28,7 +28,7 @@ namespace Gameplay.Managers {
             if (builder.InteractBehavior is not { AllowedToSeeQueuedBuilds: true }) return;
             
             List<QueuedBuildInfo> queuedStructuresCopy = new List<QueuedBuildInfo>(_queuedStructures);
-            List<BuildAbility> currentlyQueuedStructureBuilds = builder.QueuedAbilities
+            List<BuildAbility> currentlyQueuedStructureBuilds = builder.InProgressAbilities
                 .Where(a => a is BuildAbility)
                 .Cast<BuildAbility>()
                 .Where(a => a.AbilityParameters.Buildable is EntityData { IsStructure: true })

@@ -14,7 +14,7 @@ namespace Gameplay.Config.Abilities {
     public class SiegeAbilityData : AbilityDataBase<NullAbilityParameters> {
         public override bool CanBeCanceled => true;
         public override bool CancelableWhileActive => false;
-        public override bool CancelableWhileQueued => true;
+        public override bool CancelableWhileInProgress => true;
 
         public override void SelectAbility(GridEntity selector) {
             GameManager.Instance.AbilityAssignmentManager.PerformAbility(selector, this, new NullAbilityParameters(), true, false, true);

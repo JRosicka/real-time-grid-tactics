@@ -40,7 +40,7 @@ namespace Gameplay.UI {
             get {
                 List<BuildAbility> buildQueue = BuildQueue.Queue;
                 if (!Entity.EntityData.IsStructure && buildQueue.Count > 0 &&
-                    !Entity.QueuedAbilities.Select(a => a.UID).Contains(buildQueue[0].UID)) {
+                    !Entity.InProgressAbilities.Select(a => a.UID).Contains(buildQueue[0].UID)) {
                     return buildQueue[0];
                 }
 

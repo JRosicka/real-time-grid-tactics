@@ -10,7 +10,7 @@ using UnityEngine;
 public class SPCommandManager : AbstractCommandManager {
     public override void Initialize(Transform spawnBucketPrefab, GameEndManager gameEndManager, AbilityAssignmentManager abilityAssignmentManager) {
         SpawnBucket = Instantiate(spawnBucketPrefab);
-        AbilityQueueExecutor.Initialize(this, gameEndManager, abilityAssignmentManager);
+        AbilityExecutor.Initialize(this, gameEndManager, abilityAssignmentManager);
     }
 
     public override void SpawnEntity(EntityData data, Vector2Int spawnLocation, GameTeam team, GridEntity spawnerEntity, bool movementOnCooldown) {
@@ -33,7 +33,7 @@ public class SPCommandManager : AbstractCommandManager {
     }
 
     public override async void UnRegisterEntity(GridEntity entity, bool showDeathAnimation) {
-        await Task.Delay(TimeSpan.FromSeconds(AbilityQueueExecutor.UpdateFrequency * 2));
+        await Task.Delay(TimeSpan.FromSeconds(AbilityExecutor.UpdateFrequency * 2));
         DoMarkEntityUnregistered(entity, showDeathAnimation);
         DoUnRegisterEntity(entity);
     }
@@ -44,7 +44,7 @@ public class SPCommandManager : AbstractCommandManager {
 
     public override void PerformAbility(IAbility ability, bool clearOtherAbilities, bool fromInput) {
         DoPerformAbility(ability, clearOtherAbilities, fromInput);
-        DoUpdateAbilityQueue(ability.Performer, ability.Performer.QueuedAbilities);     // TODO-abilities is this necessary?
+        DoUpdateInProgressAbilities(ability.Performer, ability.Performer.InProgressAbilities);     // TODO-abilities is this necessary?
     }
 
     public override void AbilityEffectPerformed(IAbility ability) {
@@ -54,13 +54,13 @@ public class SPCommandManager : AbstractCommandManager {
         DoAbilityFailed(ability);
     }
 
-    public override void UpdateAbilityQueue(GridEntity entity) {
-        DoUpdateAbilityQueue(entity, entity.QueuedAbilities);
+    public override void UpdateInProgressAbilities(GridEntity entity) {
+        DoUpdateInProgressAbilities(entity, entity.InProgressAbilities);
     }
 
-    public override void ClearAbilityQueue(GridEntity entity) {
-        DoClearAbilityQueue(entity);
-        DoUpdateAbilityQueue(entity, entity.QueuedAbilities);
+    public override void ClearAbilities(GridEntity entity) {
+        DoClearAbilities(entity);
+        DoUpdateInProgressAbilities(entity, entity.InProgressAbilities);
     }
 
     public override void MarkAbilityCooldownExpired(IAbility ability) {

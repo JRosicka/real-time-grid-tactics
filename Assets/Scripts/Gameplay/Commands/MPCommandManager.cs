@@ -13,8 +13,8 @@ public class MPCommandManager : AbstractCommandManager {
         SpawnBucket = Instantiate(spawnBucketPrefab);
         NetworkServer.Spawn(SpawnBucket.gameObject);
         
-        // Only initialize this on the server. Clients do not need to handle an ability queue.
-        AbilityQueueExecutor.Initialize(this, gameEndManager, abilityAssignmentManager);
+        // Only initialize this on the server. Clients do not need to handle ability execution.
+        AbilityExecutor.Initialize(this, gameEndManager, abilityAssignmentManager);
     }
 
     public override void SpawnEntity(EntityData data, Vector2Int spawnLocation, GameTeam team, GridEntity spawnerEntity, bool movementOnCooldown) {
@@ -32,7 +32,7 @@ public class MPCommandManager : AbstractCommandManager {
     }
 
     public override async void UnRegisterEntity(GridEntity entity, bool showDeathAnimation) {
-        await Task.Delay(TimeSpan.FromSeconds(AbilityQueueExecutor.UpdateFrequency * 2));    // TODO maybe would be better to have this be handled in the AbilityQueueExecutor queue execution directly
+        await Task.Delay(TimeSpan.FromSeconds(AbilityExecutor.UpdateFrequency * 2));    // TODO maybe would be better to have this be handled in the AbilityExecutor execution directly
         LogTimestamp(nameof(UnRegisterEntity));
         CmdUnRegisterEntity(entity, showDeathAnimation);
     }
@@ -55,15 +55,15 @@ public class MPCommandManager : AbstractCommandManager {
         RpcAbilityFailed(ability);
     }
 
-    public override void UpdateAbilityQueue(GridEntity entity) {
-        CmdUpdateAbilityQueue(entity);
+    public override void UpdateInProgressAbilities(GridEntity entity) {
+        CmdUpdateInProgressAbilities(entity);
     }
     
-    public override void ClearAbilityQueue(GridEntity entity) {
-        LogTimestamp(nameof(ClearAbilityQueue));
+    public override void ClearAbilities(GridEntity entity) {
+        LogTimestamp(nameof(ClearAbilities));
         // I think this is safe to do?
-        if (entity.QueuedAbilities.Count == 0) return;
-        CmdClearAbilityQueue(entity);
+        if (entity.InProgressAbilities.Count == 0) return;
+        CmdClearAbilities(entity);
     }
 
     public override void MarkAbilityCooldownExpired(IAbility ability) {
@@ -134,23 +134,23 @@ public class MPCommandManager : AbstractCommandManager {
     private void CmdPerformAbility(IAbility ability, bool clearOtherAbilities, bool fromInput) {
         LogTimestamp(nameof(CmdPerformAbility));
         DoPerformAbility(ability, clearOtherAbilities, fromInput);
-        RpcUpdateAbilityQueue(ability.Performer, ability.Performer.QueuedAbilities);    // TODO-abilities is this necessary?
+        RpcUpdateInProgressAbilities(ability.Performer, ability.Performer.InProgressAbilities);    // TODO-abilities is this necessary?
     }
     
     [ClientRpc]
-    private void RpcUpdateAbilityQueue(GridEntity performer, List<IAbility> updatedAbilityQueue) {
-        DoUpdateAbilityQueue(performer, updatedAbilityQueue);
+    private void RpcUpdateInProgressAbilities(GridEntity performer, List<IAbility> updatedInProgressAbilities) {
+        DoUpdateInProgressAbilities(performer, updatedInProgressAbilities);
     }
 
     [Command(requiresAuthority = false)]
-    private void CmdUpdateAbilityQueue(GridEntity entity) {
-        RpcUpdateAbilityQueue(entity, entity.QueuedAbilities);
+    private void CmdUpdateInProgressAbilities(GridEntity entity) {
+        RpcUpdateInProgressAbilities(entity, entity.InProgressAbilities);
     }
 
     [Command(requiresAuthority = false)]
-    private void CmdClearAbilityQueue(GridEntity entity) {
-        DoClearAbilityQueue(entity);
-        RpcUpdateAbilityQueue(entity, entity.QueuedAbilities);
+    private void CmdClearAbilities(GridEntity entity) {
+        DoClearAbilities(entity);
+        RpcUpdateInProgressAbilities(entity, entity.InProgressAbilities);
     }
 
     [Command(requiresAuthority = false)]

@@ -21,7 +21,7 @@ namespace Gameplay.UI {
         public AbilitySlotInfo AbilitySlotInfo => _buildAbilityData.AbilitySlotInfo;
         public bool IsAvailabilitySensitiveToResources => true;
         public bool CaresAboutAbilityChannels => false;
-        public bool CaresAboutQueuedAbilities => false;
+        public bool CaresAboutInProgressAbilities => false;
         public bool IsAbilityTargetable => _buildAbilityData.Targeted;
         public bool AnyPlayerCanSelect => false;
         private GridController GridController => GameManager.Instance.GridController;

@@ -16,7 +16,7 @@ namespace Gameplay.Config.Abilities {
     public class MoveAbilityData : AbilityDataBase<MoveAbilityParameters>, ITargetableAbilityData {
         public override bool CanBeCanceled => true;
         public override bool CancelableWhileActive => false;
-        public override bool CancelableWhileQueued => true;
+        public override bool CancelableWhileInProgress => true;
 
         public override void SelectAbility(GridEntity selector) {
             GameManager.Instance.EntitySelectionManager.SelectTargetableAbility(this, selector.Team, null);

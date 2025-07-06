@@ -1,6 +1,6 @@
 namespace Gameplay.Entities.Abilities {
     /// <summary>
-    /// Categorization for helping <see cref="AbilityQueueExecutor"/> determine the order that abilities should be executed
+    /// Categorization for helping <see cref="AbilityExecutor"/> determine the order that abilities should be executed
     /// </summary>
     public enum AbilityExecutionType {
         PreInteractionGridUpdate = 0,

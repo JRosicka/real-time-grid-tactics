@@ -64,9 +64,9 @@ namespace Gameplay.Entities {
         /// </summary>
         public List<AbilityCooldownTimer> ActiveTimers = new();
         /// <summary>
-        /// This entity's current ability queue. TODO-abilities rename to InProgressAbilities or something
+        /// This entity's abilities that we have started to perform and have not yet completed
         /// </summary>
-        public List<IAbility> QueuedAbilities = new();
+        public List<IAbility> InProgressAbilities = new();
         // TODO-abilities: I should change the concept of an ability queue to just cover user-queued abilities (just the build queue for now). Store that in the GridEntity and update it via RPCs, but don't try to execute it in AbilityQueueExecutor until the ability that the front entry depends on is complete.
 
         // Misc fields and properties
@@ -115,7 +115,7 @@ namespace Gameplay.Entities {
         // Needs to happen right after UnregisteredEvent, probably. Keep separate. 
         public event Action KilledEvent;
         public event Action<int> KillCountChanged;
-        public event Action<List<IAbility>> AbilityQueueUpdatedEvent;
+        public event Action<List<IAbility>> InProgressAbilitiesUpdatedEvent;
         /// <summary>
         /// Only triggered on server
         /// </summary>
@@ -395,13 +395,13 @@ namespace Gameplay.Entities {
         public List<IAbility> GetCancelableAbilities() {
             List<IAbility> abilities = new List<IAbility>();
             
-            // Get cancelable active abilities
+            // Get cancelable ability timers
             abilities.AddRange(ActiveTimers
                 .Select(t => t.Ability)
                 .Where(a => a.AbilityData.CancelableWhileActive));
             
-            // Get cancelable queued abilities
-            abilities.AddRange(QueuedAbilities.Where(a => a.AbilityData.CancelableWhileQueued));
+            // Get cancelable in-progress abilities
+            abilities.AddRange(InProgressAbilities.Where(a => a.AbilityData.CancelableWhileInProgress));
 
             return abilities;
         }
@@ -423,10 +423,10 @@ namespace Gameplay.Entities {
             ToggleHoldPosition(false);
         }
         
-        public void UpdateAbilityQueue(List<IAbility> newAbilityQueue) {
-            QueuedAbilities = newAbilityQueue;
+        public void UpdateInProgressAbilities(List<IAbility> newInProgressAbilitiesSet) {
+            InProgressAbilities = newInProgressAbilitiesSet;
             GameManager.Instance.QueuedStructureBuildsManager.UpdateQueuedBuildsForEntity(this);
-            AbilityQueueUpdatedEvent?.Invoke(newAbilityQueue);
+            InProgressAbilitiesUpdatedEvent?.Invoke(newInProgressAbilitiesSet);
         }
         
         /// <summary>
@@ -508,8 +508,8 @@ namespace Gameplay.Entities {
 
             if (!holdPosition) return;
             
-            // Cancel any queued moves and attacks
-            List<IAbility> abilities = QueuedAbilities.Where(a => a is MoveAbility or AttackAbility).ToList();
+            // Cancel any in-progress moves and attacks
+            List<IAbility> abilities = InProgressAbilities.Where(a => a is MoveAbility or AttackAbility).ToList();
             abilities.ForEach(a => CommandManager.CancelAbility(a));
 
             // Update the rally point
@@ -625,13 +625,13 @@ namespace Gameplay.Entities {
             if (sourceEntity.Location == null) return;
             
             // Determine whether we should respond with an attack
-            bool inProgressAbilitiesAllowResponse = QueuedAbilities.Count == 0;
+            bool inProgressAbilitiesAllowResponse = InProgressAbilities.Count == 0;
             if (!inProgressAbilitiesAllowResponse) {
-                if (!QueuedAbilities.Any(a => a is AttackAbility)) {
+                if (!InProgressAbilities.Any(a => a is AttackAbility)) {
                     // No response if there are no attack abilities in progress
-                } else if (!QueuedAbilities.All(a => a is AttackAbility or MoveAbility)) {
+                } else if (!InProgressAbilities.All(a => a is AttackAbility or MoveAbility)) {
                     // No response if there are any non-attack non-move abilities in progress
-                } else if (QueuedAbilities.Where(a => a is AttackAbility).Cast<AttackAbility>()
+                } else if (InProgressAbilities.Where(a => a is AttackAbility).Cast<AttackAbility>()
                            .Any(a => a.AbilityParameters.TargetFire || a.AbilityParameters.Reaction)) {
                     // No response if any of the in-progress attack abilities are target fire or reactive attacks
                 } else {

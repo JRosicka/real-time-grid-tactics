@@ -15,7 +15,7 @@ namespace Gameplay.Config.Abilities {
         public int HealAmount;
         public override bool CanBeCanceled => true;
         public override bool CancelableWhileActive => true;
-        public override bool CancelableWhileQueued => false;
+        public override bool CancelableWhileInProgress => false;
         public override IAbilityParameters OnStartParameters => new HealAbilityParameters { Target = null };
 
         public override void SelectAbility(GridEntity selector) {

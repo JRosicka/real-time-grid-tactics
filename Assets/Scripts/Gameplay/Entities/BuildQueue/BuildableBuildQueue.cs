@@ -21,7 +21,7 @@ namespace Gameplay.Entities.BuildQueue {
             _maxSize = maxSize;
 
             entity.AbilityPerformedEvent += (_, _) => DetermineBuildQueue();
-            entity.AbilityQueueUpdatedEvent += _ => DetermineBuildQueue();
+            entity.InProgressAbilitiesUpdatedEvent += _ => DetermineBuildQueue();
             entity.CooldownTimerExpiredEvent += (_, _) => DetermineBuildQueue();
             
             DetermineBuildQueue();
@@ -56,7 +56,7 @@ namespace Gameplay.Entities.BuildQueue {
             if (activeAbilities.Count > 1) {
                 Debug.LogError("Multiple active build abilities detected, that should not happen");
             }
-            List<BuildAbility> queuedAbilities = _entity.QueuedAbilities.Where(a => a is BuildAbility)
+            List<BuildAbility> queuedAbilities = _entity.InProgressAbilities.Where(a => a is BuildAbility)
                 .Cast<BuildAbility>()
                 .ToList();
             Queue = activeAbilities.Concat(queuedAbilities).ToList();

@@ -72,7 +72,7 @@ namespace Gameplay.Config.Abilities {
 
         public abstract bool CanBeCanceled { get; }
         public abstract bool CancelableWhileActive { get; }
-        public abstract bool CancelableWhileQueued { get; }
+        public abstract bool CancelableWhileInProgress { get; }
 
         [SerializeField] private bool _repeatWhenCooldownFinishes;
         public bool RepeatWhenCooldownFinishes => _repeatWhenCooldownFinishes;

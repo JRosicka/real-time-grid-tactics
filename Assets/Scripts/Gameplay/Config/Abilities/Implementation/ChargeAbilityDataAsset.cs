@@ -30,7 +30,7 @@ namespace Gameplay.Config.Abilities {
         
         public override bool CanBeCanceled => false;
         public override bool CancelableWhileActive => false;
-        public override bool CancelableWhileQueued => false;
+        public override bool CancelableWhileInProgress => false;
 
         public override string GetAttackTooltipMessage(GameTeam team) {
             return HasChargeUpgrade(team)

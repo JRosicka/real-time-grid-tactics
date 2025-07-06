@@ -20,7 +20,7 @@ namespace Gameplay.UI {
         public AbilitySlotInfo AbilitySlotInfo => _abilityData.AbilitySlotInfo;
         public bool IsAvailabilitySensitiveToResources => false;
         public bool CaresAboutAbilityChannels => true;
-        public bool CaresAboutQueuedAbilities => false;
+        public bool CaresAboutInProgressAbilities => false;
         public bool IsAbilityTargetable => _abilityData.Targeted;
         public bool AnyPlayerCanSelect => _abilityData.SelectableForAllPlayers;
 

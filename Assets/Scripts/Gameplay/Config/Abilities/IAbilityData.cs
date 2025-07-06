@@ -33,11 +33,11 @@ namespace Gameplay.Config.Abilities {
         bool PerformOnStart { get; }
         IAbilityParameters OnStartParameters { get; }
         /// <summary>
-        /// Whether to pay the cost of the ability up front, even when queueing the ability. 
+        /// Whether to pay the cost of the ability up front 
         /// </summary>
         bool PayCostUpFront { get; }
         /// <summary>
-        /// Whether this ability can ever be canceled from manual cancellation, clearing the queue, etc.
+        /// Whether this ability can ever be canceled from manual cancellation, etc.
         /// </summary>
         bool CanBeCanceled { get; }
         /// <summary>
@@ -45,9 +45,9 @@ namespace Gameplay.Config.Abilities {
         /// </summary>
         bool CancelableWhileActive { get; }
         /// <summary>
-        /// Whether this ability can be manually canceled while queued. 
+        /// Whether this ability can be manually canceled while in-progress. 
         /// </summary>
-        bool CancelableWhileQueued { get; }
+        bool CancelableWhileInProgress { get; } // TODO-abilities: Hmm maybe I have a few too many cancelable fields now. See if any of these can be combined.
         /// <summary>
         /// Whether to perform view logic when the cooldown is complete instead of when the ability is triggered 
         /// </summary>

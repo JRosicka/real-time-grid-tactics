@@ -1,6 +1,6 @@
 namespace Gameplay.Entities.Abilities {
     /// <summary>
-    /// The result of performing an ability. This result informs what <see cref="AbilityQueueExecutor"/> does after trying
+    /// The result of performing an ability. This result informs what <see cref="AbilityExecutor"/> does after trying
     /// to perform the ability. 
     /// </summary>
     public enum AbilityResult {

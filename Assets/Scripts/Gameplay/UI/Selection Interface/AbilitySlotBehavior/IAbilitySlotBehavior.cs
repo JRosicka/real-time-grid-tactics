@@ -17,9 +17,9 @@ namespace Gameplay.UI {
         /// </summary>
         bool CaresAboutAbilityChannels { get; }
         /// <summary>
-        /// Whether the associated ability's availability can be modified by a change in queued abilities
+        /// Whether the associated ability's availability can be modified by a change in in-progress abilities
         /// </summary>
-        bool CaresAboutQueuedAbilities { get; }
+        bool CaresAboutInProgressAbilities { get; }
         /// <summary>
         /// Whether the associated ability is targetable
         /// </summary>

@@ -37,7 +37,7 @@ namespace Gameplay.Entities.Abilities {
                 // No entity there (or it's a friendly entity that we can share a cell with), so move there.
                 // Assume that AbilityLegal checked for movement legality. 
                 CommandManager.MoveEntityToCell(Performer, AbilityParameters.Destination);
-                QueueFollowUpAttackMove(null);
+                PerformFollowUpAttackMove(null);
                 return (true, AbilityResult.CompletedWithEffect);
             }
             
@@ -67,10 +67,10 @@ namespace Gameplay.Entities.Abilities {
                 GameManager.Instance.AbilityAssignmentManager.AddAttackTime(Performer, Data.AddedAttackTime);
                 AbilityParameters.Attacking = true; // TODO-abilities is this still necessary? Or will the attack animation be performed when resolving the attack ability that we just set to perform? 
             }
-            QueueFollowUpAttackMove(targetEntity);
+            PerformFollowUpAttackMove(targetEntity);
         }
 
-        private void QueueFollowUpAttackMove(GridEntity targetEntity) {
+        private void PerformFollowUpAttackMove(GridEntity targetEntity) {
             if (targetEntity != null && targetEntity.DeadOrDying) {
                 // Could happen if we just did a charge-attack on this entity and that attack killed it
                 targetEntity = null;

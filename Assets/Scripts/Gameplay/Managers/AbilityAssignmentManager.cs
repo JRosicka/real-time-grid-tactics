@@ -10,7 +10,7 @@ using Util;
 
 namespace Gameplay.Managers {
     /// <summary>
-    /// Handles performing entity-specific ability operations like performing, queueing, and expiring abilities for a
+    /// Handles performing local entity-specific ability operations like performing, queueing, and expiring abilities for a
     /// <see cref="GridEntity"/>
     /// </summary>
     public class AbilityAssignmentManager {
@@ -45,7 +45,7 @@ namespace Gameplay.Managers {
         }
         
         #endregion
-        #region Perform/Queue
+        #region Perform
 
         // TODO-abilities test to make sure that we are not triggering superfluous ability queue executions due to fromInput being true when it doesn't need to be
         public bool PerformAbility(GridEntity entity, IAbilityData abilityData, IAbilityParameters parameters, bool fromInput,
@@ -61,7 +61,7 @@ namespace Gameplay.Managers {
                 if (performEvenIfNotLegal) {
                     // We specified to perform the ability now, but we can't legally do that. Start performing it anyway. 
                     
-                    // Don't try to queue it if we can't actually pay for it
+                    // Don't try to perform it if we can't actually pay for it
                     if (abilityData.PayCostUpFront && !abilityData.CanPayCost(parameters, entity)) {
                         entity.AbilityFailed(abilityData);
                         return false;
@@ -93,33 +93,33 @@ namespace Gameplay.Managers {
         
         /// <summary>
         /// Server method. Clear the ability timer locally if the ability is active, otherwise remove it from the
-        /// queue if queued.
+        /// set of in-progress abilities.
         /// </summary>
         public void CancelAbility(GridEntity entity, IAbility ability) {
             ability.Cancel();
             if (ExpireTimerForAbility(entity, ability, true)) return;
             
-            // The ability is queued, so remove it from the queue
-            IAbility localAbility = entity.QueuedAbilities.FirstOrDefault(a => a.UID == ability.UID);
+            // The ability is in-progress, so remove it from the set
+            IAbility localAbility = entity.InProgressAbilities.FirstOrDefault(a => a.UID == ability.UID);
             if (localAbility != null) {
-                if (RemoveAbilityFromQueue(entity, localAbility)) {
-                    CommandManager.UpdateAbilityQueue(entity);
+                if (RemoveAbility(entity, localAbility)) {
+                    CommandManager.UpdateInProgressAbilities(entity);
                 }
             }
         }
         
         /// <summary>
-        /// Remove the ability from the queue (here on the server)
+        /// Remove the ability from the in-progress abilities set (here on the server)
         /// </summary>
         /// <returns>True if the ability was actually removed, otherwise false</returns>
-        private bool RemoveAbilityFromQueue(GridEntity entity, IAbility ability) {
-            IAbility queuedAbility = entity.QueuedAbilities.FirstOrDefault(t => t.UID == ability.UID);
-            if (queuedAbility == null) {
-                // This can happen if the whole queue was cleared between sending the remove command and now
+        private bool RemoveAbility(GridEntity entity, IAbility ability) {
+            IAbility abilityInstance = entity.InProgressAbilities.FirstOrDefault(t => t.UID == ability.UID);
+            if (abilityInstance == null) {
+                // This can happen if the whole set of in-progress abilities was cleared between sending the remove command and now
                 return false;
             }
 
-            entity.QueuedAbilities.Remove(queuedAbility);
+            entity.InProgressAbilities.Remove(abilityInstance);
             return true;
         }
         

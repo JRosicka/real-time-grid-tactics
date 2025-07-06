@@ -10,13 +10,13 @@ using UnityEngine;
 using UnityEngine.Serialization;
 
 /// <summary>
-/// Handles checking on each active <see cref="GridEntity"/>'s <see cref="IAbility"/> queue and executing the queued
-/// abilities at the desired time.
+/// Handles checking on each active <see cref="GridEntity"/>'s in-progress <see cref="IAbility"/>s and executing them.
+/// Tries executing each ability in a controlled manner, notifying clients, updating state, and removing abilities when completed/failed. 
 ///
 /// There should only ever be one of these in a game. In SP, there is just one living in the scene. In MP, only the server
 /// has a copy. 
 /// </summary>
-public class AbilityQueueExecutor : MonoBehaviour {
+public class AbilityExecutor : MonoBehaviour {
     
     [FormerlySerializedAs("_updateFrequency")]
     public float UpdateFrequency;
@@ -45,7 +45,7 @@ public class AbilityQueueExecutor : MonoBehaviour {
             _timeUntilNextUpdate += UpdateFrequency;
             
             // Time for an update
-            ExecuteQueue(false);
+            ExecuteAbilities(false);
             
             // Also perform a check for game end
             _gameEndManager.CheckForGameEnd();
@@ -55,20 +55,20 @@ public class AbilityQueueExecutor : MonoBehaviour {
     /// <summary>
     /// Perform a full round of game updates on all entities
     /// </summary>
-    public void ExecuteQueue(bool resetTimeUntilNextUpdate) {
+    public void ExecuteAbilities(bool resetTimeUntilNextUpdate) {
         if (resetTimeUntilNextUpdate) {
             _timeUntilNextUpdate = UpdateFrequency;
         }
         
         // First, execute abilities that involve updating the GridEntityCollection (or that don't depend on that)
         List<GridEntity> allEntities = _commandManager.EntitiesOnGrid.AllEntities();
-        allEntities.ForEach(e => ExecuteQueueForEntity(e, AbilityExecutionType.PreInteractionGridUpdate));
+        allEntities.ForEach(e => ExecuteAbilitiesForEntity(e, AbilityExecutionType.PreInteractionGridUpdate));
         
         // Second, execute interaction abilities that rely on (but don't update) entity positions (i.e. attacking)
-        allEntities.ForEach(e => ExecuteQueueForEntity(e, AbilityExecutionType.Interaction));
+        allEntities.ForEach(e => ExecuteAbilitiesForEntity(e, AbilityExecutionType.Interaction));
         
         // Third, execute any post-interaction abilities that update the GridEntityCollection
-        allEntities.ForEach(e => ExecuteQueueForEntity(e, AbilityExecutionType.PostInteractionGridUpdate));
+        allEntities.ForEach(e => ExecuteAbilitiesForEntity(e, AbilityExecutionType.PostInteractionGridUpdate));
         
         // Fourth, apply damage from attacks
         // TODO-abilities
@@ -78,32 +78,32 @@ public class AbilityQueueExecutor : MonoBehaviour {
     }
 
     /// <summary>
-    /// Execute the queue for a single <see cref="GridEntity"/>. Runs through the queued abilities and tries to execute
+    /// Execute in-progress abilities for a single <see cref="GridEntity"/>. Runs through the abilities and tries to execute
     /// each ability that matches the execution type.
-    /// - If the ability matches and is completed, it is cleared from the queue
+    /// - If the ability matches and is completed, it is cleared from the in-progress abilities set
     /// - Keeps performing abilities of the matching execution type until none remain. Even performs abilities that were
     ///   added during iterating. 
     /// </summary>
-    private void ExecuteQueueForEntity(GridEntity entity, AbilityExecutionType executionType) {
-        List<IAbility> abilityQueue = entity.QueuedAbilities;
+    private void ExecuteAbilitiesForEntity(GridEntity entity, AbilityExecutionType executionType) {
+        List<IAbility> abilities = entity.InProgressAbilities;
 
-        // Perform default ability if queue empty
-        if (abilityQueue.IsNullOrEmpty() && executionType == AbilityExecutionType.Interaction) {
+        // Perform default ability if there are no in-progress abilities
+        if (abilities.IsNullOrEmpty() && executionType == AbilityExecutionType.Interaction) {
             PerformDefaultAbility(entity);
             return;
         }
 
-        // Cycle through the queued abilities, trying to perform each one until one does not get completed or removed
-        bool queueUpdated = false;
+        // Cycle through the abilities, trying to perform each one until one does not get completed or removed
+        bool abilitySetUpdated = false;
         List<int> seenAbilityIDs = new List<int>();
         while (true) {
-            // No-op if the queue is empty
-            if (abilityQueue.IsNullOrEmpty()) {
+            // No-op if empty
+            if (abilities.IsNullOrEmpty()) {
                 break;
             }
 
             // Pick an ability that has matches the type and that we have not already tried to perform this execution
-            IAbility nextAbility = abilityQueue.FirstOrDefault(a => a.ExecutionType == executionType && !seenAbilityIDs.Contains(a.UID));
+            IAbility nextAbility = abilities.FirstOrDefault(a => a.ExecutionType == executionType && !seenAbilityIDs.Contains(a.UID));
             if (nextAbility == null) {
                 break;
             }
@@ -113,13 +113,13 @@ public class AbilityQueueExecutor : MonoBehaviour {
             AbilityResult result = TryPerformAbility(nextAbility);
             switch (result) {
                 case AbilityResult.CompletedWithoutEffect:
-                    RemoveAbilityFromQueue(entity, nextAbility);
-                    queueUpdated = true;
+                    RemoveAbility(entity, nextAbility);
+                    abilitySetUpdated = true;
                     break;
                 case AbilityResult.CompletedWithEffect:
                     _commandManager.AbilityEffectPerformed(nextAbility);
-                    RemoveAbilityFromQueue(entity, nextAbility);
-                    queueUpdated = true;
+                    RemoveAbility(entity, nextAbility);
+                    abilitySetUpdated = true;
                     break;
                 case AbilityResult.IncompleteWithEffect:
                     _commandManager.AbilityEffectPerformed(nextAbility);
@@ -128,16 +128,16 @@ public class AbilityQueueExecutor : MonoBehaviour {
                     break;
                 case AbilityResult.Failed:
                     _commandManager.AbilityFailed(nextAbility);
-                    RemoveAbilityFromQueue(entity, nextAbility);
-                    queueUpdated = true;
+                    RemoveAbility(entity, nextAbility);
+                    abilitySetUpdated = true;
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
             }
         }
-        if (queueUpdated) {
-            // TODO-abilities would it be better to update each entity at the very end of the full queue execution? Since these RPC calls will go out after potentially multiple steps of updates finish on the server. 
-            _commandManager.UpdateAbilityQueue(entity); 
+        if (abilitySetUpdated) {
+            // TODO-abilities would it be better to update each entity at the very end of the full set execution? Since these RPC calls will go out after potentially multiple steps of updates finish on the server. 
+            _commandManager.UpdateInProgressAbilities(entity); 
         }
     }
     
@@ -156,16 +156,15 @@ public class AbilityQueueExecutor : MonoBehaviour {
             return AbilityResult.Failed;
         }
         
-        // TODO-abilities rename to DoAbilityEffect
         return ability.PerformAbility();
     }
 
     /// <summary>
-    /// Remove the ability from the queue (here on the server)
+    /// Remove the ability from the in-progress abilities set (here on the server)
     /// </summary>
-    private void RemoveAbilityFromQueue(GridEntity entity, IAbility ability) {
-        IAbility queuedAbility = entity.QueuedAbilities.FirstOrDefault(t => t.UID == ability.UID);
-        entity.QueuedAbilities.Remove(queuedAbility);
+    private void RemoveAbility(GridEntity entity, IAbility ability) {
+        IAbility abilityInstance = entity.InProgressAbilities.FirstOrDefault(t => t.UID == ability.UID);
+        entity.InProgressAbilities.Remove(abilityInstance);
     }
     
     /// <summary>

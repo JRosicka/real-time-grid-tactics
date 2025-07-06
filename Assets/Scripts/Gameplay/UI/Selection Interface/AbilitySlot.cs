@@ -172,7 +172,7 @@ namespace Gameplay.UI {
             
             _selectedEntity.CooldownTimerExpiredEvent += OnAbilityTimersChanged;
             _selectedEntity.AbilityPerformedEvent += OnAbilityTimersChanged;
-            _selectedEntity.AbilityQueueUpdatedEvent += OnQueuedAbilitiesChanged;
+            _selectedEntity.InProgressAbilitiesUpdatedEvent += OnInProgressAbilities;
 
             if (_selectedEntity.Team is GameTeam.Player1 or GameTeam.Player2) {
                 // Track resources and owned changes for the player
@@ -203,9 +203,9 @@ namespace Gameplay.UI {
             }
         }
 
-        private void OnQueuedAbilitiesChanged(List<IAbility> abilities) {
+        private void OnInProgressAbilities(List<IAbility> abilities) {
             if (_slotBehavior == null) return; 
-            if (_slotBehavior.CaresAboutQueuedAbilities) {
+            if (_slotBehavior.CaresAboutInProgressAbilities) {
                 CheckAvailability();
             }
         }

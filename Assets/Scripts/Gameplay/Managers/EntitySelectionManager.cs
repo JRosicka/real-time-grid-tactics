@@ -193,7 +193,7 @@ public class EntitySelectionManager {
             return false;
         }
 
-        _gameManager.CommandManager.ClearAbilityQueue(SelectedEntity);
+        _gameManager.CommandManager.ClearAbilities(SelectedEntity);
 
         // TODO maybe move everything under here in this method to some other class, if things get more complicated
         if (_selectedTargetableAbility.MoveToTargetCellFirst && SelectedEntity.Location != clickedCell) {
@@ -207,7 +207,7 @@ public class EntitySelectionManager {
             }
         }
 
-        // This targetable ability will get queued
+        // This targetable ability will get performed
         _selectedTargetableAbility.DoTargetableAbility(clickedCell, SelectedEntity, _gameManager.LocalTeam, _targetData);
         DeselectTargetableAbility();
         return true;
