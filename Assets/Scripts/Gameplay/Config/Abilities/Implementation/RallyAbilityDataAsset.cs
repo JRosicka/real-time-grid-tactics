@@ -17,6 +17,8 @@ namespace Gameplay.Config.Abilities {
     public class RallyAbilityData : AbilityDataBase<RallyAbilityParameters> {
         public override bool CancelableWhileOnCooldown => false;
         public override bool CancelableWhileInProgress => false;
+        public override bool CancelableManually => false;
+        
         public bool UseAttackIconOnPath;
 
         public override void SelectAbility(GridEntity selector) {

@@ -392,7 +392,7 @@ namespace Gameplay.Entities {
             }
         }
         
-        public List<IAbility> GetCancelableAbilities() {
+        public List<IAbility> GetCancelableAbilities(bool fromInput = true) {
             List<IAbility> abilities = new List<IAbility>();
             
             // Get cancelable ability timers
@@ -403,6 +403,11 @@ namespace Gameplay.Entities {
             // Get cancelable in-progress abilities
             abilities.AddRange(InProgressAbilities.Where(a => a.AbilityData.CancelableWhileInProgress));
 
+            if (fromInput) {
+                // Remove any abilities that can not be canceled manually
+                abilities.RemoveAll(a => !a.AbilityData.CancelableManually);
+            }
+            
             return abilities;
         }
 
@@ -459,7 +464,7 @@ namespace Gameplay.Entities {
         #endregion
         #region Moving
         
-        public bool TryMoveToCell(Vector2Int targetCell) {
+        public bool TryMoveToCell(Vector2Int targetCell, bool fromInput) {
             if (!CanMoveOrRally) return false;
 
             MoveAbilityData data = GetAbilityData<MoveAbilityData>();
@@ -468,7 +473,7 @@ namespace Gameplay.Entities {
                     NextMoveCell = targetCell, 
                     SelectorTeam = Team,
                     BlockedByOccupation = true
-                }, true, true, true)) {
+                }, fromInput, true, true)) {
                 SetTargetLocation(targetCell, null, false);
             }
             return true;
@@ -523,14 +528,14 @@ namespace Gameplay.Entities {
         #endregion
         #region Attacking
 
-        public void TryAttackMoveToCell(Vector2Int targetCell) {
+        public void TryAttackMoveToCell(Vector2Int targetCell, bool fromInput) {
             if (!CanMoveOrRally) return;
 
             AttackAbilityData data = GetAbilityData<AttackAbilityData>();
             if (AbilityAssignmentManager.PerformAbility(this, data, new AttackAbilityParameters {
                         Destination = targetCell, 
                         TargetFire = false
-                    }, true, true, true)) {
+                    }, fromInput, true, true)) {
                 SetTargetLocation(targetCell, null, true);
             }
         }

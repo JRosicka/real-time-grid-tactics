@@ -47,7 +47,6 @@ namespace Gameplay.Managers {
         #endregion
         #region Perform
 
-        // TODO-abilities test to make sure that we are not triggering superfluous ability queue executions due to fromInput being true when it doesn't need to be
         public bool PerformAbility(GridEntity entity, IAbilityData abilityData, IAbilityParameters parameters, bool fromInput,
                                     bool performEvenIfNotLegal, bool clearOtherAbilities) {
             

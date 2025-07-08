@@ -49,6 +49,10 @@ namespace Gameplay.Config.Abilities {
         /// </summary>
         bool CancelableWhileInProgress { get; }
         /// <summary>
+        /// Whether this ability can be canceled manually (i.e. by user input). 
+        /// </summary>
+        bool CancelableManually { get; }
+        /// <summary>
         /// Whether to perform view logic when the cooldown is complete instead of when the ability is triggered 
         /// </summary>
         bool AnimateWhenCooldownComplete { get; }

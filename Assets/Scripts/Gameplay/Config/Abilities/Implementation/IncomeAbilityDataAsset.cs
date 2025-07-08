@@ -16,6 +16,7 @@ namespace Gameplay.Config.Abilities {
         public ResourceAmount ResourceAmountIncome;
         public override bool CancelableWhileOnCooldown => false;
         public override bool CancelableWhileInProgress => false;
+        public override bool CancelableManually => false;
 
         public override void SelectAbility(GridEntity selector) {
             // Nothing to do

@@ -36,14 +36,14 @@ namespace Gameplay.Entities {
 
             // See if we should target this entity
             if (targetEntity != null && targetEntity.Team == GameTeam.Neutral) {
-                thisEntity.TryMoveToCell(targetCell);
+                thisEntity.TryMoveToCell(targetCell, true);
             } else if (targetEntity == thisEntity) {
                 // We are right-clicking the selected entity's cell? Cancel everything. 
                 thisEntity.CancelAllAbilities();
             } else if (targetEntity != null && thisEntity.Team != targetEntity.Team) {
                 TryTargetEntity(thisEntity, targetEntity, targetCell);
             } else if (targetEntity == null || targetEntity.EntityData.FriendlyUnitsCanShareCell) {
-                thisEntity.TryMoveToCell(targetCell);
+                thisEntity.TryMoveToCell(targetCell, true);
             }
             
             GameManager.Instance.EntitySelectionManager.DeselectTargetableAbility();
