@@ -65,7 +65,7 @@ namespace Gameplay.Entities.Abilities {
             bool attacked = GameManager.Instance.AttackManager.PerformAttack(Performer, targetEntity, bonusDamage, true);
             if (attacked) {
                 GameManager.Instance.AbilityAssignmentManager.AddAttackTime(Performer, Data.AddedAttackTime);
-                AbilityParameters.Attacking = true; // TODO-abilities is this still necessary? Or will the attack animation be performed when resolving the attack ability that we just set to perform? 
+                AbilityParameters.Attacking = true; 
             }
             PerformFollowUpAttackMove(targetEntity);
         }

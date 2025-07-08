@@ -134,7 +134,10 @@ public class MPCommandManager : AbstractCommandManager {
     private void CmdPerformAbility(IAbility ability, bool clearOtherAbilities, bool fromInput) {
         LogTimestamp(nameof(CmdPerformAbility));
         DoPerformAbility(ability, clearOtherAbilities, fromInput);
-        RpcUpdateInProgressAbilities(ability.Performer, ability.Performer.InProgressAbilities);    // TODO-abilities is this necessary?
+        if (!clearOtherAbilities && !fromInput) {
+            // Performing the ability did not trigger an update of in-progress abilities, so do so now
+            RpcUpdateInProgressAbilities(ability.Performer, ability.Performer.InProgressAbilities);
+        }
     }
     
     [ClientRpc]

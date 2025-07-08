@@ -44,7 +44,10 @@ public class SPCommandManager : AbstractCommandManager {
 
     public override void PerformAbility(IAbility ability, bool clearOtherAbilities, bool fromInput) {
         DoPerformAbility(ability, clearOtherAbilities, fromInput);
-        DoUpdateInProgressAbilities(ability.Performer, ability.Performer.InProgressAbilities);     // TODO-abilities is this necessary?
+        if (!clearOtherAbilities && !fromInput) {
+            // Performing the ability did not trigger an update of in-progress abilities, so do so now
+            DoUpdateInProgressAbilities(ability.Performer, ability.Performer.InProgressAbilities);
+        }
     }
 
     public override void AbilityEffectPerformed(IAbility ability) {
