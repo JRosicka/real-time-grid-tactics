@@ -18,25 +18,25 @@ namespace Gameplay.Managers {
 
         #region Availability checks
         
-        public (bool, AbilityResult?) CanEntityUseAbility(GridEntity entity, IAbilityData data, bool ignoreBlockingTimers) {
+        public AbilityLegality CanEntityUseAbility(GridEntity entity, IAbilityData data, bool ignoreBlockingTimers) {
             // Is this entity set up to use this ability?
             if (!entity.Abilities.Contains(data)) {
-                return (false, AbilityResult.Failed);
+                return AbilityLegality.IndefinitelyIllegal;
             }
 
             // Do we own the requirements for this ability?
             List<PurchasableData> ownedPurchasables = GameManager.Instance.GetPlayerForTeam(entity.Team)
                 .OwnedPurchasablesController.OwnedPurchasables;
             if (data.Requirements.Any(r => !ownedPurchasables.Contains(r))) {
-                return (false, AbilityResult.Failed);
+                return AbilityLegality.IndefinitelyIllegal;
             }
             
             // Are there any active timers blocking this ability?
             if (!ignoreBlockingTimers && entity.ActiveTimers.Any(t => t.ChannelBlockers.Contains(data.Channel) && !t.Expired)) {
-                return (false, AbilityResult.IncompleteWithoutEffect);
+                return AbilityLegality.NotCurrentlyLegal;
             }
 
-            return (true, null);
+            return AbilityLegality.Legal;
         }
 
         public bool IsAbilityChannelOnCooldownForEntity(GridEntity entity, AbilityChannel channel, out AbilityCooldownTimer timer) {
@@ -54,9 +54,8 @@ namespace Gameplay.Managers {
                 entity.BuildQueue.CancelAllBuilds();
             }
 
-            // TODO-abilities: Hmm maybe we don't want this to return an AbilityResult. Instead we need to know what to do if not legal?
-            (bool success, AbilityResult? _) = abilityData.AbilityLegal(parameters, entity, performEvenIfNotLegal);
-            if (!success) {
+            AbilityLegality legality = abilityData.AbilityLegal(parameters, entity, performEvenIfNotLegal);
+            if (legality != AbilityLegality.Legal) {
                 if (performEvenIfNotLegal) {
                     // We specified to perform the ability now, but we can't legally do that. Start performing it anyway. 
                     

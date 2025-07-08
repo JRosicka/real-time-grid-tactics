@@ -51,12 +51,12 @@ namespace Gameplay.Config.Abilities {
             return true;
         }
 
-        protected override (bool, AbilityResult?) AbilityLegalImpl(BuildAbilityParameters parameters, GridEntity entity) {
+        protected override AbilityLegality AbilityLegalImpl(BuildAbilityParameters parameters, GridEntity entity) {
             IGamePlayer player = GameManager.Instance.GetPlayerForTeam(entity.Team);
             List<PurchasableData> ownedPurchasables = player.OwnedPurchasablesController.OwnedPurchasables;
             if (parameters.Buildable.Requirements.Any(r => !ownedPurchasables.Contains(r))) {
                 Debug.Log($"Not building ({parameters.Buildable.ID}) because we don't have the proper requirements");
-                return (false, AbilityResult.Failed);
+                return AbilityLegality.IndefinitelyIllegal;
             }
 
             if (parameters.Buildable is EntityData { IsStructure: true } buildable) {
@@ -65,19 +65,19 @@ namespace Gameplay.Config.Abilities {
                 bool buildableCanEnterCell = PathfinderService.CanEntityEnterCell(parameters.BuildLocation, buildable, entity.Team, performer);
                 bool performerCanEnterCell = PathfinderService.CanEntityEnterCell(parameters.BuildLocation, entity.EntityData, entity.Team, performer);
                 if (!buildableCanEnterCell || !performerCanEnterCell) {
-                    return (false, AbilityResult.IncompleteWithoutEffect);
+                    return AbilityLegality.NotCurrentlyLegal;
                 }
             }
 
             if (entity.Location == null) {
-                return (false, AbilityResult.Failed);
+                return AbilityLegality.IndefinitelyIllegal;
             }
             
             if (entity.Location.Value != parameters.BuildLocation) {
-                return (false, AbilityResult.IncompleteWithoutEffect);
+                return AbilityLegality.NotCurrentlyLegal;
             }
 
-            return (true, null);
+            return AbilityLegality.Legal;
         }
 
         protected override IAbility CreateAbilityImpl(BuildAbilityParameters parameters, GridEntity performer) {

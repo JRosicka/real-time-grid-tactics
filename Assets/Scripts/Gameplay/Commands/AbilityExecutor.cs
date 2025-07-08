@@ -145,9 +145,17 @@ public class AbilityExecutor : MonoBehaviour {
     /// Attempt to perform the given in-progress ability
     /// </summary>
     private AbilityResult TryPerformAbility(IAbility ability) {
-        (bool success, AbilityResult? result) = ability.AbilityData.AbilityLegal(ability.BaseParameters, ability.Performer, false);
-        if (!success) {
-            return result.Value;
+        AbilityLegality legality = ability.AbilityData.AbilityLegal(ability.BaseParameters, ability.Performer, false);
+        switch (legality) {
+            case AbilityLegality.Legal:
+                // Legal, so go on to try to perform the ability
+                break;
+            case AbilityLegality.NotCurrentlyLegal:
+                return AbilityResult.IncompleteWithoutEffect;
+            case AbilityLegality.IndefinitelyIllegal:
+                return AbilityResult.Failed;
+            default:
+                throw new ArgumentOutOfRangeException();
         }
         
         // Don't do anything if the performer has been killed 

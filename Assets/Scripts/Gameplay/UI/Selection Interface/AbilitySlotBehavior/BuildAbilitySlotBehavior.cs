@@ -82,10 +82,11 @@ namespace Gameplay.UI {
                 return AbilitySlot.AvailabilityResult.Unselectable;
             }
 
-            (bool canUseAbility, AbilityResult? _) = AbilityAssignmentManager.CanEntityUseAbility(SelectedEntity, _buildAbilityData, _buildAbilityData.SelectableWhenBlocked);
-            if (canUseAbility && player.ResourcesController.CanAfford(Buildable.Cost)
-                              && Buildable.Requirements.All(r => ownedPurchasables.Contains(r))) {
-                    // This entity can build this and we can afford this
+            AbilityLegality legality = AbilityAssignmentManager.CanEntityUseAbility(SelectedEntity, _buildAbilityData, _buildAbilityData.SelectableWhenBlocked);
+            if (legality == AbilityLegality.Legal
+                    && player.ResourcesController.CanAfford(Buildable.Cost)
+                    && Buildable.Requirements.All(r => ownedPurchasables.Contains(r))) {
+                // This entity can build this and we can afford this
                 return AbilitySlot.AvailabilityResult.Selectable;
             }
             

@@ -96,11 +96,7 @@ namespace Gameplay.Config.Abilities {
         /// Should be checked on the client before creating the ability, and checked again on the server before performing
         /// the ability. If the server check fails, let the client know. 
         /// </summary>
-        /// <returns>
-        /// - True if legal, otherwise False
-        /// - Null if above value is True, otherwise the result of what to do with the ability
-        /// </returns>
-        (bool, AbilityResult?) AbilityLegal(IAbilityParameters parameters, GridEntity entity, bool ignoreBlockingTimers);
+        AbilityLegality AbilityLegal(IAbilityParameters parameters, GridEntity entity, bool ignoreBlockingTimers);
 
         /// <summary>
         /// Whether we are able to pay the cost for this ability

@@ -184,7 +184,7 @@ public abstract class AbstractCommandManager : NetworkBehaviour, ICommandManager
         }
 
         ability.Performer.InProgressAbilities.Add(ability);
-        if (fromInput) {    // TODO-abilities: make sure all callers of this method use the proper value for this parameter
+        if (fromInput) {
             AbilityExecutor.ExecuteAbilities(true);
         }
     }

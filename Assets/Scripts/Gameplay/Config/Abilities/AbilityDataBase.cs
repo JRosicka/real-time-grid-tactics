@@ -114,21 +114,17 @@ namespace Gameplay.Config.Abilities {
         /// Should be checked on the client before creating the ability, and checked again on the server before performing
         /// the ability. If the server check fails, let the client know. 
         /// </summary>
-        /// <returns>
-        /// - True if legal, otherwise False
-        /// - Null if above value is True, otherwise the result of what to do with the ability
-        /// </returns>
-        public (bool, AbilityResult?) AbilityLegal(IAbilityParameters parameters, GridEntity entity, bool ignoreBlockingTimers) {
-            (bool success, AbilityResult? abilityResult) = GameManager.Instance.AbilityAssignmentManager.CanEntityUseAbility(entity, this, ignoreBlockingTimers);
-            if (!success) {
-                return (false, abilityResult);
+        public AbilityLegality AbilityLegal(IAbilityParameters parameters, GridEntity entity, bool ignoreBlockingTimers) {
+            AbilityLegality legality = GameManager.Instance.AbilityAssignmentManager.CanEntityUseAbility(entity, this, ignoreBlockingTimers);
+            if (legality != AbilityLegality.Legal) {
+                return legality;
             }
             return AbilityLegalImpl((T) parameters, entity);
         }
 
         public abstract bool CanPayCost(IAbilityParameters parameters, GridEntity entity);
 
-        protected abstract (bool, AbilityResult?) AbilityLegalImpl(T parameters, GridEntity entity);
+        protected abstract AbilityLegality AbilityLegalImpl(T parameters, GridEntity entity);
 
         /// <summary>
         /// Create an instance of this ability, passing in any user input. This created instance should be passed to the

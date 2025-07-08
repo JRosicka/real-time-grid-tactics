@@ -27,7 +27,7 @@ namespace Gameplay.Config.Abilities {
             return true;
         }
 
-        protected override (bool, AbilityResult?) AbilityLegalImpl(AttackAbilityParameters parameters, GridEntity entity) {
+        protected override AbilityLegality AbilityLegalImpl(AttackAbilityParameters parameters, GridEntity entity) {
             return CanAttackTarget(parameters.Target, entity);
         }
 
@@ -37,18 +37,18 @@ namespace Gameplay.Config.Abilities {
 
         public bool CanTargetCell(Vector2Int cellPosition, GridEntity selectedEntity, GameTeam selectorTeam, System.Object targetData) {
             GridEntity target = GameManager.Instance.GetTopEntityAtLocation(cellPosition);
-            (bool canAttack, AbilityResult? _) = CanAttackTarget(target, selectedEntity);
-            return canAttack;
+            AbilityLegality legality = CanAttackTarget(target, selectedEntity);
+            return legality == AbilityLegality.Legal;
         }
 
-        private (bool, AbilityResult?) CanAttackTarget(GridEntity target, GridEntity selector) {
-            if (selector == null) return (false, AbilityResult.Failed);
-            if (target == null) return (true, null);    // This is just an a-move, so can always do that
-            if (target.Team == GameTeam.Neutral) return (true, null);  // Can attack (or at least a-move to) neutral entities
-            if (target == selector) return (true, null);  // We can issue an attack move to the selected entity's cell
-            if (target.InteractBehavior is { IsLocalTeam: true } && target.EntityData.FriendlyUnitsCanShareCell) return (true, null);   // We can a-move onto a friendly entity that friendly units can enter
-            if (target.Team == selector.Team) return (false, AbilityResult.Failed);     // Can not attack friendly entities
-            return (true, null);    
+        private AbilityLegality CanAttackTarget(GridEntity target, GridEntity selector) {
+            if (selector == null) return AbilityLegality.IndefinitelyIllegal;
+            if (target == null) return AbilityLegality.Legal;    // This is just an a-move, so can always do that
+            if (target.Team == GameTeam.Neutral) return AbilityLegality.Legal;  // Can attack (or at least a-move to) neutral entities
+            if (target == selector) return AbilityLegality.Legal;  // We can issue an attack move to the selected entity's cell
+            if (target.InteractBehavior is { IsLocalTeam: true } && target.EntityData.FriendlyUnitsCanShareCell) return AbilityLegality.Legal;   // We can a-move onto a friendly entity that friendly units can enter
+            if (target.Team == selector.Team) return AbilityLegality.IndefinitelyIllegal;     // Can not attack friendly entities
+            return AbilityLegality.Legal;
         }
 
         public void DoTargetableAbility(Vector2Int cellPosition, GridEntity selectedEntity, GameTeam selectorTeam, System.Object targetData) {

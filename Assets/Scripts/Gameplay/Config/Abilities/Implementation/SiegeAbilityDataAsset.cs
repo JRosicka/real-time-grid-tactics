@@ -24,8 +24,8 @@ namespace Gameplay.Config.Abilities {
             return true;
         }
 
-        protected override (bool, AbilityResult?) AbilityLegalImpl(NullAbilityParameters parameters, GridEntity entity) {
-            return (true, null);
+        protected override AbilityLegality AbilityLegalImpl(NullAbilityParameters parameters, GridEntity entity) {
+            return AbilityLegality.Legal;
         }
 
         protected override IAbility CreateAbilityImpl(NullAbilityParameters parameters, GridEntity performer) {

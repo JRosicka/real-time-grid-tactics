@@ -1,3 +1,4 @@
+using System;
 using Gameplay.Config.Abilities;
 using Gameplay.Managers;
 using Mirror;
@@ -78,8 +79,19 @@ namespace Gameplay.Entities.Abilities {
         protected abstract void PayCostImpl();
 
         public AbilityResult PerformAbility() {
-            (bool legal, AbilityResult? result) = Data.AbilityLegal(BaseParameters, Performer, false);
-            if (!legal) return result.Value;
+            AbilityLegality legality = Data.AbilityLegal(BaseParameters, Performer, false);
+            switch (legality) {
+                case AbilityLegality.Legal:
+                    // Continue on to try to perform the ability
+                    break;
+                case AbilityLegality.NotCurrentlyLegal:
+                    return AbilityResult.IncompleteWithoutEffect;
+                case AbilityLegality.IndefinitelyIllegal:
+                    return AbilityResult.Failed;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+            
             if (!Data.PayCostUpFront && !Data.CanPayCost(BaseParameters, Performer)) return AbilityResult.Failed;
 
             (bool needToPayCost, AbilityResult result2) = DoAbilityEffect();

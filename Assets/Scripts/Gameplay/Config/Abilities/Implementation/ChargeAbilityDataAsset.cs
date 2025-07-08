@@ -48,12 +48,12 @@ namespace Gameplay.Config.Abilities {
             return true;
         }
 
-        protected override (bool, AbilityResult?) AbilityLegalImpl(ChargeAbilityParameters parameters, GridEntity entity) {
+        protected override AbilityLegality AbilityLegalImpl(ChargeAbilityParameters parameters, GridEntity entity) {
             if (CanChargeToCell(entity, parameters.Destination)) {
-                return (true, null);
+                return AbilityLegality.Legal;
             }
 
-            return (false, AbilityResult.Failed);
+            return AbilityLegality.IndefinitelyIllegal;
         }
 
         protected override IAbility CreateAbilityImpl(ChargeAbilityParameters parameters, GridEntity performer) {

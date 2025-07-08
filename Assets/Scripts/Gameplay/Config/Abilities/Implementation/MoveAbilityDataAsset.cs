@@ -26,9 +26,9 @@ namespace Gameplay.Config.Abilities {
             return true;
         }
 
-        protected override (bool, AbilityResult?) AbilityLegalImpl(MoveAbilityParameters parameters, GridEntity entity) {
+        protected override AbilityLegality AbilityLegalImpl(MoveAbilityParameters parameters, GridEntity entity) {
             if (!CanTargetCell(parameters.Destination, entity, parameters.SelectorTeam, null)) {
-                return (false, AbilityResult.Failed);
+                return AbilityLegality.IndefinitelyIllegal;
             }
 
             if (parameters.BlockedByOccupation && !PathfinderService.CanEntityEnterCell(parameters.Destination, 
@@ -37,11 +37,11 @@ namespace Gameplay.Config.Abilities {
                 PathfinderService.Path path = GameManager.Instance.PathfinderService.FindPath(entity, parameters.Destination);
                 List<GridNode> pathNodes = path.Nodes;
                 if (pathNodes.Count < 2) {
-                    return (false, AbilityResult.IncompleteWithoutEffect);
+                    return AbilityLegality.NotCurrentlyLegal;
                 }
             }
 
-            return (true, null);
+            return AbilityLegality.Legal;
         }
 
         protected override IAbility CreateAbilityImpl(MoveAbilityParameters parameters, GridEntity performer) {
