@@ -96,7 +96,7 @@ namespace Gameplay.Config.Abilities {
         /// - True if legal, otherwise False
         /// - Null if above value is True, otherwise the result of what to do with the ability
         /// </returns>
-        (bool, AbilityResult?) AbilityLegal(IAbilityParameters parameters, GridEntity entity);
+        (bool, AbilityResult?) AbilityLegal(IAbilityParameters parameters, GridEntity entity, bool ignoreBlockingTimers);
 
         /// <summary>
         /// Whether we are able to pay the cost for this ability

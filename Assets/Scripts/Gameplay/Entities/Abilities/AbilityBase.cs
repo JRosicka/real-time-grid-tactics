@@ -30,7 +30,7 @@ namespace Gameplay.Entities.Abilities {
             }
             
             if (Data.RepeatWhenCooldownFinishes) {
-                AbilityAssignmentManager.PerformAbility(Performer, AbilityData, BaseParameters, false, false, false);
+                AbilityAssignmentManager.PerformAbility(Performer, AbilityData, BaseParameters, false, true, false);
             }
 
             return true;
@@ -78,7 +78,7 @@ namespace Gameplay.Entities.Abilities {
         protected abstract void PayCostImpl();
 
         public AbilityResult PerformAbility() {
-            (bool legal, AbilityResult? result) = Data.AbilityLegal(BaseParameters, Performer);
+            (bool legal, AbilityResult? result) = Data.AbilityLegal(BaseParameters, Performer, false);
             if (!legal) return result.Value;
             if (!Data.PayCostUpFront && !Data.CanPayCost(BaseParameters, Performer)) return AbilityResult.Failed;
 

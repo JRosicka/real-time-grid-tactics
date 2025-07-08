@@ -56,7 +56,7 @@ namespace Gameplay.Managers {
             }
 
             // TODO-abilities: Hmm maybe we don't want this to return an AbilityResult. Instead we need to know what to do if not legal?
-            (bool success, AbilityResult? _) = abilityData.AbilityLegal(parameters, entity);
+            (bool success, AbilityResult? _) = abilityData.AbilityLegal(parameters, entity, performEvenIfNotLegal);
             if (!success) {
                 if (performEvenIfNotLegal) {
                     // We specified to perform the ability now, but we can't legally do that. Start performing it anyway. 

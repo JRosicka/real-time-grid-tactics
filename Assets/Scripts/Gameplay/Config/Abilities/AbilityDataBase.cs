@@ -117,8 +117,8 @@ namespace Gameplay.Config.Abilities {
         /// - True if legal, otherwise False
         /// - Null if above value is True, otherwise the result of what to do with the ability
         /// </returns>
-        public (bool, AbilityResult?) AbilityLegal(IAbilityParameters parameters, GridEntity entity) {
-            (bool success, AbilityResult? abilityResult) = GameManager.Instance.AbilityAssignmentManager.CanEntityUseAbility(entity, this, false) ;
+        public (bool, AbilityResult?) AbilityLegal(IAbilityParameters parameters, GridEntity entity, bool ignoreBlockingTimers) {
+            (bool success, AbilityResult? abilityResult) = GameManager.Instance.AbilityAssignmentManager.CanEntityUseAbility(entity, this, ignoreBlockingTimers);
             if (!success) {
                 return (false, abilityResult);
             }
