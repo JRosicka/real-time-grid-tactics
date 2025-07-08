@@ -145,7 +145,6 @@ public class AbilityExecutor : MonoBehaviour {
     /// Attempt to perform the given in-progress ability
     /// </summary>
     private AbilityResult TryPerformAbility(IAbility ability) {
-        // TODO-abilities we will need to be careful about this, we don't want abilities to stay active forever if they are not legal.
         (bool success, AbilityResult? result) = ability.AbilityData.AbilityLegal(ability.BaseParameters, ability.Performer, false);
         if (!success) {
             return result.Value;

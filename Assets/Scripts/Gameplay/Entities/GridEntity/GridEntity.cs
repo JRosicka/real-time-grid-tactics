@@ -429,6 +429,9 @@ namespace Gameplay.Entities {
         }
         
         public void UpdateInProgressAbilities(List<IAbility> newInProgressAbilitiesSet) {
+            if (newInProgressAbilitiesSet.Count >= 20) {
+                Debug.LogWarning($"{newInProgressAbilitiesSet.Count} abilities currently in progress for {EntityData.ID}. That is way too many.");
+            }
             InProgressAbilities = newInProgressAbilitiesSet;
             GameManager.Instance.QueuedStructureBuildsManager.UpdateQueuedBuildsForEntity(this);
             InProgressAbilitiesUpdatedEvent?.Invoke(newInProgressAbilitiesSet);
