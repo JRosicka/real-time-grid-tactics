@@ -13,8 +13,7 @@ namespace Gameplay.Config.Abilities {
     /// </summary>
     [Serializable]
     public class HoldPositionAbilityData : AbilityDataBase<NullAbilityParameters> {
-        public override bool CanBeCanceled => false;
-        public override bool CancelableWhileActive => false;
+        public override bool CancelableWhileOnCooldown => false;
         public override bool CancelableWhileInProgress => false;
 
         public override void SelectAbility(GridEntity selector) {

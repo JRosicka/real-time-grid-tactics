@@ -132,7 +132,7 @@ namespace Gameplay.Managers {
             AbilityCooldownTimer cooldownTimer = entity.ActiveTimers.FirstOrDefault(t => t.Ability.UID == ability.UID);
             if (cooldownTimer == null) return false;
 
-            if (canceled && !ability.AbilityData.CancelableWhileActive) {
+            if (canceled && !ability.AbilityData.CancelableWhileOnCooldown) {
                 // Can't cancel this ability's cooldown timer
                 return false;
             }

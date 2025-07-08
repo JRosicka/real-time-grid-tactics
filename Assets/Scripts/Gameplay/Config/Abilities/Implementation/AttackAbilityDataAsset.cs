@@ -15,8 +15,7 @@ namespace Gameplay.Config.Abilities {
     public class AttackAbilityData : AbilityDataBase<AttackAbilityParameters>, ITargetableAbilityData {
         public AttackAbilityLogicType AttackType;
 
-        public override bool CanBeCanceled => true;
-        public override bool CancelableWhileActive => false;
+        public override bool CancelableWhileOnCooldown => false;
         public override bool CancelableWhileInProgress => true;
 
         public override void SelectAbility(GridEntity selector) {

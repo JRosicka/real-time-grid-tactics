@@ -70,8 +70,8 @@ namespace Gameplay.Config.Abilities {
         [SerializeField] private bool _payCostUpFront;
         public bool PayCostUpFront => _payCostUpFront;
 
-        public abstract bool CanBeCanceled { get; }
-        public abstract bool CancelableWhileActive { get; }
+        public bool CanBeCanceled => CancelableWhileOnCooldown || CancelableWhileInProgress;
+        public abstract bool CancelableWhileOnCooldown { get; }
         public abstract bool CancelableWhileInProgress { get; }
 
         [SerializeField] private bool _repeatWhenCooldownFinishes;

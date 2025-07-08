@@ -398,7 +398,7 @@ namespace Gameplay.Entities {
             // Get cancelable ability timers
             abilities.AddRange(ActiveTimers
                 .Select(t => t.Ability)
-                .Where(a => a.AbilityData.CancelableWhileActive));
+                .Where(a => a.AbilityData.CancelableWhileOnCooldown));
             
             // Get cancelable in-progress abilities
             abilities.AddRange(InProgressAbilities.Where(a => a.AbilityData.CancelableWhileInProgress));

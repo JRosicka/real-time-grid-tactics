@@ -30,8 +30,7 @@ namespace Gameplay.Config.Abilities {
             public string selectionKey;
         }
 
-        public override bool CanBeCanceled => true;
-        public override bool CancelableWhileActive => true;
+        public override bool CancelableWhileOnCooldown => true;
         public override bool CancelableWhileInProgress => true;
         public override bool Targeted => Targetable;
 

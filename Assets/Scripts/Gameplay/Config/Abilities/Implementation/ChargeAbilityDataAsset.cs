@@ -28,8 +28,7 @@ namespace Gameplay.Config.Abilities {
         public EntitySelectionManager EntitySelectionManager => GameManager.Instance.EntitySelectionManager;
         public ICommandManager CommandManager => GameManager.Instance.CommandManager;
         
-        public override bool CanBeCanceled => false;
-        public override bool CancelableWhileActive => false;
+        public override bool CancelableWhileOnCooldown => false;
         public override bool CancelableWhileInProgress => false;
 
         public override string GetAttackTooltipMessage(GameTeam team) {

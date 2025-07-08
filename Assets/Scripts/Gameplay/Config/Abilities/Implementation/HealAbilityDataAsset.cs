@@ -13,8 +13,7 @@ namespace Gameplay.Config.Abilities {
     [Serializable]
     public class HealAbilityData : AbilityDataBase<HealAbilityParameters> {
         public int HealAmount;
-        public override bool CanBeCanceled => true;
-        public override bool CancelableWhileActive => true;
+        public override bool CancelableWhileOnCooldown => true;
         public override bool CancelableWhileInProgress => false;
         public override IAbilityParameters OnStartParameters => new HealAbilityParameters { Target = null };
 

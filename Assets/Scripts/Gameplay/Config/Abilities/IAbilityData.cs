@@ -37,17 +37,17 @@ namespace Gameplay.Config.Abilities {
         /// </summary>
         bool PayCostUpFront { get; }
         /// <summary>
-        /// Whether this ability can ever be canceled from manual cancellation, etc.
+        /// Whether this ability can ever be canceled.
         /// </summary>
         bool CanBeCanceled { get; }
         /// <summary>
-        /// Whether this ability can be manually canceled while in progress (active timer). 
+        /// Whether this ability can be canceled while there is an active timer. 
         /// </summary>
-        bool CancelableWhileActive { get; }
+        bool CancelableWhileOnCooldown { get; }
         /// <summary>
-        /// Whether this ability can be manually canceled while in-progress. 
+        /// Whether this ability can be canceled while in-progress. 
         /// </summary>
-        bool CancelableWhileInProgress { get; } // TODO-abilities: Hmm maybe I have a few too many cancelable fields now. See if any of these can be combined.
+        bool CancelableWhileInProgress { get; }
         /// <summary>
         /// Whether to perform view logic when the cooldown is complete instead of when the ability is triggered 
         /// </summary>
