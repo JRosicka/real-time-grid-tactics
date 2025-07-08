@@ -65,7 +65,7 @@ namespace Gameplay.Config.Abilities {
 
         [SerializeField] private bool _performOnStart;
         public bool PerformOnStart => _performOnStart;
-        public virtual IAbilityParameters OnStartParameters => null;
+        public virtual IAbilityParameters OnStartParameters => new NullAbilityParameters();
 
         [SerializeField] private bool _payCostUpFront;
         public bool PayCostUpFront => _payCostUpFront;
