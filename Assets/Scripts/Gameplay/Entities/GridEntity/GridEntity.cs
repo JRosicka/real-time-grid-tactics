@@ -543,7 +543,7 @@ namespace Gameplay.Entities {
             }
         }
 
-        private void IncrementKillCount() {
+        public void IncrementKillCount() {
             _killCountField.UpdateValue(new NetworkableIntegerValue(KillCount + 1));
         }
         
@@ -571,22 +571,6 @@ namespace Gameplay.Entities {
             if (targetEntity == null) return TargetType.Neutral;
             if (targetEntity.Team == GameTeam.Neutral || Team == GameTeam.Neutral) return TargetType.Neutral;
             return Team == targetEntity.Team ? TargetType.Ally : TargetType.Enemy;
-        }
-
-        public void ReceiveAttackFromEntity(GridEntity sourceEntity, int bonusDamage) {
-            sourceEntity.LastAttackedEntity.UpdateValue(new NetworkableGridEntityValue(this));
-            if (Location == null) {
-                Debug.LogWarning("Entity received attack but it is not registered or unregistered");
-                return;
-            }
-            
-            bool killed = HPHandler.ReceiveAttackFromEntity(sourceEntity, bonusDamage);
-            TryRespondToAttack(sourceEntity);
-
-            // TODO would be better to put this in a more central attack module. It should gather a total amount of kills in the given instant in order to account for multiple kills at once (splash damage)
-            if (killed) {
-                sourceEntity.IncrementKillCount();
-            }
         }
         
         public string GetAttackTooltipMessageFromAbilities() {
@@ -626,7 +610,7 @@ namespace Gameplay.Entities {
             return CurrentTileType!.GetDefenseModifier(EntityData);
         }
 
-        private void TryRespondToAttack(GridEntity sourceEntity) {
+        public void TryRespondToAttack(GridEntity sourceEntity) {
             // If we not an attacker, no response
             if (!EntityData.AttackByDefault) return;
             // If somehow no location (not registered), no response

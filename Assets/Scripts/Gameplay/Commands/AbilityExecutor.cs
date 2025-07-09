@@ -18,7 +18,6 @@ using UnityEngine.Serialization;
 /// </summary>
 public class AbilityExecutor : MonoBehaviour {
     
-    [FormerlySerializedAs("_updateFrequency")]
     public float UpdateFrequency;
     
     private bool _initialized;
@@ -27,6 +26,12 @@ public class AbilityExecutor : MonoBehaviour {
     private AbilityAssignmentManager _abilityAssignmentManager;
 
     private float _timeUntilNextUpdate;
+
+    private class QueuedGridEntityUnregister {
+        public GridEntity Entity;
+        public bool ShowDeathAnimation;
+    }
+    private readonly List<QueuedGridEntityUnregister> _gridEntitiesToUnRegister = new();
     
     public void Initialize(ICommandManager commandManager, GameEndManager gameEndManager, AbilityAssignmentManager abilityAssignmentManager) {
         _commandManager = commandManager;
@@ -52,6 +57,14 @@ public class AbilityExecutor : MonoBehaviour {
         }
     }
 
+    // Server method
+    public void MarkForUnRegistration(GridEntity entity, bool showDeathAnimation) {
+        _gridEntitiesToUnRegister.Add(new QueuedGridEntityUnregister {
+            Entity = entity,
+            ShowDeathAnimation = showDeathAnimation
+        });
+    }
+
     /// <summary>
     /// Perform a full round of game updates on all entities
     /// </summary>
@@ -71,10 +84,13 @@ public class AbilityExecutor : MonoBehaviour {
         allEntities.ForEach(e => ExecuteAbilitiesForEntity(e, AbilityExecutionType.PostInteractionGridUpdate));
         
         // Fourth, apply damage from attacks
-        // TODO-abilities
+        GameManager.Instance.AttackManager.ExecuteDamageApplication();
         
         // Fifth, unregister any marked entities
-        // TODO-abilities
+        foreach (QueuedGridEntityUnregister unregistration in _gridEntitiesToUnRegister) {
+            GameManager.Instance.CommandManager.UnRegisterEntity(unregistration.Entity, unregistration.ShowDeathAnimation);
+        }
+        _gridEntitiesToUnRegister.Clear();
     }
 
     /// <summary>

@@ -22,7 +22,8 @@ using Util;
 public abstract class AbstractCommandManager : NetworkBehaviour, ICommandManager {
     [field:SyncVar]
     public Transform SpawnBucket { get; protected set; }
-    [FormerlySerializedAs("AbilityQueueExecutor")] public AbilityExecutor AbilityExecutor;
+    [SerializeField] private AbilityExecutor _abilityExecutor;
+    public AbilityExecutor AbilityExecutor => _abilityExecutor;
 
     public GridEntity GridEntityPrefab;
     

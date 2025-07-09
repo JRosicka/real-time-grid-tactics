@@ -97,7 +97,7 @@ namespace Gameplay.Entities {
             if (MarkedForDeath) return;
             MarkedForDeath = true;
             
-            GameManager.Instance.CommandManager.UnRegisterEntity(_gridEntity, true);
+            GameManager.Instance.CommandManager.AbilityExecutor.MarkForUnRegistration(_gridEntity, true);
         }
     }
 }

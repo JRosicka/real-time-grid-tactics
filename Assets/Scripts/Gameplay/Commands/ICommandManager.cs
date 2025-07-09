@@ -46,4 +46,5 @@ public interface ICommandManager {
     event Action EntityCollectionChangedEvent;
     GridEntityCollection EntitiesOnGrid { get; }
     Transform SpawnBucket { get; }
+    AbilityExecutor AbilityExecutor { get; }
 }

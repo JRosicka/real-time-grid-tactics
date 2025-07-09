@@ -81,11 +81,12 @@ namespace Gameplay.Entities.Abilities {
             }
         }
 
+        // Server method
         private void SpawnEntity(EntityData entityData, Vector2Int buildLocation, bool originalBuildLocation) {
             GameManager.Instance.CommandManager.SpawnEntity(entityData, buildLocation, Performer.Team, Performer, !originalBuildLocation);
             if (entityData.IsStructure) {
                 // Destroy the builder.
-                GameManager.Instance.CommandManager.UnRegisterEntity(Performer, false);
+                GameManager.Instance.CommandManager.AbilityExecutor.MarkForUnRegistration(Performer, false);
             }
         }
 

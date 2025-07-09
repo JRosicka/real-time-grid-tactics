@@ -32,7 +32,6 @@ public class MPCommandManager : AbstractCommandManager {
     }
 
     public override async void UnRegisterEntity(GridEntity entity, bool showDeathAnimation) {
-        await Task.Delay(TimeSpan.FromSeconds(AbilityExecutor.UpdateFrequency * 2));    // TODO maybe would be better to have this be handled in the AbilityExecutor execution directly
         LogTimestamp(nameof(UnRegisterEntity));
         CmdUnRegisterEntity(entity, showDeathAnimation);
     }

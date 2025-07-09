@@ -116,7 +116,7 @@ namespace Gameplay.Entities {
         
         private void HitTarget() {
             if (_actuallyDamageTarget) {
-                _target.ReceiveAttackFromEntity(_attacker, _bonusDamage);
+                GameManager.Instance.AttackManager.DealDamage(_attacker, _target, _bonusDamage);
             }
             Destroy(gameObject);
         }

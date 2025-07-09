@@ -65,7 +65,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
-  AbilityQueueExecutor: {fileID: 5251347246876593261}
+  _abilityExecutor: {fileID: 5251347246876593261}
   GridEntityPrefab: {fileID: 2463344900879472794, guid: e0151de0c262b334689a2122049e71c8, type: 3}
 --- !u!1 &4414491607997843839
 GameObject:
@@ -111,4 +111,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 614afa52f9c644d6adfbd0e38add368d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _updateFrequency: 0.1
+  UpdateFrequency: 0.1

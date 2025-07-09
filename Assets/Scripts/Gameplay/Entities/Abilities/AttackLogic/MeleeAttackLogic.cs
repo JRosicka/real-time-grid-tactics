@@ -4,7 +4,7 @@ namespace Gameplay.Entities.Abilities {
     /// </summary>
     public class MeleeAttackLogic : IAttackLogic {
         public void DoAttack(GridEntity attacker, GridEntity target, int bonusDamage) {
-            target.ReceiveAttackFromEntity(attacker, bonusDamage);
+            GameManager.Instance.AttackManager.DealDamage(attacker, target, bonusDamage);
         }
     }
 }
