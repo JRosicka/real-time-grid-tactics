@@ -118,12 +118,16 @@ public class AbilityExecutor : MonoBehaviour {
                 break;
             }
 
-            // Pick an ability that has matches the type and that we have not already tried to perform this execution
+            // Pick an ability that matches the type and that we have not already tried to perform this execution
             IAbility nextAbility = abilities.FirstOrDefault(a => a.ExecutionType == executionType && !seenAbilityIDs.Contains(a.UID));
             if (nextAbility == null) {
                 break;
             }
             seenAbilityIDs.Add(nextAbility.UID);
+
+            if (abilities.Count >= 20) {
+                Debug.LogWarning($"{abilities.Count} abilities currently in progress for {entity.EntityData.ID}. That is way too many.");
+            }
 
             // Try to perform the next ability
             AbilityResult result = TryPerformAbility(nextAbility);

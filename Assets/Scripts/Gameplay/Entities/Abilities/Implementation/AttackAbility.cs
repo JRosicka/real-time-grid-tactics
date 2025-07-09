@@ -77,6 +77,11 @@ namespace Gameplay.Entities.Abilities {
                 return (true, AbilityResult.IncompleteWithEffect);
             }
             
+            // If no move available, then don't do anything else for now
+            if (Performer.ActiveTimers.Any(t => t.Ability is MoveAbility)) {
+                return (false, AbilityResult.IncompleteWithoutEffect);
+            }
+            
             // Otherwise move closer to the target and try again
             StepTowardsDestination(Performer, targetLocation.Value);
             return (false, AbilityResult.IncompleteWithoutEffect);

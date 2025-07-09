@@ -429,9 +429,6 @@ namespace Gameplay.Entities {
         }
         
         public void UpdateInProgressAbilities(List<IAbility> newInProgressAbilitiesSet) {
-            if (newInProgressAbilitiesSet.Count >= 20) {
-                Debug.LogWarning($"{newInProgressAbilitiesSet.Count} abilities currently in progress for {EntityData.ID}. That is way too many.");
-            }
             InProgressAbilities = newInProgressAbilitiesSet;
             GameManager.Instance.QueuedStructureBuildsManager.UpdateQueuedBuildsForEntity(this);
             InProgressAbilitiesUpdatedEvent?.Invoke(newInProgressAbilitiesSet);
@@ -638,6 +635,10 @@ namespace Gameplay.Entities {
             // current location, if not doing anything) to the queue so that it gets performed after completing this
             // reactive attack. I also need to make sure that the reactive attack actually completes rather than
             // continuing forever like normal attacks do. 
+            //
+            // TODO-abilities: Also, this is setting the target location and moving the target even when that target already 
+            // has an attack path. Bad. 
+            // TODO-abilities: Also also, units appear to not move during an attack if the attack cooldown timer is active. Bad? Maybe good actually 
             
             // Attack-move to the target
             AbilityAssignmentManager.PerformAbility(this, GetAbilityData<AttackAbilityData>(), new AttackAbilityParameters {
