@@ -32,7 +32,7 @@ public class SPCommandManager : AbstractCommandManager {
         DoRegisterEntity(entity, data, position, entityToIgnore);
     }
 
-    public override async void UnRegisterEntity(GridEntity entity, bool showDeathAnimation) {
+    public override void UnRegisterEntity(GridEntity entity, bool showDeathAnimation) {
         DoMarkEntityUnregistered(entity, showDeathAnimation);
         DoUnRegisterEntity(entity);
     }

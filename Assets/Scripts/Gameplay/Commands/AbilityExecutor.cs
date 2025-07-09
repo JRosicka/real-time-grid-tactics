@@ -7,7 +7,6 @@ using Gameplay.Entities.Abilities;
 using Gameplay.Managers;
 using Sirenix.Utilities;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 /// <summary>
 /// Handles checking on each active <see cref="GridEntity"/>'s in-progress <see cref="IAbility"/>s and executing them.
@@ -75,18 +74,37 @@ public class AbilityExecutor : MonoBehaviour {
         
         // First, execute abilities that involve updating the GridEntityCollection (or that don't depend on that)
         List<GridEntity> allEntities = _commandManager.EntitiesOnGrid.AllEntities();
-        allEntities.ForEach(e => ExecuteAbilitiesForEntity(e, AbilityExecutionType.PreInteractionGridUpdate));
+        List<GridEntity> updatedEntities = new List<GridEntity>();
+        foreach (GridEntity entity in allEntities) {
+            bool updated = ExecuteAbilitiesForEntity(entity, AbilityExecutionType.PreInteractionGridUpdate);
+            if (updated) {
+                updatedEntities.Add(entity);
+            }
+        }
         
         // Second, execute interaction abilities that rely on (but don't update) entity positions (i.e. attacking)
-        allEntities.ForEach(e => ExecuteAbilitiesForEntity(e, AbilityExecutionType.Interaction));
+        foreach (GridEntity entity in allEntities) {
+            bool updated = ExecuteAbilitiesForEntity(entity, AbilityExecutionType.Interaction);
+            if (updated && !updatedEntities.Contains(entity)) {
+                updatedEntities.Add(entity);
+            }
+        }
         
         // Third, execute any post-interaction abilities that update the GridEntityCollection
-        allEntities.ForEach(e => ExecuteAbilitiesForEntity(e, AbilityExecutionType.PostInteractionGridUpdate));
+        foreach (GridEntity entity in allEntities) {
+            bool updated = ExecuteAbilitiesForEntity(entity, AbilityExecutionType.PostInteractionGridUpdate);
+            if (updated && !updatedEntities.Contains(entity)) {
+                updatedEntities.Add(entity);
+            }
+        }
         
-        // Fourth, apply damage from attacks
+        // Then, update the in-progress abilities for each client, but only for the entities whose in-progress ability set changed
+        updatedEntities.ForEach(e => _commandManager.UpdateInProgressAbilities(e));
+        
+        // Then, apply damage from attacks
         GameManager.Instance.AttackManager.ExecuteDamageApplication();
         
-        // Fifth, unregister any marked entities
+        // Then, unregister any marked entities
         foreach (QueuedGridEntityUnregister unregistration in _gridEntitiesToUnRegister) {
             GameManager.Instance.CommandManager.UnRegisterEntity(unregistration.Entity, unregistration.ShowDeathAnimation);
         }
@@ -100,13 +118,13 @@ public class AbilityExecutor : MonoBehaviour {
     /// - Keeps performing abilities of the matching execution type until none remain. Even performs abilities that were
     ///   added during iterating. 
     /// </summary>
-    private void ExecuteAbilitiesForEntity(GridEntity entity, AbilityExecutionType executionType) {
+    /// <returns>True if the ability set was updated, otherwise false</returns>
+    private bool ExecuteAbilitiesForEntity(GridEntity entity, AbilityExecutionType executionType) {
         List<IAbility> abilities = entity.InProgressAbilities;
 
         // Perform default ability if there are no in-progress abilities
         if (abilities.IsNullOrEmpty() && executionType == AbilityExecutionType.Interaction) {
-            PerformDefaultAbility(entity);
-            return;
+            return PerformDefaultAbility(entity);
         }
 
         // Cycle through the abilities, trying to perform each one until one does not get completed or removed
@@ -155,10 +173,7 @@ public class AbilityExecutor : MonoBehaviour {
                     throw new ArgumentOutOfRangeException();
             }
         }
-        if (abilitySetUpdated) {
-            // TODO-abilities would it be better to update each entity at the very end of the full set execution? Since these RPC calls will go out after potentially multiple steps of updates finish on the server. 
-            _commandManager.UpdateInProgressAbilities(entity); 
-        }
+        return abilitySetUpdated;
     }
     
     /// <summary>
@@ -197,17 +212,18 @@ public class AbilityExecutor : MonoBehaviour {
     /// <summary>
     /// Perform the given entity's configured default ability
     /// </summary>
-    private void PerformDefaultAbility(GridEntity entity) {
-        if (!entity.EntityData.AttackByDefault) return;
+    private bool PerformDefaultAbility(GridEntity entity) {
+        if (!entity.EntityData.AttackByDefault) return false;
         Vector2Int? location = entity.Location;
-        if (location == null) return;
+        if (location == null) return false;
 
         AttackAbilityData data = entity.GetAbilityData<AttackAbilityData>();
-        if (data == null) return;
+        if (data == null) return false;
             
         _abilityAssignmentManager.PerformAbility(entity, data, new AttackAbilityParameters {
             TargetFire = false,
             Destination = location.Value
         }, false, true, true);
+        return true;
     }
 }
