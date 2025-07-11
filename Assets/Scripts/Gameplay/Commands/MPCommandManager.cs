@@ -133,7 +133,7 @@ public class MPCommandManager : AbstractCommandManager {
     private void CmdStartPerformingAbility(IAbility ability, bool clearOtherAbilities, bool fromInput) {
         LogTimestamp(nameof(CmdStartPerformingAbility));
         DoStartPerformingAbility(ability, clearOtherAbilities, fromInput);
-        if (!clearOtherAbilities && !fromInput) {
+        if (!clearOtherAbilities || fromInput) {
             // Performing the ability did not trigger an update of in-progress abilities, so do so now
             RpcUpdateInProgressAbilities(ability.Performer, ability.Performer.InProgressAbilities);
         }
