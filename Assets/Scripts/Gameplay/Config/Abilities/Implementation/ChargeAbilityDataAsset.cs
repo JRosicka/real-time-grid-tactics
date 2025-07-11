@@ -67,7 +67,7 @@ namespace Gameplay.Config.Abilities {
                 return;
             }
             selectedEntity.SetTargetLocation(cellPosition, null, true);
-            GameManager.Instance.AbilityAssignmentManager.PerformAbility(selectedEntity, this, new ChargeAbilityParameters {
+            GameManager.Instance.AbilityAssignmentManager.StartPerformingAbility(selectedEntity, this, new ChargeAbilityParameters {
                 Destination = destination.Value,
                 MoveDestination = destination.Value,
                 ClickLocation = cellPosition,

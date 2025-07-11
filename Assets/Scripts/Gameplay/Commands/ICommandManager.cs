@@ -27,7 +27,7 @@ public interface ICommandManager {
     /// <summary>
     /// Tell the server to start the process of performing an ability. Triggers an execution of active abilities in <see cref="AbilityExecutor"/>
     /// </summary>
-    void PerformAbility(IAbility ability, bool clearOtherAbilities, bool fromInput);
+    void StartPerformingAbility(IAbility ability, bool clearOtherAbilities, bool fromInput);
     void AbilityEffectPerformed(IAbility ability);
     void AbilityFailed(IAbility ability);
     void UpdateInProgressAbilities(GridEntity entity);

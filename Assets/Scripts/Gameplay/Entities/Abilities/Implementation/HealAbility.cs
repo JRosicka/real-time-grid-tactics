@@ -22,7 +22,7 @@ namespace Gameplay.Entities.Abilities {
                 AbilityParameters.Target.KilledEvent -= TargetEntityNoLongerValid;
 
                 // Re-perform
-                AbilityAssignmentManager.PerformAbility(Performer, Data, new HealAbilityParameters {
+                AbilityAssignmentManager.StartPerformingAbility(Performer, Data, new HealAbilityParameters {
                     Target = null
                 }, false, false, false);
             }
@@ -83,7 +83,7 @@ namespace Gameplay.Entities.Abilities {
                 // Either the entity moved, got killed, or has full HP. Remove and re-perform.
                 // Note that this will not get checked if the ability timer is active (i.e. was performing a heal) because 
                 // that prevents the ability from being legal. So TargetEntityNoLongerValid cancels the timer first. 
-                AbilityAssignmentManager.PerformAbility(Performer, Data, new HealAbilityParameters {
+                AbilityAssignmentManager.StartPerformingAbility(Performer, Data, new HealAbilityParameters {
                     Target = null
                 }, false, false, false);
                 return (false, AbilityResult.Failed);

@@ -83,7 +83,7 @@ namespace Gameplay.Config.Abilities {
         public void DoTargetableAbility(Vector2Int cellPosition, GridEntity selectedEntity, GameTeam selectorTeam, System.Object targetData) {
             PurchasableData purchasableData = (PurchasableData)targetData;
             BuildAbilityParameters buildParameters = new BuildAbilityParameters {Buildable = purchasableData, BuildLocation = cellPosition};
-            GameManager.Instance.AbilityAssignmentManager.PerformAbility(selectedEntity, this, buildParameters, true, true, false);
+            GameManager.Instance.AbilityAssignmentManager.StartPerformingAbility(selectedEntity, this, buildParameters, true, true, false);
             selectedEntity.SetTargetLocation(cellPosition, null, false, true);
             
             if (GameManager.Instance.SelectionInterface.BuildMenuOpenFromSelection) {

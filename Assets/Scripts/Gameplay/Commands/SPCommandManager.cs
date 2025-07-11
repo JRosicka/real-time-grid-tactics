@@ -41,8 +41,8 @@ public class SPCommandManager : AbstractCommandManager {
         Destroy(entity.gameObject);
     }
 
-    public override void PerformAbility(IAbility ability, bool clearOtherAbilities, bool fromInput) {
-        DoPerformAbility(ability, clearOtherAbilities, fromInput);
+    public override void StartPerformingAbility(IAbility ability, bool clearOtherAbilities, bool fromInput) {
+        DoStartPerformingAbility(ability, clearOtherAbilities, fromInput);
         if (!clearOtherAbilities || fromInput) {
             // Performing the ability did not trigger an update of in-progress abilities, so do so now
             DoUpdateInProgressAbilities(ability.Performer, ability.Performer.InProgressAbilities);

@@ -214,7 +214,7 @@ namespace Gameplay.Entities.Abilities {
             
             Vector2Int nextMoveCell = path.Nodes[1].Location;
             MoveAbilityData moveAbilityData = attacker.GetAbilityData<MoveAbilityData>();
-            AbilityAssignmentManager.PerformAbility(attacker, moveAbilityData, new MoveAbilityParameters {
+            AbilityAssignmentManager.StartPerformingAbility(attacker, moveAbilityData, new MoveAbilityParameters {
                 Destination = nextMoveCell,
                 NextMoveCell = nextMoveCell,
                 SelectorTeam = attacker.Team,

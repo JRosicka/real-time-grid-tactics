@@ -47,7 +47,7 @@ namespace Gameplay.Managers {
         #endregion
         #region Perform
 
-        public bool PerformAbility(GridEntity entity, IAbilityData abilityData, IAbilityParameters parameters, bool fromInput,
+        public bool StartPerformingAbility(GridEntity entity, IAbilityData abilityData, IAbilityParameters parameters, bool fromInput,
                                     bool performEvenIfNotLegal, bool clearOtherAbilities) {
             
             if (entity.BuildQueue != null && abilityData.TryingToPerformCancelsBuilds) {
@@ -70,13 +70,13 @@ namespace Gameplay.Managers {
             }
             
             IAbility abilityInstance = abilityData.CreateAbility(parameters, entity);
-            CommandManager.PerformAbility(abilityInstance, clearOtherAbilities, fromInput);
+            CommandManager.StartPerformingAbility(abilityInstance, clearOtherAbilities, fromInput);
             return true;
         }
         
         public void PerformOnStartAbilitiesForEntity(GridEntity entity) {
             foreach (IAbilityData abilityData in entity.Abilities.Where(a => a.PerformOnStart)) {
-                PerformAbility(entity, abilityData, abilityData.OnStartParameters, false, true, false);
+                StartPerformingAbility(entity, abilityData, abilityData.OnStartParameters, false, true, false);
             }
         }
         

@@ -18,7 +18,7 @@ namespace Gameplay.Config.Abilities {
         public override bool CancelableManually => false;
 
         public override void SelectAbility(GridEntity selector) {
-            GameManager.Instance.AbilityAssignmentManager.PerformAbility(selector, this, new NullAbilityParameters(), true, false, true);
+            GameManager.Instance.AbilityAssignmentManager.StartPerformingAbility(selector, this, new NullAbilityParameters(), true, false, true);
         }
         
         protected override AbilityLegality AbilityLegalImpl(NullAbilityParameters parameters, GridEntity entity) {

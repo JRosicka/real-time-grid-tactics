@@ -48,7 +48,7 @@ namespace Gameplay.UI {
                 }
                 Vector2Int? selectedEntityLocation = SelectedEntity.Location;
                 if (selectedEntityLocation == null) return;
-                AbilityAssignmentManager.PerformAbility(SelectedEntity, _buildAbilityData, new BuildAbilityParameters {
+                AbilityAssignmentManager.StartPerformingAbility(SelectedEntity, _buildAbilityData, new BuildAbilityParameters {
                     Buildable = Buildable, 
                     BuildLocation = selectedEntityLocation.Value
                 }, true, true, false);

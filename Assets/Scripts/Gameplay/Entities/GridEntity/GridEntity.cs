@@ -468,7 +468,7 @@ namespace Gameplay.Entities {
             if (!CanMoveOrRally) return false;
 
             MoveAbilityData data = GetAbilityData<MoveAbilityData>();
-            if (AbilityAssignmentManager.PerformAbility(this, data, new MoveAbilityParameters {
+            if (AbilityAssignmentManager.StartPerformingAbility(this, data, new MoveAbilityParameters {
                     Destination = targetCell, 
                     NextMoveCell = targetCell, 
                     SelectorTeam = Team,
@@ -532,7 +532,7 @@ namespace Gameplay.Entities {
             if (!CanMoveOrRally) return;
 
             AttackAbilityData data = GetAbilityData<AttackAbilityData>();
-            if (AbilityAssignmentManager.PerformAbility(this, data, new AttackAbilityParameters {
+            if (AbilityAssignmentManager.StartPerformingAbility(this, data, new AttackAbilityParameters {
                         Destination = targetCell, 
                         TargetFire = false
                     }, fromInput, true, true)) {
@@ -555,7 +555,7 @@ namespace Gameplay.Entities {
 
             if (targetType != TargetType.Enemy) return;
             AttackAbilityData data = GetAbilityData<AttackAbilityData>();
-            if (AbilityAssignmentManager.PerformAbility(this, data, new AttackAbilityParameters {
+            if (AbilityAssignmentManager.StartPerformingAbility(this, data, new AttackAbilityParameters {
                     Target = targetEntity, 
                     TargetFire = true,
                     Destination = targetCell
@@ -641,7 +641,7 @@ namespace Gameplay.Entities {
             // TODO-abilities: Also also, units appear to not move during an attack if the attack cooldown timer is active. Bad? Maybe good actually 
             
             // Attack-move to the target
-            AbilityAssignmentManager.PerformAbility(this, GetAbilityData<AttackAbilityData>(), new AttackAbilityParameters {
+            AbilityAssignmentManager.StartPerformingAbility(this, GetAbilityData<AttackAbilityData>(), new AttackAbilityParameters {
                 TargetFire = false,
                 Destination = sourceEntity.Location.Value,
                 Reaction = true,

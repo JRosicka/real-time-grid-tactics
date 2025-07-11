@@ -220,7 +220,7 @@ public class AbilityExecutor : MonoBehaviour {
         AttackAbilityData data = entity.GetAbilityData<AttackAbilityData>();
         if (data == null) return false;
             
-        _abilityAssignmentManager.PerformAbility(entity, data, new AttackAbilityParameters {
+        _abilityAssignmentManager.StartPerformingAbility(entity, data, new AttackAbilityParameters {
             TargetFire = false,
             Destination = location.Value
         }, false, true, true);

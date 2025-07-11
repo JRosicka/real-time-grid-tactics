@@ -40,9 +40,9 @@ public class MPCommandManager : AbstractCommandManager {
         CmdDestroyEntity(entity);
     }
 
-    public override void PerformAbility(IAbility ability, bool clearOtherAbilities, bool fromInput) {
-        LogTimestamp(nameof(PerformAbility));
-        CmdPerformAbility(ability, clearOtherAbilities, fromInput);
+    public override void StartPerformingAbility(IAbility ability, bool clearOtherAbilities, bool fromInput) {
+        LogTimestamp(nameof(StartPerformingAbility));
+        CmdStartPerformingAbility(ability, clearOtherAbilities, fromInput);
     }
 
     [Server]
@@ -130,9 +130,9 @@ public class MPCommandManager : AbstractCommandManager {
     }
 
     [Command(requiresAuthority = false)]
-    private void CmdPerformAbility(IAbility ability, bool clearOtherAbilities, bool fromInput) {
-        LogTimestamp(nameof(CmdPerformAbility));
-        DoPerformAbility(ability, clearOtherAbilities, fromInput);
+    private void CmdStartPerformingAbility(IAbility ability, bool clearOtherAbilities, bool fromInput) {
+        LogTimestamp(nameof(CmdStartPerformingAbility));
+        DoStartPerformingAbility(ability, clearOtherAbilities, fromInput);
         if (!clearOtherAbilities && !fromInput) {
             // Performing the ability did not trigger an update of in-progress abilities, so do so now
             RpcUpdateInProgressAbilities(ability.Performer, ability.Performer.InProgressAbilities);

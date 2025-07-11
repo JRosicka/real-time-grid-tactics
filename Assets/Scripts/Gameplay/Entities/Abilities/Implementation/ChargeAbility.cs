@@ -83,7 +83,7 @@ namespace Gameplay.Entities.Abilities {
             }
             
             AttackAbilityData attackData = Performer.GetAbilityData<AttackAbilityData>();
-            AbilityAssignmentManager.PerformAbility(Performer, attackData, new AttackAbilityParameters {
+            AbilityAssignmentManager.StartPerformingAbility(Performer, attackData, new AttackAbilityParameters {
                 TargetFire = targetEntity != null,
                 Target = targetEntity,
                 Destination = AbilityParameters.ClickLocation,

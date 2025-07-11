@@ -52,7 +52,7 @@ namespace Gameplay.Config.Abilities {
             if (target != null && target.Team == selectedEntity.Team) {
                 target = null;
             }
-            GameManager.Instance.AbilityAssignmentManager.PerformAbility(selectedEntity, this, new AttackAbilityParameters {
+            GameManager.Instance.AbilityAssignmentManager.StartPerformingAbility(selectedEntity, this, new AttackAbilityParameters {
                     TargetFire = target != null && target.Team != GameTeam.Neutral, 
                     Target = target, 
                     Destination = cellPosition

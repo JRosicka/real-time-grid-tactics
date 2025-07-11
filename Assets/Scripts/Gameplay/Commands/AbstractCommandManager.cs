@@ -92,7 +92,7 @@ public abstract class AbstractCommandManager : NetworkBehaviour, ICommandManager
         return _entitiesOnGrid.EntitiesAtLocation(location);
     }
 
-    public abstract void PerformAbility(IAbility ability, bool clearOtherAbilities, bool fromInput);
+    public abstract void StartPerformingAbility(IAbility ability, bool clearOtherAbilities, bool fromInput);
     public abstract void AbilityEffectPerformed(IAbility ability);
     public abstract void AbilityFailed(IAbility ability);
     public abstract void UpdateInProgressAbilities(GridEntity entity);
@@ -156,7 +156,7 @@ public abstract class AbstractCommandManager : NetworkBehaviour, ICommandManager
         entity.OnUnregistered(showDeathAnimation);
     }
     
-    protected void DoPerformAbility(IAbility ability, bool clearOtherAbilities, bool fromInput) {
+    protected void DoStartPerformingAbility(IAbility ability, bool clearOtherAbilities, bool fromInput) {
         // Don't do anything if the performer has been killed 
         if (ability.Performer == null || ability.Performer.DeadOrDying) return;
 

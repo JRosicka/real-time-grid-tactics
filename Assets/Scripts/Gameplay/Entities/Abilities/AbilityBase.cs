@@ -31,7 +31,7 @@ namespace Gameplay.Entities.Abilities {
             }
             
             if (Data.RepeatWhenCooldownFinishes) {
-                AbilityAssignmentManager.PerformAbility(Performer, AbilityData, BaseParameters, false, true, false);
+                AbilityAssignmentManager.StartPerformingAbility(Performer, AbilityData, BaseParameters, false, true, false);
             }
 
             return true;
