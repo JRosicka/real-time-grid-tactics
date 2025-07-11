@@ -22,11 +22,7 @@ namespace Gameplay.Config.Abilities {
         public override void SelectAbility(GridEntity selector) {
             GameManager.Instance.EntitySelectionManager.SelectTargetableAbility(this, selector.Team, null);
         }
-
-        public override bool CanPayCost(IAbilityParameters parameters, GridEntity entity) {
-            return true;
-        }
-
+        
         protected override AbilityLegality AbilityLegalImpl(AttackAbilityParameters parameters, GridEntity entity) {
             return CanAttackTarget(parameters.Target, entity);
         }

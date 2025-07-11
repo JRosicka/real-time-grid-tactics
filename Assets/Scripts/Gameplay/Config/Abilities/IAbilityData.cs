@@ -33,10 +33,6 @@ namespace Gameplay.Config.Abilities {
         bool PerformOnStart { get; }
         IAbilityParameters OnStartParameters { get; }
         /// <summary>
-        /// Whether to pay the cost of the ability up front 
-        /// </summary>
-        bool PayCostUpFront { get; }
-        /// <summary>
         /// Whether this ability can ever be canceled.
         /// </summary>
         bool CanBeCanceled { get; }
@@ -97,11 +93,6 @@ namespace Gameplay.Config.Abilities {
         /// the ability. If the server check fails, let the client know. 
         /// </summary>
         AbilityLegality AbilityLegal(IAbilityParameters parameters, GridEntity entity, bool ignoreBlockingTimers);
-
-        /// <summary>
-        /// Whether we are able to pay the cost for this ability
-        /// </summary>
-        bool CanPayCost(IAbilityParameters parameters, GridEntity entity);
         
         /// <summary>
         /// Create an instance of this ability, passing in any user input. This created instance should be passed to the

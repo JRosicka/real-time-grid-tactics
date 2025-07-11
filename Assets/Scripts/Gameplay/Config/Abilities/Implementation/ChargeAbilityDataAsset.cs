@@ -43,11 +43,7 @@ namespace Gameplay.Config.Abilities {
             Vector2Int? currentlyHoveredCell = GameManager.Instance.GridInputController.CurrentHoveredCell;
             UpdateChargePathVisual(selector, currentlyHoveredCell);
         }
-
-        public override bool CanPayCost(IAbilityParameters parameters, GridEntity entity) {
-            return true;
-        }
-
+        
         protected override AbilityLegality AbilityLegalImpl(ChargeAbilityParameters parameters, GridEntity entity) {
             if (CanChargeToCell(entity, parameters.Destination)) {
                 return AbilityLegality.Legal;

@@ -22,10 +22,6 @@ namespace Gameplay.Config.Abilities {
             // Nothing to do
         }
         
-        public override bool CanPayCost(IAbilityParameters parameters, GridEntity entity) {
-            return true;
-        }
-
         protected override AbilityLegality AbilityLegalImpl(HealAbilityParameters parameters, GridEntity entity) {
             return AbilityLegality.Legal;
         }

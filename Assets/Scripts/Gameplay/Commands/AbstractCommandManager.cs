@@ -172,16 +172,11 @@ public abstract class AbstractCommandManager : NetworkBehaviour, ICommandManager
         if (ability.UID == default) {
             ability.UID = IDUtil.GenerateUID();
         }
-        
-        if (ability.AbilityData.PayCostUpFront) {
-            // We need to pay the cost now instead of in PerformAbility because we do not pay the cost there for up-front cost 
-            // abilities. This is necessary because in PerformAbility we don't know where the cost might have been payed, 
-            // so we need to do it here. 
-            if (!ability.AbilityData.CanPayCost(ability.BaseParameters, ability.Performer)) {
-                Debug.LogWarning($"Tried to pay the cost up front while performing the ability {ability.AbilityData.AbilitySlotInfo.ID}, but we are not able to pay the cost.");
-                return;
-            }
-            ability.PayCost(true);
+
+        bool paidCost = ability.TryPayUpFrontCost();
+        if (!paidCost) {
+            Debug.LogWarning($"Tried to pay the cost up front while performing the ability {ability.AbilityData.AbilitySlotInfo.ID}, but we are not able to pay the cost.");
+            return;
         }
 
         ability.Performer.InProgressAbilities.Add(ability);

@@ -104,7 +104,6 @@ public class PlayerResourcesController : NetworkBehaviour {
 
     public void Earn(ResourceAmount amountToEarn) {
         if (amountToEarn.Amount <= 0) {
-            Debug.LogWarning($"Tried to earn {amountToEarn.Amount} resources - no op.");
             return;
         }
 

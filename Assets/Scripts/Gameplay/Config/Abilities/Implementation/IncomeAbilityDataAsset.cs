@@ -21,11 +21,7 @@ namespace Gameplay.Config.Abilities {
         public override void SelectAbility(GridEntity selector) {
             // Nothing to do
         }
-
-        public override bool CanPayCost(IAbilityParameters parameters, GridEntity entity) {
-            return true;
-        }
-
+        
         protected override AbilityLegality AbilityLegalImpl(NullAbilityParameters parameters, GridEntity entity) {
             Vector2Int? entityLocation = entity.Location;
             if (entityLocation == null) return AbilityLegality.IndefinitelyIllegal;

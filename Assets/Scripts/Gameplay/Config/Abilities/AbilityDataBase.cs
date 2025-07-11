@@ -66,10 +66,7 @@ namespace Gameplay.Config.Abilities {
         [SerializeField] private bool _performOnStart;
         public bool PerformOnStart => _performOnStart;
         public virtual IAbilityParameters OnStartParameters => new NullAbilityParameters();
-
-        [SerializeField] private bool _payCostUpFront;
-        public bool PayCostUpFront => _payCostUpFront;
-
+        
         public bool CanBeCanceled => CancelableWhileOnCooldown || CancelableWhileInProgress;
         public abstract bool CancelableWhileOnCooldown { get; }
         public abstract bool CancelableWhileInProgress { get; }
@@ -121,9 +118,7 @@ namespace Gameplay.Config.Abilities {
             }
             return AbilityLegalImpl((T) parameters, entity);
         }
-
-        public abstract bool CanPayCost(IAbilityParameters parameters, GridEntity entity);
-
+        
         protected abstract AbilityLegality AbilityLegalImpl(T parameters, GridEntity entity);
 
         /// <summary>

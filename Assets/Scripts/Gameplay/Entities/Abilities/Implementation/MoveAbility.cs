@@ -37,8 +37,9 @@ namespace Gameplay.Entities.Abilities {
             return true;
         }
 
-        protected override void PayCostImpl() {
+        public override bool TryPayUpFrontCost() {
             // Nothing to do
+            return true;
         }
         
         protected override (bool, AbilityResult) DoAbilityEffect() {

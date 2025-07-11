@@ -21,11 +21,7 @@ namespace Gameplay.Config.Abilities {
         public override void SelectAbility(GridEntity selector) {
             GameManager.Instance.EntitySelectionManager.SelectTargetableAbility(this, selector.Team, null);
         }
-
-        public override bool CanPayCost(IAbilityParameters parameters, GridEntity entity) {
-            return true;
-        }
-
+        
         protected override AbilityLegality AbilityLegalImpl(MoveAbilityParameters parameters, GridEntity entity) {
             if (!CanTargetCell(parameters.Destination, entity, parameters.SelectorTeam, null)) {
                 return AbilityLegality.IndefinitelyIllegal;

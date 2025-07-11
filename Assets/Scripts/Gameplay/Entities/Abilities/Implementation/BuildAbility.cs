@@ -110,9 +110,14 @@ namespace Gameplay.Entities.Abilities {
             return firstCellAlongRallyPoint;
         }
 
-        protected override void PayCostImpl() {
+        public override bool TryPayUpFrontCost() {
+            if (!CanPayCost()) {
+                return false;
+            }
+            
             // Pay resource cost
             GameManager.Instance.GetPlayerForTeam(Performer.Team).ResourcesController.Spend(AbilityParameters.Buildable.Cost);
+            return true;
         }
         
         protected override (bool, AbilityResult) DoAbilityEffect() {
@@ -122,6 +127,16 @@ namespace Gameplay.Entities.Abilities {
             }
 
             return (true, AbilityResult.CompletedWithEffect);
+        }
+        
+        private bool CanPayCost() {
+            IGamePlayer player = GameManager.Instance.GetPlayerForTeam(Performer.Team);
+            if (!player.ResourcesController.CanAfford(AbilityParameters.Buildable.Cost)) {
+                Debug.Log($"Not building ({AbilityParameters.Buildable.ID}) because we can't pay the cost");
+                return false;
+            }
+
+            return true;
         }
     }
 

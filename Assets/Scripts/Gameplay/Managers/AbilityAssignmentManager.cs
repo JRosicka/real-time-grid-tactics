@@ -58,12 +58,6 @@ namespace Gameplay.Managers {
             if (legality != AbilityLegality.Legal) {
                 if (performEvenIfNotLegal) {
                     // We specified to perform the ability now, but we can't legally do that. Start performing it anyway. 
-                    
-                    // Don't try to perform it if we can't actually pay for it
-                    if (abilityData.PayCostUpFront && !abilityData.CanPayCost(parameters, entity)) {
-                        entity.AbilityFailed(abilityData);
-                        return false;
-                    }
                 } else {
                     entity.AbilityFailed(abilityData);
                     return false;

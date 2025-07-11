@@ -10,7 +10,11 @@ namespace Gameplay.Entities.Abilities {
         /// Try to actually perform the ability
         /// </summary>
         AbilityResult PerformAbility();
-        void PayCost(bool justSpecificCost);
+        /// <summary>
+        /// Try to pay the associated up-front cost (i.e. when we try to perform/queue the ability) for the ability
+        /// </summary>
+        /// <returns>True if payed, otherwise false if could not be payed (i.e. can not afford)</returns>
+        bool TryPayUpFrontCost();
         IAbilityData AbilityData { get; }
         IAbilityParameters BaseParameters { get; }
         int UID { get; set; }

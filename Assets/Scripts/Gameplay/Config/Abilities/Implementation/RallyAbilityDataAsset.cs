@@ -24,11 +24,7 @@ namespace Gameplay.Config.Abilities {
         public override void SelectAbility(GridEntity selector) {
             // Nothing to do
         }
-
-        public override bool CanPayCost(IAbilityParameters parameters, GridEntity entity) {
-            return true;
-        }
-
+        
         protected override AbilityLegality AbilityLegalImpl(RallyAbilityParameters parameters, GridEntity entity) {
             return AbilityLegality.Legal;
         }
