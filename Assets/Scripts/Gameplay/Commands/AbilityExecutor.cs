@@ -31,6 +31,8 @@ public class AbilityExecutor : MonoBehaviour {
         public bool ShowDeathAnimation;
     }
     private readonly List<QueuedGridEntityUnregister> _gridEntitiesToUnRegister = new();
+
+    private readonly List<GridEntity> _dirtyInProgressAbilityEntities = new();
     
     public void Initialize(ICommandManager commandManager, GameEndManager gameEndManager, AbilityAssignmentManager abilityAssignmentManager) {
         _commandManager = commandManager;
@@ -63,6 +65,20 @@ public class AbilityExecutor : MonoBehaviour {
             ShowDeathAnimation = showDeathAnimation
         });
     }
+    
+    // Server method
+    /// <summary>
+    /// Server method. Marks the given entity as having a dirty in-progress abilities set, i.e. it should get an RPC update
+    /// for clients towards the end of the next execution loop. Necessary to prevent the following scenario:
+    /// - Update in-progress abilities for entity e.g. by clearing the set
+    /// - RPC call goes out with this empty set
+    /// - Start performing an ability, putting it in the in-progress set
+    /// - The RPC call goes through, clearing the set on the clients (and server), removing the ability we just added
+    /// </summary>
+    public void MarkInProgressAbilitiesDirty(GridEntity entity) {
+        if (_dirtyInProgressAbilityEntities.Contains(entity)) return;
+        _dirtyInProgressAbilityEntities.Add(entity);
+    }
 
     /// <summary>
     /// Perform a full round of game updates on all entities
@@ -74,32 +90,34 @@ public class AbilityExecutor : MonoBehaviour {
         
         // First, execute abilities that involve updating the GridEntityCollection (or that don't depend on that)
         List<GridEntity> allEntities = _commandManager.EntitiesOnGrid.AllEntities();
-        List<GridEntity> updatedEntities = new List<GridEntity>();
         foreach (GridEntity entity in allEntities) {
             bool updated = ExecuteAbilitiesForEntity(entity, AbilityExecutionType.PreInteractionGridUpdate);
             if (updated) {
-                updatedEntities.Add(entity);
+                _dirtyInProgressAbilityEntities.Add(entity);
             }
         }
         
         // Second, execute interaction abilities that rely on (but don't update) entity positions (i.e. attacking)
         foreach (GridEntity entity in allEntities) {
             bool updated = ExecuteAbilitiesForEntity(entity, AbilityExecutionType.Interaction);
-            if (updated && !updatedEntities.Contains(entity)) {
-                updatedEntities.Add(entity);
+            if (updated) {
+                _dirtyInProgressAbilityEntities.Add(entity);
             }
         }
         
         // Third, execute any post-interaction abilities that update the GridEntityCollection
         foreach (GridEntity entity in allEntities) {
             bool updated = ExecuteAbilitiesForEntity(entity, AbilityExecutionType.PostInteractionGridUpdate);
-            if (updated && !updatedEntities.Contains(entity)) {
-                updatedEntities.Add(entity);
+            if (updated) {
+                _dirtyInProgressAbilityEntities.Add(entity);
             }
         }
         
         // Then, update the in-progress abilities for each client, but only for the entities whose in-progress ability set changed
-        updatedEntities.ForEach(e => _commandManager.UpdateInProgressAbilities(e));
+        _dirtyInProgressAbilityEntities.ForEach(e => _commandManager.UpdateInProgressAbilities(e));
+        _dirtyInProgressAbilityEntities.Clear();
+        
+        // NO ABILITY UPDATES PAST THIS POINT
         
         // Then, apply damage from attacks
         GameManager.Instance.AttackManager.ExecuteDamageApplication();
@@ -153,11 +171,13 @@ public class AbilityExecutor : MonoBehaviour {
                 case AbilityResult.CompletedWithoutEffect:
                     RemoveAbility(entity, nextAbility);
                     abilitySetUpdated = true;
+                    TryStartPerformingQueuedAbility(nextAbility);
                     break;
                 case AbilityResult.CompletedWithEffect:
                     _commandManager.AbilityEffectPerformed(nextAbility);
                     RemoveAbility(entity, nextAbility);
                     abilitySetUpdated = true;
+                    TryStartPerformingQueuedAbility(nextAbility);
                     break;
                 case AbilityResult.IncompleteWithEffect:
                     _commandManager.AbilityEffectPerformed(nextAbility);
@@ -168,6 +188,7 @@ public class AbilityExecutor : MonoBehaviour {
                     _commandManager.AbilityFailed(nextAbility);
                     RemoveAbility(entity, nextAbility);
                     abilitySetUpdated = true;
+                    TryStartPerformingQueuedAbility(nextAbility);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
@@ -199,6 +220,17 @@ public class AbilityExecutor : MonoBehaviour {
         }
         
         return ability.PerformAbility();
+    }
+
+    /// <summary>
+    /// Check if the newly completed ability has a queued ability. If it does, start performing it. 
+    /// </summary>
+    private void TryStartPerformingQueuedAbility(IAbility completedAbility) {
+        IAbility queuedAbility = completedAbility.Performer.QueuedAbilities.FirstOrDefault(a => a.QueuedAfterAbilityID == completedAbility.UID);
+        if (queuedAbility == null) return;
+        
+        _abilityAssignmentManager.StartPerformingAbility(queuedAbility.Performer, queuedAbility.AbilityData, 
+                queuedAbility.BaseParameters, false, true, false);
     }
 
     /// <summary>

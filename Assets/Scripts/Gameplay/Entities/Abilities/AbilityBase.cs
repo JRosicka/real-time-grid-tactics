@@ -40,6 +40,7 @@ namespace Gameplay.Entities.Abilities {
         public abstract bool ShouldShowCooldownTimer { get; }
 
         public abstract void Cancel();
+        public int QueuedAfterAbilityID { get; set; }
 
         protected abstract bool CompleteCooldownImpl();
 
@@ -79,11 +80,11 @@ namespace Gameplay.Entities.Abilities {
                     throw new ArgumentOutOfRangeException();
             }
             
-            (bool needToCreateAbilityTimer, AbilityResult result2) = DoAbilityEffect();
+            (bool needToCreateAbilityTimer, AbilityResult result) = DoAbilityEffect();
             if (needToCreateAbilityTimer) {
                 CreateAbilityTimer();
             }
-            return result2;
+            return result;
         }
         
         /// <summary>

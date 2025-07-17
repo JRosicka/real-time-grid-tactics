@@ -55,13 +55,9 @@ namespace Gameplay.Managers {
             }
 
             AbilityLegality legality = abilityData.AbilityLegal(parameters, entity, performEvenIfNotLegal);
-            if (legality != AbilityLegality.Legal) {
-                if (performEvenIfNotLegal) {
-                    // We specified to perform the ability now, but we can't legally do that. Start performing it anyway. 
-                } else {
-                    entity.AbilityFailed(abilityData);
-                    return false;
-                }
+            if (legality != AbilityLegality.Legal && !performEvenIfNotLegal) {  // TODO-abilities instead of having the performEvenIfNotLegal flag, should we just always allow Legality.NotCurrentlyLegal?
+                entity.AbilityFailed(abilityData);
+                return false;
             }
             
             if (abilityData is not AttackAbilityData && entity.LastAttackedEntityValue is not null) {
@@ -70,7 +66,12 @@ namespace Gameplay.Managers {
             }
             
             IAbility abilityInstance = abilityData.CreateAbility(parameters, entity);
-            CommandManager.StartPerformingAbility(abilityInstance, clearOtherAbilities, fromInput);
+            
+            if (clearOtherAbilities) { 
+                CancelAllAbilities(entity); 
+            }
+
+            CommandManager.StartPerformingAbility(abilityInstance, fromInput);
             return true;
         }
         
@@ -78,6 +79,17 @@ namespace Gameplay.Managers {
             foreach (IAbilityData abilityData in entity.Abilities.Where(a => a.PerformOnStart)) {
                 StartPerformingAbility(entity, abilityData, abilityData.OnStartParameters, false, true, false);
             }
+        }
+
+        public void QueueAbility(GridEntity entity, IAbilityData abilityData, IAbilityParameters parameters, IAbility abilityToDependOn) {
+            AbilityLegality legality = abilityData.AbilityLegal(parameters, entity, true);
+            if (legality != AbilityLegality.Legal) {    // TODO should we allow Legality.NotCurrentlyLegal?
+                entity.AbilityFailed(abilityData);
+                return;
+            }
+            
+            IAbility abilityInstance = abilityData.CreateAbility(parameters, entity);
+            CommandManager.QueueAbility(abilityInstance, abilityToDependOn);
         }
         
         #endregion
@@ -95,9 +107,14 @@ namespace Gameplay.Managers {
             IAbility localAbility = entity.InProgressAbilities.FirstOrDefault(a => a.UID == ability.UID);
             if (localAbility != null) {
                 if (RemoveAbility(entity, localAbility)) {
-                    CommandManager.UpdateInProgressAbilities(entity);
+                    CommandManager.AbilityExecutor.MarkInProgressAbilitiesDirty(entity);
                 }
             }
+        }
+
+        public void CancelAllAbilities(GridEntity entity) {
+            List<IAbility> abilities = new List<IAbility>(entity.InProgressAbilities);
+            abilities.ForEach(a => GameManager.Instance.CommandManager.CancelAbility(a));
         }
         
         /// <summary>

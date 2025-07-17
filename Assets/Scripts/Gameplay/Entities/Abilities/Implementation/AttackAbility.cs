@@ -32,7 +32,9 @@ namespace Gameplay.Entities.Abilities {
         }
 
         public override bool TryPayUpFrontCost() {
-            // Nothing to do
+            if (!AbilityParameters.TargetFire && !Performer.HoldingPosition) {
+                Performer.SetTargetLocation(AbilityParameters.Destination, null, true);
+            }
             return true;
         }
 
@@ -106,8 +108,12 @@ namespace Gameplay.Entities.Abilities {
             }
 
             // If we are at the destination, then just keep performing the attack move at the current location in case 
-            // anything else comes in range
+            // anything else comes in range 
             if (attackerLocation == AbilityParameters.Destination) {
+                if (AbilityParameters.Reaction) {
+                    // But not for reactions, we want those to actually end.
+                    return (false, AbilityResult.CompletedWithoutEffect);
+                }
                 return (false, AbilityResult.IncompleteWithoutEffect);
             }
             

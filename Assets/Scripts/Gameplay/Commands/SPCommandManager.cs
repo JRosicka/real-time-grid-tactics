@@ -41,12 +41,8 @@ public class SPCommandManager : AbstractCommandManager {
         Destroy(entity.gameObject);
     }
 
-    public override void StartPerformingAbility(IAbility ability, bool clearOtherAbilities, bool fromInput) {
-        DoStartPerformingAbility(ability, clearOtherAbilities, fromInput);
-        if (!clearOtherAbilities || fromInput) {
-            // Performing the ability did not trigger an update of in-progress abilities, so do so now
-            DoUpdateInProgressAbilities(ability.Performer, ability.Performer.InProgressAbilities);
-        }
+    public override void StartPerformingAbility(IAbility ability, bool fromInput) {
+        DoStartPerformingAbility(ability, fromInput);
     }
 
     public override void AbilityEffectPerformed(IAbility ability) {
@@ -60,11 +56,10 @@ public class SPCommandManager : AbstractCommandManager {
         DoUpdateInProgressAbilities(entity, entity.InProgressAbilities);
     }
 
-    public override void ClearAbilities(GridEntity entity) {
-        DoClearAbilities(entity);
-        DoUpdateInProgressAbilities(entity, entity.InProgressAbilities);
+    public override void QueueAbility(IAbility ability, IAbility abilityToDependOn) {
+        DoQueueAbility(ability, abilityToDependOn);
     }
-
+    
     public override void MarkAbilityCooldownExpired(IAbility ability) {
         DoMarkAbilityCooldownExpired(ability, false);
     }

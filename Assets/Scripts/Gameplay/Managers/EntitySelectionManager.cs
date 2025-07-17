@@ -193,7 +193,7 @@ public class EntitySelectionManager {
             return false;
         }
 
-        _gameManager.CommandManager.ClearAbilities(SelectedEntity);
+        _gameManager.AbilityAssignmentManager.CancelAllAbilities(SelectedEntity);
 
         // TODO maybe move everything under here in this method to some other class, if things get more complicated
         if (_selectedTargetableAbility.MoveToTargetCellFirst && SelectedEntity.Location != clickedCell) {

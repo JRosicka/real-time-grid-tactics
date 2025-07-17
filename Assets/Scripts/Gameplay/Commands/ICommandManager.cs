@@ -23,15 +23,14 @@ public interface ICommandManager {
     void DestroyEntity(GridEntity entity);
     void MoveEntityToCell(GridEntity entity, Vector2Int destination);
     GridEntityCollection.PositionedGridEntityCollection GetEntitiesAtCell(Vector2Int location);
-    // TODO-abilities Re-add QueueAbility as a user-queue action :)
     /// <summary>
     /// Tell the server to start the process of performing an ability. Triggers an execution of active abilities in <see cref="AbilityExecutor"/>
     /// </summary>
-    void StartPerformingAbility(IAbility ability, bool clearOtherAbilities, bool fromInput);
+    void StartPerformingAbility(IAbility ability, bool fromInput);
     void AbilityEffectPerformed(IAbility ability);
     void AbilityFailed(IAbility ability);
     void UpdateInProgressAbilities(GridEntity entity);
-    void ClearAbilities(GridEntity entity);
+    void QueueAbility(IAbility ability, IAbility abilityToDependOn);
     void MarkAbilityCooldownExpired(IAbility ability);
     void CancelAbility(IAbility ability);
     void UpdateNetworkableField(NetworkBehaviour parent, string fieldName, INetworkableFieldValue newValue, string metaData);

@@ -1,6 +1,4 @@
-using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using Gameplay.Config;
 using Gameplay.Entities;
 using Gameplay.Entities.Abilities;
@@ -40,9 +38,9 @@ public class MPCommandManager : AbstractCommandManager {
         CmdDestroyEntity(entity);
     }
 
-    public override void StartPerformingAbility(IAbility ability, bool clearOtherAbilities, bool fromInput) {
+    public override void StartPerformingAbility(IAbility ability, bool fromInput) {
         LogTimestamp(nameof(StartPerformingAbility));
-        CmdStartPerformingAbility(ability, clearOtherAbilities, fromInput);
+        CmdStartPerformingAbility(ability, fromInput);
     }
 
     [Server]
@@ -57,14 +55,11 @@ public class MPCommandManager : AbstractCommandManager {
     public override void UpdateInProgressAbilities(GridEntity entity) {
         CmdUpdateInProgressAbilities(entity);
     }
-    
-    public override void ClearAbilities(GridEntity entity) {
-        LogTimestamp(nameof(ClearAbilities));
-        // I think this is safe to do?
-        if (entity.InProgressAbilities.Count == 0) return;
-        CmdClearAbilities(entity);
-    }
 
+    public override void QueueAbility(IAbility ability, IAbility abilityToDependOn) {
+        CmdQueueAbility(ability, abilityToDependOn);
+    }
+    
     public override void MarkAbilityCooldownExpired(IAbility ability) {
         CmdMarkAbilityCooldownExpired(ability);
     }
@@ -130,13 +125,9 @@ public class MPCommandManager : AbstractCommandManager {
     }
 
     [Command(requiresAuthority = false)]
-    private void CmdStartPerformingAbility(IAbility ability, bool clearOtherAbilities, bool fromInput) {
+    private void CmdStartPerformingAbility(IAbility ability, bool fromInput) {
         LogTimestamp(nameof(CmdStartPerformingAbility));
-        DoStartPerformingAbility(ability, clearOtherAbilities, fromInput);
-        if (!clearOtherAbilities || fromInput) {
-            // Performing the ability did not trigger an update of in-progress abilities, so do so now
-            RpcUpdateInProgressAbilities(ability.Performer, ability.Performer.InProgressAbilities);
-        }
+        DoStartPerformingAbility(ability, fromInput);
     }
     
     [ClientRpc]
@@ -150,9 +141,8 @@ public class MPCommandManager : AbstractCommandManager {
     }
 
     [Command(requiresAuthority = false)]
-    private void CmdClearAbilities(GridEntity entity) {
-        DoClearAbilities(entity);
-        RpcUpdateInProgressAbilities(entity, entity.InProgressAbilities);
+    private void CmdQueueAbility(IAbility ability, IAbility abilityToDependOn) {
+        DoQueueAbility(ability, abilityToDependOn);
     }
 
     [Command(requiresAuthority = false)]

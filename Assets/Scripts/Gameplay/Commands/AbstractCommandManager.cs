@@ -10,7 +10,6 @@ using Gameplay.Managers;
 using Mirror;
 using Sirenix.Utilities;
 using UnityEngine;
-using UnityEngine.Serialization;
 using Util;
 
 /// <summary>
@@ -92,12 +91,11 @@ public abstract class AbstractCommandManager : NetworkBehaviour, ICommandManager
         return _entitiesOnGrid.EntitiesAtLocation(location);
     }
 
-    public abstract void StartPerformingAbility(IAbility ability, bool clearOtherAbilities, bool fromInput);
+    public abstract void StartPerformingAbility(IAbility ability, bool fromInput);
     public abstract void AbilityEffectPerformed(IAbility ability);
     public abstract void AbilityFailed(IAbility ability);
     public abstract void UpdateInProgressAbilities(GridEntity entity);
-    public abstract void ClearAbilities(GridEntity entity);
-
+    public abstract void QueueAbility(IAbility ability, IAbility abilityToDependOn);
     public abstract void MarkAbilityCooldownExpired(IAbility ability);
 
     protected void DoSpawnEntity(EntityData data, Vector2Int spawnLocation, Func<GridEntity> spawnFunc, GameTeam team, GridEntity spawnerEntity, bool movementOnCooldown) {
@@ -156,16 +154,12 @@ public abstract class AbstractCommandManager : NetworkBehaviour, ICommandManager
         entity.OnUnregistered(showDeathAnimation);
     }
     
-    protected void DoStartPerformingAbility(IAbility ability, bool clearOtherAbilities, bool fromInput) {
+    protected void DoStartPerformingAbility(IAbility ability, bool fromInput) {
         // Don't do anything if the performer has been killed 
         if (ability.Performer == null || ability.Performer.DeadOrDying) return;
 
         if (fromInput) {
             ability.Performer.ToggleHoldPosition(false);
-        }
-        
-        if (clearOtherAbilities) {
-            ClearAbilities(ability.Performer); 
         }
         
         // Assign a UID here since this is guaranteed to be on the server (if MP)
@@ -181,7 +175,11 @@ public abstract class AbstractCommandManager : NetworkBehaviour, ICommandManager
 
         ability.Performer.InProgressAbilities.Add(ability);
         if (fromInput) {
+            AbilityExecutor.MarkInProgressAbilitiesDirty(ability.Performer);
             AbilityExecutor.ExecuteAbilities(true);
+        } else {
+            // We need to update the abilities list now since we did not just execute an abilities loop, where it would have gotten updated
+            UpdateInProgressAbilities(ability.Performer);
         }
     }
     
@@ -189,11 +187,6 @@ public abstract class AbstractCommandManager : NetworkBehaviour, ICommandManager
         performer.UpdateInProgressAbilities(updatedAbilitySet);
     }
     
-    protected void DoClearAbilities(GridEntity entity) {
-        List<IAbility> abilities = new List<IAbility>(entity.InProgressAbilities);
-        abilities.ForEach(a => GameManager.Instance.CommandManager.CancelAbility(a));
-    }
-
     protected void DoAbilityEffectPerformed(IAbility ability) {
         ability.Performer.AbilityPerformed(ability);
     }
@@ -203,6 +196,16 @@ public abstract class AbstractCommandManager : NetworkBehaviour, ICommandManager
         if (ability.Performer != null) {
             AbilityAssignmentManager.ExpireTimerForAbility(ability.Performer, ability, canceled);
         } 
+    }
+
+    protected void DoQueueAbility(IAbility ability, IAbility abilityToDependOn) {
+        IAbility abilityInstance = abilityToDependOn.Performer.InProgressAbilities.FirstOrDefault(a => a.UID == abilityToDependOn.UID);
+        if (abilityInstance == null) {
+            Debug.LogWarning("Unable to find ability instance when queueing ability");
+            return;
+        }
+        ability.QueuedAfterAbilityID = abilityInstance.UID;
+        ability.Performer.QueuedAbilities.Add(ability);
     }
 
     /// <summary>

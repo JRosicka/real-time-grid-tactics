@@ -18,7 +18,7 @@ namespace Gameplay.Entities {
     /// </summary>
     public class GridEntity : NetworkBehaviour {
         // GameManager getters
-        private static ICommandManager CommandManager => GameManager.Instance.CommandManager;
+        private static ICommandManager CommandManager => GameManager.Instance?.CommandManager;
         private static AbilityAssignmentManager AbilityAssignmentManager => GameManager.Instance.AbilityAssignmentManager;
         private static InGameTimer InGameTimer => GameManager.Instance.InGameTimer;
 
@@ -67,7 +67,10 @@ namespace Gameplay.Entities {
         /// This entity's abilities that we have started to perform and have not yet completed
         /// </summary>
         public List<IAbility> InProgressAbilities = new();
-        // TODO-abilities: I should change the concept of an ability queue to just cover user-queued abilities (just the build queue for now). Store that in the GridEntity and update it via RPCs, but don't try to execute it in AbilityQueueExecutor until the ability that the front entry depends on is complete.
+        /// <summary>
+        /// This entity's queued abilities. Each ability stores the UID of the ability it depends upon. Only updated on server. 
+        /// </summary>
+        public List<IAbility> QueuedAbilities = new();
 
         // Misc fields and properties
         [HideInInspector] 
@@ -616,7 +619,9 @@ namespace Gameplay.Entities {
             // Determine whether we should respond with an attack
             bool inProgressAbilitiesAllowResponse = InProgressAbilities.Count == 0;
             if (!inProgressAbilitiesAllowResponse) {
-                if (!InProgressAbilities.Any(a => a is AttackAbility)) {
+                if (HoldingPosition) {
+                    // No response if we are holding position
+                } else if (!InProgressAbilities.Any(a => a is AttackAbility)) {
                     // No response if there are no attack abilities in progress
                 } else if (!InProgressAbilities.All(a => a is AttackAbility or MoveAbility)) {
                     // No response if there are any non-attack non-move abilities in progress
@@ -629,16 +634,9 @@ namespace Gameplay.Entities {
             }
             if (!inProgressAbilitiesAllowResponse) return;
             
-            // TODO-abilities: With this ability refactor, I will need to implement true ability queueing in order to
-            // properly re-implement the right attack response behavior. Instead of performing the attack and clearing
-            // other abilities, I will want to move the current attack move command (or a new move command to the
-            // current location, if not doing anything) to the queue so that it gets performed after completing this
-            // reactive attack. I also need to make sure that the reactive attack actually completes rather than
-            // continuing forever like normal attacks do. 
-            //
-            // TODO-abilities: Also, this is setting the target location and moving the target even when that target already 
-            // has an attack path. Bad. 
-            // TODO-abilities: Also also, units appear to not move during an attack if the attack cooldown timer is active. Bad? Maybe good actually 
+            // If the active attack is just targeting the current location, then it is a default attack rather than an 
+            // attack move. So don't bother queueing it. 
+            IAbility actualAttackMove = InProgressAbilities.FirstOrDefault(a => a is AttackAbility attackAbility && attackAbility.AbilityParameters.Destination != Location);
             
             // Attack-move to the target
             AbilityAssignmentManager.StartPerformingAbility(this, GetAbilityData<AttackAbilityData>(), new AttackAbilityParameters {
@@ -647,9 +645,22 @@ namespace Gameplay.Entities {
                 Reaction = true,
                 ReactionTarget = sourceEntity
             }, false, true, true);
-            if (!HoldingPosition) {
-                SetTargetLocation(sourceEntity.Location.Value, sourceEntity, true);
+            
+            if (actualAttackMove != null) {
+                // Re-queue
+                IAbility reactiveAttackAbility = InProgressAbilities.FirstOrDefault(a => a is AttackAbility attackAbility && attackAbility.AbilityParameters.Reaction);
+                if (reactiveAttackAbility == null) {
+                    Debug.LogWarning("We just created a targeted ability, but it is missing in the in-progress abilities list!");
+                } else {
+                    AbilityAssignmentManager.QueueAbility(this, actualAttackMove.AbilityData, actualAttackMove.BaseParameters, reactiveAttackAbility);
+                }
             }
+
+            
+            // TODO-abilities: Also, this is setting the target location and moving the target even when that target already 
+            // has an attack path. Bad. 
+            // TODO-abilities: Also also, units appear to not move during an attack if the attack cooldown timer is active. Bad? Maybe good actually 
+            
         }
         
         #endregion
@@ -687,7 +698,7 @@ namespace Gameplay.Entities {
         /// We have just detected that all clients are ready for this entity to be destroyed. Do that. 
         /// </summary>
         private void OnEntityReadyToDie() {
-            CommandManager.DestroyEntity(this);
+            CommandManager?.DestroyEntity(this);
         }
         
         #endregion
