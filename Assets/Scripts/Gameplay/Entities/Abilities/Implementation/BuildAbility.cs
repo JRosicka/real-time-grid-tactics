@@ -110,7 +110,7 @@ namespace Gameplay.Entities.Abilities {
             return firstCellAlongRallyPoint;
         }
 
-        public override bool TryPayUpFrontCost() {
+        public override bool TryDoAbilityStartEffect() {
             if (!CanPayCost()) {
                 return false;
             }

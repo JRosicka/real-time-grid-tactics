@@ -12,10 +12,10 @@ namespace Gameplay.Entities.Abilities {
         /// </summary>
         AbilityResult PerformAbility();
         /// <summary>
-        /// Try to pay the associated up-front cost (i.e. when we try to perform the ability) for the ability
+        /// Try to do the effect for when this ability has just started
         /// </summary>
-        /// <returns>True if payed, otherwise false if could not be payed (i.e. can not afford)</returns>
-        bool TryPayUpFrontCost();
+        /// <returns>True if successful, otherwise false if this could not be done for whatever reason (i.e. can not afford)</returns>
+        bool TryDoAbilityStartEffect();
         IAbilityData AbilityData { get; }
         IAbilityParameters BaseParameters { get; }
         int UID { get; set; }

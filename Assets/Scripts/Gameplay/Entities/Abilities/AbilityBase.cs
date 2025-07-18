@@ -64,7 +64,7 @@ namespace Gameplay.Entities.Abilities {
             }
         }
 
-        public abstract bool TryPayUpFrontCost();
+        public abstract bool TryDoAbilityStartEffect();
 
         public AbilityResult PerformAbility() {
             AbilityLegality legality = Data.AbilityLegal(BaseParameters, Performer, false);

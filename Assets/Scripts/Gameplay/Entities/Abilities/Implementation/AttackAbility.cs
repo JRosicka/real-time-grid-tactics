@@ -31,8 +31,8 @@ namespace Gameplay.Entities.Abilities {
             // TODO some of these are abstract and have empty overrides, and other methods are virtual with the option of overriding. Would be nice to pick one and use that consistently, otherwise it seems like it would be easy to forget some of these when implementing new abilities. 
         }
 
-        public override bool TryPayUpFrontCost() {
-            if (!AbilityParameters.TargetFire && !Performer.HoldingPosition) {
+        public override bool TryDoAbilityStartEffect() {
+            if (!AbilityParameters.TargetFire && !AbilityParameters.Reaction && !Performer.HoldingPosition) {
                 Performer.SetTargetLocation(AbilityParameters.Destination, null, true);
             }
             return true;
@@ -140,13 +140,6 @@ namespace Gameplay.Entities.Abilities {
                 }
                 
                 // Otherwise don't step towards the destination since the reaction target is dead. Just complete the ability.
-                // But first, reset the target location
-                Vector2Int? currentLocation = Performer.Location;
-                // The location might be null if the entity is being destroyed 
-                if (currentLocation != null) {
-                    Performer.SetTargetLocation(currentLocation.Value, null, false);
-                }
-                
                 return (false, AbilityResult.CompletedWithoutEffect);
             }
             

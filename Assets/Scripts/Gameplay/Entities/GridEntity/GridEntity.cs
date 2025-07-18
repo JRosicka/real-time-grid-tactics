@@ -657,8 +657,6 @@ namespace Gameplay.Entities {
             }
 
             
-            // TODO-abilities: Also, this is setting the target location and moving the target even when that target already 
-            // has an attack path. Bad. 
             // TODO-abilities: Also also, units appear to not move during an attack if the attack cooldown timer is active. Bad? Maybe good actually 
             
         }

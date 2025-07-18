@@ -167,8 +167,8 @@ public abstract class AbstractCommandManager : NetworkBehaviour, ICommandManager
             ability.UID = IDUtil.GenerateUID();
         }
 
-        bool paidCost = ability.TryPayUpFrontCost();
-        if (!paidCost) {
+        bool success = ability.TryDoAbilityStartEffect();
+        if (!success) {
             Debug.LogWarning($"Tried to pay the cost up front while performing the ability {ability.AbilityData.AbilitySlotInfo.ID}, but we are not able to pay the cost.");
             return;
         }

@@ -21,7 +21,7 @@ namespace Gameplay.Entities.Abilities {
             return true;
         }
 
-        public override bool TryPayUpFrontCost() {
+        public override bool TryDoAbilityStartEffect() {
             // Nothing to do
             return true;
         }
