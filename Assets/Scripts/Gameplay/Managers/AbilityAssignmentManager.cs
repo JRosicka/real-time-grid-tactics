@@ -48,14 +48,14 @@ namespace Gameplay.Managers {
         #region Perform
 
         public bool StartPerformingAbility(GridEntity entity, IAbilityData abilityData, IAbilityParameters parameters, bool fromInput,
-                                    bool performEvenIfNotLegal, bool clearOtherAbilities) {
+                                    bool startPerformingEvenIfOnCooldown, bool clearOtherAbilities) {
             
             if (entity.BuildQueue != null && abilityData.TryingToPerformCancelsBuilds) {
                 entity.BuildQueue.CancelAllBuilds();
             }
 
-            AbilityLegality legality = abilityData.AbilityLegal(parameters, entity, performEvenIfNotLegal);
-            if (legality != AbilityLegality.Legal && !performEvenIfNotLegal) {  // TODO-abilities instead of having the performEvenIfNotLegal flag, should we just always allow Legality.NotCurrentlyLegal?
+            AbilityLegality legality = abilityData.AbilityLegal(parameters, entity, startPerformingEvenIfOnCooldown);
+            if (legality == AbilityLegality.IndefinitelyIllegal) {
                 entity.AbilityFailed(abilityData);
                 return false;
             }
