@@ -74,8 +74,14 @@ namespace Gameplay.Entities.Abilities {
             // Update the destination to the new target location
             AbilityParameters.Destination = targetLocation.Value;
             
-            // Attack the target if it is in range
+            // Try to attack the target if it is in range
             if (CellDistanceLogic.DistanceBetweenCells(attackerLocation.Value, targetLocation.Value) <= Performer.Range) {
+                if (Performer.ActiveTimers.Any(t => t.Ability is AttackAbility)) {
+                    // We are in range of the target, but attacking is on cooldown. Do nothing for now. 
+                    return (false, AbilityResult.IncompleteWithoutEffect);
+                }
+                
+                // Otherwise actually attack
                 DoAttack(targetLocation.Value);
                 return (true, AbilityResult.IncompleteWithEffect);
             }
@@ -98,7 +104,16 @@ namespace Gameplay.Entities.Abilities {
             }
             
             // First check to see if there is anything in range to attack
-            if (AttackInRange(Performer, attackerLocation.Value)) { // TODO-abilities if this is too expensive to do every update tick when there are a lot of entities, then we might need to keep track of when the last collection update occurred, and cache that in the parameters and check it before performing this operation.  
+            GridEntity target = DetermineTargetForAttackMove(Performer, attackerLocation.Value);  // TODO-abilities if this is too expensive to do every update tick when there are a lot of entities, then we might need to keep track of when the last collection update occurred, and cache that in the parameters and check it before performing this operation.  
+            if (target != null) {
+                if (Performer.ActiveTimers.Any(t => t.Ability is AttackAbility)) {
+                    // We are in range of a target, but attacking is on cooldown. Do nothing for now. 
+                    return (false, AbilityResult.IncompleteWithoutEffect);
+                }
+
+                // Attack the target
+                AbilityParameters.Target = target;
+                DoAttack(target.Location!.Value);
                 return (true, AbilityResult.IncompleteWithEffect);
             }
 
@@ -149,12 +164,12 @@ namespace Gameplay.Entities.Abilities {
         }
 
         /// <summary>
-        /// Try to attack something in range
+        /// Try to find the best target in range for this attack move
         /// </summary>
-        /// <returns>True if there was something to attack, otherwise false</returns>
-        private bool AttackInRange(GridEntity attacker, Vector2Int location) {
+        /// <returns>The best target, otherwise null if there is no viable target</returns>
+        private GridEntity DetermineTargetForAttackMove(GridEntity attacker, Vector2Int location) {
             Vector2Int? attackerLocation = attacker.Location;
-            if (attackerLocation == null) return false;
+            if (attackerLocation == null) return null;
             
             List<Vector2Int> cellsInRange = GridData.GetCellsInRange(location, attacker.Range)
                 .Select(c => c.Location)
@@ -165,7 +180,7 @@ namespace Gameplay.Entities.Abilities {
                     .Where(e => e.Location != null && cellsInRange.Contains(e.Location.Value))
                     .ToList();
             
-            if (enemiesInRange.Count == 0) return false;
+            if (enemiesInRange.Count == 0) return null;
 
             // Only consider the highest-priority targets
             EntityData.TargetPriority highestPriority = enemiesInRange.Max(e => e.EntityData.AttackerTargetPriority);
@@ -177,7 +192,7 @@ namespace Gameplay.Entities.Abilities {
                 enemiesInRange.RemoveAll(e => e.EntityData.AttackerTargetPriority <
                                               AbilityParameters.ReactionTarget.EntityData.AttackerTargetPriority);
             }
-            if (enemiesInRange.Count == 0) return false;
+            if (enemiesInRange.Count == 0) return null;
             
             // If there are multiple viable targets, then disregard the farther-away enemies
             // ReSharper disable PossibleInvalidOperationException      We already confirmed these values are not null
@@ -189,17 +204,11 @@ namespace Gameplay.Entities.Abilities {
             // If the attacker's last target is a viable target, then pick that one
             Vector2Int? lastAttackedEntityLocation = attacker.LastAttackedEntityValue == null ? null : attacker.LastAttackedEntityValue.Location;
             if (lastAttackedEntityLocation != null && enemiesInRange.Contains(attacker.LastAttackedEntityValue)) {
-                AbilityParameters.Target = attacker.LastAttackedEntityValue;
-                DoAttack(lastAttackedEntityLocation.Value);
-            } else {
-                // Otherwise arbitrarily pick one to attack.
-                GridEntity target = enemiesInRange[Random.Range(0, enemiesInRange.Count)];
-                AbilityParameters.Target = target;
-                DoAttack(target.Location.Value);
+                return attacker.LastAttackedEntityValue;
             }
-            // ReSharper restore PossibleInvalidOperationException
-
-            return true;
+            // Otherwise arbitrarily pick one to attack.
+            GridEntity target = enemiesInRange[Random.Range(0, enemiesInRange.Count)];
+            return target;
         }
 
         /// <summary>

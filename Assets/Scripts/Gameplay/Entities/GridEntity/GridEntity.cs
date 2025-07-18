@@ -658,10 +658,6 @@ namespace Gameplay.Entities {
                 // Since there will be no follow up attack queued, just set the target location to track this entity since that's all we will be doing
                 SetTargetLocation(sourceEntity.Location.Value, sourceEntity, true);
             }
-
-            
-            // TODO-abilities: Also also, units appear to not move during an attack if the attack cooldown timer is active. Bad? Maybe good actually 
-            
         }
         
         #endregion
