@@ -17,15 +17,15 @@ namespace Gameplay.Entities.Abilities {
         public override bool ShouldShowCooldownTimer => true;
 
         public override void Cancel() {
-            if (Performer != null && !Performer.DeadOrDying) {
-                AbilityParameters.Target.EntityMovedEvent -= TargetEntityNoLongerValid;
-                AbilityParameters.Target.KilledEvent -= TargetEntityNoLongerValid;
+            if (Performer == null || Performer.DeadOrDying) return;
+            
+            AbilityParameters.Target.EntityMovedEvent -= TargetEntityNoLongerValid;
+            AbilityParameters.Target.KilledEvent -= TargetEntityNoLongerValid;
 
-                // Re-perform
-                AbilityAssignmentManager.StartPerformingAbility(Performer, Data, new HealAbilityParameters {
-                    Target = null
-                }, false, false, false);
-            }
+            // Re-perform
+            AbilityAssignmentManager.StartPerformingAbility(Performer, Data, new HealAbilityParameters {
+                Target = null
+            }, false, false, false);
         }
 
         protected override bool CompleteCooldownImpl() {

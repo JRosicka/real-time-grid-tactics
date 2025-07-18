@@ -654,6 +654,9 @@ namespace Gameplay.Entities {
                 } else {
                     AbilityAssignmentManager.QueueAbility(this, actualAttackMove.AbilityData, actualAttackMove.BaseParameters, reactiveAttackAbility);
                 }
+            } else {
+                // Since there will be no follow up attack queued, just set the target location to track this entity since that's all we will be doing
+                SetTargetLocation(sourceEntity.Location.Value, sourceEntity, true);
             }
 
             

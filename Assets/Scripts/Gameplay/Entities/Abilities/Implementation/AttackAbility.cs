@@ -102,7 +102,7 @@ namespace Gameplay.Entities.Abilities {
                 return (true, AbilityResult.IncompleteWithEffect);
             }
 
-            if (Performer.LastAttackedEntityValue is not null) {
+            if (Performer.LastAttackedEntityValue != null) {
                 // We are not immediately doing an attack when it is available, so clear the last attack target
                 Performer.LastAttackedEntity.UpdateValue(new NetworkableGridEntityValue(null));
             }
