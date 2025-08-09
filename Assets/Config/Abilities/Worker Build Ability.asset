@@ -28,7 +28,6 @@ MonoBehaviour:
     _slotLocation: 1
     _addedMovementTime: 0
     _performOnStart: 0
-    _payCostUpFront: 1
     _repeatWhenCooldownFinishes: 0
     _animateWhenCooldownComplete: 0
     _selectable: 1
