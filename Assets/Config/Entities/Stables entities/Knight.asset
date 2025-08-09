@@ -16,9 +16,9 @@ MonoBehaviour:
   Description: Powerful cavalry unit.
   Cost:
   - Type: 0
-    Amount: 150
+    Amount: 125
   - Type: 1
-    Amount: 150
+    Amount: 125
   Requirements: []
   BuildTime: 45
   DisplayTeamColorOverMainSprite: 1
@@ -41,7 +41,7 @@ MonoBehaviour:
     Volume: 0
     AudioLayer: 0
     Interruptible: 0
-  HP: 60
+  HP: 70
   Range: 1
   Damage: 16
   BonusDamage: 0
