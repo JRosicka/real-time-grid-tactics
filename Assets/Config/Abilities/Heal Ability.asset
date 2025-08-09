@@ -17,10 +17,10 @@ MonoBehaviour:
     _id: Heal
     _description: 
     _icon: {fileID: 0}
-    _abilityTimerCooldownView: {fileID: 5971072852972127787, guid: 31b9abd5b640d9648bf03e6305a255b4, type: 3}
+    _abilityTimerCooldownView: {fileID: 0}
     _requirements: []
     _performDuration: 0
-    _cooldownDuration: 10
+    _cooldownDuration: 2
     _channel: {fileID: 11400000, guid: a2bb18c2ded749a4e902028c24c166d0, type: 2}
     _channelBlockers:
     - {fileID: 11400000, guid: a2bb18c2ded749a4e902028c24c166d0, type: 2}
@@ -34,4 +34,4 @@ MonoBehaviour:
     _autoSelect: 0
     _selectableForAllPlayers: 0
     _tryingToPerformCancelsBuilds: 0
-    HealAmount: 10
+    HealAmount: 2
