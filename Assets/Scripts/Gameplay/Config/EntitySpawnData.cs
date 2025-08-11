@@ -38,10 +38,11 @@ namespace Gameplay.Config {
         private void ThrowExceptionIfNotInGame() {
 #if !UNITY_EDITOR
             throw new Exception("Must be in UnityEditor to use this button. Wait how did you even get here?");
-#endif
+#else
             if (!EditorApplication.isPlaying) {
                 throw new Exception("Game must be in play mode to set spawn");
             }
+#endif
             GameManager gameManager = GameManager.Instance;
             if (gameManager == null) {
                 throw new Exception("Must be in-game to set spawn");
