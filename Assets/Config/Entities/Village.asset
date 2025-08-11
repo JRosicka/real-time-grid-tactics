@@ -17,7 +17,7 @@ MonoBehaviour:
     Buildable on an empty Wheat Field.
   Cost:
   - Type: 0
-    Amount: 50
+    Amount: 75
   Requirements: []
   BuildTime: 30
   DisplayTeamColorOverMainSprite: 1

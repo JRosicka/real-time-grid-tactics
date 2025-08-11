@@ -17,7 +17,7 @@ MonoBehaviour:
     Spirit-Amber Deposit.
   Cost:
   - Type: 0
-    Amount: 50
+    Amount: 75
   Requirements: []
   BuildTime: 30
   DisplayTeamColorOverMainSprite: 0
