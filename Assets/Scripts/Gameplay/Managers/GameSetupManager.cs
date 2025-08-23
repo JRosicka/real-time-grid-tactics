@@ -134,12 +134,16 @@ public class GameSetupManager : MonoBehaviour {
         GameOver = true;
         if (winner == GameTeam.Neutral) {
             GameOverView.ShowTie();
+            // TODO tie sound effect?
         } else if (GameManager.LocalTeam == GameTeam.Spectator) {
             GameOverView.ShowSpectatorThatPlayerWon(GameManager.GetPlayerForTeam(winner));
+            GameManager.Instance.AudioPlayer.TryPlaySFX(GameManager.Instance.Configuration.AudioConfiguration.GameWinSound);
         } else if (winner == GameManager.LocalTeam) {
             GameOverView.ShowVictory();
+            GameManager.Instance.AudioPlayer.TryPlaySFX(GameManager.Instance.Configuration.AudioConfiguration.GameWinSound);
         } else {
             GameOverView.ShowDefeat();
+            GameManager.Instance.AudioPlayer.TryPlaySFX(GameManager.Instance.Configuration.AudioConfiguration.GameLossSound);
         }
     }
 

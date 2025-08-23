@@ -1,3 +1,5 @@
+using System;
+using System.Threading.Tasks;
 using TMPro;
 using UnityEngine;
 
@@ -10,6 +12,7 @@ namespace Gameplay.UI {
         public TMP_Text TimerText;
         public TMP_Text LoadingText;
         public string TimerMessage = "Game start in {0}";
+        public float SoundDelaySeconds = 1f;
 
         private float _remainingCountdownTime;
         private bool _timerActive;
@@ -27,6 +30,12 @@ namespace Gameplay.UI {
             TimerText.gameObject.SetActive(true);
             LoadingText.gameObject.SetActive(false);
             UpdateTimerText();
+            PlayGameStartSound();
+        }
+
+        private async void PlayGameStartSound() {
+            await Task.Delay(TimeSpan.FromSeconds(SoundDelaySeconds));
+            GameManager.Instance.AudioPlayer.TryPlaySFX(GameManager.Instance.Configuration.AudioConfiguration.GameStartSound);
         }
 
         private void Update() {

@@ -11,5 +11,8 @@ namespace Gameplay.Config {
         public AudioFile GameMusic;
         public AudioFile ButtonClickSound;
         public AudioFile InvalidSound;
+        public AudioFile GameLossSound;
+        public AudioFile GameWinSound;
+        public AudioFile GameStartSound;
     }
 }

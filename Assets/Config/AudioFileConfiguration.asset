@@ -25,6 +25,21 @@ MonoBehaviour:
     Interruptible: 0
   InvalidSound:
     Clip: {fileID: 8300000, guid: af34f7affe36a4947950abbb1169ade9, type: 3}
-    Volume: 0.808
+    Volume: 0.408
+    AudioLayer: 0
+    Interruptible: 0
+  GameLossSound:
+    Clip: {fileID: 8300000, guid: 731e6a5242a11a743a9a77c1bb00813d, type: 3}
+    Volume: 0.2
+    AudioLayer: 0
+    Interruptible: 0
+  GameWinSound:
+    Clip: {fileID: 8300000, guid: 5da1ea2314d33304cb03765866bb7e0c, type: 3}
+    Volume: 0.2
+    AudioLayer: 0
+    Interruptible: 0
+  GameStartSound:
+    Clip: {fileID: 8300000, guid: fd1ec9c326065d14180f94ec93e302cb, type: 3}
+    Volume: 0.913
     AudioLayer: 0
     Interruptible: 0
