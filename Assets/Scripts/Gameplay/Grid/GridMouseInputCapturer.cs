@@ -9,7 +9,7 @@ namespace Gameplay.Grid {
     public class GridMouseInputCapturer : MonoBehaviour, IPointerClickHandler, IPointerMoveHandler, IPointerEnterHandler, IPointerExitHandler, IPointerDownHandler {
         [SerializeField] private GridInputController _gridInputController;
 
-        private bool InputAllowed => GameManager.Instance.GameSetupManager.InputAllowed;
+        private bool InputAllowed => GameManager.Instance?.GameSetupManager.InputAllowed ?? false;
 
         public void OnPointerClick(PointerEventData eventData) {
             if (!InputAllowed) return;

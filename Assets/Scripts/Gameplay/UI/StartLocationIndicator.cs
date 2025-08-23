@@ -25,6 +25,9 @@ namespace Gameplay.UI {
 
         private async void HideAfterDelay(float seconds) {
             await Task.Delay(TimeSpan.FromSeconds(seconds));
+            if (_animator == null || gameObject == null) {
+                return;
+            }
             _animator.Play("StartLocationIndicatorIdle");
             gameObject.SetActive(false);
         }

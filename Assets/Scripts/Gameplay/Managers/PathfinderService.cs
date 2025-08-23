@@ -191,7 +191,7 @@ public class PathfinderService {
     // TODO repurpose this a bit - we need to factor in types. We will want to consider a similar method for calculating movement penalties as well. 
     public static bool CanEntityEnterCell(Vector2Int cellPosition, EntityData entityData, GameTeam entityTeam, List<GridEntity> entitiesToIgnore = null, bool forRallying = false) {
         entitiesToIgnore ??= new List<GridEntity>();
-        List<GridEntity> entitiesAtLocation = GameManager.Instance.GetEntitiesAtLocation(cellPosition)?.Entities
+        List<GridEntity> entitiesAtLocation = GameManager.Instance?.GetEntitiesAtLocation(cellPosition)?.Entities
             .Select(o => o.Entity)
             .Where(e => !entitiesToIgnore.Contains(e))
             .ToList();
