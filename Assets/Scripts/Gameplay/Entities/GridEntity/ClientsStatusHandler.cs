@@ -17,14 +17,14 @@ namespace Gameplay.Entities {
         
         public MPClientsStatusHandler MPClientsStatusHandler;
         private Action _performWhenAllPlayersReady;
-        private int TotalPlayerCount => GameManager.Instance.GameSetupManager.MPSetupHandler.PlayerCount;
+        private Dictionary<int, MPGamePlayer> AllPlayers => GameManager.Instance.GameSetupManager.AllPlayers;
         private bool _localClientReady;
         private bool _done;
         private bool _complainTimerStarted;
         private string _handlerName;
         // 'True' indicates that the player is connected and ready OR that they are disconnected (so we don't care to wait for them)
         // ReSharper disable once CollectionNeverUpdated.Local  Yeah it is.
-        private readonly List<bool> _playerReadyStatuses = new();
+        private readonly Dictionary<int, bool> _playerReadyStatuses = new();
         
         private GameSetupManager GameSetupManager => GameManager.Instance.GameSetupManager;
         private int LocalIndex => GameManager.Instance.LocalPlayerIndex;
@@ -32,8 +32,8 @@ namespace Gameplay.Entities {
         public void Initialize(Action performWhenAllPlayersReady, string handlerName) {
             _handlerName = handlerName;
 
-            for (int i = 0; i < TotalPlayerCount; i++) {
-                _playerReadyStatuses.Add(false);
+            foreach (KeyValuePair<int, MPGamePlayer> kvp in AllPlayers) {
+                _playerReadyStatuses[kvp.Key] = false;
             }
             
             if (!NetworkClient.active) {
@@ -74,9 +74,9 @@ namespace Gameplay.Entities {
         }
 
         private void CheckForDisconnectedClients() {
-            for (int i = 0; i < TotalPlayerCount; i++) {
-                if (!GameSetupManager.AllPlayers[i].Connected) {
-                    _playerReadyStatuses[i] = true;
+            foreach (KeyValuePair<int,MPGamePlayer> kvp in AllPlayers) {
+                if (!kvp.Value.Connected) {
+                    _playerReadyStatuses[kvp.Key] = true;
                 }
             }
             
@@ -84,7 +84,7 @@ namespace Gameplay.Entities {
         }
 
         private void DetermineIfAllClientsReady() {
-            if (_playerReadyStatuses.All(b => b)) {
+            if (_playerReadyStatuses.Values.All(b => b)) {
                 PerformAction();
             }
         }
@@ -103,8 +103,9 @@ namespace Gameplay.Entities {
             if (_done) return;
 
             string reportedIndices = "";
-            foreach (bool readyStatus in _playerReadyStatuses) {
-                reportedIndices += readyStatus ? "ready, " : "unready, ";
+            foreach (KeyValuePair<int, bool> readyStatus in _playerReadyStatuses) {
+                reportedIndices += $"Index {readyStatus.Key}: ";
+                reportedIndices += readyStatus.Value ? "ready. " : "unready. ";
             }
             Debug.LogWarning($"{_handlerName} waited {SecondsToWaitForPlayersBeforeComplaining}s for all players to report! Reported indices: [{reportedIndices}]!");
         }
