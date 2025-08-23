@@ -157,6 +157,8 @@ public class GameManager : MonoBehaviour {
     }
 
     public void ReturnToMainMenu() {
+        AudioPlayer.EndMusic(false);
+
         if (!NetworkClient.active) {
             // SP. Just reload the game scene
             SceneManager.LoadScene("MainMenu");

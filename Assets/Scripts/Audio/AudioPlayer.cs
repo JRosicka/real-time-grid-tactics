@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using UnityEngine;
 
 namespace Audio {
@@ -16,6 +17,17 @@ namespace Audio {
 
         private void Awake() {
             ActivePlayer = _audioManager.Initialize();
+            if (ActivePlayer) {
+                SetStartingVolume();
+            }
+        }
+        
+        private async void SetStartingVolume() {
+            // Delay a frame since we need to wait for the audio mixer to finish loading
+            await Task.Yield();
+            
+            SetSoundEffectVolume(PlayerPrefs.GetFloat(PlayerPrefsKeys.SoundEffectVolumeKey, PlayerPrefsKeys.DefaultVolume));
+            SetMusicVolume(PlayerPrefs.GetFloat(PlayerPrefsKeys.MusicVolumeKey, PlayerPrefsKeys.DefaultVolume));
         }
 
         /// <summary>
@@ -34,7 +46,7 @@ namespace Audio {
                 if (priorityOfNewSFX < priorityOfCurrentSFX) return;
 
                 if (_interruptibleSFX != null) {
-                    _audioManager.CancelAudio(_interruptibleSFX);
+                    _audioManager.CancelAudio(_interruptibleSFX, false);
                 }
 
                 _interruptibleSFX = _audioManager.PlaySound(audioFile, false);
@@ -47,9 +59,16 @@ namespace Audio {
             if (!AudioEnabled) return;
             
             if (_activeMusic != null) {
-                _audioManager.CancelAudio(_activeMusic);
+                _audioManager.CancelAudio(_activeMusic, false);
             }
             _activeMusic = _audioManager.PlaySound(audioFile, true);
+        }
+
+        public void EndMusic(bool fadeOut) {
+            if (!AudioEnabled) return;
+            if (_activeMusic == null) return;
+            
+            _audioManager.CancelAudio(_activeMusic, fadeOut);
         }
         
         public void SetSoundEffectVolume(float newVolume) {

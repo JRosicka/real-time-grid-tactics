@@ -131,6 +131,8 @@ public class GameSetupManager : MonoBehaviour {
     /// </summary>
     /// <param name="winner"></param>
     public void NotifyGameOver(GameTeam winner) {
+        GameManager.Instance.AudioPlayer.EndMusic(true);
+        
         GameOver = true;
         if (winner == GameTeam.Neutral) {
             GameOverView.ShowTie();
