@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Audio;
@@ -57,13 +58,20 @@ namespace Audio {
             }
             
             Mixer = Resources.Load<AudioMixer>("Mixer");
-
-            SetSoundEffectVolume(PlayerPrefs.GetFloat(PlayerPrefsKeys.SoundEffectVolumeKey, PlayerPrefsKeys.DefaultVolume));
-            SetMusicVolume(PlayerPrefs.GetFloat(PlayerPrefsKeys.MusicVolumeKey, PlayerPrefsKeys.DefaultVolume));
             
             DontDestroyOnLoad(gameObject);
             Instance = this;
+            SetStartingVolume();
+            
             return true;
+        }
+
+        private async void SetStartingVolume() {
+            // Delay a frame since we need to wait for the audio mixer to finish loading
+            await Task.Yield();
+            
+            SetSoundEffectVolume(PlayerPrefs.GetFloat(PlayerPrefsKeys.SoundEffectVolumeKey, PlayerPrefsKeys.DefaultVolume));
+            SetMusicVolume(PlayerPrefs.GetFloat(PlayerPrefsKeys.MusicVolumeKey, PlayerPrefsKeys.DefaultVolume));
         }
         
         /// <summary>
