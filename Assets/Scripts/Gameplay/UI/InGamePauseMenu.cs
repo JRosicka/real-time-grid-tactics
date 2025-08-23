@@ -47,7 +47,7 @@ namespace Gameplay.UI {
         }
 
         public void Settings() {
-            SettingsMenu.Open();
+            SettingsMenu.Open(null);
         }
 
         public void Surrender() {

@@ -1,3 +1,4 @@
+using System;
 using TMPro;
 using UnityEngine;
 
@@ -14,8 +15,12 @@ namespace Gameplay.UI {
         
         private int _currentPageIndex;
         private int TotalPages => _pages.Length;
+
+        private Action _onDismiss;
         
-        public void Open() {
+        public void Open(Action onDismiss) {
+            _onDismiss = onDismiss;
+            
             gameObject.SetActive(true);
             _currentPageIndex = 0;
             _previousButton.SetActive(false);
@@ -28,6 +33,8 @@ namespace Gameplay.UI {
         public void Close() {
             gameObject.SetActive(false);
             _pages[_currentPageIndex].SetActive(false);
+            _onDismiss?.Invoke();
+            _onDismiss = null;
         }
         
         public void PreviousPage() {

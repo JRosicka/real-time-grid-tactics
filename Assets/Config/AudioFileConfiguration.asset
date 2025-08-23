@@ -19,7 +19,7 @@ MonoBehaviour:
     AudioLayer: 1
     Interruptible: 0
   ButtonClickSound:
-    Clip: {fileID: 8300000, guid: e447570de2d0fd146ad12d7e42bdb561, type: 3}
+    Clip: {fileID: 8300000, guid: 71661fd9bce89964daaf2b0bd170ecae, type: 3}
     Volume: 0.862
     AudioLayer: 0
     Interruptible: 0

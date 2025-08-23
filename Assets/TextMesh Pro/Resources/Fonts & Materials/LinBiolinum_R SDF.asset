@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 71c1514a6bd24e1e882cebbe1904ce04, type: 3}
   m_Name: LinBiolinum_R SDF
   m_EditorClassIdentifier: 
-  hashCode: 0
+  hashCode: 861428960
   material: {fileID: 8900443813055667733}
-  materialHashCode: 0
+  materialHashCode: -1596214464
   m_Version: 1.1.0
   m_SourceFontFileGUID: fa9a39070bb214d458c235afce7f339b
   m_SourceFontFile_EditorRef: {fileID: 12800000, guid: fa9a39070bb214d458c235afce7f339b, type: 3}
@@ -6076,7 +6076,8 @@ Material:
   m_PrefabAsset: {fileID: 0}
   m_Name: LinBiolinum_R SDF Material
   m_Shader: {fileID: 4800000, guid: 68e6db2ebdc24f95958faec2be5558d6, type: 3}
-  m_ValidKeywords: []
+  m_ValidKeywords:
+  - UNDERLAY_ON
   m_InvalidKeywords: []
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
@@ -6137,9 +6138,9 @@ Material:
     - _OutlineWidth: 0
     - _PerspectiveFilter: 0.875
     - _Reflectivity: 10
-    - _ScaleRatioA: 1
-    - _ScaleRatioB: 1
-    - _ScaleRatioC: 1
+    - _ScaleRatioA: 0.9
+    - _ScaleRatioB: 0.73125
+    - _ScaleRatioC: 0.73125
     - _ScaleX: 1
     - _ScaleY: 1
     - _ShaderFlags: 0
@@ -6152,9 +6153,9 @@ Material:
     - _StencilWriteMask: 255
     - _TextureHeight: 1024
     - _TextureWidth: 1024
-    - _UnderlayDilate: 0
-    - _UnderlayOffsetX: 0
-    - _UnderlayOffsetY: 0
+    - _UnderlayDilate: 0.1
+    - _UnderlayOffsetX: 0.7
+    - _UnderlayOffsetY: -0.7
     - _UnderlaySoftness: 0
     - _VertexOffsetX: 0
     - _VertexOffsetY: 0

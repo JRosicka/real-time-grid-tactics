@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Audio;
@@ -22,6 +23,8 @@ namespace Gameplay.UI {
 
         [Tooltip("Whether this is a settings menu instance that appears in-game")]
         [SerializeField] private bool _inGame;
+
+        private Action _onDismiss;
         
         public bool Active { get; private set; }
         
@@ -89,7 +92,8 @@ namespace Gameplay.UI {
         //     }
         // }
 
-        public void Open() {
+        public void Open(Action onDismiss) {
+            _onDismiss = onDismiss;
             gameObject.SetActive(true);
             Active = true;
         }
@@ -98,6 +102,8 @@ namespace Gameplay.UI {
             gameObject.SetActive(false);
             _resourcesUIList.DismissList();
             Active = false;
+            _onDismiss?.Invoke();
+            _onDismiss = null;
         }
         
         private static int ToVolumeInt(float volume) {

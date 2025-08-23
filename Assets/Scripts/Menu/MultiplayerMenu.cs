@@ -8,18 +8,10 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class MultiplayerMenu : MonoBehaviour {
-    public Button HostButton;
     public GameObject LobbyTypeSelection;
-    
-    public Button LobbySearchButton;
-    public Button JoinByIDButton;
 
-    public Button CancelButton;
     public Button StopHostButton;
-    public Button QuitButton;
-    public Button SinglePlayerButton;
-    public Button TipsButton;
-    public Button SettingsButton;
+    public GameObject MenuDialog;
     
     public LobbyListMenu LobbyListMenu;
     public GameObject JoinByIDMenu;
@@ -92,20 +84,13 @@ public class MultiplayerMenu : MonoBehaviour {
     }
 
     private void ResetMultiplayerMenu() {
-        ToggleButton(HostButton, true);
-        ToggleButton(LobbySearchButton, true);
-        ToggleButton(JoinByIDButton, true);
-        ToggleButton(QuitButton, true);
-        ToggleButton(SinglePlayerButton, true);
-        ToggleButton(TipsButton, true);
-        ToggleButton(SettingsButton, true);
-        CancelButton.gameObject.SetActive(false);
-        LobbyTypeSelection.gameObject.SetActive(false);
-        JoinByIDMenu.gameObject.SetActive(false);
-        SinglePlayerButton.gameObject.SetActive(true);
-        TipsButton.gameObject.SetActive(true);
-        SettingsButton.gameObject.SetActive(true);
+        MenuDialog.SetActive(true);
+
         SinglePlayerConfirmationDialog.SetActive(false);
+        JoinByIDMenu.SetActive(false);
+        LobbyTypeSelection.SetActive(false);
+        FailureFeedbackDialog.SetActive(false);
+        LobbyStatusText.gameObject.SetActive(false);
         JoinByIDField.text = "";
         HideLobbyMenu();
     }
@@ -114,8 +99,6 @@ public class MultiplayerMenu : MonoBehaviour {
     
     public void OnStartHostClicked() {
         ResetMultiplayerMenu();
-        CancelButton.gameObject.SetActive(true);
-        ToggleButton(HostButton, false);
 
         LobbyTypeSelection.SetActive(true);
     }
@@ -135,16 +118,7 @@ public class MultiplayerMenu : MonoBehaviour {
     }
 
     private void HideButtons() {
-        LobbyTypeSelection.SetActive(false);
-        // StopHostButton.gameObject.SetActive(true);
-        HostButton.gameObject.SetActive(false);
-        LobbySearchButton.gameObject.SetActive(false);
-        JoinByIDButton.gameObject.SetActive(false);
-        CancelButton.gameObject.SetActive(false);
-        QuitButton.gameObject.SetActive(false); 
-        SinglePlayerButton.gameObject.SetActive(false);
-        TipsButton.gameObject.SetActive(false);
-        SettingsButton.gameObject.SetActive(false);
+        MenuDialog.SetActive(false);
     }
 
     public void OnStartSinglePlayerGameClicked() {
@@ -160,43 +134,32 @@ public class MultiplayerMenu : MonoBehaviour {
 
     public void OnSearchForLobbiesClicked() {
         ResetMultiplayerMenu();
-        CancelButton.gameObject.SetActive(true);
-        ToggleButton(LobbySearchButton, false);
         
         DisplayLobbyMenu();
     }
 
     public void OnJoinByIDButtonClicked() {
         ResetMultiplayerMenu();
-        CancelButton.gameObject.SetActive(true);
-        ToggleButton(JoinByIDButton, false);
         
         JoinByIDMenu.gameObject.SetActive(true);
     }
 
     public void OnSinglePlayerButtonClicked() {
         ResetMultiplayerMenu();
-        CancelButton.gameObject.SetActive(true);
-        ToggleButton(SinglePlayerButton, false);
 
         SinglePlayerConfirmationDialog.SetActive(true);
     }
-
-    public void OnCancelClicked() {
-        ResetMultiplayerMenu();
-        CancelButton.gameObject.SetActive(false);
-        
-        // TODO cancel logic
-    }
-
+    
     public void OnTipsClicked() {
         ResetMultiplayerMenu();
-        TipsMenu.Open();
+        HideButtons();
+        TipsMenu.Open(ResetMultiplayerMenu);
     }
 
     public void OnSettingsClicked() {
         ResetMultiplayerMenu();
-        SettingsMenu.Open();
+        HideButtons();
+        SettingsMenu.Open(ResetMultiplayerMenu);
     }
     
     public void OnQuitClicked() {
@@ -257,12 +220,7 @@ public class MultiplayerMenu : MonoBehaviour {
     private void DisableLobbyStatus() {
         LobbyStatusText.gameObject.SetActive(false);
     }
-
-    private void ToggleButton(Button button, bool enableButton) {
-        button.interactable = enableButton;
-        button.GetComponentInChildren<TMP_Text>().color = enableButton ? EnabledTextColor : DisabledTextColor;
-    }
-
+    
     private void DisplayLobbyMenu() {
         // Search for lobbies
         LobbyListMenu.ShowMenu();
