@@ -91,7 +91,10 @@ namespace Gameplay.UI {
         }
 
         public void SelectAbility() {
-            if (Availability != AvailabilityResult.Selectable) return;
+            if (Availability != AvailabilityResult.Selectable) {
+                GameManager.Instance.AudioPlayer.TryPlaySFX(GameManager.Instance.Configuration.AudioConfiguration.InvalidSound);
+                return;
+            }
             
             GameManager.Instance.AudioPlayer.TryPlaySFX(GameManager.Instance.Configuration.AudioConfiguration.ButtonClickSound);
             
@@ -100,6 +103,7 @@ namespace Gameplay.UI {
         }
 
         public void HandleFailedToSelect() {
+            GameManager.Instance.AudioPlayer.TryPlaySFX(GameManager.Instance.Configuration.AudioConfiguration.InvalidSound);
             _slotBehavior?.HandleFailedToSelect(Availability);
         }
 

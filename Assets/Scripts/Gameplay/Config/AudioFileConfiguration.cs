@@ -10,5 +10,6 @@ namespace Gameplay.Config {
         public bool AudioEnabled;
         public AudioFile GameMusic;
         public AudioFile ButtonClickSound;
+        public AudioFile InvalidSound;
     }
 }
