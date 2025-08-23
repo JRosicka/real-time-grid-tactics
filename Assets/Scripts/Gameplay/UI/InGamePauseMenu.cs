@@ -10,8 +10,6 @@ namespace Gameplay.UI {
     public class InGamePauseMenu : MonoBehaviour {
         public Button SurrenderButton;
         public Button ReturnToMenuButton;
-        public RectTransform RootRectTransform;
-        public RectTransform ButtonsRectTransform;
         public CanvasGroup CanvasGroup;
         public SettingsMenu SettingsMenu;
         
@@ -36,8 +34,6 @@ namespace Gameplay.UI {
                 SurrenderButton.gameObject.SetActive(true);
                 ReturnToMenuButton.gameObject.SetActive(false);
             }
-            LayoutRebuilder.ForceRebuildLayoutImmediate(ButtonsRectTransform);
-            LayoutRebuilder.ForceRebuildLayoutImmediate(RootRectTransform);
 
             CanvasGroup.alpha = 1;
         }
