@@ -93,6 +93,8 @@ namespace Gameplay.UI {
         public void SelectAbility() {
             if (Availability != AvailabilityResult.Selectable) return;
             
+            GameManager.Instance.AudioPlayer.TryPlaySFX(GameManager.Instance.Configuration.AudioConfiguration.ButtonClickSound);
+            
             MarkSelected(true);
             _slotBehavior?.SelectSlot();
         }

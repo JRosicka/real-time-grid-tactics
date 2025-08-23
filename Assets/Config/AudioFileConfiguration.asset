@@ -12,9 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 963fcddd75f04ce9b5bc31d538b6df7f, type: 3}
   m_Name: AudioFileConfiguration
   m_EditorClassIdentifier: 
-  AudioEnabled: 0
+  AudioEnabled: 1
   GameMusic:
     Clip: {fileID: 8300000, guid: e2f961b079f5c4b6799395bc43ff8db6, type: 3}
     Volume: 0.7
     AudioLayer: 1
+    Interruptible: 0
+  ButtonClickSound:
+    Clip: {fileID: 8300000, guid: 75811df6b7e768f4b96f694d1165af17, type: 3}
+    Volume: 0.862
+    AudioLayer: 0
     Interruptible: 0

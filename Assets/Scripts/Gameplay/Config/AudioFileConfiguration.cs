@@ -9,5 +9,6 @@ namespace Gameplay.Config {
     public class AudioFileConfiguration : ScriptableObject {
         public bool AudioEnabled;
         public AudioFile GameMusic;
+        public AudioFile ButtonClickSound;
     }
 }
