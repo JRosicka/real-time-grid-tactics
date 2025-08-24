@@ -148,7 +148,7 @@ GameObject:
   - component: {fileID: 8673245231778039151}
   - component: {fileID: 8673245231778039150}
   m_Layer: 5
-  m_Name: Menu Dialog Button
+  m_Name: Menu Dialog Button Purple
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
