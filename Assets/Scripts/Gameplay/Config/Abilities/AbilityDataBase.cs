@@ -4,6 +4,7 @@ using Gameplay.Entities;
 using Gameplay.Entities.Abilities;
 using Gameplay.UI;
 using Mirror;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace Gameplay.Config.Abilities {
@@ -55,13 +56,6 @@ namespace Gameplay.Config.Abilities {
         [Space]
         [SerializeField] private AbilitySlotLocation _slotLocation;
         public AbilitySlotLocation SlotLocation => _slotLocation;
-
-        [Tooltip("How much time is added to the entity's movement cooldown timer after performing this ability. " +
-                 "If there is an active cooldown timer for movement when this ability is performed, then this amount " +
-                 "is added to that timer. Otherwise, a new cooldown timer is added with this amount.")]
-        [Range(0f, 5f)]
-        [SerializeField] private float _addedMovementTime;
-        public float AddedMovementTime => _addedMovementTime;
 
         [SerializeField] private bool _performOnStart;
         public bool PerformOnStart => _performOnStart;

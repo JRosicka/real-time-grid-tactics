@@ -20,6 +20,7 @@ namespace Gameplay.Entities.Abilities {
 
         public override AbilityExecutionType ExecutionType => AbilityExecutionType.Interaction;
         public override bool ShouldShowCooldownTimer => true;
+        protected override float AddedMovementTime => Performer.EntityData.AddedMovementTimeFromAttacking;
 
         public override void Cancel() {
             // Nothing to do

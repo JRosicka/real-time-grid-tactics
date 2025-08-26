@@ -46,6 +46,7 @@ MonoBehaviour:
   TagsToApplyBonusDamageTo: 
   NormalMoveTime: 4
   SlowMoveTime: 6.666
+  AddedMovementTimeFromAttacking: 1
   Tags: 0300000006000000
   AttackerTargetPriority: 1
   Abilities:
