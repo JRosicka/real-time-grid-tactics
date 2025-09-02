@@ -17,6 +17,7 @@ namespace Gameplay.Entities.Abilities {
         public ChargeAbility(ChargeAbilityData data, IAbilityParameters abilityParameters, GridEntity performer) : base(data, abilityParameters, performer) { }
         public override AbilityExecutionType ExecutionType => AbilityExecutionType.PreInteractionGridUpdate;
         public override bool ShouldShowCooldownTimer => true;
+        protected override float AddedMovementTime => Data.AddedMovementTime;
 
         public override void Cancel() {
             // Nothing to do

@@ -27,7 +27,6 @@ MonoBehaviour:
     _channelBlockers:
     - {fileID: 11400000, guid: feaeb05e30f0b1b439e4f27b75aba8b6, type: 2}
     _slotLocation: 1
-    _addedMovementTime: 0.6
     _performOnStart: 0
     _repeatWhenCooldownFinishes: 0
     _animateWhenCooldownComplete: 0
@@ -38,6 +37,7 @@ MonoBehaviour:
     _tryingToPerformCancelsBuilds: 1
     _showTimerOnSelectionInterface: 1
     AddedAttackTime: 4
+    AddedMovementTime: 0.6
     ChargeRange: 2
     ChargeRangeWithUpgrade: 3
     BonusDamageFromUpgrade: 4

@@ -43,6 +43,11 @@ namespace Gameplay.Config {
         // logic works correctly when setting rally points.
         public float NormalMoveTime;
         public float SlowMoveTime;
+        [Tooltip("How much time is added to the entity's movement cooldown timer after attacking. " +
+                 "If there is an active cooldown timer for movement when an attack is performed, then this amount " +
+                 "is added to that timer. Otherwise, a new cooldown timer is added with this amount.")]
+        [Range(0f, 5f)]
+        public float AddedMovementTimeFromAttacking;
 
         [Space] 
         public List<EntityTag> Tags;

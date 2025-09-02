@@ -14,6 +14,8 @@ namespace Gameplay.Entities.Abilities {
         public IAbilityParameters BaseParameters { get; }
         public GridEntity Performer { get; }
 
+        protected virtual float AddedMovementTime => 0;
+
         protected AbilityAssignmentManager AbilityAssignmentManager => GameManager.Instance.AbilityAssignmentManager;
 
         protected AbilityBase(T data, IAbilityParameters abilityParameters, GridEntity performer) {
@@ -59,8 +61,8 @@ namespace Gameplay.Entities.Abilities {
         /// </summary>
         private void CreateAbilityTimer() {
             Performer.CreateAbilityTimer(this);
-            if (Data.AddedMovementTime > 0) {
-                AbilityAssignmentManager.AddMovementTime(Performer, Data.AddedMovementTime);
+            if (AddedMovementTime > 0) {
+                AbilityAssignmentManager.AddMovementTime(Performer, AddedMovementTime);
             }
         }
 

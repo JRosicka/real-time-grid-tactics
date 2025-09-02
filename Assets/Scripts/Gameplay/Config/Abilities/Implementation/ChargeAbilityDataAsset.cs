@@ -19,6 +19,7 @@ namespace Gameplay.Config.Abilities {
         [Header("Charge configuration")]
         [Tooltip("How long of a cooldown to add when performing an attack at the end of a charge")]
         public float AddedAttackTime;
+        public float AddedMovementTime;
         public int ChargeRange;
         public int ChargeRangeWithUpgrade;
         public int BonusDamageFromUpgrade;
