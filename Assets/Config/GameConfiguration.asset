@@ -14,7 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   AudioConfiguration: {fileID: 11400000, guid: 2a425f2a191e94fe992f1d1fbe6f91d1, type: 2}
   CurrencyConfiguration: {fileID: 11400000, guid: 3db5f2d7bb4f743459bc067c8714423b, type: 2}
-  CancelButtonSprite: {fileID: 21300000, guid: 8384b72d311424d9bbf92b8c81191571, type: 3}
+  CancelButtonSprite: {fileID: 21300000, guid: ac6a5cd8c78757649b1eebb6c22b1ba4, type: 3}
+  CancelButtonSlotSprite: {fileID: 21300000, guid: e7127e30361d9154289ebc8a1d0edbf4, type: 3}
+  NeutralBannerColor: {r: 0.5943396, g: 0.5943396, b: 0.5943396, a: 1}
   Purchasables:
   - {fileID: 11400000, guid: 991ad2a1d6801ee40b831e7850e0ff35, type: 2}
   - {fileID: 11400000, guid: 13a02f740ff7d294ca02fe7f547820c0, type: 2}
@@ -32,7 +34,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: dfb82f31371a84690ae123195a14bf64, type: 2}
   - {fileID: 11400000, guid: 007fafa82b51345319298048e99631e6, type: 2}
   Abilities:
-  - {fileID: 11400000, guid: 3d5a32e773a380042aa9f61a544e48f2, type: 2}
   - {fileID: 11400000, guid: ec15a049dabc53b4d92ab14b2871752c, type: 2}
   - {fileID: 11400000, guid: a5c4aba93e508274894c2c6bfc4b751e, type: 2}
   - {fileID: 11400000, guid: bdf047dc1be4f44418a904a085034a1e, type: 2}

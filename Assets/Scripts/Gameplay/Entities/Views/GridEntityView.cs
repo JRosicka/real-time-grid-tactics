@@ -329,7 +329,7 @@ namespace Gameplay.Entities {
                 _ => null
             };
             AbilityTimerCooldownView cooldownView = Instantiate(ability.AbilityData.AbilityTimerCooldownViewPrefab, timerLocation);
-            cooldownView.Initialize(cooldownTimer, true, true, timerFill);
+            cooldownView.Initialize(cooldownTimer, true, false, true, timerFill);
         }
 
         public void SetFacingDirection(Vector2 currentPosition, Vector2 targetPosition) {

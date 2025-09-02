@@ -12,9 +12,9 @@ namespace Gameplay.UI {
     /// </summary>
     public class TooltipView : MonoBehaviour {
         [SerializeField] private GameObject _view;
+        [SerializeField] private Image _teamColorBanner;
         [SerializeField] private Image _icon;
         [SerializeField] private Image _secondaryIcon;
-        [SerializeField] private Canvas _teamColorsCanvas;
         [SerializeField] private TMP_Text _name;
         [SerializeField] private TMP_Text _description;
 
@@ -79,13 +79,15 @@ namespace Gameplay.UI {
         }
         
         private void SetUpEntityView(ISelectableObjectLogic selectableObject) {
+            _teamColorBanner.color = selectableObject.TeamBannerColor;
+            
             BuildAbility inProgressBuild = selectableObject.InProgressBuild;
             if (inProgressBuild != null) {
                 SetUpForInProgressBuild(inProgressBuild);
                 return;
             }
             
-            selectableObject.SetUpIcons(_icon, _secondaryIcon, _teamColorsCanvas, 2);
+            selectableObject.SetUpIcons(_icon, _secondaryIcon);
             
             _name.text = selectableObject.Name;
             _description.text = selectableObject.LongDescription;
@@ -102,7 +104,7 @@ namespace Gameplay.UI {
         }
 
         private void SetUpAbilityView(AbilitySlotInfo abilityInfo, IAbilitySlotBehavior abilitySlotBehavior) {
-            abilitySlotBehavior.SetUpSprites(_icon, _secondaryIcon, _teamColorsCanvas);
+            abilitySlotBehavior.SetUpSprites(_icon, _secondaryIcon, null);
             if (abilitySlotBehavior is BuildAbilitySlotBehavior buildAbilitySlotBehavior) {
                 _name.text = buildAbilitySlotBehavior.Buildable.ID;
                 _description.text = buildAbilitySlotBehavior.Buildable.Description;

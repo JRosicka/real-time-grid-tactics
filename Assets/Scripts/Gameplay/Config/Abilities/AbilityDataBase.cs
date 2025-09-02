@@ -29,6 +29,9 @@ namespace Gameplay.Config.Abilities {
         [SerializeField] private Sprite _icon;
         public Sprite Icon => _icon;
 
+        [SerializeField] private Sprite _slotSprite;
+        public Sprite SlotSprite => _slotSprite;
+
         [SerializeField] private AbilityTimerCooldownView _abilityTimerCooldownView;
         public AbilityTimerCooldownView AbilityTimerCooldownViewPrefab => _abilityTimerCooldownView;
 
@@ -88,6 +91,8 @@ namespace Gameplay.Config.Abilities {
         public virtual bool Targeted => this is ITargetableAbilityData;
         [SerializeField] private bool _tryingToPerformCancelsBuilds;
         public bool TryingToPerformCancelsBuilds => _tryingToPerformCancelsBuilds;
+        [SerializeField] private bool _showTimerOnSelectionInterface;
+        public bool ShowTimerOnSelectionInterface => _showTimerOnSelectionInterface;
 
         public virtual string GetAttackTooltipMessage() {
             return "";

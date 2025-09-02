@@ -17,7 +17,8 @@ MonoBehaviour:
     _id: Hold Position
     _description: Stay still in the current location - don't reactively move towards
       attackers.
-    _icon: {fileID: 21300000, guid: d7e756b3628ac4cedb7aa7649ad68f9a, type: 3}
+    _icon: {fileID: 21300000, guid: a0c6041e90204e940b069d4faf0e1b4c, type: 3}
+    _slotSprite: {fileID: 21300000, guid: e7127e30361d9154289ebc8a1d0edbf4, type: 3}
     _abilityTimerCooldownView: {fileID: 0}
     _requirements: []
     _performDuration: 0
@@ -34,3 +35,4 @@ MonoBehaviour:
     _autoSelect: 0
     _selectableForAllPlayers: 0
     _tryingToPerformCancelsBuilds: 1
+    _showTimerOnSelectionInterface: 0

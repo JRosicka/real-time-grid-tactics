@@ -101,18 +101,29 @@ namespace Gameplay.UI {
             return upgradeData.Requirements.All(r => ownedPurchasables.Contains(r));
         }
 
-        public void SetUpSprites(Image abilityImage, Image secondaryAbilityImage, Canvas teamColorsCanvas) {
+        public void SetUpSprites(Image abilityImage, Image secondaryAbilityImage, AbilitySlotBackgroundView abilitySlotBackground) {
             abilityImage.sprite = Buildable.BaseSpriteIconOverride == null ? Buildable.BaseSprite : Buildable.BaseSpriteIconOverride;
 
             if (Buildable.TeamColorSprite == null) {
-                teamColorsCanvas.sortingOrder = 1;
                 secondaryAbilityImage.gameObject.SetActive(false);
             } else {
                 secondaryAbilityImage.sprite = Buildable.TeamColorSprite;
                 secondaryAbilityImage.color = GameManager.Instance.GetPlayerForTeam(SelectedEntity.Team).Data.TeamColor;
                 secondaryAbilityImage.gameObject.SetActive(true);
-                teamColorsCanvas.sortingOrder = Buildable.DisplayTeamColorOverMainSprite ? 2 : 1;
             }
+
+            if (abilitySlotBackground) {
+                IGamePlayer player = GameManager.Instance.GetPlayerForTeam(SelectedEntity.Team);
+                abilitySlotBackground.SetUpSlot(player.Data.SlotTeamSprite);
+            }
+        }
+
+        public void SetUpTimerView() {
+            // No timer to show
+        }
+
+        public void ClearTimerView() {
+            // No timer to clear
         }
     }
 }

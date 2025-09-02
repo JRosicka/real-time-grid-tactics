@@ -16,7 +16,8 @@ MonoBehaviour:
     _contentResourceID: Production Build Ability Infantry
     _id: Build
     _description: Build an infantry unit.
-    _icon: {fileID: 21300000, guid: 3e43f24e145544e38ae08cda571ca32a, type: 3}
+    _icon: {fileID: 21300000, guid: dcdb6563c02b6bf43b698eea6b840db7, type: 3}
+    _slotSprite: {fileID: 21300000, guid: d7af8ddcea755de489dcd40f98cdf739, type: 3}
     _abilityTimerCooldownView: {fileID: 5971072852972127787, guid: 31b9abd5b640d9648bf03e6305a255b4, type: 3}
     _requirements: []
     _performDuration: 0
@@ -34,6 +35,7 @@ MonoBehaviour:
     _autoSelect: 1
     _selectableForAllPlayers: 1
     _tryingToPerformCancelsBuilds: 0
+    _showTimerOnSelectionInterface: 0
     Targetable: 0
     Buildables:
     - data: {fileID: 11400000, guid: 991ad2a1d6801ee40b831e7850e0ff35, type: 2}

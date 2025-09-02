@@ -12,6 +12,8 @@ namespace Gameplay.UI {
         private readonly IAbilityData _abilityData;
         private readonly GridEntity _selectedEntity;
         
+        private AbilitySlotBackgroundView _abilitySlotBackgroundView;
+        
         public DefaultAbilitySlotBehavior(IAbilityData abilityData, GridEntity selectedEntity) {
             _abilityData = abilityData;
             _selectedEntity = selectedEntity;
@@ -45,11 +47,27 @@ namespace Gameplay.UI {
             return legality == AbilityLegality.Legal ? AbilitySlot.AvailabilityResult.Selectable : AbilitySlot.AvailabilityResult.Unselectable;
         }
 
-        public void SetUpSprites(Image abilityImage, Image secondaryAbilityImage, Canvas teamColorsCanvas) {
+        public void SetUpSprites(Image abilityImage, Image secondaryAbilityImage, AbilitySlotBackgroundView abilitySlotBackground) {
             abilityImage.sprite = _abilityData.Icon;
             secondaryAbilityImage.sprite = null;
             secondaryAbilityImage.gameObject.SetActive(false);
-            teamColorsCanvas.sortingOrder = 1;
+
+            if (abilitySlotBackground) {
+                _abilitySlotBackgroundView = abilitySlotBackground;
+                abilitySlotBackground.SetUpSlot(_abilityData.SlotSprite);
+            }
+        }
+
+        public void SetUpTimerView() {
+            if (_abilitySlotBackgroundView && _abilityData.ShowTimerOnSelectionInterface) {
+                _abilitySlotBackgroundView.SetUpTimer(_selectedEntity, _abilityData.Channel);
+            }
+        }
+
+        public void ClearTimerView() {
+            if (_abilitySlotBackgroundView) {
+                _abilitySlotBackgroundView.UnsubscribeFromTimers();
+            }
         }
     }
 }

@@ -17,7 +17,8 @@ MonoBehaviour:
     _id: Charge
     _description: 'Instantly move in a straight line across a clear path. Attacks
       an enemy if there is one at the destination. '
-    _icon: {fileID: 21300000, guid: b992428d6e6bd4dba86fb5c29096b2db, type: 3}
+    _icon: {fileID: 21300000, guid: b57c4120c8015b744a4fc3667c7fba31, type: 3}
+    _slotSprite: {fileID: 21300000, guid: d7af8ddcea755de489dcd40f98cdf739, type: 3}
     _abilityTimerCooldownView: {fileID: 5971072852972127787, guid: 31b9abd5b640d9648bf03e6305a255b4, type: 3}
     _requirements: []
     _performDuration: 0
@@ -35,6 +36,7 @@ MonoBehaviour:
     _autoSelect: 0
     _selectableForAllPlayers: 0
     _tryingToPerformCancelsBuilds: 1
+    _showTimerOnSelectionInterface: 1
     AddedAttackTime: 4
     ChargeRange: 2
     ChargeRangeWithUpgrade: 3

@@ -15,6 +15,7 @@ namespace Gameplay.Config.Abilities {
         AbilitySlotInfo AbilitySlotInfo { get; }
         string ContentResourceID { get; set; }
         Sprite Icon { get; }
+        Sprite SlotSprite { get; }
         AbilityTimerCooldownView AbilityTimerCooldownViewPrefab { get; }
         List<PurchasableData> Requirements { get; }
         float PerformDuration { get; }
@@ -79,6 +80,11 @@ namespace Gameplay.Config.Abilities {
         /// tries to issue the ability command
         /// </summary>
         bool TryingToPerformCancelsBuilds { get; }
+        /// <summary>
+        /// Whether we should show a visual for the ability cooldown timer on the selection interface's <see cref="AbilitySlot"/>
+        /// for this ability. 
+        /// </summary>
+        bool ShowTimerOnSelectionInterface { get; }
         string GetAttackTooltipMessage(GameTeam team);
         /// <summary>
         /// Respond to the user input intending to use this ability. Do not actually perform the ability (unless there is

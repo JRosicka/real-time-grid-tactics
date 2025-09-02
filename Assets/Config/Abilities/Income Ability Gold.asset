@@ -17,6 +17,7 @@ MonoBehaviour:
     _id: 
     _description: 
     _icon: {fileID: 0}
+    _slotSprite: {fileID: 0}
     _abilityTimerCooldownView: {fileID: 0}
     _requirements: []
     _performDuration: 0
@@ -33,6 +34,7 @@ MonoBehaviour:
     _autoSelect: 0
     _selectableForAllPlayers: 0
     _tryingToPerformCancelsBuilds: 0
+    _showTimerOnSelectionInterface: 0
     ResourceAmountIncome:
       Type: 0
       Amount: 5

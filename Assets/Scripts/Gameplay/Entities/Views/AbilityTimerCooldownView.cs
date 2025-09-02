@@ -12,17 +12,22 @@ namespace Gameplay.Entities {
         
         private AbilityCooldownTimer _cooldownTimer;
         private bool _destroyWhenExpired;
+        private bool _hideWhenExpired;
         private bool _waitForServerEvent;
 
         // TODO: Hmm, I think I would always want waitForServerEvent to be true? As long as it doesn't look janky locally with timers appearing/disappearing on clients. 
-        public void Initialize(AbilityCooldownTimer cooldownTimer, bool destroyWhenExpired, bool waitForServerEvent, AbilityTimerFill fillOverride = null) {
+        public void Initialize(AbilityCooldownTimer cooldownTimer, bool destroyWhenExpired, bool hideWhenExpired, bool waitForServerEvent, AbilityTimerFill fillOverride = null) {
             if (Canvas != null) {
                 Canvas.overrideSorting = true;
                 Canvas.sortingOrder = CanvasSortingOrderMap.TimerView;
             }
             gameObject.SetActive(true);
+            if (_cooldownTimer != null) {
+                _cooldownTimer.ExpiredEvent -= OnTimerExpired;
+            }
             _cooldownTimer = cooldownTimer;
             _destroyWhenExpired = destroyWhenExpired;
+            _hideWhenExpired = hideWhenExpired;
             _waitForServerEvent = waitForServerEvent;
             if (fillOverride != null) {
                 AbilityTimerFill = fillOverride;
@@ -35,8 +40,10 @@ namespace Gameplay.Entities {
         }
 
         public void UnsubscribeFromTimers() {
+            AbilityTimerFill.UpdateFillAmount01(0);
             if (_cooldownTimer != null) {
                 _cooldownTimer.ExpiredEvent -= OnTimerExpired;
+                _cooldownTimer = null;
             }
         }
 
@@ -57,11 +64,13 @@ namespace Gameplay.Entities {
         }
 
         private void HandleTimerCompleted() {
+            _cooldownTimer = null;
             if (_destroyWhenExpired) {
                 Destroy(gameObject);
-            } else {
+            } else if (_hideWhenExpired) {
                 gameObject.SetActive(false);
-                _cooldownTimer = null;
+            } else {
+                AbilityTimerFill.UpdateFillAmount01(0);
             }
         }
 

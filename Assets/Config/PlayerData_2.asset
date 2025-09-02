@@ -14,6 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Team: 2
   TeamColor: {r: 1, g: 0, b: 0.056943893, a: 1}
+  SlotTeamSprite: {fileID: 21300000, guid: 2858aa17bb20d4046ae0a8eb1a724eee, type: 3}
+  TeamBannerColor: {r: 0.9137255, g: 0.26666668, b: 0.26666668, a: 1}
   DeathParticlesColor1: {r: 0.6862745, g: 0.27058825, b: 0.27058825, a: 1}
   DeathParticlesColor2: {r: 0.3764706, g: 0.12156863, b: 0.12156863, a: 1}
   SpawnLocation: {x: 3, y: 3}

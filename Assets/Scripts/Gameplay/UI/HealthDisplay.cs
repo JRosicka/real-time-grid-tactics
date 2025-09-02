@@ -23,7 +23,7 @@ namespace Gameplay.UI {
         }
 
         private void UpdateHealth() {
-            HealthField.text = $"{_target.HPHandler.CurrentHP} / {_target.MaxHP}";
+            HealthField.text = $"{_target.HPHandler.CurrentHP}/{_target.MaxHP}";
         }
     }
 }

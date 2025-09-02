@@ -17,9 +17,20 @@ namespace Gameplay.UI {
             // Nothing to do
         }
         
-        public void SetUpSprites(Image abilityImage, Image secondaryAbilityImage, Canvas teamColorsCanvas) {
+        public void SetUpSprites(Image abilityImage, Image secondaryAbilityImage, AbilitySlotBackgroundView abilitySlotBackground) {
             abilityImage.sprite = GameConfiguration.CancelButtonSprite;
             secondaryAbilityImage.gameObject.SetActive(false);
+            if (abilitySlotBackground) {
+                abilitySlotBackground.SetUpSlot(GameConfiguration.CancelButtonSlotSprite);
+            }
+        }
+
+        public void SetUpTimerView() {
+            // No timer to show
+        }
+
+        public void ClearTimerView() {
+            // No timer to clear
         }
 
         public abstract bool AnyPlayerCanSelect { get; }

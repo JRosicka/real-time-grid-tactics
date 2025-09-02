@@ -20,9 +20,10 @@ namespace Gameplay.UI {
         string Tags { get; }
         bool DisplayHP { get; }
         [CanBeNull] BuildAbility InProgressBuild { get; }
-
-        void SetUpIcons(Image entityIcon, Image entityColorsIcon, Canvas entityColorsCanvas, int teamColorsCanvasSortingOrder);
-        void SetUpMoveView(GameObject movesRow, TMP_Text movesField, AbilityTimerCooldownView moveTimer, AbilityChannel moveChannel);
+        Color TeamBannerColor { get; }
+        
+        void SetUpIcons(Image entityIcon, Image entityColorsIcon);
+        void SetUpMoveView(GameObject movesRow, TMP_Text movesField);
         void SetUpAttackView(GameObject attackRow, TMP_Text attackField);
         void SetUpResourceView(GameObject resourceRow, TMP_Text resourceLabel, TMP_Text resourceField);
         void SetUpRangeView(GameObject rangeRow, TMP_Text rangeField);

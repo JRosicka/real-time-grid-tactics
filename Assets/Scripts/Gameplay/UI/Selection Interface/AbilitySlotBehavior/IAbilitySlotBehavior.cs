@@ -44,6 +44,14 @@ namespace Gameplay.UI {
         /// <summary>
         /// Perform implementation-specific UI setup for the given sprites
         /// </summary>
-        void SetUpSprites(Image abilityImage, Image secondaryAbilityImage, Canvas teamColorsCanvas);
+        void SetUpSprites(Image abilityImage, Image secondaryAbilityImage, AbilitySlotBackgroundView abilitySlotBackground);
+        /// <summary>
+        /// Set up the cooldown timer view for this slot's associated ability if there is one that should be displayed
+        /// </summary>
+        void SetUpTimerView();
+        /// <summary>
+        /// Teardown logic for this slot's ability cooldown timer view
+        /// </summary>
+        void ClearTimerView();
     }
 }

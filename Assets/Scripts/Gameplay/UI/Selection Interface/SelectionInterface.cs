@@ -11,13 +11,12 @@ namespace Gameplay.UI {
     /// Handles displaying information about selected <see cref="GridEntity"/>s and <see cref="IAbility"/>s
     /// </summary>
     public class SelectionInterface : MonoBehaviour {
-        [SerializeField] private AbilityChannel MoveChannel;
-
         [Header("References")] 
         [SerializeField] private GameObject View;
         [SerializeField] private TooltipView _tooltipView;
         public TooltipView TooltipView => _tooltipView;
-        
+
+        [SerializeField] private Image TeamColorBanner;
         [SerializeField] private Image EntityIcon;
         [SerializeField] private Image EntityColorsIcon;
         [SerializeField] private TMP_Text NameField;
@@ -27,7 +26,6 @@ namespace Gameplay.UI {
         [SerializeField] private HealthDisplay _healthDisplay;
         [SerializeField] private GameObject MovesRow;
         [SerializeField] private TMP_Text MovesField;
-        [SerializeField] private AbilityTimerCooldownView MoveTimer;    // TODO I'll probably want to try out using a move meter instead of a timer for movement. 
         [SerializeField] private GameObject AttackRow;
         [SerializeField] private TMP_Text AttackField;
         [SerializeField] private GameObject ResourceRow;
@@ -44,8 +42,6 @@ namespace Gameplay.UI {
 
         [SerializeField] private BuildQueueView _buildQueueForStructure;
         [SerializeField] private BuildQueueView _buildQueueForWorker;
-        
-        // TODO Row of icons representing upgrades? Hoverable to get info about them?
         
         [SerializeField] private AbilityInterface AbilityInterface;
 
@@ -119,9 +115,6 @@ namespace Gameplay.UI {
             _displayedSelectable.UnregisterListeners();
 
             _displayedSelectable = null;
-            if (MoveTimer != null) {
-                MoveTimer.UnsubscribeFromTimers();
-            }
             
             // Hide everything
             ToggleViews(false, null);
@@ -141,20 +134,22 @@ namespace Gameplay.UI {
                 _defenseHoverableInfoIcon.HideIcon();
                 _attackHoverableInfoIcon.HideIcon();
                 _moveHoverableInfoIcon.HideIcon();
+            } else {
+                TeamColorBanner.color = selectableObject.TeamBannerColor;
             }
         }
 
         private void UpdateEntityInfo() {
             if (_displayedSelectable == null) return;
 
-            _displayedSelectable.SetUpIcons(EntityIcon, EntityColorsIcon, null, -1);
+            _displayedSelectable.SetUpIcons(EntityIcon, EntityColorsIcon);
 
             NameField.text = _displayedSelectable.Name;
             DescriptionField.text = _displayedSelectable.ShortDescription;
             TagsField.text = _displayedSelectable.Tags;
 
             _healthDisplay.gameObject.SetActive(_displayedSelectable.DisplayHP);
-            _displayedSelectable.SetUpMoveView(MovesRow, MovesField, MoveTimer, MoveChannel);
+            _displayedSelectable.SetUpMoveView(MovesRow, MovesField);
             _displayedSelectable.SetUpAttackView(AttackRow, AttackField);
             _displayedSelectable.SetUpRangeView(_rangeRow, _rangeField);
             _displayedSelectable.SetUpResourceView(ResourceRow, ResourceLabel, ResourceField);

@@ -34,10 +34,10 @@ namespace Gameplay.UI {
         [Header("References")]
         public Image AbilityImage;
         public Image SecondaryAbilityImage;    // For build target color icon
+        public AbilitySlotBackgroundView AbilitySlotBackgroundView;
         public Image SlotFrame;
         public TMP_Text HotkeyText;
         public AbilityInterface AbilityInterface;
-        public Canvas TeamColorsCanvas;
         public CanvasGroup CanvasGroup;
 
         private GridEntity _selectedEntity;
@@ -59,7 +59,8 @@ namespace Gameplay.UI {
         public void SetUpSlot(IAbilitySlotBehavior slotBehavior, GridEntity selectedEntity) {
             _slotBehavior = slotBehavior;
             _selectedEntity = selectedEntity;
-            slotBehavior.SetUpSprites(AbilityImage, SecondaryAbilityImage, TeamColorsCanvas);
+            slotBehavior.SetUpSprites(AbilityImage, SecondaryAbilityImage, AbilitySlotBackgroundView);
+            slotBehavior.SetUpTimerView();
             
             gameObject.SetActive(true);
             CanvasGroup.alpha = 1;
@@ -79,6 +80,7 @@ namespace Gameplay.UI {
             RemoveListeners();
             _shouldDeselectWhenTimerElapses = false;
 
+            _slotBehavior?.ClearTimerView();
             _slotBehavior = null;
             _selectedEntity = null;
             _selected = false;

@@ -25,15 +25,16 @@ namespace Gameplay.UI {
         public string Tags => string.Empty;
         public bool DisplayHP => false;
         public BuildAbility InProgressBuild => null;
-        public void SetUpIcons(Image entityIcon, Image entityColorsIcon, Canvas entityColorsCanvas, int teamColorsCanvasSortingOrder) {
+        public Color TeamBannerColor => GameManager.Instance.Configuration.NeutralBannerColor;
+        
+        public void SetUpIcons(Image entityIcon, Image entityColorsIcon) {
             entityIcon.sprite = _tile.m_DefaultSprite;
             entityColorsIcon.gameObject.SetActive(false);
         }
 
-        public void SetUpMoveView(GameObject movesRow, TMP_Text movesField, AbilityTimerCooldownView moveTimer, AbilityChannel moveChannel) {
+        public void SetUpMoveView(GameObject movesRow, TMP_Text movesField) {
             movesRow.SetActive(false);
             movesField.text = string.Empty;
-            moveTimer.gameObject.SetActive(false);
         }
 
         public void SetUpAttackView(GameObject attackRow, TMP_Text attackField) {

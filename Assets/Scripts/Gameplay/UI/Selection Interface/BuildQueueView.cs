@@ -64,7 +64,7 @@ namespace Gameplay.UI {
             
             if (AbilityAssignmentManager.IsAbilityChannelOnCooldownForEntity(_gridEntity, _buildChannel, out _activeBuildCooldownTimer)) {
                 _buildTimer.gameObject.SetActive(true);
-                _buildTimer.Initialize(_activeBuildCooldownTimer, false, true);
+                _buildTimer.Initialize(_activeBuildCooldownTimer, false, false, true);
             } else {
                 _buildTimer.gameObject.SetActive(false);
             }

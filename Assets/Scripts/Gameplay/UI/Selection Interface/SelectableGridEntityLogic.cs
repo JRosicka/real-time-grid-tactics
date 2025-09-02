@@ -19,7 +19,6 @@ namespace Gameplay.UI {
             Entity = entity;
             
             entity.AbilityPerformedEvent += OnEntityAbilityPerformed;
-            entity.CooldownTimerExpiredEvent += OnEntityAbilityCooldownExpired;
             entity.CurrentResources.ValueChanged += OnEntityResourceAmountChanged;
             entity.KillCountChanged += KillCountChanged;
             
@@ -48,37 +47,28 @@ namespace Gameplay.UI {
             }
         }
 
-        public void SetUpIcons(Image entityIcon, Image entityColorsIcon, Canvas entityColorsCanvas, int teamColorsCanvasSortingOrder) {
+        public Color TeamBannerColor {
+            get {
+                IGamePlayer player = GameManager.Instance.GetPlayerForTeam(Entity.Team);
+                return player == null 
+                    ? GameManager.Instance.Configuration.NeutralBannerColor 
+                    : player.Data.TeamBannerColor;
+            }
+        }
+
+        public void SetUpIcons(Image entityIcon, Image entityColorsIcon) {
             EntityData entityData = Entity.EntityData;
             entityIcon.sprite = entityData.BaseSpriteIconOverride == null ? entityData.BaseSprite : entityData.BaseSpriteIconOverride;
             entityColorsIcon.sprite = entityData.TeamColorSprite;
             IGamePlayer player = GameManager.Instance.GetPlayerForTeam(Entity.Team);
             entityColorsIcon.gameObject.SetActive(true);
             entityColorsIcon.color = player != null ? player.Data.TeamColor : Color.clear;
-            if (teamColorsCanvasSortingOrder >= 0 && entityColorsCanvas != null) {
-                entityColorsCanvas.sortingOrder = teamColorsCanvasSortingOrder;
-            }
         }
 
-        private GameObject _movesRow;
-        private TMP_Text _movesField;
-        private AbilityTimerCooldownView _moveTimer;
-        private AbilityChannel _moveChannel;
-        public void SetUpMoveView(GameObject movesRow, TMP_Text movesField, AbilityTimerCooldownView moveTimer, AbilityChannel moveChannel) {
-            _movesRow = movesRow;
-            _movesField = movesField;
-            _moveTimer = moveTimer;
-            _moveChannel = moveChannel;
-            
+        public void SetUpMoveView(GameObject movesRow, TMP_Text movesField) {
             if (Entity.CanMove) {
                 movesRow.SetActive(true);
                 movesField.text = $"{Entity.MoveTime:N2}s";
-                if (GameManager.Instance.AbilityAssignmentManager.IsAbilityChannelOnCooldownForEntity(Entity, moveChannel, out AbilityCooldownTimer activeMoveCooldownTimer)) {
-                    moveTimer.gameObject.SetActive(true);
-                    moveTimer.Initialize(activeMoveCooldownTimer, false, true);
-                } else {
-                    moveTimer.gameObject.SetActive(false);
-                }
             } else {
                 movesRow.SetActive(false);
             }
@@ -122,8 +112,8 @@ namespace Gameplay.UI {
             } else {
                 // There are indeed resources to be shown here
                 resourceRow.SetActive(true);
-                resourceLabel.text = $"Remaining {resourceAmount.Type.DisplayIcon()}:";
-                resourceField.text = resourceAmount.Amount.ToString();
+                resourceLabel.text = "Remaining:";
+                resourceField.text = $"{resourceAmount.Amount} {resourceAmount.Type.DisplayIcon()}";
             }
         }
 
@@ -184,7 +174,6 @@ namespace Gameplay.UI {
 
         public void UnregisterListeners() {
             Entity.AbilityPerformedEvent -= OnEntityAbilityPerformed;
-            Entity.CooldownTimerExpiredEvent -= OnEntityAbilityCooldownExpired;
             Entity.CurrentResources.ValueChanged -= OnEntityResourceAmountChanged;
             Entity.KillCountChanged -= KillCountChanged;
             IGamePlayer player = GameManager.Instance.GetPlayerForTeam(Entity.Team);
@@ -194,15 +183,10 @@ namespace Gameplay.UI {
         }
         
         private void OnEntityAbilityPerformed(IAbility iAbility, AbilityCooldownTimer abilityCooldownTimer) {
-            SetUpMoveView(_movesRow, _movesField, _moveTimer, _moveChannel);
             SetUpResourceView(_resourceRow, _resourceLabel, _resourceField);
             SetUpHoverableInfo(_defenseHoverableInfoIcon, _attackHoverableInfoIcon, null);
         }
-
-        private void OnEntityAbilityCooldownExpired(IAbility ability, AbilityCooldownTimer abilityCooldownTimer) {
-            SetUpMoveView(_movesRow, _movesField, _moveTimer, _moveChannel);
-        }
-
+        
         private void OnEntityResourceAmountChanged(INetworkableFieldValue oldValue, INetworkableFieldValue newValue, object metadata) {
             SetUpResourceView(_resourceRow, _resourceLabel, _resourceField);
         }

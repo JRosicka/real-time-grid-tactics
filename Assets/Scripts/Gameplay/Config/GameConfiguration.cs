@@ -15,6 +15,8 @@ namespace Gameplay.Config {
         
         [Header("Misc Sprites")]
         public Sprite CancelButtonSprite;
+        public Sprite CancelButtonSlotSprite;
+        public Color NeutralBannerColor;
         
         [Header("Gameplay ScriptableObjects")]
         public List<PurchasableData> Purchasables;
