@@ -3,7 +3,9 @@ using System.Linq;
 using Gameplay.Config;
 using Gameplay.Entities;
 using Gameplay.Managers;
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI; 
 
 namespace Gameplay.UI {
     /// <summary>
@@ -13,18 +15,27 @@ namespace Gameplay.UI {
     public class ResourcesInterface : MonoBehaviour {
         [SerializeField] private PlayerResourcesView _playerResourcesViewPrefab;
         [SerializeField] private Transform _resourcesViewParent;
+        [SerializeField] private Image _mainBanner;
+        [SerializeField] private TMP_Text _localPlayerName;
 
         private readonly Dictionary<GameTeam, PlayerResourcesView> _playerResourcesViews = new Dictionary<GameTeam, PlayerResourcesView>();
 
         private GameConfiguration GameConfiguration => GameManager.Instance.Configuration;
         
-        public void Initialize(IPlayerResourcesObserver resourcesObserver) {
+        public void Initialize(IPlayerResourcesObserver resourcesObserver, IGamePlayer localPlayer) {
+            bool localPlayerIsSpectator = localPlayer.Data.Team == GameTeam.Spectator;
+            _mainBanner.color = localPlayerIsSpectator
+                ? GameConfiguration.NeutralBannerColor
+                : localPlayer.Data.TeamBannerColor;
+
+            _localPlayerName.text = localPlayer.DisplayName;
+            
             resourcesObserver.BalanceChanged += UpdateBalancesView;
 
             // Create a view for each player
             foreach (IGamePlayer player in resourcesObserver.ObservedPlayers) {
                 PlayerResourcesView resourcesView = Instantiate(_playerResourcesViewPrefab, _resourcesViewParent);
-                resourcesView.SetPlayerDetails(player.DisplayName, player.Data.TeamColor);
+                resourcesView.SetPlayerDetails(player.DisplayName, player.Data.SlotTeamSprite, localPlayerIsSpectator);
                 resourcesView.UpdateAmounts(GameConfiguration.CurrencyConfiguration.StartingGoldAmount, GameConfiguration.CurrencyConfiguration.StartingAmberAmount);
                 _playerResourcesViews.Add(player.Data.Team, resourcesView);
             }

@@ -220,7 +220,7 @@ public class GameSetupManager : MonoBehaviour {
         }
         player2.DisplayName = "Opponent";
         
-        GameManager.SetPlayers(player1, player2, GameTeam.Player1, 0);
+        GameManager.SetPlayers(player1, player2, player1, 0);
         
         MapLoader.LoadMap(player1.Data.Team);
         SpawnStartingUnits();

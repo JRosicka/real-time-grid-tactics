@@ -115,8 +115,8 @@ public class GameManager : MonoBehaviour {
 
     #region Game setup
     
-    public void SetPlayers(IGamePlayer player1, IGamePlayer player2, GameTeam localTeam, int localIndex) {
-        LocalTeam = localTeam;
+    public void SetPlayers(IGamePlayer player1, IGamePlayer player2, IGamePlayer localPlayer, int localIndex) {
+        LocalTeam = localPlayer.Data.Team;
         LocalPlayerIndex = localIndex;
         
         // Set up players
@@ -126,13 +126,13 @@ public class GameManager : MonoBehaviour {
         player2.Initialize(Configuration.GetUpgrades(), Configuration);
         
         // Set up resources interface - for spectators, we want to track all players' resources
-        IPlayerResourcesObserver resourcesObserver = localTeam switch {
+        IPlayerResourcesObserver resourcesObserver = LocalTeam switch {
             GameTeam.Spectator => new CompoundPlayerResourcesObserver(new List<IGamePlayer> { player1, player2 }),
             GameTeam.Player1 => new PlayerResourcesObserver(player1),
             GameTeam.Player2 => new PlayerResourcesObserver(player2),
-            _ => throw new Exception($"Invalid local team: {localTeam}")
+            _ => throw new Exception($"Invalid local team: {LocalTeam}")
         };
-        ResourcesInterface.Initialize(resourcesObserver);
+        ResourcesInterface.Initialize(resourcesObserver, localPlayer);
     }
 
     public void SetupCommandManager(ICommandManager commandManager) {

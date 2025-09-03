@@ -42,9 +42,9 @@ public class MultiplayerGameSetupHandler : NetworkBehaviour {
             Debug.LogError("Could not find local player");
             return;
         }
-        GameManager.Instance.SetPlayers(player1, player2, localPlayer.Data.Team, localPlayer.Index);
+        GameManager.Instance.SetPlayers(player1, player2, localPlayer, localPlayer.Index);
         
-        // Let the server know we are done
+        // Let the server know we are done 
         CmdNotifyPlayerAssigned();
     }
     

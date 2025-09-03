@@ -16,7 +16,7 @@ MonoBehaviour:
   CurrencyConfiguration: {fileID: 11400000, guid: 3db5f2d7bb4f743459bc067c8714423b, type: 2}
   CancelButtonSprite: {fileID: 21300000, guid: ac6a5cd8c78757649b1eebb6c22b1ba4, type: 3}
   CancelButtonSlotSprite: {fileID: 21300000, guid: e7127e30361d9154289ebc8a1d0edbf4, type: 3}
-  NeutralBannerColor: {r: 0.5943396, g: 0.5943396, b: 0.5943396, a: 1}
+  NeutralBannerColor: {r: 0.80784315, g: 0.80784315, b: 0.80784315, a: 1}
   Purchasables:
   - {fileID: 11400000, guid: 991ad2a1d6801ee40b831e7850e0ff35, type: 2}
   - {fileID: 11400000, guid: 13a02f740ff7d294ca02fe7f547820c0, type: 2}
