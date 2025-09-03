@@ -11,6 +11,7 @@ namespace Gameplay.Entities {
     public class ArcherArrow : NetworkBehaviour {
         public float CloseEnoughAmount = .05f;
         public float Speed;
+        public float MaxLifetimeSeconds;
         public AnimationCurve AttackPathCurve;
 
         private GridEntity _attacker;
@@ -27,6 +28,7 @@ namespace Gameplay.Entities {
         private int _signInt;
         private bool _initialized;
         private int _bonusDamage;
+        private float _lifetimeSeconds;
 
         /// <summary>
         /// Should only be called on the server/SP. Sets up logic for moving the arrow to the target. 
@@ -74,9 +76,16 @@ namespace Gameplay.Entities {
                 return;
             }
 
+            _lifetimeSeconds += Time.deltaTime;
+            if (_lifetimeSeconds >= MaxLifetimeSeconds) {
+                Debug.LogWarning("Took too long for the arrow to reach its target! Hitting now.");
+                HitTarget();
+                return;
+            }
+            
             Vector3 currentPosition = transform.position;
             
-            if (_lastTargetLocation != _target.Location) {
+            if (_lastTargetLocation != targetLocation) {
                 // The target moved, so record changes and from now on just travel in a straight line towards the target
                 _lastTargetLocation = targetLocation.Value;
                 _lastTargetWorldPosition = _gridController.GetWorldPosition(targetLocation.Value);
