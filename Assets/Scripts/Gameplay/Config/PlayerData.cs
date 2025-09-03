@@ -1,4 +1,7 @@
+using Gameplay.Config.Abilities;
 using Gameplay.Entities;
+using Gameplay.Entities.Abilities;
+using Mirror;
 using UnityEngine;
 
 namespace Gameplay.Config {
@@ -14,5 +17,16 @@ namespace Gameplay.Config {
         public Color DeathParticlesColor1;
         public Color DeathParticlesColor2;
         public Vector2Int SpawnLocation;
+    }
+    
+    public static class PlayerDataSerializer {
+        public static void WritePlayerData(this NetworkWriter writer, PlayerData playerData) {
+            writer.WriteString(playerData.name);
+        }
+
+        public static PlayerData ReadPlayerData(this NetworkReader reader) {
+            PlayerData data = GameManager.Instance.Configuration.GetPlayer(reader.ReadString());
+            return data;
+        }
     }
 }

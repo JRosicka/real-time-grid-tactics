@@ -12,6 +12,9 @@ namespace Gameplay.Config {
         [Header("Config")]
         public AudioFileConfiguration AudioConfiguration;
         public CurrencyConfiguration CurrencyConfiguration;
+
+        [Header("Player Configs")] 
+        public List<PlayerData> PlayerConfigs;
         
         [Header("Misc Sprites")]
         public Sprite CancelButtonSprite;
@@ -47,6 +50,10 @@ namespace Gameplay.Config {
 
         public AbilityDataScriptableObject GetAbility(string id) {
             return Abilities.First(d => d.name == id); 
+        }
+
+        public PlayerData GetPlayer(string id) {
+            return PlayerConfigs.First(c => c.name == id);
         }
     }
 }
