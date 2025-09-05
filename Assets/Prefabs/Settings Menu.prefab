@@ -37,7 +37,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 414.75, y: -264.3}
+  m_AnchoredPosition: {x: 400, y: -264.3}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &5569157148493210527
@@ -1944,6 +1944,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Setting Slider
       objectReference: {fileID: 0}
+    - target: {fileID: 7210732998106290094, guid: ceb4ddb24624a4e5a8ee74244a9053af, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7210732998106290094, guid: ceb4ddb24624a4e5a8ee74244a9053af, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ceb4ddb24624a4e5a8ee74244a9053af, type: 3}
 --- !u!224 &8813026282255086926 stripped
@@ -2314,6 +2322,14 @@ PrefabInstance:
     - target: {fileID: 5048642193060446855, guid: ceb4ddb24624a4e5a8ee74244a9053af, type: 3}
       propertyPath: m_Name
       value: Setting Slider
+      objectReference: {fileID: 0}
+    - target: {fileID: 7210732998106290094, guid: ceb4ddb24624a4e5a8ee74244a9053af, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7210732998106290094, guid: ceb4ddb24624a4e5a8ee74244a9053af, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ceb4ddb24624a4e5a8ee74244a9053af, type: 3}
