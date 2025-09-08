@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Gameplay.Config;
+using Unity.VisualScripting;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "Gameplay Tile", menuName = "Tiles/Rule Tile")]
@@ -44,13 +45,13 @@ public class GameplayTile : HexagonalRuleTile<GameplayTile.Neighbor> {
         return slowedTag?.SlowFactor ?? 1f;
     }
 
-    private const string DefenseFormat = "Reduces incoming attack damage by {0} for {1}.";
+    private const string DefenseFormat = "{0} occupying this tile receive {1} less damage from attacks.";
     public string GetDefenseTooltip() {
         if (_defenseBoostTags.Count == 0 || _armorBonus == 0) return "";
 
         string tooltip = "";
         for (int i = 0; i < _defenseBoostTags.Count; i++) {
-            tooltip += string.Format(DefenseFormat, _armorBonus, _defenseBoostTags[i].UnitDescriptorPlural());
+            tooltip += string.Format(DefenseFormat, _defenseBoostTags[i].UnitDescriptorPlural(), _armorBonus).FirstCharacterToUpper();
             if (i < _defenseBoostTags.Count - 1) tooltip += "<br>";
         }
         return tooltip;

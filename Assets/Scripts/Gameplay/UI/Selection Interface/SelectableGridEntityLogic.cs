@@ -7,6 +7,7 @@ using Gameplay.Entities.Abilities;
 using Gameplay.Entities.BuildQueue;
 using JetBrains.Annotations;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -202,9 +203,9 @@ namespace Gameplay.UI {
         
         #region Tooltips
         
-        private const string DefenseFormatStructure = "Reduces incoming attack damage by {0} for {1}.";
-        private const string DefenseFormatUnit = "Friendly structure reduces incoming attack damage by {0}.";
-        private const string DefenseFormatTerrain = "Terrain reduces incoming attack damage by {0}.";
+        private const string DefenseFormatStructure = "{0} occupying this structure receive {1} less damage from attacks.";
+        private const string DefenseFormatUnit = "Receives {0} less damage from attacks due to friendly structure.";
+        private const string DefenseFormatTerrain = "Receives {0} less damage from attacks due to terrain.";
         private string GetDefenseTooltip() {
             int defenseModifier = Entity.GetStructureDefenseModifier();
             if (defenseModifier != 0) {
@@ -214,7 +215,7 @@ namespace Gameplay.UI {
                     if (Entity.EntityData.SharedUnitDamageTakenModifierTags.Count > 0) {
                         entitiesReceivingDefense = GetStringListForEntityTags(Entity.EntityData.SharedUnitDamageTakenModifierTags);
                     }
-                    return string.Format(DefenseFormatStructure, defenseModifier, entitiesReceivingDefense);
+                    return string.Format(DefenseFormatStructure, entitiesReceivingDefense, defenseModifier).FirstCharacterToUpper();
                 }
             
                 return string.Format(DefenseFormatUnit, defenseModifier);
