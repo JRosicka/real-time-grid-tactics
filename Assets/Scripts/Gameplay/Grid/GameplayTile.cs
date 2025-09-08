@@ -63,7 +63,7 @@ public class GameplayTile : HexagonalRuleTile<GameplayTile.Neighbor> {
         
         string tooltip = "";
         for (int i = 0; i < SlowTags.Count; i++) {
-            tooltip += string.Format(SlowFormat, SlowTags[i].Tag.UnitDescriptorPlural(), Mathf.RoundToInt((SlowTags[i].SlowFactor - 1) * 100));
+            tooltip += string.Format(SlowFormat, SlowTags[i].Tag.UnitDescriptorPlural(), Mathf.RoundToInt((1 - 1 / SlowTags[i].SlowFactor) * 100));
             if (i < SlowTags.Count - 1) tooltip += "<br>";
         }
         return tooltip;
