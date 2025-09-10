@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using Audio;
 using Game.Network;
 using JetBrains.Annotations;
 using Mirror;
@@ -20,6 +21,8 @@ public class RoomMenu : MonoBehaviour {
     public Button ToggleReadyButton;
     public TMP_Text ToggleReadyButtonText;
     public TMP_Text JoinCodeText;
+    
+    public LobbyAudio LobbyAudio;
     
     public CanvasWidthSetter CanvasWidthSetter;
 
@@ -111,11 +114,15 @@ public class RoomMenu : MonoBehaviour {
             // We're just a little baby client, so just stop the client
             NetworkManager.StopClient();
         }
+
+        LobbyAudio.ButtonClickSound();
     }
 
     public void CopyJoinCode() {
         GUIUtility.systemCopyBuffer = _joinCode;
         CopiedToClipboardAnimator.Play("Copy Join Code");
+        
+        LobbyAudio.ButtonClickSound();
     }
 
     private void TryShowStartButton() {
@@ -227,6 +234,8 @@ public class RoomMenu : MonoBehaviour {
             ToggleReadyButtonText.text = "Cancel";
             LocalPlayer.CmdChangeReadyState(true);
         }
+        
+        LobbyAudio.ButtonClickSound();
     }
 
     /// <summary>
@@ -259,5 +268,7 @@ public class RoomMenu : MonoBehaviour {
     public void StartGame() {
         SteamLobbyService.UpdateCurrentLobbyMetadata(SteamLobbyService.LobbyGameActiveKey, true.ToString());
         NetworkManager.ServerChangeScene(NetworkManager.GameplayScene);
+        
+        LobbyAudio.ButtonClickSound();
     }
 }

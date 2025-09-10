@@ -119,7 +119,7 @@ namespace Gameplay.Entities {
 
         private void Selected() {
             if (Entity.EntityData.SelectionSound.Clip != null) {
-                GameManager.Instance.AudioPlayer.TryPlaySFX(Entity.EntityData.SelectionSound);
+                GameManager.Instance.GameAudio.EntitySelectionSound(Entity.EntityData);
             }
         }
 

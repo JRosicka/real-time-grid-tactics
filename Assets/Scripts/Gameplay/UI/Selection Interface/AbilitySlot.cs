@@ -94,18 +94,18 @@ namespace Gameplay.UI {
 
         public void SelectAbility() {
             if (Availability != AvailabilityResult.Selectable) {
-                GameManager.Instance.AudioPlayer.TryPlaySFX(GameManager.Instance.Configuration.AudioConfiguration.InvalidSound);
+                GameManager.Instance.GameAudio.InvalidSound();
                 return;
             }
             
-            GameManager.Instance.AudioPlayer.TryPlaySFX(GameManager.Instance.Configuration.AudioConfiguration.ButtonClickSound);
+            GameManager.Instance.GameAudio.ButtonClickSound();
             
             MarkSelected(true);
             _slotBehavior?.SelectSlot();
         }
 
         public void HandleFailedToSelect() {
-            GameManager.Instance.AudioPlayer.TryPlaySFX(GameManager.Instance.Configuration.AudioConfiguration.InvalidSound);
+            GameManager.Instance.GameAudio.InvalidSound();
             _slotBehavior?.HandleFailedToSelect(Availability);
         }
 

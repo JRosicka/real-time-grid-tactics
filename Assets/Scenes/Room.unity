@@ -4207,6 +4207,7 @@ MonoBehaviour:
   ToggleReadyButton: {fileID: 16179781}
   ToggleReadyButtonText: {fileID: 1978654485}
   JoinCodeText: {fileID: 1606361363}
+  LobbyAudio: {fileID: 1809336150}
   CanvasWidthSetter: {fileID: 1732580025}
   CopiedToClipboardAnimator: {fileID: 1426736406}
 --- !u!114 &1732580025
@@ -4358,6 +4359,55 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d6867d710670ddb4180b26ce61892372, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &1809336148
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1809336149}
+  - component: {fileID: 1809336150}
+  m_Layer: 0
+  m_Name: Lobby Audio
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1809336149
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1809336148}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1809336150
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1809336148}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9331d439b068431d9b4fd8b41f407347, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _buttonClick:
+    Clip: {fileID: 8300000, guid: 71661fd9bce89964daaf2b0bd170ecae, type: 3}
+    Volume: 0.862
+    AudioLayer: 0
+    Interruptible: 0
 --- !u!1 &1900745866
 GameObject:
   m_ObjectHideFlags: 0

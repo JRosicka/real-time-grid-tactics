@@ -1,4 +1,7 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using Audio;
 using Game.Network;
 using Gameplay.UI;
 using Steamworks;
@@ -31,6 +34,8 @@ public class MultiplayerMenu : MonoBehaviour {
     public Color EnabledTextColor;
     
     public CanvasWidthSetter CanvasWidthSetter;
+    
+    public MainMenuAudio MainMenuAudio;
 
     private void Start() {
         CanvasWidthSetter.Initialize();
@@ -101,18 +106,24 @@ public class MultiplayerMenu : MonoBehaviour {
         ResetMultiplayerMenu();
 
         LobbyTypeSelection.SetActive(true);
+        
+        MainMenuAudio.ButtonClickSound();
     }
 
     public void OnHostPrivateLobbyClicked() {
         SteamLobbyService.Instance.HostLobby(false);
 
         HideButtons();
+        
+        MainMenuAudio.ButtonClickSound();
     }
 
     public void OnHostPublicLobbyClicked() {
         SteamLobbyService.Instance.HostLobby(true);
         
         HideButtons();
+        
+        MainMenuAudio.ButtonClickSound();
         
         // TODO maybe respond to OnLobbyCreationComplete callback? Might just get whisked away to the room though. 
     }
@@ -123,6 +134,8 @@ public class MultiplayerMenu : MonoBehaviour {
 
     public void OnStartSinglePlayerGameClicked() {
         SceneManager.LoadScene("GamePlay");
+        
+        MainMenuAudio.ButtonClickSound();
     }
 
     public void OnStopHostClicked() {
@@ -130,40 +143,54 @@ public class MultiplayerMenu : MonoBehaviour {
         
         ResetMultiplayerMenu();
         StopHostButton.gameObject.SetActive(false);
+        
+        MainMenuAudio.ButtonClickSound();
     }
 
     public void OnSearchForLobbiesClicked() {
         ResetMultiplayerMenu();
         
         DisplayLobbyMenu();
+        
+        MainMenuAudio.ButtonClickSound();
     }
 
     public void OnJoinByIDButtonClicked() {
         ResetMultiplayerMenu();
         
         JoinByIDMenu.gameObject.SetActive(true);
+        
+        MainMenuAudio.ButtonClickSound();
     }
 
     public void OnSinglePlayerButtonClicked() {
         ResetMultiplayerMenu();
 
         SinglePlayerConfirmationDialog.SetActive(true);
+        
+        MainMenuAudio.ButtonClickSound();
     }
     
     public void OnTipsClicked() {
         ResetMultiplayerMenu();
         HideButtons();
         TipsMenu.Open(ResetMultiplayerMenu);
+        
+        MainMenuAudio.ButtonClickSound();
     }
 
     public void OnSettingsClicked() {
         ResetMultiplayerMenu();
         HideButtons();
         SettingsMenu.Open(ResetMultiplayerMenu);
+        
+        MainMenuAudio.ButtonClickSound();
     }
     
     public void OnQuitClicked() {
         Application.Quit(0);
+        
+        MainMenuAudio.ButtonClickSound();
     }
 
     private event Action _onClickedOkayOnFailureDialog;
@@ -171,10 +198,14 @@ public class MultiplayerMenu : MonoBehaviour {
         FailureFeedbackDialog.SetActive(false);
         _onClickedOkayOnFailureDialog?.Invoke();
         _onClickedOkayOnFailureDialog = null;
+        
+        MainMenuAudio.ButtonClickSound();
     }
 
     private string _joinCodeForLobbyWeAreAttemptingToJoin;
     public void OnSubmitLobbyJoinIDClicked() {
+        MainMenuAudio.ButtonClickSound();
+        
         string id = JoinByIDField.text;
 
         // If we have a join code stored here, then we are expecting the user to input the correct join ID.

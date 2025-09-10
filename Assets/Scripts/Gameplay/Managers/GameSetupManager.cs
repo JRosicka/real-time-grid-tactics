@@ -131,7 +131,7 @@ public class GameSetupManager : MonoBehaviour {
     /// </summary>
     /// <param name="winner"></param>
     public void NotifyGameOver(GameTeam winner) {
-        GameManager.Instance.AudioPlayer.EndMusic(true);
+        GameManager.Instance.GameAudio.EndMusic(true);
         
         GameOver = true;
         if (winner == GameTeam.Neutral) {
@@ -139,13 +139,13 @@ public class GameSetupManager : MonoBehaviour {
             // TODO tie sound effect?
         } else if (GameManager.LocalTeam == GameTeam.Spectator) {
             GameOverView.ShowSpectatorThatPlayerWon(GameManager.GetPlayerForTeam(winner));
-            GameManager.Instance.AudioPlayer.TryPlaySFX(GameManager.Instance.Configuration.AudioConfiguration.GameWinSound);
+            GameManager.Instance.GameAudio.GameWinSound();
         } else if (winner == GameManager.LocalTeam) {
             GameOverView.ShowVictory();
-            GameManager.Instance.AudioPlayer.TryPlaySFX(GameManager.Instance.Configuration.AudioConfiguration.GameWinSound);
+            GameManager.Instance.GameAudio.GameWinSound();
         } else {
             GameOverView.ShowDefeat();
-            GameManager.Instance.AudioPlayer.TryPlaySFX(GameManager.Instance.Configuration.AudioConfiguration.GameLossSound);
+            GameManager.Instance.GameAudio.GameLossSound();
         }
     }
 

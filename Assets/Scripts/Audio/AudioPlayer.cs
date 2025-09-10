@@ -8,9 +8,7 @@ namespace Audio {
     /// </summary>
     public class AudioPlayer : MonoBehaviour {
         public bool ActivePlayer { get; private set; }
-
-        private bool AudioEnabled => GameManager.Instance.Configuration.AudioConfiguration.AudioEnabled;
-
+        
         [SerializeField] private AudioManager _audioManager;
         private OneShotAudio _interruptibleSFX;
         private OneShotAudio _activeMusic;
@@ -38,8 +36,6 @@ namespace Audio {
         /// </summary>
         /// <param name="audioFile">The audio to play</param>
         public void TryPlaySFX(AudioFile audioFile) {
-            if (!AudioEnabled) return;
-            
             if (audioFile.Interruptible) {
                 int priorityOfCurrentSFX = _interruptibleSFX?.Priority ?? int.MinValue;
                 int priorityOfNewSFX = AudioManager.GetLayerPriority(audioFile.AudioLayer);
@@ -56,8 +52,6 @@ namespace Audio {
         }
 
         public void PlayMusic(AudioFile audioFile) {
-            if (!AudioEnabled) return;
-            
             if (_activeMusic != null) {
                 _audioManager.CancelAudio(_activeMusic, false);
             }
@@ -65,7 +59,6 @@ namespace Audio {
         }
 
         public void EndMusic(bool fadeOut) {
-            if (!AudioEnabled) return;
             if (_activeMusic == null) return;
             
             _audioManager.CancelAudio(_activeMusic, fadeOut);

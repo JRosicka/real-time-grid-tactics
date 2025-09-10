@@ -12,6 +12,7 @@ using JetBrains.Annotations;
 using Mirror;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.Serialization;
 
 /// <summary>
 /// Central manager for accessing entities, players, and other managers
@@ -36,6 +37,7 @@ public class GameManager : MonoBehaviour {
     public InGameTimer InGameTimer;
     public ResourceEntityFinder ResourceEntityFinder;
     public CanvasWidthSetter CanvasWidthSetter;
+    public GameAudio GameAudio;
     
     public PathfinderService PathfinderService;
     public EntitySelectionManager EntitySelectionManager;
@@ -43,20 +45,8 @@ public class GameManager : MonoBehaviour {
     public DisconnectionHandler DisconnectionHandler;
     public AbilityAssignmentManager AbilityAssignmentManager;
     public QueuedStructureBuildsManager QueuedStructureBuildsManager;
-    public GameAudioPlayer GameAudioPlayer;
     public AttackManager AttackManager;
     
-    private AudioPlayer _audioPlayer;
-    public AudioPlayer AudioPlayer {
-        get {
-            if (_audioPlayer == null) {
-                List<AudioPlayer> audioPlayers = FindObjectsOfType<AudioPlayer>().ToList();
-                _audioPlayer = audioPlayers.First(a => a.ActivePlayer);
-            }
-            return _audioPlayer;
-        }
-    }
-
     public IGamePlayer Player1;
     public IGamePlayer Player2;
     public GameTeam LocalTeam { get; private set; }
@@ -82,14 +72,14 @@ public class GameManager : MonoBehaviour {
         GridController.Initialize(EntitySelectionManager);
         GridInputController.Initialize(EntitySelectionManager, this);
         DisconnectionDialog.Initialize(DisconnectionHandler);
-        GameAudioPlayer.Initialize(AudioPlayer, GameSetupManager, Configuration.AudioConfiguration);
+        GameAudio.Initialize(GameSetupManager, Configuration.AudioConfiguration);
         AttackManager = new AttackManager();
         CanvasWidthSetter.Initialize();
     }
 
     private void OnDestroy() {
         DisconnectionHandler?.UnregisterListeners(); 
-        GameAudioPlayer.UnregisterListeners();
+        GameAudio.UnregisterListeners();
         Instance = null;
     }
 
@@ -157,7 +147,7 @@ public class GameManager : MonoBehaviour {
     }
 
     public void ReturnToMainMenu() {
-        AudioPlayer.EndMusic(false);
+        GameAudio.EndMusic(false);
 
         if (!NetworkClient.active) {
             // SP. Just reload the game scene

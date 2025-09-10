@@ -35,7 +35,7 @@ namespace Gameplay.UI {
 
         private async void PlayGameStartSound() {
             await Task.Delay(TimeSpan.FromSeconds(SoundDelaySeconds));
-            GameManager.Instance.AudioPlayer.TryPlaySFX(GameManager.Instance.Configuration.AudioConfiguration.GameStartSound);
+            GameManager.Instance.GameAudio.GameStartSound();
         }
 
         private void Update() {
