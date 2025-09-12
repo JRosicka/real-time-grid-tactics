@@ -12,10 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 963fcddd75f04ce9b5bc31d538b6df7f, type: 3}
   m_Name: AudioFileConfiguration
   m_EditorClassIdentifier: 
-  AudioEnabled: 1
   GameMusic:
     Clip: {fileID: 8300000, guid: e2f961b079f5c4b6799395bc43ff8db6, type: 3}
-    Volume: 0.7
+    Volume: 0.236
     AudioLayer: 1
     Interruptible: 0
   ButtonClickSound:
@@ -41,5 +40,10 @@ MonoBehaviour:
   GameStartSound:
     Clip: {fileID: 8300000, guid: fd1ec9c326065d14180f94ec93e302cb, type: 3}
     Volume: 0.913
+    AudioLayer: 0
+    Interruptible: 0
+  ArrowLandSound:
+    Clip: {fileID: 8300000, guid: da31cd59208f22641810c1f1631ae12a, type: 3}
+    Volume: 0.23
     AudioLayer: 0
     Interruptible: 0

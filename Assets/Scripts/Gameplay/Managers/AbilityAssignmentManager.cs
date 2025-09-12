@@ -72,6 +72,11 @@ namespace Gameplay.Managers {
             }
 
             CommandManager.StartPerformingAbility(abilityInstance, fromInput);
+
+            if (fromInput) {
+                GameManager.Instance.GameAudio.EntityOrderSound(entity.EntityData);
+            }
+            
             return true;
         }
         

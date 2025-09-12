@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Audio;
 using Gameplay.Config;
 using Gameplay.Config.Abilities;
 using Gameplay.Entities.Abilities;
@@ -56,6 +57,8 @@ namespace Gameplay.Entities {
         public GridEntity Entity;
         
         public event Action KillAnimationFinishedEvent;
+
+        private GameAudio GameAudio => GameManager.Instance.GameAudio;
         
         public void Initialize(GridEntity entity, int stackOrder) {
             Entity = entity;
@@ -118,8 +121,8 @@ namespace Gameplay.Entities {
         }
 
         private void Selected() {
-            if (Entity.EntityData.SelectionSound.Clip != null) {
-                GameManager.Instance.GameAudio.EntitySelectionSound(Entity.EntityData);
+            if (Entity.Team == GameManager.Instance.LocalTeam) {
+                GameAudio.EntitySelectionSound(Entity.EntityData);
             }
         }
 
@@ -229,6 +232,8 @@ namespace Gameplay.Entities {
             
             // Face the x-direction that we are attacking
             SetFacingDirection(performerLocation.Value, targetLocation.Value);
+            
+            GameAudio.EntityAttackSound(Entity.EntityData);
         }
         
         private void UpdateAttack() {

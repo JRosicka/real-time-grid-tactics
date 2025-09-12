@@ -21,24 +21,23 @@ MonoBehaviour:
     Amount: 50
   Requirements: []
   BuildTime: 35
-  DisplayTeamColorOverMainSprite: 1
   BaseSprite: {fileID: 21300000, guid: 999ab72e5f2e44ba59b96a6bd1c3307e, type: 3}
   TeamColorSprite: {fileID: 21300000, guid: 38c157c6b66f14284b3dfcdd76e10992, type: 3}
   BaseSpriteIconOverride: {fileID: 0}
   _viewPrefab: {fileID: 7504026570216467247, guid: 578b7f995f51c3845914f63ae14fc166, type: 3}
-  SelectionSound:
-    Clip: {fileID: 0}
-    Volume: 0
+  SelectionSounds:
+  - Clip: {fileID: 8300000, guid: e72a7d93dcc3ece47a861cca6ef6ae8d, type: 3}
+    Volume: 0.495
     AudioLayer: 0
-    Interruptible: 0
-  OrderSound:
-    Clip: {fileID: 0}
-    Volume: 0
+    Interruptible: 1
+  OrderSounds:
+  - Clip: {fileID: 8300000, guid: e8f4503c6d5b06546be91523b32808c7, type: 3}
+    Volume: 0.391
     AudioLayer: 0
-    Interruptible: 0
-  AttackSound:
-    Clip: {fileID: 0}
-    Volume: 0
+    Interruptible: 1
+  AttackSounds:
+  - Clip: {fileID: 8300000, guid: c7158a52d3e379a48bf26536cdd04001, type: 3}
+    Volume: 0.226
     AudioLayer: 0
     Interruptible: 0
   HP: 24

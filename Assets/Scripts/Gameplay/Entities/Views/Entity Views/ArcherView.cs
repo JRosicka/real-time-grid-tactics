@@ -27,6 +27,8 @@ namespace Gameplay.Entities {
 
             if (attackLocation == null || targetLocation == null) return;
             EntityView.SetFacingDirection(attackLocation.Value, targetLocation.Value);
+            
+            GameManager.Instance.GameAudio.EntityAttackSound(attackAbility.Performer.EntityData);
         }
     }
 }

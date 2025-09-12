@@ -127,6 +127,8 @@ namespace Gameplay.Entities {
             if (_actuallyDamageTarget) {
                 GameManager.Instance.AttackManager.DealDamage(_attacker, _target, _bonusDamage);
             }
+            
+            GameManager.Instance.GameAudio.ArrowLandSound();
             Destroy(gameObject);
         }
     }

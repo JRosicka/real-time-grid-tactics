@@ -13,5 +13,6 @@ namespace Gameplay.Config {
         public AudioFile GameLossSound;
         public AudioFile GameWinSound;
         public AudioFile GameStartSound;
+        public AudioFile ArrowLandSound;
     }
 }
