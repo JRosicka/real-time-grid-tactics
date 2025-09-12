@@ -221,7 +221,7 @@ public class CheatsEditorWindow : OdinEditorWindow {
     public void SpawnUnits() {
         ThrowExceptionIfNotInGame();
         
-        GameManager.Instance.Cheats.SpawnUnits();
+        GameManager.Instance.Cheats.SpawnUnits(true);
     }
     
     [PropertyOrder(7)]

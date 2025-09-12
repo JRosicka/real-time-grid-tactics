@@ -15,9 +15,9 @@ public class MPCommandManager : AbstractCommandManager {
         AbilityExecutor.Initialize(this, gameEndManager, abilityAssignmentManager);
     }
 
-    public override void SpawnEntity(EntityData data, Vector2Int spawnLocation, GameTeam team, GridEntity spawnerEntity, bool movementOnCooldown) {
+    public override void SpawnEntity(EntityData data, Vector2Int spawnLocation, GameTeam team, GridEntity spawnerEntity, bool movementOnCooldown, bool built) {
         LogTimestamp(nameof(SpawnEntity));
-        CmdSpawnEntity(data, spawnLocation, team, spawnerEntity, movementOnCooldown);
+        CmdSpawnEntity(data, spawnLocation, team, spawnerEntity, movementOnCooldown, built);
     }
 
     public override void AddUpgrade(UpgradeData data, GameTeam team) {
@@ -74,14 +74,14 @@ public class MPCommandManager : AbstractCommandManager {
 
 
     [Command(requiresAuthority = false)] // TODO this should definitely require authority
-    private void CmdSpawnEntity(EntityData data, Vector2Int spawnLocation, GameTeam team, GridEntity entityToIgnore, bool movementOnCooldown) {
+    private void CmdSpawnEntity(EntityData data, Vector2Int spawnLocation, GameTeam team, GridEntity entityToIgnore, bool movementOnCooldown, bool built) {
         LogTimestamp(nameof(CmdSpawnEntity));
         DoSpawnEntity(data, spawnLocation, () => {
             GridEntity entityInstance = Instantiate(GridEntityPrefab, GridController.GetWorldPosition(spawnLocation), Quaternion.identity, SpawnBucket);
             NetworkServer.Spawn(entityInstance.gameObject);
             
             entityInstance.ServerInitialize(data, team, spawnLocation);
-            entityInstance.RpcInitialize(data, team);
+            entityInstance.RpcInitialize(data, team, built);
             
             return entityInstance;
         }, team, entityToIgnore, movementOnCooldown);

@@ -157,15 +157,15 @@ namespace Gameplay.Entities {
         }
         
         [ClientRpc]
-        public void RpcInitialize(EntityData data, GameTeam team) {
+        public void RpcInitialize(EntityData data, GameTeam team, bool built) {
             transform.parent = CommandManager.SpawnBucket;
-            ClientInitialize(data, team);
+            ClientInitialize(data, team, built);
         }
 
         /// <summary>
         /// Initialization that runs on each client
         /// </summary>
-        public void ClientInitialize(EntityData data, GameTeam team) {
+        public void ClientInitialize(EntityData data, GameTeam team, bool built) {
             EntityData = data;
             Team = team;
             GameTeam localPlayerTeam = GameManager.Instance.LocalTeam;
@@ -176,6 +176,10 @@ namespace Gameplay.Entities {
                 InteractBehavior = new UnownedInteractBehavior();
             } else if (Team == localPlayerTeam) {
                 InteractBehavior = new OwnerInteractBehavior();
+                if (built) {
+                    // Play the sound effect
+                    GameManager.Instance.GameAudio.EntityFinishedBuildingSound(EntityData);
+                }
             } else if (GameManager.Instance.Cheats.ControlAllPlayers) {
                 _normallyWouldBeAnEnemyButIsControllableDueToCheats = true;
                 InteractBehavior = new OwnerInteractBehavior();

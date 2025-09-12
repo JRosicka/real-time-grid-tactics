@@ -95,6 +95,12 @@ namespace Audio {
             AudioPlayer.TryPlaySFX(_audioConfiguration.ConstructionSound);
         }
 
+        public void EntityFinishedBuildingSound(EntityData entityData) {
+            if (entityData.EntityFinishedBuildingSound.Clip != null) {
+                AudioPlayer.TryPlaySFX(entityData.EntityFinishedBuildingSound);
+            }
+        }
+
         public void GameStartSound() {
             AudioPlayer.TryPlaySFX(_audioConfiguration.GameStartSound);
         }

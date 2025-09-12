@@ -50,9 +50,9 @@ namespace Gameplay.Managers {
             }
         }
 
-        public void SpawnUnits() {
+        public void SpawnUnits(bool built) {
             foreach (EntitySpawnData entitySpawnData in SpawnData) {
-                GameManager.Instance.CommandManager.SpawnEntity(entitySpawnData.Data, entitySpawnData.SpawnLocation, entitySpawnData.Team, null, false);
+                GameManager.Instance.CommandManager.SpawnEntity(entitySpawnData.Data, entitySpawnData.SpawnLocation, entitySpawnData.Team, null, false, built);
             }
         }
 

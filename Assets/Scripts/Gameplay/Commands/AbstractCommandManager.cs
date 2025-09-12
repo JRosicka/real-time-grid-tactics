@@ -63,7 +63,7 @@ public abstract class AbstractCommandManager : NetworkBehaviour, ICommandManager
     /// Attempts to spawn a new instance of the provided <see cref="GridEntity"/> at the specified location on the game
     /// grid. No-op if another entity already exists in the specified location. 
     /// </summary>
-    public abstract void SpawnEntity(EntityData data, Vector2Int spawnLocation, GameTeam team, GridEntity spawnerEntity, bool movementOnCooldown);
+    public abstract void SpawnEntity(EntityData data, Vector2Int spawnLocation, GameTeam team, GridEntity spawnerEntity, bool movementOnCooldown, bool built);
     // TODO I don't think this needs to be in CommandManager since this is only called by the server and it doesn't contain any RPC calls
     public abstract void AddUpgrade(UpgradeData data, GameTeam team);
 

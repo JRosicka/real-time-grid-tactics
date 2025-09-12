@@ -158,14 +158,14 @@ public class GameSetupManager : MonoBehaviour {
         SpawnPlayerStartingUnits(Player2Data.Team);
         
         // Then spawn any units from cheats
-        GameManager.Cheats.SpawnUnits();
+        GameManager.Cheats.SpawnUnits(false);
     }
 
     private void SpawnPlayerStartingUnits(GameTeam team) {
         MapLoader.StartingEntitySet entitySet = MapLoader.UnitSpawns.First(s => s.Team == team);
         foreach (MapLoader.EntitySpawn entity in entitySet.Entities) {
             Debug.Log($"Spawning starting unit: {entity.Entity.ID} ({entity.SpawnLocation})");
-            GameManager.CommandManager.SpawnEntity(entity.Entity, entity.SpawnLocation, team, null, false);
+            GameManager.CommandManager.SpawnEntity(entity.Entity, entity.SpawnLocation, team, null, false, false);
         }
     }
 
