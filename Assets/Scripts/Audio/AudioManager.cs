@@ -32,6 +32,7 @@ namespace Audio {
 
         private int _sourceCount;
         private readonly List<OneShotAudio> _bufferOneShot = new List<OneShotAudio>();
+        private readonly List<OneShotAudio> _bufferUnInterruptibleOneShot = new List<OneShotAudio>();
         private readonly List<LoopingAudio> _bufferLooping = new List<LoopingAudio>();
         private Transform _listener;
 
@@ -69,6 +70,7 @@ namespace Audio {
         /// </summary>
         private void Update() {
             DoUpdate(_bufferOneShot);
+            DoUpdate(_bufferUnInterruptibleOneShot);
             DoUpdate(_bufferLooping);
         }
 
@@ -105,7 +107,7 @@ namespace Audio {
             return _layerMixerGroups.ContainsKey(layer) ? _layerMixerGroups[layer] : null;
         }
         
-        public OneShotAudio PlaySound(AudioFile audioFile, bool loop) {
+        public OneShotAudio PlaySound(AudioFile audioFile, bool loop, bool interruptible) {
             if (audioFile == null || !audioFile.Clip) {
                 Debug.LogError("Trying to play a null AudioClip");
                 return null;
@@ -116,7 +118,11 @@ namespace Audio {
                 return null;
             }
 
-            OneShotAudio audioInstance = loop ? GetLoopingAudioSource() : GetOneShotAudioSource();
+            OneShotAudio audioInstance = loop
+                ? GetLoopingAudioSource()
+                : interruptible
+                    ? GetOneShotAudioSource()
+                    : GetUnInterruptibleOneShotAudioSource();
             audioInstance.Initialize(audioFile);
             audioInstance.Play();
             return audioInstance;
@@ -138,7 +144,7 @@ namespace Audio {
         }
 
         /// <summary>
-        /// retrieve an audio object that can play a an audio file once
+        /// retrieve an audio object that can play an audio file once
         /// </summary>
         private OneShotAudio GetOneShotAudioSource() {
             OneShotAudio oneShot = _bufferOneShot.FirstOrDefault(next => !next.IsPlaying && !next.IsBusy);
@@ -146,6 +152,17 @@ namespace Audio {
             if (oneShot == null) {
                 oneShot = new OneShotAudio(MakeNewAudioSource(), this);
                 _bufferOneShot.Add(oneShot);
+            }
+
+            return oneShot;
+        }
+
+        private OneShotAudio GetUnInterruptibleOneShotAudioSource() {
+            OneShotAudio oneShot = _bufferUnInterruptibleOneShot.FirstOrDefault(next => !next.IsPlaying && !next.IsBusy);
+
+            if (oneShot == null) {
+                oneShot = new OneShotAudio(MakeNewAudioSource(), this);
+                _bufferUnInterruptibleOneShot.Add(oneShot);
             }
 
             return oneShot;

@@ -14,5 +14,6 @@ namespace Gameplay.Config {
         public AudioFile GameWinSound;
         public AudioFile GameStartSound;
         public AudioFile ArrowLandSound;
+        public AudioFile ConstructionSound;
     }
 }

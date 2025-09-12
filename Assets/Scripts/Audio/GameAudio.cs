@@ -91,6 +91,10 @@ namespace Audio {
             AudioPlayer.TryPlaySFX(_audioConfiguration.ArrowLandSound);
         }
 
+        public void ConstructionSound() {
+            AudioPlayer.TryPlaySFX(_audioConfiguration.ConstructionSound);
+        }
+
         public void GameStartSound() {
             AudioPlayer.TryPlaySFX(_audioConfiguration.GameStartSound);
         }

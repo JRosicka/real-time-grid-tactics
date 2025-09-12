@@ -32,7 +32,7 @@ MonoBehaviour:
   - Clip: {fileID: 8300000, guid: 9b9d4ddf4e9e01a4ba46433b1ec4ee9a, type: 3}
     Volume: 0.482
     AudioLayer: 0
-    Interruptible: 0
+    Interruptible: 1
   AttackSounds: []
   HP: 28
   Range: 1

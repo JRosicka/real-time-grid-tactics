@@ -47,3 +47,8 @@ MonoBehaviour:
     Volume: 0.23
     AudioLayer: 0
     Interruptible: 0
+  ConstructionSound:
+    Clip: {fileID: 8300000, guid: 595a7c85eb982684fb52a27e0578846c, type: 3}
+    Volume: 0.211
+    AudioLayer: 0
+    Interruptible: 0

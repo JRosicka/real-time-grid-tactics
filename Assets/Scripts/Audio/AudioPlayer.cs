@@ -45,9 +45,9 @@ namespace Audio {
                     _audioManager.CancelAudio(_interruptibleSFX, false);
                 }
 
-                _interruptibleSFX = _audioManager.PlaySound(audioFile, false);
+                _interruptibleSFX = _audioManager.PlaySound(audioFile, false, true);
             } else {
-                _audioManager.PlaySound(audioFile, false);
+                _audioManager.PlaySound(audioFile, false, false);
             }
         }
 
@@ -55,7 +55,7 @@ namespace Audio {
             if (_activeMusic != null) {
                 _audioManager.CancelAudio(_activeMusic, false);
             }
-            _activeMusic = _audioManager.PlaySound(audioFile, true);
+            _activeMusic = _audioManager.PlaySound(audioFile, true, true);
         }
 
         public void EndMusic(bool fadeOut) {
