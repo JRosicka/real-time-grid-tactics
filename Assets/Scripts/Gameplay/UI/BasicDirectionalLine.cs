@@ -1,5 +1,6 @@
 using Gameplay.Grid;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 namespace Gameplay.UI {
@@ -8,8 +9,9 @@ namespace Gameplay.UI {
     /// </summary>
     public class BasicDirectionalLine : AbstractDirectionalLine {
         [SerializeField] private Image _endDot;
-        [SerializeField] private Image _attackDestinationIcon;
         [SerializeField] private Image _moveDestinationIcon;
+        [FormerlySerializedAs("_attackDestinationIcon")] [SerializeField] private Image _attackMoveDestinationIcon;
+        [SerializeField] private Image _targetAttackDestinationIcon;
         
         private bool _destination;
 
@@ -27,8 +29,9 @@ namespace Gameplay.UI {
         public override void Discard() {
             _destination = false;
             ToggleEndDot(true);
-            _attackDestinationIcon.gameObject.SetActive(false);
+            _attackMoveDestinationIcon.gameObject.SetActive(false);
             _moveDestinationIcon.gameObject.SetActive(false);
+            _targetAttackDestinationIcon.gameObject.SetActive(false);
             SetRotation(0);
             UpdateColor(DefaultColor);
         }
@@ -40,12 +43,13 @@ namespace Gameplay.UI {
             _endDot.color = color;
         }
 
-        public override void ShowDestinationIcon(bool attack) {
+        public override void ShowDestinationIcon(PathVisualizer.PathType pathType) {
             _destination = true;
             ToggleEndDot(false);
             
-            _attackDestinationIcon.gameObject.SetActive(attack);
-            _moveDestinationIcon.gameObject.SetActive(!attack);
+            _moveDestinationIcon.gameObject.SetActive(pathType == PathVisualizer.PathType.Move);
+            _attackMoveDestinationIcon.gameObject.SetActive(pathType == PathVisualizer.PathType.AttackMove);
+            _targetAttackDestinationIcon.gameObject.SetActive(pathType == PathVisualizer.PathType.TargetAttack);
         }
     }
 }

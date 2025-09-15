@@ -270,7 +270,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DefaultColor: {r: 1, g: 1, b: 1, a: 1}
-  _attackColor: {r: 1, g: 0, b: 0, a: 1}
+  _attackMoveColor: {r: 1, g: 0, b: 0, a: 1}
+  _targetAttackColor: {r: 0.8509804, g: 0.42352942, b: 0.03529412, a: 1}
   _moveColor: {r: 0.05490196, g: 0.4862745, b: 0.67058825, a: 1}
   _maskTransform: {fileID: 5910571140299457898}
   _imageColorsToChange:

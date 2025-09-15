@@ -4,6 +4,7 @@ using System.Linq;
 using Gameplay.Entities;
 using Gameplay.Entities.Abilities;
 using Gameplay.Grid;
+using Gameplay.UI;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -276,9 +277,10 @@ namespace Gameplay.Config.Abilities {
         private void ShowChargePathVisual(GridEntity selector, Vector2Int destination) {
             GridEntity entityAtDestination = GameManager.Instance.GetTopEntityAtLocation(destination);
             bool enemyEntityPresent = selector.GetTargetType(entityAtDestination) == GridEntity.TargetType.Enemy;
+            PathVisualizer.PathType pathType = enemyEntityPresent ? PathVisualizer.PathType.TargetAttack : PathVisualizer.PathType.Move;
             
             PathfinderService.Path path = GameManager.Instance.PathfinderService.GetPathInStraightLine(selector, destination);
-            GameManager.Instance.GridController.VisualizePath(path, enemyEntityPresent, enemyEntityPresent, true);
+            GameManager.Instance.GridController.VisualizePath(path, pathType, enemyEntityPresent, true);
         }
 
         #endregion

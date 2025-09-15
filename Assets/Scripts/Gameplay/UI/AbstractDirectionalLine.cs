@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 namespace Gameplay.UI {
@@ -15,7 +16,8 @@ namespace Gameplay.UI {
         }
         
         [SerializeField] protected Color DefaultColor;
-        [SerializeField] private Color _attackColor;
+        [FormerlySerializedAs("_attackColor")] [SerializeField] private Color _attackMoveColor;
+        [SerializeField] private Color _targetAttackColor;
         [SerializeField] private Color _moveColor;
         
         [SerializeField] private RectTransform _maskTransform;
@@ -48,10 +50,22 @@ namespace Gameplay.UI {
             SetRotationImpl(angle);
         }
 
-        public abstract void ShowDestinationIcon(bool attack);
+        public abstract void ShowDestinationIcon(PathVisualizer.PathType pathType);
 
-        public void SetColor(bool attack) {
-            UpdateColor(attack ? _attackColor : _moveColor);
+        public void SetColor(PathVisualizer.PathType pathType) {
+            switch (pathType) {
+                case PathVisualizer.PathType.Move:
+                    UpdateColor(_moveColor);
+                    break;
+                case PathVisualizer.PathType.AttackMove:
+                    UpdateColor(_attackMoveColor);
+                    break;
+                case PathVisualizer.PathType.TargetAttack:
+                    UpdateColor(_targetAttackColor);
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(pathType), pathType, null);
+            }
         }
 
         public abstract void Discard();

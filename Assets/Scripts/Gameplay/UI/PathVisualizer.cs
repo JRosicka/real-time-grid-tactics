@@ -9,6 +9,12 @@ namespace Gameplay.UI {
     /// Handles creating (from a pool) a bunch of directional arrows pointing from tile to tile to visualize a path
     /// </summary>
     public class PathVisualizer : MonoBehaviour {
+        public enum PathType {
+            Move = 0,
+            AttackMove = 1,
+            TargetAttack = 2
+        }
+        
         [SerializeField] private AbstractDirectionalLine _directionalLinePrefab;
         [SerializeField] private AbstractDirectionalLine _thickDirectionalLinePrefab;
         [SerializeField] private Transform _lineBucket;
@@ -30,7 +36,7 @@ namespace Gameplay.UI {
         /// <summary>
         /// Lay out a set of <see cref="AbstractDirectionalLine"/>s along a path
         /// </summary>
-        public void Visualize(PathfinderService.Path path, bool attack, bool hidePathDestination, bool thickLines) {
+        public void Visualize(PathfinderService.Path path, PathType pathType, bool hidePathDestination, bool thickLines) {
             ClearPath(thickLines);
             List<GridNode> pathNodes = path.Nodes;
             
@@ -49,7 +55,7 @@ namespace Gameplay.UI {
                 
                 // Reveal the line and move it in place
                 line.gameObject.SetActive(true);
-                line.SetColor(attack);
+                line.SetColor(pathType);
                 line.transform.position = GridController.GetWorldPosition(pathNodes[i].Location);
                 
                 // Rotate the line to link to the next cell in the path
@@ -62,7 +68,7 @@ namespace Gameplay.UI {
                     line.SetMask(AbstractDirectionalLine.LineType.StartHalf);
                     if (pathNodes.Count == 2) {
                         // This is the only line being displayed, so we should show the destination icon. 
-                        line.ShowDestinationIcon(attack);
+                        line.ShowDestinationIcon(pathType);
                     }
                 } else if (i == pathNodes.Count - 2) {
                     // This is the last node we care about visualizing
@@ -70,7 +76,7 @@ namespace Gameplay.UI {
                         line.SetMask(AbstractDirectionalLine.LineType.EndHalf);
                     } else {
                         line.SetMask(AbstractDirectionalLine.LineType.Full);
-                        line.ShowDestinationIcon(attack);
+                        line.ShowDestinationIcon(pathType);
                     }
                     
                     // Hide/show the previous line's dot if it has a different angle than this one.

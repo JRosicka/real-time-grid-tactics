@@ -17,7 +17,7 @@ namespace Gameplay.UI {
         }
 
         protected override void SetUpEndHalfImpl() {
-            ShowDestinationIcon(false);
+            ShowDestinationIcon(PathVisualizer.PathType.Move);
         }
         
         public override void Discard() {
@@ -36,7 +36,7 @@ namespace Gameplay.UI {
             // Nothing to do
         }
 
-        public override void ShowDestinationIcon(bool attack) {
+        public override void ShowDestinationIcon(PathVisualizer.PathType pathType) {
             Color color = _chargeLineSegment.color;
             color.a = 0;
             _chargeLineSegment.color = color;
