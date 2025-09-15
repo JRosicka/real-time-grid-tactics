@@ -32,6 +32,11 @@ MonoBehaviour:
     AudioLayer: 0
     Interruptible: 1
   AttackSounds: []
+  EntityFinishedBuildingSound:
+    Clip: {fileID: 0}
+    Volume: 0
+    AudioLayer: 0
+    Interruptible: 0
   HP: 44
   Range: 1
   Damage: 8
@@ -47,6 +52,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: a5c4aba93e508274894c2c6bfc4b751e, type: 2}
   - {fileID: 11400000, guid: 981a0f8e1c01041bda4a621902f205a3, type: 2}
   - {fileID: 11400000, guid: a23c69f58674b4c0790e0e27e2d0dbcb, type: 2}
+  - {fileID: 11400000, guid: ddf18332952084d23850a96e2fddd976, type: 2}
   FriendlyUnitsCanShareCell: 0
   AttackByDefault: 1
   IsResourceExtractor: 0

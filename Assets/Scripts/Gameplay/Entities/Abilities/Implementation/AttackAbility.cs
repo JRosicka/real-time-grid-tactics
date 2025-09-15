@@ -9,8 +9,8 @@ using Random = UnityEngine.Random;
 
 namespace Gameplay.Entities.Abilities {
     /// <summary>
-    /// <see cref="IAbility"/> for attacking. Either attacks a specific <see cref="GridEntity"/> and moves towards it
-    /// if out of range, or does a general attack-move towards a target cell.
+    /// <see cref="IAbility"/> for attacking. For doing an attack move (moving towards a target cell and
+    /// attacking anything on the way)
     /// </summary>
     public class AttackAbility : AbilityBase<AttackAbilityData, AttackAbilityParameters> {
         public AttackAbilityParameters AbilityParameters => (AttackAbilityParameters) BaseParameters;
@@ -40,64 +40,6 @@ namespace Gameplay.Entities.Abilities {
         }
 
         protected override (bool, AbilityResult) DoAbilityEffect() {
-            if (AbilityParameters.TargetFire) {
-                return DoTargetFireEffect();
-            } else {
-                return DoAttackMoveEffect();
-            }
-        }
-
-        private (bool, AbilityResult) DoTargetFireEffect() {
-            if (!GameManager.Instance.CommandManager.EntitiesOnGrid
-                .ActiveEntitiesForTeam(Performer.Team)
-                .Contains(Performer)) {
-                // The entity must be in the process of being killed since it is not present in the entities collection
-                return (false, AbilityResult.Failed);
-            }
-
-            // Check to make sure that the performer still exists
-            Vector2Int? attackerLocation = Performer == null ? null : Performer.Location;
-            if (attackerLocation == null) {
-                return (false, AbilityResult.Failed);
-            }
-            
-            // If the target no longer exists, then it must have been killed or turned into a structure or something. 
-            // Do a normal attack move in this case.
-            Vector2Int? targetLocation = AbilityParameters.Target == null || AbilityParameters.Target.DeadOrDying 
-                ? null 
-                : AbilityParameters.Target.Location;
-            if (targetLocation == null) {
-                AbilityParameters.TargetFire = false;
-                AbilityParameters.Target = null;
-                return DoAttackMoveEffect();
-            } 
-            
-            // Update the destination to the new target location
-            AbilityParameters.Destination = targetLocation.Value;
-            
-            // Try to attack the target if it is in range
-            if (CellDistanceLogic.DistanceBetweenCells(attackerLocation.Value, targetLocation.Value) <= Performer.Range) {
-                if (Performer.ActiveTimers.Any(t => t.Ability is AttackAbility)) {
-                    // We are in range of the target, but attacking is on cooldown. Do nothing for now. 
-                    return (false, AbilityResult.IncompleteWithoutEffect);
-                }
-                
-                // Otherwise actually attack
-                DoAttack(targetLocation.Value);
-                return (true, AbilityResult.IncompleteWithEffect);
-            }
-            
-            // If no move available, then don't do anything else for now
-            if (Performer.ActiveTimers.Any(t => t.Ability is MoveAbility)) {
-                return (false, AbilityResult.IncompleteWithoutEffect);
-            }
-            
-            // Otherwise move closer to the target and try again
-            StepTowardsDestination(Performer, targetLocation.Value);
-            return (false, AbilityResult.IncompleteWithoutEffect);
-        }
-        
-        private (bool, AbilityResult) DoAttackMoveEffect() {
             Vector2Int? attackerLocation = Performer.Location;
             if (attackerLocation == null) {
                 // The entity must be in the process of being killed since it is not present in the entities collection

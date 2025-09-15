@@ -9,22 +9,23 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cea1fa961828495881f8202f32d2f84f, type: 3}
-  m_Name: Attack Ability Archer Arrow
+  m_Script: {fileID: 11500000, guid: 511b210981894204a7af89b2a487ebc4, type: 3}
+  m_Name: Target Attack Ability Melee
   m_EditorClassIdentifier: 
   Data:
-    _contentResourceID: Attack Ability Archer Arrow
-    _id: Attack Move
-    _description: Target an enemy unit to move towards it and attack it.
-    _icon: {fileID: 21300000, guid: 62e5900c3d31c1f4299dec996742757c, type: 3}
-    _slotSprite: {fileID: 21300000, guid: 2858aa17bb20d4046ae0a8eb1a724eee, type: 3}
+    _contentResourceID: Target Attack Ability Melee
+    _id: Target Attack
+    _description: Moves towards a target cell, attacking any enemies encountered
+      on the way.
+    _icon: {fileID: 21300000, guid: e5a747f4f8a3042f5a9d0ab1b801e025, type: 3}
+    _slotSprite: {fileID: 21300000, guid: 821b57c268c16d847869a9511bf1de07, type: 3}
     _abilityTimerCooldownView: {fileID: 3613232002330387423, guid: f40c3d65f7969d74995aff7c067ce52a, type: 3}
     _requirements: []
     _performDuration: 0
     _cooldownDuration: 4
     _channel: {fileID: 11400000, guid: 98e93cf2e89779d4494a08d38620b523, type: 2}
     _channelBlockers: []
-    _slotLocation: 5
+    _slotLocation: 6
     _performOnStart: 0
     _repeatWhenCooldownFinishes: 0
     _animateWhenCooldownComplete: 0
@@ -34,4 +35,4 @@ MonoBehaviour:
     _selectableForAllPlayers: 0
     _tryingToPerformCancelsBuilds: 1
     _showTimerOnSelectionInterface: 1
-    AttackType: 2
+    AttackType: 1

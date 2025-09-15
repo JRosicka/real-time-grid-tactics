@@ -330,6 +330,7 @@ namespace Gameplay.Entities {
             };
             AbilityTimerFill timerFill = cooldownTimer.Ability switch {
                 AttackAbility => _attackTimerFill,
+                TargetAttackAbility => _attackTimerFill,
                 MoveAbility => _moveTimerFill,
                 _ => null
             };
