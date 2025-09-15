@@ -33,7 +33,7 @@ namespace Gameplay.Entities.Abilities {
         }
 
         public override bool TryDoAbilityStartEffect() {
-            if (!AbilityParameters.TargetFire && !AbilityParameters.Reaction && !Performer.HoldingPosition) {
+            if (!AbilityParameters.Reaction && !Performer.HoldingPosition) {
                 Performer.SetTargetLocation(AbilityParameters.Destination, null, true);
             }
             return true;
@@ -188,13 +188,11 @@ namespace Gameplay.Entities.Abilities {
     }
 
     public class AttackAbilityParameters : IAbilityParameters {
-        public bool TargetFire;
         public GridEntity Target;    // only used for targeting a specific unit
         public Vector2Int Destination; // only used for attack-moves
         public bool Reaction;   // Whether this attack was made in reaction to some other entity
         public GridEntity ReactionTarget;   // Only used for reaction attacks
         public void Serialize(NetworkWriter writer) {
-            writer.WriteBool(TargetFire);
             writer.Write(Target);
             writer.Write(Destination);
             writer.Write(Reaction);
@@ -202,7 +200,6 @@ namespace Gameplay.Entities.Abilities {
         }
 
         public void Deserialize(NetworkReader reader) {
-            TargetFire = reader.ReadBool();
             Target = reader.Read<GridEntity>();
             Destination = reader.Read<Vector2Int>();
             Reaction = reader.ReadBool();

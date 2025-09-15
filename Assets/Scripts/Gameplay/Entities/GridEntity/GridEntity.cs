@@ -540,9 +540,8 @@ namespace Gameplay.Entities {
 
             AttackAbilityData data = GetAbilityData<AttackAbilityData>();
             if (AbilityAssignmentManager.StartPerformingAbility(this, data, new AttackAbilityParameters {
-                        Destination = targetCell, 
-                        TargetFire = false
-                    }, fromInput, true, true)) {
+                    Destination = targetCell
+                }, fromInput, true, true)) {
                 SetTargetLocation(targetCell, null, true);
             }
         }
@@ -561,11 +560,9 @@ namespace Gameplay.Entities {
             TargetType targetType = GetTargetType(targetEntity);
 
             if (targetType != TargetType.Enemy) return;
-            AttackAbilityData data = GetAbilityData<AttackAbilityData>();
-            if (AbilityAssignmentManager.StartPerformingAbility(this, data, new AttackAbilityParameters {
+            TargetAttackAbilityData data = GetAbilityData<TargetAttackAbilityData>();
+            if (AbilityAssignmentManager.StartPerformingAbility(this, data, new TargetAttackAbilityParameters() {
                     Target = targetEntity, 
-                    TargetFire = true,
-                    Destination = targetCell
                 }, true, true, true)) {
                 SetTargetLocation(targetCell, targetEntity, true);
             }
@@ -630,8 +627,8 @@ namespace Gameplay.Entities {
                 } else if (!InProgressAbilities.All(a => a is AttackAbility or MoveAbility)) {
                     // No response if there are any non-attack non-move abilities in progress
                 } else if (InProgressAbilities.Where(a => a is AttackAbility).Cast<AttackAbility>()
-                           .Any(a => a.AbilityParameters.TargetFire || a.AbilityParameters.Reaction)) {
-                    // No response if any of the in-progress attack abilities are target fire or reactive attacks
+                           .Any(a => a.AbilityParameters.Reaction)) {
+                    // No response if any of the in-progress attack abilities are reactive attacks
                 } else {
                     inProgressAbilitiesAllowResponse = true;
                 }
@@ -644,7 +641,6 @@ namespace Gameplay.Entities {
             
             // Attack-move to the target
             AbilityAssignmentManager.StartPerformingAbility(this, GetAbilityData<AttackAbilityData>(), new AttackAbilityParameters {
-                TargetFire = false,
                 Destination = sourceEntity.Location.Value,
                 Reaction = true,
                 ReactionTarget = sourceEntity

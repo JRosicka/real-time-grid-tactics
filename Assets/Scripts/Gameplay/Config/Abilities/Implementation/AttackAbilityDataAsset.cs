@@ -47,11 +47,10 @@ namespace Gameplay.Config.Abilities {
                 target = null;
             }
             GameManager.Instance.AbilityAssignmentManager.StartPerformingAbility(selectedEntity, this, new AttackAbilityParameters {
-                    TargetFire = target != null && target.Team != GameTeam.Neutral, 
                     Target = target, 
                     Destination = cellPosition
                 }, true, true, true);
-            selectedEntity.SetTargetLocation(cellPosition, target, true);
+            selectedEntity.SetTargetLocation(cellPosition, null, true);
         }
 
         public void RecalculateTargetableAbilitySelection(GridEntity selector, object targetData) {

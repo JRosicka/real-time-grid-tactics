@@ -82,15 +82,22 @@ namespace Gameplay.Entities.Abilities {
                 // Don't target-fire the charge-attacked entity unless we specifically clicked on it with the charge
                 targetEntity = null;
             }
+
+            if (targetEntity == null) {
+                AttackAbilityData attackData = Performer.GetAbilityData<AttackAbilityData>();
+                AbilityAssignmentManager.StartPerformingAbility(Performer, attackData, new AttackAbilityParameters {
+                    Target = targetEntity,
+                    Destination = AbilityParameters.ClickLocation,
+                    Reaction = false,
+                    ReactionTarget = null
+                }, false, true, true);
+            } else {
+                TargetAttackAbilityData attackData = Performer.GetAbilityData<TargetAttackAbilityData>();
+                AbilityAssignmentManager.StartPerformingAbility(Performer, attackData, new TargetAttackAbilityParameters {
+                    Target = targetEntity
+                }, false, true, true);
+            }
             
-            AttackAbilityData attackData = Performer.GetAbilityData<AttackAbilityData>();
-            AbilityAssignmentManager.StartPerformingAbility(Performer, attackData, new AttackAbilityParameters {
-                TargetFire = targetEntity != null,
-                Target = targetEntity,
-                Destination = AbilityParameters.ClickLocation,
-                Reaction = false,
-                ReactionTarget = null
-            }, false, true, true);
             Performer.SetTargetLocation(AbilityParameters.ClickLocation, targetEntity, true);
         }
     }
