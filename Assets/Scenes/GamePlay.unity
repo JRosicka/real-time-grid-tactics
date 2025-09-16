@@ -529,11 +529,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4916619601353602856, guid: 698b701e93e40e2449cdd7d956d84efa, type: 3}
       propertyPath: AllySelectionColor.g
-      value: 0
+      value: 0.42352942
       objectReference: {fileID: 0}
     - target: {fileID: 4916619601353602856, guid: 698b701e93e40e2449cdd7d956d84efa, type: 3}
       propertyPath: AllySelectionColor.r
-      value: 1
+      value: 0.8509804
       objectReference: {fileID: 0}
     - target: {fileID: 4916619601353602856, guid: 698b701e93e40e2449cdd7d956d84efa, type: 3}
       propertyPath: EnemySelectionColor.b
@@ -541,11 +541,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4916619601353602856, guid: 698b701e93e40e2449cdd7d956d84efa, type: 3}
       propertyPath: EnemySelectionColor.g
-      value: 0
+      value: 0.42352942
       objectReference: {fileID: 0}
     - target: {fileID: 4916619601353602856, guid: 698b701e93e40e2449cdd7d956d84efa, type: 3}
       propertyPath: EnemySelectionColor.r
-      value: 1
+      value: 0.8509804
       objectReference: {fileID: 0}
     - target: {fileID: 4916619601353602856, guid: 698b701e93e40e2449cdd7d956d84efa, type: 3}
       propertyPath: NeutralSelectionColor.b
@@ -553,11 +553,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4916619601353602856, guid: 698b701e93e40e2449cdd7d956d84efa, type: 3}
       propertyPath: NeutralSelectionColor.g
-      value: 0
+      value: 0.42352942
       objectReference: {fileID: 0}
     - target: {fileID: 4916619601353602856, guid: 698b701e93e40e2449cdd7d956d84efa, type: 3}
       propertyPath: NeutralSelectionColor.r
-      value: 1
+      value: 0.8509804
       objectReference: {fileID: 0}
     - target: {fileID: 4916619601353602856, guid: 698b701e93e40e2449cdd7d956d84efa, type: 3}
       propertyPath: _listenForEntityUpdates
