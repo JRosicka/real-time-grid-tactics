@@ -73,5 +73,7 @@ namespace Gameplay.Config.Abilities {
         public GameObject CreateIconForTargetedCell(GameTeam selectorTeam, object targetData) {
             return null;
         }
+
+        public string AbilityVerb => "attack";
     }
 }

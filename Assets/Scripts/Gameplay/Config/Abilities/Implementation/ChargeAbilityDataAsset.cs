@@ -104,7 +104,9 @@ namespace Gameplay.Config.Abilities {
         public GameObject CreateIconForTargetedCell(GameTeam selectorTeam, object targetData) {
             return null;
         }
-
+        
+        public string AbilityVerb => "charge";
+        
         public int GetBonusDamage(GameTeam team) {
             return HasChargeUpgrade(team) ? BonusDamageFromUpgrade : 0;
         }

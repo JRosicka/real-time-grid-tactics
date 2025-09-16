@@ -42,5 +42,6 @@ namespace Gameplay.Config.Abilities {
         /// </summary>
         [CanBeNull]
         GameObject CreateIconForTargetedCell(GameTeam selectorTeam, object targetData);
+        string AbilityVerb { get; }
     }
 }

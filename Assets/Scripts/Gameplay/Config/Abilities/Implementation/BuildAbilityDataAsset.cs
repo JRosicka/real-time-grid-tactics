@@ -150,5 +150,7 @@ namespace Gameplay.Config.Abilities {
             buildingView.Initialize(selectorTeam, targetEntityData, true);
             return buildingView.gameObject;
         }
+
+        public string AbilityVerb => "build";
     }
 }

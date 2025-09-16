@@ -182,15 +182,17 @@ public class EntitySelectionManager {
 
     /// <summary>
     /// Use the selected targetable ability if we have one and can use it at the selected cell.
-    /// <returns>True if an ability was successfully used, otherwise false.</returns>
+    /// <returns>True if we have a targetable ability selected, otherwise False.</returns>
     /// </summary>
     public bool TryUseTargetableAbility(Vector2Int clickedCell) {
         if (_selectedTargetableAbility == null) return false;
 
         if (!_selectedTargetableAbility.CanTargetCell(clickedCell, SelectedEntity, _gameManager.LocalTeam, _targetData)) {
             // We clicked on a cell that the ability cannot be used on. Deselect the ability. 
+            GameManager.Instance.AlertTextDisplayer.DisplayAlert($"Can not {_selectedTargetableAbility.AbilityVerb} there.");
+            GameManager.Instance.GameAudio.InvalidSound();
             DeselectTargetableAbility();
-            return false;
+            return true;
         }
 
         _gameManager.AbilityAssignmentManager.CancelAllAbilities(SelectedEntity);
@@ -203,7 +205,7 @@ public class EntitySelectionManager {
             // sure how best to handle that. 
             if (!SelectedEntity.TryMoveToCell(clickedCell, false)) {
                 // We failed to move to the destination, so don't do the targetable ability
-                return false;
+                return true;
             }
         }
 
