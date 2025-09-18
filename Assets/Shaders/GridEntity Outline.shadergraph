@@ -1201,7 +1201,7 @@
     "m_Group": {
         "m_Id": ""
     },
-    "m_Name": "GridEntity Outline V2 Subgraph",
+    "m_Name": "GridEntity Outline Subgraph",
     "m_DrawState": {
         "m_Expanded": true,
         "m_Position": {
@@ -1718,7 +1718,7 @@
     "m_Group": {
         "m_Id": ""
     },
-    "m_Name": "GridEntity Outline V2 Subgraph",
+    "m_Name": "GridEntity Outline Subgraph",
     "m_DrawState": {
         "m_Expanded": true,
         "m_Position": {
@@ -1790,7 +1790,7 @@
     "m_Group": {
         "m_Id": ""
     },
-    "m_Name": "GridEntity Outline V2 Subgraph",
+    "m_Name": "GridEntity Outline Subgraph",
     "m_DrawState": {
         "m_Expanded": true,
         "m_Position": {
@@ -1971,8 +1971,8 @@
     "m_ShaderOutputName": "_Direction",
     "m_StageCapability": 2,
     "m_Value": {
-        "x": -0.5,
-        "y": -0.5
+        "x": -0.30000001192092898,
+        "y": -0.30000001192092898
     },
     "m_DefaultValue": {
         "x": 0.0,
@@ -2145,7 +2145,7 @@
     "m_Group": {
         "m_Id": ""
     },
-    "m_Name": "GridEntity Outline V2 Subgraph",
+    "m_Name": "GridEntity Outline Subgraph",
     "m_DrawState": {
         "m_Expanded": true,
         "m_Position": {
@@ -2199,7 +2199,7 @@
     "m_Group": {
         "m_Id": ""
     },
-    "m_Name": "GridEntity Outline V2 Subgraph",
+    "m_Name": "GridEntity Outline Subgraph",
     "m_DrawState": {
         "m_Expanded": true,
         "m_Position": {
@@ -2578,7 +2578,7 @@
     "m_Group": {
         "m_Id": ""
     },
-    "m_Name": "GridEntity Outline V2 Subgraph",
+    "m_Name": "GridEntity Outline Subgraph",
     "m_DrawState": {
         "m_Expanded": true,
         "m_Position": {
@@ -2668,7 +2668,7 @@
     "m_Group": {
         "m_Id": ""
     },
-    "m_Name": "GridEntity Outline V2 Subgraph",
+    "m_Name": "GridEntity Outline Subgraph",
     "m_DrawState": {
         "m_Expanded": true,
         "m_Position": {
@@ -3655,8 +3655,8 @@
     "m_ShaderOutputName": "_Direction",
     "m_StageCapability": 2,
     "m_Value": {
-        "x": 0.5,
-        "y": -0.5
+        "x": 0.30000001192092898,
+        "y": -0.30000001192092898
     },
     "m_DefaultValue": {
         "x": 0.0,
@@ -3908,8 +3908,8 @@
     "m_ShaderOutputName": "_Direction",
     "m_StageCapability": 2,
     "m_Value": {
-        "x": -0.5,
-        "y": 0.5
+        "x": -0.30000001192092898,
+        "y": 0.30000001192092898
     },
     "m_DefaultValue": {
         "x": 0.0,
@@ -4444,7 +4444,7 @@
     "m_Group": {
         "m_Id": ""
     },
-    "m_Name": "GridEntity Outline V2 Subgraph",
+    "m_Name": "GridEntity Outline Subgraph",
     "m_DrawState": {
         "m_Expanded": true,
         "m_Position": {
@@ -4915,7 +4915,7 @@
     "m_Group": {
         "m_Id": ""
     },
-    "m_Name": "GridEntity Outline V2 Subgraph",
+    "m_Name": "GridEntity Outline Subgraph",
     "m_DrawState": {
         "m_Expanded": true,
         "m_Position": {
@@ -5147,8 +5147,8 @@
     "m_ShaderOutputName": "_Direction",
     "m_StageCapability": 2,
     "m_Value": {
-        "x": 0.5,
-        "y": 0.5
+        "x": 0.30000001192092898,
+        "y": 0.30000001192092898
     },
     "m_DefaultValue": {
         "x": 0.0,

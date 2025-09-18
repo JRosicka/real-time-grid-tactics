@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: GridEntity Glow Red
+  m_Name: GridEntity Outline Red
   m_Shader: {fileID: -6465566751694194690, guid: f748cbb0067f44f6ba31952147cb2ab4, type: 3}
   m_ValidKeywords: []
   m_InvalidKeywords: []

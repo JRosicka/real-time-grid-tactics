@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: GridEntity Glow Blue
+  m_Name: GridEntity Outline Orange
   m_Shader: {fileID: -6465566751694194690, guid: f748cbb0067f44f6ba31952147cb2ab4, type: 3}
   m_ValidKeywords: []
   m_InvalidKeywords: []
@@ -54,7 +54,7 @@ Material:
     - _EnableExternalAlpha: 0
     - _OutlineThickness: 7
     m_Colors:
-    - _Color: {r: 0, g: 0.086274624, b: 1, a: 1}
+    - _Color: {r: 1, g: 0.6528404, b: 0.28627455, a: 1}
     - _Flip: {r: 1, g: 1, b: 1, a: 1}
     - _RendererColor: {r: 1, g: 1, b: 1, a: 1}
   m_BuildTextureStacks: []

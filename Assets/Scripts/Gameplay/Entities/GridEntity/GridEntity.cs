@@ -114,6 +114,8 @@ namespace Gameplay.Entities {
         public event Action<IAbility, AbilityCooldownTimer> CooldownTimerExpiredEvent;
         public event Action<IAbility, AbilityCooldownTimer> PerformAnimationEvent;
         public event Action SelectedEvent;
+        public event Action DeselectedEvent;
+        public event Action<bool> TargetedEvent;
         public event Action UnregisteredEvent;
         // Needs to happen right after UnregisteredEvent, probably. Keep separate. 
         public event Action KilledEvent;
@@ -307,6 +309,17 @@ namespace Gameplay.Entities {
                 InteractBehavior.Select(this);
                 SelectedEvent?.Invoke();
             }
+        }
+
+        public void Deselect() {
+            if (!Interactable) return;
+            if (InteractBehavior != null) {
+                DeselectedEvent?.Invoke();
+            }
+        }
+
+        public void DisplayTargeted(bool show) {
+            TargetedEvent?.Invoke(show);
         }
 
         /// <summary>

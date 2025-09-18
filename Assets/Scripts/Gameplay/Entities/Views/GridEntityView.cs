@@ -52,6 +52,10 @@ namespace Gameplay.Entities {
         [SerializeField] private AnimationCurve _attackAnimationOutro_curve;
         [SerializeField] private float _attackShakeTriggerTime;
         [SerializeField] private float _timeToDisappearWhenDying = .5f;
+        
+        
+        private Material _selectionMaterial;
+        private Material _targetedMaterial;
 
         [HideInInspector] 
         public GridEntity Entity;
@@ -77,6 +81,8 @@ namespace Gameplay.Entities {
             entity.PerformAnimationEvent += DoAbility;
             entity.CooldownTimerStartedEvent += CreateTimerView;
             entity.SelectedEvent += Selected;
+            entity.DeselectedEvent += Deselected;
+            entity.TargetedEvent += Targeted;
             entity.HPHandler.AttackedEvent += AttackReceived;
             entity.HPHandler.HealedEvent += HealReceived;
             entity.KilledEvent += Killed;
@@ -85,6 +91,9 @@ namespace Gameplay.Entities {
             _bottomUISection.SetActive(entity.EntityData.MovementAndAttackUI);
 
             _particularView.Initialize(entity);
+
+            _selectionMaterial = GameManager.Instance.GetPlayerForTeam(entity.Team)?.Data.SelectionMaterial;
+            _targetedMaterial = GameManager.Instance.Configuration.TargetedMaterial;
         }
 
         public void ToggleView(bool show) {
@@ -97,6 +106,8 @@ namespace Gameplay.Entities {
             Entity.PerformAnimationEvent -= DoAbility;
             Entity.CooldownTimerStartedEvent -= CreateTimerView;
             Entity.SelectedEvent -= Selected;
+            Entity.DeselectedEvent -= Deselected;
+            Entity.TargetedEvent -= Targeted;
             Entity.HPHandler.AttackedEvent -= AttackReceived;
             Entity.HPHandler.HealedEvent -= HealReceived;
             Entity.KilledEvent -= Killed;
@@ -124,6 +135,19 @@ namespace Gameplay.Entities {
             if (Entity.Team == GameManager.Instance.LocalTeam) {
                 GameAudio.EntitySelectionSound(Entity.EntityData);
             }
+
+            if (Entity.EntityData.DisplaySelectionOutline) {
+                _mainImage.material = _selectionMaterial;
+            }
+        }
+
+        private void Deselected() {
+            _mainImage.material = null;
+        }
+
+        private void Targeted(bool targeted) {
+            if (!Entity.EntityData.DisplaySelectionOutline) return;
+            _mainImage.material = targeted ? _targetedMaterial : null;
         }
 
         private async void AttackReceived(bool lethal) {

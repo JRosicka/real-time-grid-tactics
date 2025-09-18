@@ -1,6 +1,4 @@
-using Gameplay.Config.Abilities;
 using Gameplay.Entities;
-using Gameplay.Entities.Abilities;
 using Mirror;
 using UnityEngine;
 
@@ -16,7 +14,7 @@ namespace Gameplay.Config {
         public Color TeamBannerColor;
         public Color DeathParticlesColor1;
         public Color DeathParticlesColor2;
-        public Vector2Int SpawnLocation;
+        public Material SelectionMaterial;
     }
     
     public static class PlayerDataSerializer {

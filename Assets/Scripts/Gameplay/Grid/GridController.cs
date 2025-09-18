@@ -52,8 +52,8 @@ namespace Gameplay.Grid {
             _mapLoader = GameManager.Instance.GameSetupManager.MapLoader;
             GridData = new GridData(_gameplayTilemap, this);
             _overlayTilemap = new OverlayTilemap(_overlayMap, this, _inaccessibleTile);
-            _selectedUnitTracker.Initialize(_selectedUnitReticle);
-            _targetUnitTracker.Initialize(_targetUnitReticle);
+            _selectedUnitTracker.Initialize(_selectedUnitReticle, false);
+            _targetUnitTracker.Initialize(_targetUnitReticle, true);
             _selectableCells = null;    // Not sure why this is necessary, but it seems to be
             _invalidTargetedAbilityLocationIcon.gameObject.SetActive(false);
         }

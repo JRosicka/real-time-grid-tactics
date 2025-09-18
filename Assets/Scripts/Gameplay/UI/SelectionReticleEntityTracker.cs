@@ -11,9 +11,11 @@ namespace Gameplay.UI {
         private SelectionReticle _reticle;
         private GridEntity _entity;
         private Vector2Int? _lastTrackedLocation;
+        private bool _targeted;
 
-        public void Initialize(SelectionReticle reticle) {
+        public void Initialize(SelectionReticle reticle, bool targeted) {
             _reticle = reticle;
+            _targeted = targeted;
         }
 
         public void TrackEntity(GridEntity entity) {
@@ -21,6 +23,9 @@ namespace Gameplay.UI {
             if (_entity) {
                 _entity.AbilityPerformedEvent -= OnAbilityPerformed;
                 _entity.UnregisteredEvent -= OnEntityUnregistered;
+                if (_targeted) {
+                    _entity.DisplayTargeted(false);
+                }
             }
 
             _entity = entity;
@@ -28,6 +33,9 @@ namespace Gameplay.UI {
             if (_entity) {
                 _entity.AbilityPerformedEvent += OnAbilityPerformed;
                 _entity.UnregisteredEvent += OnEntityUnregistered;
+                if (_targeted) {
+                    _entity.DisplayTargeted(true);
+                }
             }
             UpdateReticle(entity);
         }
