@@ -21,6 +21,7 @@ MonoBehaviour:
   CancelButtonSprite: {fileID: 21300000, guid: ac6a5cd8c78757649b1eebb6c22b1ba4, type: 3}
   CancelButtonSlotSprite: {fileID: 21300000, guid: e7127e30361d9154289ebc8a1d0edbf4, type: 3}
   NeutralBannerColor: {r: 0.5294118, g: 0.5372549, b: 0.54901963, a: 1}
+  TargetedMaterial: {fileID: 2100000, guid: 2c657a3b9a6b54b2d8a58d0f2d4ef543, type: 2}
   Purchasables:
   - {fileID: 11400000, guid: 991ad2a1d6801ee40b831e7850e0ff35, type: 2}
   - {fileID: 11400000, guid: 13a02f740ff7d294ca02fe7f547820c0, type: 2}
