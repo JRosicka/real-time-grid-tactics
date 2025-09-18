@@ -49,7 +49,7 @@ namespace Gameplay.Entities.Abilities {
             // First check to see if there is anything in range to attack
             GridEntity target = DetermineTargetForAttackMove(Performer, attackerLocation.Value);  // TODO-abilities if this is too expensive to do every update tick when there are a lot of entities, then we might need to keep track of when the last collection update occurred, and cache that in the parameters and check it before performing this operation.  
             if (target != null) {
-                if (Performer.ActiveTimers.Any(t => t.Ability is AttackAbility)) {
+                if (Performer.ActiveTimers.Any(t => t.Ability.AbilityData.Channel == AbilityData.Channel)) {
                     // We are in range of a target, but attacking is on cooldown. Do nothing for now. 
                     return (false, AbilityResult.IncompleteWithoutEffect);
                 }

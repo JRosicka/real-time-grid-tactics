@@ -57,7 +57,7 @@ namespace Gameplay.Entities.Abilities {
 
             // Try to attack the target if it is in range
             if (CellDistanceLogic.DistanceBetweenCells(attackerLocation.Value, targetLocation.Value) <= Performer.Range) {
-                if (Performer.ActiveTimers.Any(t => t.Ability is TargetAttackAbility)) {
+                if (Performer.ActiveTimers.Any(t => t.Ability.AbilityData.Channel == AbilityData.Channel)) {
                     // We are in range of the target, but attacking is on cooldown. Do nothing for now. 
                     return (false, AbilityResult.IncompleteWithoutEffect);
                 }
