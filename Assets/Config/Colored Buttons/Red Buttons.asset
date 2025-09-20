@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 80614cd35c554e8b87c7e4bc1a0f922c, type: 3}
+  m_Name: Red Buttons
+  m_EditorClassIdentifier: 
+  Normal: {fileID: 21300000, guid: 2858aa17bb20d4046ae0a8eb1a724eee, type: 3}
+  Hovered: {fileID: 21300000, guid: 629299479d8bc1a40b6637144a021cd3, type: 3}
+  Pressed: {fileID: 21300000, guid: 0514def73cfb59a4e9f8b072ba340407, type: 3}

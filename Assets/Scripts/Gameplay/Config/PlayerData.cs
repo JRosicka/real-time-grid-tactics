@@ -10,7 +10,7 @@ namespace Gameplay.Config {
     public class PlayerData : ScriptableObject {
         public GameTeam Team;
         public Color TeamColor;
-        public Sprite SlotTeamSprite;
+        public ColoredButtonData ColoredButtonData;
         public Color TeamBannerColor;
         public Color DeathParticlesColor1;
         public Color DeathParticlesColor2;

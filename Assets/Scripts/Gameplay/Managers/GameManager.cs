@@ -38,6 +38,7 @@ public class GameManager : MonoBehaviour {
     public ResourceEntityFinder ResourceEntityFinder;
     public CanvasWidthSetter CanvasWidthSetter;
     public GameAudio GameAudio;
+    public InGamePauseButton InGamePauseButton;
     
     public PathfinderService PathfinderService;
     public EntitySelectionManager EntitySelectionManager;
@@ -123,6 +124,7 @@ public class GameManager : MonoBehaviour {
             _ => throw new Exception($"Invalid local team: {LocalTeam}")
         };
         ResourcesInterface.Initialize(resourcesObserver, localPlayer);
+        InGamePauseButton.Initialize(localPlayer.Data.ColoredButtonData);
     }
 
     public void SetupCommandManager(ICommandManager commandManager) {

@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 80614cd35c554e8b87c7e4bc1a0f922c, type: 3}
+  m_Name: Blue Buttons
+  m_EditorClassIdentifier: 
+  Normal: {fileID: 21300000, guid: a734219ed3f58904a846b4f11c35b564, type: 3}
+  Hovered: {fileID: 21300000, guid: e3bc9b4720fb7424a83c05630f4a6ff3, type: 3}
+  Pressed: {fileID: 21300000, guid: ed62eb04a3a0b3640983b53955cf4989, type: 3}

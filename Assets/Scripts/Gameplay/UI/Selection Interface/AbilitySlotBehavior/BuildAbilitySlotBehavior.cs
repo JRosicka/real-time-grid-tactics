@@ -114,7 +114,7 @@ namespace Gameplay.UI {
 
             if (abilitySlotBackground) {
                 IGamePlayer player = GameManager.Instance.GetPlayerForTeam(SelectedEntity.Team);
-                abilitySlotBackground.SetUpSlot(player.Data.SlotTeamSprite);
+                abilitySlotBackground.SetUpSlot(player.Data.ColoredButtonData.Normal);
             }
         }
 
