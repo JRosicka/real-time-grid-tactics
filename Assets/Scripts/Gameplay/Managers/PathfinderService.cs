@@ -199,27 +199,46 @@ public class PathfinderService {
     }
 
     private Path ConstructBestAlternativePath(GridEntity entity, IReadOnlyCollection<GridNode> processed, GridNode startNode, Path? pathIgnoringOtherEntities) {
+        return pathIgnoringOtherEntities == null
+            ? ConstructBestAlternativePath_NoConvenientPath(entity, processed, startNode)
+            : ConstructBestAlternativePath_WithConvenientPath(entity, processed, startNode, pathIgnoringOtherEntities.Value);
+    }
+
+    private Path ConstructBestAlternativePath_NoConvenientPath(GridEntity entity, IReadOnlyCollection<GridNode> processed, GridNode startNode) {
         GridNode bestAlternative;
                 
         float minH = processed.Min(n => n.H);
         List<GridNode> closestNodes = processed.Where(n => Mathf.Approximately(n.H, minH)).ToList();
         if (closestNodes.Count > 1) {
-            if (pathIgnoringOtherEntities != null) {
-                // TODO maybe instead of prioritizing smallest h when there is an alternate path, instead prioritize smallest f and break ties by smallest g?? Or somehow factor in the nodes in that path since we have them. 
-                // Prioritize pathing to an existing (closest) node that actually exists on the "convenient" path if that path exists
-                List<Vector2Int> convenientPathNodes = pathIgnoringOtherEntities.Value.Nodes.Select(n => n.Location).ToList();
-                List<GridNode> closestNodesAlongConvenientPath = closestNodes.Where(n => convenientPathNodes.Contains(n.Location)).ToList();
-                if (closestNodesAlongConvenientPath.Count > 0) {
-                    // There are in fact nodes that are along this convenient path. Pick the one that's farthest along. 
-                    bestAlternative = closestNodesAlongConvenientPath.Aggregate((n1, n2) => convenientPathNodes.IndexOf(n1.Location) > convenientPathNodes.IndexOf(n2.Location) ? n1 : n2);
-                    return ConstructPath(entity, startNode, bestAlternative, false);
-                } // Otherwise none of these closest nodes are on the convenient path, so just proceed to the next priority
-            }
             float minG = closestNodes.Min(n => n.G);
             bestAlternative = closestNodes.First(n => Mathf.Approximately(n.G, minG));
         } else {
             bestAlternative = closestNodes[0];
         }
+        return ConstructPath(entity, startNode, bestAlternative, false);
+    }
+
+    private Path ConstructBestAlternativePath_WithConvenientPath(GridEntity entity, IReadOnlyCollection<GridNode> processed, GridNode startNode, Path pathIgnoringOtherEntities) {
+        GridNode bestAlternative = processed.First();
+        float minModifiedH = float.MaxValue;
+        foreach (GridNode gridNode in processed) {
+            GridNode bestConvenientNode;
+            float minModifiedHForThisNode = float.MaxValue;
+            // Find the node furthest along the convenient path that is closest to this one
+            foreach (GridNode convenientNode in pathIgnoringOtherEntities.Nodes) {
+                float modifiedH = convenientNode.H + convenientNode.GetDistance(gridNode.Location);
+                if (minModifiedHForThisNode >= modifiedH) {
+                    bestConvenientNode = convenientNode;
+                    minModifiedHForThisNode = modifiedH;
+                }
+            }
+            minModifiedHForThisNode += gridNode.H;
+            if (minModifiedH > minModifiedHForThisNode) {
+                bestAlternative = gridNode;
+                minModifiedH = minModifiedHForThisNode;
+            }
+        }
+        
         return ConstructPath(entity, startNode, bestAlternative, false);
     }
 
