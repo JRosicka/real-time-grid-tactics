@@ -220,22 +220,42 @@ public class PathfinderService {
 
     private Path ConstructBestAlternativePath_WithConvenientPath(GridEntity entity, IReadOnlyCollection<GridNode> processed, GridNode startNode, Path pathIgnoringOtherEntities) {
         GridNode bestAlternative = processed.First();
-        float minModifiedH = float.MaxValue;
-        foreach (GridNode gridNode in processed) {
-            GridNode bestConvenientNode;
-            float minModifiedHForThisNode = float.MaxValue;
-            // Find the node furthest along the convenient path that is closest to this one
-            foreach (GridNode convenientNode in pathIgnoringOtherEntities.Nodes) {
-                float modifiedH = convenientNode.H + convenientNode.GetDistance(gridNode.Location);
-                if (minModifiedHForThisNode >= modifiedH) {
-                    bestConvenientNode = convenientNode;
-                    minModifiedHForThisNode = modifiedH;
+        int tieBreakIndex = -1;
+        float minDistanceFromConveniencePath = float.MaxValue;
+        
+        foreach (GridNode processedNode in processed) {
+            float minDistanceFromConveniencePathForThisNode = float.MaxValue;
+            int bestIndex = -1;
+            
+            // Find the node furthest along the convenient path that is closest to this one. Ignore the first node.
+            foreach (GridNode convenientNode in pathIgnoringOtherEntities.Nodes.GetRange(1, pathIgnoringOtherEntities.Nodes.Count - 1)) {
+                // Find the closest convenience node, breaking ties by furthest along path
+                float distance = convenientNode.GetDistance(processedNode.Location);
+                if (minDistanceFromConveniencePathForThisNode >= distance) {
+                    minDistanceFromConveniencePathForThisNode = distance;
+                    bestIndex = pathIgnoringOtherEntities.Nodes.IndexOf(convenientNode);
                 }
             }
-            minModifiedHForThisNode += gridNode.H;
-            if (minModifiedH > minModifiedHForThisNode) {
-                bestAlternative = gridNode;
-                minModifiedH = minModifiedHForThisNode;
+
+            bool useThisNode = false;
+            if (minDistanceFromConveniencePathForThisNode < minDistanceFromConveniencePath) {
+                // This node is closer to the convenient path, so use it
+                useThisNode = true;
+            } else if (Mathf.Approximately(minDistanceFromConveniencePathForThisNode, minDistanceFromConveniencePath)) {
+                if (tieBreakIndex < bestIndex) {
+                    // This node is further along the convenient path, so use it
+                    useThisNode = true;
+                } else if (tieBreakIndex == bestIndex && processedNode.H < bestAlternative.H) {
+                    // These nodes are both the same distance away from the same convenient node but this node is
+                    // closer to the destination, so use it
+                    useThisNode = true;
+                }
+            }
+
+            if (useThisNode) {
+                bestAlternative = processedNode;
+                minDistanceFromConveniencePath = minDistanceFromConveniencePathForThisNode;
+                tieBreakIndex = bestIndex;
             }
         }
         
