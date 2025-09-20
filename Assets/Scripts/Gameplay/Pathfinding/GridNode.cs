@@ -22,7 +22,7 @@ namespace Gameplay.Pathfinding {
                 if (_neighbors == null) {
                     _neighbors = new List<GridNode>();
                     foreach (GridData.CellData neighborCell in NeighborCells) {
-                        _neighbors.Add(new GridNode(_entity, neighborCell));
+                        _neighbors.Add(new GridNode(_entity, neighborCell, _ignoreOtherEntities));
                     }
                 }
 
@@ -41,6 +41,7 @@ namespace Gameplay.Pathfinding {
         /// nodes so that the H cost will always be below the actual cost. 
         /// </summary>
         private readonly float _fastestEnterTime;
+        private readonly bool _ignoreOtherEntities;
 
         /// <summary>
         /// The fastest possible travel time between this node and the destination. Assumes the fastest entrance speed because this is
@@ -49,13 +50,14 @@ namespace Gameplay.Pathfinding {
         public float GetDistance(Vector2Int destination) => _fastestEnterTime
             * CellDistanceLogic.DistanceBetweenCells(_cellData.Location, destination);
         
-        public GridNode(GridEntity entity, GridData.CellData cellData) {
+        public GridNode(GridEntity entity, GridData.CellData cellData, bool ignoreOtherEntities) {
             _entity = entity;
             _cellData = cellData;
             _fastestEnterTime = entity.EntityData.NormalMoveTime;
+            _ignoreOtherEntities = ignoreOtherEntities;
 
-            Walkable = entity.CanPathFindToTile(cellData.Tile) && PathfinderService.CanEntityEnterCell(cellData.Location, 
-                entity.EntityData, entity.Team, forRallying:entity.EntityData.CanRally);
+            Walkable = entity.CanPathFindToTile(cellData.Tile) && (ignoreOtherEntities || PathfinderService.CanEntityEnterCell(cellData.Location, 
+                entity.EntityData, entity.Team, forRallying:entity.EntityData.CanRally));
         }
 
         public float CostToEnter() {

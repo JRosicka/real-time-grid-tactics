@@ -29,6 +29,10 @@ public class PathfinderService {
         /// the destination node is the best alternative we could find. 
         /// </summary>
         public bool ContainsRequestedDestination;
+        /// <summary>
+        /// Whether the path contains nodes with entities that the pathing entity can not share with
+        /// </summary>
+        public bool IncludesImpassibleEntities;
     }
 
     /// <summary>
@@ -36,7 +40,12 @@ public class PathfinderService {
     /// per tile.
     ///
     /// If the destination can not be reached, then we return a path to the best legal alternative location. This is
-    /// prioritized by lowest H-cost then by lowest G-cost. 
+    /// prioritized by lowest H-cost then by lowest G-cost.
+    ///
+    /// Attempts to find the best path while ignoring other entities, then attempts to find the best path while accounting
+    /// for other entities.
+    /// - If the second path is not too far out of the way compared to the first path, then that second path is used
+    /// - Otherwise the first path is used
     /// </summary>
     /// <param name="entity">The entity to traverse the path. Matters for determining movement costs per tile. Also uses
     /// its current location as the path start.</param>
@@ -48,17 +57,26 @@ public class PathfinderService {
         if (entityLocation == null) {
             return new Path {
                 Nodes = new List<GridNode>(),
-                ContainsRequestedDestination = false
+                ContainsRequestedDestination = false,
+                IncludesImpassibleEntities = false
             };
         }
 
         if (entityLocation == destination) {
             return new Path {
-                Nodes = new List<GridNode> { new GridNode(entity, GridController.GridData.GetCell(entityLocation.Value)) },
-                ContainsRequestedDestination = true
+                Nodes = new List<GridNode> { new GridNode(entity, GridController.GridData.GetCell(entityLocation.Value), true) },
+                ContainsRequestedDestination = true,
+                IncludesImpassibleEntities = false
             };
         }
 
+        Path pathWhileIgnoringOtherEntities = DoFindPath(entity, entityLocation.Value, destination, true);
+        if (!pathWhileIgnoringOtherEntities.IncludesImpassibleEntities) return pathWhileIgnoringOtherEntities;
+
+        return DoFindPath(entity, entityLocation.Value, destination, false, pathWhileIgnoringOtherEntities);
+    }
+
+    private Path DoFindPath(GridEntity entity, Vector2Int entityLocation, Vector2Int destination, bool ignoreOtherEntities, Path? pathIgnoringOtherEntities = null) {
         int maxSearch = MaxCellsToSearch;
         if (!entity.CanPathFindToTile(GridController.GridData.GetCell(destination).Tile) 
                 || !CanEntityEnterCell(destination, entity.EntityData, entity.Team)) {
@@ -66,7 +84,12 @@ public class PathfinderService {
             maxSearch = MaxCellsToSearchWhenWeKnowNoPathExists;
         }
         
-        GridNode startNode = new GridNode(entity, GridController.GridData.GetCell(entityLocation.Value));
+        float entityTravelTime = entity.EntityData.NormalMoveTime > 0 ? entity.EntityData.NormalMoveTime : 1;
+        float maxFCost = pathIgnoringOtherEntities == null 
+            ? float.MaxValue 
+            : pathIgnoringOtherEntities.Value.Nodes.Last().F + GameManager.Instance.Configuration.MaxPathFindingFCostBuffer / entityTravelTime;
+        
+        GridNode startNode = new GridNode(entity, GridController.GridData.GetCell(entityLocation), ignoreOtherEntities);
         startNode.SetH(startNode.GetDistance(destination));
         
         List<GridNode> toSearch = new List<GridNode> { startNode };
@@ -82,13 +105,13 @@ public class PathfinderService {
             
             if (current.Location == destination) {
                 // We have reached the end
-                return ConstructPath(startNode, current, true);
+                return ConstructPath(entity, startNode, current, true);
             }
             
             if (processed.Count > maxSearch) {
                 // We have not yet found a path after searching for a while, and we have not exhausted all of the tiles 
                 // to search. Pick the best possible alternative destination out of those we have searched.
-                return ConstructBestAlternativePath(processed, startNode);
+                return ConstructBestAlternativePath(entity, processed, startNode, pathIgnoringOtherEntities);
             }
 
             // Search through all the current node's neighbors
@@ -106,7 +129,9 @@ public class PathfinderService {
                     if (!inSearch) {
                         // This is the first time we have taken a look at this node, so do some basic one-time setup
                         neighbor.SetH(neighbor.GetDistance(destination));
-                        toSearch.AddSorted(neighbor);
+                        if (neighbor.F <= maxFCost) {
+                            toSearch.AddSorted(neighbor);
+                        }
                     } else {
                         // We just found a better connection for the neighbor, so re-sort the list
                         toSearch.Remove(neighborBeingSearched);
@@ -118,7 +143,7 @@ public class PathfinderService {
         
         // We ran out of nodes to search without finding a way to the destination, so no path exists. Pick the best
         // possible alternative destination out of those we have searched.
-        return ConstructBestAlternativePath(processed, startNode);
+        return ConstructBestAlternativePath(entity, processed, startNode, pathIgnoringOtherEntities);
     }
 
     /// <summary>
@@ -130,28 +155,33 @@ public class PathfinderService {
         if (entityLocation == null) {
             return new Path {
                 Nodes = new List<GridNode>(),
-                ContainsRequestedDestination = false
+                ContainsRequestedDestination = false,
+                IncludesImpassibleEntities = false
             };
         }
 
-        List<GridNode> pathNodes = new() { new GridNode(entity, GridController.GridData.GetCell(entityLocation.Value)) };
+        List<GridNode> pathNodes = new() { new GridNode(entity, GridController.GridData.GetCell(entityLocation.Value), false) };
         foreach (Vector2Int cell in CellDistanceLogic.GetCellsInStraightLine(entityLocation.Value, destination)) {
-            pathNodes.Add(new GridNode(entity, GridController.GridData.GetCell(cell)));
+            pathNodes.Add(new GridNode(entity, GridController.GridData.GetCell(cell), false));
         }
         
         return new Path {
             Nodes = pathNodes,
-            ContainsRequestedDestination = true
+            ContainsRequestedDestination = true, 
+            IncludesImpassibleEntities = false
         };
 
     }
 
-    private Path ConstructPath(GridNode startNode, GridNode current, bool originalDestination) {
+    private Path ConstructPath(GridEntity entity, GridNode startNode, GridNode current, bool originalDestination) {
+        bool containsImpassibleEntities = false;
         GridNode currentPathNode = current;
         List<GridNode> pathNodes = new List<GridNode>();
         while (currentPathNode != startNode) {
             pathNodes.Add(currentPathNode);
             currentPathNode = currentPathNode.Connection;
+            containsImpassibleEntities = containsImpassibleEntities || !CanEntityEnterCell(currentPathNode.Location,
+                entity.EntityData, entity.Team, forRallying: entity.EntityData.CanRally);
 
             if (pathNodes.Count > 500) {
                 throw new Exception("Frig bro, the path is too long");
@@ -163,22 +193,34 @@ public class PathfinderService {
         pathNodes.Reverse();
         return new Path {
             Nodes = pathNodes,
-            ContainsRequestedDestination = originalDestination
+            ContainsRequestedDestination = originalDestination,
+            IncludesImpassibleEntities = containsImpassibleEntities,
         };
     }
 
-    private Path ConstructBestAlternativePath(IReadOnlyCollection<GridNode> processed, GridNode startNode) {
+    private Path ConstructBestAlternativePath(GridEntity entity, IReadOnlyCollection<GridNode> processed, GridNode startNode, Path? pathIgnoringOtherEntities) {
         GridNode bestAlternative;
                 
         float minH = processed.Min(n => n.H);
         List<GridNode> closestNodes = processed.Where(n => Mathf.Approximately(n.H, minH)).ToList();
         if (closestNodes.Count > 1) {
+            if (pathIgnoringOtherEntities != null) {
+                // TODO maybe instead of prioritizing smallest h when there is an alternate path, instead prioritize smallest f and break ties by smallest g?? Or somehow factor in the nodes in that path since we have them. 
+                // Prioritize pathing to an existing (closest) node that actually exists on the "convenient" path if that path exists
+                List<Vector2Int> convenientPathNodes = pathIgnoringOtherEntities.Value.Nodes.Select(n => n.Location).ToList();
+                List<GridNode> closestNodesAlongConvenientPath = closestNodes.Where(n => convenientPathNodes.Contains(n.Location)).ToList();
+                if (closestNodesAlongConvenientPath.Count > 0) {
+                    // There are in fact nodes that are along this convenient path. Pick the one that's farthest along. 
+                    bestAlternative = closestNodesAlongConvenientPath.Aggregate((n1, n2) => convenientPathNodes.IndexOf(n1.Location) > convenientPathNodes.IndexOf(n2.Location) ? n1 : n2);
+                    return ConstructPath(entity, startNode, bestAlternative, false);
+                } // Otherwise none of these closest nodes are on the convenient path, so just proceed to the next priority
+            }
             float minG = closestNodes.Min(n => n.G);
             bestAlternative = closestNodes.First(n => Mathf.Approximately(n.G, minG));
         } else {
             bestAlternative = closestNodes[0];
         }
-        return ConstructPath(startNode, bestAlternative, false);
+        return ConstructPath(entity, startNode, bestAlternative, false);
     }
 
     public float AngleBetweenCells(Vector2Int cell1, Vector2Int cell2) {
