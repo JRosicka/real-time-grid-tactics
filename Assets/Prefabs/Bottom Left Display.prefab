@@ -531,8 +531,8 @@ GameObject:
   m_Component:
   - component: {fileID: 8986544447372437866}
   - component: {fileID: 1644897989161527228}
-  - component: {fileID: 5129760652539055191}
   - component: {fileID: 960970069554191614}
+  - component: {fileID: 6043964197463462247}
   m_Layer: 5
   m_Name: Menu button
   m_TagString: Untagged
@@ -591,7 +591,15 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 2
---- !u!114 &5129760652539055191
+--- !u!222 &960970069554191614
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3426071353282748408}
+  m_CullTransparentMesh: 1
+--- !u!114 &6043964197463462247
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -600,11 +608,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 3426071353282748408}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Script: {fileID: 11500000, guid: c32e8343c9b24009bc46b0a3097651fb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Navigation:
-    m_Mode: 0
+    m_Mode: 3
     m_WrapAround: 0
     m_SelectOnUp: {fileID: 0}
     m_SelectOnDown: {fileID: 0}
@@ -623,7 +631,7 @@ MonoBehaviour:
     m_HighlightedSprite: {fileID: 21300000, guid: 629299479d8bc1a40b6637144a021cd3, type: 3}
     m_PressedSprite: {fileID: 21300000, guid: 0514def73cfb59a4e9f8b072ba340407, type: 3}
     m_SelectedSprite: {fileID: 21300000, guid: 2858aa17bb20d4046ae0a8eb1a724eee, type: 3}
-    m_DisabledSprite: {fileID: 21300000, guid: d31cfc9d732832d48a92e4ff8f3e677a, type: 3}
+    m_DisabledSprite: {fileID: 21300000, guid: 2858aa17bb20d4046ae0a8eb1a724eee, type: 3}
   m_AnimationTriggers:
     m_NormalTrigger: Normal
     m_HighlightedTrigger: Highlighted
@@ -647,14 +655,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
---- !u!222 &960970069554191614
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3426071353282748408}
-  m_CullTransparentMesh: 1
 --- !u!1 &3702963099873030006
 GameObject:
   m_ObjectHideFlags: 0
@@ -901,7 +901,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   PauseMenu: {fileID: 0}
   PauseButtonImage: {fileID: 1644897989161527228}
-  PauseButton: {fileID: 5129760652539055191}
+  PauseButton: {fileID: 6043964197463462247}
+  HamburgerLinesGroup: {fileID: 2025379334362726292}
+  HamburgerLines:
+  - {fileID: 2634785293738046387}
+  - {fileID: 8465358698389232445}
+  - {fileID: 2790622628954105708}
+  HamburgerLinesUpPosition: {x: 0, y: 0}
+  HamburgerLinesDownPosition: {x: 0, y: -0.51}
+  HamburgerSelectedColor: {r: 0.754717, g: 0.754717, b: 0.754717, a: 1}
+  HamburgerDeselectedColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!114 &4109470283471069069
 MonoBehaviour:
   m_ObjectHideFlags: 0

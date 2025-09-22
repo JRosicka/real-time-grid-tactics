@@ -1255,6 +1255,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Black Bars
       objectReference: {fileID: 0}
+    - target: {fileID: 5740941310266155798, guid: 612dbd3dbc2474049951b04acb8c20ab, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0.024047852
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 612dbd3dbc2474049951b04acb8c20ab, type: 3}
 --- !u!224 &344291471 stripped

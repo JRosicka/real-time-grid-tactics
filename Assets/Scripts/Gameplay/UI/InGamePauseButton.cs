@@ -1,6 +1,8 @@
+using System.Collections.Generic;
 using Gameplay.Config;
 using UnityEngine;
 using UnityEngine.UI;
+using Util;
 
 namespace Gameplay.UI {
     /// <summary>
@@ -9,7 +11,13 @@ namespace Gameplay.UI {
     public class InGamePauseButton : MonoBehaviour {
         public InGamePauseMenu PauseMenu;
         public Image PauseButtonImage;
-        public Button PauseButton;
+        public ListenerButton PauseButton;
+        public Transform HamburgerLinesGroup;
+        public List<Image> HamburgerLines;
+        public Vector2 HamburgerLinesUpPosition;
+        public Vector2 HamburgerLinesDownPosition;
+        public Color HamburgerSelectedColor;
+        public Color HamburgerDeselectedColor;
         
         private static GameSetupManager GameSetupManager => GameManager.Instance.GameSetupManager;
         
@@ -21,6 +29,8 @@ namespace Gameplay.UI {
                 selectedSprite = buttonData.Normal,
                 disabledSprite = buttonData.Pressed
             };
+            PauseButton.Pressed += ToggleClicked;
+            PauseButton.NoLongerPressed += ToggleUnClicked;
         }
         
         public void TogglePauseMenu() {
@@ -31,6 +41,16 @@ namespace Gameplay.UI {
             if (PauseMenu.SettingsMenu.Active) {
                 PauseMenu.SettingsMenu.Close();
             }
+        }
+
+        private void ToggleClicked() {
+            HamburgerLines.ForEach(l => l.color = HamburgerSelectedColor);
+            HamburgerLinesGroup.localPosition = HamburgerLinesDownPosition;
+        }
+        
+        private void ToggleUnClicked() {
+            HamburgerLines.ForEach(l => l.color = HamburgerDeselectedColor);
+            HamburgerLinesGroup.localPosition = HamburgerLinesUpPosition;
         }
     }
 }
