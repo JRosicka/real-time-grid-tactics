@@ -47,8 +47,7 @@ namespace Gameplay.UI {
             
             // If the path is too short, then no need to place any lines
             if (path.Nodes.Count < 1 
-                || (path.Nodes.Count < 2 && path.ContainsRequestedDestination) 
-                || (path.Nodes.Count < 3 && hidePathDestination)) return;
+                || (path.Nodes.Count < 2 && path.ContainsRequestedDestination)) return;
             
             VisualizeRegularLines(path, pathType, hidePathDestination, thickLines);
             if (!thickLines) {
@@ -58,6 +57,8 @@ namespace Gameplay.UI {
         
         private void VisualizeRegularLines(PathfinderService.Path path, PathType pathType, bool hidePathDestination, bool thickLines) {
             List<GridNode> pathNodes = path.Nodes;
+            if (pathNodes.Count < 3 && hidePathDestination && path.ContainsRequestedDestination) return;
+
             (List<AbstractDirectionalLine> lines, GameObjectPool<AbstractDirectionalLine> linePool) = GetLineGroup(thickLines);
             
             // No need to visualise for the final cell
