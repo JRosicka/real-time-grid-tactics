@@ -111,7 +111,7 @@ public class PathfinderService {
             if (processed.Count > maxSearch) {
                 // We have not yet found a path after searching for a while, and we have not exhausted all of the tiles 
                 // to search. Pick the best possible alternative destination out of those we have searched.
-                return ConstructBestAlternativePath(entity, processed, startNode, pathIgnoringOtherEntities);
+                return ConstructBestAlternativePath(entity, processed, startNode, destination, pathIgnoringOtherEntities);
             }
 
             // Search through all the current node's neighbors
@@ -143,7 +143,7 @@ public class PathfinderService {
         
         // We ran out of nodes to search without finding a way to the destination, so no path exists. Pick the best
         // possible alternative destination out of those we have searched.
-        return ConstructBestAlternativePath(entity, processed, startNode, pathIgnoringOtherEntities);
+        return ConstructBestAlternativePath(entity, processed, startNode, destination, pathIgnoringOtherEntities);
     }
 
     /// <summary>
@@ -195,14 +195,14 @@ public class PathfinderService {
         return new Path {
             Nodes = pathNodes,
             ContainsRequestedDestination = originalDestination,
-            IncludesImpassibleEntities = containsImpassibleEntities,
+            IncludesImpassibleEntities = containsImpassibleEntities
         };
     }
 
-    private Path ConstructBestAlternativePath(GridEntity entity, IReadOnlyCollection<GridNode> processed, GridNode startNode, Path? pathIgnoringOtherEntities) {
+    private Path ConstructBestAlternativePath(GridEntity entity, IReadOnlyCollection<GridNode> processed, GridNode startNode, Vector2Int destination, Path? pathIgnoringOtherEntities) {
         return pathIgnoringOtherEntities == null
             ? ConstructBestAlternativePath_NoConvenientPath(entity, processed, startNode)
-            : ConstructBestAlternativePath_WithConvenientPath(entity, processed, startNode, pathIgnoringOtherEntities.Value);
+            : ConstructBestAlternativePath_WithConvenientPath(entity, processed, startNode, destination, pathIgnoringOtherEntities.Value);
     }
 
     private Path ConstructBestAlternativePath_NoConvenientPath(GridEntity entity, IReadOnlyCollection<GridNode> processed, GridNode startNode) {
@@ -219,14 +219,21 @@ public class PathfinderService {
         return ConstructPath(entity, startNode, bestAlternative, false);
     }
 
-    private Path ConstructBestAlternativePath_WithConvenientPath(GridEntity entity, IReadOnlyCollection<GridNode> processed, GridNode startNode, Path pathIgnoringOtherEntities) {
+    private Path ConstructBestAlternativePath_WithConvenientPath(GridEntity entity, IReadOnlyCollection<GridNode> processed, GridNode startNode, Vector2Int destination, Path pathIgnoringOtherEntities) {
         GridNode bestAlternative = processed.First();
+        GridNode bestAdjacentNodeNotOnPath = null;
         int tieBreakIndex = -1;
         float minDistanceFromConveniencePath = float.MaxValue;
         
         foreach (GridNode processedNode in processed) {
             float minDistanceFromConveniencePathForThisNode = float.MaxValue;
             int bestIndex = -1;
+
+            if (CellDistanceLogic.DistanceBetweenCells(destination, processedNode.Location) == 1) {
+                if (bestAdjacentNodeNotOnPath == null || bestAdjacentNodeNotOnPath.G > processedNode.G) {
+                    bestAdjacentNodeNotOnPath = processedNode;
+                }
+            }
             
             // Find the node furthest along the convenient path that is closest to this one. Ignore the first node.
             foreach (GridNode convenientNode in pathIgnoringOtherEntities.Nodes.GetRange(1, pathIgnoringOtherEntities.Nodes.Count - 1)) {
@@ -258,6 +265,11 @@ public class PathfinderService {
                 minDistanceFromConveniencePath = minDistanceFromConveniencePathForThisNode;
                 tieBreakIndex = bestIndex;
             }
+        }
+
+        if (bestAdjacentNodeNotOnPath != null && CellDistanceLogic.DistanceBetweenCells(bestAlternative.Location, destination) > 1) {
+            // There is an adjacent node not on the convenient path that is available, and the closest convenient path node is not adjacent. So use the adjacent one. 
+            bestAlternative = bestAdjacentNodeNotOnPath;
         }
         
         return ConstructPath(entity, startNode, bestAlternative, false);
