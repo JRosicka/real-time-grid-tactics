@@ -179,13 +179,14 @@ public class PathfinderService {
         List<GridNode> pathNodes = new List<GridNode>();
         while (currentPathNode != startNode) {
             pathNodes.Add(currentPathNode);
-            currentPathNode = currentPathNode.Connection;
             containsImpassibleEntities = containsImpassibleEntities || !CanEntityEnterCell(currentPathNode.Location,
                 entity.EntityData, entity.Team, forRallying: entity.EntityData.CanRally);
 
             if (pathNodes.Count > 500) {
                 throw new Exception("Frig bro, the path is too long");
             }
+            
+            currentPathNode = currentPathNode.Connection;
         }
         pathNodes.Add(startNode);
                 
