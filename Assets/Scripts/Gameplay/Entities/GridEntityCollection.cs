@@ -78,6 +78,7 @@ namespace Gameplay.Entities {
                     },
                     Location = location
                 });
+                ClearLocationsWithFriendlyEntitiesCache();
                 EntityUpdatedEvent?.Invoke(location, entity);
             } else if (CanEntityShareLocation(entity, collectionAtLocation, entityToIgnore)) {
                 if (currentEntitiesAtLocation.Any(o => o.Order == order)) {
@@ -87,6 +88,7 @@ namespace Gameplay.Entities {
                     Entity = entity,
                     Order = order
                 });
+                ClearLocationsWithFriendlyEntitiesCache();
                 EntityUpdatedEvent?.Invoke(location, entity);
             } else {
                 throw new IllegalEntityPlacementException(location, entity, currentEntitiesAtLocation);
@@ -109,6 +111,7 @@ namespace Gameplay.Entities {
             }
             
             // Send the event with whatever is left over here, if anything
+            ClearLocationsWithFriendlyEntitiesCache();
             EntityUpdatedEvent?.Invoke(collection.Location, collection.Entities.Count == 0 ? null : collection.Entities[0].Entity);
         }
 
@@ -157,6 +160,29 @@ namespace Gameplay.Entities {
 
         public bool IsEntityOnGrid(GridEntity entity) {
             return AllEntities().Contains(entity);
+        }
+
+        private Dictionary<GameTeam, List<Vector2Int>> _locationsWithFriendlyEntities = new Dictionary<GameTeam, List<Vector2Int>>();
+        public List<Vector2Int> LocationsWithFriendlyEntities(GameTeam team) {
+            if (_locationsWithFriendlyEntities.TryGetValue(team, out var entities)) {
+                return entities;
+            }
+            
+            List<Vector2Int> locationsWithFriendlyEntities = GameManager.Instance.CommandManager.EntitiesOnGrid
+                .ActiveEntitiesForTeam(team)
+                .Select(e => e.Location)
+                .NotNull()
+                .Select(l => l!.Value)
+                .ToList();
+            _locationsWithFriendlyEntities[team] = locationsWithFriendlyEntities;
+            return locationsWithFriendlyEntities;
+        }
+
+        private void ClearLocationsWithFriendlyEntitiesCache() {
+            foreach (List<Vector2Int> locations in _locationsWithFriendlyEntities.Values) {
+                locations.Clear();
+            }
+            _locationsWithFriendlyEntities.Clear();
         }
 
         private bool CanEntityShareLocation(GridEntity entity, PositionedGridEntityCollection otherEntities, GridEntity entityToIgnore = null) {

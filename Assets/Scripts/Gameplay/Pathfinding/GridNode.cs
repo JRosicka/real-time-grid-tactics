@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gameplay.Entities;
 using Gameplay.Grid;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace Gameplay.Pathfinding {
@@ -58,6 +60,13 @@ namespace Gameplay.Pathfinding {
 
             Walkable = entity.CanPathFindToTile(cellData.Tile) && (ignoreOtherEntities || PathfinderService.CanEntityEnterCell(cellData.Location, 
                 entity.EntityData, entity.Team, forRallying:entity.EntityData.CanRally));
+
+            List<Vector2Int> locationsWithFriendlyEntities = GameManager.Instance.CommandManager.EntitiesOnGrid.LocationsWithFriendlyEntities(entity.Team);
+            foreach (GridData.CellData neighborCell in NeighborCells) {
+                if (locationsWithFriendlyEntities.Contains(neighborCell.Location)) {
+                    NeighborsWithFriendlyUnits++;
+                }
+            }
         }
 
         public float CostToEnter() {
@@ -78,6 +87,8 @@ namespace Gameplay.Pathfinding {
             H = h;
         }
         public float F => G + H;
+        
+        private int NeighborsWithFriendlyUnits { get; }
 
         /// <summary>
         /// Compare using F cost, then H cost
@@ -87,7 +98,9 @@ namespace Gameplay.Pathfinding {
             if (ReferenceEquals(null, other)) return 1;
             var fComparison = F.CompareTo(other.F);
             if (fComparison != 0) return fComparison;
-            return H.CompareTo(other.H);
+            var hComparison = H.CompareTo(other.H);
+            if (hComparison != 0) return hComparison;
+            return NeighborsWithFriendlyUnits.CompareTo(other.NeighborsWithFriendlyUnits);
         }
 
         /// <summary>
