@@ -176,7 +176,7 @@ public class GameSetupManager : MonoBehaviour {
         CountdownTimer.StartCountdown(CountdownTimeSeconds);
         GameTeam localTeam = GameManager.LocalTeam;
         if (localTeam != GameTeam.Spectator) {
-            Vector2Int keepLocation = MapLoader.GetHomeBaseLocation(localTeam);
+            Vector2Int keepLocation = MapLoader.GetPlayerStartLocation(localTeam);
             StartLocationIndicator.PlayMovingAnimation(GameManager.GridController.GetWorldPosition(keepLocation), 
                 GameManager.GetPlayerForTeam(localTeam).Data.TeamColor, 
                 CountdownTimeSeconds);

@@ -79,7 +79,7 @@ public class PathfinderService {
     private Path DoFindPath(GridEntity entity, Vector2Int entityLocation, Vector2Int destination, bool ignoreOtherEntities, Path? pathIgnoringOtherEntities = null) {
         int maxSearch = MaxCellsToSearch;
         if (!entity.CanPathFindToTile(GridController.GridData.GetCell(destination).Tile) 
-                || !CanEntityEnterCell(destination, entity.EntityData, entity.Team)) {
+                || !CanEntityEnterCell(destination, entity.EntityData, entity.Team, forRallying:entity.EntityData.CanRally)) {
             // Can't go to destination, so let's not overdo the search since we're just gonna pick the best available choice anyway
             maxSearch = MaxCellsToSearchWhenWeKnowNoPathExists;
         }
@@ -283,6 +283,7 @@ public class PathfinderService {
     }
     
     // TODO repurpose this a bit - we need to factor in types. We will want to consider a similar method for calculating movement penalties as well. 
+    // WOW this is a hacky mess. 
     public static bool CanEntityEnterCell(Vector2Int cellPosition, EntityData entityData, GameTeam entityTeam, List<GridEntity> entitiesToIgnore = null, bool forRallying = false) {
         entitiesToIgnore ??= new List<GridEntity>();
         List<GridEntity> entitiesAtLocation = GameManager.Instance?.GetEntitiesAtLocation(cellPosition)?.Entities
@@ -293,7 +294,7 @@ public class PathfinderService {
             // No other entities are here
             
             // If this is a resource extractor structure, then it needs a resource entity
-            if (entityData.IsStructure && entityData.IsResourceExtractor) {
+            if (!forRallying && entityData.IsStructure && entityData.IsResourceExtractor) {
                 return false;
             }
             

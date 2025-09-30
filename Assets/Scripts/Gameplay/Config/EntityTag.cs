@@ -6,7 +6,7 @@ namespace Gameplay.Config {
         Cavalry = 2, 
         Infantry = 3,
         Flying = 4,
-        HomeBase = 5,
+        Leader = 5,
         Worker = 6,
         Resource = 7,
         ResourceCollector = 8
@@ -19,7 +19,7 @@ namespace Gameplay.Config {
                 EntityTag.Cavalry => "cavalry units",
                 EntityTag.Infantry => "infantry units",
                 EntityTag.Flying => "flying units",
-                EntityTag.HomeBase => "the keep",
+                EntityTag.Leader => "the king",
                 EntityTag.Worker => "workers",
                 EntityTag.Resource => "resources",
                 EntityTag.ResourceCollector => "resource collection structures",

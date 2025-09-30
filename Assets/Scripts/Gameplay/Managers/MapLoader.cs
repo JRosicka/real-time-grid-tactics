@@ -51,17 +51,17 @@ public class MapLoader : MonoBehaviour {
         float xMin = lowerLeftWorldPosition.x - (needAdditionalHalfCellAtLeft ? GridController.CellWidth / 2 : 0);
         bool needAdditionalHalfCellAtRight = WideRightSide;
         float xMax = upperRightWorldPosition.x + (needAdditionalHalfCellAtRight ? GridController.CellWidth / 2 : 0);
-        CameraManager.Initialize(GridController.GetWorldPosition(GetHomeBaseLocation(team)), 
+        CameraManager.Initialize(GridController.GetWorldPosition(GetPlayerStartLocation(team)), 
             xMin, xMax, upperRightWorldPosition.y, lowerLeftWorldPosition.y);
     }
 
-    public Vector2Int GetHomeBaseLocation(GameTeam team) {
+    public Vector2Int GetPlayerStartLocation(GameTeam team) {
         // If the player is a spectator, just focus them on player 1's home base
         team = team == GameTeam.Spectator ? GameTeam.Player1 : team;
         return UnitSpawns
             .First(u => u.Team == team)
             .Entities
-            .First(e => e.Entity.Tags.Contains(EntityTag.HomeBase))
+            .First(e => e.Entity.Tags.Contains(EntityTag.Leader))
             .SpawnLocation;
     }
 }

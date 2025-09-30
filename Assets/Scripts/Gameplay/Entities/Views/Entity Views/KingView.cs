@@ -1,7 +1,7 @@
 using Gameplay.Entities.Abilities;
 
 namespace Gameplay.Entities {
-    public class BaseView : GridEntityParticularView {
+    public class KingView : GridEntityParticularView {
         public override void Initialize(GridEntity entity) { }
         public override void LethalDamageReceived() { }
 
