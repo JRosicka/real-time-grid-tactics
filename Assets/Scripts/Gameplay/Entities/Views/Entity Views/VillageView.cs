@@ -26,7 +26,7 @@ namespace Gameplay.Entities {
         public override bool DoAbility(IAbility ability, AbilityCooldownTimer cooldownTimer) {
             switch (ability.AbilityData) {
                 case IncomeAbilityData data:
-                    IncomeAnimationBehavior.DoIncomeAnimation(data);
+                    IncomeAnimationBehavior.DoIncomeAnimation();
                     return false;
                 default:
                     return true;

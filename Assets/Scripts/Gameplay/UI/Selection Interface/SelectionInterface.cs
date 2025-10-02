@@ -35,6 +35,8 @@ namespace Gameplay.UI {
         [SerializeField] private TMP_Text _rangeField;
         [SerializeField] private GameObject _killCountRow;
         [SerializeField] private TMP_Text _killCountField;
+        [SerializeField] private GameObject _incomeRateRow;
+        [SerializeField] private TMP_Text _incomeRateField;
 
         [SerializeField] private HoverableInfoIcon _defenseHoverableInfoIcon;
         [SerializeField] private HoverableInfoIcon _attackHoverableInfoIcon;
@@ -155,6 +157,7 @@ namespace Gameplay.UI {
             _displayedSelectable.SetUpResourceView(ResourceRow, ResourceLabel, ResourceField);
             _displayedSelectable.SetUpBuildQueueView(_buildQueueForStructure, _buildQueueForWorker);
             _displayedSelectable.SetUpKillCountView(_killCountRow, _killCountField);
+            _displayedSelectable.SetUpIncomeRateView(_incomeRateRow, _incomeRateField);
             _displayedSelectable.SetUpHoverableInfo(_defenseHoverableInfoIcon, _attackHoverableInfoIcon, _moveHoverableInfoIcon);
         }
         

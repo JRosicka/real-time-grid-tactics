@@ -4,9 +4,9 @@ namespace Gameplay.Entities.Abilities {
     /// to perform the ability. 
     /// </summary>
     public enum AbilityResult {
-        // The ability is complete and should be removed, and the effect occurred (clients should show effect)
-        CompletedWithoutEffect,
         // The ability is complete and should be removed, but the effect did not happen
+        CompletedWithoutEffect,
+        // The ability is complete and should be removed, and the effect occurred (clients should show effect)
         CompletedWithEffect,
         // The ability is not yet complete, but the effect just happened (clients should show effect)
         IncompleteWithEffect,

@@ -18,7 +18,7 @@ namespace Gameplay.Config.Abilities {
         public override IAbilityParameters OnStartParameters => new ParadeAbilityParameters { Target = null };
 
         public override void SelectAbility(GridEntity selector) {
-            // Nothing to do
+            GameManager.Instance.EntitySelectionManager.SelectTargetableAbility(this, selector.Team, null);
         }
         
         protected override AbilityLegality AbilityLegalImpl(ParadeAbilityParameters parameters, GridEntity performer) {
@@ -47,7 +47,7 @@ namespace Gameplay.Config.Abilities {
             GridEntity resourceCollector = GameManager.Instance.ResourceEntityFinder.GetResourceCollectorAtLocation(cellPosition);
             GameManager.Instance.AbilityAssignmentManager.StartPerformingAbility(selectedEntity, this, new ParadeAbilityParameters {
                 Target = resourceCollector
-            }, true, true, true);
+            }, true, true, false);
         }
 
         public void RecalculateTargetableAbilitySelection(GridEntity selector, object targetData) {

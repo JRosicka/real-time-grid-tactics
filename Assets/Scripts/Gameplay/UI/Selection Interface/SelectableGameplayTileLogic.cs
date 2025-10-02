@@ -57,6 +57,11 @@ namespace Gameplay.UI {
             killCountField.text = string.Empty;
         }
 
+        public void SetUpIncomeRateView(GameObject incomeRateRow, TMP_Text incomeRateField) {
+            incomeRateRow.SetActive(false);
+            incomeRateField.text = string.Empty;
+        }
+
         public void SetUpHoverableInfo(HoverableInfoIcon defenseHoverableInfoIcon, HoverableInfoIcon attackHoverableInfoIcon, HoverableInfoIcon moveHoverableInfoIcon) {
             string defenseTooltip = _tile.GetDefenseTooltip();
             if (!string.IsNullOrEmpty(defenseTooltip)) {

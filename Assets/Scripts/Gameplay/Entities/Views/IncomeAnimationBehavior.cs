@@ -32,8 +32,8 @@ namespace Gameplay.Entities {
             ToggleOutOfResourcesIcon(false);
         }
         
-        public void DoIncomeAnimation(IncomeAbilityData data) {
-            _incomeText.text = string.Format(_incomeTextFormat, data.ResourceAmountIncome.Amount, _textIconGlyph);
+        public void DoIncomeAnimation() {
+            _incomeText.text = string.Format(_incomeTextFormat, _entity.IncomeRate, _textIconGlyph);
             _incomeText.color = _textColor;
             _animator.Play("ShowIncome");
             

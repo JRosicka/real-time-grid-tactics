@@ -32,7 +32,7 @@ namespace Gameplay.Entities.Abilities {
 
             // Subtract the income amount from the resource entity
             ResourceAmount resourceAmount = new ResourceAmount(resourceEntity.CurrentResourcesValue);
-            int amountToGain = Mathf.Min(Data.ResourceAmountIncome.Amount, resourceAmount.Amount);
+            int amountToGain = Mathf.Min(Performer.IncomeRate, resourceAmount.Amount);
             resourceAmount.Amount -= amountToGain;
             resourceEntity.CurrentResources.UpdateValue(resourceAmount);
 

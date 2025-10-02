@@ -29,6 +29,7 @@ namespace Gameplay.UI {
         void SetUpRangeView(GameObject rangeRow, TMP_Text rangeField);
         void SetUpBuildQueueView(BuildQueueView buildQueueForStructure, BuildQueueView buildQueueForWorker);
         void SetUpKillCountView(GameObject killCountRow, TMP_Text killCountField);
+        void SetUpIncomeRateView(GameObject incomeRateRow, TMP_Text incomeRateField);
         void SetUpHoverableInfo(HoverableInfoIcon defenseHoverableInfoIcon, HoverableInfoIcon attackHoverableInfoIcon, HoverableInfoIcon moveHoverableInfoIcon);
 
         void UnregisterListeners();

@@ -22,6 +22,7 @@ namespace Gameplay.UI {
             entity.AbilityPerformedEvent += OnEntityAbilityPerformed;
             entity.CurrentResources.ValueChanged += OnEntityResourceAmountChanged;
             entity.KillCountChanged += KillCountChanged;
+            entity.IncomeRateChanged += IncomeRateChanged;
             
             IGamePlayer player = GameManager.Instance.GetPlayerForTeam(entity.Team);
             if (player != null) {
@@ -141,13 +142,26 @@ namespace Gameplay.UI {
             _killCountField = killCountField;
             
             bool tracksKills = Entity.EntityData.Damage > 0;
-            killCountRow.SetActive(tracksKills);
             if (tracksKills) {
                 killCountRow.SetActive(true);
                 killCountField.text = Entity.KillCount.ToString();
             } else {
                 killCountRow.SetActive(false);
                 killCountField.text = string.Empty;
+            }
+        }
+
+        private TMP_Text _incomeRateField;
+        public void SetUpIncomeRateView(GameObject incomeRateRow, TMP_Text incomeRateField) {
+            _incomeRateField = incomeRateField;
+            
+            bool tracksIncomeRate = Entity.IncomeRate > 0;
+            if (tracksIncomeRate) {
+                incomeRateRow.SetActive(true);
+                incomeRateField.text = Entity.IncomeRate.ToString();
+            } else  {
+                incomeRateRow.SetActive(false);
+                incomeRateField.text = string.Empty;
             }
         }
 
@@ -176,6 +190,7 @@ namespace Gameplay.UI {
             Entity.AbilityPerformedEvent -= OnEntityAbilityPerformed;
             Entity.CurrentResources.ValueChanged -= OnEntityResourceAmountChanged;
             Entity.KillCountChanged -= KillCountChanged;
+            Entity.IncomeRateChanged -= IncomeRateChanged;
             IGamePlayer player = GameManager.Instance.GetPlayerForTeam(Entity.Team);
             if (player != null) {
                 player.OwnedPurchasablesController.OwnedPurchasablesChangedEvent -= OnOwnedPurchasablesChanged;
@@ -199,7 +214,12 @@ namespace Gameplay.UI {
             if (!_killCountField) return;
             _killCountField.text = newKillCount.ToString();
         }
-        
+
+        private void IncomeRateChanged(int newIncomeRate) {
+            if (!_incomeRateField) return;
+            _incomeRateField.text = newIncomeRate.ToString();
+        }
+
         #region Tooltips
         
         private const string DefenseFormatStructure = "{0} occupying this structure receive {1} less damage from attacks.";

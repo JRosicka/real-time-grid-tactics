@@ -57,6 +57,8 @@ namespace Gameplay.Entities {
         private bool _normallyWouldBeAnEnemyButIsControllableDueToCheats;
         private NetworkableField _killCountField;
         public int KillCount => ((NetworkableIntegerValue)_killCountField?.Value)?.Value ?? 0;
+        private NetworkableField _incomeRateField;
+        public int IncomeRate => ((NetworkableIntegerValue)_incomeRateField?.Value)?.Value ?? 0;
 
         // Abilities
         /// <summary>
@@ -120,6 +122,7 @@ namespace Gameplay.Entities {
         // Needs to happen right after UnregisteredEvent, probably. Keep separate. 
         public event Action KilledEvent;
         public event Action<int> KillCountChanged;
+        public event Action<int> IncomeRateChanged;
         public event Action<List<IAbility>> InProgressAbilitiesUpdatedEvent;
         /// <summary>
         /// Only triggered on server
@@ -137,6 +140,7 @@ namespace Gameplay.Entities {
             _location = new NetworkableField(this, nameof(_location), new NetworkableVector2IntegerValue(new Vector2Int(0, 0)));
             LastAttackedEntity = new NetworkableField(this, nameof(LastAttackedEntity), new NetworkableGridEntityValue(null));
             _killCountField = new NetworkableField(this, nameof(_killCountField), new NetworkableIntegerValue(0));
+            _incomeRateField = new NetworkableField(this, nameof(_incomeRateField), new NetworkableIntegerValue(0));
         }
 
         /// <summary>
@@ -153,6 +157,12 @@ namespace Gameplay.Entities {
             HPHandler.SetCurrentHP(EntityData.HP, false);
             CurrentResources.UpdateValue(EntityData.StartingResourceSet);
             _location.UpdateValue(new NetworkableVector2IntegerValue(spawnLocation));
+
+            int startingIncomeRate = GetAbilityData<IncomeAbilityData>()?.ResourceAmountIncome.Amount ?? 0;
+            if (startingIncomeRate != 0) {
+                SetIncomeRate(startingIncomeRate);
+            }
+            
             TargetLocationLogic.ValueChanged += TargetLocationLogicChanged;
             TargetLocationLogic.UpdateValue(new TargetLocationLogic(EntityData.CanRally, spawnLocation, null, false, false));
             LastAttackedEntity.UpdateValue(new NetworkableGridEntityValue(null));
@@ -202,6 +212,7 @@ namespace Gameplay.Entities {
             LastAttackedEntity.ValueChanged += UpdateAttackTarget;
             TargetLocationLogic.ValueChanged += UpdateAttackTarget;
             _killCountField.ValueChanged += (_, _, _) => KillCountChanged?.Invoke(KillCount);
+            _incomeRateField.ValueChanged += (_, _, _) => IncomeRateChanged?.Invoke(IncomeRate);
             
             Interactable = true;
         } 
@@ -561,6 +572,10 @@ namespace Gameplay.Entities {
 
         public void IncrementKillCount() {
             _killCountField.UpdateValue(new NetworkableIntegerValue(KillCount + 1));
+        }
+
+        public void SetIncomeRate(int newIncomeRate) {
+            _incomeRateField.UpdateValue(new NetworkableIntegerValue(newIncomeRate));
         }
         
         public enum TargetType {
