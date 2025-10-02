@@ -101,8 +101,7 @@ namespace Gameplay.UI {
 
             if (resourceAmount == null && Entity.EntityData.IsResourceExtractor) {
                 // Find the resource set for the resource provider on this cell
-                GridEntityCollection.PositionedGridEntityCollection entitiesAtLocation = GameManager.Instance.GetEntitiesAtLocation(Entity.Location!.Value);
-                GridEntity resourceProvider = entitiesAtLocation?.Entities.FirstOrDefault(e => e.Entity.EntityData.StartingResourceSet is { Amount: > 0 })?.Entity;
+                GridEntity resourceProvider = GameManager.Instance.ResourceEntityFinder.GetMatchingResourceEntity(Entity, Entity.EntityData);
                 if (resourceProvider != null) {
                     resourceAmount = resourceProvider.CurrentResourcesValue;
                 }

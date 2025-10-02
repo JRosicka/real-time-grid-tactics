@@ -38,6 +38,21 @@ public class ResourceEntityFinder : MonoBehaviour {
         return resourceEntity;
     }
 
+    public GridEntity GetResourceCollectorAtLocation(Vector2Int location) {
+        var entities = GameManager.Instance.GetEntitiesAtLocation(location);
+        if (entities == null) {
+            return null;
+        }
+    
+        GridEntity resourceEntity = entities.Entities.Select(o => o.Entity)
+            .FirstOrDefault(e => e.EntityData.ID == _villageEntityData.ID || e.EntityData.ID == _amberMineEntityData.ID);
+        if (resourceEntity == null) {
+            return null;
+        }
+        
+        return resourceEntity;
+    }
+
     private EntityData GetMatchingResourceData(EntityData resourceCollector) {
         if (resourceCollector == _villageEntityData) {
             return _villageSiteEntityData;
