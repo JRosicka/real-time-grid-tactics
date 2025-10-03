@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using Gameplay.Entities;
 using Gameplay.Entities.Abilities;
 using UnityEngine;
@@ -13,8 +15,8 @@ namespace Gameplay.Config.Abilities {
     [Serializable]
     public class ParadeAbilityData : AbilityDataBase<ParadeAbilityParameters>, ITargetableAbilityData {
         public override bool CancelableWhileOnCooldown => false;
-        public override bool CancelableWhileInProgress => false;
-        public override bool CancelableManually => false;
+        public override bool CancelableWhileInProgress => true;
+        public override bool CancelableManually => true;
         public override IAbilityParameters OnStartParameters => new ParadeAbilityParameters { Target = null };
 
         public override void SelectAbility(GridEntity selector) {
@@ -22,25 +24,28 @@ namespace Gameplay.Config.Abilities {
         }
         
         protected override AbilityLegality AbilityLegalImpl(ParadeAbilityParameters parameters, GridEntity performer) {
-            return AbilityLegalAtResourceCollector(performer, parameters.Target) ? AbilityLegality.Legal : AbilityLegality.IndefinitelyIllegal;
+            if (parameters.Target == null && performer.Location != null) {
+                parameters.Target = GameManager.Instance.ResourceEntityFinder.GetResourceCollectorAtLocation(performer.Location.Value); 
+            }
+            return AbilityLegalityAtResourceCollector(performer, parameters.Target);
         }
-
-        private bool AbilityLegalAtResourceCollector(GridEntity performer, GridEntity resourceCollector) {
-            if (resourceCollector == null) return false;
-            if (resourceCollector.Team != performer.Team) return false;
-            if (!resourceCollector.EntityData.IsResourceExtractor) return false;
-            GridEntity resourceProvider = GameManager.Instance.ResourceEntityFinder.GetMatchingResourceEntity(resourceCollector, resourceCollector.EntityData);
-            if (resourceProvider.CurrentResourcesValue.Amount <= 0) return false;
-            return true;
-        }
-
+        
         protected override IAbility CreateAbilityImpl(ParadeAbilityParameters parameters, GridEntity performer) {
             return new ParadeAbility(this, parameters, performer);
         }
 
         public bool CanTargetCell(Vector2Int cellPosition, GridEntity selectedEntity, GameTeam selectorTeam, object targetData) {
             GridEntity resourceCollector = GameManager.Instance.ResourceEntityFinder.GetResourceCollectorAtLocation(cellPosition);
-            return AbilityLegalAtResourceCollector(selectedEntity, resourceCollector);
+            return AbilityLegalityAtResourceCollector(selectedEntity, resourceCollector) == AbilityLegality.Legal;
+        }
+        
+        private AbilityLegality AbilityLegalityAtResourceCollector(GridEntity performer, GridEntity resourceCollector) {
+            if (resourceCollector == null) return AbilityLegality.NotCurrentlyLegal;
+            if (resourceCollector.Team != performer.Team) return AbilityLegality.NotCurrentlyLegal;
+            if (!resourceCollector.EntityData.IsResourceExtractor) return AbilityLegality.NotCurrentlyLegal;
+            GridEntity resourceProvider = GameManager.Instance.ResourceEntityFinder.GetMatchingResourceEntity(resourceCollector, resourceCollector.EntityData);
+            if (resourceProvider.CurrentResourcesValue.Amount <= 0) return AbilityLegality.NotCurrentlyLegal;
+            return AbilityLegality.Legal;
         }
 
         public void DoTargetableAbility(Vector2Int cellPosition, GridEntity selectedEntity, GameTeam selectorTeam, object targetData) {

@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Linq;
 using Gameplay.Config.Abilities;
 using Mirror;
 using UnityEngine;
@@ -17,7 +19,14 @@ namespace Gameplay.Entities.Abilities {
         public override bool ShouldShowCooldownTimer => false;
 
         public override void Cancel() {
-            // Nothing to do
+            if (Performer == null || Performer.DeadOrDying) return;
+            
+            // Re-perform if this was the only in-progress parade ability
+            if (Performer.InProgressAbilities.OfType<ParadeAbility>().All(a => a.UID == UID)) {
+                AbilityAssignmentManager.StartPerformingAbility(Performer, Data, new ParadeAbilityParameters {
+                    Target = null
+                }, false, false, false);
+            }
         }
 
         protected override bool CompleteCooldownImpl() {
@@ -30,24 +39,44 @@ namespace Gameplay.Entities.Abilities {
         }
         
         protected override (bool, AbilityResult) DoAbilityEffect() {
-            if (!Performer.Registered || Performer.DeadOrDying) return (false, AbilityResult.Failed);
+            if (!Performer.Registered || Performer.DeadOrDying || Performer.Location == null) return (false, AbilityResult.Failed);
 
+            if (AbilityParameters.Target != null) {
+                // This is a targeted version of the ability, so detect and cancel any non-targeted instances of this ability
+                List<ParadeAbility> inProgressAbilities = Performer.InProgressAbilities.OfType<ParadeAbility>().ToList();
+                foreach (ParadeAbility paradeAbility in inProgressAbilities.Where(paradeAbility => paradeAbility.AbilityParameters.Target == null)) {
+                    GameManager.Instance.CommandManager.CancelAbility(paradeAbility);
+                }
+            }
+            
             // Is target dead?
-            if (AbilityParameters.Target == null) return (false, AbilityResult.Failed);
+            if (AbilityParameters.Target == null || !AbilityParameters.Target.Registered || AbilityParameters.Target.DeadOrDying || AbilityParameters.Target.Location == null) {
+                AbilityParameters.Target = null;
+            }
+            
+            GridEntity target = AbilityParameters.Target;
+            if (target == null) {
+                // Look for a target at the performer's current location
+                target = GameManager.Instance.ResourceEntityFinder.GetResourceCollectorAtLocation(Performer.Location.Value);
+                if (target == null || target.Location == null) {
+                    return (false, AbilityResult.IncompleteWithoutEffect);
+                }
+            }
             
             // Is target out of resources?
             GridEntity resourceEntity = GameManager.Instance.ResourceEntityFinder.GetMatchingResourceEntity(AbilityParameters.Target, AbilityParameters.Target.EntityData);
-            if (resourceEntity.CurrentResourcesValue?.Amount <= 0) return (false, AbilityResult.Failed);
+            if (resourceEntity.CurrentResourcesValue?.Amount <= 0) {
+                return (false, AbilityResult.IncompleteWithoutEffect);
+            }
             
-            Vector2Int? targetLocation = AbilityParameters.Target.Location;
-            if (targetLocation == null) return (false, AbilityResult.Failed);
-
             // Check to see if not currently at target
-            if (Performer.Location!.Value != targetLocation.Value) return (false, AbilityResult.IncompleteWithoutEffect);
+            Vector2Int targetLocation = AbilityParameters.Target.Location!.Value;
+            if (Performer.Location.Value != targetLocation) return (false, AbilityResult.IncompleteWithoutEffect);
             
             // Do effect
             AbilityParameters.Target.SetIncomeRate(AbilityParameters.Target.IncomeRate + 1);
-            return (true, AbilityResult.CompletedWithEffect);
+            AbilityParameters.Target = null;
+            return (true, AbilityResult.IncompleteWithEffect);
         }
     }
 

@@ -45,7 +45,7 @@ namespace Gameplay.Config.Abilities {
         [SerializeField] private float _performDuration;
         public float PerformDuration => _performDuration;
         
-        [Range(0f, 30f)]
+        [Range(0f, 60f)]
         [SerializeField] private float _cooldownDuration;
         public float CooldownDuration => _cooldownDuration;
 
