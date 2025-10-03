@@ -39,6 +39,11 @@ namespace Gameplay.Entities.Abilities {
                 AbilityParameters.Target = null;
             }
             
+            // Cancel this ability since we are starting another one. We need to start another one instead of just
+            // keeping this one because we can't update the target to null from here (in a way where it will persist on
+            // the server)
+            GameManager.Instance.CommandManager.CancelAbility(this);
+            
             return true;
         }
         
