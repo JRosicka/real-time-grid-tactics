@@ -64,17 +64,17 @@ namespace Gameplay.Entities.Abilities {
             }
             
             // Is target out of resources?
-            GridEntity resourceEntity = GameManager.Instance.ResourceEntityFinder.GetMatchingResourceEntity(AbilityParameters.Target, AbilityParameters.Target.EntityData);
+            GridEntity resourceEntity = GameManager.Instance.ResourceEntityFinder.GetMatchingResourceEntity(target, target.EntityData);
             if (resourceEntity.CurrentResourcesValue?.Amount <= 0) {
                 return (false, AbilityResult.IncompleteWithoutEffect);
             }
             
             // Check to see if not currently at target
-            Vector2Int targetLocation = AbilityParameters.Target.Location!.Value;
+            Vector2Int targetLocation = target.Location!.Value;
             if (Performer.Location.Value != targetLocation) return (false, AbilityResult.IncompleteWithoutEffect);
             
             // Do effect
-            AbilityParameters.Target.SetIncomeRate(AbilityParameters.Target.IncomeRate + 1);
+            target.SetIncomeRate(target.IncomeRate + 1);
             AbilityParameters.Target = null;
             return (true, AbilityResult.IncompleteWithEffect);
         }
