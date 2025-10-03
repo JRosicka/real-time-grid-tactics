@@ -179,6 +179,9 @@ namespace Gameplay.Entities {
                 case AttackAbilityData:
                     DoAttackAnimationFromAttackAbility((AttackAbility) ability);
                     break;
+                case TargetAttackAbilityData:
+                    DoAttackAnimationFromTargetAttackAbility((TargetAttackAbility) ability);
+                    break;
             }
         }
 
@@ -233,6 +236,10 @@ namespace Gameplay.Entities {
 
         private void DoAttackAnimationFromAttackAbility(AttackAbility attackAbility) {
             DoGenericAttackAnimation(attackAbility.AbilityParameters.Target.Location);
+        }
+
+        private void DoAttackAnimationFromTargetAttackAbility(TargetAttackAbility targetAttackAbility) {
+            DoGenericAttackAnimation(targetAttackAbility.AbilityParameters.Target.Location);
         }
         
         private void DoGenericAttackAnimation(Vector2Int? targetLocation) {
