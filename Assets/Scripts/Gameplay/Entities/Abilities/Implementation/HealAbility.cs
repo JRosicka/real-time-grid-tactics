@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using Gameplay.Config.Abilities;
 using Mirror;
 using UnityEngine;
@@ -16,13 +17,18 @@ namespace Gameplay.Entities.Abilities {
         public override AbilityExecutionType ExecutionType => AbilityExecutionType.PreInteractionGridUpdate;
         public override bool ShouldShowCooldownTimer => true;
 
-        public override void Cancel() {
+        public override async void Cancel() {
             if (Performer == null || Performer.DeadOrDying) return;
-            
-            AbilityParameters.Target.EntityMovedEvent -= TargetEntityNoLongerValid;
-            AbilityParameters.Target.KilledEvent -= TargetEntityNoLongerValid;
 
-            // Re-perform
+            if (AbilityParameters.Target != null) {
+                AbilityParameters.Target.EntityMovedEvent -= TargetEntityNoLongerValid;
+            }
+            if (AbilityParameters.Target != null) {
+                AbilityParameters.Target.KilledEvent -= TargetEntityNoLongerValid;
+            }
+
+            // Re-perform, but wait a frame so that we get the chance to finish canceling this ability first
+            await Task.Yield();
             AbilityAssignmentManager.StartPerformingAbility(Performer, Data, new HealAbilityParameters {
                 Target = null
             }, false, false, false);
@@ -32,11 +38,6 @@ namespace Gameplay.Entities.Abilities {
             if (CanHeal(AbilityParameters.Target)) {
                 // Actually perform the heal
                 AbilityParameters.Target.HPHandler.Heal(Data.HealAmount);
-                
-                // Reset the target so that we try to perform the heal again next execution
-                AbilityParameters.Target.EntityMovedEvent -= TargetEntityNoLongerValid;
-                AbilityParameters.Target.KilledEvent -= TargetEntityNoLongerValid;
-                AbilityParameters.Target = null;
             }
             
             // Cancel this ability since we are starting another one. We need to start another one instead of just
@@ -85,12 +86,8 @@ namespace Gameplay.Entities.Abilities {
             }
             
             if (target != AbilityParameters.Target || !CanHeal(AbilityParameters.Target)) {
-                // Either the entity moved, got killed, or has full HP. Remove and re-perform.
-                // Note that this will not get checked if the ability timer is active (i.e. was performing a heal) because 
-                // that prevents the ability from being legal. So TargetEntityNoLongerValid cancels the timer first. 
-                AbilityAssignmentManager.StartPerformingAbility(Performer, Data, new HealAbilityParameters {
-                    Target = null
-                }, false, false, false);
+                // Either the entity moved, got killed, or has full HP. Cancel so that it gets re-performed with no target.
+                GameManager.Instance.CommandManager.CancelAbility(this);
                 return (false, AbilityResult.Failed);
             }
             

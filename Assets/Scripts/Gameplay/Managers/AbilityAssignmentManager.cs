@@ -106,9 +106,9 @@ namespace Gameplay.Managers {
         /// </summary>
         public void CancelAbility(GridEntity entity, IAbility ability) {
             ability.Cancel();
-            if (ExpireTimerForAbility(entity, ability, true)) return;
+            ExpireTimerForAbility(entity, ability, true);
             
-            // The ability is in-progress, so remove it from the set
+            // The ability might be in-progress, so remove it from the set
             IAbility localAbility = entity.InProgressAbilities.FirstOrDefault(a => a.UID == ability.UID);
             if (localAbility != null) {
                 if (RemoveAbility(entity, localAbility)) {

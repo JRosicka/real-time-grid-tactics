@@ -27,7 +27,7 @@ MonoBehaviour:
     - {fileID: 11400000, guid: 34e49ddc4511a404c9f63aec4466a3a5, type: 2}
     _slotLocation: 0
     _performOnStart: 1
-    _repeatWhenCooldownFinishes: 1
+    _repeatWhenCooldownFinishes: 0
     _animateWhenCooldownComplete: 1
     _selectable: 0
     _selectableWhenBlocked: 0
