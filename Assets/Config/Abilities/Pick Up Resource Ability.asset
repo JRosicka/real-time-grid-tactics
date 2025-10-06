@@ -1,0 +1,36 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f6b95bc18aab440fbecffb80e3b05e76, type: 3}
+  m_Name: Pick Up Resource Ability
+  m_EditorClassIdentifier: 
+  Data:
+    _contentResourceID: Pick Up Resource Ability
+    _id: 
+    _description: 
+    _icon: {fileID: 0}
+    _slotSprite: {fileID: 0}
+    _abilityTimerCooldownView: {fileID: 0}
+    _requirements: []
+    _performDuration: 0
+    _cooldownDuration: 0
+    _channel: {fileID: 11400000, guid: e53d1693004b22b4aaf5ee5caa8e749d, type: 2}
+    _channelBlockers: []
+    _slotLocation: 0
+    _performOnStart: 1
+    _repeatWhenCooldownFinishes: 0
+    _animateWhenCooldownComplete: 0
+    _selectable: 0
+    _selectableWhenBlocked: 0
+    _autoSelect: 0
+    _selectableForAllPlayers: 0
+    _tryingToPerformCancelsBuilds: 0
+    _showTimerOnSelectionInterface: 0

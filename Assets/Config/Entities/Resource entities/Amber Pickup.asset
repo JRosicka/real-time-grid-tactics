@@ -39,7 +39,8 @@ MonoBehaviour:
   AddedMovementTimeFromAttacking: 0
   Tags: 07000000
   AttackerTargetPriority: 0
-  Abilities: []
+  Abilities:
+  - {fileID: 11400000, guid: d50fba4f48da240b7b8d5c84a17a6d1d, type: 2}
   FriendlyUnitsCanShareCell: 1
   AttackByDefault: 0
   IsResourceExtractor: 0

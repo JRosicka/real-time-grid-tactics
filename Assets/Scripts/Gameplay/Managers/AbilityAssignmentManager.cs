@@ -25,8 +25,8 @@ namespace Gameplay.Managers {
             }
 
             // Do we own the requirements for this ability?
-            List<PurchasableData> ownedPurchasables = GameManager.Instance.GetPlayerForTeam(entity.Team)
-                .OwnedPurchasablesController.OwnedPurchasables;
+            List<PurchasableData> ownedPurchasables = GameManager.Instance.GetPlayerForTeam(entity.Team)?
+                .OwnedPurchasablesController.OwnedPurchasables ?? new List<PurchasableData>();
             if (data.Requirements.Any(r => !ownedPurchasables.Contains(r))) {
                 return AbilityLegality.IndefinitelyIllegal;
             }
