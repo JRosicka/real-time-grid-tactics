@@ -10,7 +10,7 @@ PrefabInstance:
     - target: {fileID: 133772266710080777, guid: 9d77d3ce03b813d42b6c2efebbdefd02, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: 438a1699ad14f354da2599a2e52499ba, type: 3}
+      objectReference: {fileID: 21300000, guid: 3fb4b33424bf341809e17cc92cd5cfc5, type: 3}
     - target: {fileID: 1579792780671553591, guid: 9d77d3ce03b813d42b6c2efebbdefd02, type: 3}
       propertyPath: m_SortingOrder
       value: 1
@@ -31,6 +31,10 @@ PrefabInstance:
       propertyPath: m_SortingOrder
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2407854254111942362, guid: 9d77d3ce03b813d42b6c2efebbdefd02, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2517421855927553431, guid: 9d77d3ce03b813d42b6c2efebbdefd02, type: 3}
       propertyPath: m_Name
       value: Amber Mine View
@@ -41,15 +45,19 @@ PrefabInstance:
       objectReference: {fileID: 8786956079391198247}
     - target: {fileID: 6720547402385952072, guid: 9d77d3ce03b813d42b6c2efebbdefd02, type: 3}
       propertyPath: m_RootOrder
-      value: 4
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 6941450737904846212, guid: 9d77d3ce03b813d42b6c2efebbdefd02, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: d017048f0c0b334489473b0f5aaa52c8, type: 3}
+      objectReference: {fileID: 0}
     - target: {fileID: 6941450737904846212, guid: 9d77d3ce03b813d42b6c2efebbdefd02, type: 3}
       propertyPath: m_Color.a
-      value: 1
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7468620877357481868, guid: 9d77d3ce03b813d42b6c2efebbdefd02, type: 3}
+      propertyPath: m_RootOrder
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 8610170292872399313, guid: 9d77d3ce03b813d42b6c2efebbdefd02, type: 3}
       propertyPath: m_Pivot.x
@@ -164,7 +172,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   IncomeAnimationBehavior: {fileID: 3553170526627626221}
-  AmberMineResourceEntity: {fileID: 11400000, guid: dfb82f31371a84690ae123195a14bf64, type: 2}
 --- !u!224 &6256655248658328015 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 8610170292872399313, guid: 9d77d3ce03b813d42b6c2efebbdefd02, type: 3}

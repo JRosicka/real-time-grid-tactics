@@ -10,7 +10,15 @@ PrefabInstance:
     - target: {fileID: 133772266710080777, guid: 9d77d3ce03b813d42b6c2efebbdefd02, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: f1b38bc6630e36741879634313619637, type: 3}
+      objectReference: {fileID: 21300000, guid: 7d82f38ea06e3498285dc389919511c5, type: 3}
+    - target: {fileID: 1850096103034985778, guid: 9d77d3ce03b813d42b6c2efebbdefd02, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 3.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2407854254111942362, guid: 9d77d3ce03b813d42b6c2efebbdefd02, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2517421855927553431, guid: 9d77d3ce03b813d42b6c2efebbdefd02, type: 3}
       propertyPath: m_Name
       value: Village View
@@ -21,15 +29,19 @@ PrefabInstance:
       objectReference: {fileID: 5088879590884088445}
     - target: {fileID: 6720547402385952072, guid: 9d77d3ce03b813d42b6c2efebbdefd02, type: 3}
       propertyPath: m_RootOrder
-      value: 4
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 6941450737904846212, guid: 9d77d3ce03b813d42b6c2efebbdefd02, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: a712e8d461dd0ce4e9b0361a6361fd1b, type: 3}
+      objectReference: {fileID: 0}
     - target: {fileID: 6941450737904846212, guid: 9d77d3ce03b813d42b6c2efebbdefd02, type: 3}
       propertyPath: m_Color.a
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7468620877357481868, guid: 9d77d3ce03b813d42b6c2efebbdefd02, type: 3}
+      propertyPath: m_RootOrder
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 8610170292872399313, guid: 9d77d3ce03b813d42b6c2efebbdefd02, type: 3}
       propertyPath: m_Pivot.x
@@ -140,7 +152,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   IncomeAnimationBehavior: {fileID: 3921471743250453815}
-  VillageResourceEntity: {fileID: 11400000, guid: 007fafa82b51345319298048e99631e6, type: 2}
 --- !u!224 &6256655248658328015 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 8610170292872399313, guid: 9d77d3ce03b813d42b6c2efebbdefd02, type: 3}

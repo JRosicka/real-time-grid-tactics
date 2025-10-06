@@ -68,7 +68,7 @@ MonoBehaviour:
       m_Calls: []
   m_text: '<u>Building Stuff</u>
 
-    You can build <u>Peasants</u> from your keep.
+    You can build <u>Peasants</u> from villages.
     <u>Peasants</u> are used to build structures and are consumed upon construction.'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: c40b1b51a4a5fa043bb9c7c1898211bd, type: 2}
@@ -805,7 +805,7 @@ GameObject:
   - component: {fileID: 7180500924122679208}
   - component: {fileID: 3055483852237672269}
   m_Layer: 5
-  m_Name: Stables (2)
+  m_Name: Grass tile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3096,7 +3096,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 15adac782b070274aaa623958178593a, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 77e9e466ca1284e9c85cef156f774c04, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -3123,7 +3123,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2455123822983403205
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3672,7 +3672,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: f1b38bc6630e36741879634313619637, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 7d82f38ea06e3498285dc389919511c5, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -3748,7 +3748,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: You ultimately win by destroying your opponent's Keep.
+  m_text: You ultimately win by slaying your opponent's King.
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: c40b1b51a4a5fa043bb9c7c1898211bd, type: 2}
   m_sharedMaterial: {fileID: 8900443813055667733, guid: c40b1b51a4a5fa043bb9c7c1898211bd, type: 2}
@@ -4076,7 +4076,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &5037690818089151756
 RectTransform:
   m_ObjectHideFlags: 0
@@ -4233,7 +4233,7 @@ GameObject:
   - component: {fileID: 4533839844626954846}
   - component: {fileID: 959181338027696455}
   m_Layer: 5
-  m_Name: Keep
+  m_Name: Village
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4287,7 +4287,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 847b813419222e9478ec0690c09fe38c, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 7d82f38ea06e3498285dc389919511c5, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -4770,7 +4770,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: f1b38bc6630e36741879634313619637, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 7d82f38ea06e3498285dc389919511c5, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -4873,7 +4873,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &967145652328799724
 RectTransform:
   m_ObjectHideFlags: 0
@@ -5826,7 +5826,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: d198c94ef4580b74b87fe9c20e7a5b47, type: 3}
+  m_Sprite: {fileID: 21300000, guid: c2a9ce9aee3b24078bb841dec5ad83c2, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -6189,7 +6189,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 992393911caff794fa26699f882af973, type: 3}
+  m_Sprite: {fileID: 21300000, guid: bc940fac21ff1ff4e876a2f4621c6a65, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -6424,7 +6424,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &5217019125122820053
 RectTransform:
   m_ObjectHideFlags: 0
@@ -6672,7 +6672,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 438a1699ad14f354da2599a2e52499ba, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 3fb4b33424bf341809e17cc92cd5cfc5, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -6943,7 +6943,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 438a1699ad14f354da2599a2e52499ba, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 3fb4b33424bf341809e17cc92cd5cfc5, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -7381,7 +7381,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7949303902082825481}
   m_Layer: 5
-  m_Name: Keep
+  m_Name: King
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7845,12 +7845,12 @@ GameObject:
   - component: {fileID: 1049929160153231243}
   - component: {fileID: 7531484490596923735}
   m_Layer: 5
-  m_Name: Keep (1)
+  m_Name: Village Teamcolors
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &3616254893804748159
 RectTransform:
   m_ObjectHideFlags: 0
@@ -8279,7 +8279,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2447376185437362322
 RectTransform:
   m_ObjectHideFlags: 0
@@ -8436,7 +8436,7 @@ GameObject:
   - component: {fileID: 8099648283037503115}
   - component: {fileID: 3295824081670916274}
   m_Layer: 5
-  m_Name: Keep
+  m_Name: King
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -8490,7 +8490,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 847b813419222e9478ec0690c09fe38c, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 744607f30554cf6458191134c78c41ce, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -9124,7 +9124,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &9105568452964871652
 RectTransform:
   m_ObjectHideFlags: 0

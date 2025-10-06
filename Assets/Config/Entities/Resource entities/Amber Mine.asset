@@ -20,8 +20,8 @@ MonoBehaviour:
     Amount: 75
   Requirements: []
   BuildTime: 30
-  BaseSprite: {fileID: 21300000, guid: 438a1699ad14f354da2599a2e52499ba, type: 3}
-  TeamColorSprite: {fileID: 21300000, guid: d017048f0c0b334489473b0f5aaa52c8, type: 3}
+  BaseSprite: {fileID: 21300000, guid: 3fb4b33424bf341809e17cc92cd5cfc5, type: 3}
+  TeamColorSprite: {fileID: 0}
   BaseSpriteIconOverride: {fileID: 0}
   _viewPrefab: {fileID: 7504026570216467247, guid: 42f5b58318770954babb8bbc6d214577, type: 3}
   SelectionSounds: []

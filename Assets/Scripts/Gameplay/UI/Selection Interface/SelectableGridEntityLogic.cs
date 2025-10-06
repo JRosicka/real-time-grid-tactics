@@ -64,7 +64,11 @@ namespace Gameplay.UI {
             entityColorsIcon.sprite = entityData.TeamColorSprite;
             IGamePlayer player = GameManager.Instance.GetPlayerForTeam(Entity.Team);
             entityColorsIcon.gameObject.SetActive(true);
-            entityColorsIcon.color = player != null ? player.Data.TeamColor : Color.clear;
+            entityColorsIcon.color = player != null 
+                ? entityData.TeamColorSprite
+                    ? player.Data.TeamColor 
+                    : Color.clear
+                : Color.clear;;
         }
 
         public void SetUpMoveView(GameObject movesRow, TMP_Text movesField) {

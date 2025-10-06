@@ -31,7 +31,7 @@ namespace Gameplay.Entities {
             _buildingVisual_teamColorImage.sprite = entityData.TeamColorSprite;
             Color teamColorsImageColor = GameManager.Instance.GetPlayerForTeam(team).Data.TeamColor;
             teamColorsImageColor.a = dimmed ? _dimmedAlpha : 1;
-            _buildingVisual_teamColorImage.color = teamColorsImageColor;
+            _buildingVisual_teamColorImage.color = entityData.TeamColorSprite ? teamColorsImageColor : Color.clear;
             _buildingVisual_teamColorImage.GetComponent<Canvas>().sortingOrder += entityData.GetStackOrder();
         }
 
