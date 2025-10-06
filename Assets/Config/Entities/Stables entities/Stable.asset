@@ -50,6 +50,7 @@ MonoBehaviour:
   AttackByDefault: 0
   IsResourceExtractor: 0
   MovementAndAttackUI: 0
+  DisplaySelectionOutline: 1
   BuildQueueSize: 5
   EligibleStructureLocations:
   - {fileID: 11400000, guid: 25ec46ce372031f4d904f708f269dcb4, type: 2}

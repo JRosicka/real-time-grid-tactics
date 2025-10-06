@@ -16,16 +16,7 @@ public class MapLoader : MonoBehaviour {
     [Serializable]
     public struct StartingEntitySet {
         public GameTeam Team;
-        public List<EntitySpawn> Entities;
-    }
-
-    /// <summary>
-    /// Represents a single entity and its spawn location
-    /// </summary>
-    [Serializable]
-    public struct EntitySpawn {
-        public EntityData Entity;
-        public Vector2Int SpawnLocation;
+        public List<EntitySpawnData> Entities;
     }
 
     public CameraManager CameraManager;
@@ -61,7 +52,7 @@ public class MapLoader : MonoBehaviour {
         return UnitSpawns
             .First(u => u.Team == team)
             .Entities
-            .First(e => e.Entity.Tags.Contains(EntityTag.Leader))
+            .First(e => e.Data.Tags.Contains(EntityTag.Leader))
             .SpawnLocation;
     }
 }

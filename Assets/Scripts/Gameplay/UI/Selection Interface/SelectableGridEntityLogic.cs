@@ -113,7 +113,7 @@ namespace Gameplay.UI {
             } else {
                 // There are indeed resources to be shown here
                 resourceRow.SetActive(true);
-                resourceLabel.text = "Remaining:";
+                resourceLabel.text = "Resources:";
                 resourceField.text = $"{resourceAmount.Amount} {resourceAmount.Type.DisplayIcon()}";
             }
         }

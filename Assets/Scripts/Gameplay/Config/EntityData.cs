@@ -60,8 +60,9 @@ namespace Gameplay.Config {
 
         public bool IsStructure => Tags.Contains(EntityTag.Structure);
         public bool IsResourceExtractor;
+        public EntityData ResourceThatThisCanExtract;
         public bool MovementAndAttackUI;
-        public bool DisplaySelectionOutline => !Tags.Contains(EntityTag.Resource);
+        public bool DisplaySelectionOutline = true;
 
         public int BuildQueueSize = 5;
         public bool CanBuild => Abilities.Any(a => a.Content is BuildAbilityData);

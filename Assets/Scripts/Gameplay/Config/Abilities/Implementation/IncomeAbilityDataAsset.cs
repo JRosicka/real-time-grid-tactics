@@ -27,10 +27,7 @@ namespace Gameplay.Config.Abilities {
             if (entityLocation == null) return AbilityLegality.IndefinitelyIllegal;
             
             // We need an eligible resource entity on this cell in order to get income from it
-            GridEntity resourceEntity = GameManager.Instance.GetEntitiesAtLocation(entityLocation.Value)
-                ?.Entities
-                .Select(e => e.Entity)
-                .FirstOrDefault(e => e.Tags.Contains(EntityTag.Resource));
+            GridEntity resourceEntity = GameManager.Instance.ResourceEntityFinder.GetMatchingResourceEntity(entity, entity.EntityData);
             if (resourceEntity == null) return AbilityLegality.IndefinitelyIllegal;
             if (resourceEntity.CurrentResourcesValue.Type != ResourceAmountIncome.Type) return AbilityLegality.IndefinitelyIllegal;
             if (resourceEntity.CurrentResourcesValue.Amount <= 0) return AbilityLegality.IndefinitelyIllegal;

@@ -22,10 +22,7 @@ namespace Gameplay.Entities.Abilities {
             if (performerLocation == null) return false;
             
             // Get the resource entity on this cell
-            GridEntity resourceEntity = GameManager.Instance.GetEntitiesAtLocation(performerLocation.Value)
-                ?.Entities
-                .Select(e => e.Entity)
-                .FirstOrDefault(e => e.Tags.Contains(EntityTag.Resource));
+            GridEntity resourceEntity = GameManager.Instance.ResourceEntityFinder.GetMatchingResourceEntity(Performer, Performer.EntityData);
             if (resourceEntity == null) return false;
             if (resourceEntity.CurrentResourcesValue.Type != Data.ResourceAmountIncome.Type) return false;
             if (resourceEntity.CurrentResourcesValue.Amount <= 0) return false;

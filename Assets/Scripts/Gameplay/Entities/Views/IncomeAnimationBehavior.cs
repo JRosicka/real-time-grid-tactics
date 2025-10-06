@@ -49,11 +49,7 @@ namespace Gameplay.Entities {
                 return;
             }
 
-            List<GridEntity> entitiesAtLocation = GameManager.Instance.GetEntitiesAtLocation(_entity.Location.Value)
-                ?.Entities
-                ?.Select(e => e.Entity)
-                .ToList() ?? new List<GridEntity>();
-            GridEntity resourceEntity = entitiesAtLocation.FirstOrDefault(e => e.Tags.Contains(EntityTag.Resource));
+            GridEntity resourceEntity = GameManager.Instance.ResourceEntityFinder.GetMatchingResourceEntity(_entity, _entity.EntityData);
             if (resourceEntity == null) {
                 if (GameManager.Instance.GameSetupManager.GameInitialized) {
                     Debug.LogWarning("No resource entity found when doing income animation. This should not happen.");

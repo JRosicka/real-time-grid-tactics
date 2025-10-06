@@ -321,7 +321,7 @@ public class PathfinderService {
         
         // If this is a resource structure, then it can only go on a resource entity. 
         if (entityData.IsStructure && entityData.IsResourceExtractor &&
-                entitiesAtLocation.Any(e => !e.EntityData.Tags.Contains(EntityTag.Resource))) {
+                entitiesAtLocation.Any(e => e.EntityData != entityData.ResourceThatThisCanExtract)) {
             return false;
         }
         

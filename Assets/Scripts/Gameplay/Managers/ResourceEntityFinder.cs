@@ -1,4 +1,3 @@
-using System;
 using System.Linq;
 using Gameplay.Config;
 using Gameplay.Entities;
@@ -9,9 +8,7 @@ using UnityEngine;
 /// </summary>
 public class ResourceEntityFinder : MonoBehaviour {
     [SerializeField] private EntityData _villageEntityData;
-    [SerializeField] private EntityData _villageSiteEntityData;
     [SerializeField] private EntityData _amberMineEntityData;
-    [SerializeField] private EntityData _amberDepositEntityData;
     
     public GridEntity GetMatchingResourceEntity(GridEntity entityAtLocation, EntityData resourceCollector) {
         if (entityAtLocation.Location == null) {
@@ -54,13 +51,6 @@ public class ResourceEntityFinder : MonoBehaviour {
     }
 
     private EntityData GetMatchingResourceData(EntityData resourceCollector) {
-        if (resourceCollector == _villageEntityData) {
-            return _villageSiteEntityData;
-        }
-        if (resourceCollector == _amberMineEntityData) {
-            return _amberDepositEntityData;
-        }
-
-        return null;
+        return resourceCollector.ResourceThatThisCanExtract;
     }
 }
