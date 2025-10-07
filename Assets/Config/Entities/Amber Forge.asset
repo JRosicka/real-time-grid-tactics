@@ -29,7 +29,7 @@ MonoBehaviour:
     Volume: 0.382
     AudioLayer: 0
     Interruptible: 0
-  HP: 1
+  HP: 0
   Range: 0
   Damage: 0
   BonusDamage: 0

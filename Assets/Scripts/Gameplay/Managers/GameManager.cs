@@ -47,6 +47,7 @@ public class GameManager : MonoBehaviour {
     public AbilityAssignmentManager AbilityAssignmentManager;
     public QueuedStructureBuildsManager QueuedStructureBuildsManager;
     public AttackManager AttackManager;
+    public AmberForgeAvailabilityNotifier AmberForgeAvailabilityNotifier;
     
     public IGamePlayer Player1;
     public IGamePlayer Player2;
@@ -63,6 +64,7 @@ public class GameManager : MonoBehaviour {
         DisconnectionHandler = new DisconnectionHandler();
         AbilityAssignmentManager = new AbilityAssignmentManager();
         QueuedStructureBuildsManager = new QueuedStructureBuildsManager(this);
+        AmberForgeAvailabilityNotifier = new AmberForgeAvailabilityNotifier();
     }
 
     private void Start() {

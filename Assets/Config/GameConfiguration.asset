@@ -41,6 +41,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 007fafa82b51345319298048e99631e6, type: 2}
   - {fileID: 11400000, guid: a2899be04b8f54805a7f62c027e3675d, type: 2}
   - {fileID: 11400000, guid: f3eb88eee96a64370827475771891374, type: 2}
+  - {fileID: 11400000, guid: e16d9fca1b51810438ab31661f34df6f, type: 2}
   Abilities:
   - {fileID: 11400000, guid: ec15a049dabc53b4d92ab14b2871752c, type: 2}
   - {fileID: 11400000, guid: a5c4aba93e508274894c2c6bfc4b751e, type: 2}
@@ -67,3 +68,5 @@ MonoBehaviour:
   - {fileID: 11400000, guid: d2abf14400b53b645a0af4f3676cfbb2, type: 2}
   - {fileID: 11400000, guid: be8d7ccbdc543194e9649f8f9fadbf2b, type: 2}
   - {fileID: 11400000, guid: 21c254da385bdd14eb49ce66d1a541a9, type: 2}
+  KingEntityData: {fileID: 11400000, guid: f8a9d9571b0a8324587b160065ca7fce, type: 2}
+  AmberForgeEntityData: {fileID: 11400000, guid: e16d9fca1b51810438ab31661f34df6f, type: 2}

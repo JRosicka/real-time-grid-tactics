@@ -29,6 +29,8 @@ namespace Gameplay.Config {
         public List<PurchasableData> Purchasables;
         public List<AbilityDataScriptableObject> Abilities;
         public List<GameplayTile> Tiles;
+        public EntityData KingEntityData;
+        public EntityData AmberForgeEntityData;
 
         private void OnValidate() {
             if (Purchasables.Select(d => d.ID).Distinct().ToList().Count < Purchasables.Count) {

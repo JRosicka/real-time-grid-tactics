@@ -159,6 +159,9 @@ public class GameSetupManager : MonoBehaviour {
         
         // Then spawn any units from cheats
         GameManager.Cheats.SpawnUnits(false);
+
+        // Now that entities are registered, initialize this
+        GameManager.Instance.AmberForgeAvailabilityNotifier.Initialize();
     }
 
     private void SpawnPlayerStartingUnits(GameTeam team) {
