@@ -185,7 +185,11 @@ namespace Gameplay.Entities {
             if (localPlayerTeam == GameTeam.Spectator) {
                 InteractBehavior = new UnownedInteractBehavior();
             } else if (Team == GameTeam.Neutral) {
-                InteractBehavior = new UnownedInteractBehavior();
+                if (data.ControllableByAllPlayers) {
+                    InteractBehavior = new OwnerInteractBehavior();
+                } else {
+                    InteractBehavior = new UnownedInteractBehavior();
+                }
             } else if (Team == localPlayerTeam) {
                 InteractBehavior = new OwnerInteractBehavior();
                 if (built) {

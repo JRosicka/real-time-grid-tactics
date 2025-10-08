@@ -11,11 +11,11 @@ using Mirror;
 public class PlayerOwnedPurchasablesController : NetworkBehaviour {
     /// <summary>
     /// The currently active owned purchasables has been updated (something added or removed).
-    /// Triggers on clients. TODO test this. 
+    /// Triggers on clients. 
     /// </summary>
     public event Action OwnedPurchasablesChangedEvent;
 
-    private GameTeam _team;
+    private IGamePlayer _player;
 
     [SyncVar(hook = nameof(OwnedPurchasablesSyncVarChanged))] 
     private UpgradesCollection _upgrades = new UpgradesCollection();
@@ -23,8 +23,8 @@ public class PlayerOwnedPurchasablesController : NetworkBehaviour {
     /// <summary>
     /// Server call
     /// </summary>
-    public void Initialize(GameTeam team, List<UpgradeData> upgradesToRegister) {
-        _team = team;
+    public void Initialize(IGamePlayer player, List<UpgradeData> upgradesToRegister) {
+        _player = player;
         _upgrades.RegisterUpgrades(upgradesToRegister);
         GameManager.Instance.CommandManager.EntityRegisteredEvent += OwnedPurchasablesMayHaveChanged;
         GameManager.Instance.CommandManager.EntityUnregisteredEvent += OwnedPurchasablesMayHaveChanged;
@@ -33,9 +33,32 @@ public class PlayerOwnedPurchasablesController : NetworkBehaviour {
     public List<PurchasableData> OwnedPurchasables {
         get {
             List<PurchasableData> entityData = GameManager.Instance.CommandManager.EntitiesOnGrid
-                .ActiveEntitiesForTeam(_team).Select(e => e.EntityData).Cast<PurchasableData>().ToList();
+                .ActiveEntitiesForTeam(_player.Data.Team).Select(e => e.EntityData).Cast<PurchasableData>().ToList();
             return entityData.Concat(_upgrades.GetOwnedUpgrades()).ToList();
         }
+    }
+
+    public bool HasRequirementsForPurchase(PurchasableData purchasable, GridEntity purchaser, out String whyNot) {
+        List<PurchasableData> ownedPurchasables = OwnedPurchasables;
+        foreach (PurchasableData requiredPurchasable in purchasable.Requirements) {
+            if (!ownedPurchasables.Contains(requiredPurchasable)) {
+                whyNot = $"Requires a {requiredPurchasable.ID}.";
+                return false;
+            }
+            if (purchasable.RequirementNeedsToBeAdjacent) {
+                if (requiredPurchasable != GameManager.Instance.Configuration.KingEntityData) {
+                    throw new Exception("Game does not support a non-King adjacent required purchasable");
+                }
+
+                if (!GameManager.Instance.LeaderTracker.IsAdjacentToFriendlyLeader(purchaser.Location!.Value, _player.Data.Team)) {
+                    whyNot = $"Your {requiredPurchasable.ID} must be adjacent.";
+                    return false;
+                }
+            }
+        }
+
+        whyNot = null;
+        return true;
     }
 
     public bool HasUpgrade(UpgradeData upgrade) {
@@ -83,7 +106,7 @@ public class PlayerOwnedPurchasablesController : NetworkBehaviour {
     }
 
     private void OwnedPurchasablesMayHaveChanged(GameTeam team) {
-        if (team != _team) return;
+        if (team != _player.Data.Team) return;
         
         if (!NetworkClient.active) {
             // SP, so trigger manually.

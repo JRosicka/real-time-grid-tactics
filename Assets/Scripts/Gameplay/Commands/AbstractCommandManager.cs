@@ -65,7 +65,7 @@ public abstract class AbstractCommandManager : NetworkBehaviour, ICommandManager
     /// </summary>
     public abstract void SpawnEntity(EntityData data, Vector2Int spawnLocation, GameTeam team, GridEntity spawnerEntity, bool movementOnCooldown, bool built);
     // TODO I don't think this needs to be in CommandManager since this is only called by the server and it doesn't contain any RPC calls
-    public abstract void AddUpgrade(UpgradeData data, GameTeam team);
+    public abstract void AddUpgrade(UpgradeData data, GridEntity performer);
 
     // TODO need to have some way of verifying that these commands are legal for the client to do - especially doing stuff with GridEntites, we gotta own em
     // Maybe we can just make these abstract methods virtual, include a check at the beginning, and then have the overrides call base() at the start
@@ -129,8 +129,8 @@ public abstract class AbstractCommandManager : NetworkBehaviour, ICommandManager
         }
     }
 
-    protected void DoAddUpgrade(UpgradeData data, GameTeam team) {
-        GameManager.Instance.GetPlayerForTeam(team).OwnedPurchasablesController.AddUpgrade(data);
+    protected void DoAddUpgrade(UpgradeData data, GridEntity performer) {
+        GameManager.Instance.GetPlayerForTeam(performer).OwnedPurchasablesController.AddUpgrade(data);
     }
     
     protected void DoRegisterEntity(GridEntity entity, EntityData data, Vector2Int position, GridEntity entityToIgnore) {

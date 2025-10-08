@@ -21,6 +21,7 @@ namespace Gameplay.Config {
         /// some <see cref="GridEntity"/> needs to be able to build this. 
         /// </summary>
         public List<PurchasableData> Requirements;
+        public bool RequirementNeedsToBeAdjacent;
         public float BuildTime;
         
         [Header("References")]

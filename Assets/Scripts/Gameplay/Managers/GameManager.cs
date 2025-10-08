@@ -48,6 +48,7 @@ public class GameManager : MonoBehaviour {
     public QueuedStructureBuildsManager QueuedStructureBuildsManager;
     public AttackManager AttackManager;
     public AmberForgeAvailabilityNotifier AmberForgeAvailabilityNotifier;
+    public LeaderTracker LeaderTracker;
     
     public IGamePlayer Player1;
     public IGamePlayer Player2;
@@ -65,6 +66,7 @@ public class GameManager : MonoBehaviour {
         AbilityAssignmentManager = new AbilityAssignmentManager();
         QueuedStructureBuildsManager = new QueuedStructureBuildsManager(this);
         AmberForgeAvailabilityNotifier = new AmberForgeAvailabilityNotifier();
+        LeaderTracker = new LeaderTracker();
     }
 
     private void Start() {
@@ -104,6 +106,13 @@ public class GameManager : MonoBehaviour {
         } else {
             return null;
         }
+    }
+
+    public IGamePlayer GetPlayerForTeam(GridEntity entity) {
+        if (entity.Team == GameTeam.Neutral && entity.EntityData.ControllableByAllPlayers) {
+            return GetPlayerForTeam(LocalTeam);
+        }
+        return GetPlayerForTeam(entity.Team);
     }
 
     #region Game setup

@@ -20,6 +20,7 @@ namespace Gameplay.UI {
         /// Whether the associated ability's availability can be modified by a change in in-progress abilities
         /// </summary>
         bool CaresAboutInProgressAbilities { get; }
+        bool CaresAboutLeaderPosition { get; }
         /// <summary>
         /// Whether the associated ability is targetable
         /// </summary>

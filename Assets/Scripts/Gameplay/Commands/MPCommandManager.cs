@@ -20,8 +20,8 @@ public class MPCommandManager : AbstractCommandManager {
         CmdSpawnEntity(data, spawnLocation, team, spawnerEntity, movementOnCooldown, built);
     }
 
-    public override void AddUpgrade(UpgradeData data, GameTeam team) {
-        CmdAddUpgrade(data, team);
+    public override void AddUpgrade(UpgradeData data, GridEntity performer) {
+        CmdAddUpgrade(data, performer);
     }
 
     protected override void RegisterEntity(GridEntity entity, EntityData data, Vector2Int position, GridEntity entityToIgnore) {
@@ -88,8 +88,8 @@ public class MPCommandManager : AbstractCommandManager {
     }
 
     [Command(requiresAuthority = false)]
-    private void CmdAddUpgrade(UpgradeData data, GameTeam team) {
-        DoAddUpgrade(data, team);
+    private void CmdAddUpgrade(UpgradeData data, GridEntity performer) {
+        DoAddUpgrade(data, performer);
     }
     
     [Command(requiresAuthority = false)]

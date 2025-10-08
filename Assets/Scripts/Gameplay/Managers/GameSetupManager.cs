@@ -162,6 +162,7 @@ public class GameSetupManager : MonoBehaviour {
 
         // Now that entities are registered, initialize this
         GameManager.Instance.AmberForgeAvailabilityNotifier.Initialize();
+        GameManager.Instance.LeaderTracker.Initialize(GameManager.Instance.CommandManager);
     }
 
     private void SpawnPlayerStartingUnits(GameTeam team) {

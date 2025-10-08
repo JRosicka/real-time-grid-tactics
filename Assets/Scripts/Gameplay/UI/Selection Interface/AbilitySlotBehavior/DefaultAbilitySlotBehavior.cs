@@ -23,6 +23,7 @@ namespace Gameplay.UI {
         public bool IsAvailabilitySensitiveToResources => false;
         public bool CaresAboutAbilityChannels => true;
         public bool CaresAboutInProgressAbilities => false;
+        public bool CaresAboutLeaderPosition => false;
         public bool IsAbilityTargetable => _abilityData.Targeted;
         public bool AnyPlayerCanSelect => _abilityData.SelectableForAllPlayers;
 

@@ -36,6 +36,7 @@ MonoBehaviour:
     _tryingToPerformCancelsBuilds: 0
     _showTimerOnSelectionInterface: 0
     Targetable: 0
+    UsableEverywhereByBothTeams: 0
     Buildables:
     - data: {fileID: 11400000, guid: 991ad2a1d6801ee40b831e7850e0ff35, type: 2}
       selectionKey: q

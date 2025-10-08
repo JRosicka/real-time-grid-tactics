@@ -181,10 +181,11 @@ namespace Gameplay.UI {
             _selectedEntity.CooldownTimerExpiredEvent += OnAbilityTimersChanged;
             _selectedEntity.AbilityPerformedEvent += OnAbilityTimersChanged;
             _selectedEntity.InProgressAbilitiesUpdatedEvent += OnInProgressAbilities;
+            GameManager.Instance.LeaderTracker.LeaderMoved += OnLeaderMoved;
 
             if (_selectedEntity.Team is GameTeam.Player1 or GameTeam.Player2) {
                 // Track resources and owned changes for the player
-                IGamePlayer player = GameManager.Instance.GetPlayerForTeam(_selectedEntity.Team);
+                IGamePlayer player = GameManager.Instance.GetPlayerForTeam(_selectedEntity);
                 player.ResourcesController.BalanceChangedEvent += OnPlayerResourcesBalanceChanged;
                 player.OwnedPurchasablesController.OwnedPurchasablesChangedEvent += OnPlayerOwnedEntitiesChanged;
             }
@@ -195,10 +196,11 @@ namespace Gameplay.UI {
             
             _selectedEntity.CooldownTimerExpiredEvent -= OnAbilityTimersChanged;
             _selectedEntity.AbilityPerformedEvent -= OnAbilityTimersChanged;
-            
+            GameManager.Instance.LeaderTracker.LeaderMoved -= OnLeaderMoved;
+
             if (_selectedEntity.Team is GameTeam.Player1 or GameTeam.Player2) {
                 // Track owned changes for the player
-                IGamePlayer player = GameManager.Instance.GetPlayerForTeam(_selectedEntity.Team);
+                IGamePlayer player = GameManager.Instance.GetPlayerForTeam(_selectedEntity);
                 player.ResourcesController.BalanceChangedEvent -= OnPlayerResourcesBalanceChanged;
                 player.OwnedPurchasablesController.OwnedPurchasablesChangedEvent -= OnPlayerOwnedEntitiesChanged;
             }
@@ -214,6 +216,13 @@ namespace Gameplay.UI {
         private void OnInProgressAbilities(List<IAbility> abilities) {
             if (_slotBehavior == null) return; 
             if (_slotBehavior.CaresAboutInProgressAbilities) {
+                CheckAvailability();
+            }
+        }
+
+        private void OnLeaderMoved(GridEntity leader) {
+            if (_slotBehavior == null) return; 
+            if (_slotBehavior.CaresAboutLeaderPosition) {
                 CheckAvailability();
             }
         }

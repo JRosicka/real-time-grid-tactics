@@ -11,6 +11,7 @@ namespace Gameplay.UI {
         
         public bool IsAvailabilitySensitiveToResources => false;
         public bool CaresAboutInProgressAbilities => true;
+        public bool CaresAboutLeaderPosition => false;
         public bool IsAbilityTargetable => false;
 
         public void HandleFailedToSelect(AbilitySlot.AvailabilityResult availability) {

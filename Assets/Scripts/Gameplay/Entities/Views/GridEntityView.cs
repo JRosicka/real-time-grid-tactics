@@ -70,7 +70,7 @@ namespace Gameplay.Entities {
             _mainImage.sprite = entity.EntityData.BaseSprite;
             _mainImage.GetComponent<Canvas>().sortingOrder += stackOrder;
             _teamColorImage.sprite = entity.EntityData.TeamColorSprite;
-            IGamePlayer player = GameManager.Instance.GetPlayerForTeam(entity.Team);
+            IGamePlayer player = GameManager.Instance.GetPlayerForTeam(entity);
             if (!entity.EntityData.TeamColorSprite) {
                 _teamColorImage.color = Color.clear;
             } else if (player != null) {
@@ -94,7 +94,7 @@ namespace Gameplay.Entities {
 
             _particularView.Initialize(entity);
 
-            _selectionMaterial = GameManager.Instance.GetPlayerForTeam(entity.Team)?.Data.SelectionMaterial;
+            _selectionMaterial = GameManager.Instance.GetPlayerForTeam(entity)?.Data.SelectionMaterial;
             _targetedMaterial = GameManager.Instance.Configuration.TargetedMaterial;
         }
 
@@ -332,7 +332,7 @@ namespace Gameplay.Entities {
         private void SetDeathParticleColors() {
             ParticleSystem.MainModule main = _deathParticleSystem.main;
             ParticleSystem.MinMaxGradient colors = _deathParticleSystem.main.startColor;
-            PlayerData playerData = GameManager.Instance.GetPlayerForTeam(Entity.Team).Data;
+            PlayerData playerData = GameManager.Instance.GetPlayerForTeam(Entity).Data;
             colors.colorMin = playerData.DeathParticlesColor1;
             colors.colorMax = playerData.DeathParticlesColor2;
             main.startColor = colors;

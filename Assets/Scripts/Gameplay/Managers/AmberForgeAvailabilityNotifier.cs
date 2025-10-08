@@ -60,7 +60,8 @@ namespace Gameplay.Managers {
             // Check to see if we have enough money to buy an enhancement
             PlayerResourcesController resourcesController = GameManager.Instance.GetPlayerForTeam(GameManager.Instance.LocalTeam).ResourcesController;
             // TODO replace the new list with the list of available enhancements
-            return new List<List<ResourceAmount>>().Any(resourceAmounts => resourcesController.CanAfford(resourceAmounts));
+            return true;
+            // return new List<List<ResourceAmount>>().Any(resourceAmounts => resourcesController.CanAfford(resourceAmounts));
         }
     }
 }

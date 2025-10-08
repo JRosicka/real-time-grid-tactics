@@ -18,6 +18,7 @@ namespace Gameplay.Config.Abilities {
     [Serializable]
     public class BuildAbilityData : AbilityDataBase<BuildAbilityParameters>, ITargetableAbilityData {
         public bool Targetable;
+        public bool UsableEverywhereByBothTeams;
         public List<PurchasableDataWithSelectionKey> Buildables;
 
         private GridController GridController => GameManager.Instance.GridController;
@@ -40,10 +41,9 @@ namespace Gameplay.Config.Abilities {
         }
         
         protected override AbilityLegality AbilityLegalImpl(BuildAbilityParameters parameters, GridEntity entity) {
-            IGamePlayer player = GameManager.Instance.GetPlayerForTeam(entity.Team);
-            List<PurchasableData> ownedPurchasables = player.OwnedPurchasablesController.OwnedPurchasables;
-            if (parameters.Buildable.Requirements.Any(r => !ownedPurchasables.Contains(r))) {
-                Debug.Log($"Not building ({parameters.Buildable.ID}) because we don't have the proper requirements");
+            IGamePlayer player = GameManager.Instance.GetPlayerForTeam(entity);
+            if (!player.OwnedPurchasablesController.HasRequirementsForPurchase(parameters.Buildable, entity, out string whyNot)) {
+                Debug.Log($"Not building ({parameters.Buildable.ID}) because {whyNot}");
                 return AbilityLegality.IndefinitelyIllegal;
             }
 

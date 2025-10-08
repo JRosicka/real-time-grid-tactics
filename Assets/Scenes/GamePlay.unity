@@ -1686,24 +1686,24 @@ MonoBehaviour:
     Entities:
     - Data: {fileID: 11400000, guid: f8a9d9571b0a8324587b160065ca7fce, type: 2}
       Team: 0
-      SpawnLocation: {x: -7, y: -6}
+      SpawnLocation: {x: -7, y: -5}
     - Data: {fileID: 11400000, guid: 5d9e30910c9795b49bea0c2c257e60eb, type: 2}
       Team: 0
       SpawnLocation: {x: -9, y: -5}
     - Data: {fileID: 11400000, guid: b52e5f177d13b1b4580a21f9c5ad0bf1, type: 2}
       Team: 0
-      SpawnLocation: {x: -7, y: -5}
+      SpawnLocation: {x: -7, y: -6}
   - Team: 2
     Entities:
     - Data: {fileID: 11400000, guid: f8a9d9571b0a8324587b160065ca7fce, type: 2}
       Team: 0
-      SpawnLocation: {x: 7, y: 6}
+      SpawnLocation: {x: 6, y: 5}
     - Data: {fileID: 11400000, guid: 5d9e30910c9795b49bea0c2c257e60eb, type: 2}
       Team: 0
       SpawnLocation: {x: 8, y: 5}
     - Data: {fileID: 11400000, guid: b52e5f177d13b1b4580a21f9c5ad0bf1, type: 2}
       Team: 0
-      SpawnLocation: {x: 6, y: 5}
+      SpawnLocation: {x: 7, y: 6}
   LowerLeftCell: {x: -8, y: -6}
   UpperRightCell: {x: 8, y: 6}
   WideLeftSide: 1

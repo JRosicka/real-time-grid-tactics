@@ -66,6 +66,7 @@ namespace Gameplay.Config {
 
         public int BuildQueueSize = 5;
         public bool CanBuild => Abilities.Any(a => a.Content is BuildAbilityData);
+        public bool ControllableByAllPlayers;
         
         [Header("Structure config")]
         [Tooltip("Where this can be build. Relevant for structures only.")]

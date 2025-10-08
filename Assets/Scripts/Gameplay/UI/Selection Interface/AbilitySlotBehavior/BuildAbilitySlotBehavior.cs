@@ -22,6 +22,7 @@ namespace Gameplay.UI {
         public bool IsAvailabilitySensitiveToResources => true;
         public bool CaresAboutAbilityChannels => false;
         public bool CaresAboutInProgressAbilities => false;
+        public bool CaresAboutLeaderPosition => true;
         public bool IsAbilityTargetable => _buildAbilityData.Targeted;
         public bool AnyPlayerCanSelect => false;
         private GridController GridController => GameManager.Instance.GridController;
@@ -57,7 +58,10 @@ namespace Gameplay.UI {
 
         public void HandleFailedToSelect(AbilitySlot.AvailabilityResult availability) {
             if (availability == AbilitySlot.AvailabilityResult.Unselectable) {
-                string alertMessage = FulfillsRequirementsToBuild() ? "Can not afford." : "Requirements not met.";
+                bool fulfillsRequirements = FulfillsRequirementsToBuild(out string alertMessage);
+                if (fulfillsRequirements) {
+                    alertMessage = "Can not afford.";
+                }
                 GameManager.Instance.AlertTextDisplayer.DisplayAlert(alertMessage);
             } // Otherwise it is unavailable - don't even acknowledge the selection attempt
         }
@@ -67,7 +71,7 @@ namespace Gameplay.UI {
                 return AbilitySlot.AvailabilityResult.Unselectable;
             }
             
-            IGamePlayer player = GameManager.Instance.GetPlayerForTeam(SelectedEntity.Team);
+            IGamePlayer player = GameManager.Instance.GetPlayerForTeam(SelectedEntity);
             List<PurchasableData> ownedPurchasables = player.OwnedPurchasablesController.OwnedPurchasables;
 
             UpgradeData upgradeData = Buildable as UpgradeData;
@@ -77,15 +81,13 @@ namespace Gameplay.UI {
                 return AbilitySlot.AvailabilityResult.Hidden;
             }
 
-            if (!FulfillsRequirementsToBuild()) {
+            if (!FulfillsRequirementsToBuild(out _)) {
                 // Upgrade that we do not fulfill the requirements for
                 return AbilitySlot.AvailabilityResult.Unselectable;
             }
 
             AbilityLegality legality = AbilityAssignmentManager.CanEntityUseAbility(SelectedEntity, _buildAbilityData, _buildAbilityData.SelectableWhenBlocked);
-            if (legality == AbilityLegality.Legal
-                    && player.ResourcesController.CanAfford(Buildable.Cost)
-                    && Buildable.Requirements.All(r => ownedPurchasables.Contains(r))) {
+            if (legality == AbilityLegality.Legal && player.ResourcesController.CanAfford(Buildable.Cost)) {
                 // This entity can build this and we can afford this
                 return AbilitySlot.AvailabilityResult.Selectable;
             }
@@ -93,12 +95,9 @@ namespace Gameplay.UI {
             return AbilitySlot.AvailabilityResult.Unselectable;
         }
 
-        private bool FulfillsRequirementsToBuild() {
-            if (Buildable is not UpgradeData upgradeData) return true;
-            
-            IGamePlayer player = GameManager.Instance.GetPlayerForTeam(SelectedEntity.Team);
-            List<PurchasableData> ownedPurchasables = player.OwnedPurchasablesController.OwnedPurchasables;
-            return upgradeData.Requirements.All(r => ownedPurchasables.Contains(r));
+        private bool FulfillsRequirementsToBuild(out string whyNot) {
+            IGamePlayer player = GameManager.Instance.GetPlayerForTeam(SelectedEntity);
+            return player.OwnedPurchasablesController.HasRequirementsForPurchase(Buildable, SelectedEntity, out whyNot);
         }
 
         public void SetUpSprites(Image abilityImage, Image secondaryAbilityImage, AbilitySlotBackgroundView abilitySlotBackground) {
@@ -108,12 +107,12 @@ namespace Gameplay.UI {
                 secondaryAbilityImage.gameObject.SetActive(false);
             } else {
                 secondaryAbilityImage.sprite = Buildable.TeamColorSprite;
-                secondaryAbilityImage.color = GameManager.Instance.GetPlayerForTeam(SelectedEntity.Team).Data.TeamColor;
+                secondaryAbilityImage.color = GameManager.Instance.GetPlayerForTeam(SelectedEntity).Data.TeamColor;
                 secondaryAbilityImage.gameObject.SetActive(true);
             }
 
             if (abilitySlotBackground) {
-                IGamePlayer player = GameManager.Instance.GetPlayerForTeam(SelectedEntity.Team);
+                IGamePlayer player = GameManager.Instance.GetPlayerForTeam(SelectedEntity);
                 abilitySlotBackground.SetUpSlot(player.Data.ColoredButtonData.Normal);
             }
         }

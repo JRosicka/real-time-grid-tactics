@@ -24,7 +24,7 @@ namespace Gameplay.UI {
             entity.KillCountChanged += KillCountChanged;
             entity.IncomeRateChanged += IncomeRateChanged;
             
-            IGamePlayer player = GameManager.Instance.GetPlayerForTeam(entity.Team);
+            IGamePlayer player = GameManager.Instance.GetPlayerForTeam(entity);
             if (player != null) {
                 player.OwnedPurchasablesController.OwnedPurchasablesChangedEvent += OnOwnedPurchasablesChanged;
             }
@@ -51,7 +51,7 @@ namespace Gameplay.UI {
 
         public Color TeamBannerColor {
             get {
-                IGamePlayer player = GameManager.Instance.GetPlayerForTeam(Entity.Team);
+                IGamePlayer player = GameManager.Instance.GetPlayerForTeam(Entity);
                 return player == null 
                     ? GameManager.Instance.Configuration.NeutralBannerColor 
                     : player.Data.TeamBannerColor;
@@ -62,7 +62,7 @@ namespace Gameplay.UI {
             EntityData entityData = Entity.EntityData;
             entityIcon.sprite = entityData.BaseSpriteIconOverride == null ? entityData.BaseSprite : entityData.BaseSpriteIconOverride;
             entityColorsIcon.sprite = entityData.TeamColorSprite;
-            IGamePlayer player = GameManager.Instance.GetPlayerForTeam(Entity.Team);
+            IGamePlayer player = GameManager.Instance.GetPlayerForTeam(Entity);
             entityColorsIcon.gameObject.SetActive(true);
             entityColorsIcon.color = player != null 
                 ? entityData.TeamColorSprite
@@ -195,7 +195,7 @@ namespace Gameplay.UI {
             Entity.CurrentResources.ValueChanged -= OnEntityResourceAmountChanged;
             Entity.KillCountChanged -= KillCountChanged;
             Entity.IncomeRateChanged -= IncomeRateChanged;
-            IGamePlayer player = GameManager.Instance.GetPlayerForTeam(Entity.Team);
+            IGamePlayer player = GameManager.Instance.GetPlayerForTeam(Entity);
             if (player != null) {
                 player.OwnedPurchasablesController.OwnedPurchasablesChangedEvent -= OnOwnedPurchasablesChanged;
             }

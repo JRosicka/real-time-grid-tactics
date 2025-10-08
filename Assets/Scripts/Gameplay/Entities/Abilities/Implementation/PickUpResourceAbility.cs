@@ -31,7 +31,7 @@ namespace Gameplay.Entities.Abilities {
             
             // There is an entity here belonging to a player, so award them the resources
             ResourceAmount resourceAmount = new ResourceAmount(Performer.EntityData.StartingResourceSet);
-            PlayerResourcesController resourcesController = GameManager.Instance.GetPlayerForTeam(topEntity.Team).ResourcesController;
+            PlayerResourcesController resourcesController = GameManager.Instance.GetPlayerForTeam(topEntity).ResourcesController;
             resourcesController.Earn(resourceAmount);
             
             // Now destroy the resource pickup
