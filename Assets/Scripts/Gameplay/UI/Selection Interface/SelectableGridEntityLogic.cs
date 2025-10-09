@@ -132,7 +132,7 @@ namespace Gameplay.UI {
         }
 
         public void SetUpBuildQueueView(BuildQueueView buildQueueForStructure, BuildQueueView buildQueueForWorker) {
-            if (!Entity.EntityData.CanBuild) return;
+            if (!Entity.EntityData.CanBuild || Entity.EntityData.NeverShowBuildQueue) return;
             
             if (Entity.EntityData.IsStructure) {
                 buildQueueForStructure.SetUpForEntity(Entity);

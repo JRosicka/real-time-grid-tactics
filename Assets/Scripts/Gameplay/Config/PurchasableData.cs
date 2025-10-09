@@ -23,6 +23,8 @@ namespace Gameplay.Config {
         public List<PurchasableData> Requirements;
         public bool RequirementNeedsToBeAdjacent;
         public float BuildTime;
+        [Tooltip("If false, the purchasable is awarded at the end of the build timer. If true, it is awarded right away and the build timer is just used for cooldown. Currently untested with GridEntities (might only work with upgrades).")]
+        public bool BuildsImmediately;
         
         [Header("References")]
         public Sprite BaseSprite;

@@ -21,6 +21,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: f8a9d9571b0a8324587b160065ca7fce, type: 2}
   RequirementNeedsToBeAdjacent: 1
   BuildTime: 3
+  BuildsImmediately: 1
   BaseSprite: {fileID: 21300000, guid: b57c4120c8015b744a4fc3667c7fba31, type: 3}
   TeamColorSprite: {fileID: 0}
   BaseSpriteIconOverride: {fileID: 0}

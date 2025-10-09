@@ -50,6 +50,14 @@ namespace Gameplay.Entities.Abilities {
         }
 
         protected override bool CompleteCooldownImpl() {
+            if (!AbilityParameters.Buildable.BuildsImmediately) {
+                return AwardPurchasable();
+            }
+
+            return true;
+        }
+
+        private bool AwardPurchasable() {
             switch (AbilityParameters.Buildable) {
                 case EntityData entityData:
                     if (PathfinderService.CanEntityEnterCell(AbilityParameters.BuildLocation, entityData, Performer.Team, new List<GridEntity>{Performer})) {
@@ -124,6 +132,13 @@ namespace Gameplay.Entities.Abilities {
             if (AbilityParameters.Buildable is UpgradeData upgradeData) {
                 // Mark the upgrade as in-progress
                 GameManager.Instance.GetPlayerForTeam(Performer).OwnedPurchasablesController.AddInProgressUpgrade(upgradeData);
+            }
+            
+            if (AbilityParameters.Buildable.BuildsImmediately) {
+                bool success = AwardPurchasable();
+                if (!success) {
+                    return (false, AbilityResult.IncompleteWithoutEffect);
+                }
             }
 
             return (true, AbilityResult.CompletedWithEffect);
