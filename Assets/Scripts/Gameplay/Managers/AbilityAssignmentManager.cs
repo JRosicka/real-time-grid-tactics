@@ -32,7 +32,8 @@ namespace Gameplay.Managers {
             }
             
             // Are there any active timers blocking this ability?
-            if (!ignoreBlockingTimers && entity.ActiveTimers.Any(t => t.ChannelBlockers.Contains(data.Channel) && !t.Expired)) {
+            GameTeam team = GameManager.Instance.LocalTeam;
+            if (!ignoreBlockingTimers && entity.ActiveTimers.Any(t => t.DoesBlockChannelForTeam(data.Channel, team))) {
                 return AbilityLegality.NotCurrentlyLegal;
             }
 

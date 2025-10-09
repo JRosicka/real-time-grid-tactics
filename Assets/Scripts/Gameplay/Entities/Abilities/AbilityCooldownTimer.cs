@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using Gameplay.Config.Abilities;
 using Mirror;
@@ -21,8 +20,8 @@ namespace Gameplay.Entities.Abilities {
         /// </summary>
         private const int CooldownCheckMillis = 200;
         
-        public List<AbilityChannel> ChannelBlockers => Ability.AbilityData.ChannelBlockers;
         public readonly IAbility Ability;
+        private readonly GameTeam _team;
         
         public float TimeRemaining01 {
             get {
@@ -44,7 +43,16 @@ namespace Gameplay.Entities.Abilities {
 
         public AbilityCooldownTimer(IAbility ability, float overrideCooldownDuration) {
             Ability = ability;
+            _team = ability.Performer.Team;
             TimeRemaining = InitialTimeRemaining = overrideCooldownDuration > 0 ? overrideCooldownDuration : ability.CooldownDuration;
+        }
+        
+        public bool DoesBlockChannelForTeam(AbilityChannel channel, GameTeam team) {
+            if (team != _team) return false;
+            if (Expired) return false;
+            if (!Ability.AbilityData.ChannelBlockers.Contains(channel)) return false;
+            
+            return true;
         }
 
         public void UpdateTimer(float deltaTime) {
