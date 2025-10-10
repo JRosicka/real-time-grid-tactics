@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Gameplay.Config.Abilities;
+using Gameplay.Entities;
 using Gameplay.Entities.Abilities;
 using TMPro;
 using UnityEngine;
@@ -130,7 +131,8 @@ namespace Gameplay.UI {
             _view.SetActive(toggle);
         }
 
-        private void SelectedEntityBuildQueueUpdated(List<BuildAbility> buildAbilities) {
+        private void SelectedEntityBuildQueueUpdated(GameTeam team, List<BuildAbility> buildAbilities) {
+            if (team != GameManager.Instance.LocalTeam) return;
             if (_selectedTargetableAbility == null && _selectedTargetableAbilitySlotBehavior == null) {
                 SetUpEntityView(_selectedObject);
             }

@@ -46,7 +46,7 @@ namespace Gameplay.UI {
                 }
             } else {
                 // Try to perform the build ability, but only if the build queue is not full
-                if (!SelectedEntity.BuildQueue.HasSpace) {
+                if (!SelectedEntity.BuildQueue.HasSpace(GameManager.Instance.LocalTeam)) {
                     return;
                 }
                 Vector2Int? selectedEntityLocation = SelectedEntity.Location;

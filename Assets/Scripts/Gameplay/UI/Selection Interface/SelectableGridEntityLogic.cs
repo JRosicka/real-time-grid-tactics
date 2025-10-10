@@ -39,7 +39,7 @@ namespace Gameplay.UI {
         public bool DisplayHP => Entity.EntityData.HP > 0;
         public BuildAbility InProgressBuild {
             get {
-                List<BuildAbility> buildQueue = BuildQueue.Queue;
+                List<BuildAbility> buildQueue = BuildQueue.Queue(GameManager.Instance.LocalTeam);
                 if (!Entity.EntityData.IsStructure && buildQueue.Count > 0 &&
                     !Entity.InProgressAbilities.Select(a => a.UID).Contains(buildQueue[0].UID)) {
                     return buildQueue[0];

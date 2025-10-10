@@ -6,20 +6,26 @@ using UnityEngine;
 
 namespace Gameplay.Entities.BuildQueue {
     /// <summary>
-    /// A <see cref="IBuildQueue"/> implementation for <see cref="GridEntity"/>s that can actually build stuff.
+    /// A <see cref="IBuildQueue"/> implementation for <see cref="GridEntity"/>s that can build things for both players
+    /// simultaneously.
     /// Entirely client-side, not networked - this reacts to events that are communicated to the client (and user inputs),
     /// and any operations are sent to the <see cref="ICommandManager"/>
     /// </summary>
-    public class BuildableBuildQueue : IBuildQueue {
+    public class SharedBuildableBuildQueue : IBuildQueue {
         private readonly GridEntity _entity;
         private readonly int _maxSize;
-        private List<BuildAbility> _buildQueue = new List<BuildAbility>();
+        private readonly Dictionary<GameTeam, List<BuildAbility>> _buildAbilities;
         
         public event Action<GameTeam, List<BuildAbility>> BuildQueueUpdated;
 
-        public BuildableBuildQueue(GridEntity entity, int maxSize) {
+        public SharedBuildableBuildQueue(GridEntity entity, int maxSize) {
             _entity = entity;
             _maxSize = maxSize;
+
+            _buildAbilities = new Dictionary<GameTeam, List<BuildAbility>> {
+                { GameTeam.Player1, new List<BuildAbility>() },
+                { GameTeam.Player2, new List<BuildAbility>() }
+            };
 
             entity.AbilityPerformedEvent += (_, _) => DetermineBuildQueue();
             entity.InProgressAbilitiesUpdatedEvent += _ => DetermineBuildQueue();
@@ -29,14 +35,14 @@ namespace Gameplay.Entities.BuildQueue {
         }
 
         // TODO-abilities: Somehow this just works? Hmm. 
-        public List<BuildAbility> Queue(GameTeam team) => _buildQueue;
+        public List<BuildAbility> Queue(GameTeam team) => _buildAbilities[team];
 
-        public bool HasSpace(GameTeam team) => _buildQueue.Count < _maxSize;
+        public bool HasSpace(GameTeam team) => Queue(team).Count < _maxSize;
         
         public void CancelBuild(BuildAbility build, GameTeam team) {
-            BuildAbility abilityInBuildQueue = _buildQueue.FirstOrDefault(b => b.UID == build.UID);
+            BuildAbility abilityInBuildQueue = Queue(team).FirstOrDefault(b => b.UID == build.UID);
             if (abilityInBuildQueue == null) {
-                Debug.LogError($"Tried to cancel build that wasn't in the queue!");
+                Debug.LogError("Tried to cancel build that wasn't in the queue!");
                 return;
             }
             
@@ -44,14 +50,19 @@ namespace Gameplay.Entities.BuildQueue {
         }
 
         public void CancelAllBuilds(GameTeam team) {
-            if (team != _entity.Team) return;
-            _buildQueue.ForEach(b => GameManager.Instance.CommandManager.CancelAbility(b));
+            Queue(team).ForEach(b => GameManager.Instance.CommandManager.CancelAbility(b));
         }
         
         private void DetermineBuildQueue() {
-            List<int> previousBuildQueueIDs = _buildQueue.Select(a => a.UID).ToList();
+            DetermineBuildQueueForTeam(GameTeam.Player1);
+            DetermineBuildQueueForTeam(GameTeam.Player2);
+        }
+
+        private void DetermineBuildQueueForTeam(GameTeam team) {
+            List<int> previousBuildQueueIDs = Queue(team).Select(a => a.UID).ToList();
             
             List<BuildAbility> activeAbilities = _entity.ActiveTimers.Where(t => t.Ability is BuildAbility)
+                .Where(t => t.Team == team)
                 .Select(t => t.Ability)
                 .Cast<BuildAbility>()
                 .ToList();
@@ -59,13 +70,14 @@ namespace Gameplay.Entities.BuildQueue {
                 Debug.LogError("Multiple active build abilities detected, that should not happen");
             }
             List<BuildAbility> queuedAbilities = _entity.InProgressAbilities.Where(a => a is BuildAbility)
+                .Where(a => a.PerformerTeam == team)
                 .Cast<BuildAbility>()
                 .ToList();
-            _buildQueue = activeAbilities.Concat(queuedAbilities).ToList();
+            _buildAbilities[team] = activeAbilities.Concat(queuedAbilities).ToList();
             
-            List<int> newBuildQueueIDs = _buildQueue.Select(a => a.UID).ToList();
+            List<int> newBuildQueueIDs = Queue(team).Select(a => a.UID).ToList();
             if (!newBuildQueueIDs.SequenceEqual(previousBuildQueueIDs)) {
-                BuildQueueUpdated?.Invoke(_entity.Team, _buildQueue);
+                BuildQueueUpdated?.Invoke(team, Queue(team));
             }
         }
     }

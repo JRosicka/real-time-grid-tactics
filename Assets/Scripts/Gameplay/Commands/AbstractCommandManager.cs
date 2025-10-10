@@ -144,7 +144,8 @@ public abstract class AbstractCommandManager : NetworkBehaviour, ICommandManager
     }
 
     protected void DoUnRegisterEntity(GridEntity entity) {
-        entity.BuildQueue.CancelAllBuilds();
+        entity.BuildQueue.CancelAllBuilds(GameTeam.Player1);
+        entity.BuildQueue.CancelAllBuilds(GameTeam.Player2);
         _entitiesOnGrid.UnRegisterEntity(entity);
         SyncEntityCollection();
         EntityUnregisteredEvent?.Invoke(entity.Team);

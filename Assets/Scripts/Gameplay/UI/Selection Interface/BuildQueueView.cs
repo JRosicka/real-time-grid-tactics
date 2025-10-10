@@ -36,7 +36,8 @@ namespace Gameplay.UI {
 
             gameObject.SetActive(true);
             entity.BuildQueue.BuildQueueUpdated += UpdateBuildQueue;
-            UpdateBuildQueue(entity.BuildQueue.Queue);
+            GameTeam localTeam = GameManager.Instance.LocalTeam;
+            UpdateBuildQueue(localTeam, entity.BuildQueue.Queue(localTeam));
         }
 
         public void Clear() {
@@ -51,7 +52,9 @@ namespace Gameplay.UI {
             gameObject.SetActive(false);
         }
 
-        private void UpdateBuildQueue(List<BuildAbility> currentQueuedAbilities) {
+        private void UpdateBuildQueue(GameTeam team, List<BuildAbility> currentQueuedAbilities) {
+            if (team != GameManager.Instance.LocalTeam) return;
+            
             _slots.ForEach(s => s.Clear());
             
             int slotNumber = 0;

@@ -31,7 +31,8 @@ namespace Gameplay.UI {
             }
 
             IBuildQueue buildQueue = GetBuildQueueIfWeCanCancelSomethingInIt();
-            buildQueue?.CancelBuild(buildQueue.Queue.Last());
+            GameTeam localTeam = GameManager.Instance.LocalTeam;
+            buildQueue?.CancelBuild(buildQueue.Queue(localTeam).Last(), localTeam);
         }
 
         public override AbilitySlot.AvailabilityResult GetAvailability() {
@@ -54,7 +55,7 @@ namespace Gameplay.UI {
             
             // Otherwise clear the last build in the selected entity's build queue if there is one
             IBuildQueue buildQueue = _selectedEntity.BuildQueue;
-            if (buildQueue != null && buildQueue.Queue.Count > 0) {
+            if (buildQueue != null && buildQueue.Queue(GameManager.Instance.LocalTeam).Count > 0) {
                 return buildQueue;
             }
 

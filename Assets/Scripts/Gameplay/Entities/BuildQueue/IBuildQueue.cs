@@ -8,10 +8,10 @@ namespace Gameplay.Entities.BuildQueue {
     /// Does not actually store/update data - instead relies on <see cref="GridEntity.InProgressAbilities"/>.
     /// </summary>
     public interface IBuildQueue {
-        event Action<List<BuildAbility>> BuildQueueUpdated; 
-        List<BuildAbility> Queue { get; }
-        bool HasSpace { get; }
-        void CancelBuild(BuildAbility build);
-        void CancelAllBuilds();
+        event Action<GameTeam, List<BuildAbility>> BuildQueueUpdated;
+        List<BuildAbility> Queue(GameTeam team);
+        bool HasSpace(GameTeam team);
+        void CancelBuild(BuildAbility build, GameTeam team);
+        void CancelAllBuilds(GameTeam team);
     }
 }

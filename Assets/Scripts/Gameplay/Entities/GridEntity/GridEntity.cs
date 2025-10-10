@@ -204,7 +204,9 @@ namespace Gameplay.Entities {
             }
 
             BuildQueue = data.CanBuild 
-                ? new BuildableBuildQueue(this, data.BuildQueueSize) 
+                ? data.ControllableByAllPlayers 
+                    ? new SharedBuildableBuildQueue(this, data.BuildQueueSize)
+                    : new BuildableBuildQueue(this, data.BuildQueueSize) 
                 : new NullBuildQueue();
 
             SetupStats();

@@ -49,12 +49,12 @@ namespace Gameplay.Managers {
 
         public bool StartPerformingAbility(GridEntity entity, IAbilityData abilityData, IAbilityParameters parameters, bool fromInput,
                                     bool startPerformingEvenIfOnCooldown, bool clearOtherAbilities, GameTeam? overrideTeam = null) {
-            
+            GameTeam team = overrideTeam ?? entity.Team;
             if (entity.BuildQueue != null && abilityData.TryingToPerformCancelsBuilds) {
-                entity.BuildQueue.CancelAllBuilds();
+                entity.BuildQueue.CancelAllBuilds(team);
             }
 
-            AbilityLegality legality = abilityData.AbilityLegal(parameters, entity, startPerformingEvenIfOnCooldown, overrideTeam ?? entity.Team);
+            AbilityLegality legality = abilityData.AbilityLegal(parameters, entity, startPerformingEvenIfOnCooldown, team);
             if (legality == AbilityLegality.IndefinitelyIllegal) {
                 entity.AbilityFailed(abilityData);
                 return false;

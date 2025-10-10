@@ -15,7 +15,7 @@ namespace Gameplay.UI {
         }
 
         public override void SelectSlot() {
-            SelectedEntity.BuildQueue.CancelBuild(_buildAbility);
+            SelectedEntity.BuildQueue.CancelBuild(_buildAbility, GameManager.Instance.LocalTeam);
         }
 
         public override AbilitySlot.AvailabilityResult GetAvailability() {
