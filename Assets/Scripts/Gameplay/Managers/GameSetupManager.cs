@@ -182,7 +182,7 @@ public class GameSetupManager : MonoBehaviour {
                 CountdownTimeSeconds);
         }
         
-        PerformClientSideLateInitialization();
+        PerformClientSidePostMapSetupInitialization();
     }
 
     /// <summary>
@@ -227,7 +227,7 @@ public class GameSetupManager : MonoBehaviour {
         MapLoader.LoadMap(player1.Data.Team);
         SpawnStartingUnits();
 
-        PerformClientSideLateInitialization();
+        PerformClientSidePostMapSetupInitialization();
 
         PerformOnStartAbilities();
 
@@ -244,9 +244,19 @@ public class GameSetupManager : MonoBehaviour {
     /// <summary>
     /// Initialization items that should be performed on each client after map setup is complete
     /// </summary>
-    private void PerformClientSideLateInitialization() {
-        GameManager.Instance.AmberForgeAvailabilityNotifier.Initialize();
-        GameManager.Instance.LeaderTracker.Initialize(GameManager.Instance.CommandManager);
+    private void PerformClientSidePostMapSetupInitialization() {
+        if (GameManager.CommandManager.EntitiesOnGrid.Entities.Count == 0) {
+            GameManager.CommandManager.EntityCollectionChangedEvent += DoPerformClientSidePostMapSetupInitialization;
+        } else {
+            DoPerformClientSidePostMapSetupInitialization();
+        }
+    }
+
+    private void DoPerformClientSidePostMapSetupInitialization() {
+        GameManager.CommandManager.EntityCollectionChangedEvent -= DoPerformClientSidePostMapSetupInitialization;
+        
+        GameManager.AmberForgeAvailabilityNotifier.Initialize();
+        GameManager.LeaderTracker.Initialize(GameManager.CommandManager);
     }
     
     #region Multiplayer
