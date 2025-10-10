@@ -19,7 +19,7 @@ namespace Gameplay.Entities.Abilities {
     public class BuildAbility : AbilityBase<BuildAbilityData, BuildAbilityParameters> {
         public BuildAbilityParameters AbilityParameters => (BuildAbilityParameters) BaseParameters;
 
-        public BuildAbility(BuildAbilityData data, BuildAbilityParameters parameters, GridEntity performer) : base(data, parameters, performer) {
+        public BuildAbility(BuildAbilityData data, BuildAbilityParameters parameters, GridEntity performer, GameTeam? overrideTeam) : base(data, parameters, performer, overrideTeam) {
             
         }
 

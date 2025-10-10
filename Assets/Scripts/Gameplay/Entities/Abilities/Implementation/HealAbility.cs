@@ -10,7 +10,7 @@ namespace Gameplay.Entities.Abilities {
     public class HealAbility : AbilityBase<HealAbilityData, HealAbilityParameters> {
         public HealAbilityParameters AbilityParameters => (HealAbilityParameters) BaseParameters;
 
-        public HealAbility(HealAbilityData data, HealAbilityParameters parameters, GridEntity performer) : base(data, parameters, performer) {
+        public HealAbility(HealAbilityData data, HealAbilityParameters parameters, GridEntity performer, GameTeam? overrideTeam) : base(data, parameters, performer, overrideTeam) {
             
         }
 

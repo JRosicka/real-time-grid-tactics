@@ -21,7 +21,7 @@ namespace Gameplay.Entities.Abilities {
         private const int CooldownCheckMillis = 200;
         
         public readonly IAbility Ability;
-        private readonly GameTeam _team;
+        public readonly GameTeam Team;
         
         public float TimeRemaining01 {
             get {
@@ -43,12 +43,12 @@ namespace Gameplay.Entities.Abilities {
 
         public AbilityCooldownTimer(IAbility ability, float overrideCooldownDuration) {
             Ability = ability;
-            _team = ability.Performer.Team;
+            Team = ability.PerformerTeam;
             TimeRemaining = InitialTimeRemaining = overrideCooldownDuration > 0 ? overrideCooldownDuration : ability.CooldownDuration;
         }
         
         public bool DoesBlockChannelForTeam(AbilityChannel channel, GameTeam team) {
-            if (team != _team) return false;
+            if (team != Team) return false;
             if (Expired) return false;
             if (!Ability.AbilityData.ChannelBlockers.Contains(channel)) return false;
             

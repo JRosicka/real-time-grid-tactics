@@ -11,7 +11,7 @@ namespace Gameplay.Entities.Abilities {
     public class MoveAbility : AbilityBase<MoveAbilityData, MoveAbilityParameters> {
         public MoveAbilityParameters AbilityParameters => (MoveAbilityParameters) BaseParameters;
         
-        public MoveAbility(MoveAbilityData data, MoveAbilityParameters parameters, GridEntity performer) : base(data, parameters, performer) {
+        public MoveAbility(MoveAbilityData data, MoveAbilityParameters parameters, GridEntity performer, GameTeam? overrideTeam) : base(data, parameters, performer, overrideTeam) {
             
         }
         

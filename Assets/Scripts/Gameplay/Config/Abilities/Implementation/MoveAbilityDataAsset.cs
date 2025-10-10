@@ -40,8 +40,8 @@ namespace Gameplay.Config.Abilities {
             return AbilityLegality.Legal;
         }
 
-        protected override IAbility CreateAbilityImpl(MoveAbilityParameters parameters, GridEntity performer) {
-            return new MoveAbility(this, parameters, performer);
+        protected override IAbility CreateAbilityImpl(MoveAbilityParameters parameters, GridEntity performer, GameTeam? overrideTeam) {
+            return new MoveAbility(this, parameters, performer, overrideTeam);
         }
 
         public bool CanTargetCell(Vector2Int cellPosition, GridEntity selectedEntity, GameTeam selectorTeam, object targetData) {

@@ -27,8 +27,8 @@ namespace Gameplay.Config.Abilities {
             return CanAttackTarget(parameters.Target, entity);
         }
 
-        protected override IAbility CreateAbilityImpl(TargetAttackAbilityParameters parameters, GridEntity performer) {
-            return new TargetAttackAbility(this, parameters, performer);
+        protected override IAbility CreateAbilityImpl(TargetAttackAbilityParameters parameters, GridEntity performer, GameTeam? overrideTeam) {
+            return new TargetAttackAbility(this, parameters, performer, overrideTeam);
         }
 
         public bool CanTargetCell(Vector2Int cellPosition, GridEntity selectedEntity, GameTeam selectorTeam, System.Object targetData) {

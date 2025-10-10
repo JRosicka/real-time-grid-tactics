@@ -40,16 +40,16 @@ namespace Gameplay.Managers {
             return AbilityLegality.Legal;
         }
 
-        public bool IsAbilityChannelOnCooldownForEntity(GridEntity entity, AbilityChannel channel, out AbilityCooldownTimer timer) {
-            timer = entity.ActiveTimers.FirstOrDefault(t => t.Ability.AbilityData.Channel == channel);
-            return timer != null;
+        public bool IsAbilityChannelOnCooldownForEntity(GridEntity entity, AbilityChannel channel, out List<AbilityCooldownTimer> timers) {
+            timers = entity.ActiveTimers.Where(t => t.Ability.AbilityData.Channel == channel).ToList();
+            return timers.Count > 0;
         }
         
         #endregion
         #region Perform
 
         public bool StartPerformingAbility(GridEntity entity, IAbilityData abilityData, IAbilityParameters parameters, bool fromInput,
-                                    bool startPerformingEvenIfOnCooldown, bool clearOtherAbilities) {
+                                    bool startPerformingEvenIfOnCooldown, bool clearOtherAbilities, GameTeam? overrideTeam = null) {
             
             if (entity.BuildQueue != null && abilityData.TryingToPerformCancelsBuilds) {
                 entity.BuildQueue.CancelAllBuilds();
@@ -66,7 +66,7 @@ namespace Gameplay.Managers {
                 entity.LastAttackedEntity.UpdateValue(new NetworkableGridEntityValue(null));
             }
             
-            IAbility abilityInstance = abilityData.CreateAbility(parameters, entity);
+            IAbility abilityInstance = abilityData.CreateAbility(parameters, entity, overrideTeam);
             
             if (clearOtherAbilities) { 
                 CancelAllAbilities(entity); 
@@ -94,7 +94,7 @@ namespace Gameplay.Managers {
                 return;
             }
             
-            IAbility abilityInstance = abilityData.CreateAbility(parameters, entity);
+            IAbility abilityInstance = abilityData.CreateAbility(parameters, entity, null);
             CommandManager.QueueAbility(abilityInstance, abilityToDependOn);
         }
         
@@ -178,7 +178,7 @@ namespace Gameplay.Managers {
                 NextMoveCell = location.Value,
                 SelectorTeam = entity.Team,
                 BlockedByOccupation = false
-            }, entity);
+            }, entity, null);
             
             AddToCooldownTimer(entity, newAbility, timeToAdd);
         }

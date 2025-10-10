@@ -34,7 +34,7 @@ MonoBehaviour:
     _autoSelect: 1
     _selectableForAllPlayers: 1
     _tryingToPerformCancelsBuilds: 0
-    _showTimerOnSelectionInterface: 0
+    _showTimerOnSelectionInterface: 1
     Targetable: 0
     UsableEverywhereByBothTeams: 1
     Buildables:

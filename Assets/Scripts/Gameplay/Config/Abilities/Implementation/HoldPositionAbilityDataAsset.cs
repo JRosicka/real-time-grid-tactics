@@ -25,8 +25,8 @@ namespace Gameplay.Config.Abilities {
             return AbilityLegality.Legal;
         }
 
-        protected override IAbility CreateAbilityImpl(NullAbilityParameters parameters, GridEntity performer) {
-            return new HoldPositionAbility(this, parameters, performer);
+        protected override IAbility CreateAbilityImpl(NullAbilityParameters parameters, GridEntity performer, GameTeam? overrideTeam) {
+            return new HoldPositionAbility(this, parameters, performer, overrideTeam);
         }
     }
 }

@@ -30,8 +30,8 @@ namespace Gameplay.Config.Abilities {
             return AbilityLegalityAtResourceCollector(performer, parameters.Target);
         }
         
-        protected override IAbility CreateAbilityImpl(ParadeAbilityParameters parameters, GridEntity performer) {
-            return new ParadeAbility(this, parameters, performer);
+        protected override IAbility CreateAbilityImpl(ParadeAbilityParameters parameters, GridEntity performer, GameTeam? overrideTeam) {
+            return new ParadeAbility(this, parameters, performer, overrideTeam);
         }
 
         public bool CanTargetCell(Vector2Int cellPosition, GridEntity selectedEntity, GameTeam selectorTeam, object targetData) {

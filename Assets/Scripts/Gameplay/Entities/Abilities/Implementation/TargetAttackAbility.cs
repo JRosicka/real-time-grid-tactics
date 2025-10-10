@@ -13,7 +13,7 @@ namespace Gameplay.Entities.Abilities {
         public TargetAttackAbilityParameters AbilityParameters => (TargetAttackAbilityParameters) BaseParameters;
         private GridData GridData => GameManager.Instance.GridController.GridData;
 
-        public TargetAttackAbility(TargetAttackAbilityData data, TargetAttackAbilityParameters parameters, GridEntity performer) : base(data, parameters, performer) {}
+        public TargetAttackAbility(TargetAttackAbilityData data, TargetAttackAbilityParameters parameters, GridEntity performer, GameTeam? overrideTeam = null) : base(data, parameters, performer, overrideTeam) {}
 
         public override AbilityExecutionType ExecutionType => AbilityExecutionType.Interaction;
         public override bool ShouldShowCooldownTimer => true;

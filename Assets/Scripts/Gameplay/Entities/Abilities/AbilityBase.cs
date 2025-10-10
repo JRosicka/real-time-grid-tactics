@@ -13,15 +13,18 @@ namespace Gameplay.Entities.Abilities {
         public int UID { get; set; }
         public IAbilityParameters BaseParameters { get; }
         public GridEntity Performer { get; }
+        public GameTeam PerformerTeam { get; set; }
 
         protected virtual float AddedMovementTime => 0;
 
         protected AbilityAssignmentManager AbilityAssignmentManager => GameManager.Instance.AbilityAssignmentManager;
 
-        protected AbilityBase(T data, IAbilityParameters abilityParameters, GridEntity performer) {
+        protected AbilityBase(T data, IAbilityParameters abilityParameters, GridEntity performer, GameTeam? overrideTeam) {
             Data = data;
             BaseParameters = abilityParameters;
             Performer = performer;
+
+            PerformerTeam = overrideTeam ?? Performer.Team;
         }
 
         public abstract AbilityExecutionType ExecutionType { get; }

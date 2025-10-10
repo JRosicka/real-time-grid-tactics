@@ -34,8 +34,8 @@ namespace Gameplay.Config.Abilities {
             return AbilityLegality.Legal;
         }
 
-        protected override IAbility CreateAbilityImpl(NullAbilityParameters parameters, GridEntity performer) {
-            return new IncomeAbility(this, parameters, performer);
+        protected override IAbility CreateAbilityImpl(NullAbilityParameters parameters, GridEntity performer, GameTeam? overrideTeam) {
+            return new IncomeAbility(this, parameters, performer, overrideTeam);
         }
     }
 }

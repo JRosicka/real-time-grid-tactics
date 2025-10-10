@@ -26,8 +26,8 @@ namespace Gameplay.Config.Abilities {
             return AbilityLegality.Legal;
         }
 
-        protected override IAbility CreateAbilityImpl(HealAbilityParameters parameters, GridEntity performer) {
-            return new HealAbility(this, parameters, performer);
+        protected override IAbility CreateAbilityImpl(HealAbilityParameters parameters, GridEntity performer, GameTeam? overrideTeam) {
+            return new HealAbility(this, parameters, performer, overrideTeam);
         }
     }
 }

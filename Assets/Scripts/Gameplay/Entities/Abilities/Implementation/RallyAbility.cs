@@ -9,7 +9,7 @@ namespace Gameplay.Entities.Abilities {
     public class RallyAbility : AbilityBase<RallyAbilityData, RallyAbilityParameters> {
         public RallyAbilityParameters AbilityParameters => (RallyAbilityParameters) BaseParameters;
         
-        public RallyAbility(RallyAbilityData data, RallyAbilityParameters parameters, GridEntity performer) : base(data, parameters, performer) {
+        public RallyAbility(RallyAbilityData data, RallyAbilityParameters parameters, GridEntity performer, GameTeam? overrideTeam) : base(data, parameters, performer, overrideTeam) {
             
         }
 

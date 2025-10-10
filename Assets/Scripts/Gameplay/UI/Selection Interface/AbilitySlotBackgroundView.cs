@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Linq;
 using Gameplay.Config.Abilities;
 using Gameplay.Entities;
 using Gameplay.Entities.Abilities;
@@ -49,11 +51,16 @@ namespace Gameplay.UI {
         }
         
         private void UpdateTimer() {
-            if (AbilityAssignmentManager.IsAbilityChannelOnCooldownForEntity(_gridEntity, _abilityChannel, out AbilityCooldownTimer activeCooldownTimer)) {
-                _cooldownTimerView.Initialize(activeCooldownTimer, false, true, true);
-            } else {
-                _slotImage.gameObject.SetActive(true);
+            if (AbilityAssignmentManager.IsAbilityChannelOnCooldownForEntity(_gridEntity, _abilityChannel, out List<AbilityCooldownTimer> activeCooldownTimers)) {
+                GameTeam localTeam = GameManager.Instance.LocalTeam;
+                AbilityCooldownTimer activeTimerForPlayer = activeCooldownTimers.FirstOrDefault(t => t.Team == localTeam);
+                if (activeTimerForPlayer != null) {
+                    _cooldownTimerView.Initialize(activeTimerForPlayer, false, true, true);
+                    return;
+                }
             }
+            
+            _slotImage.gameObject.SetActive(true);
         }
 
         private void AbilityPerformed(IAbility ability, AbilityCooldownTimer abilityCooldownTimer) {

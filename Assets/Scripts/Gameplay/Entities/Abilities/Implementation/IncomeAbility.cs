@@ -8,7 +8,7 @@ namespace Gameplay.Entities.Abilities {
     /// <see cref="IAbility"/> for collecting resource income
     /// </summary>
     public class IncomeAbility : AbilityBase<IncomeAbilityData, NullAbilityParameters> {
-        public IncomeAbility(IncomeAbilityData data, NullAbilityParameters parameters, GridEntity performer) : base(data, parameters, performer) { }
+        public IncomeAbility(IncomeAbilityData data, NullAbilityParameters parameters, GridEntity performer, GameTeam? overrideTeam) : base(data, parameters, performer, overrideTeam) { }
 
         public override AbilityExecutionType ExecutionType => AbilityExecutionType.PreInteractionGridUpdate;
         public override bool ShouldShowCooldownTimer => false;

@@ -68,8 +68,8 @@ namespace Gameplay.Config.Abilities {
             return AbilityLegality.Legal;
         }
 
-        protected override IAbility CreateAbilityImpl(BuildAbilityParameters parameters, GridEntity performer) {
-            return new BuildAbility(this, parameters, performer);
+        protected override IAbility CreateAbilityImpl(BuildAbilityParameters parameters, GridEntity performer, GameTeam? overrideTeam) {
+            return new BuildAbility(this, parameters, performer, overrideTeam);
         }
 
         public bool CanTargetCell(Vector2Int cellPosition, GridEntity selectedEntity, GameTeam selectorTeam, System.Object targetData) {

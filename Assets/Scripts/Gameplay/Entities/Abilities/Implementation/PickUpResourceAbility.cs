@@ -5,7 +5,7 @@ namespace Gameplay.Entities.Abilities {
     /// <see cref="IAbility"/> for a resource pickup getting collected
     /// </summary>
     public class PickUpResourceAbility : AbilityBase<PickUpResourceAbilityData, NullAbilityParameters> {
-        public PickUpResourceAbility(PickUpResourceAbilityData data, NullAbilityParameters parameters, GridEntity performer) : base(data, parameters, performer) { }
+        public PickUpResourceAbility(PickUpResourceAbilityData data, NullAbilityParameters parameters, GridEntity performer, GameTeam? overrideTeam) : base(data, parameters, performer, overrideTeam) { }
 
         public override AbilityExecutionType ExecutionType => AbilityExecutionType.PreInteractionGridUpdate;
         public override bool ShouldShowCooldownTimer => false;

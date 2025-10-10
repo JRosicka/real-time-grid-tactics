@@ -14,7 +14,7 @@ namespace Gameplay.Entities.Abilities {
 
         private static ICommandManager CommandManager => GameManager.Instance.CommandManager;
         
-        public ChargeAbility(ChargeAbilityData data, IAbilityParameters abilityParameters, GridEntity performer) : base(data, abilityParameters, performer) { }
+        public ChargeAbility(ChargeAbilityData data, IAbilityParameters abilityParameters, GridEntity performer, GameTeam? overrideTeam) : base(data, abilityParameters, performer, overrideTeam) { }
         public override AbilityExecutionType ExecutionType => AbilityExecutionType.PreInteractionGridUpdate;
         public override bool ShouldShowCooldownTimer => true;
         protected override float AddedMovementTime => Data.AddedMovementTime;

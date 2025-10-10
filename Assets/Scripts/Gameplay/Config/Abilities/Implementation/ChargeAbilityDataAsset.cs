@@ -54,8 +54,8 @@ namespace Gameplay.Config.Abilities {
             return AbilityLegality.IndefinitelyIllegal;
         }
 
-        protected override IAbility CreateAbilityImpl(ChargeAbilityParameters parameters, GridEntity performer) {
-            return new ChargeAbility(this, parameters, performer);
+        protected override IAbility CreateAbilityImpl(ChargeAbilityParameters parameters, GridEntity performer, GameTeam? overrideTeam) {
+            return new ChargeAbility(this, parameters, performer, overrideTeam);
         }
 
         public bool CanTargetCell(Vector2Int cellPosition, GridEntity selectedEntity, GameTeam selectorTeam, object targetData) {

@@ -11,7 +11,7 @@ namespace Gameplay.Entities.Abilities {
     public class ParadeAbility : AbilityBase<ParadeAbilityData, ParadeAbilityParameters> {
         public ParadeAbilityParameters AbilityParameters => (ParadeAbilityParameters) BaseParameters;
 
-        public ParadeAbility(ParadeAbilityData data, ParadeAbilityParameters parameters, GridEntity performer) : base(data, parameters, performer) {
+        public ParadeAbility(ParadeAbilityData data, ParadeAbilityParameters parameters, GridEntity performer, GameTeam? overrideTeam) : base(data, parameters, performer, overrideTeam) {
             
         }
 

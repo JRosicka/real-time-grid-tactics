@@ -5,7 +5,7 @@ namespace Gameplay.Entities.Abilities {
     /// <see cref="IAbility"/> for making a <see cref="GridEntity"/> hold position, not reacting to being attacked. 
     /// </summary>
     public class HoldPositionAbility : AbilityBase<HoldPositionAbilityData, NullAbilityParameters> {
-        public HoldPositionAbility(HoldPositionAbilityData data, NullAbilityParameters parameters, GridEntity performer) : base(data, parameters, performer) { }
+        public HoldPositionAbility(HoldPositionAbilityData data, NullAbilityParameters parameters, GridEntity performer, GameTeam? overrideTeam) : base(data, parameters, performer, overrideTeam) { }
 
         public override AbilityExecutionType ExecutionType => AbilityExecutionType.PreInteractionGridUpdate;
         public override bool ShouldShowCooldownTimer => false;

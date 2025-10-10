@@ -20,6 +20,10 @@ namespace Gameplay.Entities.Abilities {
         IAbilityParameters BaseParameters { get; }
         int UID { get; set; }
         GridEntity Performer { get; }
+        /// <summary>
+        /// This can be different from the performer entity's team if the performing entity is a shared neutral entity
+        /// </summary>
+        GameTeam PerformerTeam { get; set; }
         AbilityExecutionType ExecutionType { get; }
         float CooldownDuration { get; }
         bool CompleteCooldown();
@@ -48,6 +52,7 @@ namespace Gameplay.Entities.Abilities {
             writer.WriteString(ability.AbilityData.ContentResourceID);
             writer.WriteInt(ability.UID);
             writer.WriteInt(ability.QueuedAfterAbilityID);
+            writer.WriteInt((int)ability.PerformerTeam);
             ability.SerializeParameters(writer);
         }
 
@@ -55,11 +60,13 @@ namespace Gameplay.Entities.Abilities {
             AbilityDataScriptableObject dataAsset = GameManager.Instance.Configuration.GetAbility(reader.ReadString());
             int uid = reader.ReadInt();
             int abilityUIDThisIsQueuedAfter = reader.ReadInt();
+            GameTeam team = (GameTeam)reader.ReadInt();
             
             // Re-create the ability instance using the data asset we loaded
             IAbility abilityInstance = dataAsset.Content.DeserializeAbility(reader);
             abilityInstance.UID = uid;
             abilityInstance.QueuedAfterAbilityID = abilityUIDThisIsQueuedAfter; 
+            abilityInstance.PerformerTeam = team;
             return abilityInstance;
         }
     }

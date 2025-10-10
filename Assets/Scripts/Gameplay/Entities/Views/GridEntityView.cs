@@ -30,6 +30,8 @@ namespace Gameplay.Entities {
         [SerializeField] private AbilityTimerFill _attackTimerFill;
         [SerializeField] private Transform _buildTimerLocation;
         [SerializeField] private Transform _uniqueAbilityTimerLocation;
+        [SerializeField] private Transform _spectatorPlayer1SharedAbilityTimerLocation;
+        [SerializeField] private Transform _spectatorPlayer2SharedAbilityTimerLocation;
         [FormerlySerializedAs("UnitAnimator")] [SerializeField] private Animator _unitAnimator;
         [SerializeField] private Animator _healAnimator;
         [SerializeField] private Transform _directionContainer;
@@ -350,23 +352,52 @@ namespace Gameplay.Entities {
         
         #endregion
         
-        // TODO can pass in things like color and timer location (maybe use a set of transform references) and stuff
         private void CreateTimerView(IAbility ability, AbilityCooldownTimer cooldownTimer) {
             if (!ability.ShouldShowCooldownTimer) return;
             if (ability.AbilityData.AbilityTimerCooldownViewPrefab == null) return;
 
-            Transform timerLocation = cooldownTimer.Ability switch {
-                AttackAbility => transform,
-                BuildAbility when cooldownTimer.Ability.AbilityData.Targeted => _buildTimerLocation,
-                MoveAbility => transform,
-                _ => _uniqueAbilityTimerLocation
-            };
-            AbilityTimerFill timerFill = cooldownTimer.Ability switch {
-                AttackAbility => _attackTimerFill,
-                TargetAttackAbility => _attackTimerFill,
-                MoveAbility => _moveTimerFill,
-                _ => null
-            };
+            Transform timerLocation;
+            switch (cooldownTimer.Ability) {
+                case AttackAbility:
+                    timerLocation = transform;
+                    break;
+                case BuildAbility:
+                    if (cooldownTimer.Ability.AbilityData.Targeted) {
+                        timerLocation = _buildTimerLocation;
+                    } else if (cooldownTimer.Ability.AbilityData.SelectableForAllPlayers &&
+                               GameManager.Instance.LocalTeam == GameTeam.Spectator) {
+                        // This is the Amber Forge for a spectator, so support timer locations for both players
+                        timerLocation = ability.Performer.Team switch {
+                            GameTeam.Player1 => _spectatorPlayer1SharedAbilityTimerLocation,
+                            GameTeam.Player2 => _spectatorPlayer2SharedAbilityTimerLocation,
+                            _ => throw new Exception("WOAH there buddy, an ABILITY that isn't from EITHER PLAYER??????")
+                        };
+                    } else {
+                        timerLocation = _uniqueAbilityTimerLocation;
+                    }
+                    break;
+                case MoveAbility:
+                    timerLocation = transform;
+                    break;
+                default:
+                    timerLocation = _uniqueAbilityTimerLocation;
+                    break;
+            }
+
+            AbilityTimerFill timerFill;
+            switch (cooldownTimer.Ability) {
+                case AttackAbility:
+                case TargetAttackAbility:
+                    timerFill = _attackTimerFill;
+                    break;
+                case MoveAbility:
+                    timerFill = _moveTimerFill;
+                    break;
+                default:
+                    timerFill = null;
+                    break;
+            }
+
             AbilityTimerCooldownView cooldownView = Instantiate(ability.AbilityData.AbilityTimerCooldownViewPrefab, timerLocation);
             cooldownView.Initialize(cooldownTimer, true, false, true, timerFill);
         }

@@ -29,8 +29,8 @@ namespace Gameplay.Config.Abilities {
             return AbilityLegality.Legal;
         }
 
-        protected override IAbility CreateAbilityImpl(RallyAbilityParameters parameters, GridEntity performer) {
-            return new RallyAbility(this, parameters, performer);
+        protected override IAbility CreateAbilityImpl(RallyAbilityParameters parameters, GridEntity performer, GameTeam? overrideTeam) {
+            return new RallyAbility(this, parameters, performer, overrideTeam);
         }
     }
 }

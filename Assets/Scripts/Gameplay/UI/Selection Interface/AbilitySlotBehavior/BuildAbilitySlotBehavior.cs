@@ -18,6 +18,8 @@ namespace Gameplay.UI {
         private readonly BuildAbilityData _buildAbilityData;
         protected readonly GridEntity SelectedEntity;
 
+        private AbilitySlotBackgroundView _abilitySlotBackgroundView;
+
         public AbilitySlotInfo AbilitySlotInfo => _buildAbilityData.AbilitySlotInfo;
         public bool IsAvailabilitySensitiveToResources => true;
         public bool CaresAboutAbilityChannels => false;
@@ -52,7 +54,7 @@ namespace Gameplay.UI {
                 AbilityAssignmentManager.StartPerformingAbility(SelectedEntity, _buildAbilityData, new BuildAbilityParameters {
                     Buildable = Buildable, 
                     BuildLocation = selectedEntityLocation.Value
-                }, true, true, false);
+                }, true, true, false, overrideTeam:GameManager.Instance.LocalTeam);
             }
         }
 
@@ -114,15 +116,20 @@ namespace Gameplay.UI {
             if (abilitySlotBackground) {
                 IGamePlayer player = GameManager.Instance.GetPlayerForTeam(SelectedEntity);
                 abilitySlotBackground.SetUpSlot(player.Data.ColoredButtonData.Normal);
+                _abilitySlotBackgroundView = abilitySlotBackground;
             }
         }
 
         public void SetUpTimerView() {
-            // No timer to show
+            if (_abilitySlotBackgroundView && _buildAbilityData.ShowTimerOnSelectionInterface) {
+                _abilitySlotBackgroundView.SetUpTimer(SelectedEntity, _buildAbilityData.Channel);
+            }
         }
 
         public void ClearTimerView() {
-            // No timer to clear
+            if (_abilitySlotBackgroundView) {
+                _abilitySlotBackgroundView.UnsubscribeFromTimers();
+            }
         }
     }
 }

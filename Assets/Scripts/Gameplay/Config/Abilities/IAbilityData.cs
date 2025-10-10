@@ -100,7 +100,7 @@ namespace Gameplay.Config.Abilities {
         /// Create an instance of this ability, passing in any user input. This created instance should be passed to the
         /// server.
         /// </summary>
-        IAbility CreateAbility(IAbilityParameters parameters, GridEntity performer);
+        IAbility CreateAbility(IAbilityParameters parameters, GridEntity performer, GameTeam? overrideTeam);
 
         /// <summary>
         /// Re-creates the <see cref="IAbility"/> by first deserializing the parameters from the provided reader

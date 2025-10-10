@@ -124,13 +124,14 @@ namespace Gameplay.Config.Abilities {
         /// Create an instance of this ability, passing in any user input. This created instance should be passed to the
         /// server. 
         /// </summary>
-        public IAbility CreateAbility(IAbilityParameters parameters, GridEntity performer) => CreateAbilityImpl((T) parameters, performer);
+        public IAbility CreateAbility(IAbilityParameters parameters, GridEntity performer, GameTeam? overrideTeam) 
+            => CreateAbilityImpl((T) parameters, performer, overrideTeam);
         
         /// <summary>
         /// Create an instance of this ability, passing in any user input. This created instance should be passed to the
         /// server. 
         /// </summary>
-        protected abstract IAbility CreateAbilityImpl(T parameters, GridEntity performer);
+        protected abstract IAbility CreateAbilityImpl(T parameters, GridEntity performer, GameTeam? overrideTeam);
 
         /// <summary>
         /// Re-creates the <see cref="IAbility"/> by first deserializing the parameters from the provided reader
@@ -140,7 +141,7 @@ namespace Gameplay.Config.Abilities {
             T parameters = new T();
             
             parameters.Deserialize(reader);
-            IAbility ability = CreateAbilityImpl(parameters, performer);
+            IAbility ability = CreateAbilityImpl(parameters, performer, null);
             ability.DeserializeImpl(reader);
             
             return ability;

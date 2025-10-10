@@ -62,7 +62,8 @@ namespace Gameplay.UI {
                 slotNumber++;
             }
             
-            if (AbilityAssignmentManager.IsAbilityChannelOnCooldownForEntity(_gridEntity, _buildChannel, out _activeBuildCooldownTimer)) {
+            if (AbilityAssignmentManager.IsAbilityChannelOnCooldownForEntity(_gridEntity, _buildChannel, out List<AbilityCooldownTimer> timers)) {
+                _activeBuildCooldownTimer = timers[0];
                 _buildTimer.gameObject.SetActive(true);
                 _buildTimer.Initialize(_activeBuildCooldownTimer, false, false, true);
             } else {
