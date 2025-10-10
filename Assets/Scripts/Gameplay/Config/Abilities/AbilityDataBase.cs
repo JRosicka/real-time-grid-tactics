@@ -115,10 +115,10 @@ namespace Gameplay.Config.Abilities {
             if (legality != AbilityLegality.Legal) {
                 return legality;
             }
-            return AbilityLegalImpl((T) parameters, entity);
+            return AbilityLegalImpl((T) parameters, entity, team);
         }
         
-        protected abstract AbilityLegality AbilityLegalImpl(T parameters, GridEntity entity);
+        protected abstract AbilityLegality AbilityLegalImpl(T parameters, GridEntity entity, GameTeam team);
 
         /// <summary>
         /// Create an instance of this ability, passing in any user input. This created instance should be passed to the

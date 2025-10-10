@@ -22,13 +22,13 @@ namespace Gameplay.Config.Abilities {
             GameManager.Instance.EntitySelectionManager.SelectTargetableAbility(this, selector.Team, null);
         }
         
-        protected override AbilityLegality AbilityLegalImpl(MoveAbilityParameters parameters, GridEntity entity) {
-            if (!CanTargetCell(parameters.Destination, entity, parameters.SelectorTeam, null)) {
+        protected override AbilityLegality AbilityLegalImpl(MoveAbilityParameters parameters, GridEntity entity, GameTeam team) {
+            if (!CanTargetCell(parameters.Destination, entity, team, null)) {
                 return AbilityLegality.IndefinitelyIllegal;
             }
 
             if (parameters.BlockedByOccupation && !PathfinderService.CanEntityEnterCell(parameters.Destination, 
-                        entity.EntityData, parameters.SelectorTeam, new List<GridEntity> { entity })) {
+                        entity.EntityData, team, new List<GridEntity> { entity })) {
                 // Only consider this legal if we can take a step towards the destination
                 PathfinderService.Path path = GameManager.Instance.PathfinderService.FindPath(entity, parameters.Destination);
                 List<GridNode> pathNodes = path.Nodes;

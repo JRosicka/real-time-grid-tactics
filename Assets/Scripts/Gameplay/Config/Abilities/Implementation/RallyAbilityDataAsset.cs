@@ -25,7 +25,7 @@ namespace Gameplay.Config.Abilities {
             // Nothing to do
         }
         
-        protected override AbilityLegality AbilityLegalImpl(RallyAbilityParameters parameters, GridEntity entity) {
+        protected override AbilityLegality AbilityLegalImpl(RallyAbilityParameters parameters, GridEntity entity, GameTeam team) {
             return AbilityLegality.Legal;
         }
 

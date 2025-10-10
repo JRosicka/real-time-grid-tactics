@@ -21,7 +21,7 @@ namespace Gameplay.Config.Abilities {
             GameManager.Instance.AbilityAssignmentManager.StartPerformingAbility(selector, this, new NullAbilityParameters(), true, false, true);
         }
         
-        protected override AbilityLegality AbilityLegalImpl(NullAbilityParameters parameters, GridEntity entity) {
+        protected override AbilityLegality AbilityLegalImpl(NullAbilityParameters parameters, GridEntity entity, GameTeam team) {
             return AbilityLegality.Legal;
         }
 

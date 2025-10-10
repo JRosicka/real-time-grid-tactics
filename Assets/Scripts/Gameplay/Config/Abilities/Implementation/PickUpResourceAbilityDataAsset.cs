@@ -20,7 +20,7 @@ namespace Gameplay.Config.Abilities {
             // Nothing to do
         }
         
-        protected override AbilityLegality AbilityLegalImpl(NullAbilityParameters parameters, GridEntity entity) {
+        protected override AbilityLegality AbilityLegalImpl(NullAbilityParameters parameters, GridEntity entity, GameTeam team) {
             return AbilityLegality.Legal;
         }
 

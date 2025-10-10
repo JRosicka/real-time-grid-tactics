@@ -23,7 +23,7 @@ namespace Gameplay.Config.Abilities {
             GameManager.Instance.EntitySelectionManager.SelectTargetableAbility(this, selector.Team, null);
         }
         
-        protected override AbilityLegality AbilityLegalImpl(ParadeAbilityParameters parameters, GridEntity performer) {
+        protected override AbilityLegality AbilityLegalImpl(ParadeAbilityParameters parameters, GridEntity performer, GameTeam team) {
             if (parameters.Target == null && performer.Location != null) {
                 parameters.Target = GameManager.Instance.ResourceEntityFinder.GetResourceCollectorAtLocation(performer.Location.Value); 
             }

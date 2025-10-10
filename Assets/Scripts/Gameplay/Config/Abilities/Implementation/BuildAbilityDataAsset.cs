@@ -40,8 +40,8 @@ namespace Gameplay.Config.Abilities {
             GameManager.Instance.SelectionInterface.SetUpBuildSelection(this);
         }
         
-        protected override AbilityLegality AbilityLegalImpl(BuildAbilityParameters parameters, GridEntity entity) {
-            IGamePlayer player = GameManager.Instance.GetPlayerForTeam(entity);
+        protected override AbilityLegality AbilityLegalImpl(BuildAbilityParameters parameters, GridEntity entity, GameTeam team) {
+            IGamePlayer player = GameManager.Instance.GetPlayerForTeam(team);
             if (!player.OwnedPurchasablesController.HasRequirementsForPurchase(parameters.Buildable, entity, out string whyNot)) {
                 Debug.Log($"Not building ({parameters.Buildable.ID}) because {whyNot}");
                 return AbilityLegality.IndefinitelyIllegal;

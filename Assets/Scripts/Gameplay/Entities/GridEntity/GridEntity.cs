@@ -506,7 +506,6 @@ namespace Gameplay.Entities {
             if (AbilityAssignmentManager.StartPerformingAbility(this, data, new MoveAbilityParameters {
                     Destination = targetCell, 
                     NextMoveCell = targetCell, 
-                    SelectorTeam = Team,
                     BlockedByOccupation = true
                 }, fromInput, true, true)) {
                 SetTargetLocation(targetCell, null, false);

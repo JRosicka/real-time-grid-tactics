@@ -175,7 +175,6 @@ namespace Gameplay.Managers {
             MoveAbility newAbility = new MoveAbility(moveAbilityData, new MoveAbilityParameters {
                 Destination = location.Value,
                 NextMoveCell = location.Value,
-                SelectorTeam = entity.Team,
                 BlockedByOccupation = false
             }, entity, null);
             

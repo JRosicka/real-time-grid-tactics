@@ -68,13 +68,11 @@ namespace Gameplay.Entities.Abilities {
     public class MoveAbilityParameters : IAbilityParameters {
         public Vector2Int Destination;
         public Vector2Int NextMoveCell;
-        public GameTeam SelectorTeam;
         public bool BlockedByOccupation;    // Whether we consider the move illegal when the target location is occupied
         public bool PerformAfterAttacks;
         public void Serialize(NetworkWriter writer) {
             writer.Write(Destination);
             writer.Write(NextMoveCell);
-            writer.Write(SelectorTeam);
             writer.WriteBool(BlockedByOccupation);
             writer.WriteBool(PerformAfterAttacks);
         }
@@ -82,7 +80,6 @@ namespace Gameplay.Entities.Abilities {
         public void Deserialize(NetworkReader reader) {
             Destination = reader.Read<Vector2Int>();
             NextMoveCell = reader.Read<Vector2Int>();
-            SelectorTeam = reader.Read<GameTeam>();
             BlockedByOccupation = reader.ReadBool();
             PerformAfterAttacks = reader.ReadBool();
         }

@@ -168,10 +168,9 @@ namespace Gameplay.Entities.Abilities {
             AbilityAssignmentManager.StartPerformingAbility(attacker, moveAbilityData, new MoveAbilityParameters {
                 Destination = nextMoveCell,
                 NextMoveCell = nextMoveCell,
-                SelectorTeam = attacker.Team,
                 BlockedByOccupation = false,
                 PerformAfterAttacks = true
-            }, false, true, false);
+            }, false, true, false, attacker.Team);
         }
         
         private void DoAttack(Vector2Int location) {
