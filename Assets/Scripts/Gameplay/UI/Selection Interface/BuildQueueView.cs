@@ -16,7 +16,7 @@ namespace Gameplay.UI {
 
         private int SlotCount => _slots.Count;
         private GridEntity _gridEntity;
-        private AbilityCooldownTimer _activeBuildCooldownTimer;
+        private AbilityTimer _activeBuildTimer;
         private AbilityAssignmentManager AbilityAssignmentManager => GameManager.Instance.AbilityAssignmentManager;
 
         public void SetUpForEntity(GridEntity entity) {
@@ -47,7 +47,7 @@ namespace Gameplay.UI {
             if (_buildTimer != null) {
                 _buildTimer.UnsubscribeFromTimers();
             }
-            _activeBuildCooldownTimer = null;
+            _activeBuildTimer = null;
 
             gameObject.SetActive(false);
         }
@@ -65,10 +65,10 @@ namespace Gameplay.UI {
                 slotNumber++;
             }
             
-            if (AbilityAssignmentManager.IsAbilityChannelOnCooldownForEntity(_gridEntity, _buildChannel, out List<AbilityCooldownTimer> timers)) {
-                _activeBuildCooldownTimer = timers[0];
+            if (AbilityAssignmentManager.IsAbilityChannelOnCooldownForEntity(_gridEntity, _buildChannel, out List<AbilityTimer> timers)) {
+                _activeBuildTimer = timers[0];
                 _buildTimer.gameObject.SetActive(true);
-                _buildTimer.Initialize(_activeBuildCooldownTimer, false, false, true);
+                _buildTimer.Initialize(_activeBuildTimer, false, false, true);
             } else {
                 _buildTimer.gameObject.SetActive(false);
             }

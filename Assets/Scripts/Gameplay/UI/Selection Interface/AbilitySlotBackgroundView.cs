@@ -5,6 +5,7 @@ using Gameplay.Entities;
 using Gameplay.Entities.Abilities;
 using Gameplay.Managers;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 namespace Gameplay.UI {
@@ -14,7 +15,8 @@ namespace Gameplay.UI {
     public class AbilitySlotBackgroundView : MonoBehaviour {
         [SerializeField] private Image _slotImage;
         [SerializeField] private Image _grayedOutSlotImage;
-        [SerializeField] private AbilityTimerCooldownView _cooldownTimerView;
+        [FormerlySerializedAs("_cooldownTimerView")] 
+        [SerializeField] private AbilityTimerCooldownView _abilityTimerView;
         [SerializeField] private bool _startGrayedOut;
         
         private GridEntity _gridEntity;
@@ -33,29 +35,29 @@ namespace Gameplay.UI {
             _abilityChannel = abilityChannel;
             
             gridEntity.AbilityPerformedEvent += AbilityPerformed;
-            gridEntity.CooldownTimerExpiredEvent += AbilityCooldownExpired;         
+            gridEntity.AbilityTimerExpiredEvent += AbilityCooldownExpired;         
             
             UpdateTimer();
         }
         
         public void UnsubscribeFromTimers() {
-            if (_cooldownTimerView != null) {
-                _cooldownTimerView.UnsubscribeFromTimers();
+            if (_abilityTimerView != null) {
+                _abilityTimerView.UnsubscribeFromTimers();
             }
             if (_gridEntity != null) {
                 _gridEntity.AbilityPerformedEvent += AbilityPerformed;
-                _gridEntity.CooldownTimerExpiredEvent += AbilityCooldownExpired;
+                _gridEntity.AbilityTimerExpiredEvent += AbilityCooldownExpired;
             }
             _gridEntity = null;
             _abilityChannel = null;
         }
         
         private void UpdateTimer() {
-            if (AbilityAssignmentManager.IsAbilityChannelOnCooldownForEntity(_gridEntity, _abilityChannel, out List<AbilityCooldownTimer> activeCooldownTimers)) {
+            if (AbilityAssignmentManager.IsAbilityChannelOnCooldownForEntity(_gridEntity, _abilityChannel, out List<AbilityTimer> activeAbilityTimers)) {
                 GameTeam localTeam = GameManager.Instance.LocalTeam;
-                AbilityCooldownTimer activeTimerForPlayer = activeCooldownTimers.FirstOrDefault(t => t.Team == localTeam);
+                AbilityTimer activeTimerForPlayer = activeAbilityTimers.FirstOrDefault(t => t.Team == localTeam);
                 if (activeTimerForPlayer != null) {
-                    _cooldownTimerView.Initialize(activeTimerForPlayer, false, true, true);
+                    _abilityTimerView.Initialize(activeTimerForPlayer, false, true, true);
                     return;
                 }
             }
@@ -63,13 +65,13 @@ namespace Gameplay.UI {
             _slotImage.gameObject.SetActive(true);
         }
 
-        private void AbilityPerformed(IAbility ability, AbilityCooldownTimer abilityCooldownTimer) {
+        private void AbilityPerformed(IAbility ability, AbilityTimer abilityTimer) {
             if (ability.AbilityData.Channel == _abilityChannel) {
                 UpdateTimer();
             }
         }
 
-        private void AbilityCooldownExpired(IAbility ability, AbilityCooldownTimer abilityCooldownTimer) {
+        private void AbilityCooldownExpired(IAbility ability, AbilityTimer abilityTimer) {
             if (ability.AbilityData.Channel == _abilityChannel) {
                 UpdateTimer();
             }

@@ -62,7 +62,7 @@ namespace Gameplay.UI {
             UpdateReticle(entityLocation.Value);
         }
 
-        private void OnAbilityPerformed(IAbility ability, AbilityCooldownTimer timer) {
+        private void OnAbilityPerformed(IAbility ability, AbilityTimer timer) {
             // Special move ability handling
             if (ability is MoveAbility moveAbility) {
                 UpdateReticle(moveAbility.AbilityParameters.NextMoveCell);

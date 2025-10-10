@@ -14,7 +14,7 @@ namespace Gameplay.Entities.Abilities {
     /// timers instead of being given updates by the server. Only the expiration and list adding/removal are networked.
     /// This may need to be changed if ability timers are too out of sync across different clients. 
     /// </summary>
-    public class AbilityCooldownTimer {
+    public class AbilityTimer {
         /// <summary>
         /// The amount of time to wait between attempts to complete the ability cooldown after the timer elapses
         /// </summary>
@@ -41,7 +41,7 @@ namespace Gameplay.Entities.Abilities {
         public float InitialTimeRemaining { get; private set; }
         private bool _markedCompletedLocally;
 
-        public AbilityCooldownTimer(IAbility ability, float overrideCooldownDuration) {
+        public AbilityTimer(IAbility ability, float overrideCooldownDuration) {
             Ability = ability;
             Team = ability.PerformerTeam;
             TimeRemaining = InitialTimeRemaining = overrideCooldownDuration > 0 ? overrideCooldownDuration : ability.CooldownDuration;

@@ -15,7 +15,7 @@ namespace Gameplay.Entities.Abilities {
         }
 
         public override AbilityExecutionType ExecutionType => AbilityExecutionType.PreInteractionGridUpdate;
-        public override bool ShouldShowCooldownTimer => true;
+        public override bool ShouldShowAbilityTimer => true;
 
         public override async void Cancel() {
             if (Performer == null || Performer.DeadOrDying) return;

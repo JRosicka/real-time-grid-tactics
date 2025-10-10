@@ -178,7 +178,7 @@ namespace Gameplay.UI {
         private void AddListeners() {
             if (_selectedEntity == null) return;
             
-            _selectedEntity.CooldownTimerExpiredEvent += OnAbilityTimersChanged;
+            _selectedEntity.AbilityTimerExpiredEvent += OnAbilityTimersChanged;
             _selectedEntity.AbilityPerformedEvent += OnAbilityTimersChanged;
             _selectedEntity.InProgressAbilitiesUpdatedEvent += OnInProgressAbilities;
             GameManager.Instance.LeaderTracker.LeaderMoved += OnLeaderMoved;
@@ -194,7 +194,7 @@ namespace Gameplay.UI {
         private void RemoveListeners() {
             if (_selectedEntity == null) return;
             
-            _selectedEntity.CooldownTimerExpiredEvent -= OnAbilityTimersChanged;
+            _selectedEntity.AbilityTimerExpiredEvent -= OnAbilityTimersChanged;
             _selectedEntity.AbilityPerformedEvent -= OnAbilityTimersChanged;
             GameManager.Instance.LeaderTracker.LeaderMoved -= OnLeaderMoved;
 
@@ -206,7 +206,7 @@ namespace Gameplay.UI {
             }
         }
 
-        private void OnAbilityTimersChanged(IAbility ability, AbilityCooldownTimer timer) {
+        private void OnAbilityTimersChanged(IAbility ability, AbilityTimer timer) {
             if (_slotBehavior == null) return; 
             if (_slotBehavior.CaresAboutAbilityChannels || timer.Ability.AbilityData.SlotLocation == SlotLocation) {
                 CheckAvailability();

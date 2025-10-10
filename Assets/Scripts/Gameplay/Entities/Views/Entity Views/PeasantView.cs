@@ -21,17 +21,17 @@ namespace Gameplay.Entities {
             }
         }
 
-        public override bool DoAbility(IAbility ability, AbilityCooldownTimer cooldownTimer) {
+        public override bool DoAbility(IAbility ability, AbilityTimer abilityTimer) {
             switch (ability) {
                 case BuildAbility buildAbility:
-                    DoBuildAnimation(buildAbility, cooldownTimer);
+                    DoBuildAnimation(buildAbility, abilityTimer);
                     return false;
                 default:
                     return true;
             }
         }
         
-        private void DoBuildAnimation(BuildAbility buildAbility, AbilityCooldownTimer timer) {
+        private void DoBuildAnimation(BuildAbility buildAbility, AbilityTimer timer) {
             // Make a temporary image of the building being built
             Vector2 position = GameManager.Instance.GridController.GetWorldPosition(buildAbility.AbilityParameters.BuildLocation);
             _buildingViewInstance = Instantiate(_buildingViewPrefab, position, Quaternion.identity, GameManager.Instance.CommandManager.SpawnBucket);

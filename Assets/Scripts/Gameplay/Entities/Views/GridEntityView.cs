@@ -83,7 +83,7 @@ namespace Gameplay.Entities {
             }
             
             entity.PerformAnimationEvent += DoAbility;
-            entity.CooldownTimerStartedEvent += CreateTimerView;
+            entity.AbilityTimerStartedEvent += CreateTimerView;
             entity.SelectedEvent += Selected;
             entity.DeselectedEvent += Deselected;
             entity.TargetedEvent += Targeted;
@@ -108,7 +108,7 @@ namespace Gameplay.Entities {
             if (Entity == null) return;
             
             Entity.PerformAnimationEvent -= DoAbility;
-            Entity.CooldownTimerStartedEvent -= CreateTimerView;
+            Entity.AbilityTimerStartedEvent -= CreateTimerView;
             Entity.SelectedEvent -= Selected;
             Entity.DeselectedEvent -= Deselected;
             Entity.TargetedEvent -= Targeted;
@@ -128,9 +128,9 @@ namespace Gameplay.Entities {
             UpdateDeath();
         }
 
-        private void DoAbility(IAbility ability, AbilityCooldownTimer cooldownTimer) {
+        private void DoAbility(IAbility ability, AbilityTimer abilityTimer) {
             if (Entity == null || Entity.DeadOrDying) return;
-            if (_particularView.DoAbility(ability, cooldownTimer)) {
+            if (_particularView.DoAbility(ability, abilityTimer)) {
                 DoGenericAbility(ability);
             }
         }
@@ -352,19 +352,19 @@ namespace Gameplay.Entities {
         
         #endregion
         
-        private void CreateTimerView(IAbility ability, AbilityCooldownTimer cooldownTimer) {
-            if (!ability.ShouldShowCooldownTimer) return;
+        private void CreateTimerView(IAbility ability, AbilityTimer abilityTimer) {
+            if (!ability.ShouldShowAbilityTimer) return;
             if (ability.AbilityData.AbilityTimerCooldownViewPrefab == null) return;
 
             Transform timerLocation;
-            switch (cooldownTimer.Ability) {
+            switch (abilityTimer.Ability) {
                 case AttackAbility:
                     timerLocation = transform;
                     break;
                 case BuildAbility:
-                    if (cooldownTimer.Ability.AbilityData.Targeted) {
+                    if (abilityTimer.Ability.AbilityData.Targeted) {
                         timerLocation = _buildTimerLocation;
-                    } else if (cooldownTimer.Ability.AbilityData.SelectableForAllPlayers &&
+                    } else if (abilityTimer.Ability.AbilityData.SelectableForAllPlayers &&
                                GameManager.Instance.LocalTeam == GameTeam.Spectator) {
                         // This is the Amber Forge for a spectator, so support timer locations for both players
                         timerLocation = ability.Performer.Team switch {
@@ -385,7 +385,7 @@ namespace Gameplay.Entities {
             }
 
             AbilityTimerFill timerFill;
-            switch (cooldownTimer.Ability) {
+            switch (abilityTimer.Ability) {
                 case AttackAbility:
                 case TargetAttackAbility:
                     timerFill = _attackTimerFill;
@@ -399,7 +399,7 @@ namespace Gameplay.Entities {
             }
 
             AbilityTimerCooldownView cooldownView = Instantiate(ability.AbilityData.AbilityTimerCooldownViewPrefab, timerLocation);
-            cooldownView.Initialize(cooldownTimer, true, false, true, timerFill);
+            cooldownView.Initialize(abilityTimer, true, false, true, timerFill);
         }
 
         public void SetFacingDirection(Vector2 currentPosition, Vector2 targetPosition) {

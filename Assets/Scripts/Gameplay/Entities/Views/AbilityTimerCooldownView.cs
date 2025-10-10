@@ -4,28 +4,28 @@ using UnityEngine;
 
 namespace Gameplay.Entities {
     /// <summary>
-    /// Visualizes an <see cref="AbilityCooldownTimer"/>
+    /// Visualizes an <see cref="AbilityTimer"/>
     /// </summary>
     public class AbilityTimerCooldownView : MonoBehaviour {
         public AbilityTimerFill AbilityTimerFill;
         public Canvas Canvas;
         
-        private AbilityCooldownTimer _cooldownTimer;
+        private AbilityTimer _abilityTimer;
         private bool _destroyWhenExpired;
         private bool _hideWhenExpired;
         private bool _waitForServerEvent;
 
         // TODO: Hmm, I think I would always want waitForServerEvent to be true? As long as it doesn't look janky locally with timers appearing/disappearing on clients. 
-        public void Initialize(AbilityCooldownTimer cooldownTimer, bool destroyWhenExpired, bool hideWhenExpired, bool waitForServerEvent, AbilityTimerFill fillOverride = null) {
+        public void Initialize(AbilityTimer abilityTimer, bool destroyWhenExpired, bool hideWhenExpired, bool waitForServerEvent, AbilityTimerFill fillOverride = null) {
             if (Canvas != null) {
                 Canvas.overrideSorting = true;
                 Canvas.sortingOrder = CanvasSortingOrderMap.TimerView;
             }
             gameObject.SetActive(true);
-            if (_cooldownTimer != null) {
-                _cooldownTimer.ExpiredEvent -= OnTimerExpired;
+            if (_abilityTimer != null) {
+                _abilityTimer.ExpiredEvent -= OnTimerExpired;
             }
-            _cooldownTimer = cooldownTimer;
+            _abilityTimer = abilityTimer;
             _destroyWhenExpired = destroyWhenExpired;
             _hideWhenExpired = hideWhenExpired;
             _waitForServerEvent = waitForServerEvent;
@@ -34,16 +34,16 @@ namespace Gameplay.Entities {
             }
 
             if (_waitForServerEvent) {
-                _cooldownTimer.ExpiredEvent += OnTimerExpired;
+                _abilityTimer.ExpiredEvent += OnTimerExpired;
             }
             UpdateFillAmount();
         }
 
         public void UnsubscribeFromTimers() {
             AbilityTimerFill.UpdateFillAmount01(0);
-            if (_cooldownTimer != null) {
-                _cooldownTimer.ExpiredEvent -= OnTimerExpired;
-                _cooldownTimer = null;
+            if (_abilityTimer != null) {
+                _abilityTimer.ExpiredEvent -= OnTimerExpired;
+                _abilityTimer = null;
             }
         }
 
@@ -52,9 +52,9 @@ namespace Gameplay.Entities {
         }
 
         private void UpdateFillAmount() {
-            if (_cooldownTimer == null) return;
+            if (_abilityTimer == null) return;
             
-            float remaining = _cooldownTimer.TimeRemaining01;
+            float remaining = _abilityTimer.TimeRemaining01;
             AbilityTimerFill.UpdateFillAmount01(remaining);
 
             if (remaining <= 0 && !_waitForServerEvent) {
@@ -64,7 +64,7 @@ namespace Gameplay.Entities {
         }
 
         private void HandleTimerCompleted() {
-            _cooldownTimer = null;
+            _abilityTimer = null;
             if (_destroyWhenExpired) {
                 Destroy(gameObject);
             } else if (_hideWhenExpired) {
@@ -78,8 +78,8 @@ namespace Gameplay.Entities {
         /// The timer has been expired on the server, so handle completion locally
         /// </summary>
         private void OnTimerExpired(bool canceled) {
-            if (_cooldownTimer != null) {
-                _cooldownTimer.ExpiredEvent -= OnTimerExpired;
+            if (_abilityTimer != null) {
+                _abilityTimer.ExpiredEvent -= OnTimerExpired;
             }
             HandleTimerCompleted();
         }

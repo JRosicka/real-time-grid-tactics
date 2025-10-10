@@ -23,7 +23,7 @@ namespace Gameplay.Entities {
             GameManager.Instance.CommandManager.EntityCollectionChangedEvent -= EntityCollectionChanged;
         }
 
-        public override bool DoAbility(IAbility ability, AbilityCooldownTimer cooldownTimer) {
+        public override bool DoAbility(IAbility ability, AbilityTimer abilityTimer) {
             switch (ability.AbilityData) {
                 case IncomeAbilityData data:
                     IncomeAnimationBehavior.DoIncomeAnimation();

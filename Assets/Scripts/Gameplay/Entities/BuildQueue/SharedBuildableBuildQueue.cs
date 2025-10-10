@@ -29,7 +29,7 @@ namespace Gameplay.Entities.BuildQueue {
 
             entity.AbilityPerformedEvent += (_, _) => DetermineBuildQueue();
             entity.InProgressAbilitiesUpdatedEvent += _ => DetermineBuildQueue();
-            entity.CooldownTimerExpiredEvent += (_, _) => DetermineBuildQueue();
+            entity.AbilityTimerExpiredEvent += (_, _) => DetermineBuildQueue();
             
             DetermineBuildQueue();
         }

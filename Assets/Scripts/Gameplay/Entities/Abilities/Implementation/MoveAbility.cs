@@ -26,7 +26,7 @@ namespace Gameplay.Entities.Abilities {
             }
         }
 
-        public override bool ShouldShowCooldownTimer => true;
+        public override bool ShouldShowAbilityTimer => true;
 
         public override void Cancel() {
             // Nothing to do

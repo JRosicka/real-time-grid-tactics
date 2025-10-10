@@ -42,7 +42,7 @@ namespace Gameplay.Entities.Abilities {
             return true;
         }
 
-        public abstract bool ShouldShowCooldownTimer { get; }
+        public abstract bool ShouldShowAbilityTimer { get; }
 
         public abstract void Cancel();
         public int QueuedAfterAbilityID { get; set; }

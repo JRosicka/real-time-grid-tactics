@@ -11,7 +11,7 @@ namespace Gameplay.Entities {
         
         public override void LethalDamageReceived() { }
 
-        public override bool DoAbility(IAbility ability, AbilityCooldownTimer cooldownTimer) {
+        public override bool DoAbility(IAbility ability, AbilityTimer abilityTimer) {
             return true;
         }
     }

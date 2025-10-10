@@ -39,8 +39,8 @@ namespace Gameplay.Managers {
                 PlayerResourcesController resourcesController = GameManager.Instance.GetPlayerForTeam(localTeam).ResourcesController;
                 resourcesController.BalanceChangedEvent += _ => UpdateAvailability();
                 if (_amberForgeEntity != null) {
-                    _amberForgeEntity.CooldownTimerStartedEvent += AmberForgeCooldownStarted;
-                    _amberForgeEntity.CooldownTimerExpiredEvent += AmberForgeCooldownExpired;
+                    _amberForgeEntity.AbilityTimerStartedEvent += AmberForgeAbilityTimerStarted;
+                    _amberForgeEntity.AbilityTimerExpiredEvent += AmberForgeAbilityTimerExpired;
                 }
             }
         }
@@ -53,14 +53,14 @@ namespace Gameplay.Managers {
             EnhancementAvailabilityChanged?.Invoke(EnhancementAvailable);
         }
 
-        private void AmberForgeCooldownStarted(IAbility ability, AbilityCooldownTimer abilityCooldownTimer) {
+        private void AmberForgeAbilityTimerStarted(IAbility ability, AbilityTimer abilityTimer) {
             if (ability.PerformerTeam != _friendlyKingEntity.Team) return;
             if (ability is not BuildAbility) return;
             
             UpdateAvailability();
         }
 
-        private void AmberForgeCooldownExpired(IAbility ability, AbilityCooldownTimer abilityCooldownTimer) {
+        private void AmberForgeAbilityTimerExpired(IAbility ability, AbilityTimer abilityTimer) {
             if (ability.PerformerTeam != _friendlyKingEntity.Team) return;
             if (ability is not BuildAbility) return;
             

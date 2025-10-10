@@ -64,7 +64,7 @@ namespace Gameplay.Entities {
         /// <summary>
         /// This entity's active abilities.
         /// </summary>
-        public List<AbilityCooldownTimer> ActiveTimers = new();
+        public List<AbilityTimer> ActiveTimers = new();
         /// <summary>
         /// This entity's abilities that we have started to perform and have not yet completed
         /// </summary>
@@ -111,10 +111,10 @@ namespace Gameplay.Entities {
         private GridEntityView _view;
         
         // Events
-        public event Action<IAbility, AbilityCooldownTimer> AbilityPerformedEvent;
-        public event Action<IAbility, AbilityCooldownTimer> CooldownTimerStartedEvent;
-        public event Action<IAbility, AbilityCooldownTimer> CooldownTimerExpiredEvent;
-        public event Action<IAbility, AbilityCooldownTimer> PerformAnimationEvent;
+        public event Action<IAbility, AbilityTimer> AbilityPerformedEvent;
+        public event Action<IAbility, AbilityTimer> AbilityTimerStartedEvent;
+        public event Action<IAbility, AbilityTimer> AbilityTimerExpiredEvent;
+        public event Action<IAbility, AbilityTimer> PerformAnimationEvent;
         public event Action SelectedEvent;
         public event Action DeselectedEvent;
         public event Action<bool> TargetedEvent;
@@ -239,7 +239,7 @@ namespace Gameplay.Entities {
         }
         
         private void Update() {
-            List<AbilityCooldownTimer> activeTimersCopy = new List<AbilityCooldownTimer>(ActiveTimers);
+            List<AbilityTimer> activeTimersCopy = new List<AbilityTimer>(ActiveTimers);
             activeTimersCopy.ForEach(t => t.UpdateTimer(Time.deltaTime));
         }
 
@@ -382,9 +382,9 @@ namespace Gameplay.Entities {
         }
 
         private void DoCreateAbilityTimer(IAbility ability, float overrideCooldownDuration) {
-            AbilityCooldownTimer newCooldownTimer = new AbilityCooldownTimer(ability, overrideCooldownDuration);
-            ActiveTimers.Add(newCooldownTimer);
-            CooldownTimerStartedEvent?.Invoke(ability, newCooldownTimer);
+            AbilityTimer newTimer = new AbilityTimer(ability, overrideCooldownDuration);
+            ActiveTimers.Add(newTimer);
+            AbilityTimerStartedEvent?.Invoke(ability, newTimer);
         }
 
         public void AddTimeToAbilityTimer(IAbility ability, float timeToAdd) {
@@ -404,8 +404,8 @@ namespace Gameplay.Entities {
         }
 
         private void DoAddTimeToAbilityTimer(IAbility ability, float timeToAdd) {
-            List<AbilityCooldownTimer> activeTimersCopy = new List<AbilityCooldownTimer>(ActiveTimers);
-            AbilityCooldownTimer timer = activeTimersCopy.FirstOrDefault(t => t.Ability.AbilityData == ability.AbilityData);
+            List<AbilityTimer> activeTimersCopy = new List<AbilityTimer>(ActiveTimers);
+            AbilityTimer timer = activeTimersCopy.FirstOrDefault(t => t.Ability.AbilityData == ability.AbilityData);
             if (timer == null) {
                 Debug.Log("Tried to add time for an ability that does not currently have an active timer");
                 return;
@@ -422,10 +422,10 @@ namespace Gameplay.Entities {
             return (TAbilityData)EntityData.Abilities.FirstOrDefault(a => a.Content.GetType() == typeof(TAbilityData))?.Content;
         }
 
-        public void TriggerAbilityCooldownExpired(IAbility ability, AbilityCooldownTimer cooldownTimer, bool canceled) {
-            CooldownTimerExpiredEvent?.Invoke(ability, cooldownTimer);
+        public void TriggerAbilityCooldownExpired(IAbility ability, AbilityTimer abilityTimer, bool canceled) {
+            AbilityTimerExpiredEvent?.Invoke(ability, abilityTimer);
             if (!canceled && ability.AbilityData.AnimateWhenCooldownComplete) {
-                PerformAnimationEvent?.Invoke(ability, cooldownTimer);
+                PerformAnimationEvent?.Invoke(ability, abilityTimer);
             }
         }
         
@@ -475,8 +475,8 @@ namespace Gameplay.Entities {
         /// Responds with any client-specific user-facing events for an ability being performed
         /// </summary>
         public void AbilityPerformed(IAbility abilityInstance) {
-            AbilityCooldownTimer cooldownTimer = ActiveTimers.FirstOrDefault(t => t.Ability.UID == abilityInstance.UID);
-            if (cooldownTimer == null) {
+            AbilityTimer abilityTimer = ActiveTimers.FirstOrDefault(t => t.Ability.UID == abilityInstance.UID);
+            if (abilityTimer == null) {
                 return;
             }
 
@@ -484,9 +484,9 @@ namespace Gameplay.Entities {
                 GameManager.Instance.QueuedStructureBuildsManager.UpdateQueuedBuildsForEntity(this); 
             }
 
-            AbilityPerformedEvent?.Invoke(abilityInstance, cooldownTimer);
+            AbilityPerformedEvent?.Invoke(abilityInstance, abilityTimer);
             if (!abilityInstance.AbilityData.AnimateWhenCooldownComplete) {
-                PerformAnimationEvent?.Invoke(abilityInstance, cooldownTimer);
+                PerformAnimationEvent?.Invoke(abilityInstance, abilityTimer);
             }
         }
 

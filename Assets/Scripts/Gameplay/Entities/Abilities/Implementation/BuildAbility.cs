@@ -28,7 +28,7 @@ namespace Gameplay.Entities.Abilities {
         public override float CooldownDuration => GameManager.Instance.Cheats.RemoveBuildTime ? .1f 
             : AbilityParameters.Buildable.BuildTime;
 
-        public override bool ShouldShowCooldownTimer {
+        public override bool ShouldShowAbilityTimer {
             get {
                 // Always show the build progress for builder units
                 if (!Performer.EntityData.IsStructure) return true;

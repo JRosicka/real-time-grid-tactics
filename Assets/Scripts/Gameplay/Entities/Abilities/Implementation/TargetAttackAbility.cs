@@ -16,7 +16,7 @@ namespace Gameplay.Entities.Abilities {
         public TargetAttackAbility(TargetAttackAbilityData data, TargetAttackAbilityParameters parameters, GridEntity performer, GameTeam? overrideTeam = null) : base(data, parameters, performer, overrideTeam) {}
 
         public override AbilityExecutionType ExecutionType => AbilityExecutionType.Interaction;
-        public override bool ShouldShowCooldownTimer => true;
+        public override bool ShouldShowAbilityTimer => true;
         protected override float AddedMovementTime => Performer.EntityData.AddedMovementTimeFromAttacking;
 
         public override void Cancel() {

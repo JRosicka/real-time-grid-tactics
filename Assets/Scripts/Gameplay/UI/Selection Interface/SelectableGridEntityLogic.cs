@@ -203,7 +203,7 @@ namespace Gameplay.UI {
             }
         }
         
-        private void OnEntityAbilityPerformed(IAbility iAbility, AbilityCooldownTimer abilityCooldownTimer) {
+        private void OnEntityAbilityPerformed(IAbility iAbility, AbilityTimer abilityTimer) {
             SetUpResourceView(_resourceRow, _resourceLabel, _resourceField);
             SetUpHoverableInfo(_defenseHoverableInfoIcon, _attackHoverableInfoIcon, null);
         }

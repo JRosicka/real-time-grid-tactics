@@ -39,7 +39,7 @@ namespace Gameplay.Managers {
             return AbilityLegality.Legal;
         }
 
-        public bool IsAbilityChannelOnCooldownForEntity(GridEntity entity, AbilityChannel channel, out List<AbilityCooldownTimer> timers) {
+        public bool IsAbilityChannelOnCooldownForEntity(GridEntity entity, AbilityChannel channel, out List<AbilityTimer> timers) {
             timers = entity.ActiveTimers.Where(t => t.Ability.AbilityData.Channel == channel).ToList();
             return timers.Count > 0;
         }
@@ -143,8 +143,8 @@ namespace Gameplay.Managers {
         public bool ExpireTimerForAbility(GridEntity entity, IAbility ability, bool canceled) {
             // Find the timer with the indicated ability. The timers themselves are not synchronized, but
             // since their abilities are we can use those. 
-            AbilityCooldownTimer cooldownTimer = entity.ActiveTimers.FirstOrDefault(t => t.Ability.UID == ability.UID);
-            if (cooldownTimer == null) return false;
+            AbilityTimer abilityTimer = entity.ActiveTimers.FirstOrDefault(t => t.Ability.UID == ability.UID);
+            if (abilityTimer == null) return false;
 
             if (canceled && !ability.AbilityData.CancelableWhileOnCooldown) {
                 // Can't cancel this ability's cooldown timer
@@ -152,9 +152,9 @@ namespace Gameplay.Managers {
             }
             
             // The ability is indeed active, so cancel it
-            cooldownTimer.Expire(canceled);
-            entity.ActiveTimers.Remove(cooldownTimer);
-            entity.TriggerAbilityCooldownExpired(ability, cooldownTimer, canceled);
+            abilityTimer.Expire(canceled);
+            entity.ActiveTimers.Remove(abilityTimer);
+            entity.TriggerAbilityCooldownExpired(ability, abilityTimer, canceled);
 
             return true;
         }
@@ -178,7 +178,7 @@ namespace Gameplay.Managers {
                 BlockedByOccupation = false
             }, entity, null);
             
-            AddToCooldownTimer(entity, newAbility, timeToAdd);
+            AddToAbilityTimer(entity, newAbility, timeToAdd);
         }
         
         /// <summary>
@@ -191,12 +191,12 @@ namespace Gameplay.Managers {
             if (attackAbilityData == null) return;
 
             AttackAbility newAbility = new AttackAbility(attackAbilityData, new AttackAbilityParameters(), entity);
-            AddToCooldownTimer(entity, newAbility, timeToAdd);
+            AddToAbilityTimer(entity, newAbility, timeToAdd);
         }
         
-        private void AddToCooldownTimer(GridEntity entity, IAbility ability, float timeToAdd) {
-            List<AbilityCooldownTimer> activeTimersCopy = new List<AbilityCooldownTimer>(entity.ActiveTimers);
-            AbilityCooldownTimer timer = activeTimersCopy.FirstOrDefault(t => t.Ability.GetType() == ability.GetType());
+        private void AddToAbilityTimer(GridEntity entity, IAbility ability, float timeToAdd) {
+            List<AbilityTimer> activeTimersCopy = new List<AbilityTimer>(entity.ActiveTimers);
+            AbilityTimer timer = activeTimersCopy.FirstOrDefault(t => t.Ability.GetType() == ability.GetType());
             if (timer != null) {
                 if (timer.Expired) {
                     Debug.LogWarning($"Tried to add {ability.GetType()} cooldown timer time from another ability, but that " +

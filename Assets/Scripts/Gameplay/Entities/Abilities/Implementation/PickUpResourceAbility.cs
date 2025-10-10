@@ -8,7 +8,7 @@ namespace Gameplay.Entities.Abilities {
         public PickUpResourceAbility(PickUpResourceAbilityData data, NullAbilityParameters parameters, GridEntity performer, GameTeam? overrideTeam) : base(data, parameters, performer, overrideTeam) { }
 
         public override AbilityExecutionType ExecutionType => AbilityExecutionType.PreInteractionGridUpdate;
-        public override bool ShouldShowCooldownTimer => false;
+        public override bool ShouldShowAbilityTimer => false;
 
         public override void Cancel() {
             // Nothing to do

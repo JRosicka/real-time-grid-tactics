@@ -30,7 +30,7 @@ namespace Gameplay.Entities.Abilities {
         /// <summary>
         /// Client-side method to determine whether the cooldown timer should be shown for the ability
         /// </summary>
-        bool ShouldShowCooldownTimer { get; }
+        bool ShouldShowAbilityTimer { get; }
         void Cancel();
         /// <summary>
         /// Start performing the ability after this ability (by id) finishes
