@@ -24,7 +24,8 @@ namespace Gameplay.Entities.Abilities {
             BaseParameters = abilityParameters;
             Performer = performer;
 
-            PerformerTeam = overrideTeam ?? Performer.Team;
+            // Can be null if performer just got unregistered 
+            PerformerTeam = overrideTeam ?? Performer?.Team ?? GameTeam.Neutral;
         }
 
         public abstract AbilityExecutionType ExecutionType { get; }
