@@ -44,7 +44,7 @@ namespace Gameplay.UI {
             if (!_selectedEntity.InteractBehavior!.IsLocalTeam && !_abilityData.SelectableForAllPlayers) {
                 return AbilitySlot.AvailabilityResult.Unselectable;
             }
-            AbilityLegality legality = GameManager.Instance.AbilityAssignmentManager.CanEntityUseAbility(_selectedEntity, _abilityData, _abilityData.SelectableWhenBlocked);
+            AbilityLegality legality = GameManager.Instance.AbilityAssignmentManager.CanEntityUseAbility(_selectedEntity, _abilityData, _abilityData.SelectableWhenBlocked, GameManager.Instance.LocalTeam);
             return legality == AbilityLegality.Legal ? AbilitySlot.AvailabilityResult.Selectable : AbilitySlot.AvailabilityResult.Unselectable;
         }
 

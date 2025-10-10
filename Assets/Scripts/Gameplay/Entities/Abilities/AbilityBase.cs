@@ -72,7 +72,7 @@ namespace Gameplay.Entities.Abilities {
         public abstract bool TryDoAbilityStartEffect();
 
         public AbilityResult PerformAbility() {
-            AbilityLegality legality = Data.AbilityLegal(BaseParameters, Performer, false);
+            AbilityLegality legality = Data.AbilityLegal(BaseParameters, Performer, false, PerformerTeam);
             switch (legality) {
                 case AbilityLegality.Legal:
                     // Continue on to try to perform the ability

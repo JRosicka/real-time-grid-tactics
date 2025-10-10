@@ -38,7 +38,7 @@ public class PlayerOwnedPurchasablesController : NetworkBehaviour {
         }
     }
 
-    public bool HasRequirementsForPurchase(PurchasableData purchasable, GridEntity purchaser, out String whyNot) {
+    public bool HasRequirementsForPurchase(PurchasableData purchasable, GridEntity purchaser, out string whyNot) {
         List<PurchasableData> ownedPurchasables = OwnedPurchasables;
         foreach (PurchasableData requiredPurchasable in purchasable.Requirements) {
             if (!ownedPurchasables.Contains(requiredPurchasable)) {

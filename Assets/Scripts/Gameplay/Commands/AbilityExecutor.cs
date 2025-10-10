@@ -201,7 +201,7 @@ public class AbilityExecutor : MonoBehaviour {
     /// Attempt to perform the given in-progress ability
     /// </summary>
     private AbilityResult TryPerformAbility(IAbility ability) {
-        AbilityLegality legality = ability.AbilityData.AbilityLegal(ability.BaseParameters, ability.Performer, false);
+        AbilityLegality legality = ability.AbilityData.AbilityLegal(ability.BaseParameters, ability.Performer, false, ability.PerformerTeam);
         switch (legality) {
             case AbilityLegality.Legal:
                 // Legal, so go on to try to perform the ability

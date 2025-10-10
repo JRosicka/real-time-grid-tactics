@@ -110,8 +110,8 @@ namespace Gameplay.Config.Abilities {
         /// Should be checked on the client before creating the ability, and checked again on the server before performing
         /// the ability. If the server check fails, let the client know. 
         /// </summary>
-        public AbilityLegality AbilityLegal(IAbilityParameters parameters, GridEntity entity, bool ignoreBlockingTimers) {
-            AbilityLegality legality = GameManager.Instance.AbilityAssignmentManager.CanEntityUseAbility(entity, this, ignoreBlockingTimers);
+        public AbilityLegality AbilityLegal(IAbilityParameters parameters, GridEntity entity, bool ignoreBlockingTimers, GameTeam team) {
+            AbilityLegality legality = GameManager.Instance.AbilityAssignmentManager.CanEntityUseAbility(entity, this, ignoreBlockingTimers, team);
             if (legality != AbilityLegality.Legal) {
                 return legality;
             }

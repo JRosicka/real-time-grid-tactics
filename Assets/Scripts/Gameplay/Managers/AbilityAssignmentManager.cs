@@ -18,7 +18,7 @@ namespace Gameplay.Managers {
 
         #region Availability checks
         
-        public AbilityLegality CanEntityUseAbility(GridEntity entity, IAbilityData data, bool ignoreBlockingTimers) {
+        public AbilityLegality CanEntityUseAbility(GridEntity entity, IAbilityData data, bool ignoreBlockingTimers, GameTeam team) {
             // Is this entity set up to use this ability?
             if (!entity.Abilities.Contains(data)) {
                 return AbilityLegality.IndefinitelyIllegal;
@@ -32,7 +32,6 @@ namespace Gameplay.Managers {
             }
             
             // Are there any active timers blocking this ability?
-            GameTeam team = GameManager.Instance.LocalTeam;
             if (!ignoreBlockingTimers && entity.ActiveTimers.Any(t => t.DoesBlockChannelForTeam(data.Channel, team))) {
                 return AbilityLegality.NotCurrentlyLegal;
             }
@@ -55,7 +54,7 @@ namespace Gameplay.Managers {
                 entity.BuildQueue.CancelAllBuilds();
             }
 
-            AbilityLegality legality = abilityData.AbilityLegal(parameters, entity, startPerformingEvenIfOnCooldown);
+            AbilityLegality legality = abilityData.AbilityLegal(parameters, entity, startPerformingEvenIfOnCooldown, overrideTeam ?? entity.Team);
             if (legality == AbilityLegality.IndefinitelyIllegal) {
                 entity.AbilityFailed(abilityData);
                 return false;
@@ -88,7 +87,7 @@ namespace Gameplay.Managers {
         }
 
         public void QueueAbility(GridEntity entity, IAbilityData abilityData, IAbilityParameters parameters, IAbility abilityToDependOn) {
-            AbilityLegality legality = abilityData.AbilityLegal(parameters, entity, true);
+            AbilityLegality legality = abilityData.AbilityLegal(parameters, entity, true, abilityToDependOn.PerformerTeam);
             if (legality != AbilityLegality.Legal) {    // TODO should we allow Legality.NotCurrentlyLegal?
                 entity.AbilityFailed(abilityData);
                 return;

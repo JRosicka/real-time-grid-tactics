@@ -87,8 +87,8 @@ namespace Gameplay.UI {
                 // Upgrade that we do not fulfill the requirements for
                 return AbilitySlot.AvailabilityResult.Unselectable;
             }
-
-            AbilityLegality legality = AbilityAssignmentManager.CanEntityUseAbility(SelectedEntity, _buildAbilityData, _buildAbilityData.SelectableWhenBlocked);
+            
+            AbilityLegality legality = AbilityAssignmentManager.CanEntityUseAbility(SelectedEntity, _buildAbilityData, _buildAbilityData.SelectableWhenBlocked, GameManager.Instance.LocalTeam);
             if (legality == AbilityLegality.Legal && player.ResourcesController.CanAfford(Buildable.Cost)) {
                 // This entity can build this and we can afford this
                 return AbilitySlot.AvailabilityResult.Selectable;
