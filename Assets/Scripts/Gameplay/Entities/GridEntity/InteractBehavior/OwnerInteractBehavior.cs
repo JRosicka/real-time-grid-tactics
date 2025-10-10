@@ -42,7 +42,7 @@ namespace Gameplay.Entities {
                 thisEntity.CancelAllAbilities();
             } else if (targetEntity != null && thisEntity.Team != targetEntity.Team) {
                 TryTargetEntity(thisEntity, targetEntity, targetCell);
-            } else if (targetEntity == null || targetEntity.EntityData.FriendlyUnitsCanShareCell) {
+            } else {
                 thisEntity.TryMoveToCell(targetCell, true);
             }
             
