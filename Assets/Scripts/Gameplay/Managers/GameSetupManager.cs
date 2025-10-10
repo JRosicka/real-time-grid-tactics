@@ -159,10 +159,6 @@ public class GameSetupManager : MonoBehaviour {
         
         // Then spawn any units from cheats
         GameManager.Cheats.SpawnUnits(false);
-
-        // Now that entities are registered, initialize this
-        GameManager.Instance.AmberForgeAvailabilityNotifier.Initialize();
-        GameManager.Instance.LeaderTracker.Initialize(GameManager.Instance.CommandManager);
     }
 
     private void SpawnPlayerStartingUnits(GameTeam team) {
@@ -185,6 +181,8 @@ public class GameSetupManager : MonoBehaviour {
                 GameManager.GetPlayerForTeam(localTeam).Data.TeamColor, 
                 CountdownTimeSeconds);
         }
+        
+        PerformClientSideLateInitialization();
     }
 
     /// <summary>
@@ -229,6 +227,8 @@ public class GameSetupManager : MonoBehaviour {
         MapLoader.LoadMap(player1.Data.Team);
         SpawnStartingUnits();
 
+        PerformClientSideLateInitialization();
+
         PerformOnStartAbilities();
 
         GameInitialized = true;
@@ -239,6 +239,14 @@ public class GameSetupManager : MonoBehaviour {
     private static void PerformOnStartAbilities() {
         GameManager.CommandManager.EntitiesOnGrid.AllEntities().ForEach(e => 
             GameManager.AbilityAssignmentManager.PerformOnStartAbilitiesForEntity(e));
+    }
+
+    /// <summary>
+    /// Initialization items that should be performed on each client after map setup is complete
+    /// </summary>
+    private void PerformClientSideLateInitialization() {
+        GameManager.Instance.AmberForgeAvailabilityNotifier.Initialize();
+        GameManager.Instance.LeaderTracker.Initialize(GameManager.Instance.CommandManager);
     }
     
     #region Multiplayer
