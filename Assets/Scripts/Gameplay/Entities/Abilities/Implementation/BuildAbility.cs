@@ -40,12 +40,12 @@ namespace Gameplay.Entities.Abilities {
         public override void Cancel() {
             // Refund the amount spent on the build
             foreach (ResourceAmount resources in AbilityParameters.Buildable.Cost) {
-                GameManager.Instance.GetPlayerForTeam(Performer).ResourcesController.Earn(resources);
+                GameManager.Instance.GetPlayerForTeam(PerformerTeam).ResourcesController.Earn(resources);
             }
 
             if (AbilityParameters.Buildable is UpgradeData upgradeData) {
                 // Cancel the upgrade
-                GameManager.Instance.GetPlayerForTeam(Performer).OwnedPurchasablesController.CancelInProgressUpgrade(upgradeData);
+                GameManager.Instance.GetPlayerForTeam(PerformerTeam).OwnedPurchasablesController.CancelInProgressUpgrade(upgradeData);
             }
         }
 
@@ -82,7 +82,7 @@ namespace Gameplay.Entities.Abilities {
                     // The build location(s) is/are occupied, so we can not yet complete the ability
                     return false;
                 case UpgradeData upgradeData:
-                    GameManager.Instance.CommandManager.AddUpgrade(upgradeData, Performer);
+                    GameManager.Instance.CommandManager.AddUpgrade(upgradeData, PerformerTeam);
                     return true;
                 default:
                     throw new Exception("Unexpected purchasable data type: " + AbilityParameters.Buildable.GetType());
@@ -124,14 +124,14 @@ namespace Gameplay.Entities.Abilities {
             }
             
             // Pay resource cost
-            GameManager.Instance.GetPlayerForTeam(Performer).ResourcesController.Spend(AbilityParameters.Buildable.Cost);
+            GameManager.Instance.GetPlayerForTeam(PerformerTeam).ResourcesController.Spend(AbilityParameters.Buildable.Cost);
             return true;
         }
         
         protected override (bool, AbilityResult) DoAbilityEffect() {
             if (AbilityParameters.Buildable is UpgradeData upgradeData) {
                 // Mark the upgrade as in-progress
-                GameManager.Instance.GetPlayerForTeam(Performer).OwnedPurchasablesController.AddInProgressUpgrade(upgradeData);
+                GameManager.Instance.GetPlayerForTeam(PerformerTeam).OwnedPurchasablesController.AddInProgressUpgrade(upgradeData);
             }
             
             if (AbilityParameters.Buildable.BuildsImmediately) {
@@ -145,7 +145,7 @@ namespace Gameplay.Entities.Abilities {
         }
         
         private bool CanPayCost() {
-            IGamePlayer player = GameManager.Instance.GetPlayerForTeam(Performer);
+            IGamePlayer player = GameManager.Instance.GetPlayerForTeam(PerformerTeam);
             if (!player.ResourcesController.CanAfford(AbilityParameters.Buildable.Cost)) {
                 Debug.Log($"Not building ({AbilityParameters.Buildable.ID}) because we can't pay the cost");
                 return false;

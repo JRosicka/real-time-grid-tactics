@@ -183,9 +183,9 @@ namespace Gameplay.UI {
             _selectedEntity.InProgressAbilitiesUpdatedEvent += OnInProgressAbilities;
             GameManager.Instance.LeaderTracker.LeaderMoved += OnLeaderMoved;
 
-            if (_selectedEntity.Team is GameTeam.Player1 or GameTeam.Player2) {
+            IGamePlayer player = GameManager.Instance.GetPlayerForTeam(_selectedEntity);
+            if (player.Data.Team is GameTeam.Player1 or GameTeam.Player2) {
                 // Track resources and owned changes for the player
-                IGamePlayer player = GameManager.Instance.GetPlayerForTeam(_selectedEntity);
                 player.ResourcesController.BalanceChangedEvent += OnPlayerResourcesBalanceChanged;
                 player.OwnedPurchasablesController.OwnedPurchasablesChangedEvent += OnPlayerOwnedEntitiesChanged;
             }
@@ -198,9 +198,9 @@ namespace Gameplay.UI {
             _selectedEntity.AbilityPerformedEvent -= OnAbilityTimersChanged;
             GameManager.Instance.LeaderTracker.LeaderMoved -= OnLeaderMoved;
 
-            if (_selectedEntity.Team is GameTeam.Player1 or GameTeam.Player2) {
+            IGamePlayer player = GameManager.Instance.GetPlayerForTeam(_selectedEntity);
+            if (player.Data.Team is GameTeam.Player1 or GameTeam.Player2) {
                 // Track owned changes for the player
-                IGamePlayer player = GameManager.Instance.GetPlayerForTeam(_selectedEntity);
                 player.ResourcesController.BalanceChangedEvent -= OnPlayerResourcesBalanceChanged;
                 player.OwnedPurchasablesController.OwnedPurchasablesChangedEvent -= OnPlayerOwnedEntitiesChanged;
             }

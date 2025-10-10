@@ -24,8 +24,8 @@ public class SPCommandManager : AbstractCommandManager {
         }, team, spawnerEntity, movementOnCooldown); 
     }
  
-    public override void AddUpgrade(UpgradeData data, GridEntity performer) {
-        DoAddUpgrade(data, performer);
+    public override void AddUpgrade(UpgradeData data, GameTeam team) {
+        DoAddUpgrade(data, team);
     }
 
     protected override void RegisterEntity(GridEntity entity, EntityData data, Vector2Int position, GridEntity entityToIgnore) {

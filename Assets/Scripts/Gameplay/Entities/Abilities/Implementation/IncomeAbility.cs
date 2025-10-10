@@ -38,7 +38,7 @@ namespace Gameplay.Entities.Abilities {
                 Type = Data.ResourceAmountIncome.Type,
                 Amount = amountToGain
             };
-            PlayerResourcesController resourcesController = GameManager.Instance.GetPlayerForTeam(Performer).ResourcesController;
+            PlayerResourcesController resourcesController = GameManager.Instance.GetPlayerForTeam(PerformerTeam).ResourcesController;
             resourcesController.Earn(resourceIncome);
             return true;
         }

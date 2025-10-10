@@ -51,10 +51,12 @@ namespace Gameplay.UI {
 
         public Color TeamBannerColor {
             get {
+                if (Entity.Team == GameTeam.Neutral) {
+                    return GameManager.Instance.Configuration.NeutralBannerColor;
+                }
+                
                 IGamePlayer player = GameManager.Instance.GetPlayerForTeam(Entity);
-                return player == null 
-                    ? GameManager.Instance.Configuration.NeutralBannerColor 
-                    : player.Data.TeamBannerColor;
+                return player.Data.TeamBannerColor;
             }
         }
 
@@ -68,7 +70,7 @@ namespace Gameplay.UI {
                 ? entityData.TeamColorSprite
                     ? player.Data.TeamColor 
                     : Color.clear
-                : Color.clear;;
+                : Color.clear;
         }
 
         public void SetUpMoveView(GameObject movesRow, TMP_Text movesField) {
