@@ -12,11 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fafa440752424124be5b9cbee86f1e06, type: 3}
   m_Name: Amber Pickup
   m_EditorClassIdentifier: 
-  ShortDescription: Awards 25 <sprite name="amber">.
-  Description: Awards 25 <sprite name="amber"> when moving a unit here.
+  ShortDescription: Awards 50 <sprite name="amber">.
+  Description: Awards 50 <sprite name="amber"> when moving a unit here.
   Cost: []
   Requirements: []
+  RequirementNeedsToBeAdjacent: 0
   BuildTime: 0
+  BuildsImmediately: 0
   BaseSprite: {fileID: 21300000, guid: 176fa3504053b45e4a626bbe7e84c071, type: 3}
   TeamColorSprite: {fileID: 0}
   BaseSpriteIconOverride: {fileID: 0}
@@ -48,10 +50,12 @@ MonoBehaviour:
   MovementAndAttackUI: 0
   DisplaySelectionOutline: 1
   BuildQueueSize: 5
+  NeverShowBuildQueue: 0
+  ControllableByAllPlayers: 0
   EligibleStructureLocations: []
   SharedUnitArmorBonus: 0
   SharedUnitDamageTakenModifierTags: 
   CanRally: 0
   StartingResourceSet:
     Type: 1
-    Amount: 25
+    Amount: 50
