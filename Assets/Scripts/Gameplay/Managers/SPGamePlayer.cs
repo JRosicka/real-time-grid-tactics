@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Gameplay.Config;
+using Gameplay.Config.Upgrades;
 using UnityEngine;
 
 public class SPGamePlayer : MonoBehaviour, IGamePlayer {

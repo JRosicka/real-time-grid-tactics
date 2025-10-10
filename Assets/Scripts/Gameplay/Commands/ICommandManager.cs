@@ -1,5 +1,6 @@
 using System;
 using Gameplay.Config;
+using Gameplay.Config.Upgrades;
 using Gameplay.Entities;
 using Gameplay.Entities.Abilities;
 using Gameplay.Managers;

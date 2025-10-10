@@ -38,7 +38,7 @@ MonoBehaviour:
     Targetable: 0
     UsableEverywhereByBothTeams: 1
     Buildables:
-    - data: {fileID: 11400000, guid: 81a0778502d7444ee8598edd4b7fdffb, type: 2}
+    - data: {fileID: 11400000, guid: 2811aaa580ba049d79353b02de36b2b5, type: 2}
       selectionKey: q
-    - data: {fileID: 11400000, guid: c6e1de146f9ce4b6ba4352a1b56fb5c7, type: 2}
+    - data: {fileID: 11400000, guid: 7a94c63cd0fed4c4e8ead65314284b3b, type: 2}
       selectionKey: w

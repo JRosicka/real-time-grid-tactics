@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Gameplay.Config;
+using Gameplay.Config.Upgrades;
 using Gameplay.Entities;
 using Mirror;
 
@@ -102,7 +103,7 @@ public class PlayerOwnedPurchasablesController : NetworkBehaviour {
     /// is not enough to get the sync to occur. 
     /// </summary>
     private void SyncUpgrades() {    // TODO: Kinda yucky. 
-        _upgrades = new UpgradesCollection(_upgrades.UpgradesDict);
+        _upgrades = new UpgradesCollection(_upgrades.Upgrades);
     }
 
     private void OwnedPurchasablesMayHaveChanged(GameTeam team) {

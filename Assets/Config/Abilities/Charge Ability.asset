@@ -41,4 +41,4 @@ MonoBehaviour:
     ChargeRange: 2
     ChargeRangeWithUpgrade: 3
     BonusDamageFromUpgrade: 4
-    ChargeUpgrade: {fileID: 11400000, guid: 296d8ee10b07046139c9c76a5378fa05, type: 2}
+    ChargeUpgrade: {fileID: 11400000, guid: 9ab6d58fde8294daa9c3c7a99e68cb87, type: 2}

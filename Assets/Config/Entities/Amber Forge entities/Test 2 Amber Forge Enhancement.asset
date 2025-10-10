@@ -9,8 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 01c00a817442473ab78b30e1f2bdfb36, type: 3}
-  m_Name: Test Amber Forge Enhancement 2
+  m_Script: {fileID: 11500000, guid: c4792688d8664cf6bba6f873f097fa6b, type: 3}
+  m_Name: Test 2 Amber Forge Enhancement
   m_EditorClassIdentifier: 
   ShortDescription: Test 2
   Description: Test 2
@@ -20,8 +20,8 @@ MonoBehaviour:
   Requirements:
   - {fileID: 11400000, guid: f8a9d9571b0a8324587b160065ca7fce, type: 2}
   RequirementNeedsToBeAdjacent: 1
-  BuildTime: 3
+  BuildTime: 4
   BuildsImmediately: 1
-  BaseSprite: {fileID: 21300000, guid: b57c4120c8015b744a4fc3667c7fba31, type: 3}
+  BaseSprite: {fileID: 21300000, guid: dcdb6563c02b6bf43b698eea6b840db7, type: 3}
   TeamColorSprite: {fileID: 0}
   BaseSpriteIconOverride: {fileID: 0}

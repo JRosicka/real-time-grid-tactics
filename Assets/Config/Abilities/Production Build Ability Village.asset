@@ -40,5 +40,5 @@ MonoBehaviour:
     Buildables:
     - data: {fileID: 11400000, guid: b52e5f177d13b1b4580a21f9c5ad0bf1, type: 2}
       selectionKey: q
-    - data: {fileID: 11400000, guid: 296d8ee10b07046139c9c76a5378fa05, type: 2}
+    - data: {fileID: 11400000, guid: 9ab6d58fde8294daa9c3c7a99e68cb87, type: 2}
       selectionKey: a

@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Gameplay.Config;
+using Gameplay.Config.Upgrades;
 
 /// <summary>
 /// Represents a player and its associated data and overall state

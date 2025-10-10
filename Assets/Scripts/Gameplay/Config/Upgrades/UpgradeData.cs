@@ -1,16 +1,17 @@
 using Gameplay.Entities;
+using Gameplay.Entities.Upgrades;
 using Mirror;
-using UnityEngine;
 
-namespace Gameplay.Config {
+namespace Gameplay.Config.Upgrades {
     /// <summary>
     /// Configuration for an upgrade, which is sort of like a <see cref="GridEntity"/> but does not have a location on
-    /// the grid. Upgrades are only tracked in this data class - see <see cref="PlayerOwnedPurchasablesController"/> for
-    /// keeping track of what upgrades are owned during a game. 
+    /// the grid. Upgrades are only tracked in this data class - see <see cref="UpgradesCollection"/> for
+    /// keeping track of what upgrades are owned during a game.
+    ///
+    /// See <see cref="IUpgrade"/> for runtime logic backed by this configuration.
     /// </summary>
-    [CreateAssetMenu(menuName = "Grid Entities/UpgradeData", fileName = "UpgradeData", order = 0)]
-    public class UpgradeData : PurchasableData {
-        
+    public abstract class UpgradeData : PurchasableData {
+        public abstract IUpgrade CreateUpgrade();
     }
     
     public static class UpgradeDataSerializer {

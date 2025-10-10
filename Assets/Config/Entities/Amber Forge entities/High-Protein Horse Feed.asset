@@ -9,19 +9,22 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 01c00a817442473ab78b30e1f2bdfb36, type: 3}
-  m_Name: Test Amber Forge Enhancement
+  m_Script: {fileID: 11500000, guid: 5acf758fd7764d2297ca4edcdb180302, type: 3}
+  m_Name: High-Protein Horse Feed
   m_EditorClassIdentifier: 
-  ShortDescription: Test
-  Description: Test
+  ShortDescription: Range and damage upgrade for the cavalry charge ability.
+  Description: Adds +1 range and +4 attack damage to the cavalry charge ability.
+    Requires a stable.
   Cost:
+  - Type: 0
+    Amount: 50
   - Type: 1
     Amount: 50
   Requirements:
-  - {fileID: 11400000, guid: f8a9d9571b0a8324587b160065ca7fce, type: 2}
-  RequirementNeedsToBeAdjacent: 1
-  BuildTime: 3
-  BuildsImmediately: 1
+  - {fileID: 11400000, guid: f2089d06c5ba63e40a8078c1636cac5f, type: 2}
+  RequirementNeedsToBeAdjacent: 0
+  BuildTime: 50
+  BuildsImmediately: 0
   BaseSprite: {fileID: 21300000, guid: b57c4120c8015b744a4fc3667c7fba31, type: 3}
   TeamColorSprite: {fileID: 0}
   BaseSpriteIconOverride: {fileID: 0}
