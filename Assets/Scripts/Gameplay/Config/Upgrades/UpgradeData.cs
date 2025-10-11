@@ -1,6 +1,7 @@
 using Gameplay.Entities;
 using Gameplay.Entities.Upgrades;
 using Mirror;
+using UnityEngine;
 
 namespace Gameplay.Config.Upgrades {
     /// <summary>
@@ -11,6 +12,11 @@ namespace Gameplay.Config.Upgrades {
     /// See <see cref="IUpgrade"/> for runtime logic backed by this configuration.
     /// </summary>
     public abstract class UpgradeData : PurchasableData {
+        [Tooltip("Whether this upgrade can be purchased again after being removed")]
+        public bool Repeatable;
+        [Tooltip("How long the upgrade effect lasts once researched. A value of 0 indicates that this is un-timed.")]
+        public int ExpirationSeconds;
+        public bool Timed => ExpirationSeconds > 0;
         public abstract IUpgrade CreateUpgrade();
     }
     

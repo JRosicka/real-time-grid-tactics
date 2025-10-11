@@ -16,7 +16,7 @@ namespace Gameplay.Config.Abilities {
         string ContentResourceID { get; set; }
         Sprite Icon { get; }
         Sprite SlotSprite { get; }
-        AbilityTimerCooldownView AbilityTimerCooldownViewPrefab { get; }
+        AbilityTimerView AbilityTimerViewPrefab { get; }
         List<PurchasableData> Requirements { get; }
         float PerformDuration { get; }
         float CooldownDuration { get; }

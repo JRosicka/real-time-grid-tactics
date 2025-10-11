@@ -18,7 +18,7 @@ namespace Gameplay.Entities.Upgrades {
         /// <summary>
         /// Triggered when the upgrade gets removed (due to its effect expiring)
         /// </summary>
-        void UpgradeRemoved();
+        void RemoveUpgrade();
 
         /// <summary>
         /// Applies an upgrade effect to the given GridEntity if relevant

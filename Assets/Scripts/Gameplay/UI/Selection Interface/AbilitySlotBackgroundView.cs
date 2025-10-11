@@ -16,7 +16,7 @@ namespace Gameplay.UI {
         [SerializeField] private Image _slotImage;
         [SerializeField] private Image _grayedOutSlotImage;
         [FormerlySerializedAs("_cooldownTimerView")] 
-        [SerializeField] private AbilityTimerCooldownView _abilityTimerView;
+        [SerializeField] private AbilityTimerView _abilityTimerView;
         [SerializeField] private bool _startGrayedOut;
         
         private GridEntity _gridEntity;

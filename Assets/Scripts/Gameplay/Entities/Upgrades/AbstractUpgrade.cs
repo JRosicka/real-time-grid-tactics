@@ -15,7 +15,7 @@ namespace Gameplay.Entities.Upgrades {
         public void UpgradeFinished() {
             throw new System.NotImplementedException();
         }
-        public void UpgradeRemoved() {
+        public void RemoveUpgrade() {
             throw new System.NotImplementedException();
         }
         public void ApplyUpgrade(GridEntity entity) {

@@ -6,6 +6,7 @@ using Gameplay.UI;
 using Mirror;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Gameplay.Config.Abilities {
     /// <summary>
@@ -33,8 +34,8 @@ namespace Gameplay.Config.Abilities {
         [SerializeField] private Sprite _slotSprite;
         public Sprite SlotSprite => _slotSprite;
 
-        [SerializeField] private AbilityTimerCooldownView _abilityTimerCooldownView;
-        public AbilityTimerCooldownView AbilityTimerCooldownViewPrefab => _abilityTimerCooldownView;
+        [FormerlySerializedAs("_abilityTimerCooldownView")] [SerializeField] private AbilityTimerView _abilityTimerView;
+        public AbilityTimerView AbilityTimerViewPrefab => _abilityTimerView;
 
         [Tooltip("All of these must be owned in order to perform the ability")]
         [SerializeField] private List<PurchasableData> _requirements;

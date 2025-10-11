@@ -354,7 +354,7 @@ namespace Gameplay.Entities {
         
         private void CreateTimerView(IAbility ability, AbilityTimer abilityTimer) {
             if (!ability.ShouldShowAbilityTimer) return;
-            if (ability.AbilityData.AbilityTimerCooldownViewPrefab == null) return;
+            if (ability.AbilityData.AbilityTimerViewPrefab == null) return;
 
             Transform timerLocation;
             switch (abilityTimer.Ability) {
@@ -398,8 +398,8 @@ namespace Gameplay.Entities {
                     break;
             }
 
-            AbilityTimerCooldownView cooldownView = Instantiate(ability.AbilityData.AbilityTimerCooldownViewPrefab, timerLocation);
-            cooldownView.Initialize(abilityTimer, true, false, true, timerFill);
+            AbilityTimerView timerView = Instantiate(ability.AbilityData.AbilityTimerViewPrefab, timerLocation);
+            timerView.Initialize(abilityTimer, true, false, true, timerFill);
         }
 
         public void SetFacingDirection(Vector2 currentPosition, Vector2 targetPosition) {

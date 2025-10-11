@@ -6,7 +6,7 @@ namespace Gameplay.Entities {
     /// <summary>
     /// Visualizes an <see cref="AbilityTimer"/>
     /// </summary>
-    public class AbilityTimerCooldownView : MonoBehaviour {
+    public class AbilityTimerView : MonoBehaviour {
         public AbilityTimerFill AbilityTimerFill;
         public Canvas Canvas;
         
