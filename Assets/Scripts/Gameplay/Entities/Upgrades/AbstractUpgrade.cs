@@ -1,18 +1,20 @@
 using System.Collections.Generic;
+using Gameplay.Config;
 using Gameplay.Config.Upgrades;
 
 namespace Gameplay.Entities.Upgrades {
     /// <summary>
     /// Base implementation of <see cref="IUpgrade"/>
     /// </summary>
-    public abstract class AbstractUpgrade : IUpgrade {
-        public UpgradeData Data { get; }
+    public abstract class AbstractUpgrade<T> : IUpgrade where T : UpgradeData {
+        protected readonly T Data;
+        public UpgradeData UpgradeData => Data;
         public UpgradeStatus Status { get; set; }
         public UpgradeDurationTimer UpgradeTimer { get; private set; }
         
         protected readonly GameTeam Team;
 
-        protected AbstractUpgrade(UpgradeData data, GameTeam team) {
+        protected AbstractUpgrade(T data, GameTeam team) {
             Data = data;
             Team = team;
         }
@@ -21,7 +23,7 @@ namespace Gameplay.Entities.Upgrades {
         
         public void UpgradeFinished() {
             ApplyGlobalEffect();
-            if (Data.ApplyToGridEntities) {
+            if (Data.ApplyToGridEntitiesUponCompletion) {
                 List<GridEntity> allFriendlyEntities = GameManager.Instance.CommandManager.EntitiesOnGrid.ActiveEntitiesForTeam(Team);
                 allFriendlyEntities.ForEach(ApplyUpgrade);
             }
@@ -29,7 +31,7 @@ namespace Gameplay.Entities.Upgrades {
 
         public void RemoveUpgrade() {
             RemoveGlobalEffect();
-            if (Data.ApplyToGridEntities) {
+            if (Data.ApplyToGridEntitiesUponCompletion || Data.ApplyToGridEntitiesWhenTheySpawn) {
                 FriendlyEntities.ForEach(RemoveUpgrade);
             }
         }
@@ -65,12 +67,11 @@ namespace Gameplay.Entities.Upgrades {
                 StartUpgradeTimer();
             }
 
-            if (Data.ApplyToGridEntities) {
-                if (newStatus == UpgradeStatus.Owned) {
-                    FriendlyEntities.ForEach(e => e.UpgradeApplied(this));
-                } else if (newStatus == UpgradeStatus.NeitherOwnedNorInProgress) {
-                    FriendlyEntities.ForEach(e => e.UpgradeRemoved(this));
-                }
+            if (Data.ApplyToGridEntitiesUponCompletion && newStatus == UpgradeStatus.Owned) {
+                FriendlyEntities.ForEach(e => e.UpgradeApplied(this));
+            } else if ((Data.ApplyToGridEntitiesUponCompletion || Data.ApplyToGridEntitiesWhenTheySpawn) 
+                       && newStatus == UpgradeStatus.NeitherOwnedNorInProgress) {
+                FriendlyEntities.ForEach(e => e.UpgradeRemoved(this));
             }
         }
 

@@ -13,7 +13,7 @@ namespace Gameplay.Entities.Upgrades {
         }
 
         protected override Task TryCompleteTimerAsync() {
-            GameManager.Instance.CommandManager.MarkUpgradeTimerExpired(_upgrade.Data, Team);
+            GameManager.Instance.CommandManager.MarkUpgradeTimerExpired(_upgrade.UpgradeData, Team);
             return Task.CompletedTask;
         }
     }

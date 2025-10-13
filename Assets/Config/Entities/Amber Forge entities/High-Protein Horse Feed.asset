@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5acf758fd7764d2297ca4edcdb180302, type: 3}
   m_Name: High-Protein Horse Feed
   m_EditorClassIdentifier: 
+  ID: High-Protein Horse Feed
   ShortDescription: Range and damage upgrade for the cavalry charge ability.
   Description: Adds +1 range and +4 attack damage to the cavalry charge ability.
     Requires a stable.
@@ -28,3 +29,7 @@ MonoBehaviour:
   BaseSprite: {fileID: 21300000, guid: b57c4120c8015b744a4fc3667c7fba31, type: 3}
   TeamColorSprite: {fileID: 0}
   BaseSpriteIconOverride: {fileID: 0}
+  Repeatable: 0
+  ApplyToGridEntitiesUponCompletion: 0
+  ApplyToGridEntitiesWhenTheySpawn: 0
+  ExpirationSeconds: 0

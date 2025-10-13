@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fafa440752424124be5b9cbee86f1e06, type: 3}
   m_Name: Stable
   m_EditorClassIdentifier: 
+  ID: Stable
   ShortDescription: Produces cavalry units.
   Description: Produces cavalry units.
   Cost:
@@ -20,7 +21,9 @@ MonoBehaviour:
   - Type: 1
     Amount: 0
   Requirements: []
+  RequirementNeedsToBeAdjacent: 0
   BuildTime: 30
+  BuildsImmediately: 0
   BaseSprite: {fileID: 21300000, guid: 77e9e466ca1284e9c85cef156f774c04, type: 3}
   TeamColorSprite: {fileID: 0}
   BaseSpriteIconOverride: {fileID: 0}
@@ -53,6 +56,8 @@ MonoBehaviour:
   MovementAndAttackUI: 0
   DisplaySelectionOutline: 1
   BuildQueueSize: 5
+  NeverShowBuildQueue: 0
+  ControllableByAllPlayers: 0
   EligibleStructureLocations:
   - {fileID: 11400000, guid: 25ec46ce372031f4d904f708f269dcb4, type: 2}
   SharedUnitArmorBonus: 0

@@ -1,5 +1,4 @@
 using System;
-using System.Linq;
 using Gameplay.Entities;
 using Gameplay.Entities.Abilities;
 using UnityEngine;
@@ -30,7 +29,7 @@ namespace Gameplay.Config.Abilities {
             GridEntity resourceEntity = GameManager.Instance.ResourceEntityFinder.GetMatchingResourceEntity(entity, entity.EntityData);
             if (resourceEntity == null) return AbilityLegality.IndefinitelyIllegal;
             if (resourceEntity.CurrentResourcesValue.Type != ResourceAmountIncome.Type) return AbilityLegality.IndefinitelyIllegal;
-            if (resourceEntity.CurrentResourcesValue.Amount <= 0) return AbilityLegality.IndefinitelyIllegal;
+            if (resourceEntity.CurrentResourcesValue.Amount <= 0) return AbilityLegality.NotCurrentlyLegal;
             return AbilityLegality.Legal;
         }
 

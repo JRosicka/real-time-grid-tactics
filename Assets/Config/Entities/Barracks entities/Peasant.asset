@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fafa440752424124be5b9cbee86f1e06, type: 3}
   m_Name: Peasant
   m_EditorClassIdentifier: 
+  ID: Peasant
   ShortDescription: Worker unit.
   Description: Worker unit. Can build resource collection and unit production structures.
   Cost:

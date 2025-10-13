@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aa8f9c576bce47b5a3038b75ddb971c0, type: 3}
   m_Name: Test 1 Amber Forge Enhancement
   m_EditorClassIdentifier: 
+  ID: Test 1
   ShortDescription: Test
   Description: Test
   Cost:
@@ -26,5 +27,6 @@ MonoBehaviour:
   TeamColorSprite: {fileID: 0}
   BaseSpriteIconOverride: {fileID: 0}
   Repeatable: 1
-  ApplyToGridEntities: 1
+  ApplyToGridEntitiesUponCompletion: 1
+  ApplyToGridEntitiesWhenTheySpawn: 1
   ExpirationSeconds: 10

@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fafa440752424124be5b9cbee86f1e06, type: 3}
   m_Name: Amber Pickup
   m_EditorClassIdentifier: 
+  ID: Amber Pickup
   ShortDescription: Awards 50 <sprite name="amber">.
   Description: Awards 50 <sprite name="amber"> when moving a unit here.
   Cost: []

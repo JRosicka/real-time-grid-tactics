@@ -31,18 +31,18 @@ namespace Gameplay.Entities {
         }
         
         public IUpgrade GetUpgrade(UpgradeData data) {
-            return _upgrades.FirstOrDefault(u => u.Data == data);
+            return _upgrades.FirstOrDefault(u => u.UpgradeData == data);
         }
         
         public List<UpgradeData> GetOwnedUpgrades() {
             return _upgrades.Where(u => u.Status == UpgradeStatus.Owned)
-                .Select(u => u.Data)
+                .Select(u => u.UpgradeData)
                 .ToList();
         }
         
         public List<UpgradeData> GetInProgressUpgrades() {
             return _upgrades.Where(u => u.Status == UpgradeStatus.InProgress)
-                .Select(u => u.Data)
+                .Select(u => u.UpgradeData)
                 .ToList();
         }
 
@@ -61,7 +61,7 @@ namespace Gameplay.Entities {
         public void ApplyUpgrades(GridEntity entity) {
             foreach (IUpgrade upgrade in _upgrades) {
                 if (upgrade.Status != UpgradeStatus.Owned) continue;
-                if (!upgrade.Data.ApplyToGridEntities) continue;
+                if (!upgrade.UpgradeData.ApplyToGridEntitiesWhenTheySpawn) continue;
                 upgrade.ApplyUpgrade(entity);
             }
         }
@@ -73,7 +73,7 @@ namespace Gameplay.Entities {
         public void ApplyUpgradeAnimations(GridEntity entity) {
             foreach (IUpgrade upgrade in _upgrades) {
                 if (upgrade.Status != UpgradeStatus.Owned) continue;
-                if (!upgrade.Data.ApplyToGridEntities) continue;
+                if (!upgrade.UpgradeData.ApplyToGridEntitiesWhenTheySpawn) continue;
                 entity.UpgradeApplied(upgrade);
             }
         }

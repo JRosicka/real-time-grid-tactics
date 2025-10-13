@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fafa440752424124be5b9cbee86f1e06, type: 3}
   m_Name: Amber Forge
   m_EditorClassIdentifier: 
+  ID: Amber Forge
   ShortDescription: Researches powerful upgrades.
   Description: Move your King to an adjacent tile in order to research powerful upgrades.
   Cost: []

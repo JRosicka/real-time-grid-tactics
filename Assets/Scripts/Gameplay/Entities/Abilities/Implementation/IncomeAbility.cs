@@ -25,7 +25,7 @@ namespace Gameplay.Entities.Abilities {
             GridEntity resourceEntity = GameManager.Instance.ResourceEntityFinder.GetMatchingResourceEntity(Performer, Performer.EntityData);
             if (resourceEntity == null) return false;
             if (resourceEntity.CurrentResourcesValue.Type != Data.ResourceAmountIncome.Type) return false;
-            if (resourceEntity.CurrentResourcesValue.Amount <= 0) return false;
+            if (resourceEntity.CurrentResourcesValue.Amount <= 0) return true;
 
             // Subtract the income amount from the resource entity
             ResourceAmount resourceAmount = new ResourceAmount(resourceEntity.CurrentResourcesValue);

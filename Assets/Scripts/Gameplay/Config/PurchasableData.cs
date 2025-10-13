@@ -8,8 +8,7 @@ namespace Gameplay.Config {
     /// Base configurable data class for a purchasable thing in the game, like a unit or an upgrade. 
     /// </summary>
     public abstract class PurchasableData : ScriptableObject {
-
-        public string ID => name;
+        public string ID;
         public string ShortDescription;
         public string Description;
 
@@ -22,6 +21,7 @@ namespace Gameplay.Config {
         /// </summary>
         public List<PurchasableData> Requirements;
         public bool RequirementNeedsToBeAdjacent;
+        [Range(0, 120)]
         public float BuildTime;
         [Tooltip("If false, the purchasable is awarded at the end of the build timer. If true, it is awarded right away and the build timer is just used for cooldown. Currently untested with GridEntities (might only work with upgrades).")]
         public bool BuildsImmediately;

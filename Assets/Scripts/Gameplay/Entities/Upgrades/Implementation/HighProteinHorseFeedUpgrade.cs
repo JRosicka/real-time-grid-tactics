@@ -1,8 +1,8 @@
 using Gameplay.Config.Upgrades;
 
 namespace Gameplay.Entities.Upgrades {
-    public class HighProteinHorseFeedUpgrade : AbstractUpgrade {
-        public HighProteinHorseFeedUpgrade(UpgradeData data, GameTeam team) : base(data, team) {}
+    public class HighProteinHorseFeedUpgrade : AbstractUpgrade<HighProteinHorseFeedUpgradeData> {
+        public HighProteinHorseFeedUpgrade(HighProteinHorseFeedUpgradeData data, GameTeam team) : base(data, team) {}
         
         protected override void ApplyGlobalEffect() {
             // Nothing to do

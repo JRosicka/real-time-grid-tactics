@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fafa440752424124be5b9cbee86f1e06, type: 3}
   m_Name: Amber Mine
   m_EditorClassIdentifier: 
+  ID: Amber Mine
   ShortDescription: Resource collector for <sprite name="amber">.
   Description: Resource collector for <sprite name="amber">. Buildable on an empty
     Spirit-Amber Deposit.
@@ -19,7 +20,9 @@ MonoBehaviour:
   - Type: 0
     Amount: 75
   Requirements: []
+  RequirementNeedsToBeAdjacent: 0
   BuildTime: 30
+  BuildsImmediately: 0
   BaseSprite: {fileID: 21300000, guid: 3fb4b33424bf341809e17cc92cd5cfc5, type: 3}
   TeamColorSprite: {fileID: 0}
   BaseSpriteIconOverride: {fileID: 0}
@@ -51,6 +54,8 @@ MonoBehaviour:
   MovementAndAttackUI: 0
   DisplaySelectionOutline: 1
   BuildQueueSize: 5
+  NeverShowBuildQueue: 0
+  ControllableByAllPlayers: 0
   EligibleStructureLocations:
   - {fileID: 11400000, guid: d2abf14400b53b645a0af4f3676cfbb2, type: 2}
   SharedUnitArmorBonus: 0

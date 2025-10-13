@@ -43,6 +43,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 9ab6d58fde8294daa9c3c7a99e68cb87, type: 2}
   - {fileID: 11400000, guid: 2811aaa580ba049d79353b02de36b2b5, type: 2}
   - {fileID: 11400000, guid: 7a94c63cd0fed4c4e8ead65314284b3b, type: 2}
+  - {fileID: 11400000, guid: 9bcd35c82053a44dfa5d90fcfe70f347, type: 2}
   Abilities:
   - {fileID: 11400000, guid: ec15a049dabc53b4d92ab14b2871752c, type: 2}
   - {fileID: 11400000, guid: a5c4aba93e508274894c2c6bfc4b751e, type: 2}

@@ -12,13 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fafa440752424124be5b9cbee86f1e06, type: 3}
   m_Name: Swordsman
   m_EditorClassIdentifier: 
+  ID: Swordsman
   ShortDescription: Standard melee unit.
   Description: Standard melee unit.
   Cost:
   - Type: 0
     Amount: 50
   Requirements: []
+  RequirementNeedsToBeAdjacent: 0
   BuildTime: 30
+  BuildsImmediately: 0
   BaseSprite: {fileID: 21300000, guid: 71dd4226a734045c29d78ae96344e958, type: 3}
   TeamColorSprite: {fileID: 21300000, guid: 7c85c0800115a46d4a4d64e48fd167c9, type: 3}
   BaseSpriteIconOverride: {fileID: 0}
@@ -57,9 +60,12 @@ MonoBehaviour:
   FriendlyUnitsCanShareCell: 0
   AttackByDefault: 1
   IsResourceExtractor: 0
+  ResourceThatThisCanExtract: {fileID: 0}
   MovementAndAttackUI: 1
   DisplaySelectionOutline: 1
   BuildQueueSize: 5
+  NeverShowBuildQueue: 0
+  ControllableByAllPlayers: 0
   EligibleStructureLocations: []
   SharedUnitArmorBonus: 0
   SharedUnitDamageTakenModifierTags: 

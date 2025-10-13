@@ -2,8 +2,8 @@ using Gameplay.Config.Upgrades;
 using UnityEngine;
 
 namespace Gameplay.Entities.Upgrades {
-    public class Test2Upgrade : AbstractUpgrade {
-        public Test2Upgrade(UpgradeData data, GameTeam team) : base(data, team) {}
+    public class Test2Upgrade : AbstractUpgrade<Test2UpgradeData> {
+        public Test2Upgrade(Test2UpgradeData data, GameTeam team) : base(data, team) {}
         
         protected override void ApplyGlobalEffect() {
             Debug.Log("Test 2 upgrade applied");

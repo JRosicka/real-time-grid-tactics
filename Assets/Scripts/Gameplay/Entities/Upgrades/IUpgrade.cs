@@ -5,7 +5,7 @@ namespace Gameplay.Entities.Upgrades {
     /// Runtime representation of an upgrade. Uses <see cref="UpgradeData"/> for configuration. 
     /// </summary>
     public interface IUpgrade {
-        UpgradeData Data { get; }
+        UpgradeData UpgradeData { get; }
         UpgradeStatus Status { get; }
         
         /// <summary>

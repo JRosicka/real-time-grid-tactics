@@ -1,7 +1,7 @@
-using System.Collections.Generic;
 using System.Linq;
 using Gameplay.Config;
-using Gameplay.Config.Abilities;
+using Gameplay.Config.Upgrades;
+using Gameplay.Entities.Upgrades;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -28,6 +28,8 @@ namespace Gameplay.Entities {
             CurrencyConfiguration.Currency currency = GameManager.Instance.Configuration.CurrencyConfiguration.Currencies.First(c => c.Type == resourceType);
             _outOfResourcesImage.sprite = currency.Icon;
             _textIconGlyph = currency.TextIconGlyph;
+
+            entity.UpgradeAppliedEvent += UpgradeApplied;
             
             ToggleOutOfResourcesIcon(false);
         }
@@ -62,6 +64,15 @@ namespace Gameplay.Entities {
             if (outOfResources && displayAlertIfOut) {
                 GameManager.Instance.AlertTextDisplayer.DisplayAlert($"One of your {_entity.DisplayName.ToLower()}s has harvested all of its resources.");
             }
+        }
+
+        private void UpgradeApplied(IUpgrade upgrade) {
+            if (upgrade is not MysticalSoilEnrichmentUpgrade) return;
+            
+            MysticalSoilEnrichmentUpgradeData data = (MysticalSoilEnrichmentUpgradeData)upgrade.UpgradeData;
+            if (data.VillageEntityData != _entity.EntityData) return;
+            
+            ToggleOutOfResourcesIcon(_entity.InteractBehavior is { IsLocalTeam: true });
         }
     }
 }
