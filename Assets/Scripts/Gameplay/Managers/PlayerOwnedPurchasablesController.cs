@@ -39,7 +39,7 @@ public class PlayerOwnedPurchasablesController : NetworkBehaviour {
     }
 
     private void Update() {
-        Upgrades.UpdateUpgradeTimers(Time.deltaTime);
+        Upgrades?.UpdateUpgradeTimers(Time.deltaTime);
     }
 
     public List<PurchasableData> OwnedPurchasables {
