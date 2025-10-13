@@ -123,9 +123,9 @@ public class GameManager : MonoBehaviour {
         
         // Set up players
         Player1 = player1;
-        player1.Initialize(Configuration.GetUpgrades(), Configuration);
+        player1.Initialize(Configuration);
         Player2 = player2;
-        player2.Initialize(Configuration.GetUpgrades(), Configuration);
+        player2.Initialize(Configuration);
         
         // Set up resources interface - for spectators, we want to track all players' resources
         IPlayerResourcesObserver resourcesObserver = LocalTeam switch {

@@ -5,6 +5,7 @@ using Gameplay.Config;
 using Gameplay.Config.Abilities;
 using Gameplay.Entities.Abilities;
 using Gameplay.Entities.BuildQueue;
+using Gameplay.Entities.Upgrades;
 using Gameplay.Managers;
 using Gameplay.UI;
 using JetBrains.Annotations;
@@ -115,6 +116,8 @@ namespace Gameplay.Entities {
         public event Action<IAbility, AbilityTimer> AbilityTimerStartedEvent;
         public event Action<IAbility, AbilityTimer> AbilityTimerExpiredEvent;
         public event Action<IAbility, AbilityTimer> PerformAnimationEvent;
+        public event Action<IUpgrade> UpgradeAppliedEvent;
+        public event Action<IUpgrade> UpgradeRemovedEvent;
         public event Action SelectedEvent;
         public event Action DeselectedEvent;
         public event Action<bool> TargetedEvent;
@@ -211,6 +214,10 @@ namespace Gameplay.Entities {
 
             SetupStats();
             SetupView();
+            
+            // Set up view portion of any in-progress upgrades
+            IGamePlayer player = GameManager.Instance.GetPlayerForTeam(team);
+            player?.OwnedPurchasablesController.Upgrades.ApplyUpgradeAnimations(this);
             
             InitializationStatusHandler.Initialize(null, nameof(InitializationStatusHandler));
             InitializationStatusHandler.SetLocalClientReady();
@@ -498,6 +505,17 @@ namespace Gameplay.Entities {
             // TODO
         }
         
+        #endregion
+        #region Upgrades
+        /// <summary>
+        /// Responds with any client-specific user-facing events for an upgrade being applied
+        /// </summary>
+        public void UpgradeApplied(IUpgrade upgrade) {
+            UpgradeAppliedEvent?.Invoke(upgrade);
+        }
+        public void UpgradeRemoved(IUpgrade upgrade) {
+            UpgradeRemovedEvent?.Invoke(upgrade);
+        }
         #endregion
         #region Moving
         

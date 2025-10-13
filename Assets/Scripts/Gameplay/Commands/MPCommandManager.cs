@@ -3,6 +3,7 @@ using Gameplay.Config;
 using Gameplay.Config.Upgrades;
 using Gameplay.Entities;
 using Gameplay.Entities.Abilities;
+using Gameplay.Entities.Upgrades;
 using Gameplay.Managers;
 using Mirror;
 using UnityEngine;
@@ -19,10 +20,6 @@ public class MPCommandManager : AbstractCommandManager {
     public override void SpawnEntity(EntityData data, Vector2Int spawnLocation, GameTeam team, GridEntity spawnerEntity, bool movementOnCooldown, bool built) {
         LogTimestamp(nameof(SpawnEntity));
         CmdSpawnEntity(data, spawnLocation, team, spawnerEntity, movementOnCooldown, built);
-    }
-
-    public override void AddUpgrade(UpgradeData data, GameTeam team) {
-        CmdAddUpgrade(data, team);
     }
 
     protected override void RegisterEntity(GridEntity entity, EntityData data, Vector2Int position, GridEntity entityToIgnore) {
@@ -61,8 +58,16 @@ public class MPCommandManager : AbstractCommandManager {
         CmdQueueAbility(ability, abilityToDependOn);
     }
     
-    public override void MarkAbilityCooldownExpired(IAbility ability) {
+    public override void MarkAbilityTimerExpired(IAbility ability) {
         CmdMarkAbilityCooldownExpired(ability);
+    }
+
+    public override void UpdateUpgradeStatus(UpgradeData data, GameTeam team, UpgradeStatus newStatus) {
+        CmdUpdateUpgradeStatus(data, team, newStatus);
+    }
+
+    public override void MarkUpgradeTimerExpired(UpgradeData upgradeData, GameTeam team) {
+        CmdMarkUpgradeTimerExpired(upgradeData, team);
     }
 
     public override void CancelAbility(IAbility ability) {
@@ -89,8 +94,9 @@ public class MPCommandManager : AbstractCommandManager {
     }
 
     [Command(requiresAuthority = false)]
-    private void CmdAddUpgrade(UpgradeData data, GameTeam team) {
-        DoAddUpgrade(data, team);
+    private void CmdUpdateUpgradeStatus(UpgradeData data, GameTeam team, UpgradeStatus newStatus) {
+        DoUpdateUpgradeStatus(data, team, newStatus);
+        RpcUpdateUpgradeStatus(data, team, newStatus);
     }
     
     [Command(requiresAuthority = false)]
@@ -153,9 +159,24 @@ public class MPCommandManager : AbstractCommandManager {
     
     [ClientRpc]
     private void RpcMarkAbilityCooldownExpired(IAbility ability) {
-        DoMarkAbilityCooldownExpired(ability, false);
+        DoMarkAbilityTimerExpired(ability, false);
     }
     
+    [ClientRpc]
+    private void RpcUpdateUpgradeStatus(UpgradeData data, GameTeam team, UpgradeStatus newStatus) {
+        DoMarkUpgradeStatusUpdated(data, team, newStatus);
+    }
+
+    [Command(requiresAuthority = false)]
+    private void CmdMarkUpgradeTimerExpired(UpgradeData upgradeData, GameTeam team) {
+        RpcMarkUpgradeTimerExpired(upgradeData, team);
+    }
+    
+    [ClientRpc]
+    private void RpcMarkUpgradeTimerExpired(UpgradeData upgradeData, GameTeam team) {
+        DoMarkUpgradeTimerExpired(upgradeData, team);
+    }
+
     [Command(requiresAuthority = false)]
     private void CmdCancelAbility(IAbility ability) {
         bool success = DoCancelAbility(ability);
@@ -166,7 +187,7 @@ public class MPCommandManager : AbstractCommandManager {
 
     [ClientRpc]
     private void RpcMarkAbilityCanceled(IAbility ability) {
-        DoMarkAbilityCooldownExpired(ability, true);
+        DoMarkAbilityTimerExpired(ability, true);
     }
 
     [ClientRpc]    // TODO probably just target the client of the player who tried to do the ability

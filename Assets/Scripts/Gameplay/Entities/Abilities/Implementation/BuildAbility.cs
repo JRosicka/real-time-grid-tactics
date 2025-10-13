@@ -4,6 +4,7 @@ using System.Linq;
 using Gameplay.Config;
 using Gameplay.Config.Abilities;
 using Gameplay.Config.Upgrades;
+using Gameplay.Entities.Upgrades;
 using Mirror;
 using UnityEngine;
 
@@ -46,7 +47,7 @@ namespace Gameplay.Entities.Abilities {
 
             if (AbilityParameters.Buildable is UpgradeData upgradeData) {
                 // Cancel the upgrade
-                GameManager.Instance.GetPlayerForTeam(PerformerTeam).OwnedPurchasablesController.CancelInProgressUpgrade(upgradeData);
+                GameManager.Instance.CommandManager.UpdateUpgradeStatus(upgradeData, PerformerTeam, UpgradeStatus.NeitherOwnedNorInProgress);
             }
         }
 
@@ -83,7 +84,7 @@ namespace Gameplay.Entities.Abilities {
                     // The build location(s) is/are occupied, so we can not yet complete the ability
                     return false;
                 case UpgradeData upgradeData:
-                    GameManager.Instance.CommandManager.AddUpgrade(upgradeData, PerformerTeam);
+                    GameManager.Instance.CommandManager.UpdateUpgradeStatus(upgradeData, PerformerTeam, UpgradeStatus.Owned);
                     return true;
                 default:
                     throw new Exception("Unexpected purchasable data type: " + AbilityParameters.Buildable.GetType());
@@ -132,7 +133,7 @@ namespace Gameplay.Entities.Abilities {
         protected override (bool, AbilityResult) DoAbilityEffect() {
             if (AbilityParameters.Buildable is UpgradeData upgradeData) {
                 // Mark the upgrade as in-progress
-                GameManager.Instance.GetPlayerForTeam(PerformerTeam).OwnedPurchasablesController.AddInProgressUpgrade(upgradeData);
+                GameManager.Instance.CommandManager.UpdateUpgradeStatus(upgradeData, PerformerTeam, UpgradeStatus.InProgress);
             }
             
             if (AbilityParameters.Buildable.BuildsImmediately) {

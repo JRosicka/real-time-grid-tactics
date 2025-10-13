@@ -1,25 +1,101 @@
+using System.Collections.Generic;
 using Gameplay.Config.Upgrades;
 
 namespace Gameplay.Entities.Upgrades {
     /// <summary>
     /// Base implementation of <see cref="IUpgrade"/>
     /// </summary>
-    public class AbstractUpgrade : IUpgrade {
+    public abstract class AbstractUpgrade : IUpgrade {
         public UpgradeData Data { get; }
         public UpgradeStatus Status { get; set; }
+        public UpgradeDurationTimer UpgradeTimer { get; private set; }
+        
+        protected readonly GameTeam Team;
 
-        public AbstractUpgrade(UpgradeData data) {
+        protected AbstractUpgrade(UpgradeData data, GameTeam team) {
             Data = data;
+            Team = team;
         }
 
+        #region Server methods
+        
         public void UpgradeFinished() {
-            throw new System.NotImplementedException();
+            ApplyGlobalEffect();
+            if (Data.ApplyToGridEntities) {
+                List<GridEntity> allFriendlyEntities = GameManager.Instance.CommandManager.EntitiesOnGrid.ActiveEntitiesForTeam(Team);
+                allFriendlyEntities.ForEach(ApplyUpgrade);
+            }
         }
+
         public void RemoveUpgrade() {
-            throw new System.NotImplementedException();
+            RemoveGlobalEffect();
+            if (Data.ApplyToGridEntities) {
+                FriendlyEntities.ForEach(RemoveUpgrade);
+            }
         }
-        public void ApplyUpgrade(GridEntity entity) {
-            throw new System.NotImplementedException();
+        
+        /// <summary>
+        /// One-time effect that gets applied globally (rather than via scanning each GridEntity) when the upgrade completes.
+        /// </summary>
+        protected abstract void ApplyGlobalEffect();
+        /// <summary>
+        /// Applies the upgrade effect to the given friendly GridEntity if relevant.
+        /// Server method.
+        /// </summary>
+        public abstract void ApplyUpgrade(GridEntity friendlyEntity);
+
+        /// <summary>
+        /// One-time effect that gets removed globally (rather than via scanning each GridEntity) when the upgrade completes.
+        /// </summary>
+        protected abstract void RemoveGlobalEffect();
+        /// <summary>
+        /// Removes the upgrade effect from the given friendly GridEntity if relevant.
+        /// Server method.
+        /// </summary>
+        public abstract void RemoveUpgrade(GridEntity friendlyEntity);
+        
+        #endregion
+        
+        // RPC client method
+        public void UpdateStatus(UpgradeStatus newStatus) {
+            if (Status == newStatus) return;
+            
+            Status = newStatus;
+            if (newStatus == UpgradeStatus.Owned && Data.Timed) {
+                StartUpgradeTimer();
+            }
+
+            if (Data.ApplyToGridEntities) {
+                if (newStatus == UpgradeStatus.Owned) {
+                    FriendlyEntities.ForEach(e => e.UpgradeApplied(this));
+                } else if (newStatus == UpgradeStatus.NeitherOwnedNorInProgress) {
+                    FriendlyEntities.ForEach(e => e.UpgradeRemoved(this));
+                }
+            }
         }
+
+        private void StartUpgradeTimer() {
+            UpgradeTimer = new UpgradeDurationTimer(this, Team, Data.ExpirationSeconds);
+        }
+
+        public bool ExpireUpgradeTimer() {
+            if (UpgradeTimer == null) return false;
+            
+            UpgradeTimer.Expire(false);
+            UpgradeTimer = null;
+            
+            if (Data.Repeatable) {
+                GameManager.Instance.CommandManager.UpdateUpgradeStatus(Data, Team, UpgradeStatus.NeitherOwnedNorInProgress);
+            }
+            
+            return true;
+            // TODO trigger event for view logic if/when we add that
+        }
+
+        public void UpdateTimer(float deltaTime) {
+            UpgradeTimer?.UpdateTimer(deltaTime);
+        }
+        
+        private List<GridEntity> FriendlyEntities => GameManager.Instance.CommandManager.EntitiesOnGrid.ActiveEntitiesForTeam(Team);
     }
 }

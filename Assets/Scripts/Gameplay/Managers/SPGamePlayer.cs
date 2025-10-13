@@ -1,6 +1,4 @@
-using System.Collections.Generic;
 using Gameplay.Config;
-using Gameplay.Config.Upgrades;
 using UnityEngine;
 
 public class SPGamePlayer : MonoBehaviour, IGamePlayer {
@@ -13,8 +11,8 @@ public class SPGamePlayer : MonoBehaviour, IGamePlayer {
     [SerializeField]
     private PlayerOwnedPurchasablesController _ownedPurchasablesController;
     public PlayerOwnedPurchasablesController OwnedPurchasablesController => _ownedPurchasablesController;
-    public void Initialize(List<UpgradeData> upgradesToRegister, GameConfiguration gameConfiguration) {
-        _ownedPurchasablesController.Initialize(this, upgradesToRegister);
+    public void Initialize(GameConfiguration gameConfiguration) {
+        _ownedPurchasablesController.Initialize(this, gameConfiguration.GetUpgrades());
         _resourcesController.Initialize(gameConfiguration.CurrencyConfiguration);
     }
 }

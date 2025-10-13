@@ -14,10 +14,12 @@ namespace Gameplay.Config.Upgrades {
     public abstract class UpgradeData : PurchasableData {
         [Tooltip("Whether this upgrade can be purchased again after being removed")]
         public bool Repeatable;
+        [Tooltip("Whether this upgrade has an effect that gets applied to certain GridEntities")]
+        public bool ApplyToGridEntities;
         [Tooltip("How long the upgrade effect lasts once researched. A value of 0 indicates that this is un-timed.")]
         public int ExpirationSeconds;
         public bool Timed => ExpirationSeconds > 0;
-        public abstract IUpgrade CreateUpgrade();
+        public abstract IUpgrade CreateUpgrade(GameTeam team);
     }
     
     public static class UpgradeDataSerializer {

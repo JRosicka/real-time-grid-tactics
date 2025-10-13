@@ -18,5 +18,5 @@ public interface IGamePlayer {
     /// <summary>
     /// Called on the client
     /// </summary>
-    void Initialize(List<UpgradeData> upgradesToRegister, GameConfiguration gameConfiguration);
+    void Initialize(GameConfiguration gameConfiguration);
 }

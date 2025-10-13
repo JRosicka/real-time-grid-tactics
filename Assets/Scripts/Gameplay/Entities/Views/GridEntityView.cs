@@ -5,6 +5,7 @@ using Audio;
 using Gameplay.Config;
 using Gameplay.Config.Abilities;
 using Gameplay.Entities.Abilities;
+using Gameplay.Entities.Upgrades;
 using Gameplay.Grid;
 using Gameplay.UI;
 using UnityEngine;
@@ -83,6 +84,8 @@ namespace Gameplay.Entities {
             }
             
             entity.PerformAnimationEvent += DoAbility;
+            entity.UpgradeAppliedEvent += UpgradeApplied;
+            entity.UpgradeRemovedEvent += UpgradeRemoved;
             entity.AbilityTimerStartedEvent += CreateTimerView;
             entity.SelectedEvent += Selected;
             entity.DeselectedEvent += Deselected;
@@ -108,6 +111,8 @@ namespace Gameplay.Entities {
             if (Entity == null) return;
             
             Entity.PerformAnimationEvent -= DoAbility;
+            Entity.UpgradeAppliedEvent -= UpgradeApplied;
+            Entity.UpgradeRemovedEvent -= UpgradeRemoved;
             Entity.AbilityTimerStartedEvent -= CreateTimerView;
             Entity.SelectedEvent -= Selected;
             Entity.DeselectedEvent -= Deselected;
@@ -133,6 +138,16 @@ namespace Gameplay.Entities {
             if (_particularView.DoAbility(ability, abilityTimer)) {
                 DoGenericAbility(ability);
             }
+        }
+
+        private void UpgradeApplied(IUpgrade upgrade) {
+            if (Entity == null || Entity.DeadOrDying) return;
+            // TODO
+        }
+        
+        private void UpgradeRemoved(IUpgrade upgrade) {
+            if (Entity == null || Entity.DeadOrDying) return;
+            // TODO
         }
 
         private void Selected() {

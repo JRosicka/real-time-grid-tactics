@@ -6,6 +6,7 @@ using Gameplay.Config;
 using Gameplay.Config.Upgrades;
 using Gameplay.Entities;
 using Gameplay.Entities.Abilities;
+using Gameplay.Entities.Upgrades;
 using Gameplay.Grid;
 using Gameplay.Managers;
 using Mirror;
@@ -43,6 +44,8 @@ public abstract class AbstractCommandManager : NetworkBehaviour, ICommandManager
         EntityCollectionChangedEvent?.Invoke();
     }
 
+    public abstract void UpdateUpgradeStatus(UpgradeData data, GameTeam team, UpgradeStatus newStatus);
+    public abstract void MarkUpgradeTimerExpired(UpgradeData upgradeData, GameTeam team);
     public abstract void CancelAbility(IAbility ability);
     public abstract void UpdateNetworkableField(NetworkBehaviour parent, string fieldName, INetworkableFieldValue newValue, string metadata);
 
@@ -65,8 +68,6 @@ public abstract class AbstractCommandManager : NetworkBehaviour, ICommandManager
     /// grid. No-op if another entity already exists in the specified location. 
     /// </summary>
     public abstract void SpawnEntity(EntityData data, Vector2Int spawnLocation, GameTeam team, GridEntity spawnerEntity, bool movementOnCooldown, bool built);
-    // TODO I don't think this needs to be in CommandManager since this is only called by the server and it doesn't contain any RPC calls
-    public abstract void AddUpgrade(UpgradeData data, GameTeam team);
 
     // TODO need to have some way of verifying that these commands are legal for the client to do - especially doing stuff with GridEntites, we gotta own em
     // Maybe we can just make these abstract methods virtual, include a check at the beginning, and then have the overrides call base() at the start
@@ -97,7 +98,7 @@ public abstract class AbstractCommandManager : NetworkBehaviour, ICommandManager
     public abstract void AbilityFailed(IAbility ability);
     public abstract void UpdateInProgressAbilities(GridEntity entity);
     public abstract void QueueAbility(IAbility ability, IAbility abilityToDependOn);
-    public abstract void MarkAbilityCooldownExpired(IAbility ability);
+    public abstract void MarkAbilityTimerExpired(IAbility ability);
 
     protected void DoSpawnEntity(EntityData data, Vector2Int spawnLocation, Func<GridEntity> spawnFunc, GameTeam team, GridEntity spawnerEntity, bool movementOnCooldown) {
         List<GridEntity> entitiesToIgnore = spawnerEntity != null ? new List<GridEntity> {spawnerEntity} : null;
@@ -113,6 +114,10 @@ public abstract class AbstractCommandManager : NetworkBehaviour, ICommandManager
             GameManager.Instance.AbilityAssignmentManager.AddMovementTime(entityInstance, entityInstance.MoveTimeToTile(tile));
         }
         
+        // Apply any active upgrades to the new entity
+        IGamePlayer player = GameManager.Instance.GetPlayerForTeam(team);
+        player?.OwnedPurchasablesController.Upgrades.ApplyUpgrades(entityInstance);
+
         // Handle starting movement
         if (spawnerEntity != null && spawnerEntity.TargetLocationLogicValue.CanRally) {
             if (data.Tags.Contains(EntityTag.Worker)) {
@@ -128,10 +133,6 @@ public abstract class AbstractCommandManager : NetworkBehaviour, ICommandManager
         if (GameManager.Instance.GameSetupManager.GameInitialized) {
             AbilityAssignmentManager.PerformOnStartAbilitiesForEntity(entityInstance);
         }
-    }
-
-    protected void DoAddUpgrade(UpgradeData data, GameTeam team) {
-        GameManager.Instance.GetPlayerForTeam(team).OwnedPurchasablesController.AddUpgrade(data);
     }
     
     protected void DoRegisterEntity(GridEntity entity, EntityData data, Vector2Int position, GridEntity entityToIgnore) {
@@ -193,11 +194,38 @@ public abstract class AbstractCommandManager : NetworkBehaviour, ICommandManager
         ability.Performer.AbilityPerformed(ability);
     }
 
-    protected void DoMarkAbilityCooldownExpired(IAbility ability, bool canceled) {
+    protected void DoMarkAbilityTimerExpired(IAbility ability, bool canceled) {
         // Check to make sure that the entity performing the ability is still around
         if (ability.Performer != null) {
             AbilityAssignmentManager.ExpireTimerForAbility(ability.Performer, ability, canceled);
         } 
+    }
+
+    protected void DoUpdateUpgradeStatus(UpgradeData data, GameTeam team, UpgradeStatus newStatus) {
+        IUpgrade upgrade = GameManager.Instance.GetPlayerForTeam(team).OwnedPurchasablesController.Upgrades.GetUpgrade(data);
+        switch (newStatus) {
+            case UpgradeStatus.NeitherOwnedNorInProgress:
+                // Canceled
+                upgrade.RemoveUpgrade();
+                break;
+            case UpgradeStatus.InProgress:
+                // Nothing to do here on the server
+                break;
+            case UpgradeStatus.Owned:
+                // Completed
+                upgrade.UpgradeFinished();
+                break;
+            default:
+                throw new ArgumentOutOfRangeException(nameof(newStatus), newStatus, null);
+        }
+    }
+    
+    protected void DoMarkUpgradeStatusUpdated(UpgradeData data, GameTeam team, UpgradeStatus newStatus) {
+        GameManager.Instance.GetPlayerForTeam(team).OwnedPurchasablesController.UpdateUpgradeStatus(data, newStatus);
+    }
+
+    protected void DoMarkUpgradeTimerExpired(UpgradeData upgradeData, GameTeam team) {
+        GameManager.Instance.GetPlayerForTeam(team).OwnedPurchasablesController.ExpireUpgradeTimer(upgradeData);
     }
 
     protected void DoQueueAbility(IAbility ability, IAbility abilityToDependOn) {

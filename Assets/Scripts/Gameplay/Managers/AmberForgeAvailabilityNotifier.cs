@@ -43,6 +43,9 @@ namespace Gameplay.Managers {
                     _amberForgeEntity.AbilityTimerStartedEvent += AmberForgeAbilityTimerStarted;
                     _amberForgeEntity.AbilityTimerExpiredEvent += AmberForgeAbilityTimerExpired;
                 }
+
+                PlayerOwnedPurchasablesController ownedPurchasables = GameManager.Instance.GetPlayerForTeam(localTeam).OwnedPurchasablesController;
+                ownedPurchasables.OwnedPurchasablesChangedEvent += UpdateAvailability;
             }
         }
 

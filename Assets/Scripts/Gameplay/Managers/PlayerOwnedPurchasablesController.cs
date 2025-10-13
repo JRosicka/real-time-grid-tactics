@@ -4,7 +4,9 @@ using System.Linq;
 using Gameplay.Config;
 using Gameplay.Config.Upgrades;
 using Gameplay.Entities;
+using Gameplay.Entities.Upgrades;
 using Mirror;
+using UnityEngine;
 
 /// <summary>
 /// Monitors a single <see cref="IGamePlayer"/>'s owned purchasables (entities and upgrades), updating when any are bought or destroyed
@@ -16,26 +18,35 @@ public class PlayerOwnedPurchasablesController : NetworkBehaviour {
     /// </summary>
     public event Action OwnedPurchasablesChangedEvent;
 
+    public UpgradesCollection Upgrades { get; private set; }
+    public List<UpgradeData> InProgressUpgrades => Upgrades.GetInProgressUpgrades();
+    
     private IGamePlayer _player;
 
-    [SyncVar(hook = nameof(OwnedPurchasablesSyncVarChanged))] 
-    private UpgradesCollection _upgrades = new UpgradesCollection();
-
     /// <summary>
-    /// Server call
+    /// Client call
     /// </summary>
     public void Initialize(IGamePlayer player, List<UpgradeData> upgradesToRegister) {
         _player = player;
-        _upgrades.RegisterUpgrades(upgradesToRegister);
-        GameManager.Instance.CommandManager.EntityRegisteredEvent += OwnedPurchasablesMayHaveChanged;
-        GameManager.Instance.CommandManager.EntityUnregisteredEvent += OwnedPurchasablesMayHaveChanged;
+        Upgrades = new UpgradesCollection(_player.Data.Team);
+        Upgrades.RegisterUpgrades(upgradesToRegister);
+        
+        if (NetworkServer.active || !NetworkClient.active) {
+            // MP server or SP
+            GameManager.Instance.CommandManager.EntityRegisteredEvent += OwnedPurchasablesMayHaveChanged;
+            GameManager.Instance.CommandManager.EntityUnregisteredEvent += OwnedPurchasablesMayHaveChanged;
+        }
     }
-    
+
+    private void Update() {
+        Upgrades.UpdateUpgradeTimers(Time.deltaTime);
+    }
+
     public List<PurchasableData> OwnedPurchasables {
         get {
             List<PurchasableData> entityData = GameManager.Instance.CommandManager.EntitiesOnGrid
                 .ActiveEntitiesForTeam(_player.Data.Team).Select(e => e.EntityData).Cast<PurchasableData>().ToList();
-            return entityData.Concat(_upgrades.GetOwnedUpgrades()).ToList();
+            return entityData.Concat(Upgrades.GetOwnedUpgrades()).ToList();
         }
     }
 
@@ -63,63 +74,33 @@ public class PlayerOwnedPurchasablesController : NetworkBehaviour {
     }
 
     public bool HasUpgrade(UpgradeData upgrade) {
-        return _upgrades.GetOwnedUpgrades().Contains(upgrade);
-    }
-
-    public List<UpgradeData> InProgressUpgrades => _upgrades.GetInProgressUpgrades();
-
-    public void AddUpgrade(UpgradeData upgrade) {
-        if (_upgrades.AddUpgrade(upgrade)) {
-            SyncUpgrades();
-            if (!NetworkClient.active) {
-                // SP, so trigger manually.
-                OwnedPurchasablesChangedEvent?.Invoke();
-            }
-        }
-    }
-
-    public void AddInProgressUpgrade(UpgradeData upgrade) {
-        if (_upgrades.AddInProgressUpgrade(upgrade)) {
-            SyncUpgrades();
-            if (!NetworkClient.active) {
-                // SP, so trigger manually.
-                OwnedPurchasablesChangedEvent?.Invoke();
-            }
-        }
+        return Upgrades.GetOwnedUpgrades().Contains(upgrade);
     }
     
-    public void CancelInProgressUpgrade(UpgradeData upgrade) {
-        if (_upgrades.CancelInProgressUpgrade(upgrade)) {
-            SyncUpgrades();
-            if (!NetworkClient.active) {
-                // SP, so trigger manually.
-                OwnedPurchasablesChangedEvent?.Invoke();
-            }
-        }
+    public void UpdateUpgradeStatus(UpgradeData upgradeData, UpgradeStatus newStatus) {
+        IUpgrade upgrade = Upgrades.GetUpgrade(upgradeData);
+        upgrade.UpdateStatus(newStatus);
     }
-
-    /// <summary>
-    /// Reset the reference for <see cref="_upgrades"/> to force a sync across clients. Just updating fields in the class
-    /// is not enough to get the sync to occur. 
-    /// </summary>
-    private void SyncUpgrades() {    // TODO: Kinda yucky. 
-        _upgrades = new UpgradesCollection(_upgrades.Upgrades);
+    
+    public void ExpireUpgradeTimer(UpgradeData upgradeData) {
+        if (Upgrades.ExpireUpgradeTimer(upgradeData)) {
+            OwnedPurchasablesChangedEvent?.Invoke();
+        }
     }
 
     private void OwnedPurchasablesMayHaveChanged(GameTeam team) {
         if (team != _player.Data.Team) return;
         
-        if (!NetworkClient.active) {
-            // SP, so trigger manually.
-            OwnedPurchasablesChangedEvent?.Invoke();
-        } else {
-            // MP, so update on each client. 
-            RpcOwnedPurchasablesChanged();
-        }
+        NotifyOwnedPurchasablesChanged();
     }
 
-    private void OwnedPurchasablesSyncVarChanged(UpgradesCollection oldValue, UpgradesCollection newValue) {
-        OwnedPurchasablesChangedEvent?.Invoke();
+    private void NotifyOwnedPurchasablesChanged() {
+        if (NetworkClient.active) {
+            RpcOwnedPurchasablesChanged();
+        } else {
+            // SP, so trigger manually.
+            OwnedPurchasablesChangedEvent?.Invoke();
+        }
     }
 
     [ClientRpc]

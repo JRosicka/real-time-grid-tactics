@@ -1,9 +1,8 @@
-using System;
-using System.Threading.Tasks;
 using Gameplay.Config;
 using Gameplay.Config.Upgrades;
 using Gameplay.Entities;
 using Gameplay.Entities.Abilities;
+using Gameplay.Entities.Upgrades;
 using Gameplay.Managers;
 using Mirror;
 using UnityEngine;
@@ -23,10 +22,6 @@ public class SPCommandManager : AbstractCommandManager {
             
             return entityInstance;
         }, team, spawnerEntity, movementOnCooldown); 
-    }
- 
-    public override void AddUpgrade(UpgradeData data, GameTeam team) {
-        DoAddUpgrade(data, team);
     }
 
     protected override void RegisterEntity(GridEntity entity, EntityData data, Vector2Int position, GridEntity entityToIgnore) {
@@ -61,14 +56,23 @@ public class SPCommandManager : AbstractCommandManager {
         DoQueueAbility(ability, abilityToDependOn);
     }
     
-    public override void MarkAbilityCooldownExpired(IAbility ability) {
-        DoMarkAbilityCooldownExpired(ability, false);
+    public override void MarkAbilityTimerExpired(IAbility ability) {
+        DoMarkAbilityTimerExpired(ability, false);
+    }
+
+    public override void UpdateUpgradeStatus(UpgradeData data, GameTeam team, UpgradeStatus newStatus) {
+        DoUpdateUpgradeStatus(data, team, newStatus);
+        DoMarkUpgradeStatusUpdated(data, team, newStatus);
+    }
+
+    public override void MarkUpgradeTimerExpired(UpgradeData upgradeData, GameTeam team) {
+        DoMarkUpgradeTimerExpired(upgradeData, team);
     }
 
     public override void CancelAbility(IAbility ability) {
         bool success = DoCancelAbility(ability);
         if (success) {
-            DoMarkAbilityCooldownExpired(ability, true);
+            DoMarkAbilityTimerExpired(ability, true);
         }
     }
 

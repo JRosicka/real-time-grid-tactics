@@ -3,6 +3,7 @@ using Gameplay.Config;
 using Gameplay.Config.Upgrades;
 using Gameplay.Entities;
 using Gameplay.Entities.Abilities;
+using Gameplay.Entities.Upgrades;
 using Gameplay.Managers;
 using Mirror;
 using UnityEngine;
@@ -14,7 +15,6 @@ using UnityEngine;
 public interface ICommandManager {
     void Initialize(Transform spawnBucketPrefab, GameEndManager gameEndManager, AbilityAssignmentManager abilityAssignmentManager);
     void SpawnEntity(EntityData data, Vector2Int spawnLocation, GameTeam team, GridEntity spawnerEntity, bool movementOnCooldown, bool built);
-    void AddUpgrade(UpgradeData data, GameTeam team);
     /// <summary>
     /// Stop keeping track of an entity and also destroy it.
     /// Waits for one update cycle before doing so, so that any commands that the entity is executing in the execution
@@ -32,7 +32,9 @@ public interface ICommandManager {
     void AbilityFailed(IAbility ability);
     void UpdateInProgressAbilities(GridEntity entity);
     void QueueAbility(IAbility ability, IAbility abilityToDependOn);
-    void MarkAbilityCooldownExpired(IAbility ability);
+    void MarkAbilityTimerExpired(IAbility ability);
+    void UpdateUpgradeStatus(UpgradeData data, GameTeam team, UpgradeStatus newStatus);
+    void MarkUpgradeTimerExpired(UpgradeData upgradeData, GameTeam team);
     void CancelAbility(IAbility ability);
     void UpdateNetworkableField(NetworkBehaviour parent, string fieldName, INetworkableFieldValue newValue, string metaData);
     /// <summary>

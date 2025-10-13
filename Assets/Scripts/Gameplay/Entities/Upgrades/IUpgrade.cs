@@ -1,6 +1,4 @@
-using Gameplay.Config;
 using Gameplay.Config.Upgrades;
-using Mirror;
 
 namespace Gameplay.Entities.Upgrades {
     /// <summary>
@@ -8,40 +6,33 @@ namespace Gameplay.Entities.Upgrades {
     /// </summary>
     public interface IUpgrade {
         UpgradeData Data { get; }
-        UpgradeStatus Status { get; set; }
+        UpgradeStatus Status { get; }
         
         /// <summary>
-        /// Triggered when the upgrade finishes being researched
+        /// Triggered when the upgrade finishes being researched.
+        /// Server method.
         /// </summary>
         void UpgradeFinished();
-
         /// <summary>
-        /// Triggered when the upgrade gets removed (due to its effect expiring)
+        /// Triggered when the upgrade gets removed (due to its effect expiring).
+        /// Server method.
         /// </summary>
         void RemoveUpgrade();
-
         /// <summary>
-        /// Applies an upgrade effect to the given GridEntity if relevant
+        /// Applies the upgrade effect to the given friendly GridEntity if relevant.
+        /// Server method.
         /// </summary>
-        void ApplyUpgrade(GridEntity entity);
-    }
-    
-    public static class UpgradeSerializer {
-        public static void WriteUpgrade(this NetworkWriter writer, IUpgrade upgrade) {
-            writer.WriteString(upgrade.Data.ID);
-            writer.WriteInt((int)upgrade.Status);
-            // upgrade.SerializeParameters(writer); // TODO add this if any implementations record additional state
-        }
-
-        public static IUpgrade ReadUpgrade(this NetworkReader reader) {
-            UpgradeData upgradeData = (UpgradeData)GameManager.Instance.Configuration.GetPurchasable(reader.ReadString());
-            UpgradeStatus status = (UpgradeStatus)reader.ReadInt();
-            
-            // Re-create the ability instance using the data asset we loaded
-            IUpgrade upgrade = upgradeData.CreateUpgrade();
-            upgrade.Status = status;
-            return upgrade;
-            // IAbility abilityInstance = dataAsset.Content.DeserializeAbility(reader);
-        }
+        void ApplyUpgrade(GridEntity friendlyEntity);
+        
+        /// <summary>
+        /// Update the status of the upgrade (i.e. just got researched, canceled, etc)
+        /// RPC client method.
+        /// </summary>
+        void UpdateStatus(UpgradeStatus status);
+        
+        // Not synchronized
+        UpgradeDurationTimer UpgradeTimer { get; }
+        bool ExpireUpgradeTimer();
+        void UpdateTimer(float deltaTime);
     }
 }

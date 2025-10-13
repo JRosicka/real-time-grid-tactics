@@ -30,7 +30,7 @@ namespace Gameplay.Entities.Abilities {
 
         protected override async Task TryCompleteTimerAsync() {
             await AsyncUtil.WaitUntilOnCallerThread(Ability.CompleteCooldown, CooldownCheckMillis);
-            GameManager.Instance.CommandManager.MarkAbilityCooldownExpired(Ability);
+            GameManager.Instance.CommandManager.MarkAbilityTimerExpired(Ability);
         }
     }
 }
