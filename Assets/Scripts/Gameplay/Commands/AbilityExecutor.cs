@@ -140,9 +140,9 @@ public class AbilityExecutor : MonoBehaviour {
     private bool ExecuteAbilitiesForEntity(GridEntity entity, AbilityExecutionType executionType) {
         List<IAbility> abilities = entity.InProgressAbilities;
 
-        // Perform default ability if there are no in-progress abilities
-        if (abilities.IsNullOrEmpty() && executionType == AbilityExecutionType.Interaction) {
-            return PerformDefaultAbility(entity);
+        // Try to perform default ability
+        if (executionType == AbilityExecutionType.Interaction) {
+            PerformDefaultAbility(entity);
         }
 
         // Cycle through the abilities, trying to perform each one until one does not get completed or removed
@@ -244,17 +244,19 @@ public class AbilityExecutor : MonoBehaviour {
     /// <summary>
     /// Perform the given entity's configured default ability
     /// </summary>
-    private bool PerformDefaultAbility(GridEntity entity) {
-        if (!entity.EntityData.AttackByDefault) return false;
+    private void PerformDefaultAbility(GridEntity entity) {
+        if (!entity.EntityData.AttackByDefault) return;
         Vector2Int? location = entity.Location;
-        if (location == null) return false;
+        if (location == null) return;
 
         AttackAbilityData data = entity.GetAbilityData<AttackAbilityData>();
-        if (data == null) return false;
+        if (data == null) return;
+
+        // Don't perform default attack if there is already another attack in progress
+        if (entity.InProgressAbilities.Any(a => a.AbilityData.BlocksDefaultAttack)) return;
             
         _abilityAssignmentManager.StartPerformingAbility(entity, data, new AttackAbilityParameters {
             Destination = location.Value
-        }, false, true, true);
-        return true;
+        }, false, true, false);
     }
 }
