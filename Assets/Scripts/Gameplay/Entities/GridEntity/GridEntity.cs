@@ -60,6 +60,8 @@ namespace Gameplay.Entities {
         public int KillCount => ((NetworkableIntegerValue)_killCountField?.Value)?.Value ?? 0;
         private NetworkableField _incomeRateField;
         public int IncomeRate => ((NetworkableIntegerValue)_incomeRateField?.Value)?.Value ?? 0;
+        private NetworkableField _timerSpeedMultiplierField;
+        public float TimerSpeedMultiplier => ((NetworkableFloatValue)_timerSpeedMultiplierField?.Value)?.Value ?? 0;
 
         // Abilities
         /// <summary>
@@ -144,6 +146,7 @@ namespace Gameplay.Entities {
             LastAttackedEntity = new NetworkableField(this, nameof(LastAttackedEntity), new NetworkableGridEntityValue(null));
             _killCountField = new NetworkableField(this, nameof(_killCountField), new NetworkableIntegerValue(0));
             _incomeRateField = new NetworkableField(this, nameof(_incomeRateField), new NetworkableIntegerValue(0));
+            _timerSpeedMultiplierField = new NetworkableField(this, nameof(_timerSpeedMultiplierField), new NetworkableFloatValue(1f));
         }
 
         /// <summary>
@@ -247,7 +250,7 @@ namespace Gameplay.Entities {
         
         private void Update() {
             List<AbilityTimer> activeTimersCopy = new List<AbilityTimer>(ActiveTimers);
-            activeTimersCopy.ForEach(t => t.UpdateTimer(Time.deltaTime));
+            activeTimersCopy.ForEach(t => t.UpdateTimer(Time.deltaTime * TimerSpeedMultiplier));
         }
 
         #endregion
@@ -599,6 +602,10 @@ namespace Gameplay.Entities {
 
         public void SetIncomeRate(int newIncomeRate) {
             _incomeRateField.UpdateValue(new NetworkableIntegerValue(newIncomeRate));
+        }
+
+        public void SetTimerMultiplier(float newTimerMultiplier) {
+            _timerSpeedMultiplierField.UpdateValue(new NetworkableFloatValue(newTimerMultiplier));
         }
         
         public enum TargetType {

@@ -1,6 +1,9 @@
 using Gameplay.Config.Upgrades;
 
 namespace Gameplay.Entities.Upgrades {
+    /// <summary>
+    /// Upgrade for giving more collectible resources for friendly villages
+    /// </summary>
     public class MysticalSoilEnrichmentUpgrade : AbstractUpgrade<MysticalSoilEnrichmentUpgradeData> {
         public MysticalSoilEnrichmentUpgrade(MysticalSoilEnrichmentUpgradeData data, GameTeam team) : base(data, team) {}
         
@@ -24,6 +27,10 @@ namespace Gameplay.Entities.Upgrades {
         }
         public override void RemoveUpgrade(GridEntity friendlyEntity) {
             // No effect
+        }
+        
+        protected override void TimerStartedLocally() {
+            // Nothing to do
         }
     }
 }

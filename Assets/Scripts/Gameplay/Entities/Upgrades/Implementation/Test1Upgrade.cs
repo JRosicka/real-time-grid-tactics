@@ -18,5 +18,9 @@ namespace Gameplay.Entities.Upgrades {
         public override void RemoveUpgrade(GridEntity friendlyEntity) {
             Debug.Log($"Test 1 upgrade removed from entity {friendlyEntity.EntityData.ID}");
         }
+        
+        protected override void TimerStartedLocally() {
+            // Nothing to do
+        }
     }
 }

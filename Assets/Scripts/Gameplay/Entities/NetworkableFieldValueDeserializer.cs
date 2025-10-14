@@ -10,6 +10,7 @@ namespace Gameplay.Entities {
             string id = reader.ReadString();
             return id switch {
                 nameof(NetworkableIntegerValue) => NetworkableIntegerValue.Deserialize(reader),
+                nameof(NetworkableFloatValue) => NetworkableFloatValue.Deserialize(reader),
                 nameof(NetworkableVector2IntegerValue) => NetworkableVector2IntegerValue.Deserialize(reader),
                 nameof(ResourceAmount) => ResourceAmount.Deserialize(reader),
                 nameof(TargetLocationLogic) => TargetLocationLogic.Deserialize(reader),

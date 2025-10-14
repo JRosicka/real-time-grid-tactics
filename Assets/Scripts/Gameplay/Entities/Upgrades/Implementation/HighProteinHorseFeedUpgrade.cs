@@ -17,5 +17,9 @@ namespace Gameplay.Entities.Upgrades {
         public override void RemoveUpgrade(GridEntity friendlyEntity) {
             // Nothing to do
         }
+
+        protected override void TimerStartedLocally() {
+            // Nothing to do
+        }
     }
 }

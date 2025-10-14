@@ -55,6 +55,8 @@ namespace Gameplay.Entities.Upgrades {
         /// Server method.
         /// </summary>
         public abstract void RemoveUpgrade(GridEntity friendlyEntity);
+
+        protected abstract void TimerStartedLocally();
         
         #endregion
         
@@ -77,6 +79,7 @@ namespace Gameplay.Entities.Upgrades {
 
         private void StartUpgradeTimer() {
             UpgradeTimer = new UpgradeDurationTimer(this, Team, Data.ExpirationSeconds);
+            TimerStartedLocally();
         }
 
         public bool ExpireUpgradeTimer() {

@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1421f0b9a73948f1825c6dff72d0da56, type: 3}
+  m_Name: Amber Aura
+  m_EditorClassIdentifier: 
+  ID: Amber Aura
+  ShortDescription: Temporary speed boost to all timers.
+  Description: Speeds up all friendly timers by 25% for 30 seconds.
+  Cost:
+  - Type: 1
+    Amount: 100
+  Requirements: []
+  RequirementNeedsToBeAdjacent: 0
+  BuildTime: 10
+  BuildsImmediately: 1
+  BaseSprite: {fileID: 21300000, guid: 435af02fffc4842f58224f3542557e11, type: 3}
+  TeamColorSprite: {fileID: 0}
+  BaseSpriteIconOverride: {fileID: 0}
+  Repeatable: 1
+  ApplyToGridEntitiesUponCompletion: 1
+  ApplyToGridEntitiesWhenTheySpawn: 1
+  ExpirationSeconds: 30
+  TimerSpeedMultiplier: 1.25
