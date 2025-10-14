@@ -192,19 +192,19 @@ namespace Gameplay.Entities {
                 InteractBehavior = new UnownedInteractBehavior();
             } else if (Team == GameTeam.Neutral) {
                 if (data.ControllableByAllPlayers) {
-                    InteractBehavior = new OwnerInteractBehavior();
+                    InteractBehavior = new OwnerInteractBehavior(this);
                 } else {
                     InteractBehavior = new UnownedInteractBehavior();
                 }
             } else if (Team == localPlayerTeam) {
-                InteractBehavior = new OwnerInteractBehavior();
+                InteractBehavior = new OwnerInteractBehavior(this);
                 if (built) {
                     // Play the sound effect
                     GameManager.Instance.GameAudio.EntityFinishedBuildingSound(EntityData);
                 }
             } else if (GameManager.Instance.Cheats.ControlAllPlayers) {
                 _normallyWouldBeAnEnemyButIsControllableDueToCheats = true;
-                InteractBehavior = new OwnerInteractBehavior();
+                InteractBehavior = new OwnerInteractBehavior(this);
             } else {
                 InteractBehavior = new EnemyInteractBehavior();
             }
@@ -364,7 +364,7 @@ namespace Gameplay.Entities {
             }
             if (controlEverything && InteractBehavior is EnemyInteractBehavior) {
                 _normallyWouldBeAnEnemyButIsControllableDueToCheats = true;
-                InteractBehavior = new OwnerInteractBehavior();
+                InteractBehavior = new OwnerInteractBehavior(this);
             } else if (!controlEverything && _normallyWouldBeAnEnemyButIsControllableDueToCheats) {
                 InteractBehavior = new EnemyInteractBehavior();
             }

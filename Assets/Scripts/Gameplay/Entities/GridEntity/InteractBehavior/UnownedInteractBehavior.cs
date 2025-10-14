@@ -13,8 +13,10 @@ namespace Gameplay.Entities {
         /// Only show paths for spectators
         /// </summary>
         public bool AllowedToSeeTargetLocation => GameManager.Instance.LocalTeam == GameTeam.Spectator;
-        public bool AllowedToSeeQueuedBuilds => GameManager.Instance.LocalTeam == GameTeam.Spectator;
         
+        public bool AllowedToSeeQueuedBuilds(GameTeam team) {
+            return GameManager.Instance.LocalTeam == GameTeam.Spectator;
+        }
         public SelectionReticle.ReticleSelection ReticleSelection => SelectionReticle.ReticleSelection.Neutral;
 
         public void Select(GridEntity entity) {

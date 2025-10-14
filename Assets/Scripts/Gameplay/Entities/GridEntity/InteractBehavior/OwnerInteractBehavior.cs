@@ -8,11 +8,25 @@ namespace Gameplay.Entities {
     /// <see cref="IInteractBehavior"/> for clicking on a friendly entity under the local player's control
     /// </summary>
     public class OwnerInteractBehavior : IInteractBehavior {
+        private readonly GridEntity _entity;
+        
         public bool IsLocalTeam => true;
         public bool AllowedToSeeTargetLocation => true;
-        public bool AllowedToSeeQueuedBuilds => true;
+        public bool AllowedToSeeQueuedBuilds(GameTeam team) {
+            if (_entity.EntityData.ControllableByAllPlayers) {
+                // Only show for local team abilities 
+                return team == GameManager.Instance.LocalTeam;
+            }
+
+            return true;
+        }
+
         public SelectionReticle.ReticleSelection ReticleSelection => SelectionReticle.ReticleSelection.Ally;
 
+        public OwnerInteractBehavior(GridEntity entity) {
+            _entity = entity;
+        }
+        
         public void Select(GridEntity entity) {
             GameManager.Instance.EntitySelectionManager.SelectEntity(entity);
         }

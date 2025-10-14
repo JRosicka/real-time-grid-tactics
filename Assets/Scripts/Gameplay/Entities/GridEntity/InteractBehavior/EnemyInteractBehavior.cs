@@ -8,7 +8,9 @@ namespace Gameplay.Entities {
     public class EnemyInteractBehavior : IInteractBehavior {
         public bool IsLocalTeam => false;
         public bool AllowedToSeeTargetLocation => false;
-        public bool AllowedToSeeQueuedBuilds => false;
+        public bool AllowedToSeeQueuedBuilds(GameTeam team) {
+            return false;
+        }
         public SelectionReticle.ReticleSelection ReticleSelection => SelectionReticle.ReticleSelection.Enemy;
 
         public void Select(GridEntity entity) {

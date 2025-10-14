@@ -29,14 +29,14 @@ namespace Gameplay.UI {
                 return;
             }
 
-            if (entity.EntityData.IsStructure && entity.InteractBehavior is not { AllowedToSeeQueuedBuilds: true }) {
+            GameTeam localTeam = GameManager.Instance.LocalTeam;
+            if (entity.EntityData.IsStructure && (entity.InteractBehavior == null || !entity.InteractBehavior.AllowedToSeeQueuedBuilds(localTeam))) {
                 // This is a structure whose builds we are not allowed to see
                 return;
             }
 
             gameObject.SetActive(true);
             entity.BuildQueue.BuildQueueUpdated += UpdateBuildQueue;
-            GameTeam localTeam = GameManager.Instance.LocalTeam;
             UpdateBuildQueue(localTeam, entity.BuildQueue.Queue(localTeam));
         }
 

@@ -35,7 +35,7 @@ namespace Gameplay.Entities.Abilities {
                 // Always show the build progress for builder units
                 if (!Performer.EntityData.IsStructure) return true;
                 // We need to be a spectator or the performer's owner to see a structure's builds
-                return Performer.InteractBehavior is { AllowedToSeeQueuedBuilds: true };
+                return Performer.InteractBehavior != null && Performer.InteractBehavior.AllowedToSeeQueuedBuilds(PerformerTeam);
             }
         }
 

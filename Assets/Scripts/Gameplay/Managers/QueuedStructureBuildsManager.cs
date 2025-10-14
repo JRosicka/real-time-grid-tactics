@@ -25,7 +25,7 @@ namespace Gameplay.Managers {
         }
 
         public void UpdateQueuedBuildsForEntity(GridEntity builder) {
-            if (builder.InteractBehavior is not { AllowedToSeeQueuedBuilds: true }) return;
+            if (builder.InteractBehavior == null || !builder.InteractBehavior.AllowedToSeeQueuedBuilds(_gameManager.LocalTeam)) return;
             
             List<QueuedBuildInfo> queuedStructuresCopy = new List<QueuedBuildInfo>(_queuedStructures);
             List<BuildAbility> currentlyQueuedStructureBuilds = builder.InProgressAbilities
