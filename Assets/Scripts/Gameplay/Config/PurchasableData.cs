@@ -35,7 +35,7 @@ namespace Gameplay.Config {
     
     public static class PurchasableDataSerializer {
         public static void WritePurchasableData(this NetworkWriter writer, PurchasableData data) {
-            writer.WriteString(data.name);
+            writer.WriteString(data.ID);
         }
 
         public static PurchasableData ReadPurchasableData(this NetworkReader reader) {

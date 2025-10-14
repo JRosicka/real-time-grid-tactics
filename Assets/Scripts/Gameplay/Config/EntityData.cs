@@ -105,7 +105,7 @@ namespace Gameplay.Config {
 
     public static class EntityDataSerializer {
         public static void WriteEntityData(this NetworkWriter writer, EntityData data) { 
-            writer.WriteString(data.name);
+            writer.WriteString(data.ID);
         }
 
         public static EntityData ReadEntityData(this NetworkReader reader) {

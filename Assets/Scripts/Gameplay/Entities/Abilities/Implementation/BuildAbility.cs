@@ -161,7 +161,7 @@ namespace Gameplay.Entities.Abilities {
         public PurchasableData Buildable;
         public Vector2Int BuildLocation;
         public void Serialize(NetworkWriter writer) {
-            writer.WriteString(Buildable.name);
+            writer.WriteString(Buildable.ID);
             writer.Write(BuildLocation);
         }
 

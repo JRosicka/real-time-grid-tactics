@@ -27,7 +27,7 @@ namespace Gameplay.Config.Upgrades {
     
     public static class UpgradeDataSerializer {
         public static void WriteUpgradeData(this NetworkWriter writer, UpgradeData data) {
-            writer.WriteString(data.name);
+            writer.WriteString(data.ID);
         }
 
         public static UpgradeData ReadUpgradeData(this NetworkReader reader) {
