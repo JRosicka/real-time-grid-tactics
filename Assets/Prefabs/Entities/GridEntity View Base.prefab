@@ -5861,8 +5861,8 @@ MonoBehaviour:
   _attackTimerFill: {fileID: 3100543005100799962}
   _buildTimerLocation: {fileID: 3854032831165729420}
   _uniqueAbilityTimerLocation: {fileID: 2274106634870613813}
-  _spectatorPlayer1SharedAbilityTimerLocation: {fileID: 0}
-  _spectatorPlayer2SharedAbilityTimerLocation: {fileID: 0}
+  _spectatorPlayer1SharedAbilityTimerLocation: {fileID: 2440762504742642026}
+  _spectatorPlayer2SharedAbilityTimerLocation: {fileID: 2253787846048362217}
   _unitAnimator: {fileID: 8551011409483650164}
   _healAnimator: {fileID: 7010898409609744855}
   _directionContainer: {fileID: 4630265928891351562}
@@ -6162,7 +6162,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2253787846048362217}
   m_Layer: 0
-  m_Name: Amber Forge Player 1 Timer Location
+  m_Name: Amber Forge Player 2 Timer Location
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

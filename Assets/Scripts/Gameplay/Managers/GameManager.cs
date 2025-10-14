@@ -110,7 +110,12 @@ public class GameManager : MonoBehaviour {
 
     public IGamePlayer GetPlayerForTeam(GridEntity entity) {
         if (entity.Team == GameTeam.Neutral && entity.EntityData.ControllableByAllPlayers) {
-            return GetPlayerForTeam(LocalTeam);
+            if (LocalTeam == GameTeam.Spectator) {
+                // Not a great solution, but just treat this like it's player 1 for spectators
+                return Player1;
+            } else { 
+                return GetPlayerForTeam(LocalTeam);
+            }
         }
         return GetPlayerForTeam(entity.Team);
     }

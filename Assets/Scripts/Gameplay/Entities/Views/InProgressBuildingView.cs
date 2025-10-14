@@ -15,7 +15,7 @@ namespace Gameplay.Entities {
 
         public void Initialize(BuildAbility buildAbility) {
             EntityData entityData = (EntityData)buildAbility.AbilityParameters.Buildable;
-            GameTeam team = buildAbility.Performer.Team;
+            GameTeam team = buildAbility.PerformerTeam;
             
             Initialize(team, entityData, false);
 

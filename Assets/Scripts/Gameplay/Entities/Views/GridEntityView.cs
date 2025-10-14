@@ -382,7 +382,7 @@ namespace Gameplay.Entities {
                     } else if (abilityTimer.Ability.AbilityData.SelectableForAllPlayers &&
                                GameManager.Instance.LocalTeam == GameTeam.Spectator) {
                         // This is the Amber Forge for a spectator, so support timer locations for both players
-                        timerLocation = ability.Performer.Team switch {
+                        timerLocation = ability.PerformerTeam switch {
                             GameTeam.Player1 => _spectatorPlayer1SharedAbilityTimerLocation,
                             GameTeam.Player2 => _spectatorPlayer2SharedAbilityTimerLocation,
                             _ => throw new Exception("WOAH there buddy, an ABILITY that isn't from EITHER PLAYER??????")

@@ -35,7 +35,13 @@ namespace Gameplay.Entities.BuildQueue {
         }
 
         // TODO-abilities: Somehow this just works? Hmm. 
-        public List<BuildAbility> Queue(GameTeam team) => _buildAbilities[team];
+        public List<BuildAbility> Queue(GameTeam team) {
+            if (team == GameTeam.Spectator) {
+                // Just serve the player 1 queue to spectators for now. 
+                team = GameTeam.Player1;
+            }
+            return _buildAbilities[team];
+        }
 
         public bool HasSpace(GameTeam team) => Queue(team).Count < _maxSize;
         
