@@ -116,8 +116,12 @@ namespace Gameplay.UI {
                 _basicResourceCostAmount.text = basicCost.ToString();
                 _advancedResourceCostContainer.SetActive(advancedCost > 0);
                 _advancedResourceCostAmount.text = advancedCost.ToString();
-                _buildTimeContainer.SetActive(true);
-                _buildTimeAmount.text = string.Format(_buildTimeFormat, Mathf.RoundToInt(buildAbilitySlotBehavior.Buildable.BuildTime));
+                if (buildAbilitySlotBehavior.Buildable.BuildsImmediately) {
+                    _buildTimeContainer.SetActive(false);
+                } else {
+                    _buildTimeContainer.SetActive(true);
+                    _buildTimeAmount.text = string.Format(_buildTimeFormat, Mathf.RoundToInt(buildAbilitySlotBehavior.Buildable.BuildTime));
+                }
             } else {
                 _name.text = abilityInfo.ID;
                 _description.text = abilityInfo.Description;
