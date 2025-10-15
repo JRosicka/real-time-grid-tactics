@@ -10,13 +10,13 @@ using UnityEngine;
 
 namespace Gameplay.Managers {
     /// <summary>
-    /// Handles tracking Amber Forge enhancements being available for research.
+    /// Handles tracking Amber Forge upgrades being available for research.
     /// Client-side. 
     /// </summary>
     public class AmberForgeAvailabilityNotifier {
-        public event Action<bool> EnhancementAvailabilityChanged;
+        public event Action<bool> AmberForgeAvailabilityChanged;
 
-        public bool EnhancementAvailable { get; private set; }
+        public bool AmberForgeAvailable { get; private set; }
         
         private GridEntity _amberForgeEntity;
         private GridEntity _friendlyKingEntity;
@@ -50,11 +50,11 @@ namespace Gameplay.Managers {
         }
 
         private void UpdateAvailability() {
-            bool newAvailability = IsEnhancementAvailable();
-            if (newAvailability == EnhancementAvailable) return;
+            bool newAvailability = IsAmberForgeUpgradeAvailable();
+            if (newAvailability == AmberForgeAvailable) return;
             
-            EnhancementAvailable = newAvailability;
-            EnhancementAvailabilityChanged?.Invoke(EnhancementAvailable);
+            AmberForgeAvailable = newAvailability;
+            AmberForgeAvailabilityChanged?.Invoke(AmberForgeAvailable);
         }
 
         private void AmberForgeAbilityTimerStarted(IAbility ability, AbilityTimer abilityTimer) {
@@ -70,17 +70,17 @@ namespace Gameplay.Managers {
             
             UpdateAvailability();
             
-            // A build ability for the local team just expired, so the Amber Forge is available. Check if there are any enhancements left to get. 
-            List<UpgradeData> availableEnhancements = AvailableEnhancements(GameManager.Instance.GetPlayerForTeam(ability.PerformerTeam));
-            if (availableEnhancements == null || availableEnhancements.Count == 0) return;
+            // A build ability for the local team just expired, so the Amber Forge is available. Check if there are any AF upgrades left to get. 
+            List<UpgradeData> availableUpgrades = AvailableAmberForgeUpgrades(GameManager.Instance.GetPlayerForTeam(ability.PerformerTeam));
+            if (availableUpgrades == null || availableUpgrades.Count == 0) return;
             GameManager.Instance.AlertTextDisplayer.DisplayAlert("The Amber Forge is available.");
         }
 
         /// <summary>
         /// Check to see if the friendly king is adjacent to the Amber Forge and whether we have enough money to buy
-        /// an available enhancement.
+        /// an available AF upgrade.
         /// </summary>
-        private bool IsEnhancementAvailable() {
+        private bool IsAmberForgeUpgradeAvailable() {
             if (!_friendlyKingEntity) return false;
             if (!_amberForgeEntity || _amberForgeEntity.DeadOrDying || _amberForgeEntity.Location == null) return false;
 
@@ -95,17 +95,17 @@ namespace Gameplay.Managers {
                 GameManager.Instance.CommandManager.EntitiesOnGrid.LocationOfEntity(_friendlyKingEntity);
             if (friendlyKingLocation == null || !adjacentCells.Contains(friendlyKingLocation.Value)) return false;
 
-            // Check if enhancements are available
+            // Check if upgrades are available
             IGamePlayer localPlayer = GameManager.Instance.GetPlayerForTeam(GameManager.Instance.LocalTeam);
             PlayerResourcesController resourcesController = localPlayer.ResourcesController;
-            List<UpgradeData> availableEnhancements = AvailableEnhancements(localPlayer);
-            if (availableEnhancements == null) return false;
+            List<UpgradeData> availableUpgrades = AvailableAmberForgeUpgrades(localPlayer);
+            if (availableUpgrades == null) return false;
             
             // Check affordability
-            return availableEnhancements.Select(e => e.Cost).Any(resourceAmounts => resourcesController.CanAfford(resourceAmounts));
+            return availableUpgrades.Select(e => e.Cost).Any(resourceAmounts => resourcesController.CanAfford(resourceAmounts));
         }
 
-        private List<UpgradeData> AvailableEnhancements(IGamePlayer player) {
+        private List<UpgradeData> AvailableAmberForgeUpgrades(IGamePlayer player) {
             return _amberForgeEntity.GetAbilityData<BuildAbilityData>()?.Buildables
                 .Select(b => b.data)
                 .Cast<UpgradeData>()

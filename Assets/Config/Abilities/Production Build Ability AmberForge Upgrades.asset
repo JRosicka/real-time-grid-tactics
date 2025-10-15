@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 575c0f3cd9a64c78aaf8481f645c83a4, type: 3}
-  m_Name: Production Build Ability Enhancements
+  m_Name: Production Build Ability AmberForge Upgrades
   m_EditorClassIdentifier: 
   Data:
-    _contentResourceID: Production Build Ability Enhancements
+    _contentResourceID: Production Build Ability AmberForge Upgrades
     _id: Build
     _description: Research an upgrade.
     _icon: {fileID: 21300000, guid: dcdb6563c02b6bf43b698eea6b840db7, type: 3}
@@ -39,11 +39,7 @@ MonoBehaviour:
     Targetable: 0
     UsableEverywhereByBothTeams: 1
     Buildables:
-    - data: {fileID: 11400000, guid: 2811aaa580ba049d79353b02de36b2b5, type: 2}
+    - data: {fileID: 11400000, guid: e21fe53fdd5d5462889502085309b111, type: 2}
       selectionKey: q
-    - data: {fileID: 11400000, guid: 7a94c63cd0fed4c4e8ead65314284b3b, type: 2}
-      selectionKey: w
     - data: {fileID: 11400000, guid: 9bcd35c82053a44dfa5d90fcfe70f347, type: 2}
       selectionKey: e
-    - data: {fileID: 11400000, guid: e21fe53fdd5d5462889502085309b111, type: 2}
-      selectionKey: r

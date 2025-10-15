@@ -17,8 +17,8 @@ namespace Gameplay.Entities {
 
             _notificationIcon.sprite = GameManager.Instance.GetPlayerForTeam(entity).Data.ColoredButtonData.Normal;
             
-            AmberForgeAvailabilityNotifier.EnhancementAvailabilityChanged += UpdateAvailability;
-            UpdateAvailability(AmberForgeAvailabilityNotifier.EnhancementAvailable);
+            AmberForgeAvailabilityNotifier.AmberForgeAvailabilityChanged += UpdateAvailability;
+            UpdateAvailability(AmberForgeAvailabilityNotifier.AmberForgeAvailable);
         }
         public override void LethalDamageReceived() { }
 
