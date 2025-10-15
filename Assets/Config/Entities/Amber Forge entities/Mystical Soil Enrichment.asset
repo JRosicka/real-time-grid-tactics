@@ -20,8 +20,8 @@ MonoBehaviour:
   - Type: 1
     Amount: 200
   Requirements:
-  - {fileID: 11400000, guid: 5d9e30910c9795b49bea0c2c257e60eb, type: 2}
-  RequirementNeedsToBeAdjacent: 0
+  - {fileID: 11400000, guid: f8a9d9571b0a8324587b160065ca7fce, type: 2}
+  RequirementNeedsToBeAdjacent: 1
   BuildTime: 60
   BuildsImmediately: 1
   BaseSprite: {fileID: 21300000, guid: 315a9e657e9cb0941b30b13c4876ec5b, type: 3}
