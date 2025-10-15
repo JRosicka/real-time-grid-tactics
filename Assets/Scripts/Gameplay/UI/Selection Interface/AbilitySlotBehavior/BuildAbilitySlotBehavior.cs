@@ -61,10 +61,13 @@ namespace Gameplay.UI {
 
         public void HandleFailedToSelect(AbilitySlot.AvailabilityResult availability) {
             if (availability == AbilitySlot.AvailabilityResult.Unselectable) {
-                bool fulfillsRequirements = FulfillsRequirementsToBuild(out string alertMessage);
-                if (fulfillsRequirements) {
+                string alertMessage;
+                if (GameManager.Instance.LocalTeam == GameTeam.Spectator) {
+                    alertMessage = "Can not affect the game as a spectator!";
+                } else if (FulfillsRequirementsToBuild(out alertMessage)) {
                     alertMessage = "Can not afford.";
                 }
+                
                 GameManager.Instance.AlertTextDisplayer.DisplayAlert(alertMessage);
             } // Otherwise it is unavailable - don't even acknowledge the selection attempt
         }
