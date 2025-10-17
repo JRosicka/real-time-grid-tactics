@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using Gameplay.Config.Abilities;
 using Gameplay.Entities;
 using Gameplay.Entities.Abilities;
+using Gameplay.Entities.Upgrades;
 using UnityEngine;
 
 namespace Gameplay.Managers {
@@ -70,12 +71,23 @@ namespace Gameplay.Managers {
             _queuedAttacks.Clear();
         }
 
+        private static int BonusDamageFromUpgrades(GridEntity attacker) {
+            int bonusDamage = 0;
+            foreach (IUpgrade upgrade in GameManager.Instance.GetPlayerForTeam(attacker).OwnedPurchasablesController.Upgrades.GetOwnedUpgrades()) {
+                bonusDamage += upgrade.GetAttackBonus(attacker);
+            }
+            return bonusDamage;
+        }
+
         private static void DoDealDamage(GridEntity attacker, GridEntity target, int bonusDamage) {
             attacker.LastAttackedEntity.UpdateValue(new NetworkableGridEntityValue(target));
             if (target.Location == null) {
                 Debug.LogWarning("Entity received attack but it is not registered or unregistered");
                 return;
             }
+            
+            // Apply any bonus damage from upgrades
+            bonusDamage += BonusDamageFromUpgrades(attacker);
             
             bool killed = target.HPHandler.ReceiveAttackFromEntity(attacker, bonusDamage);
             target.TryRespondToAttack(attacker);

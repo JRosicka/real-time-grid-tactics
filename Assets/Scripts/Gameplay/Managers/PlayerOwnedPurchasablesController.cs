@@ -46,7 +46,7 @@ public class PlayerOwnedPurchasablesController : NetworkBehaviour {
         get {
             List<PurchasableData> entityData = GameManager.Instance.CommandManager.EntitiesOnGrid
                 .ActiveEntitiesForTeam(_player.Data.Team).Select(e => e.EntityData).Cast<PurchasableData>().ToList();
-            return entityData.Concat(Upgrades.GetOwnedUpgrades()).ToList();
+            return entityData.Concat(Upgrades.GetOwnedUpgradeDatas()).ToList();
         }
     }
 
@@ -74,7 +74,7 @@ public class PlayerOwnedPurchasablesController : NetworkBehaviour {
     }
 
     public bool HasUpgrade(UpgradeData upgrade) {
-        return Upgrades.GetOwnedUpgrades().Contains(upgrade);
+        return Upgrades.GetOwnedUpgradeDatas().Contains(upgrade);
     }
     
     public void UpdateUpgradeStatus(UpgradeData upgradeData, UpgradeStatus newStatus) {

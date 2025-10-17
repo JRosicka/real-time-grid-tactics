@@ -646,6 +646,21 @@ namespace Gameplay.Entities {
 
             return tooltipMessage;
         }
+
+        public string GetAttackTooltipMessageFromUpgrades(string currentTooltipMessage) {
+            foreach (IUpgrade upgrade in GameManager.Instance.GetPlayerForTeam(this).OwnedPurchasablesController.Upgrades.GetOwnedUpgrades()) {
+                string attackTooltipMessage = upgrade.GetAttackTooltipMessage(this);
+                if (string.IsNullOrEmpty(attackTooltipMessage)) continue;
+                
+                if (!string.IsNullOrEmpty(currentTooltipMessage)) {
+                    currentTooltipMessage += "<br>";
+                }
+
+                currentTooltipMessage += attackTooltipMessage;
+            }
+
+            return currentTooltipMessage;
+        }
         
         public int GetStructureDefenseModifier() {
             if (EntityData.IsStructure) {

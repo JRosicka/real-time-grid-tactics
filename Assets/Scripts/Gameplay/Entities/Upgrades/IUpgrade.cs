@@ -34,5 +34,7 @@ namespace Gameplay.Entities.Upgrades {
         UpgradeDurationTimer UpgradeTimer { get; }
         bool ExpireUpgradeTimer();
         void UpdateTimer(float deltaTime);
+        int GetAttackBonus(GridEntity attackingEntity);
+        string GetAttackTooltipMessage(GridEntity attackingEntity);
     }
 }

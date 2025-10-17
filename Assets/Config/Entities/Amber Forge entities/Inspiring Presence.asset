@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c5b16666288a415cb0fb71beaa88b691, type: 3}
+  m_Name: Inspiring Presence
+  m_EditorClassIdentifier: 
+  ID: Inspiring Presence
+  ShortDescription: Bonus damage for units adjacent to your King.
+  Description: Adds +3 damage to friendly units when they are adjacent to your King.
+  Cost:
+  - Type: 1
+    Amount: 150
+  Requirements:
+  - {fileID: 11400000, guid: f8a9d9571b0a8324587b160065ca7fce, type: 2}
+  RequirementNeedsToBeAdjacent: 1
+  BuildTime: 10
+  BuildsImmediately: 1
+  BaseSprite: {fileID: 21300000, guid: 54aaddbf8244b0e4ab01b889303d22d4, type: 3}
+  TeamColorSprite: {fileID: 0}
+  BaseSpriteIconOverride: {fileID: 0}
+  Repeatable: 0
+  ApplyToGridEntitiesUponCompletion: 0
+  ApplyToGridEntitiesWhenTheySpawn: 0
+  ExpirationSeconds: 0
+  BonusDamage: 3

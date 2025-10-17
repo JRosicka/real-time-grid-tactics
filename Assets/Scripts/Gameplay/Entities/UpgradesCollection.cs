@@ -34,10 +34,14 @@ namespace Gameplay.Entities {
             return _upgrades.FirstOrDefault(u => u.UpgradeData == data);
         }
         
-        public List<UpgradeData> GetOwnedUpgrades() {
+        public List<UpgradeData> GetOwnedUpgradeDatas() {
             return _upgrades.Where(u => u.Status == UpgradeStatus.Owned)
                 .Select(u => u.UpgradeData)
                 .ToList();
+        }
+
+        public List<IUpgrade> GetOwnedUpgrades() {
+            return _upgrades.Where(u => u.Status == UpgradeStatus.Owned).ToList();
         }
         
         public List<UpgradeData> GetInProgressUpgrades() {

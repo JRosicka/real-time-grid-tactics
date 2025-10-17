@@ -100,6 +100,10 @@ namespace Gameplay.Entities.Upgrades {
             UpgradeTimer?.UpdateTimer(deltaTime);
         }
         
+        public virtual int GetAttackBonus(GridEntity attackingEntity) => 0;
+
+        public virtual string GetAttackTooltipMessage(GridEntity attackingEntity) => null;
+
         private List<GridEntity> FriendlyEntities => GameManager.Instance.CommandManager.EntitiesOnGrid.ActiveEntitiesForTeam(Team);
     }
 }

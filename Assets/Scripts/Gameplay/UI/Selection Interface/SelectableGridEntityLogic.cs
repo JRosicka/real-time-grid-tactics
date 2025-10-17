@@ -28,6 +28,8 @@ namespace Gameplay.UI {
             if (player != null) {
                 player.OwnedPurchasablesController.OwnedPurchasablesChangedEvent += OnOwnedPurchasablesChanged;
             }
+
+            GameManager.Instance.LeaderTracker.LeaderMoved += OnLeaderMoved;
         }
 
         [NotNull] public GridEntity Entity { get; }
@@ -201,6 +203,7 @@ namespace Gameplay.UI {
             if (player != null) {
                 player.OwnedPurchasablesController.OwnedPurchasablesChangedEvent -= OnOwnedPurchasablesChanged;
             }
+            GameManager.Instance.LeaderTracker.LeaderMoved -= OnLeaderMoved;
         }
         
         private void OnEntityAbilityPerformed(IAbility iAbility, AbilityTimer abilityTimer) {
@@ -213,6 +216,11 @@ namespace Gameplay.UI {
         }
 
         private void OnOwnedPurchasablesChanged() {
+            SetUpHoverableInfo(_defenseHoverableInfoIcon, _attackHoverableInfoIcon, null);
+        }
+
+        private void OnLeaderMoved(GridEntity leader) {
+            if (leader.Team != Entity.Team) return;
             SetUpHoverableInfo(_defenseHoverableInfoIcon, _attackHoverableInfoIcon, null);
         }
 
@@ -259,6 +267,7 @@ namespace Gameplay.UI {
         private const string AttackFormat = "Deals {0} additional damage to {1}.";
         private string GetAttackTooltip() {
             string tooltipMessage = Entity.GetAttackTooltipMessageFromAbilities();
+            tooltipMessage = Entity.GetAttackTooltipMessageFromUpgrades(tooltipMessage);
             string bonusDamage = Entity.EntityData.BonusDamage == 0 
                 ? "" 
                 : string.Format(AttackFormat, Entity.EntityData.BonusDamage, GetStringListForEntityTags(Entity.EntityData.TagsToApplyBonusDamageTo));
