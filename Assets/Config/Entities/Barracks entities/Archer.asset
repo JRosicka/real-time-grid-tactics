@@ -57,6 +57,12 @@ MonoBehaviour:
   SlowMoveTime: 6
   AddedMovementTimeFromAttacking: 1.2
   Tags: 03000000
+  InaccessibleTiles:
+  - {fileID: 11400000, guid: 21c254da385bdd14eb49ce66d1a541a9, type: 2}
+  - {fileID: 11400000, guid: 247c5b5526252334798aa3ad951dcf40, type: 2}
+  SlowTiles:
+  - {fileID: 11400000, guid: 72bba8f070a4e784393726b1ad5d4c16, type: 2}
+  OverrideEntityDataForPathfinding: {fileID: 0}
   AttackerTargetPriority: 2
   Abilities:
   - {fileID: 11400000, guid: ec15a049dabc53b4d92ab14b2871752c, type: 2}

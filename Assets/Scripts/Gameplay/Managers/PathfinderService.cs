@@ -79,12 +79,12 @@ public class PathfinderService {
     private Path DoFindPath(GridEntity entity, Vector2Int entityLocation, Vector2Int destination, bool ignoreOtherEntities, Path? pathIgnoringOtherEntities = null) {
         int maxSearch = MaxCellsToSearch;
         if (!entity.CanPathFindToTile(GridController.GridData.GetCell(destination).Tile) 
-                || !CanEntityEnterCell(destination, entity.EntityData, entity.Team, forRallying:entity.EntityData.CanRally)) {
+                || !CanEntityEnterCell(destination, entity.EntityDataForPathfinding(), entity.Team, forRallying:entity.EntityData.CanRally)) {
             // Can't go to destination, so let's not overdo the search since we're just gonna pick the best available choice anyway
             maxSearch = MaxCellsToSearchWhenWeKnowNoPathExists;
         }
         
-        float entityTravelTime = entity.EntityData.NormalMoveTime > 0 ? entity.EntityData.NormalMoveTime : 1;
+        float entityTravelTime = entity.EntityDataForPathfinding().NormalMoveTime > 0 ? entity.EntityDataForPathfinding().NormalMoveTime : 1;
         float maxFCost = pathIgnoringOtherEntities == null 
             ? float.MaxValue 
             : pathIgnoringOtherEntities.Value.Nodes.Last().F + GameManager.Instance.Configuration.MaxPathFindingFCostBuffer / entityTravelTime;

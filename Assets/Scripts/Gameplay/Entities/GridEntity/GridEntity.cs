@@ -37,8 +37,6 @@ namespace Gameplay.Entities {
         public string DisplayName => EntityData.ID;
         public List<EntityTag> Tags => EntityData.Tags;
         public IEnumerable<IAbilityData> Abilities => EntityData.Abilities.Select(a => a.Content);
-        public List<GameplayTile> SlowTiles;
-        public List<GameplayTile> InaccessibleTiles;
 
         [Header("Stats")]
         public int MaxHP;
@@ -238,14 +236,6 @@ namespace Gameplay.Entities {
             MoveTime = EntityData.NormalMoveTime;
             Range = EntityData.Range;
             Damage = EntityData.Damage;
-
-            List<GameplayTile> tiles = GameManager.Instance.Configuration.Tiles;
-            // Add any tiles that have at least one of our tags in its inaccessible tags list
-            InaccessibleTiles = tiles.Where(t => t.InaccessibleTags.Intersect(Tags).Any()).ToList();
-            // Add any tiles that have at least one of our tags in its slow tags list, and is not an inaccessible tile
-            SlowTiles = tiles.Where(t => t.SlowTags.Select(s => s.Tag).Intersect(Tags).Any())
-                .Where(t => !InaccessibleTiles.Contains(t))
-                .ToList();
         }
         
         private void Update() {
@@ -550,7 +540,11 @@ namespace Gameplay.Entities {
         /// Whether this entity can move to (or rally to) a cell with the given tile, assuming it starts adjacent to it.
         /// </summary>
         public bool CanPathFindToTile(GameplayTile tile) {
-            return !InaccessibleTiles.Contains(tile);
+            return !EntityDataForPathfinding().InaccessibleTiles.Contains(tile);
+        }
+
+        public EntityData EntityDataForPathfinding() {
+            return EntityData.OverrideEntityDataForPathfinding ?? EntityData;
         }
         
         /// <summary>
@@ -562,7 +556,7 @@ namespace Gameplay.Entities {
                 return -1;
             }
 
-            return EntityData.NormalMoveTime * tile.GetMoveModifier(Tags);
+            return EntityDataForPathfinding().NormalMoveTime * tile.GetMoveModifier(EntityDataForPathfinding().Tags);
         }
 
         public void ToggleHoldPosition(bool holdPosition) {

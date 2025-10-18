@@ -55,11 +55,11 @@ namespace Gameplay.Pathfinding {
         public GridNode(GridEntity entity, GridData.CellData cellData, bool ignoreOtherEntities) {
             _entity = entity;
             _cellData = cellData;
-            _fastestEnterTime = entity.EntityData.NormalMoveTime;
+            _fastestEnterTime = entity.EntityDataForPathfinding().NormalMoveTime;
             _ignoreOtherEntities = ignoreOtherEntities;
 
             Walkable = entity.CanPathFindToTile(cellData.Tile) && (ignoreOtherEntities || PathfinderService.CanEntityEnterCell(cellData.Location, 
-                entity.EntityData, entity.Team, forRallying:entity.EntityData.CanRally));
+                entity.EntityDataForPathfinding(), entity.Team, forRallying:entity.EntityDataForPathfinding().CanRally));
 
             List<Vector2Int> locationsWithFriendlyEntities = GameManager.Instance.CommandManager.EntitiesOnGrid.LocationsWithFriendlyEntities(entity.Team);
             foreach (GridData.CellData neighborCell in NeighborCells) {
