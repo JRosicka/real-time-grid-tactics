@@ -579,14 +579,25 @@ namespace Gameplay.Entities {
         #endregion
         #region Attacking
 
-        public void TryAttackMoveToCell(Vector2Int targetCell, bool fromInput) {
+        public void TryAttack(Vector2Int targetCell, GridEntity targetEntity, bool fromInput) {
             if (!CanMoveOrRally) return;
 
-            AttackAbilityData data = GetAbilityData<AttackAbilityData>();
-            if (AbilityAssignmentManager.StartPerformingAbility(this, data, new AttackAbilityParameters {
-                    Destination = targetCell
-                }, fromInput, true, true)) {
-                SetTargetLocation(targetCell, null, true);
+            if (targetEntity == null) {
+                // Attack move
+                AttackAbilityData data = GetAbilityData<AttackAbilityData>();
+                if (AbilityAssignmentManager.StartPerformingAbility(this, data, new AttackAbilityParameters {
+                        Destination = targetCell
+                    }, fromInput, true, true)) {
+                    SetTargetLocation(targetCell, null, true);
+                }
+            } else {
+                // Target attack
+                TargetAttackAbilityData data = GetAbilityData<TargetAttackAbilityData>();
+                if (AbilityAssignmentManager.StartPerformingAbility(this, data, new TargetAttackAbilityParameters {
+                        Target = targetEntity
+                    }, fromInput, true, true)) {
+                    SetTargetLocation(targetCell, targetEntity, true);
+                }
             }
         }
 

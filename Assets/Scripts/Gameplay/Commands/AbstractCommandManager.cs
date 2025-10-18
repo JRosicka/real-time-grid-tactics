@@ -124,8 +124,8 @@ public abstract class AbstractCommandManager : NetworkBehaviour, ICommandManager
                 // Workers get move-commanded
                 entityInstance.TryMoveToCell(spawnerEntity.TargetLocationLogicValue.CurrentTarget, false);
             } else {
-                // Everything else attack-moves
-                entityInstance.TryAttackMoveToCell(spawnerEntity.TargetLocationLogicValue.CurrentTarget, false);
+                // Everything else attacks
+                entityInstance.TryAttack(spawnerEntity.TargetLocationLogicValue.CurrentTarget, spawnerEntity.TargetLocationLogicValue.TargetEntity, false);
             }
         }
         

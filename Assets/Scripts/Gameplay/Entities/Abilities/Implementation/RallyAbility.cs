@@ -30,7 +30,13 @@ namespace Gameplay.Entities.Abilities {
         }
         
         protected override (bool, AbilityResult) DoAbilityEffect() {
-            Performer.SetTargetLocation(AbilityParameters.Destination, null, Data.UseAttackIconOnPath);
+            GridEntity entityAtDestination = Data.RallyingUnitsAreAttackers
+                ? GameManager.Instance.GetTopEntityAtLocation(AbilityParameters.Destination)
+                : null;
+            if (entityAtDestination != null && entityAtDestination.Team == PerformerTeam) {
+                entityAtDestination = null;
+            }
+            Performer.SetTargetLocation(AbilityParameters.Destination, entityAtDestination, Data.RallyingUnitsAreAttackers);
             return (true, AbilityResult.CompletedWithEffect);
         }
     }

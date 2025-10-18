@@ -2,6 +2,7 @@ using System;
 using Gameplay.Entities;
 using Gameplay.Entities.Abilities;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Gameplay.Config.Abilities {
     [CreateAssetMenu(menuName = "Abilities/RallyAbilityData")]
@@ -19,7 +20,8 @@ namespace Gameplay.Config.Abilities {
         public override bool CancelableWhileInProgress => false;
         public override bool CancelableManually => false;
         
-        public bool UseAttackIconOnPath;
+        [FormerlySerializedAs("UseAttackIconOnPath")] 
+        public bool RallyingUnitsAreAttackers;
 
         public override void SelectAbility(GridEntity selector) {
             // Nothing to do
