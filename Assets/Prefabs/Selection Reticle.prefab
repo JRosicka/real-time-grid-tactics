@@ -575,7 +575,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b170f0cda0d5490c9d6c678a29fd039a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  AllySelectionColor: {r: 0.2509804, g: 0.8, b: 0.2901961, a: 1}
+  AllySelectionColor: {r: 0, g: 1, b: 0.1254902, a: 1}
   EnemySelectionColor: {r: 1, g: 0.7529412, b: 0, a: 1}
   NeutralSelectionColor: {r: 1, g: 1, b: 1, a: 1}
   ReticleComponents:
