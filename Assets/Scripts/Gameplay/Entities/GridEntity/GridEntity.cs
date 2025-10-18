@@ -653,7 +653,9 @@ namespace Gameplay.Entities {
         }
 
         public string GetAttackTooltipMessageFromUpgrades(string currentTooltipMessage) {
-            foreach (IUpgrade upgrade in GameManager.Instance.GetPlayerForTeam(this).OwnedPurchasablesController.Upgrades.GetOwnedUpgrades()) {
+            IGamePlayer player = GameManager.Instance.GetPlayerForTeam(this);
+            if (player == null) return currentTooltipMessage;
+            foreach (IUpgrade upgrade in player.OwnedPurchasablesController.Upgrades.GetOwnedUpgrades()) {
                 string attackTooltipMessage = upgrade.GetAttackTooltipMessage(this);
                 if (string.IsNullOrEmpty(attackTooltipMessage)) continue;
                 
