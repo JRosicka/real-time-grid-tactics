@@ -6,6 +6,7 @@ using Gameplay.Entities;
 using Gameplay.Entities.Abilities;
 using Sirenix.Utilities;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 namespace Gameplay.UI {
     /// <summary>
@@ -47,6 +48,10 @@ namespace Gameplay.UI {
         }
 
         public void HandleHotkey(string input) {
+            // AbilitySlots.First(s => string.Equals(s.Hotkey, input, StringComparison.CurrentCultureIgnoreCase)).SlotButton.OnPointerDown(new PointerEventData(EventSystem.current) {
+            //     button = PointerEventData.InputButton.Left,
+            // }); TODO maybe have something like a state tracked in the ability slot. If the state is already set to pressed when it gets set to pressed again, nothing happens. A timer until it gets set back to un-pressed. 
+
             SelectAbility(AbilitySlots.First(s => string.Equals(s.Hotkey, input, StringComparison.CurrentCultureIgnoreCase)));
         }
         

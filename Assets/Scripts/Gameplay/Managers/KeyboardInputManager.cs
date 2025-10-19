@@ -56,7 +56,7 @@ namespace Gameplay.Managers {
             
             // Abilities
             foreach (string input in AbilityButtons) {
-                if (_playerInput.GetButtonDown(input)) {
+                if (_playerInput.GetButtonRepeating(input)) {
                     SelectionInterface.HandleAbilityHotkey(input);
                 }
             }

@@ -421,8 +421,8 @@ MonoBehaviour:
       _buttonLongPressExpiresIn: 0
       _buttonDeadZone: 0.5
       _buttonDownBuffer: 0
-      _buttonRepeatRate: 30
-      _buttonRepeatDelay: 0
+      _buttonRepeatRate: 20
+      _buttonRepeatDelay: 0.15
     mapCategories:
     - _name: Default
       _descriptiveName: Default
