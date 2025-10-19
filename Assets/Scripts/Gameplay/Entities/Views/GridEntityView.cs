@@ -38,7 +38,10 @@ namespace Gameplay.Entities {
         [SerializeField] private Transform _directionContainer;
         [SerializeField] private PerlinShakeBehaviour ShakeBehaviour;
         [SerializeField] private ColorFlashBehaviour ColorFlashBehaviour;
-        [SerializeField] private VisualBar _healthBar;
+        [SerializeField] private VisualBarV2 _unitHealthBar;
+        [SerializeField] private VisualBarV2 _structureHealthBar;
+        [SerializeField] private List<GameObject> _unitUIFrame;
+        [SerializeField] private GameObject _structureUIFrame;
         [SerializeField] private List<CanvasGroup> _thingsToHideWhenDying;
         [SerializeField] private CanvasGroup _mainImageGroup;
         [SerializeField] private ParticleSystem _deathParticleSystem;
@@ -75,12 +78,13 @@ namespace Gameplay.Entities {
             _teamColorImage.sprite = entity.EntityData.TeamColorSprite;
             IGamePlayer player = GameManager.Instance.GetPlayerForTeam(entity);
             if (!entity.EntityData.TeamColorSprite) {
-                _teamColorImage.color = Color.clear;
+                _teamColorImage.gameObject.SetActive(false);
             } else if (player != null) {
                 _teamColorImage.color = player.Data.TeamColor;
                 _teamColorImage.GetComponent<Canvas>().sortingOrder += stackOrder;
+                _teamColorImage.gameObject.SetActive(true);
             } else {
-                _teamColorImage.color = Color.clear;
+                _teamColorImage.gameObject.SetActive(false);
             }
             
             entity.PerformAnimationEvent += DoAbility;
@@ -93,8 +97,21 @@ namespace Gameplay.Entities {
             entity.HPHandler.AttackedEvent += AttackReceived;
             entity.HPHandler.HealedEvent += HealReceived;
             entity.KilledEvent += Killed;
-            
-            _healthBar.Initialize(new HealthBarLogic(entity));
+
+            bool hasHP = entity.MaxHP > 0;
+            if (entity.EntityData.IsStructure) {
+                if (hasHP) {
+                    _structureHealthBar.Initialize(new HealthBarLogic(entity));
+                }
+                _unitUIFrame.ForEach(g => g.SetActive(false));
+                _structureUIFrame.SetActive(hasHP);
+            } else {
+                if (hasHP) {
+                    _unitHealthBar.Initialize(new HealthBarLogic(entity));
+                }
+                _unitUIFrame.ForEach(g => g.SetActive(hasHP));
+                _structureUIFrame.SetActive(false);
+            }
             _bottomUISection.SetActive(entity.EntityData.MovementAndAttackUI);
 
             _particularView.Initialize(entity);

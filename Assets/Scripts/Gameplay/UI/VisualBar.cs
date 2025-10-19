@@ -4,7 +4,8 @@ using UnityEngine;
 namespace Gameplay.UI {
     /// <summary>
     /// Displays some current/max stat of a <see cref="GridEntity"/> as a bar above/near the entity.
-    /// Business logic is determined by the provided <see cref="IBarLogic"/> instance. 
+    /// Business logic is determined by the provided <see cref="IBarLogic"/> instance.
+    /// Old logic. TODO combine this with VisualBarV2 to allow for scaled health bars. 
     /// </summary>
     public class VisualBar : MonoBehaviour {
         public RectTransform BarFilling;
