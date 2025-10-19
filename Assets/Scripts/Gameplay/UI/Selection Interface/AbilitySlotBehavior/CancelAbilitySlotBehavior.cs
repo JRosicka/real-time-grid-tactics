@@ -22,7 +22,7 @@ namespace Gameplay.UI {
             abilityImage.sprite = GameConfiguration.CancelButtonSprite;
             secondaryAbilityImage.gameObject.SetActive(false);
             if (abilitySlotBackground) {
-                abilitySlotBackground.SetUpSlot(GameConfiguration.CancelButtonSlotSprite);
+                abilitySlotBackground.SetUpSlot(GameConfiguration.CancelButtonSlotSprites);
             }
         }
 

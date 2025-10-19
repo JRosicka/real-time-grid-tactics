@@ -7,6 +7,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using Util;
 
 namespace Gameplay.UI {
     /// <summary>
@@ -30,6 +31,10 @@ namespace Gameplay.UI {
         public Color UnselectableColor;
         public Color SelectedColor;
         public float ButtonDeselectDelay = .5f;
+        public Color SelectedIconColor;
+        public Color DeselectedIconColor;
+        public Vector2 IconUpPosition;
+        public Vector2 IconDownPosition;
         
         [Header("References")]
         public Image AbilityImage;
@@ -39,6 +44,8 @@ namespace Gameplay.UI {
         public TMP_Text HotkeyText;
         public AbilityInterface AbilityInterface;
         public CanvasGroup CanvasGroup;
+        public ListenerButton SlotButton;
+        public GameObject IconsGroup;
 
         private GridEntity _selectedEntity;
         private bool _selected;
@@ -178,6 +185,11 @@ namespace Gameplay.UI {
         private void AddListeners() {
             if (_selectedEntity == null) return;
             
+            // Slot button
+            SlotButton.Pressed += ToggleClicked;
+            SlotButton.NoLongerPressed += ToggleUnClicked;
+            
+            // Entity
             _selectedEntity.AbilityTimerExpiredEvent += OnAbilityTimersChanged;
             _selectedEntity.AbilityPerformedEvent += OnAbilityTimersChanged;
             _selectedEntity.InProgressAbilitiesUpdatedEvent += OnInProgressAbilities;
@@ -193,6 +205,9 @@ namespace Gameplay.UI {
 
         private void RemoveListeners() {
             if (_selectedEntity == null) return;
+            
+            SlotButton.Pressed -= ToggleClicked;
+            SlotButton.NoLongerPressed -= ToggleUnClicked;
             
             _selectedEntity.AbilityTimerExpiredEvent -= OnAbilityTimersChanged;
             _selectedEntity.AbilityPerformedEvent -= OnAbilityTimersChanged;
@@ -242,6 +257,18 @@ namespace Gameplay.UI {
         /// </summary>
         private void OnPlayerOwnedEntitiesChanged() {
             CheckAvailability();
+        }
+        
+        private void ToggleClicked() {
+            IconsGroup.transform.localPosition = IconDownPosition;
+            AbilityImage.color = SelectedIconColor;
+            SecondaryAbilityImage.color = SelectedIconColor;
+        }
+        
+        private void ToggleUnClicked() {
+            IconsGroup.transform.localPosition = IconUpPosition;
+            AbilityImage.color = DeselectedIconColor;
+            SecondaryAbilityImage.color = DeselectedIconColor;
         }
         
         #endregion

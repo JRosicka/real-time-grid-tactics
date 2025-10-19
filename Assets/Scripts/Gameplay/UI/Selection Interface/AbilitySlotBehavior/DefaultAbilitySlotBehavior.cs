@@ -55,7 +55,7 @@ namespace Gameplay.UI {
 
             if (abilitySlotBackground) {
                 _abilitySlotBackgroundView = abilitySlotBackground;
-                abilitySlotBackground.SetUpSlot(_abilityData.SlotSprite);
+                abilitySlotBackground.SetUpSlot(_abilityData.SlotSprites);
             }
         }
 

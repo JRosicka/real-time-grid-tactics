@@ -20,7 +20,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 62144f0ee704e3f49830997baa308b81, type: 2}
   - {fileID: 11400000, guid: 33caeaa811685415896ab82a400b3efa, type: 2}
   CancelButtonSprite: {fileID: 21300000, guid: ac6a5cd8c78757649b1eebb6c22b1ba4, type: 3}
-  CancelButtonSlotSprite: {fileID: 21300000, guid: e7127e30361d9154289ebc8a1d0edbf4, type: 3}
+  CancelButtonSlotSprites: {fileID: 11400000, guid: ef653d486657bde49819c23db7683cf4, type: 2}
   NeutralBannerColor: {r: 0.5294118, g: 0.5372549, b: 0.54901963, a: 1}
   TargetedMaterial: {fileID: 2100000, guid: 2c657a3b9a6b54b2d8a58d0f2d4ef543, type: 2}
   Purchasables:

@@ -17,7 +17,7 @@ MonoBehaviour:
     _id: Move
     _description: Move to a targeted cell, avoiding attacking enemies on the way.
     _icon: {fileID: 21300000, guid: bd6bc11b7be1fcc408ce42941097caca, type: 3}
-    _slotSprite: {fileID: 21300000, guid: a734219ed3f58904a846b4f11c35b564, type: 3}
+    _slotSprites: {fileID: 11400000, guid: 010ac3faf8011b74190aee977cd8cee3, type: 2}
     _abilityTimerView: {fileID: 3613232002330387423, guid: f40c3d65f7969d74995aff7c067ce52a, type: 3}
     _requirements: []
     _performDuration: 0

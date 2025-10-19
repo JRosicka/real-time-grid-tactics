@@ -385,9 +385,9 @@ GameObject:
   - component: {fileID: 1738663576533712045}
   - component: {fileID: 8941894723556131554}
   - component: {fileID: 7746809697624659004}
-  - component: {fileID: 8556368915745534929}
   - component: {fileID: 245845246818459804}
   - component: {fileID: 6754938932479475139}
+  - component: {fileID: 3175037074454974824}
   m_Layer: 5
   m_Name: Ability Slot
   m_TagString: Untagged
@@ -436,6 +436,10 @@ MonoBehaviour:
   UnselectableColor: {r: 0.3018868, g: 0.3018868, b: 0.3018868, a: 1}
   SelectedColor: {r: 0.7075472, g: 0.7075472, b: 0.7075472, a: 1}
   ButtonDeselectDelay: 0.2
+  SelectedIconColor: {r: 0.6886792, g: 0.6886792, b: 0.6886792, a: 1}
+  DeselectedIconColor: {r: 1, g: 1, b: 1, a: 1}
+  IconUpPosition: {x: 0, y: 0}
+  IconDownPosition: {x: 0, y: -1.5}
   AbilityImage: {fileID: 9165943905807092847}
   SecondaryAbilityImage: {fileID: 158200004530816045}
   AbilitySlotBackgroundView: {fileID: 1738663576533712045}
@@ -443,6 +447,8 @@ MonoBehaviour:
   HotkeyText: {fileID: 6493543593206636211}
   AbilityInterface: {fileID: 0}
   CanvasGroup: {fileID: 6754938932479475139}
+  SlotButton: {fileID: 3175037074454974824}
+  IconsGroup: {fileID: 1102198016702246132}
 --- !u!114 &1738663576533712045
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -457,8 +463,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _slotImage: {fileID: 4582745465899819142}
   _grayedOutSlotImage: {fileID: 7746809697624659004}
-  _cooldownTimerView: {fileID: 4811420842338035282}
-  _startGrayedOut: 0
+  _abilityTimerView: {fileID: 4811420842338035282}
+  _slotButton: {fileID: 3175037074454974824}
 --- !u!222 &8941894723556131554
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -497,62 +503,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &8556368915745534929
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3634664905948075230}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Navigation:
-    m_Mode: 3
-    m_WrapAround: 0
-    m_SelectOnUp: {fileID: 0}
-    m_SelectOnDown: {fileID: 0}
-    m_SelectOnLeft: {fileID: 0}
-    m_SelectOnRight: {fileID: 0}
-  m_Transition: 1
-  m_Colors:
-    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
-    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
-    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
-    m_ColorMultiplier: 1
-    m_FadeDuration: 0.1
-  m_SpriteState:
-    m_HighlightedSprite: {fileID: 0}
-    m_PressedSprite: {fileID: 0}
-    m_SelectedSprite: {fileID: 0}
-    m_DisabledSprite: {fileID: 0}
-  m_AnimationTriggers:
-    m_NormalTrigger: Normal
-    m_HighlightedTrigger: Highlighted
-    m_PressedTrigger: Pressed
-    m_SelectedTrigger: Selected
-    m_DisabledTrigger: Disabled
-  m_Interactable: 1
-  m_TargetGraphic: {fileID: 7746809697624659004}
-  m_OnClick:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 8182987531277296321}
-        m_TargetAssemblyTypeName: Gameplay.UI.AbilitySlot, Assembly-CSharp
-        m_MethodName: OnButtonClick
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
 --- !u!114 &245845246818459804
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -578,6 +528,62 @@ CanvasGroup:
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
+--- !u!114 &3175037074454974824
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3634664905948075230}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c32e8343c9b24009bc46b0a3097651fb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Navigation:
+    m_Mode: 3
+    m_WrapAround: 0
+    m_SelectOnUp: {fileID: 0}
+    m_SelectOnDown: {fileID: 0}
+    m_SelectOnLeft: {fileID: 0}
+    m_SelectOnRight: {fileID: 0}
+  m_Transition: 2
+  m_Colors:
+    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
+    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_ColorMultiplier: 1
+    m_FadeDuration: 0.1
+  m_SpriteState:
+    m_HighlightedSprite: {fileID: 21300000, guid: 2bcea32e4b2907d479380dc3f8860ceb, type: 3}
+    m_PressedSprite: {fileID: 21300000, guid: c9865b62777135f4bbef268006a196f9, type: 3}
+    m_SelectedSprite: {fileID: 21300000, guid: e7127e30361d9154289ebc8a1d0edbf4, type: 3}
+    m_DisabledSprite: {fileID: 21300000, guid: c9865b62777135f4bbef268006a196f9, type: 3}
+  m_AnimationTriggers:
+    m_NormalTrigger: Normal
+    m_HighlightedTrigger: Highlighted
+    m_PressedTrigger: Pressed
+    m_SelectedTrigger: Selected
+    m_DisabledTrigger: Disabled
+  m_Interactable: 1
+  m_TargetGraphic: {fileID: 7746809697624659004}
+  m_OnClick:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 8182987531277296321}
+        m_TargetAssemblyTypeName: Gameplay.UI.AbilitySlot, Assembly-CSharp
+        m_MethodName: OnButtonClick
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &4450726947637762902
 GameObject:
   m_ObjectHideFlags: 0
@@ -746,7 +752,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_Sprite: {fileID: 21300000, guid: e7127e30361d9154289ebc8a1d0edbf4, type: 3}
-  m_Type: 3
+  m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 1

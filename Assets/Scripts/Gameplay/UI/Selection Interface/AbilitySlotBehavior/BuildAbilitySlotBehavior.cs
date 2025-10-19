@@ -119,7 +119,7 @@ namespace Gameplay.UI {
 
             if (abilitySlotBackground) {
                 IGamePlayer player = GameManager.Instance.GetPlayerForTeam(SelectedEntity);
-                abilitySlotBackground.SetUpSlot(player.Data.ColoredButtonData.Normal);
+                abilitySlotBackground.SetUpSlot(player.Data.ColoredButtonData);
                 _abilitySlotBackgroundView = abilitySlotBackground;
             }
         }

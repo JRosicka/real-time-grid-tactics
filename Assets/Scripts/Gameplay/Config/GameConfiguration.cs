@@ -22,7 +22,7 @@ namespace Gameplay.Config {
         
         [Header("Misc Sprites")]
         public Sprite CancelButtonSprite;
-        public Sprite CancelButtonSlotSprite;
+        public ColoredButtonData CancelButtonSlotSprites;
         public Color NeutralBannerColor;
         public Material TargetedMaterial;
         

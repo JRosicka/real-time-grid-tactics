@@ -18,7 +18,7 @@ MonoBehaviour:
     _description: Moves towards a target cell, attacking any enemies encountered
       on the way.
     _icon: {fileID: 21300000, guid: e5a747f4f8a3042f5a9d0ab1b801e025, type: 3}
-    _slotSprite: {fileID: 21300000, guid: 821b57c268c16d847869a9511bf1de07, type: 3}
+    _slotSprites: {fileID: 11400000, guid: c443d76e6475d324c8295e3d9741d1a1, type: 2}
     _abilityTimerView: {fileID: 3613232002330387423, guid: f40c3d65f7969d74995aff7c067ce52a, type: 3}
     _requirements: []
     _performDuration: 0

@@ -17,7 +17,7 @@ MonoBehaviour:
     _id: 
     _description: 
     _icon: {fileID: 0}
-    _slotSprite: {fileID: 0}
+    _slotSprites: {fileID: 0}
     _abilityTimerView: {fileID: 0}
     _requirements: []
     _performDuration: 0

@@ -18,7 +18,7 @@ MonoBehaviour:
     _description: Stay still in the current location - don't reactively move towards
       attackers.
     _icon: {fileID: 21300000, guid: a0c6041e90204e940b069d4faf0e1b4c, type: 3}
-    _slotSprite: {fileID: 21300000, guid: e7127e30361d9154289ebc8a1d0edbf4, type: 3}
+    _slotSprites: {fileID: 11400000, guid: 35069bbcc50cd694ba97d615a9a78b90, type: 2}
     _abilityTimerView: {fileID: 0}
     _requirements: []
     _performDuration: 0

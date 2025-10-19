@@ -18,7 +18,7 @@ MonoBehaviour:
     _description: Build a structure. After completion, the worker mans the structure
       for the rest of their days.
     _icon: {fileID: 21300000, guid: dcdb6563c02b6bf43b698eea6b840db7, type: 3}
-    _slotSprite: {fileID: 21300000, guid: d7af8ddcea755de489dcd40f98cdf739, type: 3}
+    _slotSprites: {fileID: 11400000, guid: cf3e96fef80ac354cbbe3535fa2b19bd, type: 2}
     _abilityTimerView: {fileID: 5971072852972127787, guid: ed3738731b7b747739ca456d1c5328a6, type: 3}
     _requirements: []
     _performDuration: 0

@@ -17,7 +17,7 @@ MonoBehaviour:
     _id: Attack Move
     _description: Target an enemy unit to move towards it and attack it.
     _icon: {fileID: 21300000, guid: 62e5900c3d31c1f4299dec996742757c, type: 3}
-    _slotSprite: {fileID: 21300000, guid: 2858aa17bb20d4046ae0a8eb1a724eee, type: 3}
+    _slotSprites: {fileID: 11400000, guid: 0c6d76a5e9f6ec14fb683c53910d5b25, type: 2}
     _abilityTimerView: {fileID: 3613232002330387423, guid: f40c3d65f7969d74995aff7c067ce52a, type: 3}
     _requirements: []
     _performDuration: 0

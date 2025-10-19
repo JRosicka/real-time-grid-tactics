@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using Gameplay.Config;
 using Gameplay.Config.Abilities;
 using Gameplay.Entities;
 using Gameplay.Entities.Abilities;
@@ -7,6 +8,7 @@ using Gameplay.Managers;
 using UnityEngine;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
+using Util;
 
 namespace Gameplay.UI {
     /// <summary>
@@ -17,17 +19,26 @@ namespace Gameplay.UI {
         [SerializeField] private Image _grayedOutSlotImage;
         [FormerlySerializedAs("_cooldownTimerView")] 
         [SerializeField] private AbilityTimerView _abilityTimerView;
-        [SerializeField] private bool _startGrayedOut;
+        [SerializeField] private ListenerButton _slotButton;
         
         private GridEntity _gridEntity;
         private AbilityChannel _abilityChannel;
+        private ColoredButtonData _slotSprites;
         
         private AbilityAssignmentManager AbilityAssignmentManager => GameManager.Instance.AbilityAssignmentManager;
         
-        public void SetUpSlot(Sprite slotSprite) {
-            _slotImage.sprite = slotSprite;
-            _grayedOutSlotImage.sprite = slotSprite;
-            _slotImage.gameObject.SetActive(!_startGrayedOut);
+        public void SetUpSlot(ColoredButtonData slotSprites) {
+            _slotSprites = slotSprites;
+            _slotImage.sprite = _slotSprites.Normal;
+            _grayedOutSlotImage.sprite = _slotSprites.Normal;
+            _slotImage.gameObject.SetActive(true);
+            
+            _slotButton.spriteState = new SpriteState {
+                highlightedSprite = _slotSprites.Hovered,
+                pressedSprite = _slotSprites.Pressed,
+                selectedSprite = _slotSprites.Normal,
+                disabledSprite = _slotSprites.Pressed
+            };
         }
 
         public void SetUpTimer(GridEntity gridEntity, AbilityChannel abilityChannel) {

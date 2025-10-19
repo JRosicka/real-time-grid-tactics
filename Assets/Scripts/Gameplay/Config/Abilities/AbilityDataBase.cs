@@ -30,10 +30,10 @@ namespace Gameplay.Config.Abilities {
 
         [SerializeField] private Sprite _icon;
         public Sprite Icon => _icon;
-
-        [SerializeField] private Sprite _slotSprite;
-        public Sprite SlotSprite => _slotSprite;
-
+        
+        [SerializeField] private ColoredButtonData _slotSprites;
+        public ColoredButtonData SlotSprites => _slotSprites;
+        
         [FormerlySerializedAs("_abilityTimerCooldownView")] [SerializeField] private AbilityTimerView _abilityTimerView;
         public AbilityTimerView AbilityTimerViewPrefab => _abilityTimerView;
 
