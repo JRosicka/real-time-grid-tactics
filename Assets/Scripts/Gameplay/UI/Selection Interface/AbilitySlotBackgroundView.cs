@@ -24,18 +24,21 @@ namespace Gameplay.UI {
         private GridEntity _gridEntity;
         private AbilityChannel _abilityChannel;
         private ColoredButtonData _slotSprites;
+        private bool _hovered;
+        private bool _pressed;
         
         private AbilityAssignmentManager AbilityAssignmentManager => GameManager.Instance.AbilityAssignmentManager;
 
         private void Start() {
             _slotButton.Pressed += SlotButtonPressed;
             _slotButton.NoLongerPressed += SlotButtonUnPressed;
+            _slotButton.Entered += ToggleHovered;
+            _slotButton.Exited += ToggleUnHovered;
         }
 
         public void SetUpSlot(ColoredButtonData slotSprites) {
             _slotSprites = slotSprites;
-            _slotImage.sprite = _slotSprites.Normal;
-            _grayedOutSlotImage.sprite = _slotSprites.Normal;
+            SetSprites(_slotSprites.Normal);
             _slotImage.gameObject.SetActive(true);
             
             _slotButton.spriteState = new SpriteState {
@@ -94,11 +97,28 @@ namespace Gameplay.UI {
         }
 
         private void SlotButtonPressed() {
-            _slotImage.sprite = _slotSprites.Pressed;
+            SetSprites(_slotImage.sprite = _slotSprites.Pressed);
+            _pressed = true;
         }
         
         private void SlotButtonUnPressed() {
-            _slotImage.sprite = _slotSprites.Normal;
+            SetSprites(_slotImage.sprite = _hovered ? _slotSprites.Hovered : _slotSprites.Normal);
+            _pressed = false;
+        }
+        
+        private void ToggleHovered() {
+            SetSprites(_slotImage.sprite = _slotSprites.Hovered);
+            _hovered = true;
+        }
+
+        private void ToggleUnHovered() {
+            SetSprites(_pressed ? _slotSprites.Pressed : _slotSprites.Normal);
+            _hovered = false;
+        }
+
+        private void SetSprites(Sprite sprite) {
+            _slotImage.sprite = sprite;
+            _grayedOutSlotImage.sprite = sprite;
         }
     }
 }

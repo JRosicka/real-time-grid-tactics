@@ -9,6 +9,9 @@ namespace Util {
     public class ListenerButton : Button {
         public event Action Pressed;
         public event Action NoLongerPressed;
+        public event Action Entered;
+        public event Action Exited;
+        
         public override void OnPointerDown(PointerEventData eventData) {
             base.OnPointerDown(eventData);
             Pressed?.Invoke();
@@ -17,6 +20,16 @@ namespace Util {
         public override void OnPointerUp(PointerEventData eventData) {
             base.OnPointerUp(eventData);
             NoLongerPressed?.Invoke();
+        }
+
+        public override void OnPointerEnter(PointerEventData eventData) {
+            base.OnPointerEnter(eventData);
+            Entered?.Invoke();
+        }
+
+        public override void OnPointerExit(PointerEventData eventData) {
+            base.OnPointerExit(eventData);
+            Exited?.Invoke();
         }
     }
 }

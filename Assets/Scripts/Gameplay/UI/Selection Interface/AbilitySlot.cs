@@ -93,6 +93,10 @@ namespace Gameplay.UI {
         public void Clear() {
             RemoveListeners();
             _shouldDeselectWhenTimerElapses = false;
+            
+            // Reset the button icon state in case the button was in mid-press
+            IconsGroup.transform.localPosition = IconUpPosition;
+            AbilityImage.color = DeselectedIconColor;
 
             _slotBehavior?.ClearTimerView();
             _slotBehavior = null;
@@ -123,7 +127,7 @@ namespace Gameplay.UI {
             _selected = selected;
             _shouldDeselectWhenTimerElapses = false;
             if (selected) {
-                SlotFrame.color = SelectedColor;
+                // SlotFrame.color = SelectedColor;
                 if (_slotBehavior is { IsAbilityTargetable: true }) {
                     // We want this slot to keep appearing as selected until we do something else, so don't auto-unmark it.
                 } else {
@@ -173,12 +177,12 @@ namespace Gameplay.UI {
             
             if (_selected && Availability == AvailabilityResult.Selectable) {
                 // Re-set the appearance to "selected" if we were selected and still can be
-                SlotFrame.color = SelectedColor;
+                // SlotFrame.color = SelectedColor;
             }
         }
 
         private void MarkAvailability(AvailabilityResult availability) {
-            SlotFrame.color = availability == AvailabilityResult.Selectable ? SelectableColor : UnselectableColor;
+            // SlotFrame.color = availability == AvailabilityResult.Selectable ? SelectableColor : UnselectableColor;
             CanvasGroup.alpha = 1;
             Availability = availability;
         }

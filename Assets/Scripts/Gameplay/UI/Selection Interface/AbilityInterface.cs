@@ -53,7 +53,7 @@ namespace Gameplay.UI {
             if (pressed) {
                 slot.SlotButton.OnPointerDown(new PointerEventData(EventSystem.current) {
                     button = PointerEventData.InputButton.Left,
-                }); //TODO maybe have something like a state tracked in the ability slot. If the state is already set to pressed when it gets set to pressed again, then it resets the timer for when it gets set back to un-pressed. So all this would do is the below business logic and set the state in the ability slot. 
+                });
             } else {
                 slot.SlotButton.OnPointerUp(new PointerEventData(EventSystem.current) {
                     button = PointerEventData.InputButton.Left,
