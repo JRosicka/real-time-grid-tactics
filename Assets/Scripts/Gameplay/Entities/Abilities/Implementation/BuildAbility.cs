@@ -93,6 +93,7 @@ namespace Gameplay.Entities.Abilities {
 
         // Server method
         private void SpawnEntity(EntityData entityData, Vector2Int buildLocation, bool originalBuildLocation) {
+            if (GameManager.Instance == null) return;
             GameManager.Instance.CommandManager.SpawnEntity(entityData, buildLocation, Performer.Team, Performer, !originalBuildLocation, true);
             if (entityData.IsStructure) {
                 // Destroy the builder.
