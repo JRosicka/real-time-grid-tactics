@@ -35,6 +35,7 @@ namespace Gameplay.UI {
         public Color DeselectedIconColor;
         public Vector2 IconUpPosition;
         public Vector2 IconDownPosition;
+        public float ButtonDeselectBufferForHotkeyDetection = .1f;
         
         [Header("References")]
         public Image AbilityImage;
@@ -50,6 +51,7 @@ namespace Gameplay.UI {
         private GridEntity _selectedEntity;
         private bool _selected;
         private bool _shouldDeselectWhenTimerElapses;
+        private float _lastAbilityClickTime;
 
         /// <summary>
         /// Delegation of implementation-specific behaviour conducted through here
@@ -57,8 +59,13 @@ namespace Gameplay.UI {
         private IAbilitySlotBehavior _slotBehavior;
 
         public AvailabilityResult Availability { get; private set; }
-        
+
         public bool AnyPlayerCanSelect => _slotBehavior.AnyPlayerCanSelect;
+
+        private void Start() {
+            SlotButton.Pressed += ToggleClicked;
+            SlotButton.NoLongerPressed += ToggleUnClicked;
+        }
 
         /// <summary>
         /// Update this ability slot to set its state/appearance
@@ -93,10 +100,6 @@ namespace Gameplay.UI {
             _selected = false;
             Availability = AvailabilityResult.Hidden;
             gameObject.SetActive(false);
-        }
-        
-        public void OnButtonClick() {
-            AbilityInterface.SelectAbility(this);
         }
 
         public void SelectAbility() {
@@ -185,10 +188,6 @@ namespace Gameplay.UI {
         private void AddListeners() {
             if (_selectedEntity == null) return;
             
-            // Slot button
-            SlotButton.Pressed += ToggleClicked;
-            SlotButton.NoLongerPressed += ToggleUnClicked;
-            
             // Entity
             _selectedEntity.AbilityTimerExpiredEvent += OnAbilityTimersChanged;
             _selectedEntity.AbilityPerformedEvent += OnAbilityTimersChanged;
@@ -205,9 +204,6 @@ namespace Gameplay.UI {
 
         private void RemoveListeners() {
             if (_selectedEntity == null) return;
-            
-            SlotButton.Pressed -= ToggleClicked;
-            SlotButton.NoLongerPressed -= ToggleUnClicked;
             
             _selectedEntity.AbilityTimerExpiredEvent -= OnAbilityTimersChanged;
             _selectedEntity.AbilityPerformedEvent -= OnAbilityTimersChanged;
@@ -262,13 +258,21 @@ namespace Gameplay.UI {
         private void ToggleClicked() {
             IconsGroup.transform.localPosition = IconDownPosition;
             AbilityImage.color = SelectedIconColor;
-            SecondaryAbilityImage.color = SelectedIconColor;
         }
         
         private void ToggleUnClicked() {
             IconsGroup.transform.localPosition = IconUpPosition;
             AbilityImage.color = DeselectedIconColor;
-            SecondaryAbilityImage.color = DeselectedIconColor;
+            
+            // The hotkey for this might have toggled a click and performed the ability logic at the same time. 
+            if (Time.time - _lastAbilityClickTime > ButtonDeselectBufferForHotkeyDetection) {
+                DoSelectAbility();
+            }
+        }
+
+        public void DoSelectAbility() {
+            AbilityInterface.SelectAbility(this);
+            _lastAbilityClickTime = Time.time;
         }
         
         #endregion

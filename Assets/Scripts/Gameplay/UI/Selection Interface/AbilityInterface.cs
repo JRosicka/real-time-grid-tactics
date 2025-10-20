@@ -47,12 +47,23 @@ namespace Gameplay.UI {
             AbilitySlots.ForEach(s => s.Clear());
         }
 
-        public void HandleHotkey(string input) {
-            // AbilitySlots.First(s => string.Equals(s.Hotkey, input, StringComparison.CurrentCultureIgnoreCase)).SlotButton.OnPointerDown(new PointerEventData(EventSystem.current) {
-            //     button = PointerEventData.InputButton.Left,
-            // }); TODO maybe have something like a state tracked in the ability slot. If the state is already set to pressed when it gets set to pressed again, nothing happens. A timer until it gets set back to un-pressed. 
+        public void HandleHotkey(string input, bool pressed) {
+            // Button click visual
+            AbilitySlot slot = AbilitySlots.First(s => string.Equals(s.Hotkey, input, StringComparison.CurrentCultureIgnoreCase));
+            if (pressed) {
+                slot.SlotButton.OnPointerDown(new PointerEventData(EventSystem.current) {
+                    button = PointerEventData.InputButton.Left,
+                }); //TODO maybe have something like a state tracked in the ability slot. If the state is already set to pressed when it gets set to pressed again, then it resets the timer for when it gets set back to un-pressed. So all this would do is the below business logic and set the state in the ability slot. 
+            } else {
+                slot.SlotButton.OnPointerUp(new PointerEventData(EventSystem.current) {
+                    button = PointerEventData.InputButton.Left,
+                });
+            }
 
-            SelectAbility(AbilitySlots.First(s => string.Equals(s.Hotkey, input, StringComparison.CurrentCultureIgnoreCase)));
+            // Business logic
+            if (pressed) {
+                slot.DoSelectAbility();
+            }
         }
         
         public void DeselectActiveAbility() {

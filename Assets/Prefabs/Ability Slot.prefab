@@ -436,10 +436,11 @@ MonoBehaviour:
   UnselectableColor: {r: 0.3018868, g: 0.3018868, b: 0.3018868, a: 1}
   SelectedColor: {r: 0.7075472, g: 0.7075472, b: 0.7075472, a: 1}
   ButtonDeselectDelay: 0.2
-  SelectedIconColor: {r: 0.6886792, g: 0.6886792, b: 0.6886792, a: 1}
+  SelectedIconColor: {r: 0.8301887, g: 0.8301887, b: 0.8301887, a: 1}
   DeselectedIconColor: {r: 1, g: 1, b: 1, a: 1}
   IconUpPosition: {x: 0, y: 0}
   IconDownPosition: {x: 0, y: -1.5}
+  ButtonDeselectBufferForHotkeyDetection: 0.2
   AbilityImage: {fileID: 9165943905807092847}
   SecondaryAbilityImage: {fileID: 158200004530816045}
   AbilitySlotBackgroundView: {fileID: 1738663576533712045}
@@ -571,19 +572,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 7746809697624659004}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 8182987531277296321}
-        m_TargetAssemblyTypeName: Gameplay.UI.AbilitySlot, Assembly-CSharp
-        m_MethodName: OnButtonClick
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!1 &4450726947637762902
 GameObject:
   m_ObjectHideFlags: 0

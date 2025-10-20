@@ -422,7 +422,7 @@ MonoBehaviour:
       _buttonDeadZone: 0.5
       _buttonDownBuffer: 0
       _buttonRepeatRate: 20
-      _buttonRepeatDelay: 0.15
+      _buttonRepeatDelay: 0.2
     mapCategories:
     - _name: Default
       _descriptiveName: Default

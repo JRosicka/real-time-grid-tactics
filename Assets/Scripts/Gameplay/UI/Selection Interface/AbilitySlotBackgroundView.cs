@@ -26,7 +26,12 @@ namespace Gameplay.UI {
         private ColoredButtonData _slotSprites;
         
         private AbilityAssignmentManager AbilityAssignmentManager => GameManager.Instance.AbilityAssignmentManager;
-        
+
+        private void Start() {
+            _slotButton.Pressed += SlotButtonPressed;
+            _slotButton.NoLongerPressed += SlotButtonUnPressed;
+        }
+
         public void SetUpSlot(ColoredButtonData slotSprites) {
             _slotSprites = slotSprites;
             _slotImage.sprite = _slotSprites.Normal;
@@ -86,6 +91,14 @@ namespace Gameplay.UI {
             if (ability.AbilityData.Channel == _abilityChannel) {
                 UpdateTimer();
             }
+        }
+
+        private void SlotButtonPressed() {
+            _slotImage.sprite = _slotSprites.Pressed;
+        }
+        
+        private void SlotButtonUnPressed() {
+            _slotImage.sprite = _slotSprites.Normal;
         }
     }
 }
