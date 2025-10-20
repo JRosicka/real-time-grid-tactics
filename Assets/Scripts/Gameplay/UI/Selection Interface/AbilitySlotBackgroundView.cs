@@ -26,6 +26,8 @@ namespace Gameplay.UI {
         private ColoredButtonData _slotSprites;
         private bool _hovered;
         private bool _pressed;
+
+        private Color _currentColorTint;
         
         private AbilityAssignmentManager AbilityAssignmentManager => GameManager.Instance.AbilityAssignmentManager;
 
@@ -57,6 +59,11 @@ namespace Gameplay.UI {
             gridEntity.AbilityTimerExpiredEvent += AbilityCooldownExpired;         
             
             UpdateTimer();
+        }
+
+        public void SetColorTint(Color foregroundColorForMichelle, Color backgroundColor) {
+            _slotImage.color = foregroundColorForMichelle;
+            _grayedOutSlotImage.color = backgroundColor;
         }
         
         public void UnsubscribeFromTimers() {
@@ -97,26 +104,27 @@ namespace Gameplay.UI {
         }
 
         private void SlotButtonPressed() {
-            SetSprites(_slotImage.sprite = _slotSprites.Pressed);
             _pressed = true;
+            SetSprites(_slotSprites?.Pressed);
         }
         
         private void SlotButtonUnPressed() {
-            SetSprites(_slotImage.sprite = _hovered ? _slotSprites.Hovered : _slotSprites.Normal);
             _pressed = false;
+            SetSprites(_hovered ? _slotSprites?.Hovered : _slotSprites?.Normal);
         }
         
         private void ToggleHovered() {
-            SetSprites(_slotImage.sprite = _slotSprites.Hovered);
             _hovered = true;
+            SetSprites(_slotSprites?.Hovered);
         }
 
         private void ToggleUnHovered() {
-            SetSprites(_pressed ? _slotSprites.Pressed : _slotSprites.Normal);
             _hovered = false;
+            SetSprites(_pressed ? _slotSprites?.Pressed : _slotSprites?.Normal);
         }
 
         private void SetSprites(Sprite sprite) {
+            if (sprite == null) return;
             _slotImage.sprite = sprite;
             _grayedOutSlotImage.sprite = sprite;
         }

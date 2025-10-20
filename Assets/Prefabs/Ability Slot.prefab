@@ -432,9 +432,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   SlotLocation: 0
   Hotkey: 0
-  SelectableColor: {r: 0.4056604, g: 0.4056604, b: 0.4056604, a: 1}
+  SelectableColor: {r: 1, g: 1, b: 1, a: 1}
+  SelectableBackgroundColor: {r: 0.41509432, g: 0.41509432, b: 0.41509432, a: 1}
   UnselectableColor: {r: 0.3018868, g: 0.3018868, b: 0.3018868, a: 1}
+  UnselectableBackgroundColor: {r: 0, g: 0, b: 0, a: 1}
   SelectedColor: {r: 0.7075472, g: 0.7075472, b: 0.7075472, a: 1}
+  SelectedBackgroundColor: {r: 0.3207547, g: 0.3207547, b: 0.3207547, a: 1}
   ButtonDeselectDelay: 0.2
   SelectedIconColor: {r: 0.8301887, g: 0.8301887, b: 0.8301887, a: 1}
   DeselectedIconColor: {r: 1, g: 1, b: 1, a: 1}

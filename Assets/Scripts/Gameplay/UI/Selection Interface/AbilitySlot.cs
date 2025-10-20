@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using Gameplay.Entities;
 using Gameplay.Entities.Abilities;
@@ -28,9 +27,11 @@ namespace Gameplay.UI {
         public AbilitySlotLocation SlotLocation;
         public string Hotkey;
         public Color SelectableColor;
+        public Color SelectableBackgroundColor;
         public Color UnselectableColor;
+        public Color UnselectableBackgroundColor;
         public Color SelectedColor;
-        public float ButtonDeselectDelay = .5f;
+        public Color SelectedBackgroundColor;
         public Color SelectedIconColor;
         public Color DeselectedIconColor;
         public Vector2 IconUpPosition;
@@ -41,7 +42,6 @@ namespace Gameplay.UI {
         public Image AbilityImage;
         public Image SecondaryAbilityImage;    // For build target color icon
         public AbilitySlotBackgroundView AbilitySlotBackgroundView;
-        public Image SlotFrame;
         public TMP_Text HotkeyText;
         public AbilityInterface AbilityInterface;
         public CanvasGroup CanvasGroup;
@@ -92,7 +92,6 @@ namespace Gameplay.UI {
 
         public void Clear() {
             RemoveListeners();
-            _shouldDeselectWhenTimerElapses = false;
             
             // Reset the button icon state in case the button was in mid-press
             IconsGroup.transform.localPosition = IconUpPosition;
@@ -125,35 +124,17 @@ namespace Gameplay.UI {
 
         public void MarkSelected(bool selected) {
             _selected = selected;
-            _shouldDeselectWhenTimerElapses = false;
             if (selected) {
-                // SlotFrame.color = SelectedColor;
                 if (_slotBehavior is { IsAbilityTargetable: true }) {
                     // We want this slot to keep appearing as selected until we do something else, so don't auto-unmark it.
+                    AbilitySlotBackgroundView.SetColorTint(SelectedColor, SelectedBackgroundColor);
                 } else {
-                    StartCoroutine(DeselectLater());
+                    MarkSelected(false);
                 }
 
             } else {
                 // Resets the color
                 CheckAvailability();
-            }
-        }
-
-        /// <summary>
-        /// Deselect this slot in a bit so that there is an active "this is selected" look right after selecting.
-        /// TODO: This doesn't really do anything right now since MarkSelectable(false) is called immediately after due to the ability being performed. If we care about this, then might be best to do some sort of animation or no-op the MarkSelectable(false) when this is active or something. 
-        /// </summary>
-        /// <returns></returns>
-        private IEnumerator DeselectLater() {
-            _shouldDeselectWhenTimerElapses = true;
-            
-            yield return new WaitForSeconds(ButtonDeselectDelay);
-
-            // Only deselect if we have not done anything else meaningful with this slot while waiting
-            if (_shouldDeselectWhenTimerElapses) {
-                MarkAvailability(AvailabilityResult.Unselectable);
-                MarkSelected(false);
             }
         }
 
@@ -177,12 +158,14 @@ namespace Gameplay.UI {
             
             if (_selected && Availability == AvailabilityResult.Selectable) {
                 // Re-set the appearance to "selected" if we were selected and still can be
-                // SlotFrame.color = SelectedColor;
+                AbilitySlotBackgroundView.SetColorTint(SelectedColor, SelectedBackgroundColor);
             }
         }
 
         private void MarkAvailability(AvailabilityResult availability) {
-            // SlotFrame.color = availability == AvailabilityResult.Selectable ? SelectableColor : UnselectableColor;
+            Color foregroundColor = availability == AvailabilityResult.Selectable ? SelectableColor : UnselectableColor;
+            Color backgroundColor = availability == AvailabilityResult.Selectable ? SelectableBackgroundColor : UnselectableBackgroundColor;
+            AbilitySlotBackgroundView.SetColorTint(foregroundColor, backgroundColor);
             CanvasGroup.alpha = 1;
             Availability = availability;
         }

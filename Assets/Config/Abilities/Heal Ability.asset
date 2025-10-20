@@ -17,7 +17,7 @@ MonoBehaviour:
     _id: Heal
     _description: 
     _icon: {fileID: 0}
-    _slotSprites: {fileID: 0}
+    _slotSprites: {fileID: 11400000, guid: ef653d486657bde49819c23db7683cf4, type: 2}
     _abilityTimerView: {fileID: 0}
     _requirements: []
     _performDuration: 0
