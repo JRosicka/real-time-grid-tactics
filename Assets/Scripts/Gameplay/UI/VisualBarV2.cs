@@ -10,6 +10,7 @@ namespace Gameplay.UI {
     /// </summary>
     public class VisualBarV2 : MonoBehaviour {
         public Image BarFilling;
+        public HealthBarDividersView HealthBarDividersView;
 
         private IBarLogic _barLogic;
         private bool _initialized;
@@ -19,6 +20,8 @@ namespace Gameplay.UI {
             barLogic.BarUpdateEvent += UpdateBar;
             barLogic.BarDestroyEvent += DestroyBar;
             _barLogic = barLogic;
+            HealthBarDividersView.Initialize(barLogic.MaxValue);
+            
             _initialized = true;
             
             // Set the initial bar size
