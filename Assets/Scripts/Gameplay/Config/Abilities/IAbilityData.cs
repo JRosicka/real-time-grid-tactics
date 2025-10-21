@@ -15,6 +15,9 @@ namespace Gameplay.Config.Abilities {
         AbilitySlotInfo AbilitySlotInfo { get; }
         string ContentResourceID { get; set; }
         Sprite Icon { get; }
+        Sprite OverrideIconForGrid { get; }
+        bool FlipGridIcon { get; }
+        Color GridIconColor { get; }
         ColoredButtonData SlotSprites { get; }
         AbilityTimerView AbilityTimerViewPrefab { get; }
         List<PurchasableData> Requirements { get; }

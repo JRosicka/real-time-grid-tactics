@@ -18,6 +18,8 @@ MonoBehaviour:
     _description: Stay still in the current location - don't reactively move towards
       attackers.
     _icon: {fileID: 21300000, guid: a0c6041e90204e940b069d4faf0e1b4c, type: 3}
+    _overrideIconForGrid: {fileID: 0}
+    _gridIconColor: {r: 0, g: 0, b: 0, a: 0}
     _slotSprites: {fileID: 11400000, guid: 35069bbcc50cd694ba97d615a9a78b90, type: 2}
     _abilityTimerView: {fileID: 0}
     _requirements: []

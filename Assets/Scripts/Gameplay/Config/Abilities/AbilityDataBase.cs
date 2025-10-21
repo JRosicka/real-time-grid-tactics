@@ -30,7 +30,13 @@ namespace Gameplay.Config.Abilities {
 
         [SerializeField] private Sprite _icon;
         public Sprite Icon => _icon;
-        
+        [SerializeField] private Sprite _overrideIconForGrid;
+        public Sprite OverrideIconForGrid => _overrideIconForGrid;
+        [SerializeField] private bool _flipGridIcon;
+        public bool FlipGridIcon => _flipGridIcon;
+        [SerializeField] private Color _gridIconColor;
+        public Color GridIconColor => _gridIconColor;
+
         [SerializeField] private ColoredButtonData _slotSprites;
         public ColoredButtonData SlotSprites => _slotSprites;
         

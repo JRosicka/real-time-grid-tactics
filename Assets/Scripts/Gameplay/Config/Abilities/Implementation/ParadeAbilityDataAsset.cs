@@ -60,7 +60,7 @@ namespace Gameplay.Config.Abilities {
         }
 
         public void UpdateHoveredCell(GridEntity selector, Vector2Int? cell) {
-            // Nothing to do
+            GameManager.Instance.GridIconDisplayer.DisplayOverHoveredCell(this, cell);
         }
 
         public void OwnedPurchasablesChanged(GridEntity selector) {
@@ -77,5 +77,6 @@ namespace Gameplay.Config.Abilities {
         }
 
         public string AbilityVerb => "perform a parade";
+        public bool ShowIconOnGridWhenSelected => true;
     }
 }

@@ -152,6 +152,7 @@ public class EntitySelectionManager {
         bool targetableAbilityWasSelected = _selectedTargetableAbility != null;
         if (targetableAbilityWasSelected) {
             _selectedTargetableAbility.Deselect();
+            GameManager.Instance.GridIconDisplayer.DisplayOverHoveredCell(_selectedTargetableAbility, null);
         }
         _selectedTargetableAbility = null;
         _targetData = null;

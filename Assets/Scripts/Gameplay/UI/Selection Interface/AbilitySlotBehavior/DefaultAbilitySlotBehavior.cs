@@ -33,6 +33,7 @@ namespace Gameplay.UI {
             _abilityData.SelectAbility(_selectedEntity);
             if (_abilityData is ITargetableAbilityData targetableAbilityData) {
                 GameManager.Instance.SelectionInterface.TooltipView.ToggleForTargetableAbility(targetableAbilityData, this);
+                GameManager.Instance.GridIconDisplayer.DisplayOverCurrentHoveredCell(targetableAbilityData);
             }
         }
 

@@ -39,6 +39,7 @@ public class GameManager : MonoBehaviour {
     public CanvasWidthSetter CanvasWidthSetter;
     public GameAudio GameAudio;
     public InGamePauseButton InGamePauseButton;
+    public GridIconDisplayer GridIconDisplayer;
     
     public PathfinderService PathfinderService;
     public EntitySelectionManager EntitySelectionManager;

@@ -85,6 +85,7 @@ namespace Gameplay.Config.Abilities {
 
         public void UpdateHoveredCell(GridEntity selector, Vector2Int? cell) {
             UpdateChargePathVisual(selector, cell);
+            GameManager.Instance.GridIconDisplayer.DisplayOverHoveredCell(this, cell);
         }
 
         public void OwnedPurchasablesChanged(GridEntity selector) {
@@ -107,7 +108,8 @@ namespace Gameplay.Config.Abilities {
         }
         
         public string AbilityVerb => "charge";
-        
+        public bool ShowIconOnGridWhenSelected => false;
+
         public int GetBonusDamage(GameTeam team) {
             return HasChargeUpgrade(team) ? BonusDamageFromUpgrade : 0;
         }
