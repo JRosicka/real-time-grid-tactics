@@ -61,6 +61,7 @@ MonoBehaviour:
   AttackByDefault: 0
   IsResourceExtractor: 0
   ResourceThatThisCanExtract: {fileID: 0}
+  EntityIcon: {fileID: 21300000, guid: e5bee5bd58caf46318f3c4269b42fb7e, type: 3}
   MovementAndAttackUI: 0
   DisplaySelectionOutline: 1
   BuildQueueSize: 5

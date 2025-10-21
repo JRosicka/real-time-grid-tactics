@@ -5764,6 +5764,7 @@ MonoBehaviour:
   - {fileID: 5090515305287165812}
   - {fileID: 2772119137875160398}
   _structureUIFrame: {fileID: 8421533844678055575}
+  _entityIcon: {fileID: 7567422964868029}
   _thingsToHideWhenDying:
   - {fileID: 3797823565097640948}
   - {fileID: 3409150600207725942}
@@ -6038,7 +6039,7 @@ GameObject:
   - component: {fileID: 8710714917937897216}
   - component: {fileID: 7975032589834037677}
   m_Layer: 0
-  m_Name: Health Hex
+  m_Name: Entity Hex
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7915,7 +7916,7 @@ GameObject:
   - component: {fileID: 2537716374200385178}
   - component: {fileID: 7567422964868029}
   m_Layer: 0
-  m_Name: Health Icon
+  m_Name: Entity Icon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7969,7 +7970,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 8c5e03b6b52e16d4192cb394e92e32d5, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 5b6995700155848eeb2890acbee2465c, type: 3}
   m_Type: 0
   m_PreserveAspect: 1
   m_FillCenter: 1

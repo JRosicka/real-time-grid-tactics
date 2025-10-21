@@ -42,6 +42,7 @@ namespace Gameplay.Entities {
         [SerializeField] private VisualBarV2 _structureHealthBar;
         [SerializeField] private List<GameObject> _unitUIFrame;
         [SerializeField] private GameObject _structureUIFrame;
+        [SerializeField] private Image _entityIcon;
         [SerializeField] private List<CanvasGroup> _thingsToHideWhenDying;
         [SerializeField] private CanvasGroup _mainImageGroup;
         [SerializeField] private ParticleSystem _deathParticleSystem;
@@ -102,6 +103,7 @@ namespace Gameplay.Entities {
             if (entity.EntityData.IsStructure) {
                 if (hasHP) {
                     _structureHealthBar.Initialize(new HealthBarLogic(entity));
+                    _entityIcon.sprite = entity.EntityData.EntityIcon;
                 }
                 _unitUIFrame.ForEach(g => g.SetActive(false));
                 _structureUIFrame.SetActive(hasHP);
