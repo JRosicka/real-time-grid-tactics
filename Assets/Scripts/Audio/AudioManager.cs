@@ -16,6 +16,8 @@ namespace Audio {
     public class AudioManager : MonoBehaviour {
         // Loudness (perceptually) ~doubles every 10 decibels -> 10/ln(2)
         private const float DecibelCoefficient = 14.4269504089f;
+
+        private const float GlobalVolumeMultiplier = 2.5f;
         
         public static AudioManager Instance;
 
@@ -46,7 +48,7 @@ namespace Audio {
             }
         }
         private Dictionary<AudioLayerName, AudioMixerGroup> _layerMixerGroups;
-
+        
         /// <summary>
         /// Performs initialization. If initialization was already performed this app session, then destroys the GameObject. 
         /// </summary>
@@ -189,11 +191,11 @@ namespace Audio {
         }
 
         public void SetSoundEffectVolume(float newVolume) {
-            Mixer.SetFloat(PlayerPrefsKeys.SoundEffectVolumeKey, ToDecibels(newVolume));
+            Mixer.SetFloat(PlayerPrefsKeys.SoundEffectVolumeKey, ToDecibels(newVolume * GlobalVolumeMultiplier));
         }
         
         public void SetMusicVolume(float newVolume) {
-            Mixer.SetFloat(PlayerPrefsKeys.MusicVolumeKey, ToDecibels(newVolume));
+            Mixer.SetFloat(PlayerPrefsKeys.MusicVolumeKey, ToDecibels(newVolume * GlobalVolumeMultiplier));
         }
 
         /// <summary> 
