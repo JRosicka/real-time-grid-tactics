@@ -22,8 +22,10 @@ MonoBehaviour:
   Requirements:
   - Purchasable: {fileID: 11400000, guid: f2089d06c5ba63e40a8078c1636cac5f, type: 2}
     MustBeAdjacent: 0
+    FailedRequirementExplanation: You must own a Stable.
   - Purchasable: {fileID: 11400000, guid: f8a9d9571b0a8324587b160065ca7fce, type: 2}
     MustBeAdjacent: 1
+    FailedRequirementExplanation: Your King must be adjacent to the Amber Forge.
   BuildTime: 30
   BuildsImmediately: 1
   BaseSprite: {fileID: 21300000, guid: b57c4120c8015b744a4fc3667c7fba31, type: 3}

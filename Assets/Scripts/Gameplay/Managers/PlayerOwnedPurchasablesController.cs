@@ -54,8 +54,7 @@ public class PlayerOwnedPurchasablesController : NetworkBehaviour {
         List<PurchasableData> ownedPurchasables = OwnedPurchasables;
         foreach (PurchasableRequirement requirement in purchasable.Requirements) {
             if (!ownedPurchasables.Contains(requirement.Purchasable)) {
-                string potentialA = requirement.Purchasable is EntityData ? " a" : "";
-                whyNot = $"Requires{potentialA} {requirement.Purchasable.ID}.";
+                whyNot = requirement.FailedRequirementExplanation;
                 return false;
             }
             if (requirement.MustBeAdjacent) {
@@ -64,7 +63,7 @@ public class PlayerOwnedPurchasablesController : NetworkBehaviour {
                 }
 
                 if (!GameManager.Instance.LeaderTracker.IsAdjacentToFriendlyLeader(purchaser.Location!.Value, _player.Data.Team)) {
-                    whyNot = $"Your {requirement.Purchasable.ID} must be adjacent.";
+                    whyNot = requirement.FailedRequirementExplanation;
                     return false;
                 }
             }

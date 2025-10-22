@@ -11,5 +11,6 @@ namespace Gameplay.Config {
         /// Whether the purchasable needs to be adjacent to the purchasing entity
         /// </summary>
         public bool MustBeAdjacent;
+        public string FailedRequirementExplanation;
     }
 }

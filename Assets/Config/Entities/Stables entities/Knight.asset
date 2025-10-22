@@ -23,6 +23,7 @@ MonoBehaviour:
   Requirements:
   - Purchasable: {fileID: 11400000, guid: 9ab6d58fde8294daa9c3c7a99e68cb87, type: 2}
     MustBeAdjacent: 0
+    FailedRequirementExplanation: You must own the High-Protein Horse Feed upgrade.
   BuildTime: 45
   BuildsImmediately: 0
   BaseSprite: {fileID: 21300000, guid: 39af4f5fcf6309945b217e525c572273, type: 3}
