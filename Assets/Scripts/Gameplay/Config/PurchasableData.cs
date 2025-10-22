@@ -19,8 +19,7 @@ namespace Gameplay.Config {
         /// Note that this is distinct from the build source for this. These required items must exist somewhere, and additionally
         /// some <see cref="GridEntity"/> needs to be able to build this. 
         /// </summary>
-        public List<PurchasableData> Requirements;
-        public bool RequirementNeedsToBeAdjacent;
+        public List<PurchasableRequirement> Requirements;
         [Range(0, 120)]
         public float BuildTime;
         [Tooltip("If false, the purchasable is awarded at the end of the build timer. If true, it is awarded right away and the build timer is just used for cooldown. Currently untested with GridEntities (might only work with upgrades).")]

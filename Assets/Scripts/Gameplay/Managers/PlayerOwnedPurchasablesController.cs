@@ -52,18 +52,19 @@ public class PlayerOwnedPurchasablesController : NetworkBehaviour {
 
     public bool HasRequirementsForPurchase(PurchasableData purchasable, GridEntity purchaser, out string whyNot) {
         List<PurchasableData> ownedPurchasables = OwnedPurchasables;
-        foreach (PurchasableData requiredPurchasable in purchasable.Requirements) {
-            if (!ownedPurchasables.Contains(requiredPurchasable)) {
-                whyNot = $"Requires a {requiredPurchasable.ID}.";
+        foreach (PurchasableRequirement requirement in purchasable.Requirements) {
+            if (!ownedPurchasables.Contains(requirement.Purchasable)) {
+                string potentialA = requirement.Purchasable is EntityData ? " a" : "";
+                whyNot = $"Requires{potentialA} {requirement.Purchasable.ID}.";
                 return false;
             }
-            if (purchasable.RequirementNeedsToBeAdjacent) {
-                if (requiredPurchasable != GameManager.Instance.Configuration.KingEntityData) {
+            if (requirement.MustBeAdjacent) {
+                if (requirement.Purchasable != GameManager.Instance.Configuration.KingEntityData) {
                     throw new Exception("Game does not support a non-King adjacent required purchasable");
                 }
 
                 if (!GameManager.Instance.LeaderTracker.IsAdjacentToFriendlyLeader(purchaser.Location!.Value, _player.Data.Team)) {
-                    whyNot = $"Your {requiredPurchasable.ID} must be adjacent.";
+                    whyNot = $"Your {requirement.Purchasable.ID} must be adjacent.";
                     return false;
                 }
             }
