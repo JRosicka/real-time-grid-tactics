@@ -18,6 +18,8 @@ namespace Gameplay.UI {
         [SerializeField] private SettingSlider _sfxVolumeSlider;
         [SerializeField] private SettingSlider _musicVolumeSlider;
         [SerializeField] private SettingToggle _edgeScrollToggle;
+        [SerializeField] private SettingSlider _edgeScrollSpeedSlider;
+        [SerializeField] private SettingSlider _edgeScrollSpeedSensitivitySlider;
         [SerializeField] private SettingDropdownList _displayList;
         [SerializeField] private SettingDropdownList _resourcesUIList;
 
@@ -36,6 +38,8 @@ namespace Gameplay.UI {
             int sfxVolume = ToVolumeInt(PlayerPrefs.GetFloat(PlayerPrefsKeys.SoundEffectVolumeKey, PlayerPrefsKeys.DefaultVolume));
             int musicVolume = ToVolumeInt(PlayerPrefs.GetFloat(PlayerPrefsKeys.MusicVolumeKey, PlayerPrefsKeys.DefaultVolume));
             bool edgeScroll = PlayerPrefs.GetInt(PlayerPrefsKeys.EdgeScrollKey, 1) == 1;
+            int edgeScrollSpeed = PlayerPrefs.GetInt(PlayerPrefsKeys.EdgeScrollSpeed, PlayerPrefsKeys.DefaultEdgeScrollSpeed);
+            int edgeScrollSensitivity = PlayerPrefs.GetInt(PlayerPrefsKeys.EdgeScrollSensitivity, PlayerPrefsKeys.DefaultEdgeScrollSensitivity);
             int chosenDisplay = PlayerPrefs.GetInt(PlayerPrefsKeys.ChosenDisplayKey, 0);
             // _resourcesUILocation = PlayerPrefs.GetInt(PlayerPrefsKeys.ResourcesUILocationKey, 0);
             
@@ -47,6 +51,12 @@ namespace Gameplay.UI {
             
             _edgeScrollToggle.Initialize(edgeScroll);
             _edgeScrollToggle.ValueChanged += EdgeScrollChanged;
+            
+            _edgeScrollSpeedSlider.Initialize(edgeScrollSpeed);
+            _edgeScrollSpeedSlider.ValueChanged += EdgeScrollSpeedChanged;
+
+            _edgeScrollSpeedSensitivitySlider.Initialize(edgeScrollSensitivity);
+            _edgeScrollSpeedSensitivitySlider.ValueChanged += EdgeScrollSensitivityChanged;
 
             List<string> displayStrings = Display.displays.Take(8).Select((d, i) => $"Display {i + 1}").ToList();
             _displayList.Initialize(chosenDisplay, displayStrings);
@@ -72,6 +82,20 @@ namespace Gameplay.UI {
             PlayerPrefs.SetInt(PlayerPrefsKeys.EdgeScrollKey, edgeScroll ? 1 : 0);
             if (_inGame) {
                 GameManager.CameraManager.ToggleEdgeScroll(edgeScroll);
+            }
+        }
+        
+        private void EdgeScrollSpeedChanged(int speed) {
+            PlayerPrefs.SetInt(PlayerPrefsKeys.EdgeScrollSpeed, speed);
+            if (_inGame) {
+                GameManager.CameraManager.SetEdgeScrollSpeed(speed);
+            }
+        }
+
+        private void EdgeScrollSensitivityChanged(int sensitivity) {
+            PlayerPrefs.SetInt(PlayerPrefsKeys.EdgeScrollSensitivity, sensitivity);
+            if (_inGame) {
+                GameManager.CameraManager.SetEdgeScrollSensitivity(sensitivity);
             }
         }
 

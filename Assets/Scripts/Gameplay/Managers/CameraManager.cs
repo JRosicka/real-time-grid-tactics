@@ -24,11 +24,15 @@ public class CameraManager : MonoBehaviour {
     [SerializeField] [Range(0, .1f)] private float _edgeScrollNormalThreshold;
     [SerializeField] private RectTransform _gameWindow;
     [SerializeField] private RectTransform _cameraWindow;
-    private float VerticalEdgeScrollThreshold => _gameWindow.rect.height * _edgeScrollNormalThreshold;
-    private float HorizontalEdgeScrollThreshold => _gameWindow.rect.width * _edgeScrollNormalThreshold;
+    private float VerticalEdgeScrollThreshold => _gameWindow.rect.height * _edgeScrollNormalThreshold * _edgeScrollSensitivityMultiplier;
+    private float HorizontalEdgeScrollThreshold => _gameWindow.rect.width * _edgeScrollNormalThreshold * _edgeScrollSensitivityMultiplier;
     private CameraDirection? _currentEdgeScrollDirection_horizontal;
     private CameraDirection? _currentEdgeScrollDirection_vertical;
     private bool _edgeScrollEnabled;
+    private float _edgeScrollSpeedMultiplier;
+    private float _edgeScrollSensitivityMultiplier;
+    
+    private float EdgeScrollSpeed => _cameraMoveSpeed * _edgeScrollSpeedMultiplier;
     
     private bool InputAllowed => GameManager.Instance.GameSetupManager.InputAllowed;
     
@@ -46,6 +50,8 @@ public class CameraManager : MonoBehaviour {
         SetBoundaries(boundaryLeft, boundaryRight, boundaryUp, boundaryDown);
         SetCameraStartPosition(startPosition);
         _edgeScrollEnabled = PlayerPrefs.GetInt(PlayerPrefsKeys.EdgeScrollKey, 1) == 1;
+        SetEdgeScrollSpeed(PlayerPrefs.GetInt(PlayerPrefsKeys.EdgeScrollSpeed, PlayerPrefsKeys.DefaultEdgeScrollSpeed));
+        SetEdgeScrollSensitivity(PlayerPrefs.GetInt(PlayerPrefsKeys.EdgeScrollSensitivity, PlayerPrefsKeys.DefaultEdgeScrollSensitivity));
         
         _playerInput = ReInput.players.GetPlayer(0);
     }
@@ -67,7 +73,15 @@ public class CameraManager : MonoBehaviour {
     public void ToggleEdgeScroll(bool enable) {
         _edgeScrollEnabled = enable;
     }
-    
+
+    public void SetEdgeScrollSpeed(int newSpeed) {
+        _edgeScrollSpeedMultiplier = newSpeed / 75f + .25f; // .25 to 1.75
+    }
+
+    public void SetEdgeScrollSensitivity(int newSensitivity) {
+        _edgeScrollSensitivityMultiplier = newSensitivity / 75f + .25f; // .25 to 1.75
+    }
+
     public void StartMiddleMousePan(Vector2 startMousePosition) {
         _middleMouseDragLastPosition = _camera.ScreenToWorldPoint(startMousePosition);
     }
@@ -85,7 +99,7 @@ public class CameraManager : MonoBehaviour {
             _ => throw new ArgumentOutOfRangeException(nameof(direction), direction, null)
         };
         
-        Vector3 difference = moveVector * Time.deltaTime * _cameraMoveSpeed;
+        Vector3 difference = moveVector * Time.deltaTime * EdgeScrollSpeed;
         _camera.transform.position = ClampCamera(_camera.transform.position + difference);
         
         // float scroll = Input.GetAxis("Mouse ScrollWheel");
