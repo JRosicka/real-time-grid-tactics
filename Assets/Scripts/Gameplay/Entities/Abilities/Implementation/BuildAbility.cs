@@ -5,6 +5,7 @@ using Gameplay.Config;
 using Gameplay.Config.Abilities;
 using Gameplay.Config.Upgrades;
 using Gameplay.Entities.Upgrades;
+using Gameplay.Grid;
 using Mirror;
 using UnityEngine;
 
@@ -108,17 +109,30 @@ namespace Gameplay.Entities.Abilities {
         /// <returns>The location of the best viable cell, or null if no cells are viable.</returns>
         private Vector2Int? GetBestAdjacentCellToSpawn(EntityData entityData) {
             PathfinderService.Path path = GameManager.Instance.PathfinderService.FindPath(Performer, Performer.TargetLocationLogicValue.CurrentTarget);
-            if (path.Nodes.Count < 2) {
-                return null;
+            if (path.Nodes.Count >= 2) {
+                // Spawn at the first node along the path to the rally point if we can.
+                Vector2Int firstCellAlongRallyPoint = path.Nodes[1].Location;
+                if (GameManager.Instance.GridController.GridData.GetCell(firstCellAlongRallyPoint).Tile.InaccessibleTags
+                        .All(t => !entityData.Tags.Contains(t))
+                    && PathfinderService.CanEntityEnterCell(firstCellAlongRallyPoint, entityData, Performer.Team)) {
+                    return firstCellAlongRallyPoint;
+                }
             }
-            Vector2Int firstCellAlongRallyPoint = path.Nodes[1].Location;
             
-            if (GameManager.Instance.GridController.GridData.GetCell(firstCellAlongRallyPoint).Tile.InaccessibleTags.Any(t => entityData.Tags.Contains(t))
-                    || !PathfinderService.CanEntityEnterCell(firstCellAlongRallyPoint, entityData, Performer.Team)) {
-                return null;
+            // Otherwise check each adjacent cell to the building entity, prioritizing the ones closest to the destination
+            if (Performer.Location == null) return null;
+            List<GridData.CellData> orderedAdjacentCells = GameManager.Instance.GridController.GridData
+                .GetAdjacentCells(Performer.Location.Value)
+                .OrderBy(c => CellDistanceLogic.DistanceBetweenCells(c.Location, Performer.TargetLocationLogicValue.CurrentTarget))
+                .ToList();
+            foreach (GridData.CellData adjacentCell in orderedAdjacentCells) {
+                if (adjacentCell.Tile.InaccessibleTags.Any(t => entityData.Tags.Contains(t))) continue;
+                if (!PathfinderService.CanEntityEnterCell(adjacentCell.Location, entityData, Performer.Team)) continue;
+                return adjacentCell.Location;
             }
 
-            return firstCellAlongRallyPoint;
+            // No adjacent cells work
+            return null;
         }
 
         public override bool TryDoAbilityStartEffect() {
