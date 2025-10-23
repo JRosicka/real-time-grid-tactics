@@ -442,7 +442,7 @@ namespace Gameplay.Entities {
 
             if (fromInput) {
                 // Remove any abilities that can not be canceled manually
-                abilities.RemoveAll(a => !a.AbilityData.CancelableManually);
+                abilities.RemoveAll(a => !a.Cancelable);
             }
             
             return abilities;

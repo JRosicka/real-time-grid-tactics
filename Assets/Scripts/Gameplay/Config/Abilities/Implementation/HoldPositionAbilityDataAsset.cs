@@ -15,7 +15,7 @@ namespace Gameplay.Config.Abilities {
     public class HoldPositionAbilityData : AbilityDataBase<NullAbilityParameters> {
         public override bool CancelableWhileOnCooldown => false;
         public override bool CancelableWhileInProgress => false;
-        public override bool CancelableManually => false;
+        public override bool Cancelable => false;
 
         public override void SelectAbility(GridEntity selector) {
             GameManager.Instance.AbilityAssignmentManager.StartPerformingAbility(selector, this, new NullAbilityParameters(), true, false, true);

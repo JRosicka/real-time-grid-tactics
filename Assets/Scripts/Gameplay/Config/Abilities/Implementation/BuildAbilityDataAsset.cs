@@ -33,7 +33,7 @@ namespace Gameplay.Config.Abilities {
 
         public override bool CancelableWhileOnCooldown => true;
         public override bool CancelableWhileInProgress => true;
-        public override bool CancelableManually => true;
+        public override bool Cancelable => true;
         public override bool Targeted => Targetable;
 
         public override void SelectAbility(GridEntity selector) {

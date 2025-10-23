@@ -16,7 +16,7 @@ namespace Gameplay.Config.Abilities {
     public class ParadeAbilityData : AbilityDataBase<ParadeAbilityParameters>, ITargetableAbilityData {
         public override bool CancelableWhileOnCooldown => false;
         public override bool CancelableWhileInProgress => true;
-        public override bool CancelableManually => true;
+        public override bool Cancelable => true;
         public override IAbilityParameters OnStartParameters => new ParadeAbilityParameters { Target = null };
 
         public override void SelectAbility(GridEntity selector) {

@@ -40,6 +40,8 @@ namespace Gameplay.Entities.Abilities {
             }
         }
 
+        public override bool Cancelable => !AbilityParameters.Buildable.BuildsImmediately && base.Cancelable;
+
         public override void Cancel() {
             // Refund the amount spent on the build
             foreach (ResourceAmount resources in AbilityParameters.Buildable.Cost) {

@@ -1,5 +1,7 @@
+using System.Collections.Generic;
 using System.Linq;
 using Gameplay.Entities;
+using Gameplay.Entities.Abilities;
 using Gameplay.Entities.BuildQueue;
 
 namespace Gameplay.UI {
@@ -55,11 +57,12 @@ namespace Gameplay.UI {
             
             // Otherwise clear the last build in the selected entity's build queue if there is one
             IBuildQueue buildQueue = _selectedEntity.BuildQueue;
-            if (buildQueue != null && buildQueue.Queue(GameManager.Instance.LocalTeam).Count > 0) {
-                return buildQueue;
-            }
+            if (buildQueue == null) return null;
+            List<BuildAbility> queue = buildQueue.Queue(GameManager.Instance.LocalTeam);
+            if (queue.Count == 0) return null;
+            if (!queue.Last().Cancelable) return null;
 
-            return null;
+            return buildQueue;
         }
     }
 }

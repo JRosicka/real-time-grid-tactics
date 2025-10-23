@@ -18,7 +18,7 @@ namespace Gameplay.Config.Abilities {
     public class RallyAbilityData : AbilityDataBase<RallyAbilityParameters> {
         public override bool CancelableWhileOnCooldown => false;
         public override bool CancelableWhileInProgress => false;
-        public override bool CancelableManually => false;
+        public override bool Cancelable => false;
         
         [FormerlySerializedAs("UseAttackIconOnPath")] 
         public bool RallyingUnitsAreAttackers;
