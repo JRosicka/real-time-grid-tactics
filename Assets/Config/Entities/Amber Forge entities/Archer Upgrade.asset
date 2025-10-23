@@ -1,0 +1,42 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 214afee21a1849d1b39738bbbcdcadda, type: 3}
+  m_Name: Archer Upgrade
+  m_EditorClassIdentifier: 
+  ID: Swift Step
+  ShortDescription: 'Movement speed upgrade for Archers. '
+  Description: Archers are no longer slowed by Forests. Archer move speed penalty
+    after attacking reduced by 0.3s.
+  Cost:
+  - Type: 1
+    Amount: 100
+  Requirements:
+  - Purchasable: {fileID: 11400000, guid: 43174010eb096460f944f7aa4f3b1791, type: 2}
+    MustBeAdjacent: 0
+    FailedRequirementExplanation: You must own a Barracks.
+  - Purchasable: {fileID: 11400000, guid: f8a9d9571b0a8324587b160065ca7fce, type: 2}
+    MustBeAdjacent: 1
+    FailedRequirementExplanation: Your King must be adjacent to the Amber Forge.
+  BuildTime: 10
+  BuildsImmediately: 1
+  BaseSprite: {fileID: 21300000, guid: 5f27dbeabdfd4c746aeaca92a471076d, type: 3}
+  TeamColorSprite: {fileID: 0}
+  BaseSpriteIconOverride: {fileID: 0}
+  Repeatable: 0
+  ApplyToGridEntitiesUponCompletion: 1
+  ApplyToGridEntitiesWhenTheySpawn: 1
+  ExpirationSeconds: 0
+  ArcherData: {fileID: 11400000, guid: 938107a9fc68aa54586e46f7860fc6ff, type: 2}
+  SlowTerrainSpeedModifierIntensity: 0
+  AdditionalMovementTimeFromAttacking: -0.3
+  MoveTooltipMessage: Not slowed by Forests.<br>Move speed penalty after attacking
+    reduced by 0.3s.

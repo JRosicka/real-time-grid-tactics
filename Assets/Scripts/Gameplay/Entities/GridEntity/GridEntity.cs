@@ -60,6 +60,10 @@ namespace Gameplay.Entities {
         public int IncomeRate => ((NetworkableIntegerValue)_incomeRateField?.Value)?.Value ?? 0;
         private NetworkableField _timerSpeedMultiplierField;
         public float TimerSpeedMultiplier => ((NetworkableFloatValue)_timerSpeedMultiplierField?.Value)?.Value ?? 0;
+        private NetworkableField _slowMoveSpeedMultiplierField;
+        public float SlowMoveSpeedMultiplier => ((NetworkableFloatValue)_slowMoveSpeedMultiplierField?.Value)?.Value ?? 0;
+        private NetworkableField _additionalMovementTimeFromAttackingField;
+        public float AdditionalMovementTimeFromAttacking => ((NetworkableFloatValue)_additionalMovementTimeFromAttackingField?.Value)?.Value ?? 0;
 
         // Abilities
         /// <summary>
@@ -145,6 +149,8 @@ namespace Gameplay.Entities {
             _killCountField = new NetworkableField(this, nameof(_killCountField), new NetworkableIntegerValue(0));
             _incomeRateField = new NetworkableField(this, nameof(_incomeRateField), new NetworkableIntegerValue(0));
             _timerSpeedMultiplierField = new NetworkableField(this, nameof(_timerSpeedMultiplierField), new NetworkableFloatValue(1f));
+            _slowMoveSpeedMultiplierField = new NetworkableField(this, nameof(_slowMoveSpeedMultiplierField), new NetworkableFloatValue(1f));
+            _additionalMovementTimeFromAttackingField = new NetworkableField(this, nameof(_additionalMovementTimeFromAttackingField), new NetworkableFloatValue(0));
         }
 
         /// <summary>
@@ -556,7 +562,13 @@ namespace Gameplay.Entities {
                 return -1;
             }
 
-            return EntityDataForPathfinding().NormalMoveTime * tile.GetMoveModifier(EntityDataForPathfinding().Tags);
+            EntityData entityData = EntityDataForPathfinding();
+            float normalMoveTime = entityData.NormalMoveTime;
+            float extraMoveTimeFromTile = tile.GetMoveModifier(entityData.Tags) - 1;
+            if (tile.IsSlowed(entityData.Tags)) {
+                extraMoveTimeFromTile *= SlowMoveSpeedMultiplier;
+            }
+            return normalMoveTime + normalMoveTime * extraMoveTimeFromTile;
         }
 
         public void ToggleHoldPosition(bool holdPosition) {
@@ -612,7 +624,17 @@ namespace Gameplay.Entities {
         public void SetTimerMultiplier(float newTimerMultiplier) {
             _timerSpeedMultiplierField.UpdateValue(new NetworkableFloatValue(newTimerMultiplier));
         }
+
+        public void SetSlowMoveSpeedMultiplier(float newSlowMoveSpeedMultiplier) {
+            _slowMoveSpeedMultiplierField.UpdateValue(new NetworkableFloatValue(newSlowMoveSpeedMultiplier));
+        }
+
+        public void SetAdditionalMovementTimeFromAttacking(float newAdditionalMovementTime) {
+            _additionalMovementTimeFromAttackingField.UpdateValue(new NetworkableFloatValue(newAdditionalMovementTime));
+        }
         
+        public float MovementTimeFromAttacking => EntityData.AddedMovementTimeFromAttacking + AdditionalMovementTimeFromAttacking;
+
         public enum TargetType {
             Enemy = 1,
             Ally = 2,
@@ -666,6 +688,24 @@ namespace Gameplay.Entities {
                 currentTooltipMessage += attackTooltipMessage;
             }
 
+            return currentTooltipMessage;
+        }
+
+        public string GetMoveTooltipMessageFromUpgrades() {
+            string currentTooltipMessage = "";
+            IGamePlayer player = GameManager.Instance.GetPlayerForTeam(this);
+            if (player == null) return currentTooltipMessage;
+            foreach (IUpgrade upgrade in player.OwnedPurchasablesController.Upgrades.GetOwnedUpgrades()) {
+                string moveTooltipMessage = upgrade.GetMoveTooltipMessage(this);
+                if (string.IsNullOrEmpty(moveTooltipMessage)) continue;
+
+                if (!string.IsNullOrEmpty(moveTooltipMessage)) {
+                    moveTooltipMessage += "<br>";
+                }
+
+                currentTooltipMessage += moveTooltipMessage;
+            }
+            
             return currentTooltipMessage;
         }
         

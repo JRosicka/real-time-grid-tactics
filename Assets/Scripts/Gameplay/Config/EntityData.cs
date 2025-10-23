@@ -38,11 +38,7 @@ namespace Gameplay.Config {
         public List<EntityTag> TagsToApplyBonusDamageTo;
 
         [Header("Movement")]
-        // NOTE: if we add faster movement times here, then update GridNode._fastestEnterTime calculation accordingly
-        // These should have values for production structures even though those can't move. This is so that the pathfinding 
-        // logic works correctly when setting rally points.
         public float NormalMoveTime;
-        public float SlowMoveTime;
         [Tooltip("How much time is added to the entity's movement cooldown timer after attacking. " +
                  "If there is an active cooldown timer for movement when an attack is performed, then this amount " +
                  "is added to that timer. Otherwise, a new cooldown timer is added with this amount.")]

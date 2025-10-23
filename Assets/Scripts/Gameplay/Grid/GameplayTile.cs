@@ -45,6 +45,10 @@ public class GameplayTile : HexagonalRuleTile<GameplayTile.Neighbor> {
         return slowedTag?.SlowFactor ?? 1f;
     }
 
+    public bool IsSlowed(List<EntityTag> tags) {
+        return SlowTags.Any(s => tags.Contains(s.Tag));
+    }
+
     private const string DefenseFormat = "{0} occupying this tile receive {1} less damage from attacks.";
     public string GetDefenseTooltip() {
         if (_defenseBoostTags.Count == 0 || _armorBonus == 0) return "";

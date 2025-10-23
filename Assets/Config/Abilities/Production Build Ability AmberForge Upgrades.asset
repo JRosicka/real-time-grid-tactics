@@ -48,5 +48,7 @@ MonoBehaviour:
       selectionKey: w
     - data: {fileID: 11400000, guid: 9bcd35c82053a44dfa5d90fcfe70f347, type: 2}
       selectionKey: e
+    - data: {fileID: 11400000, guid: 3564d2f2163ea409f8664fa350696e65, type: 2}
+      selectionKey: a
     - data: {fileID: 11400000, guid: 9ab6d58fde8294daa9c3c7a99e68cb87, type: 2}
       selectionKey: s

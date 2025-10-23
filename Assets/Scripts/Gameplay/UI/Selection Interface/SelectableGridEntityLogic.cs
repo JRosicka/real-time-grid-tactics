@@ -175,9 +175,11 @@ namespace Gameplay.UI {
 
         private HoverableInfoIcon _defenseHoverableInfoIcon;
         private HoverableInfoIcon _attackHoverableInfoIcon;
+        private HoverableInfoIcon _moveHoverableInfoIcon;
         public void SetUpHoverableInfo(HoverableInfoIcon defenseHoverableInfoIcon, HoverableInfoIcon attackHoverableInfoIcon, HoverableInfoIcon moveHoverableInfoIcon) {
             _defenseHoverableInfoIcon = defenseHoverableInfoIcon;
             _attackHoverableInfoIcon = attackHoverableInfoIcon;
+            _moveHoverableInfoIcon = moveHoverableInfoIcon;
             
             string defenseTooltip = GetDefenseTooltip();
             if (!string.IsNullOrEmpty(defenseTooltip)) {
@@ -191,6 +193,13 @@ namespace Gameplay.UI {
                 attackHoverableInfoIcon.ShowIcon(attackTooltip);
             } else {
                 attackHoverableInfoIcon.HideIcon();
+            }
+
+            string moveTooltip = GetMoveTooltip();
+            if (!string.IsNullOrEmpty(moveTooltip)) {
+                moveHoverableInfoIcon.ShowIcon(moveTooltip);
+            } else {
+                moveHoverableInfoIcon.HideIcon();
             }
         }
 
@@ -208,7 +217,7 @@ namespace Gameplay.UI {
         
         private void OnEntityAbilityPerformed(IAbility iAbility, AbilityTimer abilityTimer) {
             SetUpResourceView(_resourceRow, _resourceLabel, _resourceField);
-            SetUpHoverableInfo(_defenseHoverableInfoIcon, _attackHoverableInfoIcon, null);
+            SetUpHoverableInfo(_defenseHoverableInfoIcon, _attackHoverableInfoIcon, _moveHoverableInfoIcon);
         }
         
         private void OnEntityResourceAmountChanged(INetworkableFieldValue oldValue, INetworkableFieldValue newValue, object metadata) {
@@ -216,12 +225,12 @@ namespace Gameplay.UI {
         }
 
         private void OnOwnedPurchasablesChanged() {
-            SetUpHoverableInfo(_defenseHoverableInfoIcon, _attackHoverableInfoIcon, null);
+            SetUpHoverableInfo(_defenseHoverableInfoIcon, _attackHoverableInfoIcon, _moveHoverableInfoIcon);
         }
 
         private void OnLeaderMoved(GridEntity leader) {
             if (leader.Team != Entity.Team) return;
-            SetUpHoverableInfo(_defenseHoverableInfoIcon, _attackHoverableInfoIcon, null);
+            SetUpHoverableInfo(_defenseHoverableInfoIcon, _attackHoverableInfoIcon, _moveHoverableInfoIcon);
         }
 
         private void KillCountChanged(int newKillCount) {
@@ -275,6 +284,11 @@ namespace Gameplay.UI {
                 tooltipMessage += "<br>";
             }
             return tooltipMessage + bonusDamage;
+        }
+
+        private string GetMoveTooltip() {
+            string tooltipMessage = Entity.GetMoveTooltipMessageFromUpgrades();
+            return tooltipMessage;
         }
 
         private static string GetStringListForEntityTags(List<EntityTag> tags) {

@@ -103,6 +103,7 @@ namespace Gameplay.Entities.Upgrades {
         public virtual int GetAttackBonus(GridEntity attackingEntity) => 0;
 
         public virtual string GetAttackTooltipMessage(GridEntity attackingEntity) => null;
+        public virtual string GetMoveTooltipMessage(GridEntity moveEntity) => null;
 
         private List<GridEntity> FriendlyEntities => GameManager.Instance.CommandManager.EntitiesOnGrid.ActiveEntitiesForTeam(Team);
     }

@@ -17,7 +17,7 @@ namespace Gameplay.Entities.Abilities {
 
         public override AbilityExecutionType ExecutionType => AbilityExecutionType.Interaction;
         public override bool ShouldShowAbilityTimer => true;
-        protected override float AddedMovementTime => Performer.EntityData.AddedMovementTimeFromAttacking;
+        protected override float AddedMovementTime => Performer.MovementTimeFromAttacking;
 
         public override void Cancel() {
             // Nothing to do

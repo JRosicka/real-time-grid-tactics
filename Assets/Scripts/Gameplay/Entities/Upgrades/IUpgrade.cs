@@ -36,5 +36,6 @@ namespace Gameplay.Entities.Upgrades {
         void UpdateTimer(float deltaTime);
         int GetAttackBonus(GridEntity attackingEntity);
         string GetAttackTooltipMessage(GridEntity attackingEntity);
+        string GetMoveTooltipMessage(GridEntity movingEntity);
     }
 }
