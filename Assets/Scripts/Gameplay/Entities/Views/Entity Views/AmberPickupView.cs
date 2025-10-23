@@ -9,6 +9,7 @@ namespace Gameplay.Entities {
             _animator.Play("Resource Pickup Idle", -1, Random.value);
         }
         public override void LethalDamageReceived() { }
+        public override void NonLethalDamageReceived() { }
 
         public override bool DoAbility(IAbility ability, AbilityTimer abilityTimer) {
             return true;

@@ -5,6 +5,7 @@ namespace Gameplay.Entities {
     public abstract class GridEntityParticularView : MonoBehaviour {
         public abstract void Initialize(GridEntity entity);
         public abstract void LethalDamageReceived();
+        public abstract void NonLethalDamageReceived();
         /// <summary>
         /// Perform any entity-specific animations for the given ability.
         /// </summary>

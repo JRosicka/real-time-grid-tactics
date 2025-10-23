@@ -8,6 +8,7 @@ namespace Gameplay.Entities {
         
         public override void Initialize(GridEntity entity) { }
         public override void LethalDamageReceived() { }
+        public override void NonLethalDamageReceived() { }
 
         public override bool DoAbility(IAbility ability, AbilityTimer abilityTimer) {
             switch (ability.AbilityData) {

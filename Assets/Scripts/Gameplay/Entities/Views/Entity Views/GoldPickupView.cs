@@ -10,6 +10,7 @@ namespace Gameplay.Entities {
         }
         
         public override void LethalDamageReceived() { }
+        public override void NonLethalDamageReceived() { }
 
         public override bool DoAbility(IAbility ability, AbilityTimer abilityTimer) {
             return true;

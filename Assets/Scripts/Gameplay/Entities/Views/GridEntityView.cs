@@ -193,8 +193,11 @@ namespace Gameplay.Entities {
             await Task.Delay((int)(_attackShakeTriggerTime * 1000));
             ShakeBehaviour.Shake();
             ColorFlashBehaviour.Flash();
+            
             if (lethal) {
                 _particularView.LethalDamageReceived();
+            } else {
+                _particularView.NonLethalDamageReceived();
             }
         }
 

@@ -22,6 +22,7 @@ namespace Gameplay.Entities {
             _resourceEntity?.ToggleView(true);
             GameManager.Instance.CommandManager.EntityCollectionChangedEvent -= EntityCollectionChanged;
         }
+        public override void NonLethalDamageReceived() { }
 
         public override bool DoAbility(IAbility ability, AbilityTimer abilityTimer) {
             switch (ability.AbilityData) {
