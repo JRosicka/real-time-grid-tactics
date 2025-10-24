@@ -25,7 +25,7 @@ MonoBehaviour:
     _abilityTimerView: {fileID: 5971072852972127787, guid: 31b9abd5b640d9648bf03e6305a255b4, type: 3}
     _requirements: []
     _performDuration: 0
-    _cooldownDuration: 50
+    _cooldownDuration: 45
     _channel: {fileID: 11400000, guid: e53d1693004b22b4aaf5ee5caa8e749d, type: 2}
     _channelBlockers:
     - {fileID: 11400000, guid: e53d1693004b22b4aaf5ee5caa8e749d, type: 2}
