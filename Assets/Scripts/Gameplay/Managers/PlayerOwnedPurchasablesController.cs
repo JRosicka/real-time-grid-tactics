@@ -80,6 +80,7 @@ public class PlayerOwnedPurchasablesController : NetworkBehaviour {
     public void UpdateUpgradeStatus(UpgradeData upgradeData, UpgradeStatus newStatus) {
         IUpgrade upgrade = Upgrades.GetUpgrade(upgradeData);
         upgrade.UpdateStatus(newStatus);
+        OwnedPurchasablesChangedEvent?.Invoke();
     }
     
     public void ExpireUpgradeTimer(UpgradeData upgradeData) {
