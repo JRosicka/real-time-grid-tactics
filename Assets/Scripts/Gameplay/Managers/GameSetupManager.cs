@@ -123,7 +123,7 @@ public class GameSetupManager : MonoBehaviour {
     /// </summary>
     public async void ReturnToLobbyAsync() {
         await Task.Delay(GameOverDelayMillis);
-        GameManager.ReturnToLobby();
+        GameManager?.ReturnToLobby();
     }
 
     /// <summary>
