@@ -22,7 +22,7 @@ MonoBehaviour:
   - Purchasable: {fileID: 11400000, guid: f8a9d9571b0a8324587b160065ca7fce, type: 2}
     MustBeAdjacent: 1
     FailedRequirementExplanation: Your King must be adjacent to the Amber Forge.
-  BuildTime: 10
+  BuildTime: 60
   BuildsImmediately: 1
   BaseSprite: {fileID: 21300000, guid: e0ed8fc4bfdf1694ab1ddd43321b4155, type: 3}
   TeamColorSprite: {fileID: 0}
