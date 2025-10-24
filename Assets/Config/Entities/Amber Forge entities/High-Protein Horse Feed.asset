@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: High-Protein Horse Feed
   m_EditorClassIdentifier: 
   ID: High-Protein Horse Feed
-  ShortDescription: Range and damage upgrade for the cavalry charge ability.
+  ShortDescription: Range + damage upgrade for the charge ability, unlocks Knights.
   Description: Adds +1 range and +4 attack damage to the cavalry charge ability.
-    Requires a stable.
+    Unlocks Knights. Requires a stable.
   Cost:
   - Type: 1
     Amount: 50
