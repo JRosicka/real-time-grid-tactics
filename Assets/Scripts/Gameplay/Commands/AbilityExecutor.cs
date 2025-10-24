@@ -252,8 +252,8 @@ public class AbilityExecutor : MonoBehaviour {
         AttackAbilityData data = entity.GetAbilityData<AttackAbilityData>();
         if (data == null) return;
 
-        // Don't perform default attack if there is already another attack in progress
-        if (entity.InProgressAbilities.Any(a => a.AbilityData.BlocksDefaultAttack) || entity.ActiveTimers.Any(t => t.Ability.AbilityData.BlocksDefaultAttack)) return;
+        // Don't perform default attack if there are any 
+        if (entity.InProgressAbilities.Any(a => a.AbilityData.BlocksDefaultAttack)) return;
             
         _abilityAssignmentManager.StartPerformingAbility(entity, data, new AttackAbilityParameters {
             Destination = location.Value
