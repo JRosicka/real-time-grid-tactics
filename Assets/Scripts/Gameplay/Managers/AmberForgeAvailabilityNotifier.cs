@@ -87,19 +87,14 @@ namespace Gameplay.Managers {
             // Check cooldown timers
             if (_amberForgeEntity.ActiveTimers.Any(t => t.Ability is BuildAbility && t.Team == _friendlyKingEntity.Team)) return false;
             
-            // Check friendly king adjacency
-            Vector2Int amberForgeLocation = _amberForgeEntity.Location!.Value;
-            List<Vector2Int> adjacentCells = GameManager.Instance.GridController.GridData
-                .GetAdjacentCells(amberForgeLocation).Select(c => c.Location).ToList();
-            Vector2Int? friendlyKingLocation =
-                GameManager.Instance.CommandManager.EntitiesOnGrid.LocationOfEntity(_friendlyKingEntity);
-            if (friendlyKingLocation == null || !adjacentCells.Contains(friendlyKingLocation.Value)) return false;
-
             // Check if upgrades are available
             IGamePlayer localPlayer = GameManager.Instance.GetPlayerForTeam(GameManager.Instance.LocalTeam);
             PlayerResourcesController resourcesController = localPlayer.ResourcesController;
             List<UpgradeData> availableUpgrades = AvailableAmberForgeUpgrades(localPlayer);
             if (availableUpgrades == null) return false;
+            
+            // Check requirements (including friendly King adjacency)
+            if (availableUpgrades.All(u => !localPlayer.OwnedPurchasablesController.HasRequirementsForPurchase(u, _amberForgeEntity, out _))) return false;
             
             // Check affordability
             return availableUpgrades.Select(e => e.Cost).Any(resourceAmounts => resourcesController.CanAfford(resourceAmounts));
