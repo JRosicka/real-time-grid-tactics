@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: AudioFileConfiguration
   m_EditorClassIdentifier: 
   GameMusic:
-    Clip: {fileID: 8300000, guid: e2f961b079f5c4b6799395bc43ff8db6, type: 3}
+    Clip: {fileID: 0}
     Volume: 0.236
     AudioLayer: 1
     Interruptible: 0
