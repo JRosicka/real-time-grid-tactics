@@ -12,10 +12,10 @@ namespace Gameplay.Entities {
         public override bool DoAbility(IAbility ability, AbilityTimer abilityTimer) {
             switch (ability) {
                 case AttackAbility attackAbility:
-                    DoAttackAnimation(attackAbility.AbilityParameters.Target, attackAbility.Performer);
+                    DoAttackAnimation(attackAbility.Performer, attackAbility.AbilityParameters.Target);
                     return false;
                 case TargetAttackAbility targetAttackAbility:
-                    DoAttackAnimation(targetAttackAbility.AbilityParameters.Target, targetAttackAbility.Performer);
+                    DoAttackAnimation(targetAttackAbility.Performer, targetAttackAbility.AbilityParameters.Target);
                     return false;
                 default:
                     return true;
