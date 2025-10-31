@@ -49,7 +49,9 @@ namespace Gameplay.Entities {
             // Animate the peasant view with the build animation
             _animator.Play("WorkerBuild");
 
-            GameManager.Instance.GameAudio.ConstructionSound();
+            if (buildAbility.PerformerTeam == GameManager.Instance.LocalTeam) {
+                GameManager.Instance.GameAudio.ConstructionSound();
+            }
         }
 
         private void BuildAbilityCompleted(bool canceled) {
