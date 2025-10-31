@@ -18,7 +18,7 @@ MonoBehaviour:
     at the time of research.
   Cost:
   - Type: 1
-    Amount: 200
+    Amount: 150
   Requirements:
   - Purchasable: {fileID: 11400000, guid: 5d9e30910c9795b49bea0c2c257e60eb, type: 2}
     MustBeAdjacent: 0

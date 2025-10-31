@@ -17,7 +17,7 @@ MonoBehaviour:
   Description: Adds +3 damage to friendly units when they are adjacent to your King.
   Cost:
   - Type: 1
-    Amount: 150
+    Amount: 100
   Requirements:
   - Purchasable: {fileID: 11400000, guid: f8a9d9571b0a8324587b160065ca7fce, type: 2}
     MustBeAdjacent: 1
