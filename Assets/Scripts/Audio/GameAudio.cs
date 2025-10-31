@@ -112,5 +112,9 @@ namespace Audio {
         public void GameLossSound() {
             AudioPlayer.TryPlaySFX(_audioConfiguration.GameLossSound);
         }
+
+        public void UpgradeCompleteSound() {
+            AudioPlayer.TryPlaySFX(_audioConfiguration.UpgradeCompleteSound);
+        }
     }
 }

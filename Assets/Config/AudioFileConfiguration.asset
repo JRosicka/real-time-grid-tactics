@@ -52,3 +52,8 @@ MonoBehaviour:
     Volume: 0.211
     AudioLayer: 0
     Interruptible: 0
+  UpgradeCompleteSound:
+    Clip: {fileID: 8300000, guid: 152ec2e0b5844aa48b1834ca664552cb, type: 3}
+    Volume: 0.472
+    AudioLayer: 0
+    Interruptible: 1
