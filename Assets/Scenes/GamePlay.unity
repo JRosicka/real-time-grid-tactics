@@ -1675,10 +1675,10 @@ MonoBehaviour:
       SpawnLocation: {x: 2, y: 3}
     - Data: {fileID: 11400000, guid: f3eb88eee96a64370827475771891374, type: 2}
       Team: 0
-      SpawnLocation: {x: -9, y: 3}
+      SpawnLocation: {x: -9, y: 1}
     - Data: {fileID: 11400000, guid: f3eb88eee96a64370827475771891374, type: 2}
       Team: 0
-      SpawnLocation: {x: 8, y: -2}
+      SpawnLocation: {x: 8, y: -1}
     - Data: {fileID: 11400000, guid: e16d9fca1b51810438ab31661f34df6f, type: 2}
       Team: 0
       SpawnLocation: {x: 0, y: 0}
