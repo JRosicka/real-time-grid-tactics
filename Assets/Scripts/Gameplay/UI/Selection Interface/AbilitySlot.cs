@@ -105,18 +105,20 @@ namespace Gameplay.UI {
             gameObject.SetActive(false);
         }
 
-        public void SelectAbility() {
+        public bool SelectAbility() {
             if (Availability != AvailabilityResult.Selectable) {
                 GameManager.Instance.GameAudio.InvalidSound();
-                return;
+                return false;
             }
-            
-            GameManager.Instance.GameAudio.ButtonClickSound();
             
             MarkSelected(true);
             _slotBehavior?.SelectSlot();
+            return true;
         }
 
+        /// <summary>
+        /// When holding down the hotkey to select this button, this only gets called for the first frame
+        /// </summary>
         public void HandleFailedToSelect() {
             GameManager.Instance.GameAudio.InvalidSound();
             _slotBehavior?.HandleFailedToSelect(Availability);
@@ -253,12 +255,12 @@ namespace Gameplay.UI {
             
             // The hotkey for this might have toggled a click and performed the ability logic at the same time. 
             if (Time.time - _lastAbilityClickTime > ButtonDeselectBufferForHotkeyDetection) {
-                DoSelectAbility();
+                DoSelectAbility(false);
             }
         }
 
-        public void DoSelectAbility() {
-            AbilityInterface.SelectAbility(this);
+        public void DoSelectAbility(bool newlyPressed) {
+            AbilityInterface.SelectAbility(this, newlyPressed);
             _lastAbilityClickTime = Time.time;
         }
         

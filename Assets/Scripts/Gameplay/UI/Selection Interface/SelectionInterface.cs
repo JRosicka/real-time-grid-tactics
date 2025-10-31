@@ -89,8 +89,8 @@ namespace Gameplay.UI {
             ToggleViews(true, selectedTile);
         }
 
-        public void HandleAbilityHotkey(string input, bool pressed) {
-            AbilityInterface.HandleHotkey(input, pressed);
+        public void HandleAbilityHotkey(string input, bool pressed, bool newlyPressed) {
+            AbilityInterface.HandleHotkey(input, pressed, newlyPressed);
         }
         
         public void DeselectActiveAbility() {

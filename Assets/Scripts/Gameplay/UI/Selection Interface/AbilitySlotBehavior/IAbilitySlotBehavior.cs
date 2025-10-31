@@ -35,7 +35,8 @@ namespace Gameplay.UI {
         /// </summary>
         void SelectSlot();
         /// <summary>
-        /// We just received user input to select the slot, but we can not select it
+        /// We just received user input to select the slot, but we can not select it. Only gets called the first frame
+        /// when holding down the hotkey for this.
         /// </summary>
         void HandleFailedToSelect(AbilitySlot.AvailabilityResult availability);
         /// <summary>

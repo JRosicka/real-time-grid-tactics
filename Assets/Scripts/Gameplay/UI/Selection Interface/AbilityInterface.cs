@@ -47,7 +47,7 @@ namespace Gameplay.UI {
             AbilitySlots.ForEach(s => s.Clear());
         }
 
-        public void HandleHotkey(string input, bool pressed) {
+        public void HandleHotkey(string input, bool pressed, bool newlyPressed) {
             // Button click visual
             AbilitySlot slot = AbilitySlots.First(s => string.Equals(s.Hotkey, input, StringComparison.CurrentCultureIgnoreCase));
             if (pressed) {
@@ -62,7 +62,7 @@ namespace Gameplay.UI {
 
             // Business logic
             if (pressed) {
-                slot.DoSelectAbility();
+                slot.DoSelectAbility(newlyPressed);
             }
         }
         
@@ -72,9 +72,11 @@ namespace Gameplay.UI {
             DeselectUnselectedSlots();
         }
         
-        public void SelectAbility(AbilitySlot slot) {
+        public void SelectAbility(AbilitySlot slot, bool newlyPressed) {
             if (slot.Availability != AbilitySlot.AvailabilityResult.Selectable) {
-                slot.HandleFailedToSelect();
+                if (newlyPressed) {
+                    slot.HandleFailedToSelect();
+                }
                 return;
             }
             
@@ -87,7 +89,10 @@ namespace Gameplay.UI {
             GameManager.Instance.EntitySelectionManager.DeselectTargetableAbility();
 
             _selectedSlot = slot;
-            _selectedSlot.SelectAbility();
+            bool actuallySelected = _selectedSlot.SelectAbility();
+            if (newlyPressed && actuallySelected) {
+                GameManager.Instance.GameAudio.ButtonClickSound();
+            }
             
             DeselectUnselectedSlots();
         }
