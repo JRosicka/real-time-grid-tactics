@@ -1,3 +1,4 @@
+using UnityEngine;
 using UnityEngine.UI;
 
 namespace Gameplay.Entities {
@@ -7,11 +8,14 @@ namespace Gameplay.Entities {
     /// </summary>
     public class ImageFillTimerFill : AbilityTimerFill {
         public Image FillImage;
+        
+        [Header("Visual modifiers")]
+        public float MinFillAmount;
         public float MaxFillAmount;
         
         public override void UpdateFillAmount01(float amount) {
             float invertedAmount = 1f - amount;
-            FillImage.fillAmount = invertedAmount * MaxFillAmount;
+            FillImage.fillAmount = Mathf.Lerp(MinFillAmount, MaxFillAmount, invertedAmount);
         }
     }
 }

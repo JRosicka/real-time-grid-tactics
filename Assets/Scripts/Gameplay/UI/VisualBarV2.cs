@@ -11,6 +11,10 @@ namespace Gameplay.UI {
     public class VisualBarV2 : MonoBehaviour {
         public Image BarFilling;
         public HealthBarDividersView HealthBarDividersView;
+        
+        [Header("Visual modifiers")]
+        public float MinFillAmount;
+        public float MaxFillAmount;
 
         private IBarLogic _barLogic;
         private bool _initialized;
@@ -35,7 +39,8 @@ namespace Gameplay.UI {
         }
 
         private void UpdateBar() {
-            BarFilling.fillAmount = _barLogic.CurrentValue / _barLogic.MaxValue;
+            float currentValue01 = _barLogic.CurrentValue / _barLogic.MaxValue;
+            BarFilling.fillAmount = Mathf.Lerp(MinFillAmount, MaxFillAmount, currentValue01);
         }
         
         private void DestroyBar() {

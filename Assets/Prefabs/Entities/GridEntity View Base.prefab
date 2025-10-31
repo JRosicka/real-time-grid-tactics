@@ -131,6 +131,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   BarFilling: {fileID: 2388953117816249174}
   HealthBarDividersView: {fileID: 5194595149127304650}
+  MinFillAmount: 0.04
+  MaxFillAmount: 0.94
 --- !u!222 &4767245020811023656
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -5950,7 +5952,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   FillImage: {fileID: 7276762156123923580}
-  MaxFillAmount: 1
+  MinFillAmount: 0.04
+  MaxFillAmount: 0.94
 --- !u!222 &7810799383345439664
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -6157,7 +6160,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   FillImage: {fileID: 315521613133426037}
-  MaxFillAmount: 1
+  MinFillAmount: 0.04
+  MaxFillAmount: 0.94
 --- !u!222 &4251611408781120830
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -7234,6 +7238,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   BarFilling: {fileID: 3396406605549919443}
   HealthBarDividersView: {fileID: 8239764542387274708}
+  MinFillAmount: 0.04
+  MaxFillAmount: 0.94
 --- !u!222 &4287310503551562868
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -7831,6 +7837,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   FillImage: {fileID: 7318395102670378406}
+  MinFillAmount: 0
   MaxFillAmount: 1
 --- !u!222 &7019243126779332982
 CanvasRenderer:
@@ -8351,6 +8358,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   FillImage: {fileID: 5960387318699788808}
+  MinFillAmount: 0
   MaxFillAmount: 1
 --- !u!222 &7481298517313555203
 CanvasRenderer:
