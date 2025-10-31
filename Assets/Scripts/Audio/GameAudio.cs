@@ -41,6 +41,7 @@ namespace Audio {
         }
 
         private void StartMusic() {
+            if (_audioConfiguration.GameMusic.Clip == null) return;
             AudioPlayer.PlayMusic(_audioConfiguration.GameMusic);
         }
         
