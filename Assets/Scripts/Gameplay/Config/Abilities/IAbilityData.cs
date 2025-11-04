@@ -85,6 +85,7 @@ namespace Gameplay.Config.Abilities {
         /// for this ability. 
         /// </summary>
         bool ShowTimerOnSelectionInterface { get; }
+        bool PerformByDefault { get; }
         string GetAttackTooltipMessage(GameTeam team);
         /// <summary>
         /// Respond to the user input intending to use this ability. Do not actually perform the ability (unless there is

@@ -18,16 +18,7 @@ namespace Gameplay.Entities.Abilities {
         public override AbilityExecutionType ExecutionType => AbilityExecutionType.PreInteractionGridUpdate;
         public override bool ShouldShowAbilityTimer => false;
 
-        public override void Cancel() {
-            if (Performer == null || Performer.DeadOrDying) return;
-            
-            // Re-perform if this was the only in-progress parade ability
-            if (Performer.InProgressAbilities.OfType<ParadeAbility>().All(a => a.UID == UID)) {
-                AbilityAssignmentManager.StartPerformingAbility(Performer, Data, new ParadeAbilityParameters {
-                    Target = null
-                }, false, false, false);
-            }
-        }
+        public override void Cancel() { }
 
         protected override bool CompleteCooldownImpl() {
             return true;

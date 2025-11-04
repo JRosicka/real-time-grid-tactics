@@ -245,18 +245,29 @@ public class AbilityExecutor : MonoBehaviour {
     /// Perform the given entity's configured default ability
     /// </summary>
     private void PerformDefaultAbility(GridEntity entity) {
-        if (!entity.EntityData.AttackByDefault) return;
         Vector2Int? location = entity.Location;
         if (location == null) return;
 
-        AttackAbilityData data = entity.GetAbilityData<AttackAbilityData>();
-        if (data == null) return;
+        if (entity.EntityData.AttackByDefault) {
+            AttackAbilityData data = entity.GetAbilityData<AttackAbilityData>();
+            if (data != null) {
+                // Don't perform default attack if there are any abilities that block it
+                if (!entity.InProgressAbilities.Any(a => a.AbilityData.BlocksDefaultAttack)) {
+                    _abilityAssignmentManager.StartPerformingAbility(entity, data, new AttackAbilityParameters {
+                        Destination = location.Value
+                    }, false, true, false);
+                }
+            }
+        }
 
-        // Don't perform default attack if there are any 
-        if (entity.InProgressAbilities.Any(a => a.AbilityData.BlocksDefaultAttack)) return;
-            
-        _abilityAssignmentManager.StartPerformingAbility(entity, data, new AttackAbilityParameters {
-            Destination = location.Value
-        }, false, true, false);
+        foreach (AbilityDataScriptableObject ability in entity.EntityData.Abilities) {
+            if (ability.Content.PerformByDefault) {
+                if (entity.InProgressAbilities.All(a => a.AbilityData.GetType() != ability.Content.GetType())) {
+                    _abilityAssignmentManager.StartPerformingAbility(entity, ability.Content, new ParadeAbilityParameters {
+                        Target = null
+                    }, false, true, false);
+                }
+            }
+        }
     }
 }

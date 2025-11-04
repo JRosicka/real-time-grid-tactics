@@ -96,6 +96,8 @@ namespace Gameplay.Config.Abilities {
         public bool BlocksDefaultAttack => _blocksDefaultAttack;
         [SerializeField] private bool _showTimerOnSelectionInterface;
         public bool ShowTimerOnSelectionInterface => _showTimerOnSelectionInterface;
+        [SerializeField] private bool _performByDefault;
+        public bool PerformByDefault => _performByDefault;
 
         public virtual string GetAttackTooltipMessage() {
             return "";
