@@ -32,13 +32,13 @@ MonoBehaviour:
     Volume: 0
     AudioLayer: 0
     Interruptible: 0
-  HP: 50
+  HP: 80
   Range: 1
-  Damage: 8
+  Damage: 4
   BonusDamage: 0
   TagsToApplyBonusDamageTo: 
-  NormalMoveTime: 4.5
-  AddedMovementTimeFromAttacking: 1
+  NormalMoveTime: 4
+  AddedMovementTimeFromAttacking: 1.2
   Tags: 0500000003000000
   InaccessibleTiles:
   - {fileID: 11400000, guid: 21c254da385bdd14eb49ce66d1a541a9, type: 2}
