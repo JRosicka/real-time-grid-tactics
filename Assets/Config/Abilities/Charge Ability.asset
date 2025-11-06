@@ -19,6 +19,7 @@ MonoBehaviour:
       an enemy if there is one at the destination. '
     _icon: {fileID: 21300000, guid: b57c4120c8015b744a4fc3667c7fba31, type: 3}
     _overrideIconForGrid: {fileID: 0}
+    _flipGridIcon: 0
     _gridIconColor: {r: 0, g: 0, b: 0, a: 0}
     _slotSprites: {fileID: 11400000, guid: cf3e96fef80ac354cbbe3535fa2b19bd, type: 2}
     _abilityTimerView: {fileID: 5971072852972127787, guid: 31b9abd5b640d9648bf03e6305a255b4, type: 3}
@@ -39,6 +40,7 @@ MonoBehaviour:
     _tryingToPerformCancelsBuilds: 1
     _blocksDefaultAttack: 1
     _showTimerOnSelectionInterface: 1
+    _performByDefault: 0
     AddedAttackTime: 4
     AddedMovementTime: 0.6
     ChargeRange: 2
