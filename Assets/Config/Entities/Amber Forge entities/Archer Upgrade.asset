@@ -15,7 +15,7 @@ MonoBehaviour:
   ID: Swift Step
   ShortDescription: 'Movement speed upgrade for Archers. '
   Description: Archers are no longer slowed by Forests. Archer move cooldown penalty
-    after attacking reduced by 0.4s.
+    after attacking reduced by 0.5s.
   Cost:
   - Type: 1
     Amount: 100
@@ -37,6 +37,6 @@ MonoBehaviour:
   ExpirationSeconds: 0
   ArcherData: {fileID: 11400000, guid: 938107a9fc68aa54586e46f7860fc6ff, type: 2}
   SlowTerrainSpeedModifierIntensity: 0
-  AdditionalMovementTimeFromAttacking: -0.4
+  AdditionalMovementTimeFromAttacking: -0.5
   MoveTooltipMessage: Not slowed by Forests.<br>Move cooldown penalty after attacking
-    reduced by 0.4s.
+    reduced by 0.5s.

@@ -19,7 +19,6 @@ MonoBehaviour:
   - Type: 0
     Amount: 50
   Requirements: []
-  RequirementNeedsToBeAdjacent: 0
   BuildTime: 30
   BuildsImmediately: 0
   BaseSprite: {fileID: 21300000, guid: 71dd4226a734045c29d78ae96344e958, type: 3}
@@ -48,8 +47,7 @@ MonoBehaviour:
   BonusDamage: 0
   TagsToApplyBonusDamageTo: 
   NormalMoveTime: 4
-  SlowMoveTime: 6.666
-  AddedMovementTimeFromAttacking: 1
+  AddedMovementTimeFromAttacking: 1.2
   Tags: 03000000
   InaccessibleTiles:
   - {fileID: 11400000, guid: 21c254da385bdd14eb49ce66d1a541a9, type: 2}
@@ -67,6 +65,7 @@ MonoBehaviour:
   AttackByDefault: 1
   IsResourceExtractor: 0
   ResourceThatThisCanExtract: {fileID: 0}
+  EntityIcon: {fileID: 0}
   MovementAndAttackUI: 1
   DisplaySelectionOutline: 1
   BuildQueueSize: 5
