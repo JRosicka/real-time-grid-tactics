@@ -32,7 +32,7 @@ public class RoomMenu : MonoBehaviour {
     private SteamLobbyService SteamLobbyService => SteamLobbyService.Instance;
     private string _joinCode;
 
-    private List<GameNetworkPlayer> PlayersInLobby => FindObjectsOfType<GameNetworkPlayer>().ToList();
+    private List<GameNetworkPlayer> PlayersInLobby => FindObjectsByType<GameNetworkPlayer>(FindObjectsSortMode.InstanceID).ToList();
     private GameNetworkPlayer _cachedGameNetworkPlayer;
     private GameNetworkPlayer LocalPlayer {
         get {

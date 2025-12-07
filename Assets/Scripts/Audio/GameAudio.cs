@@ -12,7 +12,7 @@ namespace Audio {
         private AudioPlayer AudioPlayer {
             get {
                 if (_audioPlayer == null) {
-                    List<AudioPlayer> audioPlayers = FindObjectsOfType<AudioPlayer>().ToList();
+                    List<AudioPlayer> audioPlayers = FindObjectsByType<AudioPlayer>(FindObjectsSortMode.None).ToList();
                     _audioPlayer = audioPlayers.First(a => a.ActivePlayer);
                 }
                 return _audioPlayer;

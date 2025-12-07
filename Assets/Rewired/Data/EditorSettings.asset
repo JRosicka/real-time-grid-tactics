@@ -11,9 +11,9 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: -1822101463, guid: 09c9b883b79ef864a99683bb36c5776d, type: 3}
   m_Name: EditorSettings
-  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: Rewired_Core.dll::Rewired.Data.EditorSettings
   programVersion1: 1
   programVersion2: 1
-  programVersion3: 41
-  programVersion4: 5
+  programVersion3: 60
+  programVersion4: 2
   dataVersion: 1

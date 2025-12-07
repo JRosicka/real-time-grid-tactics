@@ -1,3 +1,597 @@
+1.1.60.2:
+
+    Changes:
+      - Windows Standalone, Windows Gaming Input: Excluded Sony Dual Shock 4 and Dual Sense controllers from Windows Gaming Input handling due to numerous new Windows bugs causing various issues with these controllers.
+
+1.1.60.1:
+
+    Bug Fixes:
+      - Fixed auto-generated Controller Element Identifier positive and negative descriptive names being incorrectly cleared resulting in Unknown Controller axis positive and negative descriptive names being blank.
+
+1.1.60.0:
+
+    Changes:
+      - Glyphs pack:
+        - Added detection of Text Mesh Pro version to installer and branched Unity UI Text Mesh Pro Glyph Helper by version to address Text Mesh Pro properties being stripped when the Unity Player Managed Stripping Level is set to Medium or higher due to the use of reflection (Unity 2020-2023).
+        - Added ability to set custom filtering of results for glyph display to glyph components.
+      - iOS/tvOS: Added explicit recognition of supported third party controllers so the correct glyphs will be displayed for these controllers by default instead of the generic gamepad glyphs.
+     
+    API Changes:
+      - Added ReInput.ControllerHelper.SetLastActiveController method.
+      - Added Player.ControllerHelper.SetLastActiveController method.
+      - Added Glyphs.UnityUI.UnityUITextMeshProGlyphHelper.isRewiredElementAllowedHandler property.
+      - Added Glyphs.ControllerElementGlyphSelectorOptions.isActionElementMapAllowedHandler property.
+      
+    Modified Controller Definitions:
+      - Xbox One Controller, DualShock 4, DualSense, Joy-Con (Dual), Switch Pro Controller: Added mappings for iOS/tvOS.
+
+1.1.59.2:
+
+    Changes:
+      - Changed deprecated function call in Control Mapper to eliminate warning (Unity 6000+).
+      - Desktop platforms, Enhanced Device Support: Re-enabled Dual Sense Edge support.
+
+    Modified Controller Definitions:
+      - Windows Standalone, Use Windows Gaming Input: Added mapping for Dual Shock 4 for Windows Gaming Input due to changes in Windows update that cause the controller to now be handled by WGI.
+      - Windows Standalone, Use Windows Gaming Input: Added mapping for Dual Sense for Windows Gaming Input due to changes in Windows update that cause the controller to now be handled by WGI.
+    
+    Bug Fixes:
+      - Windows, Direct Input: Fixed exception thrown when changing joystick refresh rate at runtime with one or more controllers connected and then connecting or disconnecting a controller.
+
+1.1.59.1:
+
+    Changes:
+      - Windows, Linux, OSX + Enhanced Device Support: Improved reliability of Nintendo Switch controller initialization routine.
+      - Windows, Linux, OSX + Enhanced Device Support: Reworked Nintendo Switch controller driver to work around 8Bitdo Ultimate Contoller 2C differences (bugs) in low-level device communication vs official Nintendo Switch controllers.
+      - Added detection of Rewired being reset or destroyed/deinitialized from within an event callback.
+    
+    Bug Fixes:
+      - Windows, Linux, OSX + Enhanced Device Support: Fixed issue of double device initialization if device connected on startup failed to initialize on Awake.
+      - Added custom serialization/deserialization of UnityEngine.AnimationCurve and UnityEngine.Keyframe to XML for Axis Calibration Sensitivity Curve saving/loading.
+      - Fixed bug in keyboard combo key blocking causing order of bindings to affect whether a key binding would be blocked or not when that key is also bound to a key combo.
+
+1.1.59.0:
+
+    Changes:
+      - Added support for Nintendo Switch 2 plugin.
+      - Glyphs pack: UnityUITextMeshProGlyphHelper updates Text Mesh Pro text when UnityUITextMeshProGlyphHelper.text is set changed regardless of whether the new text contains any tags.
+      - Nintendo Switch Controller glyph set: Changed "RS" and "LS" to "R" and "L".
+      - Added VisionOS build support through existing iOS support.
+      - Changed Input Behavior Digital Axis Simulation to disabled by default.
+      - Relative Joystick and Custom Controller axes can now be detected during rebind polling.
+      - Added Controller Element Identifier Roles.
+      - UserDataStore Implementations: Added Action Mapping Save Mode options to save and load mappings by controller (existing and default behavior) or by controller element role.
+      - MacOS, Native + Use Game Controller Framework: Changed method of determining which devices are supported by Game Controller Framework to prevent HID devices that use the Generic profile from being handled by Game Controller Framework instead of IO Kit.
+
+    API Changes:
+      - Added PlayerController.AbsoluteToRelativeScalingMode enum.
+      - Added PlayerController.Axis.absoluteToRelativeScalingMode property.
+      - Added PlayerController.Axis.Definition.absoluteToRelativeScalingMode field.
+      - Added PlayerController.absoluteToRelativeScalingReferenceResolution property.
+      - Added Controller.Element.excludeFromPolling property.
+      - Added Controller.Axis.axisCoordinateMode property.
+      - Added ControllerMap.Create method.
+      - Added ControllerElementIdentifier.role property.
+      - Added Data.UserDataStore_KeyValue.ActionMappingSaveMode enum.
+      - Added Data.UserDataStore_KeyValue.actionMappingSaveMode property.
+      - Added Data.UserDataStore_PlayerPrefs.ActionMappingSaveMode enum.
+      - Added Data.UserDataStore_PlayerPrefs.actionMappingSaveMode property.
+      - Added ControllerMap.modifiedTime property.
+      - Added ControllerMap.isModified property.
+
+    New Controller Definitions:
+      - Xbox Game Core Racing Wheel
+      - Nintendo Switch 2 Console
+      - Nintendo Switch 2 Joy-Con (Dual)
+      - Nintendo Switch 2 Joy-Con (L)
+      - Nintendo Switch 2 Joy-Con (R)
+      - Nintendo Switch 2 Pro Controller
+    
+    Modified Controller Definitions:
+      - Added Role to some element identifiers on many controllers.
+      - Removed TM symbols from all Nintendo Switch controller names.
+      - Added Android mappings to Oculus Touch Left and Oculus Touch Right definitions.
+      - Aerosoft Truck and Bus Wheel: Fixed Stick Y key spelling from "stick/verical" to "stick/vertical".
+
+    Bug Fixes:
+      - Player Mouse: When "Use Hardware Pointer Position" is enabled and the Player Mouse's X/Y axes have also been mapped to the physical mouse axes using a Mouse Map, the hardware pointer position now overrides the mapped mouse delta input instead of the two conflicting mouse inputs being processed
+ additivly which resulted in pointer jitter at lower frame rates.
+      - Player Mouse: Fixed mouse wheel scroll issues when scrolling left or down when "Activate Action Buttons on Negative Value" is enabled.
+      - UserDataStore_File: Fixed attempting to create output directory with no name if save file path has no directory.
+      - Gamepad Template: Changed mapping of Atari Jaguar Controller A button to Action Bottom Row 3.
+      - Gamepad Template: Removed Center 3 mapping from Thrustmaster FireStorm Dual Power.
+      - MacOS, Game Controller Framework: Fixed rare exception when an input event is received with an out of range index when multiple controllers are connected when entering Play mode.
+      - MacOS, Game controller Framework: Fixed exception when GetElementSfSymbolsName or GetElementLocalizedName or unmapped versions of functions when the controller doesn't have an element that corresponds to the element identifier id passed to the function.
+      - MacOS, Game controller Framework: Fixed incorrect value returned from GetElementSfSymbolsName and GetElementLocalizedName or unmapped versions of functions for the whole D-Pad element.
+
+1.1.58.4:
+
+    Bug Fixes:
+      - Windows Standalone, Raw Input: Fixed possible missed mouse events when using mouse and keyboard together with Unity Input System backend enabled.
+
+1.1.58.3:
+
+    Bug Fixes:
+      - Glyphs pack: Element glyphs no longer displayed for Action bindings on Controllers that are disabled or not assigned to the Player.
+
+1.1.58.2:
+
+    Bug Fixes:
+      - Custom Platform no longer throws exceptions related to Localization Manager when using custom Keyboard and Mouse input sources.
+
+1.1.58.1:
+
+    Bug Fixes:
+      - Fixed compiler error in UserDataStore_KeyValue on Nintendo Swtich, Playstation 4, and Xbox One (XDK) build targets.
+
+1.1.58.0:
+
+    Changes:
+      - Windows Standalone, Native Mouse Handling: Handle possible edge case of a Raw Input mouse event reporting both up and down events for a button in the same Raw Input event. (It is unclear if this can even occur, but this is an attempt to address a few recent reports of mouse buttons getting stuck on.)
+
+    API Changes:
+      - Added UserDataStore_File class.
+      - Added UserDataStore_KeyValue class.
+    
+    Bug Fixes:
+      - Unity Editor: Fixed OnGUIHelper component being permanently added to Rewired Input Manager GameObject if OnGUI update loop enabled and Run in Edit Mode is enabled.
+      - Unity Editor: Fixed static object pool not cleared manually on initialization causing exception to be thrown when Domain Reloading is disabled in Unity Editor preferences and entering Play mode multiple times with different Rewired Input Managers which have different Update Loops enabled.
+      - Unity Editor, Windows, Native Keyboard Handling / Native Mouse Handling: Fixed keyboard and mouse input events buffering up when clicking outside the Unity Editor window when Application.runInBackground disabled and Ignore Input When App Not In Focus enabled.
+
+1.1.57.3:
+
+    Changes:
+      - Changed Cinemachine 3 integration minimum version to Unity 2022.
+      - Added workaround for non-functioning Sony controllers connected via Bluetooth when using Enhanced Device Support on some distros of Linux that expose these devices as virtual devices instead of Bluetooth devices through udev.
+      
+    New Controller Definitions:
+      - Aerosoft Truck and Bus Wheel
+      - Aerosoft Truck and Bus Gear
+    
+    Bug Fixes:
+      - MacOS, Native: Prevent exceptions and possible crash when pressing a button on a controller that only has buttons (no axes or hats).
+
+1.1.57.2:
+
+    Changes:
+      - Glyphs pack:
+        - Added Steam Contoller glyph set (re-uses Xbox One glyphs).
+        - Glyph Provider now sets itself back as the glyph provider when Rewired is reset.
+      - Localized String Provider now sets itself back as the localized string provider when Rewired is reset.
+
+    Controller Definition Changes:
+      - MacOS, Native: Added variant to Xbox One Controller definition for Xbox Elite Series 2 controller.
+    
+    Bug Fixes:
+      - Desktop Platforms, Enhanced Device Support, Nintendo Switch controllers: Vibration with duration works correctly now.
+
+1.1.57.1:
+
+     Bug Fixes:
+      - Windows Standalone, Windows Gaming Input: Fix exception thrown if no Tag is present.
+
+1.1.57.0:
+    
+    Changes:
+      - Removed Glyph system from base Rewired package and moved it into an optional pack that must be installed by the user.
+      - Removed editor script that set up scripting defines used for detecting Text Mesh Pro presence and version.
+
+    Bug Fixes:
+      - Windows Standalone, Windows Gaming Input: Prevent controller definition matching without Tag if Tag is supplied by definition.
+
+1.1.56.3:
+
+    Bug Fixes:
+      - Workaround for Sprite Glyph Set inspector glyph list clipping not working correctly on Unity 2019+ due to Unity editor GUI Layout inconsistencies.
+
+1.1.56.2:
+
+    Bug Fixes:
+      - Fixed exception thrown when ReInput is set to run in Edit mode and then entering Play mode directly.
+
+1.1.56.1:
+    
+    Bug Fixes:
+      - Fixed exception thrown in Rewired Editor when editing keyboard maps.
+
+1.1.56.0:
+
+    Changes:
+      - Added string localization system.
+      - Added glyph system.
+      - Added key fields to most objects in Rewired Input Manager and Controller and Controller Template definitions.
+      - Added Cinemachine 3 integration. (Unity 6+)
+      - Control Mapper:
+        - Added glyph support.
+        - Added support of localization system.
+        - Theme can now be changed at runtime.
+        - Dropped support in Unity 4.x.
+      - Removed Stadia platform support.
+
+    API Changes:
+      - Added Rewired.Interfaces.ILocalizedStringProvider interface.
+      - Added Rewired.Interfaces.IGlyphProvider interface.
+      - Added Rewired.ReInput.LocalizationHelper class.
+      - Added Rewired.ReInput.GlyphHelper class.
+      - Added Rewired.ReInput.localization property.
+      - Added Rewired.ReInput.glyphs property.
+      - Added Rewired.Keyboard.GetModifierKeyName method.
+      - Added Rewired.Keyboard.GetModifierKeyGlyph method.
+      - Added Rewired.ControllerElementIdentifier.key property.
+      - Added Rewired.ControllerElementIdentifier.positiveKey property.
+      - Added Rewired.ControllerElementIdentifier.negativeKey property.
+      - Added Rewired.ControllerElementIdentifier.glyph property.
+      - Added Rewired.ControllerElementIdentifier.positiveGlyph property.
+      - Added Rewired.ControllerElementIdentifier.negativeGlyph property.
+      - Added Rewired.ControllerElementIdentifier.GetGlyph method.
+      - Added Rewired.ControllerElementIdentifier.GetFinalGlyphKey method.
+      - Added Rewired.ControllerTemplateElementIdentifier.key property.
+      - Added Rewired.ControllerTemplateElementIdentifier.positiveKey property.
+      - Added Rewired.ControllerTemplateElementIdentifier.negativeKey property.
+      - Added Rewired.ControllerTemplateElementIdentifier.glyph property.
+      - Added Rewired.ControllerTemplateElementIdentifier.positiveGlyph property.
+      - Added Rewired.ControllerTemplateElementIdentifier.negativeGlyph property.
+      - Added Rewired.ControllerTemplateElementIdentifier.GetGlyph method.
+      - Added Rewired.ControllerTemplateElementIdentifier.GetFinalGlyphKey method.
+      - Added Rewired.ActionElementMap.elementIdentifierGlyph property.
+      - Added Rewired.ActionElementMap.elementIdentifierGlyphCount property.
+      - Added Rewired.ActionElementMap.GetElementIdentifierFinalGlyphKeys method.
+      - Added Rewired.ActionElementMap.GetElementIdentifierGlyphs method.
+      - Added Rewired.ActionElementMap.TryGetCombinedElementIdentifierName function.
+      - Added Rewired.ActionElementMap.TryGetCombinedElementIdentifierGlyph function.
+      - Added Rewired.ActionElementMap.TryGetCombinedElementIdentifierFinalGlyphKey function.
+      - Added Rewired.Controller.DirectionalPad class.
+      - Added Rewired.Joystick.directionalPadCount property.
+      - Added Rewired.Joystick.DirectionalPads property.
+      - Added Rewired.CompoundControllerElementType.DPad value.
+      - Added Rewired.InputAction.GetDisplayName method.
+      - Added Rewired.UI.ControlMapper.themeSettings property.
+      - Added Rewired.UI.ControlMapper.showGlyphs property.
+      - Added Rewired.Glyphs.ControllerElementGlyphProvider class.
+      - Added Rewired.Glyphs.ControllerElementGlyphSelectorOptions class.
+      - Added Rewired.Glyphs.ControllerElementGlyphSelectorOptionsSO class.
+      - Added Rewired.Glyphs.ControllerElementGlyphSelectorOptionsSOBase class.
+      - Added Rewired.Glyphs.ControllerElementGlyphSetCollectionSO class.
+      - Added Rewired.Glyphs.ControllerElementGlyphSetSO class.
+      - Added Rewired.Glyphs.ControllerElementSpriteGlyphSetSO class.
+      - Added Rewired.Glyphs.UnityUI.GlobalUnityUIControllerElementGlyphSettings
+      - Added Rewired.Glyphs.UnityUI.UnityUIControllerElementGlyph
+      - Added Rewired.Glyphs.UnityUI.UnityUIControllerElementGlyphBase
+      - Added Rewired.Glyphs.UnityUI.UnityUIGlyphOrText
+      - Added Rewired.Glyphs.UnityUI.UnityUIGlyphOrTextBase
+      - Added Rewired.Glyphs.UnityUI.UnityUIGlyphOrTextTMPro
+      - Added Rewired.Glyphs.UnityUI.UnityUIPlayerControllerElementGlyphBase
+      - Bug fix: Added Controller.GetCompoundElementById method and deprecated Controller.GetCompundElementById method.
+      - Bug fix: Changed Rewired.Platforms.XInputDeviceSubType.FlightSick to FlightStick.
+      - Removed all Stadia-related members.
+    
+    Controller Definition Changes:
+      - Changed Left Stick Button and Right Stick Button names to L3 / R3 on all Sony controllers.
+      - Added element identifier keys to all controllers and controller templates.
+      - Added D-Pad compound elements to all controllers with D-Pads.
+      - Changed Lever 1-3 lever press element identifier string from "Lever # Down" to "Lever # Press" to avoid conflicts with lever axis names on Saitek Pro Flight Quadrant and Saitek Pro Flight Yoke.
+      - Removed redundant R2 element identifier on Stadia Controller.
+    
+    Bug Fixes:
+      - Controller.Element.compoundElement property now returns the parent Controller.CompoundElement instead of null.
+   
+1.1.55.0:
+
+   Changes:
+      - Added Update Mode option.
+      - Removed DualSense Edge Enhanced Device Support due to not functioning correctly.
+
+   API Changes:
+      - Added Rewired.ReInput.Update function.
+      - Added Rewired.ReInput.ConfigHelper.updateMode property.
+      - Added Rewired.Config.UpdateMode enum.
+      - Added Rewired.ControllerExtensions.DualShock4Extension.batteryCharging property.
+   
+   Bug Fixes:
+      - Sony Dual Shock 4, Enhanced Device Support: Fixed incorrect battery level.
+      - Sony Dual Sense, Enhanced Device Support: Fixed incorrect battery charging state and battery level.
+
+1.1.54.1:
+
+   Bug Fixes: 
+      - New Custom Platform Hardware Joystick Map Platform Map axis values are now set to the correct default values when adding an axis.
+
+1.1.54.0:
+
+    Changes:
+      - Added variants to Rewired.Platforms.Custom.HardwareJoystickMapCustomPlatformMapSimple.
+    
+    API Changes:
+      - Added Rewired.Platforms.Custom.HardwareJoystickMapCustomPlatformMapSimpleBase class.
+      - Moved Rewired.Platforms.Custom.HardwareJoystickMapCustomPlatformMapSimple.MatchingCriteria class to Rewired.Platforms.Custom.HardwareJoystickMapCustomPlatformMapSimpleBase.MatchingCriteria.
+
+    Bug Fixes:
+      - Added detection of initial application focused state with Application.isFocused (Unity 2017+) to eliminate edge case of application incorrectly responding to input events in builds if window is defocused during initial application loading while Application.runInBackground is true and Rewired is not initialized on Awake in the first scene of the application on certain platforms using certain input sources.
+
+1.1.53.0:
+
+    Changes:
+      - Added editor inspector support for Custom Platform Hardware Joystick Map Platform Map variants.
+      - Updated Custom Platform example to illustrate variants and HardwareJoystickMapCustomPlatformMapSimpleSO.
+      
+    API Changes:
+      - Added Rewired.Platforms.Custom.HardwareJoystickMapCustomPlatformMapSimple class.
+      - Added Rewired.Platforms.Custom.HardwareJoystickMapCustomPlatformMapSimple.MatchingCriteria class.
+      - Added HardwareJoystickMapCustomPlatformMapSimpleSO class.
+
+1.1.52.0:
+
+    Changes:
+      - Added Custom Platforms: Developers can now add support for platforms not supported natively by Rewired.
+      - Added Custom Platform example.
+      - Updated Unity version check handling for Unity 6 in preparation for Unity 6 support. (Unity 6 support has not been added in this release.)
+  
+    API Changes:
+      - Added Rewired.Platforms.Custom.CustomPlatformConfigVars class.
+      - Added Rewired.Platforms.Custom.CustomPlatformInitOptions class.
+      - Added Rewired.Platforms.Custom.CustomPlatformInputSource class.
+      - Added Rewired.Platforms.Custom.CustomPlatformInputSource.InitOptions class.
+      - Added Rewired.Platforms.Custom.CustomPlatformInputSource.Joystick class.
+      - Added Rewired.Platforms.Custom.CustomPlatformUnifiedControllerSource class.
+      - Added Rewired.Platforms.Custom.CustomPlatformUnifiedKeyboardSource class.
+      - Added Rewired.Platforms.Custom.CustomPlatformUnifiedMouseSource class.
+      - Added Rewired.Platforms.Custom.HardwareJoystickMapCustomPlatformMap class.
+      - Added Rewired.Platforms.Custom.HardwareJoystickMapCustomPlatformMap.Axis class.
+      - Added Rewired.Platforms.Custom.HardwareJoystickMapCustomPlatformMap.Button class.
+      - Added Rewired.Platforms.Custom.HardwareJoystickMapCustomPlatformMap.Elements class.    
+      - Added Rewired.Platforms.Custom.HardwareJoystickMapCustomPlatformMap.MatchingCriteria class.
+      - Added Rewired.Platforms.Custom.HardwareJoystickMapCustomPlatformMap<TMatchingCriteria> class.
+      - Added Rewired.Platforms.Custom.HardwareJoystickMapCustomPlatformMapSO class.
+      - Added Rewired.Platforms.Custom.ICustomPlatformInitializer interface.
+      - Added Rewired.Platforms.Custom.IHardwareJoystickMapCustomPlatformMapProvider interface.
+  
+    Bug Fixes:
+      - Updated editor code to handle recently changed Xbox Game Core build target strings when automatically setting Rewired_Core.dll build targets.
+
+1.1.51.0:
+
+  Changes:
+    - Windows Standalone, Unity 2023: Added ARM64 native library Rewired_WindowsGamingInput.dll.
+    - Windows Standalone: Rewired_DirectInput.dll minimum Windows version support changed to 10.0.17134.0.
+    - windows Standalone: Rewired_DirectInput.dll changed to static linking of VC runtime.
+
+  Bug Fixes:
+    - Unity 2023, Windows Standalone: Fixed Rewired_WindowsGamingInput.dll plugin importer settings that were not inherited properly when copying the meta file from an older version of Unity causing Unity to attempt to include the 64-bit DLL in 32-bit builds.
+
+1.1.50.0:
+
+  Changes:
+    - Added keyboard key combination override modes.
+    - Changed the default keyboard key combination override mode to Cancel. This mode makes key combination override behavior more intuitive, with Actions bound to modifier keys canceled when a key combo is activated that contains that modifier key. Canceled Actions do not return True until the bound key is released and pressed again. Existing Rewired Input Managers will retain the legacy mode (Pause), but newly created Rewired Input Managers will default to Cancel.
+    - Added Key Combination Override Mode to Rewired Input Manager Settings.
+    - Added Generate Key Events On Key Combination Override to Rewired Input Manager Settings.
+    - Added Enhanced Device Support device type exclusion options.
+
+  API Changes:
+    - Added Rewired.Config.KeyCombinationOverrideMode enum.
+    - Added ReInput.ConfigHelper.keyCombinationOverrideMode property.
+    - Added ReInput.ConfigHelper.generateKeyEventsOnKeyCombinationOverride property.
+    - Added Rewired.ControllerExtensions.DualSenseExtension.GetVibrationMode function.
+    - Added Rewired.ControllerExtensions.DualSenseExtension.SetVibrationMode function.
+    - Addde Rewired.ControllerExtensions.DualSenseVibrationMode enum.
+    - Added Rewired.Config.EnhancedDeviceSupportDeviceType enum.
+    - Added ReInput.ConfigHelper.enhancedDeviceSupportExcludedDeviceTypes property.
+  
+  Bug Fixes:
+    - Player.GetButtonTimePressed and Player.GetButtonTimeUnpressed now return correct values when an Action bound to a keyboard modifier key has its value blocked or unblocked due to a key combination being activated or deactivated that includes the modifier key and Key Combination Override mode is set to Pause and Generate Key Events On Key Combination Override is disabled.
+
+1.1.49.2:
+
+  Changes:
+    - Updated Cinemachine integration to work with Unity Editor Play Mode options.
+
+  Controller Definitions:
+    - Microsoft Xbox One, Android: Changed mapping of View button for newer Android versions dropping support for older versions of Android that map the View button to keyboard ESC.
+    
+  Bug Fixes:
+    - Rewired_MacOS library: Now ad-hoc signed instead of signed with development identity.
+    - Rewired_MacOS library: Prevent possible issues on MacOS versions < 11.
+
+1.1.49.1:
+
+  Bug Fixes:
+    - MacOS Standalone, Native, Enhanced Device Support: Fixed bug causing controllers using Enhanced Device Support to stop working after editor pause, long level loading time, or application out of focus with Unity Player -> Run in Background disabled.
+
+1.1.49.0:
+
+  Changes:
+    - Added Use Physical Keys (Unity) option in Rewired Input Manager to detect Unity Physical Keys setting and to display warning to users about implications of using this setting. (Unity 2021.2+)
+    - Native Keyboard Handling is disabled if Unity Physical Keys setting is enabled.
+    
+  API Changes:
+    - Added Rewired.Platforms.MacOS.IOKit.IOKitControllerExtension class.
+    - Added Rewired.Platforms.Linux.UDev.UdevControllerExtension class.
+    - Added Rewired.Platforms.Windows.XInput.XInputControllerExtension class.
+    - Added Rewired.Platforms.Windows.XInput.CapabilityFlags enum.
+    - Added Rewired.Platforms.Windows.XInput.DeviceType enum.
+    - Added Rewired.Platforms.Windows.XInput.DeviceSubType enum.
+    - Added Rewired.Platforms.Microsoft.WindowsGamingInput.WindowsGamingInputControllerExtension class.
+    - Added Rewired.Platforms.Microsoft.WindowsGamingInput.DeviceType enum.
+    - Added Rewired.Platforms.UWP.HID.HIDControllerExtension class.
+
+1.1.48.0:
+  
+  Changes:
+    - Linux Standalone, Native: Added Enhanced Device Support option. Special device features such as Sony DualSense vibration, IMU, and trigger haptics now work on Linux. (See documentation for Linux permissions issues.)
+    - Linux Standalone, Native: Modified format of joystick.HardwareIdentifier string.
+    - Windows Standalone, Raw Input: Modified format of joystick.HardwareIdentifier string for consistency.
+    - Windows Standalone, Direct Input: Modified format of joystick.HardwareIdentifier string for consistency.
+    - MacOS, Native: Modified format of joystick.HardwareIdentifier string for consistency.
+    - Enhanced Device Support, Sony DualSense: Changed to vibration compatibility mode v2 for proper vibration intensity ramp, removed workaround.
+    - MacOS Standalone, Native, Enhanced Device Support: Sony DualSense special features now work when connected via Bluetooth.
+    - MacOS Standalone, Native, Enhanced Device Support: Sony DualShock 4 special features now work when connected via Bluetooth.
+
+  Controller Definitions:
+    - Sony DualSense, Linux Native: Added more device identifiers for matching.
+    - Nintendo Pro Controller, Linux Native: Added variant for newer versions of Ubuntu.
+    - Nintendo Left Joy-Con, Linux Native: Added variant for newer versions of Ubuntu.
+    - Nintendo Right Joy-Con, Linux Native: Added variant for newer versions of Ubuntu.
+
+  Bug Fixes:
+    - Windows Standalone, Raw Input + Enhanced Device Support: Fixed possible issue with cleanup of resources for devices supported by Enhanced Device Support.
+    - Windows Standalone, Raw Input + Enhanced Device Support: Fixed Sony DualShock 4 special features no longer working via Bluetooth (bug introduced in 1.1.47.0).
+
+1.1.47.0:
+  
+  Changes:
+    - Windows Standalone: Added support for Windows.Gaming.Input input source (Requires Windows 10, October 2018 Update version 1809 (10.0.17763.0) or greater. Will fall back to other input sources on older versions of Windows.) Note: This option is now enabled by default on newly created Rewired Input Managers, but existing instances are not modified and the option must be manually enabled in Rewired Editor -> Settings -> Windows.
+    - Added Rewired_WindowsGamingInput.dll native library.
+    - Windows Standalone Raw Input, MacOS Native, Enhanced Device Support: Added DualSense trigger effect support.
+    - MacOS Game Controller Framework: Added DualSense trigger effect support.
+    - MacOS Game Controller Framework: Excluded Nintendo Switch Joy-Cons due to devices not functioning correctly through Game Controller Framework.
+    - Added DualSense Edge support (not tested).
+    - Android: Improved keyfile detection of Dual Shock 4 and Dual Sense controllers due to problems caused by Android fragementation.
+    - Windows UWP, Native: Improved filtering of non-XInput compatible HID controllers that are supported by Windows.Gaming.Input.Gamepad to prevent duplicate devices from appearing when both Gamepad API and HID API are enabled.
+    - Windows UWP, Native: Xbox 360 and Xbox One Controllers and now recognized as distinct controller types instead of being identified as "XInput Gamepad" with limited.
+    - Windows UWP, Native: Added device type and HID product name to joystick.HardwareIdentifier string.
+    - Windows UWP, Native: Updated minimum supported windows version to Windows 10, Fall Creators Update version 1709 (10.0.16299.0).
+    - Rewired Editor: Changed some terminology under Settings -> Windows UWP.
+    - Windows Standalone Raw Input, OSX Native, Enhanced Device Support: Added internal drivers for Nintendo Switch Pro Controller and Joy-Cons to support vibration and certain special controller features.
+    - Windows Standalone Raw Input, OSX Native, Enhanced Device Support: Added workaround for lack of perceptible vibration ramp on Dual Sense.
+    - Added more information to Debug Information.
+  
+  API Changes:
+    - Added ReInput.ConfigHelper.useWindowsGamingInput property.
+    - Added Rewired.ControllerExtensions.IDualSenseExtension interface.
+    - Added Rewired.ControllerExtensions.IDualSenseGamepadTriggerEffect interface.
+    - Added Rewired.ControllerExtensions.DualSenseGamepadTriggerType enum.
+    - Added Rewired.ControllerExtensions.DualSenseGamepadTriggerEffectType enum.
+    - Added Rewired.ControllerExtensions.DualSenseGamepadTriggerEffectState enum.
+    - Added Rewired.ControllerExtensions.DualSenseGamepadTriggerEffectPositionValueSet struct.
+    - Added Rewired.ControllerExtensions.DualSenseGamepadTriggerEffectOff struct.
+    - Added Rewired.ControllerExtensions.DualSenseGamepadTriggerEffectFeedback struct.
+    - Added Rewired.ControllerExtensions.DualSenseGamepadTriggerEffectWeapon struct.
+    - Added Rewired.ControllerExtensions.DualSenseGamepadTriggerEffectVibration struct.
+    - Added Rewired.ControllerExtensions.DualSenseGamepadTriggerEffectMultiplePositionFeedback struct.
+    - Added Rewired.ControllerExtensions.DualSenseGamepadTriggerEffectSlopeFeedback struct.
+    - Added Rewired.ControllerExtensions.DualSenseGamepadTriggerEffectMultiplePositionVibration struct.
+    - Added Rewired.ControllerExtensions.DualSenseGamepadExtension.SetTriggerEffect function.
+    - Added Rewired.ControllerExtensions.IHIDControllerExtension interface.
+    - Added Rewired.ControllerExtensions.NintendoSwitchGamepadExtension class.
+    - Added Rewired.ControllerExtensions.NintendoSwitchProControllerExtension class.
+    - Added Rewired.ControllerExtensions.NintendoSwitchJoyConExtension class.
+    - Added Rewired.ControllerExtensions.NintendoSwitchGamepadVibration struct.
+    - Added Rewired.ControllerExtensions.NintendoSwitchJoyConType enum.
+    - Added Rewired.ControllerExtensions.NintendoSwitchJoyConGripStyle enum.
+    - Added Rewired.Platforms.Apple.GameController.GCControllerDualSenseExtension.SetTriggerEffect function.
+    - Added Rewired.Platforms.Windows.RawInput.RawInputControllerExtension class.
+    - Added Rewired.Platforms.Windows.DirectInput.DirectInputControllerExtension class.
+    - Added ReInput.ConfigHelper.windowsUWPSupportGamepads property.
+    - Added ReInput.ConfigHelper.useAppleGameControllerFramework property.
+    - Added Rewired.ControllerExtensions.IHIDControllerExtension interface to Rewired.ControllerExtensions.DualSenseExtension, Rewired.ControllerExtensions.DualShock4Extension, and Rewired.ControllerExtensions.RailDriverExtension.
+
+  Controller Definitions:
+    - Nintendo Switch Pro Controlller, Apple Game Controller Framework: Added definition.
+    - Windows, Windows Gaming Input: Added Steam-configured variants to Xbox 360 Controller, Xbox One Controller, Sony DualShock 4, Sony DualSense, Nintendo Pro Controller, Nintendo Joy-Con (L), Nintendo Joy-Con (R), Steam Controller.
+    
+  Bug fixes:
+    - Windows Standalone, Raw Input: Fixed bug introduced in 1.1.45.2 causing Raw Input events to not be forwarded to UnityEngine.Input until the application first lost and then received focus again. This only affected UnityEngine.Input mouse axis values.
+
+1.1.46.0:
+
+  Changes:
+    - Changed Rewired Editor colors and bolded controller names that have an existing controller map due to Unity editor default skin changes at some unknown Unity version in the past causing skin colors to be off.
+  
+  API Changes:
+    - Added InputMapper.ConflictResponse.Swap enum value.
+    - Added InputMapper.ConflictFoundEventData.IsSwapAllowed function.
+    
+  Modified Controller Definitions:
+    - Apple MFI Controller, iOS Fallback: Added Left Stick Button and Right Stick Button mappings for Xbox and Sony controllers. NOTE: Only works in versions of Unity that support these additional buttons. It is not known at what version the button mappings were added to Unity.
+
+1.1.45.3:
+
+  Changes:
+    - Removed reference to TouchInputModule class in RewiredStandaloneInputModule due to deprecation and removal of class in some unknown update version of Unity UI causing compiler errors on a fresh install.
+
+1.1.45.2:
+
+  Changes:
+    - Windows Standalone, Raw Input: Raw Input events are no longer forwarded to Unity when application is paused or out of focus.
+
+1.1.45.1:
+
+  Changes:
+    - Changes to support Game Core plugin in Unity 2017 for specific customer.
+
+1.1.45.0:
+  
+  Changes:
+    - Added Unity 2023 branch.
+    - Updated internal GUIText component for breaking change in Unity 2022.2+ removing Arial.ttf from default assets.
+    - Exceptions thrown by event handlers and caught by Rewired are now logged as exceptions instead of as errors so they can be handled by tools such as Sentry.
+    
+  API Changes:
+    - Added ControllerMap.ElementMaps property (alias for AllMaps property).
+
+  Modified Controller Definitions:
+    - Updated Microsoft Xbox One Controller definition to account for breaking changes to mappings, presumably due to firmware updates, on Linux Native, and added additional identifiers to match more Xbox Series S|X controllers.
+    - Added Menu, Left Stick Button, and Right Stick Button bindings to Gamepad Template map for Apple MFi Controller.
+
+  Bug Fixes:
+    - Fixed PlayerController.GetElement returning only Axis elements.
+    - Fixed PlayerController.Element.name always returning null.
+    - Added workaround for Mono bug? that caused allocation of 32 bytes of garbage periodically in Windows.
+    - Windows Standalone, MacOS Standalone, with Enhanced Device Support enabled: Fixed infinitely-expanding buffer in memory caused by input event buffer on Sony DualShock 4 and Sony DualSense controllers in the Unity editor when pausing Play mode and in builds when the application is out of focus and the Unity Player setting "Run in Background" is false.
+    - Fixed bug causing negative Axis Contribution on Actions bound to a trigger to be lost when converting a Gamepad Template Map to a Controller Map using ControllerTemplateMap.ToControllerMap when the gamepad has digital buttons instead of analog triggers.
+    - Fixed UWP platform compiler errors in Unity 2022+.
+
+1.1.44.0:
+
+  Changes:
+    - MacOS, Game Controller Framework: Added support for setting light color on Dual Shock 4 and Dual Sense controllers.
+    - Checks Unity Active Input Manager setting on installation and warns user if set to an incompatible setting.
+    - Internal changes to allow Rewired plugins to optionally run target platform-specific code in the Unity editor.
+  
+  API Changes:
+    - Added Rewired.Platforms.Apple.GameController.GCControllerDualShock4Extension.SetLightColor functions.
+    - Added Rewired.Platforms.Apple.GameController.GCControllerDualSenseExtension.SetLightColor functions.
+    
+  Bug Fixes:
+    - Mac OS Standalone, Native, Game Controller Framework enabled: Fixed bug causing crash in MacOS versions prior to 11.0.
+    - Reverted old workaround for a platform-specific Unity bug in Rewired Pointer Input Module which disabled the check to see if a mouse is present before processing mouse input events. The workaround caused issues because touch input changes the Unity mouse pointer position.
+
+1.1.43.0:
+
+  Changes:
+    - Added MacOS Game Controller Framework support.
+  
+  API Changes:
+    - Added ControllerMap.CreateFromJson function.
+    - Added Controller.Element.compoundElement property.
+    - Added Controller.GetCompoundElementById function.
+
+1.1.42.1:
+
+    Bug Fixes:
+      - Fixed missing method exception thrown when editing Custom Controllers in Rewired Editor.
+
+1.1.42.0:
+
+  Changes:
+    - Added Unity 2022 branch.
+    - Removed support for many old platforms: Windows 8 Phone, Windows 8 Store,  Windows 8.1 Universal, Ouya, PS3, Wii, WiiU, Xbox 360, Blackberry, Google Nexus Player, Gamestick.
+    - Removed PS4 support from core. A plugin is now required for PS4 support. See Special Platforms in the documentation for details.
+    - Added support for Sony PlayStation 4 plugin.
+    - Added support for Sony PlayStation 5 plugin.
+    - Added support for Nintendo Switch plugin running in Unity Editor.
+    - OSX: Updated SDL2 library to 2.0.20, universal Intel/Apple Silicon. (SDL2 library files in project must be deleted and re-installed from the menu.)
+    - Added Rewired_DirectInput.pdb files.
+    - Added option to disable mouse input on platforms and avoid polling for mouse input values on Unity-based input sources to reduce CPU usage on certain platforms.
+
+  Bug Fixes:
+    - Removed warning in editor when Unity Input System is enabled in Unity 2021.2+.
+    - Rewired Input Manager Settings configuration is no longer reset when using Compact Ids function.
+    - Controller Map returns the correct controller type even before data is baked when creating a Controller Map from XML.
+    - Controller id defaults to -1 instead of 0 for incomplete Controller Maps which have been created outside a Player and have no associated Controller.
+    - Creating an ActionElementMap in an incomplete Controller Map can no longer throw an exception if no Controller exists when the Controller Map has an undefined Controller id.
+    - Control Mapper: Adding a Map categories that is set to not User Assignable to the list of categories to display no longer break the layout.
+
 1.1.41.5:
 
   Bug Fixes:
@@ -17,7 +611,6 @@
 
   Bug Fixes:
     - OSX Standalone, Native, Enhanced Device support enabled: Fixed Dual Shock 4 axes not working when connected via USB bug introduced in 1.1.41.2.
-
 
 1.1.41.2:
 

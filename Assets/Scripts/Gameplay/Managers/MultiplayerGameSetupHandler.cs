@@ -30,10 +30,10 @@ public class MultiplayerGameSetupHandler : NetworkBehaviour {
     
     [ClientRpc]
     public void RpcAssignPlayers() {
-        ICommandManager commandManager = FindObjectOfType<MPCommandManager>();
+        ICommandManager commandManager = FindFirstObjectByType<MPCommandManager>();
         GameManager.Instance.CommandManager = commandManager;
 
-        List<MPGamePlayer> players = FindObjectsOfType<MPGamePlayer>().ToList(); 
+        List<MPGamePlayer> players = FindObjectsByType<MPGamePlayer>(FindObjectsSortMode.InstanceID).ToList(); 
         MPGamePlayer player1 = players.FirstOrDefault(p => p.Data.Team == GameTeam.Player1);
         MPGamePlayer player2 = players.FirstOrDefault(p => p.Data.Team == GameTeam.Player2);
         MPGamePlayer localPlayer = players.FirstOrDefault(p => p.isLocalPlayer);

@@ -274,7 +274,7 @@ public class GameSetupManager : MonoBehaviour {
             yield break;
         }
 
-        List<MPGamePlayer> players = FindObjectsOfType<MPGamePlayer>().ToList();
+        List<MPGamePlayer> players = FindObjectsByType<MPGamePlayer>(FindObjectsSortMode.InstanceID).ToList();
         if (players.Count == MPSetupHandler.PlayerCount) {
             // Load the map client-side first, then notify the server that the client setup is finished
             MapLoader.LoadMap(players.First(p => p.isLocalPlayer).Data.Team);
@@ -356,7 +356,7 @@ public class GameSetupManager : MonoBehaviour {
         }
         
         // If we are missing any players (due to no one picking those slots), set them up as dummy players now 
-        List<MPGamePlayer> players = FindObjectsOfType<MPGamePlayer>().ToList();
+        List<MPGamePlayer> players = FindObjectsByType<MPGamePlayer>(FindObjectsSortMode.InstanceID).ToList();
         MPGamePlayer player1 = players.FirstOrDefault(p => p.Data.Team == GameTeam.Player1);
         MPGamePlayer player2 = players.FirstOrDefault(p => p.Data.Team == GameTeam.Player2);
         if (!player1) {
