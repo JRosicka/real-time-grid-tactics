@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: CheatConfiguration
   m_EditorClassIdentifier: 
   _currentCheats:
-    CheatsEnabled: 1
+    CheatsEnabled: 0
     PlayerMoney: 5000
     RemoveBuildTime: 1
     ControlAllPlayers: 1
