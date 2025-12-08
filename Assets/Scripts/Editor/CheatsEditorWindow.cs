@@ -115,7 +115,7 @@ public class CheatsEditorWindow : OdinEditorWindow {
 
     private void OpenScene(string sceneName) {
         if (EditorApplication.isPlaying) {
-            throw new Exception("Can not change scenes like this while in play mode");
+            throw new Exception("Cannot change scenes like this while in play mode");
         }
 
         string assetPath = LocateSceneAsset(sceneName);

@@ -63,9 +63,9 @@ namespace Gameplay.UI {
             if (availability == AbilitySlot.AvailabilityResult.Unselectable) {
                 string alertMessage;
                 if (GameManager.Instance.LocalTeam == GameTeam.Spectator) {
-                    alertMessage = "Can not affect the game as a spectator!";
+                    alertMessage = "Cannot affect the game as a spectator!";
                 } else if (FulfillsRequirementsToBuild(out alertMessage)) {
-                    alertMessage = "Can not afford.";
+                    alertMessage = "Cannot afford.";
                 }
                 
                 GameManager.Instance.AlertTextDisplayer.DisplayAlert(alertMessage);

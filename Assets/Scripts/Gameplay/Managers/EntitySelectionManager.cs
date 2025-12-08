@@ -191,7 +191,7 @@ public class EntitySelectionManager {
 
         if (!_selectedTargetableAbility.CanTargetCell(clickedCell, SelectedEntity, _gameManager.LocalTeam, _targetData)) {
             // We clicked on a cell that the ability cannot be used on. Deselect the ability. 
-            GameManager.Instance.AlertTextDisplayer.DisplayAlert($"Can not {_selectedTargetableAbility.AbilityVerb} there.");
+            GameManager.Instance.AlertTextDisplayer.DisplayAlert($"Cannot {_selectedTargetableAbility.AbilityVerb} there.");
             GameManager.Instance.GameAudio.InvalidSound();
             DeselectTargetableAbility();
             return true;
