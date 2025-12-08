@@ -67,7 +67,7 @@ public abstract class AbstractCommandManager : NetworkBehaviour, ICommandManager
     /// Attempts to spawn a new instance of the provided <see cref="GridEntity"/> at the specified location on the game
     /// grid. No-op if another entity already exists in the specified location. 
     /// </summary>
-    public abstract void SpawnEntity(EntityData data, Vector2Int spawnLocation, GameTeam team, GridEntity spawnerEntity, bool movementOnCooldown, bool built);
+    public abstract void SpawnEntity(EntityData data, Vector2Int spawnLocation, GameTeam team, GridEntity spawnerEntity, Vector2Int spawnerLocation, bool built);
 
     // TODO need to have some way of verifying that these commands are legal for the client to do - especially doing stuff with GridEntites, we gotta own em
     // Maybe we can just make these abstract methods virtual, include a check at the beginning, and then have the overrides call base() at the start
@@ -100,7 +100,7 @@ public abstract class AbstractCommandManager : NetworkBehaviour, ICommandManager
     public abstract void QueueAbility(IAbility ability, IAbility abilityToDependOn);
     public abstract void MarkAbilityTimerExpired(IAbility ability);
 
-    protected void DoSpawnEntity(EntityData data, Vector2Int spawnLocation, Func<GridEntity> spawnFunc, GameTeam team, GridEntity spawnerEntity, bool movementOnCooldown) {
+    protected void DoSpawnEntity(EntityData data, Vector2Int spawnLocation, Func<GridEntity> spawnFunc, GameTeam team, GridEntity spawnerEntity, Vector2Int spawnerLocation) {
         List<GridEntity> entitiesToIgnore = spawnerEntity != null ? new List<GridEntity> {spawnerEntity} : null;
         if (!PathfinderService.CanEntityEnterCell(spawnLocation, data, team, entitiesToIgnore)) {
             return;
@@ -109,7 +109,8 @@ public abstract class AbstractCommandManager : NetworkBehaviour, ICommandManager
         GridEntity entityInstance = spawnFunc();
         RegisterEntity(entityInstance, data, spawnLocation, spawnerEntity);
 
-        if (movementOnCooldown) {
+        if (spawnerLocation != spawnLocation) {
+            // Add movement cooldown
             GameplayTile tile = GameManager.Instance.GridController.GridData.GetCell(spawnLocation)!.Tile;
             GameManager.Instance.AbilityAssignmentManager.AddMovementTime(entityInstance, entityInstance.MoveTimeToTile(tile));
         }
@@ -119,7 +120,7 @@ public abstract class AbstractCommandManager : NetworkBehaviour, ICommandManager
         player?.OwnedPurchasablesController.Upgrades.ApplyUpgrades(entityInstance);
 
         // Handle starting movement
-        if (spawnerEntity != null && spawnerEntity.TargetLocationLogicValue.CanRally) {
+        if (spawnerEntity != null && spawnerEntity.TargetLocationLogicValue.CanRally && spawnerEntity.TargetLocationLogicValue.CurrentTarget != spawnerLocation) {
             if (data.Tags.Contains(EntityTag.Worker)) {
                 // Workers get move-commanded
                 entityInstance.TryMoveToCell(spawnerEntity.TargetLocationLogicValue.CurrentTarget, false);

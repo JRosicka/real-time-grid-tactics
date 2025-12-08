@@ -69,7 +69,7 @@ namespace Gameplay.Entities.Abilities {
                         // The location is open to put this entity, so go ahead and spawn it.
                         // Note that we mark the performer entity as being ignorable since it will probably not be unregistered via
                         // the below command before we check if it's legal to spawn this new one. 
-                        SpawnEntity(entityData, AbilityParameters.BuildLocation, true);
+                        SpawnEntity(entityData, AbilityParameters.BuildLocation, AbilityParameters.BuildLocation);
                         return true;
                     }
                     
@@ -77,7 +77,7 @@ namespace Gameplay.Entities.Abilities {
                         // We can potentially still complete the ability. See if we can send the unit to an adjacent cell.
                         Vector2Int? adjacentCell = GetBestAdjacentCellToSpawn(entityData);
                         if (adjacentCell != null) {
-                            SpawnEntity(entityData, adjacentCell.Value, false);
+                            SpawnEntity(entityData, adjacentCell.Value, AbilityParameters.BuildLocation);
                             
                             return true;
                         }
@@ -95,9 +95,9 @@ namespace Gameplay.Entities.Abilities {
         }
 
         // Server method
-        private void SpawnEntity(EntityData entityData, Vector2Int buildLocation, bool originalBuildLocation) {
+        private void SpawnEntity(EntityData entityData, Vector2Int buildLocation, Vector2Int spawnerLocation) {
             if (GameManager.Instance == null) return;
-            GameManager.Instance.CommandManager.SpawnEntity(entityData, buildLocation, Performer.Team, Performer, !originalBuildLocation, true);
+            GameManager.Instance.CommandManager.SpawnEntity(entityData, buildLocation, Performer.Team, Performer, spawnerLocation, true);
             if (entityData.IsStructure) {
                 // Destroy the builder.
                 GameManager.Instance.CommandManager.AbilityExecutor.MarkForUnRegistration(Performer, false);
