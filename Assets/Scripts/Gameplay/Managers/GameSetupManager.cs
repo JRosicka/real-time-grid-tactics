@@ -131,9 +131,11 @@ public class GameSetupManager : MonoBehaviour {
     /// </summary>
     /// <param name="winner"></param>
     public void NotifyGameOver(GameTeam winner) {
+        if (GameOver) return;
+        GameOver = true;
+        
         GameManager.Instance.GameAudio.EndMusic(true);
         
-        GameOver = true;
         if (winner == GameTeam.Neutral) {
             GameOverView.ShowTie();
             // TODO tie sound effect?
