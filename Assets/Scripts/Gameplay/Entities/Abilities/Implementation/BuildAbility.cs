@@ -21,9 +21,10 @@ namespace Gameplay.Entities.Abilities {
     /// </summary>
     public class BuildAbility : AbilityBase<BuildAbilityData, BuildAbilityParameters> {
         public BuildAbilityParameters AbilityParameters => (BuildAbilityParameters) BaseParameters;
+        public BuildAbilityData BuildAbilityData { get; private set; }
 
         public BuildAbility(BuildAbilityData data, BuildAbilityParameters parameters, GridEntity performer, GameTeam? overrideTeam) : base(data, parameters, performer, overrideTeam) {
-            
+            BuildAbilityData = data;
         }
 
         public override AbilityExecutionType ExecutionType => AbilityExecutionType.PreInteractionGridUpdate;

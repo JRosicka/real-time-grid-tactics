@@ -39,6 +39,7 @@ MonoBehaviour:
     _tryingToPerformCancelsBuilds: 0
     _blocksDefaultAttack: 0
     _showTimerOnSelectionInterface: 1
+    _performByDefault: 0
     Targetable: 0
     UsableEverywhereByBothTeams: 1
     Buildables:

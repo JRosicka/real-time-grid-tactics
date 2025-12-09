@@ -398,10 +398,10 @@ namespace Gameplay.Entities {
                 case AttackAbility:
                     timerLocation = transform;
                     break;
-                case BuildAbility:
+                case BuildAbility buildAbility:
                     if (abilityTimer.Ability.AbilityData.Targeted) {
                         timerLocation = _buildTimerLocation;
-                    } else if (abilityTimer.Ability.AbilityData.SelectableForAllPlayers &&
+                    } else if (buildAbility.BuildAbilityData.UsableEverywhereByBothTeams &&
                                GameManager.Instance.LocalTeam == GameTeam.Spectator) {
                         // This is the Amber Forge for a spectator, so support timer locations for both players
                         timerLocation = ability.PerformerTeam switch {
