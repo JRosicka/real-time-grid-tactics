@@ -125,7 +125,7 @@ namespace Gameplay.Config.Abilities {
         /// </summary>
         /// <returns>The destination cell, or null if no viable destination exists</returns>
         private Vector2Int? DetermineChargeDestination(GridEntity selector, Vector2Int targetCell) {
-            Vector2Int? selectorLocation = selector.Location;
+            Vector2Int? selectorLocation = selector?.Location;
             if (selectorLocation == null) return null;
             if (selectorLocation.Value == targetCell) return null;
 

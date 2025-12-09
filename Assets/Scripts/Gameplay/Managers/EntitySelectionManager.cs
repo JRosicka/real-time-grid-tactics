@@ -55,6 +55,10 @@ public class EntitySelectionManager {
             SelectedEntity.Deselect();
         }
         GridController.UnTrackEntity(SelectedEntity);
+
+        if (entity != SelectedEntity) {
+            DeselectTargetableAbility();
+        }
         
         SelectedEntity = entity;
         _selectedEntityCurrentLocation = entity == null ? null : entity.Location;
