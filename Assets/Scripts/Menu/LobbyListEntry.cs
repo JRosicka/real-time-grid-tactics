@@ -1,5 +1,6 @@
 using System;
 using Steamworks;
+using Telepathy;
 using TMPro;
 using UnityEngine;
 
@@ -21,6 +22,16 @@ public class LobbyListEntry : MonoBehaviour {
     private string _joinCode;
     
     public void PopulateEntry(SteamLobbyService.Lobby lobby) {
+        string members = "";
+        foreach (SteamLobbyService.LobbyMember member in lobby.Members) {
+            members += $"({member.SteamID}, {member.Data.Length}), ";
+        }
+        string data = "";
+        foreach (SteamLobbyService.LobbyMetaData metadata in lobby.Data) {
+            data += $"({metadata.Key}, {metadata.Value}), ";
+        }
+        Debug.Log($"Populating lobby: ID: {lobby.SteamID}. Member limit: {lobby.MemberLimit}. Members: {members}. Data: {data}.");
+        
         string hostName = ProcessName(lobby[SteamLobbyService.LobbyOwnerKey]);
         LobbyNameField.text = $"{hostName}'s lobby";
         _privateLobby = !Convert.ToBoolean(lobby[SteamLobbyService.LobbyIsOpenKey]);

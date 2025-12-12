@@ -386,7 +386,7 @@ public class SteamLobbyService : MonoBehaviour {
             CurrentLobbyID,
             HostAddressKey);
         if (hostAddress.IsNullOrWhitespace()) {
-            Debug.LogError("No host address data found when trying to enter lobby, aborting");
+            Debug.LogError($"No host address data found when trying to enter lobby, aborting. Host lobby ID: {CurrentLobbyID}");
             _currentIDForLobbyBeingJoined = CSteamID.Nil;
             OnLobbyJoinComplete?.Invoke(false, "No host address found when attempting to enter lobby.");
             return;
