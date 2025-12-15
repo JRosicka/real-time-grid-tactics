@@ -5428,6 +5428,63 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 2551352687769473835, guid: 612dbd3dbc2474049951b04acb8c20ab, type: 3}
   m_PrefabInstance: {fileID: 5740941309140758831}
   m_PrefabAsset: {fileID: 0}
+--- !u!1001 &7955693085685589128
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 3605094903925598017, guid: fc73754934403984787c71995ace80b4, type: 3}
+      propertyPath: m_Name
+      value: Game Config Holster
+      objectReference: {fileID: 0}
+    - target: {fileID: 5057422885028796792, guid: fc73754934403984787c71995ace80b4, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5057422885028796792, guid: fc73754934403984787c71995ace80b4, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5057422885028796792, guid: fc73754934403984787c71995ace80b4, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5057422885028796792, guid: fc73754934403984787c71995ace80b4, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5057422885028796792, guid: fc73754934403984787c71995ace80b4, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5057422885028796792, guid: fc73754934403984787c71995ace80b4, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5057422885028796792, guid: fc73754934403984787c71995ace80b4, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5057422885028796792, guid: fc73754934403984787c71995ace80b4, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5057422885028796792, guid: fc73754934403984787c71995ace80b4, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5057422885028796792, guid: fc73754934403984787c71995ace80b4, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: fc73754934403984787c71995ace80b4, type: 3}
 --- !u!114 &8394295997017822200 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 9205137630906964571, guid: a2bd5b25ad94f4608b4fa65dd413d28e, type: 3}
@@ -5450,3 +5507,4 @@ SceneRoots:
   - {fileID: 306689125}
   - {fileID: 4586516104798620291}
   - {fileID: 1369653069}
+  - {fileID: 7955693085685589128}

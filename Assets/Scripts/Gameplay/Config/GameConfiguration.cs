@@ -13,6 +13,7 @@ namespace Gameplay.Config {
         [Header("Config")]
         public AudioFileConfiguration AudioConfiguration;
         public CurrencyConfiguration CurrencyConfiguration;
+        public MapsConfiguration MapsConfiguration;
         
         [Tooltip("How much extra F-cost (in seconds to move) past the generated ignoring-other-entities path when constructing an account-for-other-entities path. This will be divided by the entity's normal move time.")]
         public float MaxPathFindingFCostBuffer;

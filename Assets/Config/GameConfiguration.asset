@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   AudioConfiguration: {fileID: 11400000, guid: 2a425f2a191e94fe992f1d1fbe6f91d1, type: 2}
   CurrencyConfiguration: {fileID: 11400000, guid: 3db5f2d7bb4f743459bc067c8714423b, type: 2}
+  MapsConfiguration: {fileID: 11400000, guid: 56ac6738340180a4ea956ab823147789, type: 2}
   MaxPathFindingFCostBuffer: 36
   PlayerConfigs:
   - {fileID: 11400000, guid: db81b6365297c4740954a5fc43742225, type: 2}
