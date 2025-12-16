@@ -63,5 +63,9 @@ namespace Gameplay.Config {
         public PlayerData GetPlayer(string id) {
             return PlayerConfigs.First(c => c.name == id);
         }
+
+        public GameplayTile GetTile(string id) {
+            return Tiles.First(t => t.name == id);
+        }
     }
 }

@@ -30,6 +30,7 @@ MonoBehaviour:
     m_NeighborPositions: []
     m_RuleTransform: 0
   m_FlatTop: 0
+  TileID: grass
   Selectable: 1
   DisplayName: Grass
   ShortDescription: Plain terrain.

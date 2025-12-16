@@ -43,16 +43,19 @@ namespace Gameplay.Config {
         /// <summary>
         /// Saves a map in the static maps configuration. If a map exists with the same ID, overwrites that one. 
         /// </summary>
-        public static void SaveMap(string mapID, string displayName, string description, int index, 
-                            Vector2Int lowerLeftCell, Vector2Int upperRightCell, List<MapData.Cell> cells, 
-                            List<StartingEntitySet> entities, MapType mapType) {
+        public static void SaveMap(string mapID, MapType mapType, string displayName, string description, int index, 
+                            Vector2Int lowerLeftCell, Vector2Int upperRightCell, bool wideLeftSide, bool wideRightSide, 
+                            List<MapData.Cell> cells, List<StartingEntitySet> entities) {
             MapData newMapData = new MapData {
                 mapID = mapID,
+                mapType = mapType,
                 displayName = displayName,
                 description = description,
                 index = index,
                 lowerLeftCell = lowerLeftCell,
                 upperRightCell = upperRightCell,
+                wideLeftSide = wideLeftSide,
+                wideRightSide = wideRightSide,
                 cells = cells,
                 entities = entities,
             };

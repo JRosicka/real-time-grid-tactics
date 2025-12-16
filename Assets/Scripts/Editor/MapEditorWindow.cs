@@ -35,6 +35,17 @@ namespace Gameplay.Config {
             }
         }
         
+        private MapLoader _mapLoader;
+
+        private MapLoader MapLoader {
+            get {
+                if (!_mapLoader) {
+                    _mapLoader = FindFirstObjectByType<MapLoader>();
+                }
+                return _mapLoader;
+            }
+        }
+        
         /// <summary>
         /// The '%m' allows for the keyboard shortcut CTRL + M for opening the window. 
         /// </summary>
@@ -45,6 +56,7 @@ namespace Gameplay.Config {
         }
 
         private bool _everSetUp;
+        private bool _everPopulated;
         private bool _inGameScene;
         private bool _notInGameScene;
 
@@ -63,6 +75,13 @@ namespace Gameplay.Config {
             _inGameScene = newInGameScene;
             _notInGameScene = !newInGameScene;
             _everSetUp = true;
+
+            if (_inGameScene && !_everPopulated) {
+                DropdownMapID = MapLoader.CurrentMapID;
+                PopulateFields(MapSerializer.GetMap(DropdownMapID));
+                
+                _everPopulated = true;
+            }
             
             Repaint();
         }
@@ -92,12 +111,24 @@ namespace Gameplay.Config {
         [Button("Load")]
         public void LoadMap() {
             MapData mapData = MapSerializer.GetMap(DropdownMapID);
-            
-            
-            
-            // TODO load tiles
+            MapLoader.LoadMap(mapData);
+            PopulateFields(mapData);
             
             Repaint();
+        }
+
+        private void PopulateFields(MapData mapData) {
+            MapID = mapData.mapID;
+            MapType = mapData.mapType;
+            DisplayName = mapData.displayName;
+            Description = mapData.description;
+            DisplayIndex = mapData.index;
+            LowerLeftCell = new AssignableLocation(mapData.lowerLeftCell);
+            UpperRightCell = new AssignableLocation(mapData.upperRightCell);
+            WideLeftSide = mapData.wideLeftSide;
+            WideRightSide = mapData.wideRightSide;
+
+            Entities = mapData.entities;
         }
         
         #endregion
@@ -111,9 +142,11 @@ namespace Gameplay.Config {
         [HorizontalGroup("Saving")]
         [Button("Save")]
         public void SaveMap() {
-            MapSerializer.SaveMap(MapID, DisplayName, Description, DisplayIndex, LowerLeftCell, UpperRightCell, 
-                null, Entities, Preview ? MapType.Preview : MapType.Playable);
-            // TODO read cells
+            List<MapData.Cell> cells = new List<MapData.Cell>();
+            // TODO
+            
+            MapSerializer.SaveMap(MapID, MapType, DisplayName, Description, DisplayIndex, LowerLeftCell.Location, 
+                UpperRightCell.Location, WideLeftSide, WideRightSide, null, Entities);
         }
 
         #endregion
@@ -121,17 +154,26 @@ namespace Gameplay.Config {
 
         [Title("Configuration")]
         [VerticalGroup("Configuring", Order = 0, VisibleIf = "_inGameScene")]
+        public MapType MapType;
+        [VerticalGroup("Configuring")]
         public string DisplayName;
         [VerticalGroup("Configuring")]
         public string Description;
         [VerticalGroup("Configuring")]
         public int DisplayIndex;
+        [Space]
         [VerticalGroup("Configuring")]
-        public Vector2Int LowerLeftCell;
+        [InlineProperty]
+        public AssignableLocation LowerLeftCell;
         [VerticalGroup("Configuring")]
-        public Vector2Int UpperRightCell;
+        [InlineProperty]
+        public AssignableLocation UpperRightCell;
         
-        // TODO Odd numbered wall for left and right
+        [Header("Whether either side should be 'wide' meaning an extra column beyond the corner cell's column")]
+        [VerticalGroup("Configuring")]
+        public bool WideLeftSide;
+        [VerticalGroup("Configuring")]
+        public bool WideRightSide;
 
         [VerticalGroup("Configuring")]
         [PropertyOrder(10)]
@@ -145,11 +187,6 @@ namespace Gameplay.Config {
         [PropertyOrder(20)]
         public List<StartingEntitySet> Entities;
         
-        [Space]
-        [VerticalGroup("Configuring")]
-        [PropertyOrder(20)]
-        public bool Preview;
-
         #endregion
     }
 }

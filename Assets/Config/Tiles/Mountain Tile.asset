@@ -30,6 +30,7 @@ MonoBehaviour:
     m_NeighborPositions: []
     m_RuleTransform: 0
   m_FlatTop: 0
+  TileID: mountain
   Selectable: 1
   DisplayName: Mountain
   ShortDescription: Impassible terrain.

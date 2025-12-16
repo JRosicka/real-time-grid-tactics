@@ -1624,105 +1624,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 442fe7ccdd4f49ce8ce044894b2147d6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  GridController: {fileID: 1769013663}
   CameraManager: {fileID: 504119508}
-  UnitSpawns:
-  - Team: -1
-    Entities:
-    - Data: {fileID: 11400000, guid: dfb82f31371a84690ae123195a14bf64, type: 2}
-      SpawnLocation:
-        Location: {x: -9, y: -3}
-    - Data: {fileID: 11400000, guid: dfb82f31371a84690ae123195a14bf64, type: 2}
-      SpawnLocation:
-        Location: {x: 0, y: -2}
-    - Data: {fileID: 11400000, guid: dfb82f31371a84690ae123195a14bf64, type: 2}
-      SpawnLocation:
-        Location: {x: 0, y: 2}
-    - Data: {fileID: 11400000, guid: dfb82f31371a84690ae123195a14bf64, type: 2}
-      SpawnLocation:
-        Location: {x: -7, y: 6}
-    - Data: {fileID: 11400000, guid: dfb82f31371a84690ae123195a14bf64, type: 2}
-      SpawnLocation:
-        Location: {x: 7, y: -6}
-    - Data: {fileID: 11400000, guid: dfb82f31371a84690ae123195a14bf64, type: 2}
-      SpawnLocation:
-        Location: {x: 8, y: 3}
-    - Data: {fileID: 11400000, guid: 007fafa82b51345319298048e99631e6, type: 2}
-      SpawnLocation:
-        Location: {x: -9, y: -5}
-    - Data: {fileID: 11400000, guid: 007fafa82b51345319298048e99631e6, type: 2}
-      SpawnLocation:
-        Location: {x: -5, y: -6}
-    - Data: {fileID: 11400000, guid: 007fafa82b51345319298048e99631e6, type: 2}
-      SpawnLocation:
-        Location: {x: 0, y: -6}
-    - Data: {fileID: 11400000, guid: 007fafa82b51345319298048e99631e6, type: 2}
-      SpawnLocation:
-        Location: {x: -4, y: 2}
-    - Data: {fileID: 11400000, guid: 007fafa82b51345319298048e99631e6, type: 2}
-      SpawnLocation:
-        Location: {x: -9, y: 5}
-    - Data: {fileID: 11400000, guid: 007fafa82b51345319298048e99631e6, type: 2}
-      SpawnLocation:
-        Location: {x: 0, y: 6}
-    - Data: {fileID: 11400000, guid: 007fafa82b51345319298048e99631e6, type: 2}
-      SpawnLocation:
-        Location: {x: 4, y: -2}
-    - Data: {fileID: 11400000, guid: 007fafa82b51345319298048e99631e6, type: 2}
-      SpawnLocation:
-        Location: {x: 8, y: -5}
-    - Data: {fileID: 11400000, guid: 007fafa82b51345319298048e99631e6, type: 2}
-      SpawnLocation:
-        Location: {x: 8, y: 5}
-    - Data: {fileID: 11400000, guid: 007fafa82b51345319298048e99631e6, type: 2}
-      SpawnLocation:
-        Location: {x: 5, y: 6}
-    - Data: {fileID: 11400000, guid: f3eb88eee96a64370827475771891374, type: 2}
-      SpawnLocation:
-        Location: {x: 5, y: -6}
-    - Data: {fileID: 11400000, guid: f3eb88eee96a64370827475771891374, type: 2}
-      SpawnLocation:
-        Location: {x: -5, y: 6}
-    - Data: {fileID: 11400000, guid: a2899be04b8f54805a7f62c027e3675d, type: 2}
-      SpawnLocation:
-        Location: {x: -3, y: -3}
-    - Data: {fileID: 11400000, guid: a2899be04b8f54805a7f62c027e3675d, type: 2}
-      SpawnLocation:
-        Location: {x: 2, y: 3}
-    - Data: {fileID: 11400000, guid: f3eb88eee96a64370827475771891374, type: 2}
-      SpawnLocation:
-        Location: {x: -9, y: 1}
-    - Data: {fileID: 11400000, guid: f3eb88eee96a64370827475771891374, type: 2}
-      SpawnLocation:
-        Location: {x: 8, y: -1}
-    - Data: {fileID: 11400000, guid: e16d9fca1b51810438ab31661f34df6f, type: 2}
-      SpawnLocation:
-        Location: {x: 0, y: 0}
-  - Team: 1
-    Entities:
-    - Data: {fileID: 11400000, guid: f8a9d9571b0a8324587b160065ca7fce, type: 2}
-      SpawnLocation:
-        Location: {x: -8, y: -5}
-    - Data: {fileID: 11400000, guid: 5d9e30910c9795b49bea0c2c257e60eb, type: 2}
-      SpawnLocation:
-        Location: {x: -9, y: -5}
-    - Data: {fileID: 11400000, guid: b52e5f177d13b1b4580a21f9c5ad0bf1, type: 2}
-      SpawnLocation:
-        Location: {x: -8, y: -6}
-  - Team: 2
-    Entities:
-    - Data: {fileID: 11400000, guid: f8a9d9571b0a8324587b160065ca7fce, type: 2}
-      SpawnLocation:
-        Location: {x: 7, y: 5}
-    - Data: {fileID: 11400000, guid: 5d9e30910c9795b49bea0c2c257e60eb, type: 2}
-      SpawnLocation:
-        Location: {x: 8, y: 5}
-    - Data: {fileID: 11400000, guid: b52e5f177d13b1b4580a21f9c5ad0bf1, type: 2}
-      SpawnLocation:
-        Location: {x: 8, y: 6}
-  LowerLeftCell: {x: -8, y: -6}
-  UpperRightCell: {x: 8, y: 6}
-  WideLeftSide: 1
-  WideRightSide: 1
+  CurrentMapID: test map
 --- !u!4 &602790831
 Transform:
   m_ObjectHideFlags: 0
@@ -5207,6 +5111,9 @@ MonoBehaviour:
   _pathVisualizer: {fileID: 1932547287}
   _overlayMap: {fileID: 17099766}
   _inaccessibleTile: {fileID: 11400000, guid: dda43804f0513384d9023e941df94235, type: 2}
+  _outlineTilemap: {fileID: 1848933317}
+  _outOfBoundsTile: {fileID: 11400000, guid: ed4cbd438df4d6447aa91854257d15d0, type: 2}
+  _outlineTile: {fileID: 11400000, guid: 614d7e316d440104fab611a801f09890, type: 2}
   _mouseReticle: {fileID: 636985548}
   _invalidTargetedAbilityLocationIcon: {fileID: 1809320856}
   _selectedUnitReticle: {fileID: 1261052757}

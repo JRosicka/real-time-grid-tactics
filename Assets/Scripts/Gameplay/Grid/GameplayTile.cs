@@ -12,7 +12,8 @@ public class GameplayTile : HexagonalRuleTile<GameplayTile.Neighbor> {
         public EntityTag Tag;
         public float SlowFactor;
     }
-    
+
+    public string TileID; 
     public bool Selectable;
     public string DisplayName;
     public string ShortDescription;

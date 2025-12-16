@@ -14,6 +14,10 @@ namespace Gameplay.Config {
         
         public Vector2Int Location;
 
+        public AssignableLocation(Vector2Int location) {
+            Location = location;
+        }
+
         [Button("Set Location")]
         public void SetLocation() {
             ThrowExceptionIfNotInGame();

@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using System.Linq;
+using Gameplay.Config;
 using Gameplay.Entities;
 using Gameplay.UI;
 using Sirenix.Utilities;
@@ -22,6 +24,11 @@ namespace Gameplay.Grid {
         private OverlayTilemap _overlayTilemap;
         [SerializeField] private Tilemap _overlayMap;
         [SerializeField] private Tile _inaccessibleTile;
+        
+        // Tilemap for boundaries and cell outlines
+        [SerializeField] private Tilemap _outlineTilemap;
+        [SerializeField] private Tile _outOfBoundsTile;
+        [SerializeField] private Tile _outlineTile;
         
         // Reticle for where the mouse is currently hovering
         [SerializeField] private SelectionReticle _mouseReticle;
@@ -56,6 +63,44 @@ namespace Gameplay.Grid {
             _targetUnitTracker.Initialize(_targetUnitReticle, true);
             _selectableCells = null;    // Not sure why this is necessary, but it seems to be
             _invalidTargetedAbilityLocationIcon.gameObject.SetActive(false);
+        }
+
+        /// <summary>
+        /// Assigns gameplay tiles and outline/out-of-bounds tiles to the grid
+        /// </summary>
+        public void LoadMap(MapData mapData) {
+            _gameplayTilemap.ClearAllTiles();
+            _allCellsInBounds?.Clear();
+            
+            // Assign each gameplay tile
+            List<Vector3Int> locations = new();
+            List<TileBase> tiles = new();
+            foreach (MapData.Cell cell in mapData.cells) {
+                locations.Add((Vector3Int)cell.location);
+                tiles.Add(GameConfigurationLocator.GameConfiguration.GetTile(cell.cellType));
+            }
+            
+            _gameplayTilemap.SetTiles(locations.ToArray(), tiles.ToArray());
+            
+            // Assign the out-of-bounds tile to all locations
+            List<TileBase> outOfBoundsTiles = new();
+            for (int i = 0; i < locations.Count; i++) {
+                outOfBoundsTiles.Add(_outOfBoundsTile);
+            }
+            _outlineTilemap.SetTiles(locations.ToArray(), outOfBoundsTiles.ToArray());
+
+            // Now fill in the in-bounds tiles
+            List<TileBase> outlineTiles = new();
+            Vector3Int[] inBoundsLocations = GetAllCellsInBounds().Select(c => (Vector3Int)c).ToArray();
+            for (int i = 0; i < inBoundsLocations.Length; i++) {
+                outlineTiles.Add(_outlineTile);
+            }
+            _outlineTilemap.SetTiles(locations.ToArray(), outlineTiles.ToArray());
+        }
+
+        public List<MapData.Cell> GetAllCells() {
+            // _gameplayTilemap.GetTile<GameplayTile>() TODO
+            return null;
         }
         
         public void TrackEntity(GridEntity entity) {

@@ -30,6 +30,7 @@ MonoBehaviour:
     m_NeighborPositions: []
     m_RuleTransform: 0
   m_FlatTop: 0
+  TileID: wheat
   Selectable: 0
   DisplayName: Wheat Field
   ShortDescription: 

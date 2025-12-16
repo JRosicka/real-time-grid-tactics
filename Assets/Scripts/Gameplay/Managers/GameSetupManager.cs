@@ -164,7 +164,7 @@ public class GameSetupManager : MonoBehaviour {
     }
 
     private void SpawnPlayerStartingUnits(GameTeam team) {
-        MapLoader.StartingEntitySet entitySet = MapLoader.UnitSpawns.First(s => s.Team == team);
+        StartingEntitySet entitySet = MapLoader.UnitSpawns.First(s => s.Team == team);
         foreach (EntitySpawnData entity in entitySet.Entities) {
             Debug.Log($"Spawning starting unit: {entity.Data.ID} ({entity.SpawnLocation})");
             GameManager.CommandManager.SpawnEntity(entity.Data, entity.SpawnLocation.Location, team, null, entity.SpawnLocation.Location, false);
@@ -226,7 +226,7 @@ public class GameSetupManager : MonoBehaviour {
         
         GameManager.SetPlayers(player1, player2, player1, 0);
         
-        MapLoader.LoadMap(player1.Data.Team);
+        MapLoader.LoadMapOld(player1.Data.Team);
         SpawnStartingUnits();
 
         PerformClientSidePostMapSetupInitialization();
@@ -279,7 +279,7 @@ public class GameSetupManager : MonoBehaviour {
         List<MPGamePlayer> players = FindObjectsByType<MPGamePlayer>(FindObjectsSortMode.InstanceID).ToList();
         if (players.Count == MPSetupHandler.PlayerCount) {
             // Load the map client-side first, then notify the server that the client setup is finished
-            MapLoader.LoadMap(players.First(p => p.isLocalPlayer).Data.Team);
+            MapLoader.LoadMapOld(players.First(p => p.isLocalPlayer).Data.Team);
             MPSetupHandler.CmdNotifyPlayerReady(players.First(p => p.isLocalPlayer).DisplayName);
         } else if (players.Count > MPSetupHandler.PlayerCount) {
             throw new Exception($"Detected more player objects than the recorded player count! Expected: {MPSetupHandler.PlayerCount}. Actual: {players.Count}");
@@ -328,7 +328,7 @@ public class GameSetupManager : MonoBehaviour {
 
         if (networkPlayer.isLocalPlayer) {
             // This is the server's local player. Since no other clients will notify us that this player joined, we should do it here
-            MapLoader.LoadMap(gamePlayer.Data.Team); 
+            MapLoader.LoadMapOld(gamePlayer.Data.Team); 
             MarkPlayerReady(networkPlayer.DisplayName + " (host)");
         }
     }
