@@ -179,9 +179,9 @@ namespace Gameplay.Config {
 
         [VerticalGroup("Configuring")]
         [PropertyOrder(10)]
-        [Button("Toggle Boundary")]
-        public void ToggleBoundary() {
-            // TODO
+        [Button("Update Boundaries")]
+        public void UpdateBoundaries() {
+            MapLoader.UpdateBoundaries(LowerLeftCell.Location, UpperRightCell.Location, WideLeftSide, WideRightSide);
         }
         
         [Space]

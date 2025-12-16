@@ -67,8 +67,11 @@ namespace Gameplay.Grid {
         /// <summary>
         /// Assigns gameplay tiles and outline/out-of-bounds tiles to the grid
         /// </summary>
-        public void LoadMap(MapData mapData) {
-            _gameplayTilemap.ClearAllTiles();
+        public void LoadMap(MapData mapData, bool onlyBoundaries = false) {
+            if (!onlyBoundaries) {
+                _gameplayTilemap.ClearAllTiles();
+            }
+            _outlineTilemap.ClearAllTiles();
             _allCellsInBounds?.Clear();
             
             // Assign each gameplay tile
@@ -78,8 +81,9 @@ namespace Gameplay.Grid {
                 locations.Add((Vector3Int)cell.location);
                 tiles.Add(GameConfigurationLocator.GameConfiguration.GetTile(cell.cellType));
             }
-            
-            _gameplayTilemap.SetTiles(locations.ToArray(), tiles.ToArray());
+            if (!onlyBoundaries) {
+                _gameplayTilemap.SetTiles(locations.ToArray(), tiles.ToArray());
+            }
             
             // Assign the out-of-bounds tile to all locations
             List<TileBase> outOfBoundsTiles = new();

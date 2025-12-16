@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using Gameplay.Config;
@@ -59,4 +58,18 @@ public class MapLoader : MonoBehaviour {
             .First(e => e.Data.Tags.Contains(EntityTag.Leader))
             .SpawnLocation.Location;
     }
+    
+#if UNITY_EDITOR
+    /// <summary>
+    /// Updates the out-of-bounds area. Useful when creating/modifying a map in the editor. 
+    /// </summary>
+    public void UpdateBoundaries(Vector2Int lowerLeftCell, Vector2Int upperRightCell, bool wideLeftSide, bool wideRightSide) {
+        LowerLeftCell = lowerLeftCell;
+        UpperRightCell = upperRightCell;
+        WideLeftSide = wideLeftSide;
+        WideRightSide = wideRightSide;
+        
+        GridController.LoadMap(_currentMap, true); 
+    }
+#endif
 }
