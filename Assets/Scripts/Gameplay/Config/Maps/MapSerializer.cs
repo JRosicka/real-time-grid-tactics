@@ -75,6 +75,12 @@ namespace Gameplay.Config {
                 default:
                     throw new ArgumentOutOfRangeException(nameof(mapType), mapType, "Tried to save unknown map type");
             }
+            
+#if UNITY_EDITOR
+            EditorUtility.SetDirty(MapsConfiguration);
+            AssetDatabase.SaveAssets();
+            AssetDatabase.Refresh();
+#endif
         }
 
         [CanBeNull]
