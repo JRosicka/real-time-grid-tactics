@@ -35,6 +35,7 @@ public class GameSetupManager : MonoBehaviour {
     public PlayerData SpectatorData;
     public float CountdownTimeSeconds = 3f;
     public int GameOverDelayMillis = 5 * 1000;
+    private MapData MapData => MapSerializer.GetMap(MapLoader.CurrentMapID);
     
     private static GameManager GameManager => GameManager.Instance;
     
@@ -225,8 +226,9 @@ public class GameSetupManager : MonoBehaviour {
         player2.DisplayName = "Opponent";
         
         GameManager.SetPlayers(player1, player2, player1, 0);
-        
-        MapLoader.LoadMapOld(player1.Data.Team);
+
+        MapLoader.LoadMap(MapData);
+        MapLoader.SetUpCamera(player1.Data.Team);
         SpawnStartingUnits();
 
         PerformClientSidePostMapSetupInitialization();
@@ -279,7 +281,8 @@ public class GameSetupManager : MonoBehaviour {
         List<MPGamePlayer> players = FindObjectsByType<MPGamePlayer>(FindObjectsSortMode.InstanceID).ToList();
         if (players.Count == MPSetupHandler.PlayerCount) {
             // Load the map client-side first, then notify the server that the client setup is finished
-            MapLoader.LoadMapOld(players.First(p => p.isLocalPlayer).Data.Team);
+            MapLoader.LoadMap(MapData);
+            MapLoader.SetUpCamera(players.First(p => p.isLocalPlayer).Data.Team);
             MPSetupHandler.CmdNotifyPlayerReady(players.First(p => p.isLocalPlayer).DisplayName);
         } else if (players.Count > MPSetupHandler.PlayerCount) {
             throw new Exception($"Detected more player objects than the recorded player count! Expected: {MPSetupHandler.PlayerCount}. Actual: {players.Count}");
@@ -328,7 +331,8 @@ public class GameSetupManager : MonoBehaviour {
 
         if (networkPlayer.isLocalPlayer) {
             // This is the server's local player. Since no other clients will notify us that this player joined, we should do it here
-            MapLoader.LoadMapOld(gamePlayer.Data.Team); 
+            MapLoader.LoadMap(MapData);
+            MapLoader.SetUpCamera(gamePlayer.Data.Team); 
             MarkPlayerReady(networkPlayer.DisplayName + " (host)");
         }
     }

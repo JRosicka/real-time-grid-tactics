@@ -17,12 +17,11 @@ namespace Gameplay.Config {
         private const string GameSceneName = "GamePlay";
         static MapEditorWindow() {
             // Ran whenever recompiling the project
-            EditorApplication.delayCall += () => {
-                Instance.SetUpWindow();
-            };
-            EditorSceneManager.sceneOpened += (scene, mode) => {
-                Instance.SetUpWindow();
-            };
+            EditorApplication.delayCall += () => Instance.SetUpWindow();
+            
+            // Ran whenever a scene loads
+            EditorSceneManager.sceneOpened += (_, _) => Instance.SetUpWindow();
+            SceneManager.sceneLoaded += (_, _) => Instance.SetUpWindow();
         }
 
         private static MapEditorWindow _instance;

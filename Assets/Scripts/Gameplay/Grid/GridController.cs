@@ -36,11 +36,11 @@ namespace Gameplay.Grid {
         
         // Reticle for the selected unit
         [SerializeField] private SelectionReticle _selectedUnitReticle;
-        private SelectionReticleEntityTracker _selectedUnitTracker = new SelectionReticleEntityTracker();
+        private readonly SelectionReticleEntityTracker _selectedUnitTracker = new();
         
         // Reticle for the target unit (The place where the selected unit is moving towards or attacking)
         [SerializeField] private SelectionReticle _targetUnitReticle;
-        private SelectionReticleEntityTracker _targetUnitTracker = new SelectionReticleEntityTracker();
+        private readonly SelectionReticleEntityTracker _targetUnitTracker = new();
 
         private EntitySelectionManager _entitySelectionManager;
 
@@ -56,7 +56,6 @@ namespace Gameplay.Grid {
         public void Initialize(EntitySelectionManager entitySelectionManager) {
             _entitySelectionManager = entitySelectionManager;
             _pathVisualizer.Initialize();
-            GridData = new GridData(_gameplayTilemap, this);
             _overlayTilemap = new OverlayTilemap(_overlayMap, this, _inaccessibleTile);
             _selectedUnitTracker.Initialize(_selectedUnitReticle, false);
             _targetUnitTracker.Initialize(_targetUnitReticle, true);
@@ -85,6 +84,9 @@ namespace Gameplay.Grid {
                 _gameplayTilemap.SetTiles(locations.ToArray(), tiles.ToArray());
             }
             
+            // Now that the gameplay tilemap is updated, create the grid data
+            GridData = new GridData(_gameplayTilemap, this);
+            
             // Assign the out-of-bounds tile to all locations
             List<TileBase> outOfBoundsTiles = new();
             for (int i = 0; i < locations.Count; i++) {
@@ -107,7 +109,7 @@ namespace Gameplay.Grid {
             BoundsInt bounds = _gameplayTilemap.cellBounds;
             for (int x = bounds.xMin; x < bounds.xMax; x++) {
                 for (int y = bounds.yMin; y < bounds.yMax; y++) {
-                    Vector3Int cellPos = new Vector3Int(x, y, 0);
+                    Vector3Int cellPos = new(x, y, 0);
                     if (_gameplayTilemap.HasTile(cellPos)) {
                         allCells.Add(new MapData.Cell {
                             location = (Vector2Int)cellPos,

@@ -22,20 +22,6 @@ public class MapLoader : MonoBehaviour {
     public bool WideRightSide { get; private set; }
     public List<StartingEntitySet> UnitSpawns { get; private set; }
     
-    // TODO Repurpose to camera setup which only gets called in-game (right after loading map)
-    public void LoadMapOld(GameTeam team) {
-        Vector2 lowerLeftWorldPosition = GridController.GetWorldPosition(LowerLeftCell);
-        Vector2 upperRightWorldPosition = GridController.GetWorldPosition(UpperRightCell);
-        
-        // TODO move all camera stuff to a separate method
-        bool needAdditionalHalfCellAtLeft = WideLeftSide;
-        float xMin = lowerLeftWorldPosition.x - (needAdditionalHalfCellAtLeft ? GridController.CellWidth / 2 : 0);
-        bool needAdditionalHalfCellAtRight = WideRightSide; 
-        float xMax = upperRightWorldPosition.x + (needAdditionalHalfCellAtRight ? GridController.CellWidth / 2 : 0);
-        CameraManager.Initialize(GridController.GetWorldPosition(GetPlayerStartLocation(team)), 
-            xMin, xMax, upperRightWorldPosition.y, lowerLeftWorldPosition.y);
-    }
-
     public void LoadMap(MapData mapData) {
         _currentMap = mapData;
         CurrentMapID = mapData.mapID;
@@ -47,6 +33,18 @@ public class MapLoader : MonoBehaviour {
         UnitSpawns = mapData.entities;
         
         GridController.LoadMap(mapData);
+    }
+    
+    public void SetUpCamera(GameTeam teamToCenterOn) {
+        Vector2 lowerLeftWorldPosition = GridController.GetWorldPosition(LowerLeftCell);
+        Vector2 upperRightWorldPosition = GridController.GetWorldPosition(UpperRightCell);
+        
+        bool needAdditionalHalfCellAtLeft = WideLeftSide;
+        float xMin = lowerLeftWorldPosition.x - (needAdditionalHalfCellAtLeft ? GridController.CellWidth / 2 : 0);
+        bool needAdditionalHalfCellAtRight = WideRightSide; 
+        float xMax = upperRightWorldPosition.x + (needAdditionalHalfCellAtRight ? GridController.CellWidth / 2 : 0);
+        CameraManager.Initialize(GridController.GetWorldPosition(GetPlayerStartLocation(teamToCenterOn)), 
+            xMin, xMax, upperRightWorldPosition.y, lowerLeftWorldPosition.y);
     }
 
     public Vector2Int GetPlayerStartLocation(GameTeam team) {
