@@ -102,25 +102,6 @@ namespace Gameplay.Grid {
             }
             _outlineTilemap.SetTiles(inBoundsLocations, outlineTiles.ToArray());
         }
-
-        public List<MapData.Cell> GetAllCells() {
-            List<MapData.Cell> allCells = new();
-            
-            BoundsInt bounds = _gameplayTilemap.cellBounds;
-            for (int x = bounds.xMin; x < bounds.xMax; x++) {
-                for (int y = bounds.yMin; y < bounds.yMax; y++) {
-                    Vector3Int cellPos = new(x, y, 0);
-                    if (_gameplayTilemap.HasTile(cellPos)) {
-                        allCells.Add(new MapData.Cell {
-                            location = (Vector2Int)cellPos,
-                            cellType = _gameplayTilemap.GetTile<GameplayTile>(cellPos).TileID
-                        });
-                    }
-                }
-            }
-
-            return allCells;
-        }
         
         public void TrackEntity(GridEntity entity) {
             _selectedUnitTracker.TrackEntity(entity);
@@ -207,6 +188,27 @@ namespace Gameplay.Grid {
             _pathVisualizer.Visualize(path, pathType, targetLocation, hidePathDestination, thickLines);
         }
 
+        #region Get Cells
+        
+        public List<MapData.Cell> GetAllCells() {
+            List<MapData.Cell> allCells = new();
+            
+            BoundsInt bounds = _gameplayTilemap.cellBounds;
+            for (int x = bounds.xMin; x < bounds.xMax; x++) {
+                for (int y = bounds.yMin; y < bounds.yMax; y++) {
+                    Vector3Int cellPos = new(x, y, 0);
+                    if (_gameplayTilemap.HasTile(cellPos)) {
+                        allCells.Add(new MapData.Cell {
+                            location = (Vector2Int)cellPos,
+                            cellType = _gameplayTilemap.GetTile<GameplayTile>(cellPos).TileID
+                        });
+                    }
+                }
+            }
+
+            return allCells;
+        }
+
         private List<Vector2Int> _allCellsInBounds;
         public List<Vector2Int> GetAllCellsInBounds() {
             if (!_allCellsInBounds.IsNullOrEmpty()) return _allCellsInBounds;
@@ -262,6 +264,7 @@ namespace Gameplay.Grid {
             return GetAllCellsInBounds().Contains(cell);
         }
 
+        #endregion
         #region Vector Conversion
         
         public Vector2 GetWorldPosition(Vector2Int cellPosition) {
