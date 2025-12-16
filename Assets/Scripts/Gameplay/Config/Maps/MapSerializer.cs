@@ -15,25 +15,7 @@ namespace Gameplay.Config {
             get {
                 // Load the configuration if not already loaded
                 if (_mapsConfiguration == null) {
-#if UNITY_EDITOR
-                    // If in the editor, then load the file directly since GameConfigurationLocator only operates in play mode
-                    string[] guids = AssetDatabase.FindAssets("t:MapsConfiguration");
-                    switch (guids.Length) {
-                        case 0:
-                            throw new Exception("No maps configuration found");
-                        case > 1:
-                            throw new Exception("More than one maps configuration found");
-                    }
-
-                    string assetPath = AssetDatabase.GUIDToAssetPath(guids[0]);
-                    _mapsConfiguration = AssetDatabase.LoadAssetAtPath<MapsConfiguration>(assetPath);
-
-                    if (_mapsConfiguration == null) {
-                        throw new Exception($"Failed to find cheat configuration: {assetPath}");
-                    }
-#else
                     _mapsConfiguration = GameConfigurationLocator.GameConfiguration.MapsConfiguration;
-#endif
                 }
             
                 return _mapsConfiguration;

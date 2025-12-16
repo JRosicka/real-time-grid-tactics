@@ -49,14 +49,13 @@ namespace Gameplay.Grid {
         /// GameObject to hover over the selected cell to indicate the selected targetable ability
         /// </summary>
         private GameObject _targetedIcon;
-        private MapLoader _mapLoader;
+        [SerializeField] private MapLoader _mapLoader;
 
         public GridData GridData { get; private set; }
 
         public void Initialize(EntitySelectionManager entitySelectionManager) {
             _entitySelectionManager = entitySelectionManager;
             _pathVisualizer.Initialize();
-            _mapLoader = GameManager.Instance.GameSetupManager.MapLoader;
             GridData = new GridData(_gameplayTilemap, this);
             _overlayTilemap = new OverlayTilemap(_overlayMap, this, _inaccessibleTile);
             _selectedUnitTracker.Initialize(_selectedUnitReticle, false);
@@ -95,12 +94,26 @@ namespace Gameplay.Grid {
             for (int i = 0; i < inBoundsLocations.Length; i++) {
                 outlineTiles.Add(_outlineTile);
             }
-            _outlineTilemap.SetTiles(locations.ToArray(), outlineTiles.ToArray());
+            _outlineTilemap.SetTiles(inBoundsLocations, outlineTiles.ToArray());
         }
 
         public List<MapData.Cell> GetAllCells() {
-            // _gameplayTilemap.GetTile<GameplayTile>() TODO
-            return null;
+            List<MapData.Cell> allCells = new();
+            
+            BoundsInt bounds = _gameplayTilemap.cellBounds;
+            for (int x = bounds.xMin; x < bounds.xMax; x++) {
+                for (int y = bounds.yMin; y < bounds.yMax; y++) {
+                    Vector3Int cellPos = new Vector3Int(x, y, 0);
+                    if (_gameplayTilemap.HasTile(cellPos)) {
+                        allCells.Add(new MapData.Cell {
+                            location = (Vector2Int)cellPos,
+                            cellType = _gameplayTilemap.GetTile<GameplayTile>(cellPos).TileID
+                        });
+                    }
+                }
+            }
+
+            return allCells;
         }
         
         public void TrackEntity(GridEntity entity) {

@@ -13,7 +13,7 @@ namespace Gameplay.Config {
         
         public EntitySpawnData(EntitySpawnData other) {
             Data = other.Data;
-            SpawnLocation = other.SpawnLocation;
+            SpawnLocation = new AssignableLocation(other.SpawnLocation.Location);
         }
     }
 }

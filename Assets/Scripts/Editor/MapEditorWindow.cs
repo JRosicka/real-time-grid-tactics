@@ -128,7 +128,7 @@ namespace Gameplay.Config {
             WideLeftSide = mapData.wideLeftSide;
             WideRightSide = mapData.wideRightSide;
 
-            Entities = mapData.entities;
+            Entities = CopyEntities(mapData.entities);
         }
         
         #endregion
@@ -142,11 +142,12 @@ namespace Gameplay.Config {
         [HorizontalGroup("Saving")]
         [Button("Save")]
         public void SaveMap() {
-            List<MapData.Cell> cells = new List<MapData.Cell>();
-            // TODO
-            
+            List<MapData.Cell> cells = MapLoader.GridController.GetAllCells();
             MapSerializer.SaveMap(MapID, MapType, DisplayName, Description, DisplayIndex, LowerLeftCell.Location, 
-                UpperRightCell.Location, WideLeftSide, WideRightSide, null, Entities);
+                UpperRightCell.Location, WideLeftSide, WideRightSide, cells, CopyEntities(Entities));
+            
+            // Re-load the map to make sure the changes are reflected
+            LoadMap();
         }
 
         #endregion
@@ -158,6 +159,7 @@ namespace Gameplay.Config {
         [VerticalGroup("Configuring")]
         public string DisplayName;
         [VerticalGroup("Configuring")]
+        [TextArea(3, 10)]
         public string Description;
         [VerticalGroup("Configuring")]
         public int DisplayIndex;
@@ -188,5 +190,21 @@ namespace Gameplay.Config {
         public List<StartingEntitySet> Entities;
         
         #endregion
+        
+        private List<StartingEntitySet> CopyEntities(List<StartingEntitySet> entities) {
+            List<StartingEntitySet> newEntities = new List<StartingEntitySet>();
+            foreach (StartingEntitySet entitySet in entities) {
+                StartingEntitySet newEntitySet = new StartingEntitySet {
+                    Team = entitySet.Team,
+                    Entities = new List<EntitySpawnData>()
+                };
+                foreach (EntitySpawnData spawnData in entitySet.Entities) {
+                    newEntitySet.Entities.Add(new EntitySpawnData(spawnData));
+                }
+                newEntities.Add(newEntitySet);
+            }
+
+            return newEntities;
+        }
     }
 }
