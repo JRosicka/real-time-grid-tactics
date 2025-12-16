@@ -227,7 +227,7 @@ public class CheatsEditorWindow : OdinEditorWindow {
     [PropertyOrder(7)]
     [OnValueChanged("SpawnDataChanged")]
     [SerializeField]
-    private List<EntitySpawnData> _spawnData = new List<EntitySpawnData>();
+    private List<StartingEntitySet> _spawnData = new List<StartingEntitySet>();
     private void SpawnDataChanged() {
         if (!_loadingCheatData) {
             CheatConfiguration.SpawnData = _spawnData;
@@ -235,9 +235,11 @@ public class CheatsEditorWindow : OdinEditorWindow {
         }
     }
     private void SetSpawnDataListeners() {
-        foreach (EntitySpawnData entitySpawnData in _spawnData) {
-            entitySpawnData.SpawnLocationUpdated -= SpawnDataChanged;
-            entitySpawnData.SpawnLocationUpdated += SpawnDataChanged;
+        foreach (StartingEntitySet entitySet in _spawnData) {
+            foreach (EntitySpawnData entitySpawnData in entitySet.Entities) {
+                entitySpawnData.SpawnLocationUpdated -= SpawnDataChanged;
+                entitySpawnData.SpawnLocationUpdated += SpawnDataChanged;
+            }
         }
     }
 

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using JetBrains.Annotations;
 using UnityEditor;
 using UnityEngine;
@@ -44,8 +45,7 @@ namespace Gameplay.Config {
         /// </summary>
         public static void SaveMap(string mapID, string displayName, string description, int index, 
                             Vector2Int lowerLeftCell, Vector2Int upperRightCell, List<MapData.Cell> cells, 
-                            List<MapData.Entity> neutralEntities, List<MapData.Entity> player1Entities, 
-                            List<MapData.Entity> player2Entities, MapType mapType) {
+                            List<StartingEntitySet> entities, MapType mapType) {
             MapData newMapData = new MapData {
                 mapID = mapID,
                 displayName = displayName,
@@ -54,9 +54,7 @@ namespace Gameplay.Config {
                 lowerLeftCell = lowerLeftCell,
                 upperRightCell = upperRightCell,
                 cells = cells,
-                neutralEntities = neutralEntities,
-                player1Entities = player1Entities,
-                player2Entities = player2Entities,
+                entities = entities,
             };
 
             MapData currentMapData = MapsConfiguration[mapID];
@@ -81,13 +79,17 @@ namespace Gameplay.Config {
             return MapsConfiguration[mapID];
         }
 
-        public static List<MapData> GetAllMaps(MapType mapType) {
+        public static List<MapData> GetMaps(MapType mapType) {
             return mapType switch {
                 MapType.Playable => MapsConfiguration.PlayableMaps,
                 MapType.Preview => MapsConfiguration.PreviewMaps,
                 _ => throw new ArgumentOutOfRangeException(nameof(mapType), mapType,
                     "Tried to load maps for an unknown map type")
             };
+        }
+
+        public static List<MapData> GetAllMaps() {
+            return GetMaps(MapType.Playable).Concat(GetMaps(MapType.Preview)).ToList();
         }
     }
 }

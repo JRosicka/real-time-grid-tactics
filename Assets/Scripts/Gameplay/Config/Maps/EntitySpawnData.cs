@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Gameplay.Entities;
 using Sirenix.OdinInspector;
 #if UNITY_EDITOR
@@ -13,14 +14,12 @@ namespace Gameplay.Config {
     [Serializable]
     public class EntitySpawnData {
         public EntityData Data;
-        public GameTeam Team;
         public Vector2Int SpawnLocation;
 
         public event Action SpawnLocationUpdated;
 
         public EntitySpawnData(EntitySpawnData other) {
             Data = other.Data;
-            Team = other.Team;
             SpawnLocation = other.SpawnLocation;
         }
         
@@ -49,4 +48,5 @@ namespace Gameplay.Config {
             }
         }
     }
+    
 }

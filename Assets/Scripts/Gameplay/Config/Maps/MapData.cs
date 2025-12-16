@@ -20,9 +20,7 @@ namespace Gameplay.Config {
         public Vector2Int lowerLeftCell;
         public Vector2Int upperRightCell;
         public List<Cell> cells;
-        public List<Entity> neutralEntities;
-        public List<Entity> player1Entities;
-        public List<Entity> player2Entities;
+        public List<StartingEntitySet> entities;
 
         [Serializable]
         public class Cell {

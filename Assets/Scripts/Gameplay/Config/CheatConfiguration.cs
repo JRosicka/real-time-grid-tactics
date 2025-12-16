@@ -52,7 +52,7 @@ namespace Gameplay.Config {
             }
         }
 
-        public List<EntitySpawnData> SpawnData {
+        public List<StartingEntitySet> SpawnData {
             get => _currentCheats.SpawnData;
             set {
                 _currentCheats.SpawnData = value;
@@ -70,8 +70,15 @@ namespace Gameplay.Config {
             _savedCheats.ControlAllPlayers = ControlAllPlayers;
             
             _savedCheats.SpawnData.Clear();
-            foreach (EntitySpawnData spawnData in SpawnData) {
-                _savedCheats.SpawnData.Add(new EntitySpawnData(spawnData));
+            foreach (StartingEntitySet entitySet in SpawnData) {
+                StartingEntitySet newEntitySet = new StartingEntitySet {
+                    Team = entitySet.Team,
+                    Entities = new List<EntitySpawnData>()
+                };
+                foreach (EntitySpawnData spawnData in entitySet.Entities) {
+                    newEntitySet.Entities.Add(new EntitySpawnData(spawnData));
+                }
+                _savedCheats.SpawnData.Add(newEntitySet);
             }
 
             ApplyCheats();
@@ -87,9 +94,17 @@ namespace Gameplay.Config {
             _currentCheats.ControlAllPlayers = _savedCheats.ControlAllPlayers;
             
             _currentCheats.SpawnData.Clear();
-            foreach (EntitySpawnData spawnData in _savedCheats.SpawnData) {
-                _currentCheats.SpawnData.Add(new EntitySpawnData(spawnData));
+            foreach (StartingEntitySet entitySet in _savedCheats.SpawnData) {
+                StartingEntitySet newEntitySet = new StartingEntitySet {
+                    Team = entitySet.Team,
+                    Entities = new List<EntitySpawnData>()
+                };
+                foreach (EntitySpawnData spawnData in entitySet.Entities) {
+                    newEntitySet.Entities.Add(new EntitySpawnData(spawnData));
+                }
+                _savedCheats.SpawnData.Add(newEntitySet);
             }
+
             ApplyCheats();
         }
 
@@ -128,6 +143,6 @@ namespace Gameplay.Config {
         /// <summary>
         /// Extra spawn configurations
         /// </summary>
-        public List<EntitySpawnData> SpawnData;
+        public List<StartingEntitySet> SpawnData;
     }
 }

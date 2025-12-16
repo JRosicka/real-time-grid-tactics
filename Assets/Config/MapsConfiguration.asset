@@ -12,5 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a743925c2c7444ea880df5573915b9eb, type: 3}
   m_Name: MapsConfiguration
   m_EditorClassIdentifier: Assembly-CSharp::Gameplay.Config.MapsConfiguration
-  PlayableMaps: []
+  PlayableMaps:
+  - mapID: test map
+    displayName: TEST MAP
+    description: This is a test
+    index: 0
+    lowerLeftCell: {x: -5, y: -10}
+    upperRightCell: {x: 5, y: 10}
+    cells: []
+    neutralEntities: []
+    player1Entities: []
+    player2Entities: []
   PreviewMaps: []
