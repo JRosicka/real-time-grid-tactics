@@ -33,12 +33,12 @@ namespace Gameplay.Grid {
             }
         }
 
-        private EntitySpawnData _entitySpawnDataBeingSet;
-        public void ToggleSetSpawnData(EntitySpawnData entitySpawnData) {
-            if (_entitySpawnDataBeingSet == entitySpawnData) {
-                _entitySpawnDataBeingSet = null;
+        private AssignableLocation _assignableLocationBeingSet;
+        public void ToggleSetSpawnData(AssignableLocation assignableLocation) {
+            if (_assignableLocationBeingSet == assignableLocation) {
+                _assignableLocationBeingSet = null;
             } else {
-                _entitySpawnDataBeingSet = entitySpawnData;
+                _assignableLocationBeingSet = assignableLocation;
             }
         }
 
@@ -46,9 +46,9 @@ namespace Gameplay.Grid {
         /// If we are configuring the spawn point of an entity in the editor, then send the new location to the spawn data. 
         /// </summary>
         private void UpdateEntitySpawnConfiguration(Vector2Int cell) {
-            if (_entitySpawnDataBeingSet == null) return;
-            _entitySpawnDataBeingSet.UpdateSpawnLocation(cell);
-            _entitySpawnDataBeingSet = null;
+            if (_assignableLocationBeingSet == null) return;
+            _assignableLocationBeingSet.UpdateLocation(cell);
+            _assignableLocationBeingSet = null;
         }
 
         private void RegisterEvents() {

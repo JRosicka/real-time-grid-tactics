@@ -53,8 +53,8 @@ namespace Gameplay.Managers {
         public void SpawnUnits(bool built) {
             foreach (StartingEntitySet entitySet in SpawnData) {
                 foreach (EntitySpawnData entitySpawnData in entitySet.Entities) {
-                    GameManager.Instance.CommandManager.SpawnEntity(entitySpawnData.Data, entitySpawnData.SpawnLocation,
-                        entitySet.Team, null, entitySpawnData.SpawnLocation, built);
+                    GameManager.Instance.CommandManager.SpawnEntity(entitySpawnData.Data, entitySpawnData.SpawnLocation.Location,
+                        entitySet.Team, null, entitySpawnData.SpawnLocation.Location, built);
                 }
             }
         }

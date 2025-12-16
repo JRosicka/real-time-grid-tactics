@@ -1629,67 +1629,96 @@ MonoBehaviour:
   - Team: -1
     Entities:
     - Data: {fileID: 11400000, guid: dfb82f31371a84690ae123195a14bf64, type: 2}
-      SpawnLocation: {x: -9, y: -3}
+      SpawnLocation:
+        Location: {x: -9, y: -3}
     - Data: {fileID: 11400000, guid: dfb82f31371a84690ae123195a14bf64, type: 2}
-      SpawnLocation: {x: 0, y: -2}
+      SpawnLocation:
+        Location: {x: 0, y: -2}
     - Data: {fileID: 11400000, guid: dfb82f31371a84690ae123195a14bf64, type: 2}
-      SpawnLocation: {x: 0, y: 2}
+      SpawnLocation:
+        Location: {x: 0, y: 2}
     - Data: {fileID: 11400000, guid: dfb82f31371a84690ae123195a14bf64, type: 2}
-      SpawnLocation: {x: -7, y: 6}
+      SpawnLocation:
+        Location: {x: -7, y: 6}
     - Data: {fileID: 11400000, guid: dfb82f31371a84690ae123195a14bf64, type: 2}
-      SpawnLocation: {x: 7, y: -6}
+      SpawnLocation:
+        Location: {x: 7, y: -6}
     - Data: {fileID: 11400000, guid: dfb82f31371a84690ae123195a14bf64, type: 2}
-      SpawnLocation: {x: 8, y: 3}
+      SpawnLocation:
+        Location: {x: 8, y: 3}
     - Data: {fileID: 11400000, guid: 007fafa82b51345319298048e99631e6, type: 2}
-      SpawnLocation: {x: -9, y: -5}
+      SpawnLocation:
+        Location: {x: -9, y: -5}
     - Data: {fileID: 11400000, guid: 007fafa82b51345319298048e99631e6, type: 2}
-      SpawnLocation: {x: -5, y: -6}
+      SpawnLocation:
+        Location: {x: -5, y: -6}
     - Data: {fileID: 11400000, guid: 007fafa82b51345319298048e99631e6, type: 2}
-      SpawnLocation: {x: 0, y: -6}
+      SpawnLocation:
+        Location: {x: 0, y: -6}
     - Data: {fileID: 11400000, guid: 007fafa82b51345319298048e99631e6, type: 2}
-      SpawnLocation: {x: -4, y: 2}
+      SpawnLocation:
+        Location: {x: -4, y: 2}
     - Data: {fileID: 11400000, guid: 007fafa82b51345319298048e99631e6, type: 2}
-      SpawnLocation: {x: -9, y: 5}
+      SpawnLocation:
+        Location: {x: -9, y: 5}
     - Data: {fileID: 11400000, guid: 007fafa82b51345319298048e99631e6, type: 2}
-      SpawnLocation: {x: 0, y: 6}
+      SpawnLocation:
+        Location: {x: 0, y: 6}
     - Data: {fileID: 11400000, guid: 007fafa82b51345319298048e99631e6, type: 2}
-      SpawnLocation: {x: 4, y: -2}
+      SpawnLocation:
+        Location: {x: 4, y: -2}
     - Data: {fileID: 11400000, guid: 007fafa82b51345319298048e99631e6, type: 2}
-      SpawnLocation: {x: 8, y: -5}
+      SpawnLocation:
+        Location: {x: 8, y: -5}
     - Data: {fileID: 11400000, guid: 007fafa82b51345319298048e99631e6, type: 2}
-      SpawnLocation: {x: 8, y: 5}
+      SpawnLocation:
+        Location: {x: 8, y: 5}
     - Data: {fileID: 11400000, guid: 007fafa82b51345319298048e99631e6, type: 2}
-      SpawnLocation: {x: 5, y: 6}
+      SpawnLocation:
+        Location: {x: 5, y: 6}
     - Data: {fileID: 11400000, guid: f3eb88eee96a64370827475771891374, type: 2}
-      SpawnLocation: {x: 5, y: -6}
+      SpawnLocation:
+        Location: {x: 5, y: -6}
     - Data: {fileID: 11400000, guid: f3eb88eee96a64370827475771891374, type: 2}
-      SpawnLocation: {x: -5, y: 6}
+      SpawnLocation:
+        Location: {x: -5, y: 6}
     - Data: {fileID: 11400000, guid: a2899be04b8f54805a7f62c027e3675d, type: 2}
-      SpawnLocation: {x: -3, y: -3}
+      SpawnLocation:
+        Location: {x: -3, y: -3}
     - Data: {fileID: 11400000, guid: a2899be04b8f54805a7f62c027e3675d, type: 2}
-      SpawnLocation: {x: 2, y: 3}
+      SpawnLocation:
+        Location: {x: 2, y: 3}
     - Data: {fileID: 11400000, guid: f3eb88eee96a64370827475771891374, type: 2}
-      SpawnLocation: {x: -9, y: 1}
+      SpawnLocation:
+        Location: {x: -9, y: 1}
     - Data: {fileID: 11400000, guid: f3eb88eee96a64370827475771891374, type: 2}
-      SpawnLocation: {x: 8, y: -1}
+      SpawnLocation:
+        Location: {x: 8, y: -1}
     - Data: {fileID: 11400000, guid: e16d9fca1b51810438ab31661f34df6f, type: 2}
-      SpawnLocation: {x: 0, y: 0}
+      SpawnLocation:
+        Location: {x: 0, y: 0}
   - Team: 1
     Entities:
     - Data: {fileID: 11400000, guid: f8a9d9571b0a8324587b160065ca7fce, type: 2}
-      SpawnLocation: {x: -8, y: -5}
+      SpawnLocation:
+        Location: {x: -8, y: -5}
     - Data: {fileID: 11400000, guid: 5d9e30910c9795b49bea0c2c257e60eb, type: 2}
-      SpawnLocation: {x: -9, y: -5}
+      SpawnLocation:
+        Location: {x: -9, y: -5}
     - Data: {fileID: 11400000, guid: b52e5f177d13b1b4580a21f9c5ad0bf1, type: 2}
-      SpawnLocation: {x: -8, y: -6}
+      SpawnLocation:
+        Location: {x: -8, y: -6}
   - Team: 2
     Entities:
     - Data: {fileID: 11400000, guid: f8a9d9571b0a8324587b160065ca7fce, type: 2}
-      SpawnLocation: {x: 7, y: 5}
+      SpawnLocation:
+        Location: {x: 7, y: 5}
     - Data: {fileID: 11400000, guid: 5d9e30910c9795b49bea0c2c257e60eb, type: 2}
-      SpawnLocation: {x: 8, y: 5}
+      SpawnLocation:
+        Location: {x: 8, y: 5}
     - Data: {fileID: 11400000, guid: b52e5f177d13b1b4580a21f9c5ad0bf1, type: 2}
-      SpawnLocation: {x: 8, y: 6}
+      SpawnLocation:
+        Location: {x: 8, y: 6}
   LowerLeftCell: {x: -8, y: -6}
   UpperRightCell: {x: 8, y: 6}
   WideLeftSide: 1

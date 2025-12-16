@@ -53,6 +53,6 @@ public class MapLoader : MonoBehaviour {
             .First(u => u.Team == team)
             .Entities
             .First(e => e.Data.Tags.Contains(EntityTag.Leader))
-            .SpawnLocation;
+            .SpawnLocation.Location;
     }
 }

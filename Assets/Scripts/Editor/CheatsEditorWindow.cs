@@ -237,8 +237,8 @@ public class CheatsEditorWindow : OdinEditorWindow {
     private void SetSpawnDataListeners() {
         foreach (StartingEntitySet entitySet in _spawnData) {
             foreach (EntitySpawnData entitySpawnData in entitySet.Entities) {
-                entitySpawnData.SpawnLocationUpdated -= SpawnDataChanged;
-                entitySpawnData.SpawnLocationUpdated += SpawnDataChanged;
+                entitySpawnData.SpawnLocation.LocationUpdated -= SpawnDataChanged;
+                entitySpawnData.SpawnLocation.LocationUpdated += SpawnDataChanged;
             }
         }
     }

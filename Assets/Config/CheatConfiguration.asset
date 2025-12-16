@@ -21,15 +21,19 @@ MonoBehaviour:
     - Team: 1
       Entities:
       - Data: {fileID: 11400000, guid: 991ad2a1d6801ee40b831e7850e0ff35, type: 2}
-        SpawnLocation: {x: 3, y: -2}
+        SpawnLocation:
+          Location: {x: 4, y: -3}
       - Data: {fileID: 11400000, guid: ab21f1dc552bf344ba9f886807dcb498, type: 2}
-        SpawnLocation: {x: 3, y: -3}
+        SpawnLocation:
+          Location: {x: 0, y: -4}
     - Team: 2
       Entities:
       - Data: {fileID: 11400000, guid: b52e5f177d13b1b4580a21f9c5ad0bf1, type: 2}
-        SpawnLocation: {x: 1, y: 1}
+        SpawnLocation:
+          Location: {x: 2, y: 0}
       - Data: {fileID: 11400000, guid: 938107a9fc68aa54586e46f7860fc6ff, type: 2}
-        SpawnLocation: {x: 3, y: 1}
+        SpawnLocation:
+          Location: {x: 5, y: 0}
   _savedCheats:
     CheatsEnabled: 1
     PlayerMoney: 5000
@@ -39,12 +43,16 @@ MonoBehaviour:
     - Team: 1
       Entities:
       - Data: {fileID: 11400000, guid: 991ad2a1d6801ee40b831e7850e0ff35, type: 2}
-        SpawnLocation: {x: 3, y: -2}
+        SpawnLocation:
+          Location: {x: 4, y: -3}
       - Data: {fileID: 11400000, guid: ab21f1dc552bf344ba9f886807dcb498, type: 2}
-        SpawnLocation: {x: 3, y: -3}
+        SpawnLocation:
+          Location: {x: 0, y: -4}
     - Team: 2
       Entities:
       - Data: {fileID: 11400000, guid: b52e5f177d13b1b4580a21f9c5ad0bf1, type: 2}
-        SpawnLocation: {x: 1, y: 1}
+        SpawnLocation:
+          Location: {x: 2, y: 0}
       - Data: {fileID: 11400000, guid: 938107a9fc68aa54586e46f7860fc6ff, type: 2}
-        SpawnLocation: {x: 3, y: 1}
+        SpawnLocation:
+          Location: {x: 5, y: 0}
