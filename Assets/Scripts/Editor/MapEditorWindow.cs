@@ -19,6 +19,13 @@ namespace Gameplay.Config {
             // Ran whenever recompiling the project
             EditorApplication.delayCall += () => Instance.SetUpWindow();
             
+            // Ran whenever exiting play mode
+            EditorApplication.playModeStateChanged += state => {
+                if (state == PlayModeStateChange.ExitingPlayMode) {
+                    EditorApplication.delayCall += () => Instance.SetUpWindow();
+                }
+            };
+            
             // Ran whenever a scene loads
             EditorSceneManager.sceneOpened += (_, _) => Instance.SetUpWindow();
             SceneManager.sceneLoaded += (_, _) => Instance.SetUpWindow();
@@ -49,7 +56,7 @@ namespace Gameplay.Config {
         /// The '%m' allows for the keyboard shortcut CTRL + M for opening the window. 
         /// </summary>
         [MenuItem("Tools/Scene Navigation %m")]
-        private static void OpenWindow() {
+        private static void OpenMapsWindow() {
             Instance.SetUpWindow();
             Instance.Show();
         }
