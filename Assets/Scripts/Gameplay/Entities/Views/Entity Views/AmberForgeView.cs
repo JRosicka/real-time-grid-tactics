@@ -7,10 +7,13 @@ namespace Gameplay.Entities {
     public class AmberForgeView : GridEntityParticularView {
         [SerializeField] private GameObject _notificationView;
         [SerializeField] private Image _notificationIcon;
+        private GridEntity _amberForgeEntity;
         
         private AmberForgeAvailabilityNotifier AmberForgeAvailabilityNotifier => GameManager.Instance.AmberForgeAvailabilityNotifier;
         
         public override void Initialize(GridEntity entity) {
+            _amberForgeEntity = entity;
+            
             // Only do these for actual players, not spectators
             GameTeam localTeam = GameManager.Instance.LocalTeam;
             if (localTeam == GameTeam.Spectator) return;
@@ -18,7 +21,7 @@ namespace Gameplay.Entities {
             _notificationIcon.sprite = GameManager.Instance.GetPlayerForTeam(entity).Data.ColoredButtonData.Normal;
             
             AmberForgeAvailabilityNotifier.AmberForgeAvailabilityChanged += UpdateAvailability;
-            UpdateAvailability(AmberForgeAvailabilityNotifier.AmberForgeAvailable);
+            UpdateAvailability(entity, false);
         }
         public override void LethalDamageReceived() { }
         public override void NonLethalDamageReceived() { }
@@ -27,7 +30,8 @@ namespace Gameplay.Entities {
             return true;
         }
         
-        private void UpdateAvailability(bool available) {
+        private void UpdateAvailability(GridEntity amberForge, bool available) {
+            if (amberForge != _amberForgeEntity) return;
             _notificationView.SetActive(available);
         }
     }

@@ -1175,4 +1175,6 @@ MonoBehaviour:
       - Data: {fileID: 11400000, guid: b52e5f177d13b1b4580a21f9c5ad0bf1, type: 2}
         SpawnLocation:
           Location: {x: 8, y: 6}
+    - Team: 0
+      Entities: []
   PreviewMaps: []
