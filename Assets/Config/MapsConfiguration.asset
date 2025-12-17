@@ -1177,4 +1177,2338 @@ MonoBehaviour:
           Location: {x: 8, y: 6}
     - Team: 0
       Entities: []
+  - mapID: mountainPass
+    mapType: 0
+    displayName: Mountain Pass
+    description: 'Will you journey down the road of prosperity? Or take the pass
+      less traveled? '
+    index: 100
+    lowerLeftCell: {x: -7, y: -5}
+    upperRightCell: {x: 8, y: 4}
+    wideLeftSide: 1
+    wideRightSide: 0
+    cells:
+    - location: {x: -11, y: -11}
+      cellType: grass
+    - location: {x: -11, y: -10}
+      cellType: grass
+    - location: {x: -11, y: -9}
+      cellType: grass
+    - location: {x: -11, y: -8}
+      cellType: grass
+    - location: {x: -11, y: -7}
+      cellType: grass
+    - location: {x: -11, y: -6}
+      cellType: wheat
+    - location: {x: -11, y: -5}
+      cellType: grass
+    - location: {x: -11, y: -4}
+      cellType: grass
+    - location: {x: -11, y: -3}
+      cellType: grass
+    - location: {x: -11, y: -2}
+      cellType: grass
+    - location: {x: -11, y: -1}
+      cellType: grass
+    - location: {x: -11, y: 0}
+      cellType: grass
+    - location: {x: -11, y: 1}
+      cellType: grass
+    - location: {x: -11, y: 2}
+      cellType: grass
+    - location: {x: -11, y: 3}
+      cellType: grass
+    - location: {x: -11, y: 4}
+      cellType: grass
+    - location: {x: -11, y: 5}
+      cellType: grass
+    - location: {x: -11, y: 6}
+      cellType: grass
+    - location: {x: -11, y: 7}
+      cellType: grass
+    - location: {x: -11, y: 8}
+      cellType: grass
+    - location: {x: -11, y: 9}
+      cellType: grass
+    - location: {x: -11, y: 10}
+      cellType: grass
+    - location: {x: -11, y: 11}
+      cellType: grass
+    - location: {x: -10, y: -11}
+      cellType: grass
+    - location: {x: -10, y: -10}
+      cellType: grass
+    - location: {x: -10, y: -9}
+      cellType: grass
+    - location: {x: -10, y: -8}
+      cellType: grass
+    - location: {x: -10, y: -7}
+      cellType: grass
+    - location: {x: -10, y: -6}
+      cellType: wheat
+    - location: {x: -10, y: -5}
+      cellType: grass
+    - location: {x: -10, y: -4}
+      cellType: grass
+    - location: {x: -10, y: -3}
+      cellType: grass
+    - location: {x: -10, y: -2}
+      cellType: grass
+    - location: {x: -10, y: -1}
+      cellType: grass
+    - location: {x: -10, y: 0}
+      cellType: grass
+    - location: {x: -10, y: 1}
+      cellType: grass
+    - location: {x: -10, y: 2}
+      cellType: grass
+    - location: {x: -10, y: 3}
+      cellType: grass
+    - location: {x: -10, y: 4}
+      cellType: grass
+    - location: {x: -10, y: 5}
+      cellType: grass
+    - location: {x: -10, y: 6}
+      cellType: grass
+    - location: {x: -10, y: 7}
+      cellType: grass
+    - location: {x: -10, y: 8}
+      cellType: grass
+    - location: {x: -10, y: 9}
+      cellType: grass
+    - location: {x: -10, y: 10}
+      cellType: grass
+    - location: {x: -10, y: 11}
+      cellType: grass
+    - location: {x: -9, y: -11}
+      cellType: grass
+    - location: {x: -9, y: -10}
+      cellType: grass
+    - location: {x: -9, y: -9}
+      cellType: grass
+    - location: {x: -9, y: -8}
+      cellType: grass
+    - location: {x: -9, y: -7}
+      cellType: grass
+    - location: {x: -9, y: -6}
+      cellType: wheat
+    - location: {x: -9, y: -5}
+      cellType: grass
+    - location: {x: -9, y: -4}
+      cellType: grass
+    - location: {x: -9, y: -3}
+      cellType: grass
+    - location: {x: -9, y: -2}
+      cellType: grass
+    - location: {x: -9, y: -1}
+      cellType: grass
+    - location: {x: -9, y: 0}
+      cellType: grass
+    - location: {x: -9, y: 1}
+      cellType: grass
+    - location: {x: -9, y: 2}
+      cellType: grass
+    - location: {x: -9, y: 3}
+      cellType: grass
+    - location: {x: -9, y: 4}
+      cellType: grass
+    - location: {x: -9, y: 5}
+      cellType: grass
+    - location: {x: -9, y: 6}
+      cellType: grass
+    - location: {x: -9, y: 7}
+      cellType: grass
+    - location: {x: -9, y: 8}
+      cellType: grass
+    - location: {x: -9, y: 9}
+      cellType: grass
+    - location: {x: -9, y: 10}
+      cellType: grass
+    - location: {x: -9, y: 11}
+      cellType: grass
+    - location: {x: -8, y: -11}
+      cellType: grass
+    - location: {x: -8, y: -10}
+      cellType: grass
+    - location: {x: -8, y: -9}
+      cellType: grass
+    - location: {x: -8, y: -8}
+      cellType: grass
+    - location: {x: -8, y: -7}
+      cellType: grass
+    - location: {x: -8, y: -6}
+      cellType: wheat
+    - location: {x: -8, y: -5}
+      cellType: grass
+    - location: {x: -8, y: -4}
+      cellType: grass
+    - location: {x: -8, y: -3}
+      cellType: grass
+    - location: {x: -8, y: -2}
+      cellType: grass
+    - location: {x: -8, y: -1}
+      cellType: grass
+    - location: {x: -8, y: 0}
+      cellType: grass
+    - location: {x: -8, y: 1}
+      cellType: grass
+    - location: {x: -8, y: 2}
+      cellType: grass
+    - location: {x: -8, y: 3}
+      cellType: grass
+    - location: {x: -8, y: 4}
+      cellType: grass
+    - location: {x: -8, y: 5}
+      cellType: grass
+    - location: {x: -8, y: 6}
+      cellType: grass
+    - location: {x: -8, y: 7}
+      cellType: grass
+    - location: {x: -8, y: 8}
+      cellType: grass
+    - location: {x: -8, y: 9}
+      cellType: grass
+    - location: {x: -8, y: 10}
+      cellType: grass
+    - location: {x: -8, y: 11}
+      cellType: grass
+    - location: {x: -7, y: -11}
+      cellType: grass
+    - location: {x: -7, y: -10}
+      cellType: grass
+    - location: {x: -7, y: -9}
+      cellType: grass
+    - location: {x: -7, y: -8}
+      cellType: grass
+    - location: {x: -7, y: -7}
+      cellType: grass
+    - location: {x: -7, y: -6}
+      cellType: grass
+    - location: {x: -7, y: -5}
+      cellType: wheat
+    - location: {x: -7, y: -4}
+      cellType: grass
+    - location: {x: -7, y: -3}
+      cellType: grass
+    - location: {x: -7, y: -2}
+      cellType: mountain
+    - location: {x: -7, y: -1}
+      cellType: grass
+    - location: {x: -7, y: 0}
+      cellType: grass
+    - location: {x: -7, y: 1}
+      cellType: grass
+    - location: {x: -7, y: 2}
+      cellType: grass
+    - location: {x: -7, y: 3}
+      cellType: grass
+    - location: {x: -7, y: 4}
+      cellType: forest
+    - location: {x: -7, y: 5}
+      cellType: grass
+    - location: {x: -7, y: 6}
+      cellType: grass
+    - location: {x: -7, y: 7}
+      cellType: grass
+    - location: {x: -7, y: 8}
+      cellType: grass
+    - location: {x: -7, y: 9}
+      cellType: grass
+    - location: {x: -7, y: 10}
+      cellType: grass
+    - location: {x: -7, y: 11}
+      cellType: grass
+    - location: {x: -6, y: -11}
+      cellType: grass
+    - location: {x: -6, y: -10}
+      cellType: grass
+    - location: {x: -6, y: -9}
+      cellType: grass
+    - location: {x: -6, y: -8}
+      cellType: grass
+    - location: {x: -6, y: -7}
+      cellType: grass
+    - location: {x: -6, y: -6}
+      cellType: grass
+    - location: {x: -6, y: -5}
+      cellType: grass
+    - location: {x: -6, y: -4}
+      cellType: grass
+    - location: {x: -6, y: -3}
+      cellType: grass
+    - location: {x: -6, y: -2}
+      cellType: grass
+    - location: {x: -6, y: -1}
+      cellType: road
+    - location: {x: -6, y: 0}
+      cellType: wheat
+    - location: {x: -6, y: 1}
+      cellType: grass
+    - location: {x: -6, y: 2}
+      cellType: grass
+    - location: {x: -6, y: 3}
+      cellType: wheat
+    - location: {x: -6, y: 4}
+      cellType: grass
+    - location: {x: -6, y: 5}
+      cellType: grass
+    - location: {x: -6, y: 6}
+      cellType: grass
+    - location: {x: -6, y: 7}
+      cellType: grass
+    - location: {x: -6, y: 8}
+      cellType: grass
+    - location: {x: -6, y: 9}
+      cellType: grass
+    - location: {x: -6, y: 10}
+      cellType: grass
+    - location: {x: -6, y: 11}
+      cellType: grass
+    - location: {x: -5, y: -11}
+      cellType: grass
+    - location: {x: -5, y: -10}
+      cellType: grass
+    - location: {x: -5, y: -9}
+      cellType: grass
+    - location: {x: -5, y: -8}
+      cellType: grass
+    - location: {x: -5, y: -7}
+      cellType: grass
+    - location: {x: -5, y: -6}
+      cellType: grass
+    - location: {x: -5, y: -5}
+      cellType: mountain
+    - location: {x: -5, y: -4}
+      cellType: wheat
+    - location: {x: -5, y: -3}
+      cellType: mountain
+    - location: {x: -5, y: -2}
+      cellType: grass
+    - location: {x: -5, y: -1}
+      cellType: grass
+    - location: {x: -5, y: 0}
+      cellType: road
+    - location: {x: -5, y: 1}
+      cellType: road
+    - location: {x: -5, y: 2}
+      cellType: forest
+    - location: {x: -5, y: 3}
+      cellType: forest
+    - location: {x: -5, y: 4}
+      cellType: grass
+    - location: {x: -5, y: 5}
+      cellType: grass
+    - location: {x: -5, y: 6}
+      cellType: grass
+    - location: {x: -5, y: 7}
+      cellType: grass
+    - location: {x: -5, y: 8}
+      cellType: grass
+    - location: {x: -5, y: 9}
+      cellType: grass
+    - location: {x: -5, y: 10}
+      cellType: grass
+    - location: {x: -5, y: 11}
+      cellType: grass
+    - location: {x: -4, y: -11}
+      cellType: grass
+    - location: {x: -4, y: -10}
+      cellType: grass
+    - location: {x: -4, y: -9}
+      cellType: grass
+    - location: {x: -4, y: -8}
+      cellType: grass
+    - location: {x: -4, y: -7}
+      cellType: grass
+    - location: {x: -4, y: -6}
+      cellType: grass
+    - location: {x: -4, y: -5}
+      cellType: mountain
+    - location: {x: -4, y: -4}
+      cellType: mountain
+    - location: {x: -4, y: -3}
+      cellType: forest
+    - location: {x: -4, y: -2}
+      cellType: grass
+    - location: {x: -4, y: -1}
+      cellType: grass
+    - location: {x: -4, y: 0}
+      cellType: forest
+    - location: {x: -4, y: 1}
+      cellType: grass
+    - location: {x: -4, y: 2}
+      cellType: road
+    - location: {x: -4, y: 3}
+      cellType: road
+    - location: {x: -4, y: 4}
+      cellType: grass
+    - location: {x: -4, y: 5}
+      cellType: grass
+    - location: {x: -4, y: 6}
+      cellType: grass
+    - location: {x: -4, y: 7}
+      cellType: grass
+    - location: {x: -4, y: 8}
+      cellType: grass
+    - location: {x: -4, y: 9}
+      cellType: grass
+    - location: {x: -4, y: 10}
+      cellType: grass
+    - location: {x: -4, y: 11}
+      cellType: grass
+    - location: {x: -3, y: -11}
+      cellType: grass
+    - location: {x: -3, y: -10}
+      cellType: grass
+    - location: {x: -3, y: -9}
+      cellType: grass
+    - location: {x: -3, y: -8}
+      cellType: grass
+    - location: {x: -3, y: -7}
+      cellType: grass
+    - location: {x: -3, y: -6}
+      cellType: grass
+    - location: {x: -3, y: -5}
+      cellType: mountain
+    - location: {x: -3, y: -4}
+      cellType: grass
+    - location: {x: -3, y: -3}
+      cellType: mountain
+    - location: {x: -3, y: -2}
+      cellType: amber
+    - location: {x: -3, y: -1}
+      cellType: forest
+    - location: {x: -3, y: 0}
+      cellType: grass
+    - location: {x: -3, y: 1}
+      cellType: grass
+    - location: {x: -3, y: 2}
+      cellType: forest
+    - location: {x: -3, y: 3}
+      cellType: road
+    - location: {x: -3, y: 4}
+      cellType: grass
+    - location: {x: -3, y: 5}
+      cellType: grass
+    - location: {x: -3, y: 6}
+      cellType: grass
+    - location: {x: -3, y: 7}
+      cellType: grass
+    - location: {x: -3, y: 8}
+      cellType: grass
+    - location: {x: -3, y: 9}
+      cellType: grass
+    - location: {x: -3, y: 10}
+      cellType: grass
+    - location: {x: -3, y: 11}
+      cellType: grass
+    - location: {x: -2, y: -11}
+      cellType: grass
+    - location: {x: -2, y: -10}
+      cellType: grass
+    - location: {x: -2, y: -9}
+      cellType: grass
+    - location: {x: -2, y: -8}
+      cellType: grass
+    - location: {x: -2, y: -7}
+      cellType: grass
+    - location: {x: -2, y: -6}
+      cellType: grass
+    - location: {x: -2, y: -5}
+      cellType: mountain
+    - location: {x: -2, y: -4}
+      cellType: grass
+    - location: {x: -2, y: -3}
+      cellType: mountain
+    - location: {x: -2, y: -2}
+      cellType: mountain
+    - location: {x: -2, y: -1}
+      cellType: grass
+    - location: {x: -2, y: 0}
+      cellType: mountain
+    - location: {x: -2, y: 1}
+      cellType: grass
+    - location: {x: -2, y: 2}
+      cellType: grass
+    - location: {x: -2, y: 3}
+      cellType: road
+    - location: {x: -2, y: 4}
+      cellType: grass
+    - location: {x: -2, y: 5}
+      cellType: grass
+    - location: {x: -2, y: 6}
+      cellType: grass
+    - location: {x: -2, y: 7}
+      cellType: grass
+    - location: {x: -2, y: 8}
+      cellType: grass
+    - location: {x: -2, y: 9}
+      cellType: grass
+    - location: {x: -2, y: 10}
+      cellType: grass
+    - location: {x: -2, y: 11}
+      cellType: grass
+    - location: {x: -1, y: -11}
+      cellType: grass
+    - location: {x: -1, y: -10}
+      cellType: grass
+    - location: {x: -1, y: -9}
+      cellType: grass
+    - location: {x: -1, y: -8}
+      cellType: grass
+    - location: {x: -1, y: -7}
+      cellType: grass
+    - location: {x: -1, y: -6}
+      cellType: grass
+    - location: {x: -1, y: -5}
+      cellType: grass
+    - location: {x: -1, y: -4}
+      cellType: grass
+    - location: {x: -1, y: -3}
+      cellType: mountain
+    - location: {x: -1, y: -2}
+      cellType: grass
+    - location: {x: -1, y: -1}
+      cellType: grass
+    - location: {x: -1, y: 0}
+      cellType: grass
+    - location: {x: -1, y: 1}
+      cellType: grass
+    - location: {x: -1, y: 2}
+      cellType: grass
+    - location: {x: -1, y: 3}
+      cellType: road
+    - location: {x: -1, y: 4}
+      cellType: wheat
+    - location: {x: -1, y: 5}
+      cellType: grass
+    - location: {x: -1, y: 6}
+      cellType: grass
+    - location: {x: -1, y: 7}
+      cellType: grass
+    - location: {x: -1, y: 8}
+      cellType: grass
+    - location: {x: -1, y: 9}
+      cellType: grass
+    - location: {x: -1, y: 10}
+      cellType: grass
+    - location: {x: -1, y: 11}
+      cellType: grass
+    - location: {x: 0, y: -11}
+      cellType: grass
+    - location: {x: 0, y: -10}
+      cellType: grass
+    - location: {x: 0, y: -9}
+      cellType: grass
+    - location: {x: 0, y: -8}
+      cellType: grass
+    - location: {x: 0, y: -7}
+      cellType: grass
+    - location: {x: 0, y: -6}
+      cellType: grass
+    - location: {x: 0, y: -5}
+      cellType: amber
+    - location: {x: 0, y: -4}
+      cellType: grass
+    - location: {x: 0, y: -3}
+      cellType: amberForge
+    - location: {x: 0, y: -2}
+      cellType: grass
+    - location: {x: 0, y: -1}
+      cellType: amber
+    - location: {x: 0, y: 0}
+      cellType: mountain
+    - location: {x: 0, y: 1}
+      cellType: amber
+    - location: {x: 0, y: 2}
+      cellType: forest
+    - location: {x: 0, y: 3}
+      cellType: road
+    - location: {x: 0, y: 4}
+      cellType: grass
+    - location: {x: 0, y: 5}
+      cellType: grass
+    - location: {x: 0, y: 6}
+      cellType: grass
+    - location: {x: 0, y: 7}
+      cellType: grass
+    - location: {x: 0, y: 8}
+      cellType: grass
+    - location: {x: 0, y: 9}
+      cellType: grass
+    - location: {x: 0, y: 10}
+      cellType: grass
+    - location: {x: 0, y: 11}
+      cellType: grass
+    - location: {x: 1, y: -11}
+      cellType: grass
+    - location: {x: 1, y: -10}
+      cellType: grass
+    - location: {x: 1, y: -9}
+      cellType: grass
+    - location: {x: 1, y: -8}
+      cellType: grass
+    - location: {x: 1, y: -7}
+      cellType: grass
+    - location: {x: 1, y: -6}
+      cellType: grass
+    - location: {x: 1, y: -5}
+      cellType: grass
+    - location: {x: 1, y: -4}
+      cellType: grass
+    - location: {x: 1, y: -3}
+      cellType: mountain
+    - location: {x: 1, y: -2}
+      cellType: grass
+    - location: {x: 1, y: -1}
+      cellType: grass
+    - location: {x: 1, y: 0}
+      cellType: mountain
+    - location: {x: 1, y: 1}
+      cellType: grass
+    - location: {x: 1, y: 2}
+      cellType: forest
+    - location: {x: 1, y: 3}
+      cellType: road
+    - location: {x: 1, y: 4}
+      cellType: grass
+    - location: {x: 1, y: 5}
+      cellType: grass
+    - location: {x: 1, y: 6}
+      cellType: grass
+    - location: {x: 1, y: 7}
+      cellType: grass
+    - location: {x: 1, y: 8}
+      cellType: grass
+    - location: {x: 1, y: 9}
+      cellType: grass
+    - location: {x: 1, y: 10}
+      cellType: grass
+    - location: {x: 1, y: 11}
+      cellType: grass
+    - location: {x: 2, y: -11}
+      cellType: grass
+    - location: {x: 2, y: -10}
+      cellType: grass
+    - location: {x: 2, y: -9}
+      cellType: grass
+    - location: {x: 2, y: -8}
+      cellType: grass
+    - location: {x: 2, y: -7}
+      cellType: grass
+    - location: {x: 2, y: -6}
+      cellType: grass
+    - location: {x: 2, y: -5}
+      cellType: mountain
+    - location: {x: 2, y: -4}
+      cellType: grass
+    - location: {x: 2, y: -3}
+      cellType: mountain
+    - location: {x: 2, y: -2}
+      cellType: grass
+    - location: {x: 2, y: -1}
+      cellType: grass
+    - location: {x: 2, y: 0}
+      cellType: grass
+    - location: {x: 2, y: 1}
+      cellType: grass
+    - location: {x: 2, y: 2}
+      cellType: grass
+    - location: {x: 2, y: 3}
+      cellType: road
+    - location: {x: 2, y: 4}
+      cellType: wheat
+    - location: {x: 2, y: 5}
+      cellType: grass
+    - location: {x: 2, y: 6}
+      cellType: grass
+    - location: {x: 2, y: 7}
+      cellType: grass
+    - location: {x: 2, y: 8}
+      cellType: grass
+    - location: {x: 2, y: 9}
+      cellType: grass
+    - location: {x: 2, y: 10}
+      cellType: grass
+    - location: {x: 2, y: 11}
+      cellType: grass
+    - location: {x: 3, y: -11}
+      cellType: grass
+    - location: {x: 3, y: -10}
+      cellType: grass
+    - location: {x: 3, y: -9}
+      cellType: grass
+    - location: {x: 3, y: -8}
+      cellType: grass
+    - location: {x: 3, y: -7}
+      cellType: grass
+    - location: {x: 3, y: -6}
+      cellType: grass
+    - location: {x: 3, y: -5}
+      cellType: mountain
+    - location: {x: 3, y: -4}
+      cellType: grass
+    - location: {x: 3, y: -3}
+      cellType: mountain
+    - location: {x: 3, y: -2}
+      cellType: mountain
+    - location: {x: 3, y: -1}
+      cellType: forest
+    - location: {x: 3, y: 0}
+      cellType: mountain
+    - location: {x: 3, y: 1}
+      cellType: grass
+    - location: {x: 3, y: 2}
+      cellType: grass
+    - location: {x: 3, y: 3}
+      cellType: road
+    - location: {x: 3, y: 4}
+      cellType: grass
+    - location: {x: 3, y: 5}
+      cellType: grass
+    - location: {x: 3, y: 6}
+      cellType: grass
+    - location: {x: 3, y: 7}
+      cellType: grass
+    - location: {x: 3, y: 8}
+      cellType: grass
+    - location: {x: 3, y: 9}
+      cellType: grass
+    - location: {x: 3, y: 10}
+      cellType: grass
+    - location: {x: 3, y: 11}
+      cellType: grass
+    - location: {x: 4, y: -11}
+      cellType: grass
+    - location: {x: 4, y: -10}
+      cellType: grass
+    - location: {x: 4, y: -9}
+      cellType: grass
+    - location: {x: 4, y: -8}
+      cellType: grass
+    - location: {x: 4, y: -7}
+      cellType: grass
+    - location: {x: 4, y: -6}
+      cellType: grass
+    - location: {x: 4, y: -5}
+      cellType: mountain
+    - location: {x: 4, y: -4}
+      cellType: grass
+    - location: {x: 4, y: -3}
+      cellType: forest
+    - location: {x: 4, y: -2}
+      cellType: amber
+    - location: {x: 4, y: -1}
+      cellType: grass
+    - location: {x: 4, y: 0}
+      cellType: grass
+    - location: {x: 4, y: 1}
+      cellType: grass
+    - location: {x: 4, y: 2}
+      cellType: forest
+    - location: {x: 4, y: 3}
+      cellType: road
+    - location: {x: 4, y: 4}
+      cellType: grass
+    - location: {x: 4, y: 5}
+      cellType: grass
+    - location: {x: 4, y: 6}
+      cellType: grass
+    - location: {x: 4, y: 7}
+      cellType: grass
+    - location: {x: 4, y: 8}
+      cellType: grass
+    - location: {x: 4, y: 9}
+      cellType: grass
+    - location: {x: 4, y: 10}
+      cellType: grass
+    - location: {x: 4, y: 11}
+      cellType: grass
+    - location: {x: 5, y: -11}
+      cellType: grass
+    - location: {x: 5, y: -10}
+      cellType: grass
+    - location: {x: 5, y: -9}
+      cellType: grass
+    - location: {x: 5, y: -8}
+      cellType: grass
+    - location: {x: 5, y: -7}
+      cellType: grass
+    - location: {x: 5, y: -6}
+      cellType: grass
+    - location: {x: 5, y: -5}
+      cellType: mountain
+    - location: {x: 5, y: -4}
+      cellType: mountain
+    - location: {x: 5, y: -3}
+      cellType: mountain
+    - location: {x: 5, y: -2}
+      cellType: grass
+    - location: {x: 5, y: -1}
+      cellType: grass
+    - location: {x: 5, y: 0}
+      cellType: forest
+    - location: {x: 5, y: 1}
+      cellType: road
+    - location: {x: 5, y: 2}
+      cellType: road
+    - location: {x: 5, y: 3}
+      cellType: forest
+    - location: {x: 5, y: 4}
+      cellType: grass
+    - location: {x: 5, y: 5}
+      cellType: grass
+    - location: {x: 5, y: 6}
+      cellType: grass
+    - location: {x: 5, y: 7}
+      cellType: grass
+    - location: {x: 5, y: 8}
+      cellType: grass
+    - location: {x: 5, y: 9}
+      cellType: grass
+    - location: {x: 5, y: 10}
+      cellType: grass
+    - location: {x: 5, y: 11}
+      cellType: grass
+    - location: {x: 6, y: -11}
+      cellType: grass
+    - location: {x: 6, y: -10}
+      cellType: grass
+    - location: {x: 6, y: -9}
+      cellType: grass
+    - location: {x: 6, y: -8}
+      cellType: grass
+    - location: {x: 6, y: -7}
+      cellType: grass
+    - location: {x: 6, y: -6}
+      cellType: grass
+    - location: {x: 6, y: -5}
+      cellType: grass
+    - location: {x: 6, y: -4}
+      cellType: wheat
+    - location: {x: 6, y: -3}
+      cellType: grass
+    - location: {x: 6, y: -2}
+      cellType: grass
+    - location: {x: 6, y: -1}
+      cellType: road
+    - location: {x: 6, y: 0}
+      cellType: road
+    - location: {x: 6, y: 1}
+      cellType: grass
+    - location: {x: 6, y: 2}
+      cellType: forest
+    - location: {x: 6, y: 3}
+      cellType: wheat
+    - location: {x: 6, y: 4}
+      cellType: grass
+    - location: {x: 6, y: 5}
+      cellType: grass
+    - location: {x: 6, y: 6}
+      cellType: grass
+    - location: {x: 6, y: 7}
+      cellType: grass
+    - location: {x: 6, y: 8}
+      cellType: grass
+    - location: {x: 6, y: 9}
+      cellType: grass
+    - location: {x: 6, y: 10}
+      cellType: grass
+    - location: {x: 6, y: 11}
+      cellType: grass
+    - location: {x: 7, y: -11}
+      cellType: grass
+    - location: {x: 7, y: -10}
+      cellType: grass
+    - location: {x: 7, y: -9}
+      cellType: grass
+    - location: {x: 7, y: -8}
+      cellType: grass
+    - location: {x: 7, y: -7}
+      cellType: grass
+    - location: {x: 7, y: -6}
+      cellType: grass
+    - location: {x: 7, y: -5}
+      cellType: wheat
+    - location: {x: 7, y: -4}
+      cellType: grass
+    - location: {x: 7, y: -3}
+      cellType: grass
+    - location: {x: 7, y: -2}
+      cellType: grass
+    - location: {x: 7, y: -1}
+      cellType: grass
+    - location: {x: 7, y: 0}
+      cellType: wheat
+    - location: {x: 7, y: 1}
+      cellType: grass
+    - location: {x: 7, y: 2}
+      cellType: grass
+    - location: {x: 7, y: 3}
+      cellType: grass
+    - location: {x: 7, y: 4}
+      cellType: grass
+    - location: {x: 7, y: 5}
+      cellType: grass
+    - location: {x: 7, y: 6}
+      cellType: grass
+    - location: {x: 7, y: 7}
+      cellType: grass
+    - location: {x: 7, y: 8}
+      cellType: grass
+    - location: {x: 7, y: 9}
+      cellType: grass
+    - location: {x: 7, y: 10}
+      cellType: grass
+    - location: {x: 7, y: 11}
+      cellType: grass
+    - location: {x: 8, y: -11}
+      cellType: grass
+    - location: {x: 8, y: -10}
+      cellType: grass
+    - location: {x: 8, y: -9}
+      cellType: grass
+    - location: {x: 8, y: -8}
+      cellType: grass
+    - location: {x: 8, y: -7}
+      cellType: grass
+    - location: {x: 8, y: -6}
+      cellType: grass
+    - location: {x: 8, y: -5}
+      cellType: grass
+    - location: {x: 8, y: -4}
+      cellType: grass
+    - location: {x: 8, y: -3}
+      cellType: grass
+    - location: {x: 8, y: -2}
+      cellType: mountain
+    - location: {x: 8, y: -1}
+      cellType: grass
+    - location: {x: 8, y: 0}
+      cellType: grass
+    - location: {x: 8, y: 1}
+      cellType: grass
+    - location: {x: 8, y: 2}
+      cellType: grass
+    - location: {x: 8, y: 3}
+      cellType: grass
+    - location: {x: 8, y: 4}
+      cellType: forest
+    - location: {x: 8, y: 5}
+      cellType: grass
+    - location: {x: 8, y: 6}
+      cellType: grass
+    - location: {x: 8, y: 7}
+      cellType: grass
+    - location: {x: 8, y: 8}
+      cellType: grass
+    - location: {x: 8, y: 9}
+      cellType: grass
+    - location: {x: 8, y: 10}
+      cellType: grass
+    - location: {x: 8, y: 11}
+      cellType: grass
+    - location: {x: 9, y: -11}
+      cellType: grass
+    - location: {x: 9, y: -10}
+      cellType: grass
+    - location: {x: 9, y: -9}
+      cellType: grass
+    - location: {x: 9, y: -8}
+      cellType: grass
+    - location: {x: 9, y: -7}
+      cellType: grass
+    - location: {x: 9, y: -6}
+      cellType: grass
+    - location: {x: 9, y: -5}
+      cellType: grass
+    - location: {x: 9, y: -4}
+      cellType: grass
+    - location: {x: 9, y: -3}
+      cellType: grass
+    - location: {x: 9, y: -2}
+      cellType: grass
+    - location: {x: 9, y: -1}
+      cellType: grass
+    - location: {x: 9, y: 0}
+      cellType: grass
+    - location: {x: 9, y: 1}
+      cellType: grass
+    - location: {x: 9, y: 2}
+      cellType: grass
+    - location: {x: 9, y: 3}
+      cellType: grass
+    - location: {x: 9, y: 4}
+      cellType: grass
+    - location: {x: 9, y: 5}
+      cellType: grass
+    - location: {x: 9, y: 6}
+      cellType: grass
+    - location: {x: 9, y: 7}
+      cellType: grass
+    - location: {x: 9, y: 8}
+      cellType: grass
+    - location: {x: 9, y: 9}
+      cellType: grass
+    - location: {x: 9, y: 10}
+      cellType: grass
+    - location: {x: 9, y: 11}
+      cellType: grass
+    - location: {x: 10, y: -11}
+      cellType: grass
+    - location: {x: 10, y: -10}
+      cellType: grass
+    - location: {x: 10, y: -9}
+      cellType: grass
+    - location: {x: 10, y: -8}
+      cellType: grass
+    - location: {x: 10, y: -7}
+      cellType: grass
+    - location: {x: 10, y: -6}
+      cellType: grass
+    - location: {x: 10, y: -5}
+      cellType: grass
+    - location: {x: 10, y: -4}
+      cellType: grass
+    - location: {x: 10, y: -3}
+      cellType: grass
+    - location: {x: 10, y: -2}
+      cellType: grass
+    - location: {x: 10, y: -1}
+      cellType: grass
+    - location: {x: 10, y: 0}
+      cellType: grass
+    - location: {x: 10, y: 1}
+      cellType: grass
+    - location: {x: 10, y: 2}
+      cellType: grass
+    - location: {x: 10, y: 3}
+      cellType: grass
+    - location: {x: 10, y: 4}
+      cellType: grass
+    - location: {x: 10, y: 5}
+      cellType: grass
+    - location: {x: 10, y: 6}
+      cellType: grass
+    - location: {x: 10, y: 7}
+      cellType: grass
+    - location: {x: 10, y: 8}
+      cellType: grass
+    - location: {x: 10, y: 9}
+      cellType: grass
+    - location: {x: 10, y: 10}
+      cellType: grass
+    - location: {x: 10, y: 11}
+      cellType: grass
+    - location: {x: 11, y: -11}
+      cellType: grass
+    - location: {x: 11, y: -10}
+      cellType: grass
+    - location: {x: 11, y: -9}
+      cellType: grass
+    - location: {x: 11, y: -8}
+      cellType: grass
+    - location: {x: 11, y: -7}
+      cellType: grass
+    - location: {x: 11, y: -6}
+      cellType: grass
+    - location: {x: 11, y: -5}
+      cellType: grass
+    - location: {x: 11, y: -4}
+      cellType: grass
+    - location: {x: 11, y: -3}
+      cellType: grass
+    - location: {x: 11, y: -2}
+      cellType: grass
+    - location: {x: 11, y: -1}
+      cellType: grass
+    - location: {x: 11, y: 0}
+      cellType: grass
+    - location: {x: 11, y: 1}
+      cellType: grass
+    - location: {x: 11, y: 2}
+      cellType: grass
+    - location: {x: 11, y: 3}
+      cellType: grass
+    - location: {x: 11, y: 4}
+      cellType: grass
+    - location: {x: 11, y: 5}
+      cellType: grass
+    - location: {x: 11, y: 6}
+      cellType: grass
+    - location: {x: 11, y: 7}
+      cellType: grass
+    - location: {x: 11, y: 8}
+      cellType: grass
+    - location: {x: 11, y: 9}
+      cellType: grass
+    - location: {x: 11, y: 10}
+      cellType: grass
+    - location: {x: 11, y: 11}
+      cellType: grass
+    entities:
+    - Team: -1
+      Entities:
+      - Data: {fileID: 11400000, guid: 007fafa82b51345319298048e99631e6, type: 2}
+        SpawnLocation:
+          Location: {x: -7, y: -5}
+      - Data: {fileID: 11400000, guid: 007fafa82b51345319298048e99631e6, type: 2}
+        SpawnLocation:
+          Location: {x: -5, y: -4}
+      - Data: {fileID: 11400000, guid: 007fafa82b51345319298048e99631e6, type: 2}
+        SpawnLocation:
+          Location: {x: -6, y: 0}
+      - Data: {fileID: 11400000, guid: 007fafa82b51345319298048e99631e6, type: 2}
+        SpawnLocation:
+          Location: {x: -6, y: 3}
+      - Data: {fileID: 11400000, guid: 007fafa82b51345319298048e99631e6, type: 2}
+        SpawnLocation:
+          Location: {x: -1, y: 4}
+      - Data: {fileID: 11400000, guid: 007fafa82b51345319298048e99631e6, type: 2}
+        SpawnLocation:
+          Location: {x: 2, y: 4}
+      - Data: {fileID: 11400000, guid: 007fafa82b51345319298048e99631e6, type: 2}
+        SpawnLocation:
+          Location: {x: 6, y: 3}
+      - Data: {fileID: 11400000, guid: 007fafa82b51345319298048e99631e6, type: 2}
+        SpawnLocation:
+          Location: {x: 7, y: 0}
+      - Data: {fileID: 11400000, guid: 007fafa82b51345319298048e99631e6, type: 2}
+        SpawnLocation:
+          Location: {x: 6, y: -4}
+      - Data: {fileID: 11400000, guid: 007fafa82b51345319298048e99631e6, type: 2}
+        SpawnLocation:
+          Location: {x: 7, y: -5}
+      - Data: {fileID: 11400000, guid: dfb82f31371a84690ae123195a14bf64, type: 2}
+        SpawnLocation:
+          Location: {x: -3, y: -2}
+      - Data: {fileID: 11400000, guid: dfb82f31371a84690ae123195a14bf64, type: 2}
+        SpawnLocation:
+          Location: {x: 0, y: -5}
+      - Data: {fileID: 11400000, guid: dfb82f31371a84690ae123195a14bf64, type: 2}
+        SpawnLocation:
+          Location: {x: 4, y: -2}
+      - Data: {fileID: 11400000, guid: dfb82f31371a84690ae123195a14bf64, type: 2}
+        SpawnLocation:
+          Location: {x: 0, y: -1}
+      - Data: {fileID: 11400000, guid: dfb82f31371a84690ae123195a14bf64, type: 2}
+        SpawnLocation:
+          Location: {x: 0, y: 1}
+      - Data: {fileID: 11400000, guid: e16d9fca1b51810438ab31661f34df6f, type: 2}
+        SpawnLocation:
+          Location: {x: 0, y: -3}
+      - Data: {fileID: 11400000, guid: a2899be04b8f54805a7f62c027e3675d, type: 2}
+        SpawnLocation:
+          Location: {x: -7, y: 4}
+      - Data: {fileID: 11400000, guid: a2899be04b8f54805a7f62c027e3675d, type: 2}
+        SpawnLocation:
+          Location: {x: 8, y: 4}
+      - Data: {fileID: 11400000, guid: a2899be04b8f54805a7f62c027e3675d, type: 2}
+        SpawnLocation:
+          Location: {x: -7, y: -1}
+      - Data: {fileID: 11400000, guid: a2899be04b8f54805a7f62c027e3675d, type: 2}
+        SpawnLocation:
+          Location: {x: 7, y: -1}
+      - Data: {fileID: 11400000, guid: f3eb88eee96a64370827475771891374, type: 2}
+        SpawnLocation:
+          Location: {x: -3, y: -4}
+      - Data: {fileID: 11400000, guid: f3eb88eee96a64370827475771891374, type: 2}
+        SpawnLocation:
+          Location: {x: 4, y: -4}
+      - Data: {fileID: 11400000, guid: f3eb88eee96a64370827475771891374, type: 2}
+        SpawnLocation:
+          Location: {x: 3, y: 2}
+      - Data: {fileID: 11400000, guid: f3eb88eee96a64370827475771891374, type: 2}
+        SpawnLocation:
+          Location: {x: -2, y: 2}
+    - Team: 1
+      Entities:
+      - Data: {fileID: 11400000, guid: 5d9e30910c9795b49bea0c2c257e60eb, type: 2}
+        SpawnLocation:
+          Location: {x: -7, y: -5}
+      - Data: {fileID: 11400000, guid: f8a9d9571b0a8324587b160065ca7fce, type: 2}
+        SpawnLocation:
+          Location: {x: -7, y: -5}
+      - Data: {fileID: 11400000, guid: b52e5f177d13b1b4580a21f9c5ad0bf1, type: 2}
+        SpawnLocation:
+          Location: {x: -6, y: -5}
+    - Team: 2
+      Entities:
+      - Data: {fileID: 11400000, guid: 5d9e30910c9795b49bea0c2c257e60eb, type: 2}
+        SpawnLocation:
+          Location: {x: 7, y: -5}
+      - Data: {fileID: 11400000, guid: f8a9d9571b0a8324587b160065ca7fce, type: 2}
+        SpawnLocation:
+          Location: {x: 7, y: -5}
+      - Data: {fileID: 11400000, guid: b52e5f177d13b1b4580a21f9c5ad0bf1, type: 2}
+        SpawnLocation:
+          Location: {x: 6, y: -5}
+  - mapID: oakcrest
+    mapType: 0
+    displayName: Oakcrest
+    description: Big open plains, lush dense forests, and TWO Amber Forges! Wow!
+    index: 200
+    lowerLeftCell: {x: -9, y: -8}
+    upperRightCell: {x: 10, y: 6}
+    wideLeftSide: 0
+    wideRightSide: 0
+    cells:
+    - location: {x: -11, y: -11}
+      cellType: grass
+    - location: {x: -11, y: -10}
+      cellType: grass
+    - location: {x: -11, y: -9}
+      cellType: grass
+    - location: {x: -11, y: -8}
+      cellType: grass
+    - location: {x: -11, y: -7}
+      cellType: grass
+    - location: {x: -11, y: -6}
+      cellType: grass
+    - location: {x: -11, y: -5}
+      cellType: grass
+    - location: {x: -11, y: -4}
+      cellType: grass
+    - location: {x: -11, y: -3}
+      cellType: grass
+    - location: {x: -11, y: -2}
+      cellType: grass
+    - location: {x: -11, y: -1}
+      cellType: grass
+    - location: {x: -11, y: 0}
+      cellType: grass
+    - location: {x: -11, y: 1}
+      cellType: grass
+    - location: {x: -11, y: 2}
+      cellType: grass
+    - location: {x: -11, y: 3}
+      cellType: grass
+    - location: {x: -11, y: 4}
+      cellType: grass
+    - location: {x: -11, y: 5}
+      cellType: grass
+    - location: {x: -11, y: 6}
+      cellType: grass
+    - location: {x: -11, y: 7}
+      cellType: grass
+    - location: {x: -11, y: 8}
+      cellType: grass
+    - location: {x: -11, y: 9}
+      cellType: grass
+    - location: {x: -11, y: 10}
+      cellType: grass
+    - location: {x: -11, y: 11}
+      cellType: grass
+    - location: {x: -10, y: -11}
+      cellType: grass
+    - location: {x: -10, y: -10}
+      cellType: grass
+    - location: {x: -10, y: -9}
+      cellType: grass
+    - location: {x: -10, y: -8}
+      cellType: grass
+    - location: {x: -10, y: -7}
+      cellType: grass
+    - location: {x: -10, y: -6}
+      cellType: grass
+    - location: {x: -10, y: -5}
+      cellType: grass
+    - location: {x: -10, y: -4}
+      cellType: grass
+    - location: {x: -10, y: -3}
+      cellType: grass
+    - location: {x: -10, y: -2}
+      cellType: grass
+    - location: {x: -10, y: -1}
+      cellType: grass
+    - location: {x: -10, y: 0}
+      cellType: grass
+    - location: {x: -10, y: 1}
+      cellType: grass
+    - location: {x: -10, y: 2}
+      cellType: grass
+    - location: {x: -10, y: 3}
+      cellType: grass
+    - location: {x: -10, y: 4}
+      cellType: grass
+    - location: {x: -10, y: 5}
+      cellType: grass
+    - location: {x: -10, y: 6}
+      cellType: grass
+    - location: {x: -10, y: 7}
+      cellType: grass
+    - location: {x: -10, y: 8}
+      cellType: grass
+    - location: {x: -10, y: 9}
+      cellType: grass
+    - location: {x: -10, y: 10}
+      cellType: grass
+    - location: {x: -10, y: 11}
+      cellType: grass
+    - location: {x: -9, y: -11}
+      cellType: grass
+    - location: {x: -9, y: -10}
+      cellType: grass
+    - location: {x: -9, y: -9}
+      cellType: grass
+    - location: {x: -9, y: -8}
+      cellType: mountain
+    - location: {x: -9, y: -7}
+      cellType: grass
+    - location: {x: -9, y: -6}
+      cellType: grass
+    - location: {x: -9, y: -5}
+      cellType: road
+    - location: {x: -9, y: -4}
+      cellType: grass
+    - location: {x: -9, y: -3}
+      cellType: road
+    - location: {x: -9, y: -2}
+      cellType: forest
+    - location: {x: -9, y: -1}
+      cellType: road
+    - location: {x: -9, y: 0}
+      cellType: grass
+    - location: {x: -9, y: 1}
+      cellType: road
+    - location: {x: -9, y: 2}
+      cellType: forest
+    - location: {x: -9, y: 3}
+      cellType: road
+    - location: {x: -9, y: 4}
+      cellType: grass
+    - location: {x: -9, y: 5}
+      cellType: forest
+    - location: {x: -9, y: 6}
+      cellType: grass
+    - location: {x: -9, y: 7}
+      cellType: grass
+    - location: {x: -9, y: 8}
+      cellType: grass
+    - location: {x: -9, y: 9}
+      cellType: grass
+    - location: {x: -9, y: 10}
+      cellType: grass
+    - location: {x: -9, y: 11}
+      cellType: grass
+    - location: {x: -8, y: -11}
+      cellType: grass
+    - location: {x: -8, y: -10}
+      cellType: grass
+    - location: {x: -8, y: -9}
+      cellType: grass
+    - location: {x: -8, y: -8}
+      cellType: mountain
+    - location: {x: -8, y: -7}
+      cellType: amber
+    - location: {x: -8, y: -6}
+      cellType: road
+    - location: {x: -8, y: -5}
+      cellType: forest
+    - location: {x: -8, y: -4}
+      cellType: road
+    - location: {x: -8, y: -3}
+      cellType: wheat
+    - location: {x: -8, y: -2}
+      cellType: road
+    - location: {x: -8, y: -1}
+      cellType: forest
+    - location: {x: -8, y: 0}
+      cellType: road
+    - location: {x: -8, y: 1}
+      cellType: forest
+    - location: {x: -8, y: 2}
+      cellType: road
+    - location: {x: -8, y: 3}
+      cellType: forest
+    - location: {x: -8, y: 4}
+      cellType: road
+    - location: {x: -8, y: 5}
+      cellType: road
+    - location: {x: -8, y: 6}
+      cellType: road
+    - location: {x: -8, y: 7}
+      cellType: grass
+    - location: {x: -8, y: 8}
+      cellType: grass
+    - location: {x: -8, y: 9}
+      cellType: grass
+    - location: {x: -8, y: 10}
+      cellType: grass
+    - location: {x: -8, y: 11}
+      cellType: grass
+    - location: {x: -7, y: -11}
+      cellType: grass
+    - location: {x: -7, y: -10}
+      cellType: grass
+    - location: {x: -7, y: -9}
+      cellType: grass
+    - location: {x: -7, y: -8}
+      cellType: mountain
+    - location: {x: -7, y: -7}
+      cellType: forest
+    - location: {x: -7, y: -6}
+      cellType: road
+    - location: {x: -7, y: -5}
+      cellType: forest
+    - location: {x: -7, y: -4}
+      cellType: forest
+    - location: {x: -7, y: -3}
+      cellType: forest
+    - location: {x: -7, y: -2}
+      cellType: forest
+    - location: {x: -7, y: -1}
+      cellType: forest
+    - location: {x: -7, y: 0}
+      cellType: grass
+    - location: {x: -7, y: 1}
+      cellType: grass
+    - location: {x: -7, y: 2}
+      cellType: forest
+    - location: {x: -7, y: 3}
+      cellType: forest
+    - location: {x: -7, y: 4}
+      cellType: forest
+    - location: {x: -7, y: 5}
+      cellType: road
+    - location: {x: -7, y: 6}
+      cellType: grass
+    - location: {x: -7, y: 7}
+      cellType: grass
+    - location: {x: -7, y: 8}
+      cellType: grass
+    - location: {x: -7, y: 9}
+      cellType: grass
+    - location: {x: -7, y: 10}
+      cellType: grass
+    - location: {x: -7, y: 11}
+      cellType: grass
+    - location: {x: -6, y: -11}
+      cellType: grass
+    - location: {x: -6, y: -10}
+      cellType: grass
+    - location: {x: -6, y: -9}
+      cellType: grass
+    - location: {x: -6, y: -8}
+      cellType: mountain
+    - location: {x: -6, y: -7}
+      cellType: forest
+    - location: {x: -6, y: -6}
+      cellType: road
+    - location: {x: -6, y: -5}
+      cellType: forest
+    - location: {x: -6, y: -4}
+      cellType: forest
+    - location: {x: -6, y: -3}
+      cellType: forest
+    - location: {x: -6, y: -2}
+      cellType: forest
+    - location: {x: -6, y: -1}
+      cellType: forest
+    - location: {x: -6, y: 0}
+      cellType: grass
+    - location: {x: -6, y: 1}
+      cellType: amberForge
+    - location: {x: -6, y: 2}
+      cellType: forest
+    - location: {x: -6, y: 3}
+      cellType: forest
+    - location: {x: -6, y: 4}
+      cellType: grass
+    - location: {x: -6, y: 5}
+      cellType: wheat
+    - location: {x: -6, y: 6}
+      cellType: grass
+    - location: {x: -6, y: 7}
+      cellType: grass
+    - location: {x: -6, y: 8}
+      cellType: grass
+    - location: {x: -6, y: 9}
+      cellType: grass
+    - location: {x: -6, y: 10}
+      cellType: grass
+    - location: {x: -6, y: 11}
+      cellType: grass
+    - location: {x: -5, y: -11}
+      cellType: grass
+    - location: {x: -5, y: -10}
+      cellType: grass
+    - location: {x: -5, y: -9}
+      cellType: grass
+    - location: {x: -5, y: -8}
+      cellType: mountain
+    - location: {x: -5, y: -7}
+      cellType: mountain
+    - location: {x: -5, y: -6}
+      cellType: road
+    - location: {x: -5, y: -5}
+      cellType: forest
+    - location: {x: -5, y: -4}
+      cellType: forest
+    - location: {x: -5, y: -3}
+      cellType: forest
+    - location: {x: -5, y: -2}
+      cellType: forest
+    - location: {x: -5, y: -1}
+      cellType: forest
+    - location: {x: -5, y: 0}
+      cellType: forest
+    - location: {x: -5, y: 1}
+      cellType: forest
+    - location: {x: -5, y: 2}
+      cellType: forest
+    - location: {x: -5, y: 3}
+      cellType: grass
+    - location: {x: -5, y: 4}
+      cellType: grass
+    - location: {x: -5, y: 5}
+      cellType: grass
+    - location: {x: -5, y: 6}
+      cellType: grass
+    - location: {x: -5, y: 7}
+      cellType: grass
+    - location: {x: -5, y: 8}
+      cellType: grass
+    - location: {x: -5, y: 9}
+      cellType: grass
+    - location: {x: -5, y: 10}
+      cellType: grass
+    - location: {x: -5, y: 11}
+      cellType: grass
+    - location: {x: -4, y: -11}
+      cellType: grass
+    - location: {x: -4, y: -10}
+      cellType: grass
+    - location: {x: -4, y: -9}
+      cellType: grass
+    - location: {x: -4, y: -8}
+      cellType: mountain
+    - location: {x: -4, y: -7}
+      cellType: mountain
+    - location: {x: -4, y: -6}
+      cellType: road
+    - location: {x: -4, y: -5}
+      cellType: grass
+    - location: {x: -4, y: -4}
+      cellType: forest
+    - location: {x: -4, y: -3}
+      cellType: forest
+    - location: {x: -4, y: -2}
+      cellType: forest
+    - location: {x: -4, y: -1}
+      cellType: forest
+    - location: {x: -4, y: 0}
+      cellType: wheat
+    - location: {x: -4, y: 1}
+      cellType: forest
+    - location: {x: -4, y: 2}
+      cellType: forest
+    - location: {x: -4, y: 3}
+      cellType: grass
+    - location: {x: -4, y: 4}
+      cellType: grass
+    - location: {x: -4, y: 5}
+      cellType: grass
+    - location: {x: -4, y: 6}
+      cellType: grass
+    - location: {x: -4, y: 7}
+      cellType: grass
+    - location: {x: -4, y: 8}
+      cellType: grass
+    - location: {x: -4, y: 9}
+      cellType: grass
+    - location: {x: -4, y: 10}
+      cellType: grass
+    - location: {x: -4, y: 11}
+      cellType: grass
+    - location: {x: -3, y: -11}
+      cellType: grass
+    - location: {x: -3, y: -10}
+      cellType: grass
+    - location: {x: -3, y: -9}
+      cellType: grass
+    - location: {x: -3, y: -8}
+      cellType: mountain
+    - location: {x: -3, y: -7}
+      cellType: mountain
+    - location: {x: -3, y: -6}
+      cellType: road
+    - location: {x: -3, y: -5}
+      cellType: grass
+    - location: {x: -3, y: -4}
+      cellType: forest
+    - location: {x: -3, y: -3}
+      cellType: grass
+    - location: {x: -3, y: -2}
+      cellType: forest
+    - location: {x: -3, y: -1}
+      cellType: grass
+    - location: {x: -3, y: 0}
+      cellType: forest
+    - location: {x: -3, y: 1}
+      cellType: grass
+    - location: {x: -3, y: 2}
+      cellType: grass
+    - location: {x: -3, y: 3}
+      cellType: grass
+    - location: {x: -3, y: 4}
+      cellType: grass
+    - location: {x: -3, y: 5}
+      cellType: grass
+    - location: {x: -3, y: 6}
+      cellType: amber
+    - location: {x: -3, y: 7}
+      cellType: grass
+    - location: {x: -3, y: 8}
+      cellType: grass
+    - location: {x: -3, y: 9}
+      cellType: grass
+    - location: {x: -3, y: 10}
+      cellType: grass
+    - location: {x: -3, y: 11}
+      cellType: grass
+    - location: {x: -2, y: -11}
+      cellType: grass
+    - location: {x: -2, y: -10}
+      cellType: grass
+    - location: {x: -2, y: -9}
+      cellType: grass
+    - location: {x: -2, y: -8}
+      cellType: mountain
+    - location: {x: -2, y: -7}
+      cellType: mountain
+    - location: {x: -2, y: -6}
+      cellType: road
+    - location: {x: -2, y: -5}
+      cellType: grass
+    - location: {x: -2, y: -4}
+      cellType: grass
+    - location: {x: -2, y: -3}
+      cellType: grass
+    - location: {x: -2, y: -2}
+      cellType: grass
+    - location: {x: -2, y: -1}
+      cellType: grass
+    - location: {x: -2, y: 0}
+      cellType: grass
+    - location: {x: -2, y: 1}
+      cellType: grass
+    - location: {x: -2, y: 2}
+      cellType: grass
+    - location: {x: -2, y: 3}
+      cellType: grass
+    - location: {x: -2, y: 4}
+      cellType: grass
+    - location: {x: -2, y: 5}
+      cellType: grass
+    - location: {x: -2, y: 6}
+      cellType: mountain
+    - location: {x: -2, y: 7}
+      cellType: grass
+    - location: {x: -2, y: 8}
+      cellType: grass
+    - location: {x: -2, y: 9}
+      cellType: grass
+    - location: {x: -2, y: 10}
+      cellType: grass
+    - location: {x: -2, y: 11}
+      cellType: grass
+    - location: {x: -1, y: -11}
+      cellType: grass
+    - location: {x: -1, y: -10}
+      cellType: grass
+    - location: {x: -1, y: -9}
+      cellType: grass
+    - location: {x: -1, y: -8}
+      cellType: mountain
+    - location: {x: -1, y: -7}
+      cellType: mountain
+    - location: {x: -1, y: -6}
+      cellType: road
+    - location: {x: -1, y: -5}
+      cellType: road
+    - location: {x: -1, y: -4}
+      cellType: grass
+    - location: {x: -1, y: -3}
+      cellType: grass
+    - location: {x: -1, y: -2}
+      cellType: grass
+    - location: {x: -1, y: -1}
+      cellType: grass
+    - location: {x: -1, y: 0}
+      cellType: grass
+    - location: {x: -1, y: 1}
+      cellType: grass
+    - location: {x: -1, y: 2}
+      cellType: grass
+    - location: {x: -1, y: 3}
+      cellType: grass
+    - location: {x: -1, y: 4}
+      cellType: grass
+    - location: {x: -1, y: 5}
+      cellType: mountain
+    - location: {x: -1, y: 6}
+      cellType: mountain
+    - location: {x: -1, y: 7}
+      cellType: grass
+    - location: {x: -1, y: 8}
+      cellType: grass
+    - location: {x: -1, y: 9}
+      cellType: grass
+    - location: {x: -1, y: 10}
+      cellType: grass
+    - location: {x: -1, y: 11}
+      cellType: grass
+    - location: {x: 0, y: -11}
+      cellType: grass
+    - location: {x: 0, y: -10}
+      cellType: grass
+    - location: {x: 0, y: -9}
+      cellType: grass
+    - location: {x: 0, y: -8}
+      cellType: mountain
+    - location: {x: 0, y: -7}
+      cellType: mountain
+    - location: {x: 0, y: -6}
+      cellType: mountain
+    - location: {x: 0, y: -5}
+      cellType: road
+    - location: {x: 0, y: -4}
+      cellType: grass
+    - location: {x: 0, y: -3}
+      cellType: grass
+    - location: {x: 0, y: -2}
+      cellType: mountain
+    - location: {x: 0, y: -1}
+      cellType: amber
+    - location: {x: 0, y: 0}
+      cellType: grass
+    - location: {x: 0, y: 1}
+      cellType: grass
+    - location: {x: 0, y: 2}
+      cellType: grass
+    - location: {x: 0, y: 3}
+      cellType: road
+    - location: {x: 0, y: 4}
+      cellType: wheat
+    - location: {x: 0, y: 5}
+      cellType: mountain
+    - location: {x: 0, y: 6}
+      cellType: mountain
+    - location: {x: 0, y: 7}
+      cellType: grass
+    - location: {x: 0, y: 8}
+      cellType: grass
+    - location: {x: 0, y: 9}
+      cellType: grass
+    - location: {x: 0, y: 10}
+      cellType: grass
+    - location: {x: 0, y: 11}
+      cellType: grass
+    - location: {x: 1, y: -11}
+      cellType: grass
+    - location: {x: 1, y: -10}
+      cellType: grass
+    - location: {x: 1, y: -9}
+      cellType: grass
+    - location: {x: 1, y: -8}
+      cellType: mountain
+    - location: {x: 1, y: -7}
+      cellType: mountain
+    - location: {x: 1, y: -6}
+      cellType: wheat
+    - location: {x: 1, y: -5}
+      cellType: grass
+    - location: {x: 1, y: -4}
+      cellType: grass
+    - location: {x: 1, y: -3}
+      cellType: grass
+    - location: {x: 1, y: -2}
+      cellType: grass
+    - location: {x: 1, y: -1}
+      cellType: grass
+    - location: {x: 1, y: 0}
+      cellType: mountain
+    - location: {x: 1, y: 1}
+      cellType: grass
+    - location: {x: 1, y: 2}
+      cellType: grass
+    - location: {x: 1, y: 3}
+      cellType: road
+    - location: {x: 1, y: 4}
+      cellType: mountain
+    - location: {x: 1, y: 5}
+      cellType: mountain
+    - location: {x: 1, y: 6}
+      cellType: mountain
+    - location: {x: 1, y: 7}
+      cellType: grass
+    - location: {x: 1, y: 8}
+      cellType: grass
+    - location: {x: 1, y: 9}
+      cellType: grass
+    - location: {x: 1, y: 10}
+      cellType: grass
+    - location: {x: 1, y: 11}
+      cellType: grass
+    - location: {x: 2, y: -11}
+      cellType: grass
+    - location: {x: 2, y: -10}
+      cellType: grass
+    - location: {x: 2, y: -9}
+      cellType: grass
+    - location: {x: 2, y: -8}
+      cellType: mountain
+    - location: {x: 2, y: -7}
+      cellType: grass
+    - location: {x: 2, y: -6}
+      cellType: grass
+    - location: {x: 2, y: -5}
+      cellType: grass
+    - location: {x: 2, y: -4}
+      cellType: grass
+    - location: {x: 2, y: -3}
+      cellType: grass
+    - location: {x: 2, y: -2}
+      cellType: grass
+    - location: {x: 2, y: -1}
+      cellType: grass
+    - location: {x: 2, y: 0}
+      cellType: grass
+    - location: {x: 2, y: 1}
+      cellType: grass
+    - location: {x: 2, y: 2}
+      cellType: grass
+    - location: {x: 2, y: 3}
+      cellType: grass
+    - location: {x: 2, y: 4}
+      cellType: road
+    - location: {x: 2, y: 5}
+      cellType: mountain
+    - location: {x: 2, y: 6}
+      cellType: mountain
+    - location: {x: 2, y: 7}
+      cellType: grass
+    - location: {x: 2, y: 8}
+      cellType: grass
+    - location: {x: 2, y: 9}
+      cellType: grass
+    - location: {x: 2, y: 10}
+      cellType: grass
+    - location: {x: 2, y: 11}
+      cellType: grass
+    - location: {x: 3, y: -11}
+      cellType: grass
+    - location: {x: 3, y: -10}
+      cellType: grass
+    - location: {x: 3, y: -9}
+      cellType: grass
+    - location: {x: 3, y: -8}
+      cellType: mountain
+    - location: {x: 3, y: -7}
+      cellType: grass
+    - location: {x: 3, y: -6}
+      cellType: grass
+    - location: {x: 3, y: -5}
+      cellType: grass
+    - location: {x: 3, y: -4}
+      cellType: grass
+    - location: {x: 3, y: -3}
+      cellType: grass
+    - location: {x: 3, y: -2}
+      cellType: grass
+    - location: {x: 3, y: -1}
+      cellType: grass
+    - location: {x: 3, y: 0}
+      cellType: grass
+    - location: {x: 3, y: 1}
+      cellType: grass
+    - location: {x: 3, y: 2}
+      cellType: grass
+    - location: {x: 3, y: 3}
+      cellType: grass
+    - location: {x: 3, y: 4}
+      cellType: road
+    - location: {x: 3, y: 5}
+      cellType: mountain
+    - location: {x: 3, y: 6}
+      cellType: mountain
+    - location: {x: 3, y: 7}
+      cellType: grass
+    - location: {x: 3, y: 8}
+      cellType: grass
+    - location: {x: 3, y: 9}
+      cellType: grass
+    - location: {x: 3, y: 10}
+      cellType: grass
+    - location: {x: 3, y: 11}
+      cellType: grass
+    - location: {x: 4, y: -11}
+      cellType: grass
+    - location: {x: 4, y: -10}
+      cellType: grass
+    - location: {x: 4, y: -9}
+      cellType: grass
+    - location: {x: 4, y: -8}
+      cellType: amber
+    - location: {x: 4, y: -7}
+      cellType: grass
+    - location: {x: 4, y: -6}
+      cellType: grass
+    - location: {x: 4, y: -5}
+      cellType: grass
+    - location: {x: 4, y: -4}
+      cellType: grass
+    - location: {x: 4, y: -3}
+      cellType: forest
+    - location: {x: 4, y: -2}
+      cellType: forest
+    - location: {x: 4, y: -1}
+      cellType: forest
+    - location: {x: 4, y: 0}
+      cellType: forest
+    - location: {x: 4, y: 1}
+      cellType: forest
+    - location: {x: 4, y: 2}
+      cellType: forest
+    - location: {x: 4, y: 3}
+      cellType: grass
+    - location: {x: 4, y: 4}
+      cellType: road
+    - location: {x: 4, y: 5}
+      cellType: mountain
+    - location: {x: 4, y: 6}
+      cellType: mountain
+    - location: {x: 4, y: 7}
+      cellType: grass
+    - location: {x: 4, y: 8}
+      cellType: grass
+    - location: {x: 4, y: 9}
+      cellType: grass
+    - location: {x: 4, y: 10}
+      cellType: grass
+    - location: {x: 4, y: 11}
+      cellType: grass
+    - location: {x: 5, y: -11}
+      cellType: grass
+    - location: {x: 5, y: -10}
+      cellType: grass
+    - location: {x: 5, y: -9}
+      cellType: grass
+    - location: {x: 5, y: -8}
+      cellType: grass
+    - location: {x: 5, y: -7}
+      cellType: grass
+    - location: {x: 5, y: -6}
+      cellType: grass
+    - location: {x: 5, y: -5}
+      cellType: grass
+    - location: {x: 5, y: -4}
+      cellType: forest
+    - location: {x: 5, y: -3}
+      cellType: forest
+    - location: {x: 5, y: -2}
+      cellType: wheat
+    - location: {x: 5, y: -1}
+      cellType: forest
+    - location: {x: 5, y: 0}
+      cellType: forest
+    - location: {x: 5, y: 1}
+      cellType: forest
+    - location: {x: 5, y: 2}
+      cellType: forest
+    - location: {x: 5, y: 3}
+      cellType: forest
+    - location: {x: 5, y: 4}
+      cellType: road
+    - location: {x: 5, y: 5}
+      cellType: mountain
+    - location: {x: 5, y: 6}
+      cellType: mountain
+    - location: {x: 5, y: 7}
+      cellType: grass
+    - location: {x: 5, y: 8}
+      cellType: grass
+    - location: {x: 5, y: 9}
+      cellType: grass
+    - location: {x: 5, y: 10}
+      cellType: grass
+    - location: {x: 5, y: 11}
+      cellType: grass
+    - location: {x: 6, y: -11}
+      cellType: grass
+    - location: {x: 6, y: -10}
+      cellType: grass
+    - location: {x: 6, y: -9}
+      cellType: grass
+    - location: {x: 6, y: -8}
+      cellType: grass
+    - location: {x: 6, y: -7}
+      cellType: wheat
+    - location: {x: 6, y: -6}
+      cellType: grass
+    - location: {x: 6, y: -5}
+      cellType: forest
+    - location: {x: 6, y: -4}
+      cellType: forest
+    - location: {x: 6, y: -3}
+      cellType: amberForge
+    - location: {x: 6, y: -2}
+      cellType: forest
+    - location: {x: 6, y: -1}
+      cellType: forest
+    - location: {x: 6, y: 0}
+      cellType: forest
+    - location: {x: 6, y: 1}
+      cellType: forest
+    - location: {x: 6, y: 2}
+      cellType: forest
+    - location: {x: 6, y: 3}
+      cellType: forest
+    - location: {x: 6, y: 4}
+      cellType: road
+    - location: {x: 6, y: 5}
+      cellType: forest
+    - location: {x: 6, y: 6}
+      cellType: mountain
+    - location: {x: 6, y: 7}
+      cellType: grass
+    - location: {x: 6, y: 8}
+      cellType: grass
+    - location: {x: 6, y: 9}
+      cellType: grass
+    - location: {x: 6, y: 10}
+      cellType: grass
+    - location: {x: 6, y: 11}
+      cellType: grass
+    - location: {x: 7, y: -11}
+      cellType: grass
+    - location: {x: 7, y: -10}
+      cellType: grass
+    - location: {x: 7, y: -9}
+      cellType: grass
+    - location: {x: 7, y: -8}
+      cellType: grass
+    - location: {x: 7, y: -7}
+      cellType: road
+    - location: {x: 7, y: -6}
+      cellType: grass
+    - location: {x: 7, y: -5}
+      cellType: forest
+    - location: {x: 7, y: -4}
+      cellType: forest
+    - location: {x: 7, y: -3}
+      cellType: grass
+    - location: {x: 7, y: -2}
+      cellType: grass
+    - location: {x: 7, y: -1}
+      cellType: forest
+    - location: {x: 7, y: 0}
+      cellType: forest
+    - location: {x: 7, y: 1}
+      cellType: forest
+    - location: {x: 7, y: 2}
+      cellType: forest
+    - location: {x: 7, y: 3}
+      cellType: forest
+    - location: {x: 7, y: 4}
+      cellType: road
+    - location: {x: 7, y: 5}
+      cellType: forest
+    - location: {x: 7, y: 6}
+      cellType: mountain
+    - location: {x: 7, y: 7}
+      cellType: grass
+    - location: {x: 7, y: 8}
+      cellType: grass
+    - location: {x: 7, y: 9}
+      cellType: grass
+    - location: {x: 7, y: 10}
+      cellType: grass
+    - location: {x: 7, y: 11}
+      cellType: grass
+    - location: {x: 8, y: -11}
+      cellType: grass
+    - location: {x: 8, y: -10}
+      cellType: grass
+    - location: {x: 8, y: -9}
+      cellType: grass
+    - location: {x: 8, y: -8}
+      cellType: grass
+    - location: {x: 8, y: -7}
+      cellType: road
+    - location: {x: 8, y: -6}
+      cellType: forest
+    - location: {x: 8, y: -5}
+      cellType: forest
+    - location: {x: 8, y: -4}
+      cellType: forest
+    - location: {x: 8, y: -3}
+      cellType: forest
+    - location: {x: 8, y: -2}
+      cellType: grass
+    - location: {x: 8, y: -1}
+      cellType: forest
+    - location: {x: 8, y: 0}
+      cellType: forest
+    - location: {x: 8, y: 1}
+      cellType: wheat
+    - location: {x: 8, y: 2}
+      cellType: forest
+    - location: {x: 8, y: 3}
+      cellType: forest
+    - location: {x: 8, y: 4}
+      cellType: road
+    - location: {x: 8, y: 5}
+      cellType: amber
+    - location: {x: 8, y: 6}
+      cellType: mountain
+    - location: {x: 8, y: 7}
+      cellType: grass
+    - location: {x: 8, y: 8}
+      cellType: grass
+    - location: {x: 8, y: 9}
+      cellType: grass
+    - location: {x: 8, y: 10}
+      cellType: grass
+    - location: {x: 8, y: 11}
+      cellType: grass
+    - location: {x: 9, y: -11}
+      cellType: grass
+    - location: {x: 9, y: -10}
+      cellType: grass
+    - location: {x: 9, y: -9}
+      cellType: grass
+    - location: {x: 9, y: -8}
+      cellType: road
+    - location: {x: 9, y: -7}
+      cellType: forest
+    - location: {x: 9, y: -6}
+      cellType: road
+    - location: {x: 9, y: -5}
+      cellType: road
+    - location: {x: 9, y: -4}
+      cellType: road
+    - location: {x: 9, y: -3}
+      cellType: road
+    - location: {x: 9, y: -2}
+      cellType: road
+    - location: {x: 9, y: -1}
+      cellType: road
+    - location: {x: 9, y: 0}
+      cellType: road
+    - location: {x: 9, y: 1}
+      cellType: road
+    - location: {x: 9, y: 2}
+      cellType: road
+    - location: {x: 9, y: 3}
+      cellType: road
+    - location: {x: 9, y: 4}
+      cellType: road
+    - location: {x: 9, y: 5}
+      cellType: grass
+    - location: {x: 9, y: 6}
+      cellType: mountain
+    - location: {x: 9, y: 7}
+      cellType: grass
+    - location: {x: 9, y: 8}
+      cellType: grass
+    - location: {x: 9, y: 9}
+      cellType: grass
+    - location: {x: 9, y: 10}
+      cellType: grass
+    - location: {x: 9, y: 11}
+      cellType: grass
+    - location: {x: 10, y: -11}
+      cellType: grass
+    - location: {x: 10, y: -10}
+      cellType: grass
+    - location: {x: 10, y: -9}
+      cellType: grass
+    - location: {x: 10, y: -8}
+      cellType: grass
+    - location: {x: 10, y: -7}
+      cellType: grass
+    - location: {x: 10, y: -6}
+      cellType: grass
+    - location: {x: 10, y: -5}
+      cellType: grass
+    - location: {x: 10, y: -4}
+      cellType: forest
+    - location: {x: 10, y: -3}
+      cellType: grass
+    - location: {x: 10, y: -2}
+      cellType: grass
+    - location: {x: 10, y: -1}
+      cellType: grass
+    - location: {x: 10, y: 0}
+      cellType: forest
+    - location: {x: 10, y: 1}
+      cellType: grass
+    - location: {x: 10, y: 2}
+      cellType: grass
+    - location: {x: 10, y: 3}
+      cellType: grass
+    - location: {x: 10, y: 4}
+      cellType: grass
+    - location: {x: 10, y: 5}
+      cellType: grass
+    - location: {x: 10, y: 6}
+      cellType: mountain
+    - location: {x: 10, y: 7}
+      cellType: grass
+    - location: {x: 10, y: 8}
+      cellType: grass
+    - location: {x: 10, y: 9}
+      cellType: grass
+    - location: {x: 10, y: 10}
+      cellType: grass
+    - location: {x: 10, y: 11}
+      cellType: grass
+    - location: {x: 11, y: -11}
+      cellType: grass
+    - location: {x: 11, y: -10}
+      cellType: grass
+    - location: {x: 11, y: -9}
+      cellType: grass
+    - location: {x: 11, y: -8}
+      cellType: grass
+    - location: {x: 11, y: -7}
+      cellType: grass
+    - location: {x: 11, y: -6}
+      cellType: grass
+    - location: {x: 11, y: -5}
+      cellType: grass
+    - location: {x: 11, y: -4}
+      cellType: grass
+    - location: {x: 11, y: -3}
+      cellType: grass
+    - location: {x: 11, y: -2}
+      cellType: grass
+    - location: {x: 11, y: -1}
+      cellType: grass
+    - location: {x: 11, y: 0}
+      cellType: grass
+    - location: {x: 11, y: 1}
+      cellType: grass
+    - location: {x: 11, y: 2}
+      cellType: grass
+    - location: {x: 11, y: 3}
+      cellType: grass
+    - location: {x: 11, y: 4}
+      cellType: grass
+    - location: {x: 11, y: 5}
+      cellType: grass
+    - location: {x: 11, y: 6}
+      cellType: grass
+    - location: {x: 11, y: 7}
+      cellType: grass
+    - location: {x: 11, y: 8}
+      cellType: grass
+    - location: {x: 11, y: 9}
+      cellType: grass
+    - location: {x: 11, y: 10}
+      cellType: grass
+    - location: {x: 11, y: 11}
+      cellType: grass
+    entities:
+    - Team: -1
+      Entities:
+      - Data: {fileID: 11400000, guid: 007fafa82b51345319298048e99631e6, type: 2}
+        SpawnLocation:
+          Location: {x: -6, y: 5}
+      - Data: {fileID: 11400000, guid: 007fafa82b51345319298048e99631e6, type: 2}
+        SpawnLocation:
+          Location: {x: 0, y: 4}
+      - Data: {fileID: 11400000, guid: 007fafa82b51345319298048e99631e6, type: 2}
+        SpawnLocation:
+          Location: {x: -4, y: 0}
+      - Data: {fileID: 11400000, guid: 007fafa82b51345319298048e99631e6, type: 2}
+        SpawnLocation:
+          Location: {x: -8, y: -3}
+      - Data: {fileID: 11400000, guid: e16d9fca1b51810438ab31661f34df6f, type: 2}
+        SpawnLocation:
+          Location: {x: -6, y: 1}
+      - Data: {fileID: 11400000, guid: dfb82f31371a84690ae123195a14bf64, type: 2}
+        SpawnLocation:
+          Location: {x: -3, y: 6}
+      - Data: {fileID: 11400000, guid: dfb82f31371a84690ae123195a14bf64, type: 2}
+        SpawnLocation:
+          Location: {x: 0, y: -1}
+      - Data: {fileID: 11400000, guid: dfb82f31371a84690ae123195a14bf64, type: 2}
+        SpawnLocation:
+          Location: {x: -8, y: -7}
+      - Data: {fileID: 11400000, guid: dfb82f31371a84690ae123195a14bf64, type: 2}
+        SpawnLocation:
+          Location: {x: 8, y: 5}
+      - Data: {fileID: 11400000, guid: dfb82f31371a84690ae123195a14bf64, type: 2}
+        SpawnLocation:
+          Location: {x: 4, y: -8}
+      - Data: {fileID: 11400000, guid: e16d9fca1b51810438ab31661f34df6f, type: 2}
+        SpawnLocation:
+          Location: {x: 6, y: -3}
+      - Data: {fileID: 11400000, guid: 007fafa82b51345319298048e99631e6, type: 2}
+        SpawnLocation:
+          Location: {x: 6, y: -7}
+      - Data: {fileID: 11400000, guid: 007fafa82b51345319298048e99631e6, type: 2}
+        SpawnLocation:
+          Location: {x: 1, y: -6}
+      - Data: {fileID: 11400000, guid: 007fafa82b51345319298048e99631e6, type: 2}
+        SpawnLocation:
+          Location: {x: 5, y: -2}
+      - Data: {fileID: 11400000, guid: 007fafa82b51345319298048e99631e6, type: 2}
+        SpawnLocation:
+          Location: {x: 8, y: 1}
+      - Data: {fileID: 11400000, guid: f3eb88eee96a64370827475771891374, type: 2}
+        SpawnLocation:
+          Location: {x: 7, y: -2}
+      - Data: {fileID: 11400000, guid: a2899be04b8f54805a7f62c027e3675d, type: 2}
+        SpawnLocation:
+          Location: {x: 3, y: -4}
+      - Data: {fileID: 11400000, guid: a2899be04b8f54805a7f62c027e3675d, type: 2}
+        SpawnLocation:
+          Location: {x: -3, y: -3}
+      - Data: {fileID: 11400000, guid: a2899be04b8f54805a7f62c027e3675d, type: 2}
+        SpawnLocation:
+          Location: {x: 3, y: 1}
+      - Data: {fileID: 11400000, guid: a2899be04b8f54805a7f62c027e3675d, type: 2}
+        SpawnLocation:
+          Location: {x: -2, y: 2}
+      - Data: {fileID: 11400000, guid: f3eb88eee96a64370827475771891374, type: 2}
+        SpawnLocation:
+          Location: {x: -6, y: 0}
+      - Data: {fileID: 11400000, guid: f3eb88eee96a64370827475771891374, type: 2}
+        SpawnLocation:
+          Location: {x: -9, y: -6}
+      - Data: {fileID: 11400000, guid: f3eb88eee96a64370827475771891374, type: 2}
+        SpawnLocation:
+          Location: {x: 10, y: 4}
+    - Team: 1
+      Entities:
+      - Data: {fileID: 11400000, guid: 5d9e30910c9795b49bea0c2c257e60eb, type: 2}
+        SpawnLocation:
+          Location: {x: -6, y: 5}
+      - Data: {fileID: 11400000, guid: f8a9d9571b0a8324587b160065ca7fce, type: 2}
+        SpawnLocation:
+          Location: {x: -6, y: 5}
+      - Data: {fileID: 11400000, guid: b52e5f177d13b1b4580a21f9c5ad0bf1, type: 2}
+        SpawnLocation:
+          Location: {x: -5, y: 6}
+      - Data: {fileID: 11400000, guid: 13a02f740ff7d294ca02fe7f547820c0, type: 2}
+        SpawnLocation:
+          Location: {x: -3, y: 6}
+    - Team: 2
+      Entities:
+      - Data: {fileID: 11400000, guid: 5d9e30910c9795b49bea0c2c257e60eb, type: 2}
+        SpawnLocation:
+          Location: {x: 6, y: -7}
+      - Data: {fileID: 11400000, guid: f8a9d9571b0a8324587b160065ca7fce, type: 2}
+        SpawnLocation:
+          Location: {x: 6, y: -7}
+      - Data: {fileID: 11400000, guid: b52e5f177d13b1b4580a21f9c5ad0bf1, type: 2}
+        SpawnLocation:
+          Location: {x: 6, y: -8}
+      - Data: {fileID: 11400000, guid: 13a02f740ff7d294ca02fe7f547820c0, type: 2}
+        SpawnLocation:
+          Location: {x: 4, y: -8}
   PreviewMaps: []
