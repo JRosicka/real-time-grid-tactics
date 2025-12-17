@@ -1188,108 +1188,12 @@ MonoBehaviour:
     wideLeftSide: 1
     wideRightSide: 0
     cells:
-    - location: {x: -11, y: -11}
-      cellType: grass
-    - location: {x: -11, y: -10}
-      cellType: grass
-    - location: {x: -11, y: -9}
-      cellType: grass
-    - location: {x: -11, y: -8}
-      cellType: grass
-    - location: {x: -11, y: -7}
-      cellType: grass
-    - location: {x: -11, y: -6}
-      cellType: wheat
-    - location: {x: -11, y: -5}
-      cellType: grass
-    - location: {x: -11, y: -4}
-      cellType: grass
-    - location: {x: -11, y: -3}
-      cellType: grass
-    - location: {x: -11, y: -2}
-      cellType: grass
-    - location: {x: -11, y: -1}
-      cellType: grass
-    - location: {x: -11, y: 0}
-      cellType: grass
-    - location: {x: -11, y: 1}
-      cellType: grass
-    - location: {x: -11, y: 2}
-      cellType: grass
-    - location: {x: -11, y: 3}
-      cellType: grass
-    - location: {x: -11, y: 4}
-      cellType: grass
-    - location: {x: -11, y: 5}
-      cellType: grass
-    - location: {x: -11, y: 6}
-      cellType: grass
-    - location: {x: -11, y: 7}
-      cellType: grass
-    - location: {x: -11, y: 8}
-      cellType: grass
-    - location: {x: -11, y: 9}
-      cellType: grass
-    - location: {x: -11, y: 10}
-      cellType: grass
-    - location: {x: -11, y: 11}
-      cellType: grass
-    - location: {x: -10, y: -11}
-      cellType: grass
-    - location: {x: -10, y: -10}
-      cellType: grass
-    - location: {x: -10, y: -9}
-      cellType: grass
-    - location: {x: -10, y: -8}
-      cellType: grass
-    - location: {x: -10, y: -7}
-      cellType: grass
-    - location: {x: -10, y: -6}
-      cellType: wheat
-    - location: {x: -10, y: -5}
-      cellType: grass
-    - location: {x: -10, y: -4}
-      cellType: grass
-    - location: {x: -10, y: -3}
-      cellType: grass
-    - location: {x: -10, y: -2}
-      cellType: grass
-    - location: {x: -10, y: -1}
-      cellType: grass
-    - location: {x: -10, y: 0}
-      cellType: grass
-    - location: {x: -10, y: 1}
-      cellType: grass
-    - location: {x: -10, y: 2}
-      cellType: grass
-    - location: {x: -10, y: 3}
-      cellType: grass
-    - location: {x: -10, y: 4}
-      cellType: grass
-    - location: {x: -10, y: 5}
-      cellType: grass
-    - location: {x: -10, y: 6}
-      cellType: grass
-    - location: {x: -10, y: 7}
-      cellType: grass
-    - location: {x: -10, y: 8}
-      cellType: grass
-    - location: {x: -10, y: 9}
-      cellType: grass
-    - location: {x: -10, y: 10}
-      cellType: grass
-    - location: {x: -10, y: 11}
-      cellType: grass
-    - location: {x: -9, y: -11}
-      cellType: grass
-    - location: {x: -9, y: -10}
-      cellType: grass
     - location: {x: -9, y: -9}
       cellType: grass
     - location: {x: -9, y: -8}
       cellType: grass
     - location: {x: -9, y: -7}
-      cellType: grass
+      cellType: mountain
     - location: {x: -9, y: -6}
       cellType: wheat
     - location: {x: -9, y: -5}
@@ -1297,7 +1201,7 @@ MonoBehaviour:
     - location: {x: -9, y: -4}
       cellType: grass
     - location: {x: -9, y: -3}
-      cellType: grass
+      cellType: mountain
     - location: {x: -9, y: -2}
       cellType: grass
     - location: {x: -9, y: -1}
@@ -1305,9 +1209,9 @@ MonoBehaviour:
     - location: {x: -9, y: 0}
       cellType: grass
     - location: {x: -9, y: 1}
-      cellType: grass
+      cellType: forest
     - location: {x: -9, y: 2}
-      cellType: grass
+      cellType: forest
     - location: {x: -9, y: 3}
       cellType: grass
     - location: {x: -9, y: 4}
@@ -1316,38 +1220,24 @@ MonoBehaviour:
       cellType: grass
     - location: {x: -9, y: 6}
       cellType: grass
-    - location: {x: -9, y: 7}
-      cellType: grass
-    - location: {x: -9, y: 8}
-      cellType: grass
-    - location: {x: -9, y: 9}
-      cellType: grass
-    - location: {x: -9, y: 10}
-      cellType: grass
-    - location: {x: -9, y: 11}
-      cellType: grass
-    - location: {x: -8, y: -11}
-      cellType: grass
-    - location: {x: -8, y: -10}
-      cellType: grass
     - location: {x: -8, y: -9}
       cellType: grass
     - location: {x: -8, y: -8}
-      cellType: grass
+      cellType: mountain
     - location: {x: -8, y: -7}
       cellType: grass
     - location: {x: -8, y: -6}
-      cellType: wheat
+      cellType: mountain
     - location: {x: -8, y: -5}
       cellType: grass
     - location: {x: -8, y: -4}
-      cellType: grass
+      cellType: forest
     - location: {x: -8, y: -3}
-      cellType: grass
+      cellType: mountain
     - location: {x: -8, y: -2}
-      cellType: grass
+      cellType: mountain
     - location: {x: -8, y: -1}
-      cellType: grass
+      cellType: forest
     - location: {x: -8, y: 0}
       cellType: grass
     - location: {x: -8, y: 1}
@@ -1357,31 +1247,17 @@ MonoBehaviour:
     - location: {x: -8, y: 3}
       cellType: grass
     - location: {x: -8, y: 4}
-      cellType: grass
+      cellType: forest
     - location: {x: -8, y: 5}
-      cellType: grass
+      cellType: forest
     - location: {x: -8, y: 6}
-      cellType: grass
-    - location: {x: -8, y: 7}
-      cellType: grass
-    - location: {x: -8, y: 8}
-      cellType: grass
-    - location: {x: -8, y: 9}
-      cellType: grass
-    - location: {x: -8, y: 10}
-      cellType: grass
-    - location: {x: -8, y: 11}
-      cellType: grass
-    - location: {x: -7, y: -11}
-      cellType: grass
-    - location: {x: -7, y: -10}
       cellType: grass
     - location: {x: -7, y: -9}
       cellType: grass
     - location: {x: -7, y: -8}
       cellType: grass
     - location: {x: -7, y: -7}
-      cellType: grass
+      cellType: mountain
     - location: {x: -7, y: -6}
       cellType: grass
     - location: {x: -7, y: -5}
@@ -1408,26 +1284,12 @@ MonoBehaviour:
       cellType: grass
     - location: {x: -7, y: 6}
       cellType: grass
-    - location: {x: -7, y: 7}
-      cellType: grass
-    - location: {x: -7, y: 8}
-      cellType: grass
-    - location: {x: -7, y: 9}
-      cellType: grass
-    - location: {x: -7, y: 10}
-      cellType: grass
-    - location: {x: -7, y: 11}
-      cellType: grass
-    - location: {x: -6, y: -11}
-      cellType: grass
-    - location: {x: -6, y: -10}
-      cellType: grass
     - location: {x: -6, y: -9}
       cellType: grass
     - location: {x: -6, y: -8}
       cellType: grass
     - location: {x: -6, y: -7}
-      cellType: grass
+      cellType: mountain
     - location: {x: -6, y: -6}
       cellType: grass
     - location: {x: -6, y: -5}
@@ -1454,28 +1316,14 @@ MonoBehaviour:
       cellType: grass
     - location: {x: -6, y: 6}
       cellType: grass
-    - location: {x: -6, y: 7}
-      cellType: grass
-    - location: {x: -6, y: 8}
-      cellType: grass
-    - location: {x: -6, y: 9}
-      cellType: grass
-    - location: {x: -6, y: 10}
-      cellType: grass
-    - location: {x: -6, y: 11}
-      cellType: grass
-    - location: {x: -5, y: -11}
-      cellType: grass
-    - location: {x: -5, y: -10}
-      cellType: grass
     - location: {x: -5, y: -9}
       cellType: grass
     - location: {x: -5, y: -8}
-      cellType: grass
+      cellType: mountain
     - location: {x: -5, y: -7}
-      cellType: grass
+      cellType: mountain
     - location: {x: -5, y: -6}
-      cellType: grass
+      cellType: mountain
     - location: {x: -5, y: -5}
       cellType: mountain
     - location: {x: -5, y: -4}
@@ -1500,28 +1348,14 @@ MonoBehaviour:
       cellType: grass
     - location: {x: -5, y: 6}
       cellType: grass
-    - location: {x: -5, y: 7}
-      cellType: grass
-    - location: {x: -5, y: 8}
-      cellType: grass
-    - location: {x: -5, y: 9}
-      cellType: grass
-    - location: {x: -5, y: 10}
-      cellType: grass
-    - location: {x: -5, y: 11}
-      cellType: grass
-    - location: {x: -4, y: -11}
-      cellType: grass
-    - location: {x: -4, y: -10}
-      cellType: grass
     - location: {x: -4, y: -9}
       cellType: grass
     - location: {x: -4, y: -8}
-      cellType: grass
+      cellType: mountain
     - location: {x: -4, y: -7}
       cellType: grass
     - location: {x: -4, y: -6}
-      cellType: grass
+      cellType: mountain
     - location: {x: -4, y: -5}
       cellType: mountain
     - location: {x: -4, y: -4}
@@ -1546,28 +1380,14 @@ MonoBehaviour:
       cellType: grass
     - location: {x: -4, y: 6}
       cellType: grass
-    - location: {x: -4, y: 7}
-      cellType: grass
-    - location: {x: -4, y: 8}
-      cellType: grass
-    - location: {x: -4, y: 9}
-      cellType: grass
-    - location: {x: -4, y: 10}
-      cellType: grass
-    - location: {x: -4, y: 11}
-      cellType: grass
-    - location: {x: -3, y: -11}
-      cellType: grass
-    - location: {x: -3, y: -10}
-      cellType: grass
     - location: {x: -3, y: -9}
-      cellType: grass
+      cellType: mountain
     - location: {x: -3, y: -8}
       cellType: grass
     - location: {x: -3, y: -7}
       cellType: grass
     - location: {x: -3, y: -6}
-      cellType: grass
+      cellType: mountain
     - location: {x: -3, y: -5}
       cellType: mountain
     - location: {x: -3, y: -4}
@@ -1589,31 +1409,17 @@ MonoBehaviour:
     - location: {x: -3, y: 4}
       cellType: grass
     - location: {x: -3, y: 5}
-      cellType: grass
+      cellType: forest
     - location: {x: -3, y: 6}
-      cellType: grass
-    - location: {x: -3, y: 7}
-      cellType: grass
-    - location: {x: -3, y: 8}
-      cellType: grass
-    - location: {x: -3, y: 9}
-      cellType: grass
-    - location: {x: -3, y: 10}
-      cellType: grass
-    - location: {x: -3, y: 11}
-      cellType: grass
-    - location: {x: -2, y: -11}
-      cellType: grass
-    - location: {x: -2, y: -10}
       cellType: grass
     - location: {x: -2, y: -9}
       cellType: grass
     - location: {x: -2, y: -8}
       cellType: grass
     - location: {x: -2, y: -7}
-      cellType: grass
+      cellType: mountain
     - location: {x: -2, y: -6}
-      cellType: grass
+      cellType: mountain
     - location: {x: -2, y: -5}
       cellType: mountain
     - location: {x: -2, y: -4}
@@ -1635,31 +1441,17 @@ MonoBehaviour:
     - location: {x: -2, y: 4}
       cellType: grass
     - location: {x: -2, y: 5}
-      cellType: grass
+      cellType: forest
     - location: {x: -2, y: 6}
-      cellType: grass
-    - location: {x: -2, y: 7}
-      cellType: grass
-    - location: {x: -2, y: 8}
-      cellType: grass
-    - location: {x: -2, y: 9}
-      cellType: grass
-    - location: {x: -2, y: 10}
-      cellType: grass
-    - location: {x: -2, y: 11}
-      cellType: grass
-    - location: {x: -1, y: -11}
-      cellType: grass
-    - location: {x: -1, y: -10}
       cellType: grass
     - location: {x: -1, y: -9}
       cellType: grass
     - location: {x: -1, y: -8}
-      cellType: grass
+      cellType: mountain
     - location: {x: -1, y: -7}
-      cellType: grass
+      cellType: mountain
     - location: {x: -1, y: -6}
-      cellType: grass
+      cellType: mountain
     - location: {x: -1, y: -5}
       cellType: grass
     - location: {x: -1, y: -4}
@@ -1684,28 +1476,14 @@ MonoBehaviour:
       cellType: grass
     - location: {x: -1, y: 6}
       cellType: grass
-    - location: {x: -1, y: 7}
-      cellType: grass
-    - location: {x: -1, y: 8}
-      cellType: grass
-    - location: {x: -1, y: 9}
-      cellType: grass
-    - location: {x: -1, y: 10}
-      cellType: grass
-    - location: {x: -1, y: 11}
-      cellType: grass
-    - location: {x: 0, y: -11}
-      cellType: grass
-    - location: {x: 0, y: -10}
-      cellType: grass
     - location: {x: 0, y: -9}
       cellType: grass
     - location: {x: 0, y: -8}
-      cellType: grass
+      cellType: mountain
     - location: {x: 0, y: -7}
-      cellType: grass
+      cellType: mountain
     - location: {x: 0, y: -6}
-      cellType: grass
+      cellType: mountain
     - location: {x: 0, y: -5}
       cellType: amber
     - location: {x: 0, y: -4}
@@ -1730,28 +1508,14 @@ MonoBehaviour:
       cellType: grass
     - location: {x: 0, y: 6}
       cellType: grass
-    - location: {x: 0, y: 7}
-      cellType: grass
-    - location: {x: 0, y: 8}
-      cellType: grass
-    - location: {x: 0, y: 9}
-      cellType: grass
-    - location: {x: 0, y: 10}
-      cellType: grass
-    - location: {x: 0, y: 11}
-      cellType: grass
-    - location: {x: 1, y: -11}
-      cellType: grass
-    - location: {x: 1, y: -10}
-      cellType: grass
     - location: {x: 1, y: -9}
       cellType: grass
     - location: {x: 1, y: -8}
-      cellType: grass
+      cellType: mountain
     - location: {x: 1, y: -7}
-      cellType: grass
+      cellType: mountain
     - location: {x: 1, y: -6}
-      cellType: grass
+      cellType: mountain
     - location: {x: 1, y: -5}
       cellType: grass
     - location: {x: 1, y: -4}
@@ -1776,28 +1540,14 @@ MonoBehaviour:
       cellType: grass
     - location: {x: 1, y: 6}
       cellType: grass
-    - location: {x: 1, y: 7}
-      cellType: grass
-    - location: {x: 1, y: 8}
-      cellType: grass
-    - location: {x: 1, y: 9}
-      cellType: grass
-    - location: {x: 1, y: 10}
-      cellType: grass
-    - location: {x: 1, y: 11}
-      cellType: grass
-    - location: {x: 2, y: -11}
-      cellType: grass
-    - location: {x: 2, y: -10}
-      cellType: grass
     - location: {x: 2, y: -9}
       cellType: grass
     - location: {x: 2, y: -8}
-      cellType: grass
+      cellType: mountain
     - location: {x: 2, y: -7}
-      cellType: grass
+      cellType: mountain
     - location: {x: 2, y: -6}
-      cellType: grass
+      cellType: mountain
     - location: {x: 2, y: -5}
       cellType: mountain
     - location: {x: 2, y: -4}
@@ -1819,31 +1569,17 @@ MonoBehaviour:
     - location: {x: 2, y: 4}
       cellType: wheat
     - location: {x: 2, y: 5}
-      cellType: grass
+      cellType: forest
     - location: {x: 2, y: 6}
       cellType: grass
-    - location: {x: 2, y: 7}
-      cellType: grass
-    - location: {x: 2, y: 8}
-      cellType: grass
-    - location: {x: 2, y: 9}
-      cellType: grass
-    - location: {x: 2, y: 10}
-      cellType: grass
-    - location: {x: 2, y: 11}
-      cellType: grass
-    - location: {x: 3, y: -11}
-      cellType: grass
-    - location: {x: 3, y: -10}
-      cellType: grass
     - location: {x: 3, y: -9}
-      cellType: grass
+      cellType: mountain
     - location: {x: 3, y: -8}
       cellType: grass
     - location: {x: 3, y: -7}
       cellType: grass
     - location: {x: 3, y: -6}
-      cellType: grass
+      cellType: mountain
     - location: {x: 3, y: -5}
       cellType: mountain
     - location: {x: 3, y: -4}
@@ -1865,22 +1601,8 @@ MonoBehaviour:
     - location: {x: 3, y: 4}
       cellType: grass
     - location: {x: 3, y: 5}
-      cellType: grass
+      cellType: forest
     - location: {x: 3, y: 6}
-      cellType: grass
-    - location: {x: 3, y: 7}
-      cellType: grass
-    - location: {x: 3, y: 8}
-      cellType: grass
-    - location: {x: 3, y: 9}
-      cellType: grass
-    - location: {x: 3, y: 10}
-      cellType: grass
-    - location: {x: 3, y: 11}
-      cellType: grass
-    - location: {x: 4, y: -11}
-      cellType: grass
-    - location: {x: 4, y: -10}
       cellType: grass
     - location: {x: 4, y: -9}
       cellType: grass
@@ -1889,7 +1611,7 @@ MonoBehaviour:
     - location: {x: 4, y: -7}
       cellType: grass
     - location: {x: 4, y: -6}
-      cellType: grass
+      cellType: mountain
     - location: {x: 4, y: -5}
       cellType: mountain
     - location: {x: 4, y: -4}
@@ -1914,28 +1636,14 @@ MonoBehaviour:
       cellType: grass
     - location: {x: 4, y: 6}
       cellType: grass
-    - location: {x: 4, y: 7}
-      cellType: grass
-    - location: {x: 4, y: 8}
-      cellType: grass
-    - location: {x: 4, y: 9}
-      cellType: grass
-    - location: {x: 4, y: 10}
-      cellType: grass
-    - location: {x: 4, y: 11}
-      cellType: grass
-    - location: {x: 5, y: -11}
-      cellType: grass
-    - location: {x: 5, y: -10}
-      cellType: grass
     - location: {x: 5, y: -9}
       cellType: grass
     - location: {x: 5, y: -8}
-      cellType: grass
+      cellType: mountain
     - location: {x: 5, y: -7}
-      cellType: grass
+      cellType: mountain
     - location: {x: 5, y: -6}
-      cellType: grass
+      cellType: mountain
     - location: {x: 5, y: -5}
       cellType: mountain
     - location: {x: 5, y: -4}
@@ -1960,28 +1668,14 @@ MonoBehaviour:
       cellType: grass
     - location: {x: 5, y: 6}
       cellType: grass
-    - location: {x: 5, y: 7}
-      cellType: grass
-    - location: {x: 5, y: 8}
-      cellType: grass
-    - location: {x: 5, y: 9}
-      cellType: grass
-    - location: {x: 5, y: 10}
-      cellType: grass
-    - location: {x: 5, y: 11}
-      cellType: grass
-    - location: {x: 6, y: -11}
-      cellType: grass
-    - location: {x: 6, y: -10}
-      cellType: grass
     - location: {x: 6, y: -9}
       cellType: grass
     - location: {x: 6, y: -8}
-      cellType: grass
+      cellType: mountain
     - location: {x: 6, y: -7}
-      cellType: grass
+      cellType: mountain
     - location: {x: 6, y: -6}
-      cellType: grass
+      cellType: mountain
     - location: {x: 6, y: -5}
       cellType: grass
     - location: {x: 6, y: -4}
@@ -2006,26 +1700,12 @@ MonoBehaviour:
       cellType: grass
     - location: {x: 6, y: 6}
       cellType: grass
-    - location: {x: 6, y: 7}
-      cellType: grass
-    - location: {x: 6, y: 8}
-      cellType: grass
-    - location: {x: 6, y: 9}
-      cellType: grass
-    - location: {x: 6, y: 10}
-      cellType: grass
-    - location: {x: 6, y: 11}
-      cellType: grass
-    - location: {x: 7, y: -11}
-      cellType: grass
-    - location: {x: 7, y: -10}
-      cellType: grass
     - location: {x: 7, y: -9}
       cellType: grass
     - location: {x: 7, y: -8}
       cellType: grass
     - location: {x: 7, y: -7}
-      cellType: grass
+      cellType: mountain
     - location: {x: 7, y: -6}
       cellType: grass
     - location: {x: 7, y: -5}
@@ -2052,20 +1732,6 @@ MonoBehaviour:
       cellType: grass
     - location: {x: 7, y: 6}
       cellType: grass
-    - location: {x: 7, y: 7}
-      cellType: grass
-    - location: {x: 7, y: 8}
-      cellType: grass
-    - location: {x: 7, y: 9}
-      cellType: grass
-    - location: {x: 7, y: 10}
-      cellType: grass
-    - location: {x: 7, y: 11}
-      cellType: grass
-    - location: {x: 8, y: -11}
-      cellType: grass
-    - location: {x: 8, y: -10}
-      cellType: grass
     - location: {x: 8, y: -9}
       cellType: grass
     - location: {x: 8, y: -8}
@@ -2079,11 +1745,11 @@ MonoBehaviour:
     - location: {x: 8, y: -4}
       cellType: grass
     - location: {x: 8, y: -3}
-      cellType: grass
+      cellType: mountain
     - location: {x: 8, y: -2}
       cellType: mountain
     - location: {x: 8, y: -1}
-      cellType: grass
+      cellType: forest
     - location: {x: 8, y: 0}
       cellType: grass
     - location: {x: 8, y: 1}
@@ -2095,156 +1761,56 @@ MonoBehaviour:
     - location: {x: 8, y: 4}
       cellType: forest
     - location: {x: 8, y: 5}
-      cellType: grass
+      cellType: forest
     - location: {x: 8, y: 6}
-      cellType: grass
-    - location: {x: 8, y: 7}
-      cellType: grass
-    - location: {x: 8, y: 8}
-      cellType: grass
-    - location: {x: 8, y: 9}
-      cellType: grass
-    - location: {x: 8, y: 10}
-      cellType: grass
-    - location: {x: 8, y: 11}
-      cellType: grass
-    - location: {x: 9, y: -11}
-      cellType: grass
-    - location: {x: 9, y: -10}
       cellType: grass
     - location: {x: 9, y: -9}
       cellType: grass
     - location: {x: 9, y: -8}
-      cellType: grass
+      cellType: mountain
     - location: {x: 9, y: -7}
-      cellType: grass
+      cellType: mountain
     - location: {x: 9, y: -6}
-      cellType: grass
+      cellType: mountain
     - location: {x: 9, y: -5}
       cellType: grass
     - location: {x: 9, y: -4}
-      cellType: grass
+      cellType: forest
     - location: {x: 9, y: -3}
-      cellType: grass
+      cellType: mountain
     - location: {x: 9, y: -2}
-      cellType: grass
+      cellType: mountain
     - location: {x: 9, y: -1}
       cellType: grass
     - location: {x: 9, y: 0}
       cellType: grass
     - location: {x: 9, y: 1}
-      cellType: grass
+      cellType: forest
     - location: {x: 9, y: 2}
       cellType: grass
     - location: {x: 9, y: 3}
       cellType: grass
     - location: {x: 9, y: 4}
-      cellType: grass
+      cellType: forest
     - location: {x: 9, y: 5}
       cellType: grass
     - location: {x: 9, y: 6}
       cellType: grass
-    - location: {x: 9, y: 7}
-      cellType: grass
-    - location: {x: 9, y: 8}
-      cellType: grass
-    - location: {x: 9, y: 9}
-      cellType: grass
-    - location: {x: 9, y: 10}
-      cellType: grass
-    - location: {x: 9, y: 11}
-      cellType: grass
-    - location: {x: 10, y: -11}
-      cellType: grass
-    - location: {x: 10, y: -10}
-      cellType: grass
-    - location: {x: 10, y: -9}
-      cellType: grass
     - location: {x: 10, y: -8}
-      cellType: grass
-    - location: {x: 10, y: -7}
       cellType: grass
     - location: {x: 10, y: -6}
       cellType: grass
-    - location: {x: 10, y: -5}
-      cellType: grass
     - location: {x: 10, y: -4}
-      cellType: grass
-    - location: {x: 10, y: -3}
       cellType: grass
     - location: {x: 10, y: -2}
       cellType: grass
-    - location: {x: 10, y: -1}
-      cellType: grass
     - location: {x: 10, y: 0}
       cellType: grass
-    - location: {x: 10, y: 1}
-      cellType: grass
     - location: {x: 10, y: 2}
-      cellType: grass
-    - location: {x: 10, y: 3}
-      cellType: grass
+      cellType: forest
     - location: {x: 10, y: 4}
       cellType: grass
-    - location: {x: 10, y: 5}
-      cellType: grass
     - location: {x: 10, y: 6}
-      cellType: grass
-    - location: {x: 10, y: 7}
-      cellType: grass
-    - location: {x: 10, y: 8}
-      cellType: grass
-    - location: {x: 10, y: 9}
-      cellType: grass
-    - location: {x: 10, y: 10}
-      cellType: grass
-    - location: {x: 10, y: 11}
-      cellType: grass
-    - location: {x: 11, y: -11}
-      cellType: grass
-    - location: {x: 11, y: -10}
-      cellType: grass
-    - location: {x: 11, y: -9}
-      cellType: grass
-    - location: {x: 11, y: -8}
-      cellType: grass
-    - location: {x: 11, y: -7}
-      cellType: grass
-    - location: {x: 11, y: -6}
-      cellType: grass
-    - location: {x: 11, y: -5}
-      cellType: grass
-    - location: {x: 11, y: -4}
-      cellType: grass
-    - location: {x: 11, y: -3}
-      cellType: grass
-    - location: {x: 11, y: -2}
-      cellType: grass
-    - location: {x: 11, y: -1}
-      cellType: grass
-    - location: {x: 11, y: 0}
-      cellType: grass
-    - location: {x: 11, y: 1}
-      cellType: grass
-    - location: {x: 11, y: 2}
-      cellType: grass
-    - location: {x: 11, y: 3}
-      cellType: grass
-    - location: {x: 11, y: 4}
-      cellType: grass
-    - location: {x: 11, y: 5}
-      cellType: grass
-    - location: {x: 11, y: 6}
-      cellType: grass
-    - location: {x: 11, y: 7}
-      cellType: grass
-    - location: {x: 11, y: 8}
-      cellType: grass
-    - location: {x: 11, y: 9}
-      cellType: grass
-    - location: {x: 11, y: 10}
-      cellType: grass
-    - location: {x: 11, y: 11}
       cellType: grass
     entities:
     - Team: -1
@@ -2353,6 +1919,8 @@ MonoBehaviour:
     wideLeftSide: 0
     wideRightSide: 0
     cells:
+    - location: {x: -11, y: -12}
+      cellType: grass
     - location: {x: -11, y: -11}
       cellType: grass
     - location: {x: -11, y: -10}
@@ -2391,24 +1959,18 @@ MonoBehaviour:
       cellType: grass
     - location: {x: -11, y: 7}
       cellType: grass
-    - location: {x: -11, y: 8}
-      cellType: grass
-    - location: {x: -11, y: 9}
-      cellType: grass
-    - location: {x: -11, y: 10}
-      cellType: grass
-    - location: {x: -11, y: 11}
+    - location: {x: -10, y: -12}
       cellType: grass
     - location: {x: -10, y: -11}
       cellType: grass
     - location: {x: -10, y: -10}
       cellType: grass
     - location: {x: -10, y: -9}
-      cellType: grass
+      cellType: mountain
     - location: {x: -10, y: -8}
       cellType: grass
     - location: {x: -10, y: -7}
-      cellType: grass
+      cellType: forest
     - location: {x: -10, y: -6}
       cellType: grass
     - location: {x: -10, y: -5}
@@ -2416,11 +1978,11 @@ MonoBehaviour:
     - location: {x: -10, y: -4}
       cellType: grass
     - location: {x: -10, y: -3}
-      cellType: grass
+      cellType: forest
     - location: {x: -10, y: -2}
-      cellType: grass
+      cellType: forest
     - location: {x: -10, y: -1}
-      cellType: grass
+      cellType: forest
     - location: {x: -10, y: 0}
       cellType: grass
     - location: {x: -10, y: 1}
@@ -2428,7 +1990,7 @@ MonoBehaviour:
     - location: {x: -10, y: 2}
       cellType: grass
     - location: {x: -10, y: 3}
-      cellType: grass
+      cellType: forest
     - location: {x: -10, y: 4}
       cellType: grass
     - location: {x: -10, y: 5}
@@ -2437,20 +1999,14 @@ MonoBehaviour:
       cellType: grass
     - location: {x: -10, y: 7}
       cellType: grass
-    - location: {x: -10, y: 8}
-      cellType: grass
-    - location: {x: -10, y: 9}
-      cellType: grass
-    - location: {x: -10, y: 10}
-      cellType: grass
-    - location: {x: -10, y: 11}
-      cellType: grass
+    - location: {x: -9, y: -12}
+      cellType: mountain
     - location: {x: -9, y: -11}
       cellType: grass
     - location: {x: -9, y: -10}
       cellType: grass
     - location: {x: -9, y: -9}
-      cellType: grass
+      cellType: mountain
     - location: {x: -9, y: -8}
       cellType: mountain
     - location: {x: -9, y: -7}
@@ -2482,21 +2038,15 @@ MonoBehaviour:
     - location: {x: -9, y: 6}
       cellType: grass
     - location: {x: -9, y: 7}
-      cellType: grass
-    - location: {x: -9, y: 8}
-      cellType: grass
-    - location: {x: -9, y: 9}
-      cellType: grass
-    - location: {x: -9, y: 10}
-      cellType: grass
-    - location: {x: -9, y: 11}
+      cellType: road
+    - location: {x: -8, y: -12}
       cellType: grass
     - location: {x: -8, y: -11}
       cellType: grass
     - location: {x: -8, y: -10}
-      cellType: grass
+      cellType: mountain
     - location: {x: -8, y: -9}
-      cellType: grass
+      cellType: mountain
     - location: {x: -8, y: -8}
       cellType: mountain
     - location: {x: -8, y: -7}
@@ -2529,20 +2079,14 @@ MonoBehaviour:
       cellType: road
     - location: {x: -8, y: 7}
       cellType: grass
-    - location: {x: -8, y: 8}
-      cellType: grass
-    - location: {x: -8, y: 9}
-      cellType: grass
-    - location: {x: -8, y: 10}
-      cellType: grass
-    - location: {x: -8, y: 11}
+    - location: {x: -7, y: -12}
       cellType: grass
     - location: {x: -7, y: -11}
-      cellType: grass
+      cellType: mountain
     - location: {x: -7, y: -10}
-      cellType: grass
+      cellType: mountain
     - location: {x: -7, y: -9}
-      cellType: grass
+      cellType: mountain
     - location: {x: -7, y: -8}
       cellType: mountain
     - location: {x: -7, y: -7}
@@ -2574,21 +2118,15 @@ MonoBehaviour:
     - location: {x: -7, y: 6}
       cellType: grass
     - location: {x: -7, y: 7}
-      cellType: grass
-    - location: {x: -7, y: 8}
-      cellType: grass
-    - location: {x: -7, y: 9}
-      cellType: grass
-    - location: {x: -7, y: 10}
-      cellType: grass
-    - location: {x: -7, y: 11}
+      cellType: forest
+    - location: {x: -6, y: -12}
       cellType: grass
     - location: {x: -6, y: -11}
       cellType: grass
     - location: {x: -6, y: -10}
-      cellType: grass
+      cellType: mountain
     - location: {x: -6, y: -9}
-      cellType: grass
+      cellType: mountain
     - location: {x: -6, y: -8}
       cellType: mountain
     - location: {x: -6, y: -7}
@@ -2621,16 +2159,10 @@ MonoBehaviour:
       cellType: grass
     - location: {x: -6, y: 7}
       cellType: grass
-    - location: {x: -6, y: 8}
-      cellType: grass
-    - location: {x: -6, y: 9}
-      cellType: grass
-    - location: {x: -6, y: 10}
-      cellType: grass
-    - location: {x: -6, y: 11}
+    - location: {x: -5, y: -12}
       cellType: grass
     - location: {x: -5, y: -11}
-      cellType: grass
+      cellType: forest
     - location: {x: -5, y: -10}
       cellType: grass
     - location: {x: -5, y: -9}
@@ -2667,20 +2199,14 @@ MonoBehaviour:
       cellType: grass
     - location: {x: -5, y: 7}
       cellType: grass
-    - location: {x: -5, y: 8}
-      cellType: grass
-    - location: {x: -5, y: 9}
-      cellType: grass
-    - location: {x: -5, y: 10}
-      cellType: grass
-    - location: {x: -5, y: 11}
+    - location: {x: -4, y: -12}
       cellType: grass
     - location: {x: -4, y: -11}
-      cellType: grass
+      cellType: forest
     - location: {x: -4, y: -10}
       cellType: grass
     - location: {x: -4, y: -9}
-      cellType: grass
+      cellType: mountain
     - location: {x: -4, y: -8}
       cellType: mountain
     - location: {x: -4, y: -7}
@@ -2712,21 +2238,15 @@ MonoBehaviour:
     - location: {x: -4, y: 6}
       cellType: grass
     - location: {x: -4, y: 7}
-      cellType: grass
-    - location: {x: -4, y: 8}
-      cellType: grass
-    - location: {x: -4, y: 9}
-      cellType: grass
-    - location: {x: -4, y: 10}
-      cellType: grass
-    - location: {x: -4, y: 11}
+      cellType: mountain
+    - location: {x: -3, y: -12}
       cellType: grass
     - location: {x: -3, y: -11}
       cellType: grass
     - location: {x: -3, y: -10}
       cellType: grass
     - location: {x: -3, y: -9}
-      cellType: grass
+      cellType: mountain
     - location: {x: -3, y: -8}
       cellType: mountain
     - location: {x: -3, y: -7}
@@ -2758,21 +2278,15 @@ MonoBehaviour:
     - location: {x: -3, y: 6}
       cellType: amber
     - location: {x: -3, y: 7}
-      cellType: grass
-    - location: {x: -3, y: 8}
-      cellType: grass
-    - location: {x: -3, y: 9}
-      cellType: grass
-    - location: {x: -3, y: 10}
-      cellType: grass
-    - location: {x: -3, y: 11}
+      cellType: mountain
+    - location: {x: -2, y: -12}
       cellType: grass
     - location: {x: -2, y: -11}
       cellType: grass
     - location: {x: -2, y: -10}
-      cellType: grass
+      cellType: mountain
     - location: {x: -2, y: -9}
-      cellType: grass
+      cellType: mountain
     - location: {x: -2, y: -8}
       cellType: mountain
     - location: {x: -2, y: -7}
@@ -2804,21 +2318,15 @@ MonoBehaviour:
     - location: {x: -2, y: 6}
       cellType: mountain
     - location: {x: -2, y: 7}
-      cellType: grass
-    - location: {x: -2, y: 8}
-      cellType: grass
-    - location: {x: -2, y: 9}
-      cellType: grass
-    - location: {x: -2, y: 10}
-      cellType: grass
-    - location: {x: -2, y: 11}
-      cellType: grass
+      cellType: mountain
+    - location: {x: -1, y: -12}
+      cellType: forest
     - location: {x: -1, y: -11}
       cellType: grass
     - location: {x: -1, y: -10}
-      cellType: grass
+      cellType: mountain
     - location: {x: -1, y: -9}
-      cellType: grass
+      cellType: mountain
     - location: {x: -1, y: -8}
       cellType: mountain
     - location: {x: -1, y: -7}
@@ -2850,21 +2358,15 @@ MonoBehaviour:
     - location: {x: -1, y: 6}
       cellType: mountain
     - location: {x: -1, y: 7}
-      cellType: grass
-    - location: {x: -1, y: 8}
-      cellType: grass
-    - location: {x: -1, y: 9}
-      cellType: grass
-    - location: {x: -1, y: 10}
-      cellType: grass
-    - location: {x: -1, y: 11}
+      cellType: mountain
+    - location: {x: 0, y: -12}
       cellType: grass
     - location: {x: 0, y: -11}
-      cellType: grass
+      cellType: mountain
     - location: {x: 0, y: -10}
-      cellType: grass
+      cellType: mountain
     - location: {x: 0, y: -9}
-      cellType: grass
+      cellType: mountain
     - location: {x: 0, y: -8}
       cellType: mountain
     - location: {x: 0, y: -7}
@@ -2896,21 +2398,15 @@ MonoBehaviour:
     - location: {x: 0, y: 6}
       cellType: mountain
     - location: {x: 0, y: 7}
-      cellType: grass
-    - location: {x: 0, y: 8}
-      cellType: grass
-    - location: {x: 0, y: 9}
-      cellType: grass
-    - location: {x: 0, y: 10}
-      cellType: grass
-    - location: {x: 0, y: 11}
+      cellType: mountain
+    - location: {x: 1, y: -12}
       cellType: grass
     - location: {x: 1, y: -11}
-      cellType: grass
+      cellType: mountain
     - location: {x: 1, y: -10}
-      cellType: grass
+      cellType: mountain
     - location: {x: 1, y: -9}
-      cellType: grass
+      cellType: mountain
     - location: {x: 1, y: -8}
       cellType: mountain
     - location: {x: 1, y: -7}
@@ -2942,21 +2438,15 @@ MonoBehaviour:
     - location: {x: 1, y: 6}
       cellType: mountain
     - location: {x: 1, y: 7}
-      cellType: grass
-    - location: {x: 1, y: 8}
-      cellType: grass
-    - location: {x: 1, y: 9}
-      cellType: grass
-    - location: {x: 1, y: 10}
-      cellType: grass
-    - location: {x: 1, y: 11}
+      cellType: mountain
+    - location: {x: 2, y: -12}
       cellType: grass
     - location: {x: 2, y: -11}
       cellType: grass
     - location: {x: 2, y: -10}
-      cellType: grass
+      cellType: mountain
     - location: {x: 2, y: -9}
-      cellType: grass
+      cellType: mountain
     - location: {x: 2, y: -8}
       cellType: mountain
     - location: {x: 2, y: -7}
@@ -2988,21 +2478,15 @@ MonoBehaviour:
     - location: {x: 2, y: 6}
       cellType: mountain
     - location: {x: 2, y: 7}
-      cellType: grass
-    - location: {x: 2, y: 8}
-      cellType: grass
-    - location: {x: 2, y: 9}
-      cellType: grass
-    - location: {x: 2, y: 10}
-      cellType: grass
-    - location: {x: 2, y: 11}
+      cellType: mountain
+    - location: {x: 3, y: -12}
       cellType: grass
     - location: {x: 3, y: -11}
       cellType: grass
     - location: {x: 3, y: -10}
-      cellType: grass
+      cellType: mountain
     - location: {x: 3, y: -9}
-      cellType: grass
+      cellType: mountain
     - location: {x: 3, y: -8}
       cellType: mountain
     - location: {x: 3, y: -7}
@@ -3034,21 +2518,15 @@ MonoBehaviour:
     - location: {x: 3, y: 6}
       cellType: mountain
     - location: {x: 3, y: 7}
-      cellType: grass
-    - location: {x: 3, y: 8}
-      cellType: grass
-    - location: {x: 3, y: 9}
-      cellType: grass
-    - location: {x: 3, y: 10}
-      cellType: grass
-    - location: {x: 3, y: 11}
-      cellType: grass
+      cellType: mountain
+    - location: {x: 4, y: -12}
+      cellType: mountain
     - location: {x: 4, y: -11}
-      cellType: grass
+      cellType: mountain
     - location: {x: 4, y: -10}
       cellType: grass
     - location: {x: 4, y: -9}
-      cellType: grass
+      cellType: mountain
     - location: {x: 4, y: -8}
       cellType: amber
     - location: {x: 4, y: -7}
@@ -3080,15 +2558,9 @@ MonoBehaviour:
     - location: {x: 4, y: 6}
       cellType: mountain
     - location: {x: 4, y: 7}
-      cellType: grass
-    - location: {x: 4, y: 8}
-      cellType: grass
-    - location: {x: 4, y: 9}
-      cellType: grass
-    - location: {x: 4, y: 10}
-      cellType: grass
-    - location: {x: 4, y: 11}
-      cellType: grass
+      cellType: mountain
+    - location: {x: 5, y: -12}
+      cellType: mountain
     - location: {x: 5, y: -11}
       cellType: grass
     - location: {x: 5, y: -10}
@@ -3127,13 +2599,7 @@ MonoBehaviour:
       cellType: mountain
     - location: {x: 5, y: 7}
       cellType: grass
-    - location: {x: 5, y: 8}
-      cellType: grass
-    - location: {x: 5, y: 9}
-      cellType: grass
-    - location: {x: 5, y: 10}
-      cellType: grass
-    - location: {x: 5, y: 11}
+    - location: {x: 6, y: -12}
       cellType: grass
     - location: {x: 6, y: -11}
       cellType: grass
@@ -3172,21 +2638,15 @@ MonoBehaviour:
     - location: {x: 6, y: 6}
       cellType: mountain
     - location: {x: 6, y: 7}
-      cellType: grass
-    - location: {x: 6, y: 8}
-      cellType: grass
-    - location: {x: 6, y: 9}
-      cellType: grass
-    - location: {x: 6, y: 10}
-      cellType: grass
-    - location: {x: 6, y: 11}
-      cellType: grass
+      cellType: mountain
+    - location: {x: 7, y: -12}
+      cellType: mountain
     - location: {x: 7, y: -11}
       cellType: grass
     - location: {x: 7, y: -10}
       cellType: grass
     - location: {x: 7, y: -9}
-      cellType: grass
+      cellType: forest
     - location: {x: 7, y: -8}
       cellType: grass
     - location: {x: 7, y: -7}
@@ -3218,14 +2678,8 @@ MonoBehaviour:
     - location: {x: 7, y: 6}
       cellType: mountain
     - location: {x: 7, y: 7}
-      cellType: grass
-    - location: {x: 7, y: 8}
-      cellType: grass
-    - location: {x: 7, y: 9}
-      cellType: grass
-    - location: {x: 7, y: 10}
-      cellType: grass
-    - location: {x: 7, y: 11}
+      cellType: mountain
+    - location: {x: 8, y: -12}
       cellType: grass
     - location: {x: 8, y: -11}
       cellType: grass
@@ -3264,21 +2718,15 @@ MonoBehaviour:
     - location: {x: 8, y: 6}
       cellType: mountain
     - location: {x: 8, y: 7}
-      cellType: grass
-    - location: {x: 8, y: 8}
-      cellType: grass
-    - location: {x: 8, y: 9}
-      cellType: grass
-    - location: {x: 8, y: 10}
-      cellType: grass
-    - location: {x: 8, y: 11}
+      cellType: mountain
+    - location: {x: 9, y: -12}
       cellType: grass
     - location: {x: 9, y: -11}
-      cellType: grass
+      cellType: forest
     - location: {x: 9, y: -10}
-      cellType: grass
+      cellType: forest
     - location: {x: 9, y: -9}
-      cellType: grass
+      cellType: road
     - location: {x: 9, y: -8}
       cellType: road
     - location: {x: 9, y: -7}
@@ -3310,19 +2758,13 @@ MonoBehaviour:
     - location: {x: 9, y: 6}
       cellType: mountain
     - location: {x: 9, y: 7}
-      cellType: grass
-    - location: {x: 9, y: 8}
-      cellType: grass
-    - location: {x: 9, y: 9}
-      cellType: grass
-    - location: {x: 9, y: 10}
-      cellType: grass
-    - location: {x: 9, y: 11}
+      cellType: mountain
+    - location: {x: 10, y: -12}
       cellType: grass
     - location: {x: 10, y: -11}
       cellType: grass
     - location: {x: 10, y: -10}
-      cellType: grass
+      cellType: road
     - location: {x: 10, y: -9}
       cellType: grass
     - location: {x: 10, y: -8}
@@ -3332,7 +2774,7 @@ MonoBehaviour:
     - location: {x: 10, y: -6}
       cellType: grass
     - location: {x: 10, y: -5}
-      cellType: grass
+      cellType: forest
     - location: {x: 10, y: -4}
       cellType: forest
     - location: {x: 10, y: -3}
@@ -3340,11 +2782,11 @@ MonoBehaviour:
     - location: {x: 10, y: -2}
       cellType: grass
     - location: {x: 10, y: -1}
-      cellType: grass
+      cellType: forest
     - location: {x: 10, y: 0}
       cellType: forest
     - location: {x: 10, y: 1}
-      cellType: grass
+      cellType: forest
     - location: {x: 10, y: 2}
       cellType: grass
     - location: {x: 10, y: 3}
@@ -3352,23 +2794,17 @@ MonoBehaviour:
     - location: {x: 10, y: 4}
       cellType: grass
     - location: {x: 10, y: 5}
-      cellType: grass
+      cellType: forest
     - location: {x: 10, y: 6}
       cellType: mountain
     - location: {x: 10, y: 7}
-      cellType: grass
-    - location: {x: 10, y: 8}
-      cellType: grass
-    - location: {x: 10, y: 9}
-      cellType: grass
-    - location: {x: 10, y: 10}
-      cellType: grass
-    - location: {x: 10, y: 11}
+      cellType: mountain
+    - location: {x: 11, y: -12}
       cellType: grass
     - location: {x: 11, y: -11}
       cellType: grass
     - location: {x: 11, y: -10}
-      cellType: grass
+      cellType: road
     - location: {x: 11, y: -9}
       cellType: grass
     - location: {x: 11, y: -8}
@@ -3388,7 +2824,7 @@ MonoBehaviour:
     - location: {x: 11, y: -1}
       cellType: grass
     - location: {x: 11, y: 0}
-      cellType: grass
+      cellType: forest
     - location: {x: 11, y: 1}
       cellType: grass
     - location: {x: 11, y: 2}
@@ -3403,13 +2839,25 @@ MonoBehaviour:
       cellType: grass
     - location: {x: 11, y: 7}
       cellType: grass
-    - location: {x: 11, y: 8}
+    - location: {x: 12, y: -12}
       cellType: grass
-    - location: {x: 11, y: 9}
+    - location: {x: 12, y: -10}
+      cellType: road
+    - location: {x: 12, y: -8}
       cellType: grass
-    - location: {x: 11, y: 10}
+    - location: {x: 12, y: -6}
       cellType: grass
-    - location: {x: 11, y: 11}
+    - location: {x: 12, y: -4}
+      cellType: grass
+    - location: {x: 12, y: -2}
+      cellType: grass
+    - location: {x: 12, y: 0}
+      cellType: grass
+    - location: {x: 12, y: 2}
+      cellType: grass
+    - location: {x: 12, y: 4}
+      cellType: grass
+    - location: {x: 12, y: 6}
       cellType: grass
     entities:
     - Team: -1
