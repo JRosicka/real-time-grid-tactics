@@ -99,7 +99,7 @@ namespace Gameplay.Managers {
             if (availableUpgrades == null) return false;
             
             // Check requirements (including friendly King adjacency)
-            if (availableUpgrades.All(u => !localPlayer.OwnedPurchasablesController.HasRequirementsForPurchase(u, amberForge, out _))) return false;
+            availableUpgrades = availableUpgrades.Where(u => localPlayer.OwnedPurchasablesController.HasRequirementsForPurchase(u, amberForge, out _)).ToList();
             
             // Check affordability
             return availableUpgrades.Select(e => e.Cost).Any(resourceAmounts => resourcesController.CanAfford(resourceAmounts));
