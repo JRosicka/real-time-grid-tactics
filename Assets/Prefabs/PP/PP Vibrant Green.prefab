@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 5222219487859679537}
   - component: {fileID: 6740461434402312498}
   m_Layer: 0
-  m_Name: PP Cool Forest
+  m_Name: PP Vibrant Green
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -47,5 +47,5 @@ MonoBehaviour:
   m_IsGlobal: 1
   priority: 0
   blendDistance: 0
-  weight: 0.783
-  sharedProfile: {fileID: 11400000, guid: d43b5f34b734c0347ab35c6028a076fe, type: 2}
+  weight: 0.58
+  sharedProfile: {fileID: 11400000, guid: 63e3c1422e69240d0ac49104e575ba78, type: 2}

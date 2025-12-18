@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d7fd9488000d3734a9e00ee676215985, type: 3}
-  m_Name: PP Profile
+  m_Name: PP Profile Crisp Automn
   m_EditorClassIdentifier: 
   components:
   - {fileID: 3187097580073262264}
@@ -80,13 +80,13 @@ MonoBehaviour:
     m_Value: 0
   contrast:
     m_OverrideState: 1
-    m_Value: 15
+    m_Value: 36
   colorFilter:
     m_OverrideState: 1
-    m_Value: {r: 0.36320752, g: 1, b: 0.6682257, a: 1}
+    m_Value: {r: 0.72971916, g: 0.8396226, b: 0.6930847, a: 1}
   hueShift:
     m_OverrideState: 1
-    m_Value: 17
+    m_Value: -27
   saturation:
     m_OverrideState: 1
-    m_Value: 2.3
+    m_Value: -22
