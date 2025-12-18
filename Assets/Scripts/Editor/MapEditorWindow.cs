@@ -103,7 +103,7 @@ namespace Gameplay.Config {
         #region Map Loading
 
         private List<ValueDropdownItem> GetMapIDs() {
-            return MapSerializer.GetAllMaps().Select(m => new ValueDropdownItem(m.mapID, m.mapID)).ToList();
+            return MapSerializer.GetAllMaps().OrderBy(m => m.index).Select(m => new ValueDropdownItem(m.mapID, m.mapID)).ToList();
         }
         
         [Title("Loading")]
@@ -129,6 +129,7 @@ namespace Gameplay.Config {
             DisplayName = mapData.displayName;
             Description = mapData.description;
             DisplayIndex = mapData.index;
+            PostProcessingID = mapData.postProcessingID;
             LowerLeftCell = new AssignableLocation(mapData.lowerLeftCell);
             UpperRightCell = new AssignableLocation(mapData.upperRightCell);
             WideLeftSide = mapData.wideLeftSide;
@@ -149,8 +150,9 @@ namespace Gameplay.Config {
         [Button("Save")]
         public void SaveMap() {
             List<MapData.Cell> cells = MapLoader.GridController.GetAllCells();
-            MapSerializer.SaveMap(MapID, MapType, DisplayName, Description, DisplayIndex, LowerLeftCell.Location, 
-                UpperRightCell.Location, WideLeftSide, WideRightSide, cells, CopyEntities(Entities));
+            MapSerializer.SaveMap(MapID, MapType, DisplayName, Description, DisplayIndex, PostProcessingID, 
+                LowerLeftCell.Location, UpperRightCell.Location, WideLeftSide, WideRightSide, cells, 
+                CopyEntities(Entities));
             
             // Re-load the map to make sure the changes are reflected
             LoadMap();
@@ -169,6 +171,8 @@ namespace Gameplay.Config {
         public string Description;
         [VerticalGroup("Configuring")]
         public int DisplayIndex;
+        [VerticalGroup("Configuring")]
+        public string PostProcessingID;
         [Space]
         [VerticalGroup("Configuring")]
         [InlineProperty]

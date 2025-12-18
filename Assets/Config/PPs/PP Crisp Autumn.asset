@@ -1,0 +1,16 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba8fde4672274655a87ae2ed0b294e2a, type: 3}
+  m_Name: PP Crisp Autumn
+  m_EditorClassIdentifier: Assembly-CSharp::Gameplay.Config.PostProcessingData
+  PPID: crispAutumn
+  Prefab: {fileID: 7787607022672005461, guid: df53dd1242fdf429cbcb3c307712eaf7, type: 3}

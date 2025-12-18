@@ -40,11 +40,11 @@ MonoBehaviour:
   BonusDamage: 0
   TagsToApplyBonusDamageTo: 
   NormalMoveTime: 4
-  SlowMoveTime: 6.666
   AddedMovementTimeFromAttacking: 0
   Tags: 0100000008000000
   InaccessibleTiles:
   - {fileID: 11400000, guid: 21c254da385bdd14eb49ce66d1a541a9, type: 2}
+  - {fileID: 11400000, guid: d73b2f2ca718f89489ab7d1ab3d344cb, type: 2}
   - {fileID: 11400000, guid: 247c5b5526252334798aa3ad951dcf40, type: 2}
   SlowTiles:
   - {fileID: 11400000, guid: 72bba8f070a4e784393726b1ad5d4c16, type: 2}

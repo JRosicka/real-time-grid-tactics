@@ -16,6 +16,7 @@ namespace Gameplay.Config {
         public string displayName;
         public string description;
         public int index;
+        public string postProcessingID;
 
         [Header("Config")]
         public Vector2Int lowerLeftCell;

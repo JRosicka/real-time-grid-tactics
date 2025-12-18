@@ -18,6 +18,7 @@ MonoBehaviour:
     displayName: Origins
     description: 'Ol'' reliable. The beloved classic. Truly the de_dust2 of AmberForge. '
     index: 0
+    postProcessingID: 
     lowerLeftCell: {x: -8, y: -6}
     upperRightCell: {x: 8, y: 6}
     wideLeftSide: 1
@@ -1183,6 +1184,7 @@ MonoBehaviour:
     description: 'Will you journey down the road of prosperity? Or take the pass
       less traveled? '
     index: 100
+    postProcessingID: crispAutumn
     lowerLeftCell: {x: -7, y: -5}
     upperRightCell: {x: 8, y: 4}
     wideLeftSide: 1
@@ -1914,6 +1916,7 @@ MonoBehaviour:
     displayName: Oakcrest
     description: Big open plains, lush dense forests, and TWO Amber Forges! Wow!
     index: 200
+    postProcessingID: vibrantGreen
     lowerLeftCell: {x: -9, y: -8}
     upperRightCell: {x: 10, y: 6}
     wideLeftSide: 0
@@ -2146,7 +2149,7 @@ MonoBehaviour:
     - location: {x: -6, y: 0}
       cellType: grass
     - location: {x: -6, y: 1}
-      cellType: amberForge
+      cellType: amberForgeGrass
     - location: {x: -6, y: 2}
       cellType: forest
     - location: {x: -6, y: 3}
@@ -2618,7 +2621,7 @@ MonoBehaviour:
     - location: {x: 6, y: -4}
       cellType: forest
     - location: {x: 6, y: -3}
-      cellType: amberForge
+      cellType: amberForgeGrass
     - location: {x: 6, y: -2}
       cellType: forest
     - location: {x: 6, y: -1}

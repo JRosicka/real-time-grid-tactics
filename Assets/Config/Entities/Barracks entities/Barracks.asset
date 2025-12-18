@@ -19,7 +19,6 @@ MonoBehaviour:
   - Type: 0
     Amount: 100
   Requirements: []
-  RequirementNeedsToBeAdjacent: 0
   BuildTime: 30
   BuildsImmediately: 0
   BaseSprite: {fileID: 21300000, guid: c2a9ce9aee3b24078bb841dec5ad83c2, type: 3}
@@ -40,13 +39,13 @@ MonoBehaviour:
   BonusDamage: 0
   TagsToApplyBonusDamageTo: 
   NormalMoveTime: 0
-  SlowMoveTime: 0
   AddedMovementTimeFromAttacking: 0
   Tags: 01000000
   InaccessibleTiles:
   - {fileID: 11400000, guid: 247c5b5526252334798aa3ad951dcf40, type: 2}
   - {fileID: 11400000, guid: 72bba8f070a4e784393726b1ad5d4c16, type: 2}
   - {fileID: 11400000, guid: 21c254da385bdd14eb49ce66d1a541a9, type: 2}
+  - {fileID: 11400000, guid: d73b2f2ca718f89489ab7d1ab3d344cb, type: 2}
   - {fileID: 11400000, guid: d2abf14400b53b645a0af4f3676cfbb2, type: 2}
   - {fileID: 11400000, guid: be8d7ccbdc543194e9649f8f9fadbf2b, type: 2}
   SlowTiles: []

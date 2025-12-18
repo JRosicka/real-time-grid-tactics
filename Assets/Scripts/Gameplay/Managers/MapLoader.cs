@@ -11,7 +11,7 @@ using UnityEngine;
 public class MapLoader : MonoBehaviour {
     public GridController GridController;
     public CameraManager CameraManager;
-    
+    public List<GameObject> PPObjects = new();
     
     public string CurrentMapID;
 
@@ -31,6 +31,16 @@ public class MapLoader : MonoBehaviour {
         WideLeftSide = mapData.wideLeftSide;
         WideRightSide = mapData.wideRightSide;
         UnitSpawns = mapData.entities;
+        
+        // Clear any previous PP objects and spawn the new one
+        foreach (GameObject ppObject in PPObjects) {
+            DestroyImmediate(ppObject);
+        }
+        PPObjects.Clear();
+        if (!string.IsNullOrEmpty(mapData.postProcessingID)) {
+            GameObject newPP = Instantiate(GameConfigurationLocator.GameConfiguration.GetPPPrefab(mapData.postProcessingID), transform);
+            PPObjects.Add(newPP);
+        } 
         
         GridController.LoadMap(mapData);
     }

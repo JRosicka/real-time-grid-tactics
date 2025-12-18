@@ -74,5 +74,9 @@ MonoBehaviour:
   - {fileID: 11400000, guid: be8d7ccbdc543194e9649f8f9fadbf2b, type: 2}
   - {fileID: 11400000, guid: 21c254da385bdd14eb49ce66d1a541a9, type: 2}
   - {fileID: 11400000, guid: 1bd1ef96b686fb8479bb7defd104ac0d, type: 2}
+  - {fileID: 11400000, guid: d73b2f2ca718f89489ab7d1ab3d344cb, type: 2}
+  PPs:
+  - {fileID: 11400000, guid: a241d80b00370a14299e61eb4912956a, type: 2}
+  - {fileID: 11400000, guid: ad6cbc05b10ed484490c8fe56dd589c2, type: 2}
   KingEntityData: {fileID: 11400000, guid: f8a9d9571b0a8324587b160065ca7fce, type: 2}
   AmberForgeEntityData: {fileID: 11400000, guid: e16d9fca1b51810438ab31661f34df6f, type: 2}

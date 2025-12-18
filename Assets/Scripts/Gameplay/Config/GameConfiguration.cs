@@ -31,6 +31,7 @@ namespace Gameplay.Config {
         public List<PurchasableData> Purchasables;
         public List<AbilityDataScriptableObject> Abilities;
         public List<GameplayTile> Tiles;
+        public List<PostProcessingData> PPs;
         public EntityData KingEntityData;
         public EntityData AmberForgeEntityData;
 
@@ -66,6 +67,10 @@ namespace Gameplay.Config {
 
         public GameplayTile GetTile(string id) {
             return Tiles.First(t => t.TileID == id);
+        }
+
+        public GameObject GetPPPrefab(string id) {
+            return PPs.First(p => p.PPID == id).Prefab;
         }
     }
 }
