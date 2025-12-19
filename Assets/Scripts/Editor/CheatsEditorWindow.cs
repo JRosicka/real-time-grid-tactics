@@ -94,6 +94,13 @@ public class CheatsEditorWindow : OdinEditorWindow {
     
     [Title("Scenes")]
     [HorizontalGroup("Scenes", Order = -2)]
+    [Button("Loading")]
+    public void OpenLoadingScene() {
+        OpenScene("Loading");
+    }
+
+    [Title("")]
+    [HorizontalGroup("Scenes")]
     [Button("Main Menu")]
     public void OpenMainMenuScene() {
         OpenScene("MainMenu");
