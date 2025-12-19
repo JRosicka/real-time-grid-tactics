@@ -25,9 +25,9 @@ namespace Scenes {
             DontDestroyOnLoad(gameObject);
             _instance = this;
             
-            _sceneLoader.Initialize();
             _gameConfigurationLocator.Initialize();
             _audioPlayer.Initialize();
+            _sceneLoader.Initialize();
         }
     }
 }

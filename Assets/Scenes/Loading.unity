@@ -300,9 +300,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Scenes.LoadingScreen
   _loadingText: {fileID: 1491613005}
-  _canvasGroup: {fileID: 0}
-  _fadeSeconds: 1
-  _loadingTextFrequencySeconds: 1.5
+  _canvasGroup: {fileID: 678934760}
+  _canvas: {fileID: 1978654972}
+  _fadeSeconds: 0.5
+  _loadingTextFrequencySeconds: 1.2
   _loadingTextMaxPeriodCount: 3
   _loadingTextFormat: Loading{0}
 --- !u!225 &678934760
@@ -789,7 +790,7 @@ Canvas:
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 15
   m_TargetDisplay: 0
 --- !u!224 &1978654973
 RectTransform:

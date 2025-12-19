@@ -36,7 +36,9 @@ namespace Audio {
         }
 
         public void UnregisterListeners() {
-            _gameSetupManager.GameInitializedEvent -= StartMusic;
+            if (_gameSetupManager) {
+                _gameSetupManager.GameInitializedEvent -= StartMusic;
+            }
         }
 
         private void StartMusic() {
