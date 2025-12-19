@@ -44,7 +44,7 @@ namespace Gameplay.Config {
             }
         }
 
-        private void Awake() {
+        public void Initialize() {
             if (!_gameConfiguration) {
                 _gameConfiguration = _gameConfigurationRef;
             }

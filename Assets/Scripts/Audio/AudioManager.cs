@@ -49,22 +49,9 @@ namespace Audio {
         }
         private Dictionary<AudioLayerName, AudioMixerGroup> _layerMixerGroups;
         
-        /// <summary>
-        /// Performs initialization. If initialization was already performed this app session, then destroys the GameObject. 
-        /// </summary>
-        /// <returns>True if this is the active player, otherwise false if this is getting destroyed</returns>
-        public bool Initialize() {
-            if (Instance != null && Instance != this) {
-                Destroy(gameObject);
-                return false;
-            }
-            
-            Mixer = Resources.Load<AudioMixer>("Mixer");
-            
-            DontDestroyOnLoad(gameObject);
+        public void Initialize() {
             Instance = this;
-            
-            return true;
+            Mixer = Resources.Load<AudioMixer>("Mixer");
         }
         
         /// <summary>

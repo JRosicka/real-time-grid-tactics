@@ -7,17 +7,13 @@ namespace Audio {
     /// Also handles keeping track of an interruptible SFX. 
     /// </summary>
     public class AudioPlayer : MonoBehaviour {
-        public bool ActivePlayer { get; private set; }
-        
         [SerializeField] private AudioManager _audioManager;
         private OneShotAudio _interruptibleSFX;
         private OneShotAudio _activeMusic;
 
-        private void Awake() {
-            ActivePlayer = _audioManager.Initialize();
-            if (ActivePlayer) {
-                SetStartingVolume();
-            }
+        public void Initialize() {
+            _audioManager.Initialize();
+            SetStartingVolume();
         }
         
         private async void SetStartingVolume() {
