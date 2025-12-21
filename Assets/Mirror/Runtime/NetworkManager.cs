@@ -924,7 +924,7 @@ namespace Mirror
             NetworkClient.isLoadingScene = false;
             
             // Set the scene as active
-            SceneManager.SetActiveScene(SceneManager.GetSceneByName("Room"));
+            SceneManager.SetActiveScene(SceneManager.GetSceneByName(StrippedSceneName(networkSceneName)));
 
             // host mode?
             if (mode == NetworkManagerMode.Host)
@@ -943,6 +943,16 @@ namespace Mirror
             }
             // otherwise we called it after stopping when loading offline scene.
             // do nothing then.
+        }
+        
+        private static string StrippedSceneName(string sceneName) {
+            if (!sceneName.Contains("/") || !sceneName.Contains(".")) {
+                return sceneName;
+            }
+            
+            sceneName = sceneName.Substring(sceneName.LastIndexOf('/') + 1);
+            sceneName = sceneName.Substring(0, sceneName.LastIndexOf('.'));
+            return sceneName;
         }
 
         // finish load scene part for host mode. makes code easier and is

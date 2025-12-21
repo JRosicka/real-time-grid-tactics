@@ -1830,7 +1830,7 @@ MonoBehaviour:
   GridController: {fileID: 1769013663}
   CameraManager: {fileID: 504119508}
   PPObjects: []
-  CurrentMapID: oakcrest
+  CurrentMapID: mountainPass
 --- !u!4 &602790831
 Transform:
   m_ObjectHideFlags: 0

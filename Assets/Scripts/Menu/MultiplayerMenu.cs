@@ -4,6 +4,7 @@ using System.Linq;
 using Audio;
 using Game.Network;
 using Gameplay.UI;
+using Scenes;
 using Steamworks;
 using TMPro;
 using UnityEngine;
@@ -118,13 +119,15 @@ public class MultiplayerMenu : MonoBehaviour {
         MainMenuAudio.ButtonClickSound();
     }
 
-    public void OnHostPublicLobbyClicked() {
-        SteamLobbyService.Instance.HostLobby(true);
-        
-        HideButtons();
-        
+    public async void OnHostPublicLobbyClicked() {
         MainMenuAudio.ButtonClickSound();
         
+        await SceneLoader.Instance.LoadLobby();
+
+        HideButtons();
+
+        SteamLobbyService.Instance.HostLobby(true);
+
         // TODO maybe respond to OnLobbyCreationComplete callback? Might just get whisked away to the room though. 
     }
 
@@ -133,8 +136,7 @@ public class MultiplayerMenu : MonoBehaviour {
     }
 
     public void OnStartSinglePlayerGameClicked() {
-        SceneManager.LoadScene("GamePlay");
-        
+        SceneLoader.Instance.LoadIntoGame();
         MainMenuAudio.ButtonClickSound();
     }
 

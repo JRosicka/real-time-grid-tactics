@@ -911,6 +911,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Loading.SceneManager
   _loadingScreen: {fileID: 0}
+  _minimumLoadTimeSeconds: 0.5
 --- !u!1 &8422299083395272486
 GameObject:
   m_ObjectHideFlags: 0

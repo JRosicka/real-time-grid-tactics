@@ -117,10 +117,11 @@ namespace Game.Network {
 #endif
         }
 
-        public event Action ServerChangeSceneAction;
+        // Static since the NetworkManager gets re-created when stopping the server
+        public static event Action<string> ServerChangeSceneAction;
         public override void OnServerChangeScene(string newSceneName) {
             DebugLog(nameof(OnServerChangeScene));
-            ServerChangeSceneAction?.Invoke();
+            ServerChangeSceneAction?.Invoke(newSceneName);
             base.OnServerChangeScene(newSceneName);
         }
 
@@ -230,10 +231,11 @@ namespace Game.Network {
             base.OnClientNotReady();
         }
 
-        public event Action ClientChangeSceneAction;
+        // Static since the NetworkManager gets re-created when stopping the server
+        public static event Action<string> ClientChangeSceneAction;
         public override void OnClientChangeScene(string newSceneName, SceneOperation sceneOperation, bool customHandling) {
             DebugLog(nameof(OnClientChangeScene));
-            ClientChangeSceneAction?.Invoke();
+            ClientChangeSceneAction?.Invoke(newSceneName);
             base.OnClientChangeScene(newSceneName, sceneOperation, customHandling);
         }
 

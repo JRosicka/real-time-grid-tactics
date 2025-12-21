@@ -10,6 +10,7 @@ using Gameplay.Managers;
 using Gameplay.UI;
 using JetBrains.Annotations;
 using Mirror;
+using Scenes;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.Serialization;
@@ -156,7 +157,7 @@ public class GameManager : MonoBehaviour {
     public void ReturnToLobby() {
         if (!NetworkClient.active) {
             // SP. Just load to the main menu. 
-            SceneManager.LoadScene("MainMenu");
+            SceneLoader.Instance.LoadLobby();
             return;
         }
 
@@ -169,8 +170,8 @@ public class GameManager : MonoBehaviour {
         GameAudio.EndMusic(false);
 
         if (!NetworkClient.active) {
-            // SP. Just reload the game scene
-            SceneManager.LoadScene("MainMenu");
+            // SP. Just load into main menu
+            SceneLoader.Instance.LoadMainMenu();
             return;
         }
 

@@ -106,6 +106,8 @@ public class RoomMenu : MonoBehaviour {
     }
 
     public void ExitRoom() {
+        LobbyAudio.ButtonClickSound();
+
         DisconnectFeedbackService.SetDisconnectReason(DisconnectFeedbackService.DisconnectReason.ClientDisconnect);
         if (NetworkServer.active) {
             // We're the host, so stop the whole server
@@ -114,8 +116,6 @@ public class RoomMenu : MonoBehaviour {
             // We're just a little baby client, so just stop the client
             NetworkManager.StopClient();
         }
-
-        LobbyAudio.ButtonClickSound();
     }
 
     public void CopyJoinCode() {

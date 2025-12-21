@@ -2,6 +2,7 @@ using System;
 using System.Threading.Tasks;
 using Game.Network;
 using Mirror;
+using Scenes;
 using UnityEngine.SceneManagement;
 
 namespace Gameplay.Managers {
@@ -41,7 +42,7 @@ namespace Gameplay.Managers {
                 gameNetworkManager.StopClient();
             }
 
-            SceneManager.LoadScene("MainMenu");
+            SceneLoader.Instance.LoadMainMenu();
         }
     }
 }

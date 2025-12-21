@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 using TMPro;
 using UnityEngine;
 
@@ -30,11 +31,16 @@ namespace Scenes {
         private float _currentFadeAmount;
         private float _currentLoadingTextAmount;
         private LoadingScreenState _state;
+        private TaskCompletionSource<object> _showLoadingScreenTcs;
         
-        public void ShowLoadingScreen(bool fadeIn, bool inFrontOfMenus) {
+        public async Task ShowLoadingScreen(bool fadeIn, bool inFrontOfMenus) {
             SetState(fadeIn ? LoadingScreenState.FadeIn : LoadingScreenState.Visible);
-
             _canvas.sortingOrder = inFrontOfMenus ? InFrontOfMenuSortingOrder : BehindMenuSortingOrder;
+
+            if (fadeIn) {
+                _showLoadingScreenTcs = new TaskCompletionSource<object>();
+                await _showLoadingScreenTcs.Task;
+            }
         }
 
         public void HideLoadingScreen(bool fadeOut) {
@@ -55,6 +61,8 @@ namespace Scenes {
                     _canvasGroup.alpha = 1;
                     _currentFadeAmount = _fadeSeconds;
                     _canvas.gameObject.SetActive(true);
+                    _showLoadingScreenTcs?.SetResult(null);
+                    _showLoadingScreenTcs = null;
                     break;
                 case LoadingScreenState.FadeOut:
                     _canvas.gameObject.SetActive(true);
