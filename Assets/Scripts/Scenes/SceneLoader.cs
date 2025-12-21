@@ -75,12 +75,17 @@ namespace Scenes {
 
         private async Task UnloadScene(string sceneName) {
             Scene sceneToUnload = SceneManager.GetSceneByName(sceneName);
-            if (!sceneToUnload.isLoaded) {
+            if (!sceneToUnload.isLoaded || !sceneToUnload.IsValid() || !Application.isPlaying) {
                 return;
             }
             
             await _loadingScreen.ShowLoadingScreen(false, true);
-            await SceneManager.UnloadSceneAsync(sceneName);
+            
+            AsyncOperation op = SceneManager.UnloadSceneAsync(sceneName);
+            // Can happen if exiting the application or exiting play mode
+            if (op == null) return;
+            await op;
+            
             _loadingScreen.HideLoadingScreen(true);
         }
 
