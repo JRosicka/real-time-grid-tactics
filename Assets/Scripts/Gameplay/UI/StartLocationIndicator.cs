@@ -10,12 +10,13 @@ namespace Gameplay.UI {
     public class StartLocationIndicator : MonoBehaviour {
         [SerializeField] private Image _background;
         [SerializeField] private Animator _animator;
-
+        [SerializeField] private Camera _camera;
+        
         [SerializeField] private float _topPadding;
         
         public void PlayMovingAnimation(Vector2 worldPosition, Color teamColor, float countdownTimeSeconds) {
             gameObject.SetActive(true);
-            transform.position = Camera.main!.WorldToScreenPoint(worldPosition + new Vector2(0, _topPadding));
+            transform.position = _camera!.WorldToScreenPoint(worldPosition + new Vector2(0, _topPadding));
             _animator.Play("StartLocationIndicatorMoving");
             
             _background.color = teamColor;

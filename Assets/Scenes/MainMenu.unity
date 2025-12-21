@@ -2285,6 +2285,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _rectTransform: {fileID: 764379206}
+  _camera: {fileID: 639890312}
 --- !u!1 &788469461 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2111750595193992372, guid: d4cadade030fa5642a71a2bb2a863bab, type: 3}

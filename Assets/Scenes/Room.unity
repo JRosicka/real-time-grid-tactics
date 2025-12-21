@@ -4474,6 +4474,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _rectTransform: {fileID: 1732580023}
+  _camera: {fileID: 639890312}
 --- !u!1001 &1756506418
 PrefabInstance:
   m_ObjectHideFlags: 0

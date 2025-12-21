@@ -8,12 +8,13 @@ public class CanvasWidthSetter : MonoBehaviour {
     private const float MaxCanvasAspectRatio = 1.77778f; // 16/9
 
     [SerializeField] private RectTransform _rectTransform;
+    [SerializeField] private Camera _camera;
 
     private float CanvasWidth {
         get {
             float cameraHeight = _rectTransform.rect.height;
             // Make the camera as wide as needed, but don't go over the standard 16/9
-            return cameraHeight * Mathf.Min(Camera.main.aspect, MaxCanvasAspectRatio);
+            return cameraHeight * Mathf.Min(_camera.aspect, MaxCanvasAspectRatio);
         }
     }
 

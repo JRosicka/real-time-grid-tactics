@@ -331,6 +331,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CanvasWidthSetter
   _rectTransform: {fileID: 678934758}
+  _camera: {fileID: 329105870}
 --- !u!1 &873629883
 GameObject:
   m_ObjectHideFlags: 0
