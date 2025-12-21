@@ -860,9 +860,7 @@ namespace Mirror
                     break;
             }
 
-            // don't change the client's current networkSceneName when loading additive scene content
-            if (sceneOperation == SceneOperation.Normal)
-                networkSceneName = newSceneName;
+            networkSceneName = newSceneName;
         }
 
         // support additive scene loads:
@@ -924,7 +922,8 @@ namespace Mirror
             NetworkClient.isLoadingScene = false;
             
             // Set the scene as active
-            SceneManager.SetActiveScene(SceneManager.GetSceneByName(StrippedSceneName(networkSceneName)));
+            Scene networkScene = SceneManager.GetSceneByName(StrippedSceneName(networkSceneName));
+            SceneManager.SetActiveScene(networkScene);
 
             // host mode?
             if (mode == NetworkManagerMode.Host)
