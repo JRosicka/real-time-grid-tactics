@@ -5,6 +5,7 @@ using Game.Network;
 using Mirror;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Util;
 
 namespace Scenes {
     /// <summary>
@@ -51,6 +52,14 @@ namespace Scenes {
         public async void LoadIntoGame() {
             await UnloadCurrentSceneAsync(GameSceneName);
             LoadScene(GameSceneName, true, true);
+        }
+
+        /// <summary>
+        /// Just show the loading screen without doing any actual scene loading/unloading (presumably because Mirror
+        /// is handling that)
+        /// </summary>
+        public void ShowLoadingScreen() {
+            _loadingScreen.ShowLoadingScreen(true, true).FireAndForget();
         }
         
         private async void LoadScene(string sceneName, bool fade, bool loadingScreenInFrontOfMenus) {

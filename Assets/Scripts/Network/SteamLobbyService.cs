@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using Game.Network;
 using Mirror;
+using Scenes;
 using Sirenix.Utilities;
 using Steamworks;
 using UnityEngine;
@@ -312,6 +313,8 @@ public class SteamLobbyService : MonoBehaviour {
             return;
         }
 
+        SceneLoader.Instance.ShowLoadingScreen();
+        
         _currentIDForLobbyBeingJoined = lobbyID;
         
         RequestLobbyData(lobbyID, lobby => {
