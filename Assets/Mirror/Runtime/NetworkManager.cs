@@ -772,7 +772,7 @@ namespace Mirror
             // it will be re-enabled in FinishLoadScene.
             NetworkServer.isLoadingScene = true;
 
-            loadingSceneAsync = SceneManager.LoadSceneAsync(newSceneName);
+            loadingSceneAsync = SceneManager.LoadSceneAsync(newSceneName, LoadSceneMode.Additive);
 
             // ServerChangeScene can be called when stopping the server
             // when this happens the server is not active so does not need to tell clients about the change
@@ -922,6 +922,9 @@ namespace Mirror
             //Debug.Log("FinishLoadScene: resuming handlers after scene was loading.");
             NetworkServer.isLoadingScene = false;
             NetworkClient.isLoadingScene = false;
+            
+            // Set the scene as active
+            SceneManager.SetActiveScene(SceneManager.GetSceneByName("Room"));
 
             // host mode?
             if (mode == NetworkManagerMode.Host)
