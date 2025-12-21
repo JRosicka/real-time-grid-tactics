@@ -789,7 +789,7 @@ namespace Mirror
         // This is only set in ClientChangeScene below...never on server.
         // We need to check this in OnClientSceneChanged called from FinishLoadSceneClientOnly
         // to prevent AddPlayer message after loading/unloading additive scenes
-        SceneOperation clientSceneOperation = SceneOperation.Normal;
+        SceneOperation clientSceneOperation = SceneOperation.LoadAdditive;
 
         internal void ClientChangeScene(string newSceneName, SceneOperation sceneOperation = SceneOperation.Normal, bool customHandling = false)
         {
@@ -1346,8 +1346,7 @@ namespace Mirror
             // always become ready.
             if (!NetworkClient.ready) NetworkClient.Ready();
 
-            // Only call AddPlayer for normal scene changes, not additive load/unload
-            if (clientSceneOperation == SceneOperation.Normal && autoCreatePlayer && NetworkClient.localPlayer == null)
+            if (autoCreatePlayer && NetworkClient.localPlayer == null)
             {
                 // add player if existing one is null
                 NetworkClient.AddPlayer();
