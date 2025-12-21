@@ -603,7 +603,7 @@ namespace Mirror
             // Check if NetworkServer.active because we can get here via Disconnect before server has started to change scenes.
             if (!string.IsNullOrWhiteSpace(offlineScene) && !IsSceneActive(offlineScene) && loadingSceneAsync == null && !NetworkServer.active)
             {
-                ClientChangeScene(offlineScene, SceneOperation.Normal);
+                ClientChangeScene(offlineScene, SceneOperation.LoadAdditive);
             }
 
             networkSceneName = "";
