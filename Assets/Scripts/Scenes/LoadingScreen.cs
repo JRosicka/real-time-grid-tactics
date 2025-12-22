@@ -38,7 +38,7 @@ namespace Scenes {
             _canvas.sortingOrder = inFrontOfMenus ? InFrontOfMenuSortingOrder : BehindMenuSortingOrder;
 
             if (fadeIn) {
-                _showLoadingScreenTcs = new TaskCompletionSource<object>();
+                _showLoadingScreenTcs ??= new TaskCompletionSource<object>();
                 await _showLoadingScreenTcs.Task;
             }
         }

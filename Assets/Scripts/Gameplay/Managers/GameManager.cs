@@ -14,6 +14,7 @@ using Scenes;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.Serialization;
+using Util;
 
 /// <summary>
 /// Central manager for accessing entities, players, and other managers
@@ -157,7 +158,7 @@ public class GameManager : MonoBehaviour {
     public void ReturnToLobby() {
         if (!NetworkClient.active) {
             // SP. Just load to the main menu. 
-            SceneLoader.Instance.LoadLobby();
+            SceneLoader.Instance.LoadLobby().FireAndForget();
             return;
         }
 

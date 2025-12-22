@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Game.Network;
+using JetBrains.Annotations;
 using Mirror;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -21,6 +22,7 @@ namespace Scenes {
         [SerializeField] private float _minimumLoadTimeSeconds = .5f;
         
         public static SceneLoader Instance { get; private set; }
+        private string _targetScene;
         
         public void Initialize() {
             Instance = this;
@@ -35,7 +37,7 @@ namespace Scenes {
             
             if (SceneManager.loadedSceneCount == 1) {
                 // We must be starting the game from the loading scene. Load the main menu.
-                LoadScene(MainMenuSceneName, true, true);
+                LoadMainMenu();
             }
         }
         
@@ -45,13 +47,19 @@ namespace Scenes {
         }
 
         public async void LoadMainMenu() {
-            await UnloadCurrentSceneAsync(MainMenuSceneName);
-            LoadScene(MainMenuSceneName, true, true);
+            _targetScene = MainMenuSceneName;
+            await UnloadCurrentScenesAsync();
+            await LoadScene(MainMenuSceneName, true, true, true, false);
+            await LoadScene(GameSceneName, false, true, true, true);
         }
         
+        /// <summary>
+        /// Load a match
+        /// </summary>
         public async void LoadIntoGame() {
-            await UnloadCurrentSceneAsync(GameSceneName);
-            LoadScene(GameSceneName, true, true);
+            _targetScene = GameSceneName;
+            await UnloadCurrentScenesAsync();
+            await LoadScene(GameSceneName, true, true, true, true);
         }
 
         /// <summary>
@@ -62,24 +70,25 @@ namespace Scenes {
             _loadingScreen.ShowLoadingScreen(true, true).FireAndForget();
         }
         
-        private async void LoadScene(string sceneName, bool fade, bool loadingScreenInFrontOfMenus) {
+        private async Task LoadScene(string sceneName, bool asActive, bool fade, bool loadingScreenInFrontOfMenus, bool hideLoadingScreenWhenDone) {
             await _loadingScreen.ShowLoadingScreen(fade, loadingScreenInFrontOfMenus);
             
             float startTime = Time.time;
             await SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive);
             float loadTime = Time.time - startTime;
             
-            // Always have the gameplay scene be the active one since that's where we want GameObjects to be instantiated by default
-            if (sceneName == GameSceneName) {
-                SceneManager.SetActiveScene(SceneManager.GetSceneByName(GameSceneName));
+            if (asActive) {
+                SceneManager.SetActiveScene(SceneManager.GetSceneByName(sceneName));
             }
 
             // If the scene loaded too quickly, wait a bit before hiding the loading screen
             if (loadTime < _minimumLoadTimeSeconds) {
                 await Task.Delay(TimeSpan.FromSeconds(_minimumLoadTimeSeconds - loadTime));
             }
-            
-            _loadingScreen.HideLoadingScreen(fade);
+
+            if (hideLoadingScreenWhenDone) {
+                _loadingScreen.HideLoadingScreen(fade);
+            }
         }
 
         private async Task UnloadScene(string sceneName) {
@@ -112,51 +121,54 @@ namespace Scenes {
             _loadingScreen = FindFirstObjectByType<LoadingScreen>();
             
             // Load directly into whatever scene we were looking at in the editor
-            LoadScene(currentSceneName, false, false);
+            _targetScene = StrippedSceneName(currentSceneName);
+            await LoadScene(currentSceneName, true, false, false, true);
         }
 
         private void SubscribeToNetworkedSceneChanges() {
-            GameNetworkManager.ClientChangeSceneAction += UnloadCurrentScene;
-            GameNetworkManager.ServerChangeSceneAction += UnloadCurrentScene;
+            GameNetworkManager.ClientChangeSceneAction += MirrorChangedScene;
+            GameNetworkManager.ServerChangeSceneAction += MirrorChangedScene;
         }
 
         private void OnDestroy() {
-            GameNetworkManager.ClientChangeSceneAction -= UnloadCurrentScene;
-            GameNetworkManager.ServerChangeSceneAction -= UnloadCurrentScene;
+            GameNetworkManager.ClientChangeSceneAction -= MirrorChangedScene;
+            GameNetworkManager.ServerChangeSceneAction -= MirrorChangedScene;
         }
 
-        private async void UnloadCurrentScene(string newSceneName) {
-            await UnloadCurrentSceneAsync(newSceneName);
+        /// <summary>
+        /// There was a scene change invoked by Mirror, so respond accordingly
+        /// </summary>
+        /// <param name="newSceneName"></param>
+        private async void MirrorChangedScene(string newSceneName) {
+            string strippedSceneName = StrippedSceneName(newSceneName);
+            if (_targetScene == strippedSceneName) return;
+            _targetScene = strippedSceneName;
+            
+            await UnloadCurrentScenesAsync();
+            switch (strippedSceneName) {
+                case MainMenuSceneName:
+                case LobbySceneName:
+                    await LoadScene(GameSceneName, false, true, true, true);
+                    break;
+            }
         }
 
         /// <summary>
         /// Mirror is ordering a scene change, so handle unloading whatever scene we currently have loaded and handle
         /// showing/hiding the loading screen if needed
         /// </summary>
-        private async Task UnloadCurrentSceneAsync(string newSceneName) {
-            List<Task> unloadTasks = new();
-            switch (StrippedSceneName(newSceneName)) {
-                case GameSceneName:
-                    unloadTasks.Add(UnloadScene(MainMenuSceneName));
-                    unloadTasks.Add(UnloadScene(LobbySceneName));
-                    break;
-                case LobbySceneName:
-                    unloadTasks.Add(UnloadScene(MainMenuSceneName));
-                    unloadTasks.Add(UnloadScene(GameSceneName));
-                    break;
-                case MainMenuSceneName:
-                    unloadTasks.Add(UnloadScene(LobbySceneName));
-                    unloadTasks.Add(UnloadScene(GameSceneName));
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException(newSceneName, "Loading into unexpected scene");
-            }
-            
+        private async Task UnloadCurrentScenesAsync() {
+            List<Task> unloadTasks = new() {
+                UnloadScene(MainMenuSceneName),
+                UnloadScene(LobbySceneName),
+                UnloadScene(GameSceneName)
+            };
+
             await Task.WhenAll(unloadTasks);
         }
 
         private static string StrippedSceneName(string sceneName) {
-            if (!sceneName.Contains("/") || !sceneName.Contains(".")) {
+            if (sceneName == null || !sceneName.Contains("/") || !sceneName.Contains(".")) {
                 return sceneName;
             }
             

@@ -123,12 +123,7 @@ public class MultiplayerMenu : MonoBehaviour {
         MainMenuAudio.ButtonClickSound();
         
         await SceneLoader.Instance.LoadLobby();
-
-        HideButtons();
-
         SteamLobbyService.Instance.HostLobby(true);
-
-        // TODO maybe respond to OnLobbyCreationComplete callback? Might just get whisked away to the room though. 
     }
 
     private void HideButtons() {
@@ -136,8 +131,8 @@ public class MultiplayerMenu : MonoBehaviour {
     }
 
     public void OnStartSinglePlayerGameClicked() {
-        SceneLoader.Instance.LoadIntoGame();
         MainMenuAudio.ButtonClickSound();
+        SceneLoader.Instance.LoadIntoGame();
     }
 
     public void OnStopHostClicked() {
