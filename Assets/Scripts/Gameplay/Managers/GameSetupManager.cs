@@ -175,6 +175,8 @@ public class GameSetupManager : MonoBehaviour {
     /// Start the UI for counting down. Does not actually start the game when finished counting down. 
     /// </summary>
     public void StartCountdownTimerView() {
+        SceneLoader.Instance.HideLoadingScreen();
+        
         CountdownTimer.StartCountdown(CountdownTimeSeconds);
         GameTeam localTeam = GameManager.LocalTeam;
         if (localTeam != GameTeam.Spectator) {

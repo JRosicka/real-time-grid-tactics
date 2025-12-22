@@ -72,6 +72,14 @@ namespace Scenes {
             _loadingScreen.ShowLoadingScreen(true, true).FireAndForget();
         }
         
+        /// <summary>
+        /// Just hide the loading screen without doing any actual scene loading/unloading (presumably because Mirror
+        /// is handling that)
+        /// </summary>
+        public void HideLoadingScreen() {
+            _loadingScreen.HideLoadingScreen(true);
+        }
+        
         private async Task LoadScene(string sceneName, bool asActive, bool fade, bool loadingScreenInFrontOfMenus, bool hideLoadingScreenWhenDone) {
             await _loadingScreen.ShowLoadingScreen(fade, loadingScreenInFrontOfMenus);
             
@@ -105,8 +113,6 @@ namespace Scenes {
             // Can happen if exiting the application or exiting play mode
             if (op == null) return;
             await op;
-            
-            _loadingScreen.HideLoadingScreen(true);
         }
 
         /// <summary>
