@@ -2,8 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Game.Network;
-using JetBrains.Annotations;
-using Mirror;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Util;
@@ -14,6 +12,7 @@ namespace Scenes {
     /// </summary>
     public class SceneLoader : MonoBehaviour {
         [SerializeField] private LoadingScreen _loadingScreen;
+        [SerializeField] private GameNetworkStateTracker _gameNetworkStateManager;
         private const string LoadingSceneName = "Loading";
         private const string MainMenuSceneName = "MainMenu";
         private const string LobbySceneName = "Room";
@@ -43,11 +42,13 @@ namespace Scenes {
         
         public Task LoadLobby() {
             // The actual scene loading for the lobby is handled by Mirror, so just handle the loading screen
+            _gameNetworkStateManager.GameIsNetworked = false;
             return _loadingScreen.ShowLoadingScreen(true, true);
         }
 
         public async void LoadMainMenu() {
             _targetScene = MainMenuSceneName;
+            _gameNetworkStateManager.GameIsNetworked = false;
             await UnloadCurrentScenesAsync();
             await LoadScene(MainMenuSceneName, true, true, true, false);
             await LoadScene(GameSceneName, false, true, true, true);
@@ -58,6 +59,7 @@ namespace Scenes {
         /// </summary>
         public async void LoadIntoGame() {
             _targetScene = GameSceneName;
+            _gameNetworkStateManager.GameIsNetworked = false;
             await UnloadCurrentScenesAsync();
             await LoadScene(GameSceneName, true, true, true, true);
         }
@@ -148,7 +150,11 @@ namespace Scenes {
             switch (strippedSceneName) {
                 case MainMenuSceneName:
                 case LobbySceneName:
+                    _gameNetworkStateManager.GameIsNetworked = false;
                     await LoadScene(GameSceneName, false, true, true, true);
+                    break;
+                case GameSceneName:
+                    _gameNetworkStateManager.GameIsNetworked = true;
                     break;
             }
         }

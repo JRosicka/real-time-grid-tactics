@@ -1,5 +1,6 @@
 using Gameplay.Grid;
 using Mirror;
+using Scenes;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
@@ -20,14 +21,11 @@ namespace Gameplay.Entities.Abilities {
             ArcherArrow arrow = Object.Instantiate(ArrowPrefab, attackWorldPosition, Quaternion.identity, 
                 GameManager.Instance.CommandManager.SpawnBucket);
 
-            if (NetworkClient.active) {
-                // MP Server
+            if (GameNetworkStateTracker.Instance.GameIsNetworked) {
                 NetworkServer.Spawn(arrow.gameObject);
-                arrow.Initialize(attacker, target, bonusDamage);
-            } else if (!NetworkClient.active) {
-                // SP
-                arrow.Initialize(attacker, target, bonusDamage);
             }
+
+            arrow.Initialize(attacker, target, bonusDamage);
         }
     }
 }

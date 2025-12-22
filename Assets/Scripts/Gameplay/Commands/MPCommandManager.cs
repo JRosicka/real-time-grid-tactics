@@ -6,6 +6,7 @@ using Gameplay.Entities.Abilities;
 using Gameplay.Entities.Upgrades;
 using Gameplay.Managers;
 using Mirror;
+using Scenes;
 using UnityEngine;
 
 public class MPCommandManager : AbstractCommandManager {
@@ -205,7 +206,7 @@ public class MPCommandManager : AbstractCommandManager {
 
     [ClientRpc]
     private void RpcUpdateNetworkableField(NetworkBehaviour parent, string fieldName, INetworkableFieldValue newValue, string metadata) {
-        if (NetworkServer.active) {
+        if (GameNetworkStateTracker.Instance.HostForNetworkedGame) {
             // We already updated this on the server in the Cmd call, don't update it here again
             return;
         }

@@ -5,6 +5,7 @@ using Gameplay.Config.Abilities;
 using Gameplay.Entities;
 using Gameplay.Entities.Abilities;
 using Mirror;
+using Scenes;
 using UnityEngine;
 using Util;
 
@@ -210,7 +211,7 @@ namespace Gameplay.Managers {
             
             // Since we won't actually be performing this ability, we need to generate a UID for it now
             int uid = IDUtil.GenerateUID();
-            if (NetworkClient.active && !NetworkServer.active) {
+            if (GameNetworkStateTracker.Instance.GameIsNetworked && !GameNetworkStateTracker.Instance.HostForNetworkedGame) {
                 // MP client. Hack - use a different set of UIDs than what the server creates
                 uid *= -1;
             }

@@ -10,6 +10,7 @@ using Gameplay.Entities.Upgrades;
 using Gameplay.Grid;
 using Gameplay.Managers;
 using Mirror;
+using Scenes;
 using Sirenix.Utilities;
 using UnityEngine;
 using Util;
@@ -277,7 +278,7 @@ public abstract class AbstractCommandManager : NetworkBehaviour, ICommandManager
     private void SyncEntityCollection() {    // TODO: If networking is horribly slow when there are a lot of GridEntities in the game... this is probably why. Kinda yucky. 
         LogTimestamp(nameof(SyncEntityCollection));
         _entitiesOnGrid = new GridEntityCollection(_entitiesOnGrid.Entities);
-        if (!NetworkClient.active) {
+        if (!GameNetworkStateTracker.Instance.GameIsNetworked) {
             // SP, so syncvars won't work
             EntityCollectionChangedEvent?.Invoke();
         }

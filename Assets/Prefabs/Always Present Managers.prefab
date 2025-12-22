@@ -754,6 +754,51 @@ MonoBehaviour:
     controllerMapLayoutManagerSetIdCounter: 0
     controllerMapEnablerSetIdCounter: 0
   _controllerDataFiles: {fileID: 11400000, guid: d21d2b20df8369642b76aafbb2576ba7, type: 2}
+--- !u!1 &6007072202046239592
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2429206026562300973}
+  - component: {fileID: 242126502615915125}
+  m_Layer: 0
+  m_Name: GameNetworkState
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2429206026562300973
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6007072202046239592}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7961294086651181830}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &242126502615915125
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6007072202046239592}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5ea92c80293d4d42b541e449e0851ff6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Scenes.GameNetworkStateTracker
+  GameIsNetworked: 0
 --- !u!1 &6127374113051229592
 GameObject:
   m_ObjectHideFlags: 0
@@ -911,6 +956,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Loading.SceneManager
   _loadingScreen: {fileID: 0}
+  _gameNetworkStateManager: {fileID: 242126502615915125}
   _minimumLoadTimeSeconds: 0.5
 --- !u!1 &8422299083395272486
 GameObject:
@@ -947,6 +993,7 @@ Transform:
   - {fileID: 7963865181683527928}
   - {fileID: 2618738042674736906}
   - {fileID: 4192712891784227813}
+  - {fileID: 2429206026562300973}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &3770035518213683960
@@ -964,6 +1011,7 @@ MonoBehaviour:
   _audioPlayer: {fileID: 3040161776324841636}
   _sceneLoader: {fileID: 9096919112124343779}
   _gameConfigurationLocator: {fileID: 1921425175468845931}
+  _gameNetworkStateManager: {fileID: 242126502615915125}
 --- !u!1 &9061756347866052206
 GameObject:
   m_ObjectHideFlags: 0

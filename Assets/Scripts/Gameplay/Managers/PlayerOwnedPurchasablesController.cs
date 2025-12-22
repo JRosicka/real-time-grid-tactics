@@ -6,6 +6,7 @@ using Gameplay.Config.Upgrades;
 using Gameplay.Entities;
 using Gameplay.Entities.Upgrades;
 using Mirror;
+using Scenes;
 using UnityEngine;
 
 /// <summary>
@@ -31,7 +32,7 @@ public class PlayerOwnedPurchasablesController : NetworkBehaviour {
         Upgrades = new UpgradesCollection(_player.Data.Team);
         Upgrades.RegisterUpgrades(upgradesToRegister);
         
-        if (NetworkServer.active || !NetworkClient.active) {
+        if (GameNetworkStateTracker.Instance.HostForNetworkedGame || !GameNetworkStateTracker.Instance.GameIsNetworked) {
             // MP server or SP
             GameManager.Instance.CommandManager.EntityRegisteredEvent += OwnedPurchasablesMayHaveChanged;
             GameManager.Instance.CommandManager.EntityUnregisteredEvent += OwnedPurchasablesMayHaveChanged;
@@ -96,7 +97,7 @@ public class PlayerOwnedPurchasablesController : NetworkBehaviour {
     }
 
     private void NotifyOwnedPurchasablesChanged() {
-        if (NetworkClient.active) {
+        if (GameNetworkStateTracker.Instance.GameIsNetworked) {
             RpcOwnedPurchasablesChanged();
         } else {
             // SP, so trigger manually.

@@ -1,6 +1,7 @@
 using Gameplay.Entities.Abilities;
 using Gameplay.Grid;
 using Mirror;
+using Scenes;
 using UnityEngine;
 
 namespace Gameplay.Entities {
@@ -37,7 +38,7 @@ namespace Gameplay.Entities {
             _initialized = true;
             _bonusDamage = bonusDamage;
             DoInitialize(attacker, target, true);
-            if (NetworkClient.active) {
+            if (GameNetworkStateTracker.Instance.GameIsNetworked) {
                 RpcInitialize(attacker, target);
             }
         }

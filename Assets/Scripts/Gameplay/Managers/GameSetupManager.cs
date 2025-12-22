@@ -8,6 +8,7 @@ using Gameplay.Config;
 using Gameplay.Entities;
 using Gameplay.UI;
 using Mirror;
+using Scenes;
 using Steamworks;
 using UnityEngine;
 
@@ -52,7 +53,7 @@ public class GameSetupManager : MonoBehaviour {
     private bool _gameInitialized;
     public bool GameInitialized {
         get {
-            if (NetworkClient.active) {
+            if (GameNetworkStateTracker.Instance.GameIsNetworked) {
                 // MP
                 return MPSetupHandler.GameInitialized;
             }
@@ -60,7 +61,7 @@ public class GameSetupManager : MonoBehaviour {
         }
         private set {
             _gameInitialized = value;
-            if (NetworkServer.active) {
+            if (GameNetworkStateTracker.Instance.HostForNetworkedGame) {
                 MPSetupHandler.GameInitialized = value;
             } else if (value) {
                 TriggerGameInitializedEvent();
@@ -81,13 +82,11 @@ public class GameSetupManager : MonoBehaviour {
     public bool GameOver { get; private set; }
 
     public void Initialize() {
-        // If we are not connected in a multiplayer session, then we must be playing singleplayer. Set up the game now. 
-        // Otherwise, wait for the network manager to set up the multiplayer game. 
-        if (!NetworkClient.active) {
+        if (!GameNetworkStateTracker.Instance.GameIsNetworked) {
             SetupSPGame();
         } else {
             CountdownTimer.ShowLoadingStatus();
-            if (!NetworkServer.active) {
+            if (!GameNetworkStateTracker.Instance.HostForNetworkedGame) {
                 // This is a client and not the host. Listen for all player objects getting created so that we can tell the server that we are ready.
                 StartCoroutine(ListenForPlayersConnected());
             }
@@ -104,7 +103,7 @@ public class GameSetupManager : MonoBehaviour {
         }
 
         GameTeam winningTeam = winner == null ? GameTeam.Neutral : winner.Data.Team;
-        if (!NetworkClient.active) {
+        if (!GameNetworkStateTracker.Instance.GameIsNetworked) {
             ReturnToLobbyAsync();
             NotifyGameOver(winningTeam);
         } else {

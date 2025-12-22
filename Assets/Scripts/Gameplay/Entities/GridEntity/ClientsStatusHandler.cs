@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Mirror;
+using Scenes;
 using UnityEngine;
 
 namespace Gameplay.Entities {
@@ -36,10 +37,10 @@ namespace Gameplay.Entities {
                 _playerReadyStatuses[kvp.Key] = false;
             }
             
-            if (!NetworkClient.active) {
+            if (!GameNetworkStateTracker.Instance.GameIsNetworked) {
                 // SP
                 _performWhenAllPlayersReady = performWhenAllPlayersReady;
-            } else if (NetworkServer.active) {
+            } else if (GameNetworkStateTracker.Instance.HostForNetworkedGame) {
                 // MP server
                 _performWhenAllPlayersReady = performWhenAllPlayersReady;
                 MPClientsStatusHandler.ClientReadyEvent += MarkClientReady;
@@ -53,7 +54,7 @@ namespace Gameplay.Entities {
 
             _localClientReady = true;
             // TODO could add a utility method for this if else block since we do it in a bunch of places (and another one for the if else-if version of this for running on server)
-            if (!NetworkClient.active) {
+            if (!GameNetworkStateTracker.Instance.GameIsNetworked) {
                 // SP
                 PerformAction();
             } else {

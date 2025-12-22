@@ -1,6 +1,7 @@
 using System;
 using System.Threading.Tasks;
 using Mirror;
+using Scenes;
 using UnityEngine;
 using Util;
 
@@ -58,10 +59,10 @@ namespace Gameplay.Entities {
 
         private void HandleTimerCompleted() {
             _markedCompletedLocally = true;
-            if (!NetworkClient.active) {
+            if (!GameNetworkStateTracker.Instance.GameIsNetworked) {
                 // SP
                 TryCompleteTimerAsync().FireAndForget();
-            } else if (NetworkServer.active) {
+            } else if (GameNetworkStateTracker.Instance.HostForNetworkedGame) {
                 // MP and we are the server
                 TryCompleteTimerAsync().FireAndForget();
             } // else MP and we are a client. Only handle client-specific stuff. 

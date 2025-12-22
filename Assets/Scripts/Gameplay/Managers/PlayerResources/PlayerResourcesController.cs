@@ -4,6 +4,7 @@ using System.Linq;
 using Gameplay.Config;
 using Gameplay.Entities;
 using Mirror;
+using Scenes;
 using UnityEngine;
 
 public enum ResourceType {
@@ -134,7 +135,7 @@ public class PlayerResourcesController : NetworkBehaviour {
     }
     
     private void SetBalance(ResourceAmount newBalance) {
-        if (!NetworkClient.active) {
+        if (!GameNetworkStateTracker.Instance.GameIsNetworked) {
             // SP
             DoSetBalance(newBalance);
         } else {
@@ -157,7 +158,7 @@ public class PlayerResourcesController : NetworkBehaviour {
     }
 
     private void UpdateBalances() {
-        if (!NetworkClient.active) {
+        if (!GameNetworkStateTracker.Instance.GameIsNetworked) {
             // SP, so syncvars won't work... Trigger manually.
             BalanceChangedEvent?.Invoke(_balances.ToList());
         } else {
