@@ -1,9 +1,12 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Audio;
 using Game.Network;
 using JetBrains.Annotations;
+using Menu;
 using Mirror;
+using Scenes;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -18,6 +21,7 @@ public class RoomMenu : MonoBehaviour {
     public PlayerSlot PlayerSlot2;
     public List<PlayerSlot> SpectatorSlots;
     public Button StartButton;
+    public Button SwitchMapButton;
     public Button ToggleReadyButton;
     public TMP_Text ToggleReadyButtonText;
     public TMP_Text JoinCodeText;
@@ -28,9 +32,12 @@ public class RoomMenu : MonoBehaviour {
 
     public Animator CopiedToClipboardAnimator;
     
+    public LobbyNetworkBehaviour LobbyNetworkBehaviour;
+    
     private static GameNetworkManager NetworkManager => (GameNetworkManager)Mirror.NetworkManager.singleton;
     private SteamLobbyService SteamLobbyService => SteamLobbyService.Instance;
     private string _joinCode;
+    private string _mapID;
 
     private List<GameNetworkPlayer> PlayersInLobby => FindObjectsByType<GameNetworkPlayer>(FindObjectsSortMode.InstanceID).ToList();
     private GameNetworkPlayer _cachedGameNetworkPlayer;
@@ -63,6 +70,7 @@ public class RoomMenu : MonoBehaviour {
         AllPlayerSlots.ForEach(s => s.Initialize(this));
         
         StartButton.gameObject.SetActive(false);
+        SwitchMapButton.gameObject.SetActive(NetworkServer.active);
         NetworkManager.RoomServerPlayersReadyAction += TryShowStartButton;
         NetworkManager.RoomServerPlayersNotReadyAction += HideStartButton;
         NetworkManager.RoomServerSceneChangedAction += UpdateLobbyOpenStatus;
@@ -77,6 +85,8 @@ public class RoomMenu : MonoBehaviour {
         _joinCode = lobby[SteamLobbyService.LobbyUIDKey];
         JoinCodeText.text = _joinCode;
         // steamLobbyService.OnCurrentLobbyMetadataChanged += AddUnassignedPlayers;    // TODO do we listen to this, or maybe to one of the GameNetworkPlayer methods, or maybe to the GameNetworkManager updatelobby event.
+
+        _mapID = GameTypeTracker.Instance.MapID;
     }
     
     private void OnDestroy() {
@@ -116,6 +126,20 @@ public class RoomMenu : MonoBehaviour {
             // We're just a little baby client, so just stop the client
             NetworkManager.StopClient();
         }
+    }
+
+    /// <summary>
+    /// Temporary logic to cycle between maps. Server method.
+    /// </summary>
+    public void SwitchMap() {
+        _mapID = _mapID switch {
+            "origins" => "mountainPass",
+            "mountainPass" => "oakcrest",
+            "oakcrest" => "origins",
+            _ => throw new ArgumentOutOfRangeException(_mapID, $"Unexpected map ID: {_mapID}")
+        };
+
+        LobbyNetworkBehaviour.SwitchMap(_mapID);
     }
 
     public void CopyJoinCode() {
@@ -267,6 +291,7 @@ public class RoomMenu : MonoBehaviour {
 
     public void StartGame() {
         SteamLobbyService.UpdateCurrentLobbyMetadata(SteamLobbyService.LobbyGameActiveKey, true.ToString());
+        LobbyNetworkBehaviour.LockMapLoading();
         NetworkManager.ServerChangeScene(NetworkManager.GameplayScene);
         
         LobbyAudio.ButtonClickSound();

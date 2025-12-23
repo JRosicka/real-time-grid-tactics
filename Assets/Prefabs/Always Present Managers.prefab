@@ -798,7 +798,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5ea92c80293d4d42b541e449e0851ff6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Scenes.GameNetworkStateTracker
-  GameIsNetworked: 0
 --- !u!1 &6127374113051229592
 GameObject:
   m_ObjectHideFlags: 0
@@ -956,7 +955,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Loading.SceneManager
   _loadingScreen: {fileID: 0}
-  _gameNetworkStateManager: {fileID: 242126502615915125}
+  _gameTypeManager: {fileID: 242126502615915125}
   _minimumLoadTimeSeconds: 0.5
 --- !u!1 &8422299083395272486
 GameObject:
@@ -1011,7 +1010,7 @@ MonoBehaviour:
   _audioPlayer: {fileID: 3040161776324841636}
   _sceneLoader: {fileID: 9096919112124343779}
   _gameConfigurationLocator: {fileID: 1921425175468845931}
-  _gameNetworkStateManager: {fileID: 242126502615915125}
+  _gameTypeManager: {fileID: 242126502615915125}
 --- !u!1 &9061756347866052206
 GameObject:
   m_ObjectHideFlags: 0

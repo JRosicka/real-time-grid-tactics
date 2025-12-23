@@ -13,8 +13,6 @@ public class MapLoader : MonoBehaviour {
     public CameraManager CameraManager;
     public List<GameObject> PPObjects = new();
     
-    public string CurrentMapID;
-
     private MapData _currentMap;
     public Vector2Int LowerLeftCell { get; private set; }
     public Vector2Int UpperRightCell { get; private set; }
@@ -24,7 +22,6 @@ public class MapLoader : MonoBehaviour {
     
     public void LoadMap(MapData mapData) {
         _currentMap = mapData;
-        CurrentMapID = mapData.mapID;
         
         LowerLeftCell = mapData.lowerLeftCell;
         UpperRightCell = mapData.upperRightCell;

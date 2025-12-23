@@ -121,6 +121,7 @@ public class MultiplayerMenu : MonoBehaviour {
 
     public async void OnHostPublicLobbyClicked() {
         MainMenuAudio.ButtonClickSound();
+        SceneLoader.Instance.LockMapLoading();
         
         await SceneLoader.Instance.LoadLobby();
         SteamLobbyService.Instance.HostLobby(true);
@@ -132,7 +133,7 @@ public class MultiplayerMenu : MonoBehaviour {
 
     public void OnStartSinglePlayerGameClicked() {
         MainMenuAudio.ButtonClickSound();
-        SceneLoader.Instance.LoadIntoGame();
+        SceneLoader.Instance.LoadIntoSinglePlayerGame();
     }
 
     public void OnStopHostClicked() {

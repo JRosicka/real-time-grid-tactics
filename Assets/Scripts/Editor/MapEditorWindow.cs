@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using Scenes;
 using Sirenix.OdinInspector;
 using Sirenix.OdinInspector.Editor;
 using UnityEditor;
@@ -83,7 +84,7 @@ namespace Gameplay.Config {
             _everSetUp = true;
 
             if (_inGameScene && !_everPopulated) {
-                DropdownMapID = MapLoader.CurrentMapID;
+                DropdownMapID = "origins";
                 PopulateFields(MapSerializer.GetMap(DropdownMapID));
                 
                 _everPopulated = true;
@@ -119,6 +120,7 @@ namespace Gameplay.Config {
             MapData mapData = MapSerializer.GetMap(DropdownMapID);
             MapLoader.LoadMap(mapData);
             PopulateFields(mapData);
+            GameTypeTracker.SetMapIDFromEditorWindow(DropdownMapID);
             
             Repaint();
         }
@@ -156,6 +158,7 @@ namespace Gameplay.Config {
             
             // Re-load the map to make sure the changes are reflected
             LoadMap();
+            GameTypeTracker.SetMapIDFromEditorWindow(DropdownMapID);
         }
 
         #endregion

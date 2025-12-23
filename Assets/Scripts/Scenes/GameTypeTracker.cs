@@ -24,10 +24,18 @@ namespace Scenes {
         /// Whether the local machine is the host for the MP game
         /// </summary>
         public bool HostForNetworkedGame => GameIsNetworked && NetworkServer.active;
-
+        /// <summary>
+        /// The ID of the map to use
+        /// </summary>
+        public string MapID { get; private set; }
+        private static string _mapIDFromEditorWindow;
         
         public void Initialize() {
             Instance = this;
+#if UNITY_EDITOR
+            MapID = string.IsNullOrEmpty(_mapIDFromEditorWindow) ? "origins" : _mapIDFromEditorWindow;
+            SetMap(MapID);
+#endif
         }
 
         public void SetGameType(bool networked, bool allowInput, bool runGame) {
@@ -35,5 +43,16 @@ namespace Scenes {
             AllowInput = allowInput;
             RunGame = runGame;
         }
+        
+        public void SetMap(string mapID) {
+            MapID = mapID;
+        }
+        
+#if UNITY_EDITOR
+        public static void SetMapIDFromEditorWindow(string mapID) {
+            _mapIDFromEditorWindow = mapID;
+        }
+#endif
+
     }
 }

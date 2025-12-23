@@ -37,7 +37,7 @@ public class GameSetupManager : MonoBehaviour {
     public PlayerData SpectatorData;
     public float CountdownTimeSeconds = 3f;
     public int GameOverDelayMillis = 5 * 1000;
-    private MapData MapData => MapSerializer.GetMap(MapLoader.CurrentMapID);
+    private MapData MapData => MapSerializer.GetMap(GameTypeTracker.Instance.MapID);
     
     private static GameManager GameManager => GameManager.Instance;
     

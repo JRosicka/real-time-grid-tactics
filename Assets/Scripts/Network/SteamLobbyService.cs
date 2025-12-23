@@ -314,6 +314,7 @@ public class SteamLobbyService : MonoBehaviour {
         }
 
         SceneLoader.Instance.ShowLoadingScreen();
+        SceneLoader.Instance.LockMapLoading();
         
         _currentIDForLobbyBeingJoined = lobbyID;
         

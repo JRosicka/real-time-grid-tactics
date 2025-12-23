@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using Game.Network;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.Serialization;
 using Util;
 
 namespace Scenes {
@@ -13,7 +12,7 @@ namespace Scenes {
     /// </summary>
     public class SceneLoader : MonoBehaviour {
         [SerializeField] private LoadingScreen _loadingScreen;
-        [FormerlySerializedAs("_gameNetworkStateManager")] [SerializeField] private GameTypeTracker _gameTypeManager;
+        [SerializeField] private GameTypeTracker _gameTypeManager;
         private const string LoadingSceneName = "Loading";
         private const string MainMenuSceneName = "MainMenu";
         private const string LobbySceneName = "Room";
@@ -50,19 +49,47 @@ namespace Scenes {
         public async void LoadMainMenu() {
             _targetScene = MainMenuSceneName;
             _gameTypeManager.SetGameType(false, false, true);
-            await UnloadCurrentScenesAsync();
+            await UnloadCurrentScenesAsync(true);
             await LoadScene(MainMenuSceneName, true, true, true, false);
             await LoadScene(GameSceneName, false, true, true, true);
         }
         
         /// <summary>
-        /// Load a match
+        /// Load int a SP match
         /// </summary>
-        public async void LoadIntoGame() {
+        public async void LoadIntoSinglePlayerGame() {
             _targetScene = GameSceneName;
             _gameTypeManager.SetGameType(false, true, true);
-            await UnloadCurrentScenesAsync();
+            await UnloadCurrentScenesAsync(true);
             await LoadScene(GameSceneName, true, true, true, true);
+        }
+        
+        /// <summary>
+        /// Switch the map in the currently loaded game scene
+        /// </summary>
+        public void SwitchLoadedMap(string newMapID) {
+            _gameTypeManager.SetMap(newMapID);
+            
+            if (_switchMapTask == null || _switchMapTask.IsCompleted) {
+                _switchMapTask = DoSwitchLoadedMap();
+            }
+        }
+
+        private Task _switchMapTask;
+        private bool _mapLoadingLocked;
+        private async Task DoSwitchLoadedMap() {
+            await UnloadScene(GameSceneName, false, true);
+            
+            if (_mapLoadingLocked) {
+                Debug.Log("Not reloading the game scene while switching maps because the game scene is already loaded. Someone else must have loaded the game scene.");
+                return;
+            }
+            
+            await LoadScene(GameSceneName, false, true, false, true);
+        }
+        
+        public void LockMapLoading() {
+            _mapLoadingLocked = true;
         }
 
         /// <summary>
@@ -102,13 +129,13 @@ namespace Scenes {
             }
         }
 
-        private async Task UnloadScene(string sceneName) {
+        private async Task UnloadScene(string sceneName, bool showLoadingScreenInFrontOfMenus, bool fade) {
             Scene sceneToUnload = SceneManager.GetSceneByName(sceneName);
             if (!sceneToUnload.isLoaded || !sceneToUnload.IsValid() || !Application.isPlaying) {
                 return;
             }
             
-            await _loadingScreen.ShowLoadingScreen(false, true);
+            await _loadingScreen.ShowLoadingScreen(fade, showLoadingScreenInFrontOfMenus);
             
             AsyncOperation op = SceneManager.UnloadSceneAsync(sceneName);
             // Can happen if exiting the application or exiting play mode
@@ -131,6 +158,9 @@ namespace Scenes {
             
             // Load directly into whatever scene we were looking at in the editor
             _targetScene = StrippedSceneName(currentSceneName);
+            if (_targetScene == GameSceneName) {
+                GameTypeTracker.Instance.SetGameType(false, true, true);
+            }
             await LoadScene(currentSceneName, true, false, false, true);
         }
 
@@ -153,17 +183,20 @@ namespace Scenes {
             if (_targetScene == strippedSceneName) return;
             _targetScene = strippedSceneName;
             
-            await UnloadCurrentScenesAsync();
+            await UnloadCurrentScenesAsync(false);
             switch (strippedSceneName) {
                 case MainMenuSceneName:
+                    _mapLoadingLocked = false;
                     _gameTypeManager.SetGameType(false, false, true);
                     await LoadScene(GameSceneName, false, true, true, true);
                     break;
                 case LobbySceneName:
+                    _mapLoadingLocked = false;
                     _gameTypeManager.SetGameType(false, false, false);
                     await LoadScene(GameSceneName, false, true, true, true);
                     break;
                 case GameSceneName:
+                    _mapLoadingLocked = true;
                     _gameTypeManager.SetGameType(true, true, true);
                     break;
             }
@@ -173,11 +206,11 @@ namespace Scenes {
         /// Mirror is ordering a scene change, so handle unloading whatever scene we currently have loaded and handle
         /// showing/hiding the loading screen if needed
         /// </summary>
-        private async Task UnloadCurrentScenesAsync() {
+        private async Task UnloadCurrentScenesAsync(bool fadeOutFirst) {
             List<Task> unloadTasks = new() {
-                UnloadScene(MainMenuSceneName),
-                UnloadScene(LobbySceneName),
-                UnloadScene(GameSceneName)
+                UnloadScene(MainMenuSceneName, true, fadeOutFirst),
+                UnloadScene(LobbySceneName, true, fadeOutFirst),
+                UnloadScene(GameSceneName, true, fadeOutFirst)
             };
 
             await Task.WhenAll(unloadTasks);
