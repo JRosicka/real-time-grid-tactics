@@ -19,10 +19,10 @@ namespace Gameplay.UI {
         
         private void Start() {
             SetText(TimeSpan.Zero);
-            if (GameSetupManager.GameInitialized) {
+            if (GameSetupManager.GameRunning) {
                 StartTimer();
             } else {
-                GameManager.Instance.GameSetupManager.GameInitializedEvent += StartTimer;
+                GameManager.Instance.GameSetupManager.GameRunningEvent += StartTimer;
             }
         }
 

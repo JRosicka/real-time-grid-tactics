@@ -211,7 +211,7 @@ namespace Gameplay.Managers {
             
             // Since we won't actually be performing this ability, we need to generate a UID for it now
             int uid = IDUtil.GenerateUID();
-            if (GameNetworkStateTracker.Instance.GameIsNetworked && !GameNetworkStateTracker.Instance.HostForNetworkedGame) {
+            if (GameTypeTracker.Instance.GameIsNetworked && !GameTypeTracker.Instance.HostForNetworkedGame) {
                 // MP client. Hack - use a different set of UIDs than what the server creates
                 uid *= -1;
             }

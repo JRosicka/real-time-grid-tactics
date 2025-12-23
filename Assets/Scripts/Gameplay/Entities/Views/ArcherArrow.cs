@@ -38,7 +38,7 @@ namespace Gameplay.Entities {
             _initialized = true;
             _bonusDamage = bonusDamage;
             DoInitialize(attacker, target, true);
-            if (GameNetworkStateTracker.Instance.GameIsNetworked) {
+            if (GameTypeTracker.Instance.GameIsNetworked) {
                 RpcInitialize(attacker, target);
             }
         }

@@ -4,6 +4,7 @@ using Gameplay.Config.Abilities;
 using Gameplay.Entities;
 using Gameplay.Grid;
 using Gameplay.UI;
+using Scenes;
 using UnityEngine;
 
 /// <summary>
@@ -30,10 +31,10 @@ public class EntitySelectionManager {
 
     public EntitySelectionManager(GameManager gameManager) {
         _gameManager = gameManager;
-        if (_gameManager.GameSetupManager.GameInitialized) {
+        if (_gameManager.GameSetupManager.GameRunning && GameTypeTracker.Instance.AllowInput) {
             RegisterEvents();
         } else {
-            gameManager.GameSetupManager.GameInitializedEvent += RegisterEvents;
+            gameManager.GameSetupManager.GameRunningEvent += RegisterEvents;
         }
     }
 

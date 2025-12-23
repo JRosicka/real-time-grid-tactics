@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Gameplay.Entities;
+using Scenes;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -35,7 +36,8 @@ namespace Gameplay.UI {
         }
 
         public void SelectTile(Vector2Int location, GridEntity entityAtLocation) {
-            if (!GameManager.Instance.GameSetupManager.GameInitialized) return;
+            if (!GameManager.Instance.GameSetupManager.GameRunning) return;
+            if (!GameTypeTracker.Instance.AllowInput) return;
             
             _hidden = false; 
             _canvasGroup.alpha = 1;
@@ -55,7 +57,8 @@ namespace Gameplay.UI {
         }
 
         private void UpdateColor(GridEntity entityAtLocation) {
-            if (!GameManager.Instance.GameSetupManager.GameInitialized) return;
+            if (!GameManager.Instance.GameSetupManager.GameRunning) return;
+            if (!GameTypeTracker.Instance.AllowInput) return;
 
             ReticleSelection reticleSelection = entityAtLocation == null || entityAtLocation.InteractBehavior == null
                 ? ReticleSelection.Neutral

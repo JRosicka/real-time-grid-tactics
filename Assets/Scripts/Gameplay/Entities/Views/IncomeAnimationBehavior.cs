@@ -53,7 +53,7 @@ namespace Gameplay.Entities {
 
             GridEntity resourceEntity = GameManager.Instance.ResourceEntityFinder.GetMatchingResourceEntity(_entity, _entity.EntityData);
             if (resourceEntity == null) {
-                if (GameManager.Instance.GameSetupManager.GameInitialized) {
+                if (GameManager.Instance.GameSetupManager.GameRunning) {
                     Debug.LogWarning("No resource entity found when doing income animation. This should not happen.");
                 }
                 return;

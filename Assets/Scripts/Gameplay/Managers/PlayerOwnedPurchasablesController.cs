@@ -32,7 +32,7 @@ public class PlayerOwnedPurchasablesController : NetworkBehaviour {
         Upgrades = new UpgradesCollection(_player.Data.Team);
         Upgrades.RegisterUpgrades(upgradesToRegister);
         
-        if (GameNetworkStateTracker.Instance.HostForNetworkedGame || !GameNetworkStateTracker.Instance.GameIsNetworked) {
+        if (GameTypeTracker.Instance.HostForNetworkedGame || !GameTypeTracker.Instance.GameIsNetworked) {
             // MP server or SP
             GameManager.Instance.CommandManager.EntityRegisteredEvent += OwnedPurchasablesMayHaveChanged;
             GameManager.Instance.CommandManager.EntityUnregisteredEvent += OwnedPurchasablesMayHaveChanged;
@@ -97,7 +97,7 @@ public class PlayerOwnedPurchasablesController : NetworkBehaviour {
     }
 
     private void NotifyOwnedPurchasablesChanged() {
-        if (GameNetworkStateTracker.Instance.GameIsNetworked) {
+        if (GameTypeTracker.Instance.GameIsNetworked) {
             RpcOwnedPurchasablesChanged();
         } else {
             // SP, so trigger manually.

@@ -23,6 +23,7 @@ public class GameSetupManager : MonoBehaviour {
     public StartLocationIndicator StartLocationIndicator;
     public GameOverView GameOverView;
     [SerializeField] private InGamePauseMenu _pauseMenu;
+    [SerializeField] private GameUI _gameUI;
 
     [Header("Prefabs")]
     public SPGamePlayer SPGamePlayerPrefab;
@@ -50,30 +51,35 @@ public class GameSetupManager : MonoBehaviour {
     // The total number of players in this game who have had their gameobjects assigned
     private int _assignedPlayerCount;
     // Whether the game was initialized on the server
-    private bool _gameInitialized;
-    public bool GameInitialized {
+    private bool _gameRunning;
+    public bool GameRunning {
         get {
-            if (GameNetworkStateTracker.Instance.GameIsNetworked) {
+            if (GameTypeTracker.Instance.GameIsNetworked) {
                 // MP
-                return MPSetupHandler.GameInitialized;
+                return MPSetupHandler.GameRunning;
             }
-            return _gameInitialized;
+            return _gameRunning;
         }
         private set {
-            _gameInitialized = value;
-            if (GameNetworkStateTracker.Instance.HostForNetworkedGame) {
-                MPSetupHandler.GameInitialized = value;
+            _gameRunning = value;
+            if (GameTypeTracker.Instance.HostForNetworkedGame) {
+                MPSetupHandler.GameRunning = value;
             } else if (value) {
-                TriggerGameInitializedEvent();
+                TriggerGameRunningEvent();
             }
         }
     }
     
-    public bool InputAllowed => !_pauseMenu.Paused && GameInitialized && !GameOver && !GameManager.DisconnectionHandler.Disconnected;
+    public bool InputAllowed => 
+        !_pauseMenu.Paused 
+        && GameRunning 
+        && GameTypeTracker.Instance.AllowInput
+        && !GameOver 
+        && !GameManager.DisconnectionHandler.Disconnected;
 
-    public event Action GameInitializedEvent;
-    public void TriggerGameInitializedEvent() {
-        GameInitializedEvent?.Invoke();
+    public event Action GameRunningEvent;
+    public void TriggerGameRunningEvent() {
+        GameRunningEvent?.Invoke();
     }
 
     // Server event
@@ -82,17 +88,19 @@ public class GameSetupManager : MonoBehaviour {
     public bool GameOver { get; private set; }
 
     public void Initialize() {
-        if (!GameNetworkStateTracker.Instance.GameIsNetworked) {
+        if (!GameTypeTracker.Instance.GameIsNetworked) {
             SetupSPGame();
         } else {
             CountdownTimer.ShowLoadingStatus();
-            if (!GameNetworkStateTracker.Instance.HostForNetworkedGame) {
+            if (!GameTypeTracker.Instance.HostForNetworkedGame) {
                 // This is a client and not the host. Listen for all player objects getting created so that we can tell the server that we are ready.
                 StartCoroutine(ListenForPlayersConnected());
             }
         }
         
         GameManager.GameEndManager.GameEnded += HandleGameOver;
+        
+        _gameUI.Initialize(GameTypeTracker.Instance.AllowInput);
     }
     
     // TODO it would be good to move all of this game over logic to GameEndManager, but we currently can't do server-side logic in that class
@@ -101,9 +109,11 @@ public class GameSetupManager : MonoBehaviour {
         if (gameNetworkManager != null) {
             gameNetworkManager.RoomServerDisconnectAction -= ReDetermineWhichPlayersAreConnected;
         }
+        
+        GameRunning = false;
 
         GameTeam winningTeam = winner == null ? GameTeam.Neutral : winner.Data.Team;
-        if (!GameNetworkStateTracker.Instance.GameIsNetworked) {
+        if (!GameTypeTracker.Instance.GameIsNetworked) {
             ReturnToLobbyAsync();
             NotifyGameOver(winningTeam);
         } else {
@@ -193,17 +203,19 @@ public class GameSetupManager : MonoBehaviour {
     /// Actual timer (separate from <see cref="CountdownTimerView"/>) for starting the game
     /// </summary>
     private async void PerformGameStartCountdown() {
+        if (!GameTypeTracker.Instance.RunGame) return;
+
         await Task.Delay((int)(CountdownTimeSeconds * 1000));
         
         // The game is actually starting now, so perform on-start abilities for the starting set of entities
         PerformOnStartAbilities();
-        GameInitialized = true;
+        GameRunning = true;
     }
     
     #region Singleplayer
 
     private void SetupSPGame() {
-        if (GameInitialized) {
+        if (GameRunning) {
             Debug.LogError("Can not set up SP game, the game was already set up");
             return;
         }
@@ -234,9 +246,10 @@ public class GameSetupManager : MonoBehaviour {
 
         PerformClientSidePostMapSetupInitialization();
 
-        PerformOnStartAbilities();
-
-        GameInitialized = true;
+        if (GameTypeTracker.Instance.RunGame) {
+            PerformOnStartAbilities();
+            GameRunning = true;
+        }
     } 
 
     #endregion
@@ -357,7 +370,7 @@ public class GameSetupManager : MonoBehaviour {
     /// </summary>
     [Server]
     private void SetupMPGame() {
-        if (GameInitialized) {
+        if (GameRunning) {
             Debug.LogError("Can not set up MP game, the game was already set up");
             return;
         }

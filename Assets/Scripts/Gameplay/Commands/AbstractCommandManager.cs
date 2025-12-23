@@ -132,7 +132,7 @@ public abstract class AbstractCommandManager : NetworkBehaviour, ICommandManager
         }
         
         // Now that the entity is registered, perform any on-start abilities
-        if (GameManager.Instance.GameSetupManager.GameInitialized) {
+        if (GameManager.Instance.GameSetupManager.GameRunning) {
             AbilityAssignmentManager.PerformOnStartAbilitiesForEntity(entityInstance);
         }
     }
@@ -278,7 +278,7 @@ public abstract class AbstractCommandManager : NetworkBehaviour, ICommandManager
     private void SyncEntityCollection() {    // TODO: If networking is horribly slow when there are a lot of GridEntities in the game... this is probably why. Kinda yucky. 
         LogTimestamp(nameof(SyncEntityCollection));
         _entitiesOnGrid = new GridEntityCollection(_entitiesOnGrid.Entities);
-        if (!GameNetworkStateTracker.Instance.GameIsNetworked) {
+        if (!GameTypeTracker.Instance.GameIsNetworked) {
             // SP, so syncvars won't work
             EntityCollectionChangedEvent?.Invoke();
         }

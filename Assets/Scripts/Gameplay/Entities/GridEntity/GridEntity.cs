@@ -371,10 +371,10 @@ namespace Gameplay.Entities {
         #region AbilityTimers
 
         public void CreateAbilityTimer(IAbility ability, float overrideCooldownDuration = -1) {
-            if (!GameNetworkStateTracker.Instance.GameIsNetworked) {
+            if (!GameTypeTracker.Instance.GameIsNetworked) {
                 // SP
                 DoCreateAbilityTimer(ability, overrideCooldownDuration);
-            } else if (GameNetworkStateTracker.Instance.HostForNetworkedGame) {
+            } else if (GameTypeTracker.Instance.HostForNetworkedGame) {
                 // MP server. Make the timer immediately locally, and also make the RPC call to do it remotely. 
                 DoCreateAbilityTimer(ability, overrideCooldownDuration); 
                 RpcCreateAbilityTimer(ability, overrideCooldownDuration);
@@ -384,7 +384,7 @@ namespace Gameplay.Entities {
 
         [ClientRpc]
         private void RpcCreateAbilityTimer(IAbility ability, float overrideCooldownDuration) {
-            if (GameNetworkStateTracker.Instance.HostForNetworkedGame) return;   // Don't make the timer on the server since it was already created locally there. 
+            if (GameTypeTracker.Instance.HostForNetworkedGame) return;   // Don't make the timer on the server since it was already created locally there. 
             DoCreateAbilityTimer(ability, overrideCooldownDuration);
         }
 
@@ -395,10 +395,10 @@ namespace Gameplay.Entities {
         }
 
         public void AddTimeToAbilityTimer(IAbility ability, float timeToAdd) {
-            if (!GameNetworkStateTracker.Instance.GameIsNetworked) {
+            if (!GameTypeTracker.Instance.GameIsNetworked) {
                 // SP
                 DoAddTimeToAbilityTimer(ability, timeToAdd);
-            } else if (GameNetworkStateTracker.Instance.HostForNetworkedGame) {
+            } else if (GameTypeTracker.Instance.HostForNetworkedGame) {
                 // MP server
                 RpcAddTimeToAbilityTimer(ability, timeToAdd);
             }

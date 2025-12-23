@@ -1,5 +1,6 @@
 using System;
 using Gameplay.Config;
+using Scenes;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -26,10 +27,10 @@ namespace Gameplay.Grid {
         public void Initialize(EntitySelectionManager entitySelectionManager, GameManager gameManager) {
             _entitySelectionManager = entitySelectionManager;
             _gameManager = gameManager;
-            if (_gameManager.GameSetupManager.GameInitialized) {
+            if (_gameManager.GameSetupManager.GameRunning && GameTypeTracker.Instance.AllowInput) {
                 RegisterEvents();
             } else {
-                gameManager.GameSetupManager.GameInitializedEvent += RegisterEvents;
+                gameManager.GameSetupManager.GameRunningEvent += RegisterEvents;
             }
         }
 

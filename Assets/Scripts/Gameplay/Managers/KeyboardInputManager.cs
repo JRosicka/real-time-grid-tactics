@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Gameplay.UI;
 using Rewired;
+using Scenes;
 using UnityEngine;
 
 namespace Gameplay.Managers {
@@ -33,7 +34,8 @@ namespace Gameplay.Managers {
         }
 
         private void Update() {
-            if (!GameManager.Instance.GameSetupManager.GameInitialized) return;
+            if (!GameManager.Instance.GameSetupManager.GameRunning) return;
+            if (!GameTypeTracker.Instance.AllowInput) return;
             if (GameManager.Instance.GameSetupManager.GameOver) return;
 
             HandleEscape();

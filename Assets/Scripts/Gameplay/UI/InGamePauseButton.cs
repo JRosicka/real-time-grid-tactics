@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Gameplay.Config;
+using Scenes;
 using UnityEngine;
 using UnityEngine.UI;
 using Util;
@@ -34,7 +35,8 @@ namespace Gameplay.UI {
         }
         
         public void TogglePauseMenu() {
-            if (!GameSetupManager.GameInitialized) return;
+            if (!GameSetupManager.GameRunning) return;
+            if (!GameTypeTracker.Instance.AllowInput) return;
             if (GameSetupManager.GameOver) return;
 
             PauseMenu.TogglePauseMenu();

@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Game.Network;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.Serialization;
 using Util;
 
 namespace Scenes {
@@ -12,7 +13,7 @@ namespace Scenes {
     /// </summary>
     public class SceneLoader : MonoBehaviour {
         [SerializeField] private LoadingScreen _loadingScreen;
-        [SerializeField] private GameNetworkStateTracker _gameNetworkStateManager;
+        [FormerlySerializedAs("_gameNetworkStateManager")] [SerializeField] private GameTypeTracker _gameTypeManager;
         private const string LoadingSceneName = "Loading";
         private const string MainMenuSceneName = "MainMenu";
         private const string LobbySceneName = "Room";
@@ -42,13 +43,13 @@ namespace Scenes {
         
         public Task LoadLobby() {
             // The actual scene loading for the lobby is handled by Mirror, so just handle the loading screen
-            _gameNetworkStateManager.GameIsNetworked = false;
+            _gameTypeManager.SetGameType(false, false, false);
             return _loadingScreen.ShowLoadingScreen(true, true);
         }
 
         public async void LoadMainMenu() {
             _targetScene = MainMenuSceneName;
-            _gameNetworkStateManager.GameIsNetworked = false;
+            _gameTypeManager.SetGameType(false, false, true);
             await UnloadCurrentScenesAsync();
             await LoadScene(MainMenuSceneName, true, true, true, false);
             await LoadScene(GameSceneName, false, true, true, true);
@@ -59,7 +60,7 @@ namespace Scenes {
         /// </summary>
         public async void LoadIntoGame() {
             _targetScene = GameSceneName;
-            _gameNetworkStateManager.GameIsNetworked = false;
+            _gameTypeManager.SetGameType(false, true, true);
             await UnloadCurrentScenesAsync();
             await LoadScene(GameSceneName, true, true, true, true);
         }
@@ -155,12 +156,15 @@ namespace Scenes {
             await UnloadCurrentScenesAsync();
             switch (strippedSceneName) {
                 case MainMenuSceneName:
+                    _gameTypeManager.SetGameType(false, false, true);
+                    await LoadScene(GameSceneName, false, true, true, true);
+                    break;
                 case LobbySceneName:
-                    _gameNetworkStateManager.GameIsNetworked = false;
+                    _gameTypeManager.SetGameType(false, false, false);
                     await LoadScene(GameSceneName, false, true, true, true);
                     break;
                 case GameSceneName:
-                    _gameNetworkStateManager.GameIsNetworked = true;
+                    _gameTypeManager.SetGameType(true, true, true);
                     break;
             }
         }

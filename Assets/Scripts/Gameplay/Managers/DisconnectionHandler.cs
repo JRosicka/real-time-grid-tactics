@@ -15,7 +15,7 @@ namespace Gameplay.Managers {
         public bool Disconnected { get; private set; }
         
         public DisconnectionHandler() {
-            if (!GameNetworkStateTracker.Instance.GameIsNetworked) return;
+            if (!GameTypeTracker.Instance.GameIsNetworked) return;
 
             MessagePacking.DisconnectedFromException += DisconnectDetected;
         }

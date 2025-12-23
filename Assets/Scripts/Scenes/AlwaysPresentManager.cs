@@ -1,6 +1,7 @@
 using Audio;
 using Gameplay.Config;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Scenes {
     /// <summary>
@@ -12,7 +13,7 @@ namespace Scenes {
         [SerializeField] private AudioPlayer _audioPlayer;
         [SerializeField] private SceneLoader _sceneLoader;
         [SerializeField] private GameConfigurationLocator _gameConfigurationLocator;
-        [SerializeField] private GameNetworkStateTracker _gameNetworkStateManager;
+        [FormerlySerializedAs("_gameNetworkStateManager")] [SerializeField] private GameTypeTracker _gameTypeManager;
 
         /// <summary>
         /// Performs initialization. If initialization was already performed this app session, then destroys the GameObject. 
@@ -26,7 +27,7 @@ namespace Scenes {
             DontDestroyOnLoad(gameObject);
             _instance = this;
             
-            _gameNetworkStateManager.Initialize();
+            _gameTypeManager.Initialize();
             _gameConfigurationLocator.Initialize();
             _audioPlayer.Initialize();
             _sceneLoader.Initialize();

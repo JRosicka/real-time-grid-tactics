@@ -37,10 +37,10 @@ namespace Gameplay.Entities {
                 _playerReadyStatuses[kvp.Key] = false;
             }
             
-            if (!GameNetworkStateTracker.Instance.GameIsNetworked) {
+            if (!GameTypeTracker.Instance.GameIsNetworked) {
                 // SP
                 _performWhenAllPlayersReady = performWhenAllPlayersReady;
-            } else if (GameNetworkStateTracker.Instance.HostForNetworkedGame) {
+            } else if (GameTypeTracker.Instance.HostForNetworkedGame) {
                 // MP server
                 _performWhenAllPlayersReady = performWhenAllPlayersReady;
                 MPClientsStatusHandler.ClientReadyEvent += MarkClientReady;
@@ -54,7 +54,7 @@ namespace Gameplay.Entities {
 
             _localClientReady = true;
             // TODO could add a utility method for this if else block since we do it in a bunch of places (and another one for the if else-if version of this for running on server)
-            if (!GameNetworkStateTracker.Instance.GameIsNetworked) {
+            if (!GameTypeTracker.Instance.GameIsNetworked) {
                 // SP
                 PerformAction();
             } else {

@@ -206,7 +206,7 @@ public class MPCommandManager : AbstractCommandManager {
 
     [ClientRpc]
     private void RpcUpdateNetworkableField(NetworkBehaviour parent, string fieldName, INetworkableFieldValue newValue, string metadata) {
-        if (GameNetworkStateTracker.Instance.HostForNetworkedGame) {
+        if (GameTypeTracker.Instance.HostForNetworkedGame) {
             // We already updated this on the server in the Cmd call, don't update it here again
             return;
         }

@@ -59,10 +59,10 @@ namespace Gameplay.Entities {
 
         private void HandleTimerCompleted() {
             _markedCompletedLocally = true;
-            if (!GameNetworkStateTracker.Instance.GameIsNetworked) {
+            if (!GameTypeTracker.Instance.GameIsNetworked) {
                 // SP
                 TryCompleteTimerAsync().FireAndForget();
-            } else if (GameNetworkStateTracker.Instance.HostForNetworkedGame) {
+            } else if (GameTypeTracker.Instance.HostForNetworkedGame) {
                 // MP and we are the server
                 TryCompleteTimerAsync().FireAndForget();
             } // else MP and we are a client. Only handle client-specific stuff. 

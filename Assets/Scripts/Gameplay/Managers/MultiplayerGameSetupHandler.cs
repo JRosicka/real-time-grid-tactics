@@ -3,6 +3,7 @@ using System.Linq;
 using Gameplay.Entities;
 using Mirror;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 /// <summary>
 /// Object for <see cref="GameSetupManager"/> to delegate any NetworkBehaviour-specific multiplayer initialization. This way, 
@@ -15,11 +16,11 @@ public class MultiplayerGameSetupHandler : NetworkBehaviour {
     [SyncVar]
     public int PlayerCount = -1;
 
-    [SyncVar(hook = nameof(OnGameInitialized))] 
-    public bool GameInitialized;
-    private void OnGameInitialized(bool previousState, bool currentState) {
+    [SyncVar(hook = nameof(OnGameRunning))] 
+    public bool GameRunning;
+    private void OnGameRunning(bool previousState, bool currentState) {
         if (currentState) {
-            GameSetupManager.TriggerGameInitializedEvent();
+            GameSetupManager.TriggerGameRunningEvent();
         }
     }
     

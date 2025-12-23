@@ -24,7 +24,7 @@ public class GameEndManager {
     /// </summary>
     public void CheckForGameEnd() {
         if (_gameOver) return;
-        if (!_gameManager.GameSetupManager.GameInitialized) return;
+        if (!_gameManager.GameSetupManager.GameRunning) return;
         
         bool player1Lost = PlayerHasLost(_gameManager.Player1);
         bool player2Lost = PlayerHasLost(_gameManager.Player2);

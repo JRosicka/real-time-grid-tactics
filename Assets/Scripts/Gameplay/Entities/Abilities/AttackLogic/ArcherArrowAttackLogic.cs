@@ -21,7 +21,7 @@ namespace Gameplay.Entities.Abilities {
             ArcherArrow arrow = Object.Instantiate(ArrowPrefab, attackWorldPosition, Quaternion.identity, 
                 GameManager.Instance.CommandManager.SpawnBucket);
 
-            if (GameNetworkStateTracker.Instance.GameIsNetworked) {
+            if (GameTypeTracker.Instance.GameIsNetworked) {
                 NetworkServer.Spawn(arrow.gameObject);
             }
 

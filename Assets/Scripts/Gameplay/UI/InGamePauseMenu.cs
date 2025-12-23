@@ -26,7 +26,7 @@ namespace Gameplay.UI {
             }
             gameObject.SetActive(Paused);
 
-            if (!GameNetworkStateTracker.Instance.GameIsNetworked || GameManager.LocalTeam == GameTeam.Spectator) {
+            if (!GameTypeTracker.Instance.GameIsNetworked || GameManager.LocalTeam == GameTeam.Spectator) {
                 // SP or spectator, so show a return-to-menu button
                 SurrenderButton.gameObject.SetActive(false);
                 ReturnToMenuButton.gameObject.SetActive(true);

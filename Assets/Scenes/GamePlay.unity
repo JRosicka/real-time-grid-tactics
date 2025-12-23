@@ -846,6 +846,7 @@ GameObject:
   m_Component:
   - component: {fileID: 251873017}
   - component: {fileID: 251873018}
+  - component: {fileID: 251873019}
   m_Layer: 5
   m_Name: UI Overlay
   m_TagString: Untagged
@@ -895,6 +896,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _rectTransform: {fileID: 251873017}
   _camera: {fileID: 1050066544}
+--- !u!114 &251873019
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 251873016}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8138c04f65834494921d888f92d3a3d1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Gameplay.UI.GameUI
+  _gameUI: {fileID: 251873016}
 --- !u!1 &255439060
 GameObject:
   m_ObjectHideFlags: 0
@@ -1648,6 +1662,7 @@ MonoBehaviour:
   StartLocationIndicator: {fileID: 1410126875300341464}
   GameOverView: {fileID: 1681351945}
   _pauseMenu: {fileID: 1723025850449871020}
+  _gameUI: {fileID: 251873019}
   SPGamePlayerPrefab: {fileID: 8195557163812692593, guid: c33bd22bbff2db8479bf24a64400fd19, type: 3}
   MPGamePlayerPrefab: {fileID: 1108950147278443221, guid: 55db1d50132c69d4fb591de75d649982, type: 3}
   MPCommandManagerPrefab: {fileID: 5189142770249109527, guid: a96b27fb42ce1f942b78aa1e1b407640, type: 3}
@@ -1724,7 +1739,7 @@ MonoBehaviour:
   syncInterval: 0.1
   GameSetupManager: {fileID: 527040125}
   PlayerCount: -1
-  GameInitialized: 0
+  GameRunning: 0
 --- !u!114 &550799287
 MonoBehaviour:
   m_ObjectHideFlags: 0

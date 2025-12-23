@@ -156,7 +156,7 @@ public class GameManager : MonoBehaviour {
     #region Game end
 
     public void ReturnToLobby() {
-        if (!GameNetworkStateTracker.Instance.GameIsNetworked) {
+        if (!GameTypeTracker.Instance.GameIsNetworked) {
             // SP. Just load to the main menu. 
             SceneLoader.Instance.LoadLobby().FireAndForget();
             return;
@@ -170,7 +170,7 @@ public class GameManager : MonoBehaviour {
     public void ReturnToMainMenu() {
         GameAudio.EndMusic(false);
 
-        if (!GameNetworkStateTracker.Instance.GameIsNetworked) {
+        if (!GameTypeTracker.Instance.GameIsNetworked) {
             // SP. Just load into main menu
             SceneLoader.Instance.LoadMainMenu();
             return;

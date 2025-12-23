@@ -135,7 +135,7 @@ public class PlayerResourcesController : NetworkBehaviour {
     }
     
     private void SetBalance(ResourceAmount newBalance) {
-        if (!GameNetworkStateTracker.Instance.GameIsNetworked) {
+        if (!GameTypeTracker.Instance.GameIsNetworked) {
             // SP
             DoSetBalance(newBalance);
         } else {
@@ -158,7 +158,7 @@ public class PlayerResourcesController : NetworkBehaviour {
     }
 
     private void UpdateBalances() {
-        if (!GameNetworkStateTracker.Instance.GameIsNetworked) {
+        if (!GameTypeTracker.Instance.GameIsNetworked) {
             // SP, so syncvars won't work... Trigger manually.
             BalanceChangedEvent?.Invoke(_balances.ToList());
         } else {

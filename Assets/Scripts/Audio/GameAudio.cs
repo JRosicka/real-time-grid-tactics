@@ -28,16 +28,16 @@ namespace Audio {
             _gameSetupManager = gameSetupManager;
             _audioConfiguration = audioConfiguration;
             
-            if (gameSetupManager.GameInitialized) {
+            if (gameSetupManager.GameRunning) {
                 StartMusic();
             } else {
-                gameSetupManager.GameInitializedEvent += StartMusic;
+                gameSetupManager.GameRunningEvent += StartMusic;
             }
         }
 
         public void UnregisterListeners() {
             if (_gameSetupManager) {
-                _gameSetupManager.GameInitializedEvent -= StartMusic;
+                _gameSetupManager.GameRunningEvent -= StartMusic;
             }
         }
 
