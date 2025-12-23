@@ -212,9 +212,9 @@ public class GameSetupManager : MonoBehaviour {
         GameManager.SetupCommandManager(commandManager);
         
         // Set up players
-        SPGamePlayer player1 = Instantiate(SPGamePlayerPrefab);
+        SPGamePlayer player1 = Instantiate(SPGamePlayerPrefab, GameManager.transform);
         player1.Data = Player1Data;
-        SPGamePlayer player2 = Instantiate(SPGamePlayerPrefab);
+        SPGamePlayer player2 = Instantiate(SPGamePlayerPrefab, GameManager.transform);
         player2.Data = Player2Data;
         
         // Attempt to set the local player name
@@ -367,7 +367,7 @@ public class GameSetupManager : MonoBehaviour {
         MPGamePlayer player1 = players.FirstOrDefault(p => p.Data.Team == GameTeam.Player1);
         MPGamePlayer player2 = players.FirstOrDefault(p => p.Data.Team == GameTeam.Player2);
         if (!player1) {
-            player1 = Instantiate(MPGamePlayerPrefab, default(Vector3), default);
+            player1 = Instantiate(MPGamePlayerPrefab, GameManager.transform);
             player1.Data = Player1Data;
             player1.DisplayName = "Player 1";
             player1.Connected = true;
@@ -375,7 +375,7 @@ public class GameSetupManager : MonoBehaviour {
             NetworkServer.Spawn(player1.gameObject);
         }
         if (!player2) {
-            player2 = Instantiate(MPGamePlayerPrefab, default(Vector3), default);
+            player2 = Instantiate(MPGamePlayerPrefab, GameManager.transform);
             player2.Data = Player2Data;
             player2.DisplayName = "Player 2";
             player2.Connected = true;

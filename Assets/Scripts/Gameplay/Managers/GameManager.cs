@@ -148,7 +148,7 @@ public class GameManager : MonoBehaviour {
 
     public void SetupCommandManager(ICommandManager commandManager) {
         CommandManager = commandManager;
-        CommandManager.Initialize(SpawnBucketPrefab, GameEndManager, AbilityAssignmentManager);
+        CommandManager.Initialize(SpawnBucketPrefab, this, AbilityAssignmentManager);
     }
 
     #endregion

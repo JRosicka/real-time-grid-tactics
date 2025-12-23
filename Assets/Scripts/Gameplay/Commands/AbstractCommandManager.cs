@@ -62,7 +62,7 @@ public abstract class AbstractCommandManager : NetworkBehaviour, ICommandManager
 
     public GridEntityCollection EntitiesOnGrid => _entitiesOnGrid;
 
-    public abstract void Initialize(Transform spawnBucketPrefab, GameEndManager gameEndManager, AbilityAssignmentManager abilityAssignmentManager);
+    public abstract void Initialize(Transform spawnBucketPrefab, GameManager gameManager, AbilityAssignmentManager abilityAssignmentManager);
     
     /// <summary>
     /// Attempts to spawn a new instance of the provided <see cref="GridEntity"/> at the specified location on the game

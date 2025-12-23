@@ -13,7 +13,7 @@ using UnityEngine;
 /// In multiplayer games, these commands are networked to the server.
 /// </summary>
 public interface ICommandManager {
-    void Initialize(Transform spawnBucketPrefab, GameEndManager gameEndManager, AbilityAssignmentManager abilityAssignmentManager);
+    void Initialize(Transform spawnBucketPrefab, GameManager gameManager, AbilityAssignmentManager abilityAssignmentManager);
     void SpawnEntity(EntityData data, Vector2Int spawnLocation, GameTeam team, GridEntity spawnerEntity, Vector2Int spawnerLocation, bool built);
     /// <summary>
     /// Stop keeping track of an entity and also destroy it.

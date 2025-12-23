@@ -10,12 +10,12 @@ using Scenes;
 using UnityEngine;
 
 public class MPCommandManager : AbstractCommandManager {
-    public override void Initialize(Transform spawnBucketPrefab, GameEndManager gameEndManager, AbilityAssignmentManager abilityAssignmentManager) {
-        SpawnBucket = Instantiate(spawnBucketPrefab);
+    public override void Initialize(Transform spawnBucketPrefab, GameManager gameManager, AbilityAssignmentManager abilityAssignmentManager) {
+        SpawnBucket = Instantiate(spawnBucketPrefab, gameManager.transform);
         NetworkServer.Spawn(SpawnBucket.gameObject);
         
         // Only initialize this on the server. Clients do not need to handle ability execution.
-        AbilityExecutor.Initialize(this, gameEndManager, abilityAssignmentManager);
+        AbilityExecutor.Initialize(this, gameManager.GameEndManager, abilityAssignmentManager);
     }
 
     public override void SpawnEntity(EntityData data, Vector2Int spawnLocation, GameTeam team, GridEntity spawnerEntity, Vector2Int spawnerLocation, bool built) {

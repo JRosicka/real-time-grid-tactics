@@ -922,9 +922,11 @@ namespace Mirror
             NetworkClient.isLoadingScene = false;
             
             // Set the scene as active
-            Scene networkScene = SceneManager.GetSceneByName(StrippedSceneName(networkSceneName));
-            SceneManager.SetActiveScene(networkScene);
-
+            if (!string.IsNullOrEmpty(networkSceneName)) { 
+                Scene networkScene = SceneManager.GetSceneByName(StrippedSceneName(networkSceneName));
+                SceneManager.SetActiveScene(networkScene);
+            }
+            
             // host mode?
             if (mode == NetworkManagerMode.Host)
             {
