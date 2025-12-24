@@ -302,8 +302,8 @@ MonoBehaviour:
   _loadingText: {fileID: 1491613005}
   _canvasGroup: {fileID: 678934760}
   _canvas: {fileID: 1978654972}
-  _fadeSeconds: 0.5
-  _loadingTextFrequencySeconds: 1.2
+  _fadeSeconds: 0.2
+  _loadingTextFrequencySeconds: 1
   _loadingTextMaxPeriodCount: 3
   _loadingTextFormat: Loading{0}
 --- !u!225 &678934760
