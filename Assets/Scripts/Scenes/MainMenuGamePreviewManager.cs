@@ -20,6 +20,10 @@ namespace Scenes {
             SwitchMap(GetNextPreviewMap());
         }
 
+        public void PickNextMap() {
+            GameTypeTracker.Instance.SetMap(GetNextPreviewMap());
+        }
+
         private string GetNextPreviewMap() {
             // TODO look at preview maps instead
             string currentLoadedMap = GameTypeTracker.Instance.MapID;

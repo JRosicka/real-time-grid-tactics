@@ -742,6 +742,20 @@ namespace Mirror
 
         public static AsyncOperation loadingSceneAsync;
 
+        private bool _canChangeScene;
+        public bool CanChangeScene {
+            get => _canChangeScene;
+            set {
+                _canChangeScene = value;
+                if (value) {
+                    QueuedSceneLoadOperation?.Invoke();
+                    QueuedSceneLoadOperation = null;
+                }
+            }
+        }
+
+        private Action QueuedSceneLoadOperation;
+
         /// <summary>Change the server scene and all client's scenes across the network.</summary>
         // Called automatically if onlineScene or offlineScene are set, but it
         // can be called from user code to switch scenes again while the game is
@@ -765,14 +779,24 @@ namespace Mirror
             NetworkServer.SetAllClientsNotReady();
             networkSceneName = newSceneName;
 
-            // Let server prepare for scene change
-            OnServerChangeScene(newSceneName);
-
+            if (CanChangeScene) {
+                // Let server prepare for scene change
+                OnServerChangeScene(newSceneName);
+            }
+            
             // set server flag to stop processing messages while changing scenes
             // it will be re-enabled in FinishLoadScene.
             NetworkServer.isLoadingScene = true;
-
-            loadingSceneAsync = SceneManager.LoadSceneAsync(newSceneName, LoadSceneMode.Additive);
+            
+            if (CanChangeScene) {
+                loadingSceneAsync = SceneManager.LoadSceneAsync(newSceneName, LoadSceneMode.Additive);
+            } else {
+                QueuedSceneLoadOperation = () => {
+                    // Let server prepare for scene change
+                    OnServerChangeScene(newSceneName);
+                    loadingSceneAsync = SceneManager.LoadSceneAsync(newSceneName, LoadSceneMode.Additive);
+                };
+            }
 
             // ServerChangeScene can be called when stopping the server
             // when this happens the server is not active so does not need to tell clients about the change
@@ -801,8 +825,10 @@ namespace Mirror
 
             //Debug.Log($"ClientChangeScene newSceneName: {newSceneName} networkSceneName{networkSceneName}");
 
-            // Let client prepare for scene change
-            OnClientChangeScene(newSceneName, sceneOperation, customHandling);
+            if (CanChangeScene) {
+                // Let client prepare for scene change
+                OnClientChangeScene(newSceneName, sceneOperation, customHandling);
+            }
 
             // After calling OnClientChangeScene, exit if server since server is already doing
             // the actual scene change, and we don't need to do it for the host client
@@ -830,14 +856,29 @@ namespace Mirror
             switch (sceneOperation)
             {
                 case SceneOperation.Normal:
-                    loadingSceneAsync = SceneManager.LoadSceneAsync(newSceneName);
+                    if (CanChangeScene) {
+                        loadingSceneAsync = SceneManager.LoadSceneAsync(newSceneName);
+                    } else {
+                        QueuedSceneLoadOperation = () => {
+                            loadingSceneAsync = SceneManager.LoadSceneAsync(newSceneName);
+                        };
+                    }
+
                     break;
                 case SceneOperation.LoadAdditive:
                     // Ensure additive scene is not already loaded on client by name or path
                     // since we don't know which was passed in the Scene message
                     if (StrippedSceneName(SceneManager.GetActiveScene().name) != StrippedSceneName(newSceneName)
                             || (!SceneManager.GetSceneByName(newSceneName).IsValid() && !SceneManager.GetSceneByPath(newSceneName).IsValid()))
-                        loadingSceneAsync = SceneManager.LoadSceneAsync(newSceneName, LoadSceneMode.Additive);
+                        if (CanChangeScene) {
+                            loadingSceneAsync = SceneManager.LoadSceneAsync(newSceneName, LoadSceneMode.Additive);
+                        } else {
+                            QueuedSceneLoadOperation = () => {
+                                // Let client prepare for scene change
+                                OnClientChangeScene(newSceneName, sceneOperation, customHandling);
+                                loadingSceneAsync = SceneManager.LoadSceneAsync(newSceneName, LoadSceneMode.Additive);
+                            };
+                        }
                     else
                     {
                         Debug.LogWarning($"Scene {newSceneName} is already loaded");

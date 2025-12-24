@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Game.Network;
+using Mirror;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Util;
@@ -19,6 +20,7 @@ namespace Scenes {
         public const string GameSceneName = "GamePlay";
         
         [SerializeField] private float _minimumLoadTimeSeconds = .5f;
+        [SerializeField] private float _tooCloseMapSwitchProximityTime = .25f;
         
         public static SceneLoader Instance { get; private set; }
         public MainMenuGamePreviewManager MainMenuGamePreviewManager { get; private set; }
@@ -57,6 +59,7 @@ namespace Scenes {
         public async void LoadMainMenu() {
             _targetScene = MainMenuSceneName;
             _gameTypeManager.SetGameType(false, false, true);
+            MainMenuGamePreviewManager.PickNextMap();
             await UnloadCurrentScenesAsync(true);
             await LoadScene(MainMenuSceneName, true, true, true, false);
             await LoadScene(GameSceneName, false, true, true, true);
@@ -87,7 +90,18 @@ namespace Scenes {
         private bool _mapLoadingLocked;
         private float _mapLoadingLockUpdateTime;
         private async Task DoSwitchLoadedMap() {
+            if (NetworkManager.singleton != null) {
+                NetworkManager.singleton.CanChangeScene = false;
+            }
+            
             float switchStartTime = Time.time;
+            
+            // If this is too close to the last map loading update time, then wait a bit for that to finish loading
+            float timeSinceLock = switchStartTime - _mapLoadingLockUpdateTime;
+            if (timeSinceLock < _tooCloseMapSwitchProximityTime) {
+                await Task.Delay(TimeSpan.FromSeconds(_tooCloseMapSwitchProximityTime - timeSinceLock));
+            }
+            
             await UnloadScene(GameSceneName, false, true);
             
             if (_mapLoadingLocked) {
@@ -130,6 +144,10 @@ namespace Scenes {
         
         private async Task LoadScene(string sceneName, bool asActive, bool fade, bool loadingScreenInFrontOfMenus, bool hideLoadingScreenWhenDone) {
             await _loadingScreen.ShowLoadingScreen(fade, loadingScreenInFrontOfMenus);
+
+            if (sceneName == GameSceneName && NetworkManager.singleton != null) {
+                NetworkManager.singleton.CanChangeScene = false;
+            }
             
             float startTime = Time.time;
             await SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive);
@@ -148,6 +166,10 @@ namespace Scenes {
 
             if (hideLoadingScreenWhenDone) {
                 _loadingScreen.HideLoadingScreen(fade);
+            }
+            
+            if (sceneName == GameSceneName && NetworkManager.singleton != null) {
+                NetworkManager.singleton.CanChangeScene = true;
             }
         }
 
@@ -216,6 +238,7 @@ namespace Scenes {
 
             switch (strippedSceneName) {
                 case MainMenuSceneName:
+                    MainMenuGamePreviewManager.PickNextMap();
                     _gameTypeManager.SetGameType(false, false, true);
                     await LoadScene(GameSceneName, false, true, true, true);
                     break;
