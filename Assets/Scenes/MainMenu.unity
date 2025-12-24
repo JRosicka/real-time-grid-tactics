@@ -2756,6 +2756,50 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 7919885796733713017, guid: b6cff0d61569362458e43a7aa35381d1, type: 3}
   m_PrefabInstance: {fileID: 994678405}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1033933726
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1033933728}
+  - component: {fileID: 1033933727}
+  m_Layer: 0
+  m_Name: Map Preview Behaviour
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1033933727
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1033933726}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 21bacdbf71074a6485f976f730834330, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Menu.MainMenuGamePreviewBehaviour
+--- !u!4 &1033933728
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1033933726}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1073700443
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5374,6 +5418,7 @@ SceneRoots:
   - {fileID: 639890313}
   - {fileID: 306689125}
   - {fileID: 1369653069}
+  - {fileID: 1033933728}
   - {fileID: 1207827967}
   - {fileID: 50360497}
   - {fileID: 5278453586595915652}

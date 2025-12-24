@@ -14,17 +14,23 @@ namespace Scenes {
         [SerializeField] private LoadingScreen _loadingScreen;
         [SerializeField] private GameTypeTracker _gameTypeManager;
         private const string LoadingSceneName = "Loading";
-        private const string MainMenuSceneName = "MainMenu";
-        private const string LobbySceneName = "Room";
-        private const string GameSceneName = "GamePlay";
+        public const string MainMenuSceneName = "MainMenu";
+        public const string LobbySceneName = "Room";
+        public const string GameSceneName = "GamePlay";
         
         [SerializeField] private float _minimumLoadTimeSeconds = .5f;
         
         public static SceneLoader Instance { get; private set; }
+        public MainMenuGamePreviewManager MainMenuGamePreviewManager { get; private set; }
+
+        public event Action<string> SceneLoaded;
+        
         private string _targetScene;
         
         public void Initialize() {
             Instance = this;
+            
+            MainMenuGamePreviewManager = new MainMenuGamePreviewManager();
 
             SubscribeToNetworkedSceneChanges();
             
@@ -34,6 +40,8 @@ namespace Scenes {
                 return;
             }
             
+            MainMenuGamePreviewManager.Initialize(true);
+
             if (SceneManager.loadedSceneCount == 1) {
                 // We must be starting the game from the loading scene. Load the main menu.
                 LoadMainMenu();
@@ -77,11 +85,18 @@ namespace Scenes {
 
         private Task _switchMapTask;
         private bool _mapLoadingLocked;
+        private float _mapLoadingLockUpdateTime;
         private async Task DoSwitchLoadedMap() {
+            float switchStartTime = Time.time;
             await UnloadScene(GameSceneName, false, true);
             
             if (_mapLoadingLocked) {
                 Debug.Log("Not reloading the game scene while switching maps because the game scene is already loaded. Someone else must have loaded the game scene.");
+                return;
+            }
+
+            if (switchStartTime < _mapLoadingLockUpdateTime) {
+                Debug.Log("Not reloading the game scene while switching maps because there has been a more recent update to map locking.");
                 return;
             }
             
@@ -89,7 +104,12 @@ namespace Scenes {
         }
         
         public void LockMapLoading() {
-            _mapLoadingLocked = true;
+            UpdateMapLock(true);
+        }
+        
+        private void UpdateMapLock(bool locked) {
+            _mapLoadingLocked = locked;
+            _mapLoadingLockUpdateTime = Time.time;
         }
 
         /// <summary>
@@ -118,6 +138,8 @@ namespace Scenes {
             if (asActive) {
                 SceneManager.SetActiveScene(SceneManager.GetSceneByName(sceneName));
             }
+            
+            SceneLoaded?.Invoke(sceneName);
 
             // If the scene loaded too quickly, wait a bit before hiding the loading screen
             if (loadTime < _minimumLoadTimeSeconds) {
@@ -149,6 +171,8 @@ namespace Scenes {
         private async void LoadDirectlyFromEnteringPlayMode() {
             string currentSceneName = SceneManager.GetActiveScene().name;
             
+            MainMenuGamePreviewManager.Initialize(currentSceneName == MainMenuSceneName);
+
             // Load the loading scene
             SceneManager.LoadScene(LoadingSceneName, LoadSceneMode.Single);
 
@@ -183,20 +207,23 @@ namespace Scenes {
             if (_targetScene == strippedSceneName) return;
             _targetScene = strippedSceneName;
             
+            bool lockMapLoading = strippedSceneName == GameSceneName;
+            UpdateMapLock(lockMapLoading);
+            
             await UnloadCurrentScenesAsync(false);
+            
+            SceneLoaded?.Invoke(strippedSceneName);
+
             switch (strippedSceneName) {
                 case MainMenuSceneName:
-                    _mapLoadingLocked = false;
                     _gameTypeManager.SetGameType(false, false, true);
                     await LoadScene(GameSceneName, false, true, true, true);
                     break;
                 case LobbySceneName:
-                    _mapLoadingLocked = false;
                     _gameTypeManager.SetGameType(false, false, false);
                     await LoadScene(GameSceneName, false, true, true, true);
                     break;
                 case GameSceneName:
-                    _mapLoadingLocked = true;
                     _gameTypeManager.SetGameType(true, true, true);
                     break;
             }
