@@ -1701,6 +1701,7 @@ GameObject:
   - component: {fileID: 550799285}
   - component: {fileID: 550799287}
   - component: {fileID: 550799286}
+  - component: {fileID: 550799288}
   m_Layer: 0
   m_Name: Multiplayer Setup Handler
   m_TagString: Untagged
@@ -1757,6 +1758,18 @@ MonoBehaviour:
   visible: 0
   m_AssetId: 
   hasSpawned: 0
+--- !u!114 &550799288
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 550799284}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0ade67f1f6bc412cbd50a6bd0fb536cd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Game.Network.NetworkedObjectToggler
 --- !u!1001 &576233886
 PrefabInstance:
   m_ObjectHideFlags: 0
