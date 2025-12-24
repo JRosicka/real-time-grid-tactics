@@ -34,8 +34,10 @@ namespace Scenes {
             Instance = this;
 #if UNITY_EDITOR
             MapID = string.IsNullOrEmpty(_mapIDFromEditorWindow) ? "origins" : _mapIDFromEditorWindow;
-            SetMap(MapID);
+#else
+            MapID = "origins";
 #endif
+            SetMap(MapID);
         }
 
         public void SetGameType(bool networked, bool allowInput, bool runGame) {

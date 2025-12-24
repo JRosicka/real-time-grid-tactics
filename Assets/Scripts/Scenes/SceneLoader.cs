@@ -42,12 +42,9 @@ namespace Scenes {
                 return;
             }
             
-            MainMenuGamePreviewManager.Initialize(true);
-
-            if (SceneManager.loadedSceneCount == 1) {
-                // We must be starting the game from the loading scene. Load the main menu.
-                LoadMainMenu();
-            }
+            // We must be starting the game from the loading scene. Load the main menu.
+            MainMenuGamePreviewManager.Initialize(false);
+            LoadMainMenu();
         }
         
         public Task LoadLobby() {
