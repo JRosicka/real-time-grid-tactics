@@ -6,20 +6,26 @@ namespace Menu {
     /// Networked logic for the lobby
     /// </summary>
     public class LobbyNetworkBehaviour : NetworkBehaviour {
-        private string _mapID = "origins";
-
+        [SyncVar(hook = nameof(OnMapChanged))]
+        public string MapID = "origins";
+        
         /// <summary>
         /// Set the map and update the clients 
         /// </summary>
         [Server]
         public void SwitchMap(string mapID) {
-            RpcSwitchMap(mapID);
+            MapID = mapID;
         }
         
-        [ClientRpc]
-        private void RpcSwitchMap(string mapID) {
-            _mapID = mapID;
-            SceneLoader.Instance.SwitchLoadedMap(_mapID);
+        private void OnMapChanged(string _, string newMapID) {
+            SceneLoader.Instance.SwitchLoadedMap(newMapID);
+        }
+
+        /// <summary>
+        /// Load the map that the lobby is set to
+        /// </summary>
+        public void SetUpCurrentMapOnLobbyJoin() {
+            GameTypeTracker.Instance.SetMap(MapID);
         }
         
         /// <summary>

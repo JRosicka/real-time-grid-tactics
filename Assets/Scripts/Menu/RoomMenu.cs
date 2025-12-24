@@ -86,6 +86,7 @@ public class RoomMenu : MonoBehaviour {
         JoinCodeText.text = _joinCode;
         // steamLobbyService.OnCurrentLobbyMetadataChanged += AddUnassignedPlayers;    // TODO do we listen to this, or maybe to one of the GameNetworkPlayer methods, or maybe to the GameNetworkManager updatelobby event.
 
+        LobbyNetworkBehaviour.SetUpCurrentMapOnLobbyJoin();
         _mapID = GameTypeTracker.Instance.MapID;
     }
     
