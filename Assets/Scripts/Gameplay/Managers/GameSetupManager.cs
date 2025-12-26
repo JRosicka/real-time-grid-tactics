@@ -114,7 +114,7 @@ public class GameSetupManager : MonoBehaviour {
 
         GameTeam winningTeam = winner == null ? GameTeam.Neutral : winner.Data.Team;
         if (!GameTypeTracker.Instance.GameIsNetworked) {
-            ReturnToLobbyAsync();
+            LeaveGameAsync();
             NotifyGameOver(winningTeam);
         } else {
             MPSetupHandler.CmdGameOver(winningTeam);
@@ -131,9 +131,9 @@ public class GameSetupManager : MonoBehaviour {
     /// <summary>
     /// Server/SP logic for ending the game. Halts commands and returns to lobby shortly. (SP will just reload the game scene)
     /// </summary>
-    public async void ReturnToLobbyAsync() {
+    public async void LeaveGameAsync() {
         await Task.Delay(GameOverDelayMillis);
-        GameManager?.ReturnToLobby();
+        GameManager?.LeaveGame();
     }
 
     /// <summary>

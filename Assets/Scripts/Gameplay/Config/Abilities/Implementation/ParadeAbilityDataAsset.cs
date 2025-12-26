@@ -24,9 +24,6 @@ namespace Gameplay.Config.Abilities {
         }
         
         protected override AbilityLegality AbilityLegalImpl(ParadeAbilityParameters parameters, GridEntity performer, GameTeam team) {
-            if (parameters.Target == null && performer.Location != null) {
-                parameters.Target = GameManager.Instance.ResourceEntityFinder.GetResourceCollectorAtLocation(performer.Location.Value); 
-            }
             return AbilityLegalityAtResourceCollector(performer, parameters.Target);
         }
         
@@ -46,6 +43,9 @@ namespace Gameplay.Config.Abilities {
         }
         
         private AbilityLegality AbilityLegalityAtResourceCollector(GridEntity performer, GridEntity resourceCollector) {
+            if (resourceCollector == null && performer.Location != null) {
+                resourceCollector = GameManager.Instance.ResourceEntityFinder.GetResourceCollectorAtLocation(performer.Location.Value); 
+            }
             if (resourceCollector == null) return AbilityLegality.NotCurrentlyLegal;
             if (resourceCollector.Team != performer.Team) return AbilityLegality.NotCurrentlyLegal;
             if (!resourceCollector.EntityData.IsResourceExtractor) return AbilityLegality.NotCurrentlyLegal;

@@ -157,10 +157,10 @@ public class GameManager : MonoBehaviour {
     
     #region Game end
 
-    public void ReturnToLobby() {
+    public void LeaveGame() {
         if (!GameTypeTracker.Instance.GameIsNetworked) {
             // SP. Just load to the main menu. 
-            SceneLoader.Instance.LoadLobby().FireAndForget();
+            SceneLoader.Instance.LoadMainMenu();
             return;
         }
 

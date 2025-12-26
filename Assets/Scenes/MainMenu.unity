@@ -171,6 +171,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: SteamManager
       objectReference: {fileID: 0}
+    - target: {fileID: 8829364601840800532, guid: c8f468274c266c74faccf3d7a0d2b34e, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -3098,6 +3102,10 @@ PrefabInstance:
     - target: {fileID: 8099707350822509824, guid: 27afa1f1289c3b74faa227a483364adf, type: 3}
       propertyPath: m_Name
       value: NetworkManager
+      objectReference: {fileID: 0}
+    - target: {fileID: 8099707350822509824, guid: 27afa1f1289c3b74faa227a483364adf, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
