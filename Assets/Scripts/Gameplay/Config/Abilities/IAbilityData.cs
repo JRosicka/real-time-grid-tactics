@@ -111,5 +111,6 @@ namespace Gameplay.Config.Abilities {
         /// Re-creates the <see cref="IAbility"/> by first deserializing the parameters from the provided reader
         /// </summary>
         IAbility DeserializeAbility(NetworkReader reader);
+        IAbilityParameters DeserializeParametersFromJson(Dictionary<string, object> json);
     }
 }

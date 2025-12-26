@@ -83,12 +83,12 @@ public class MPCommandManager : AbstractCommandManager {
     [Command(requiresAuthority = false)] // TODO this should definitely require authority
     private void CmdSpawnEntity(EntityData data, Vector2Int spawnLocation, GameTeam team, GridEntity entityToIgnore, Vector2Int spawnerLocation, bool built) {
         LogTimestamp(nameof(CmdSpawnEntity));
-        DoSpawnEntity(data, spawnLocation, () => {
+        DoSpawnEntity(data, spawnLocation, entityUID => {
             GridEntity entityInstance = Instantiate(GridEntityPrefab, GridController.GetWorldPosition(spawnLocation), Quaternion.identity, SpawnBucket);
             NetworkServer.Spawn(entityInstance.gameObject);
             
             entityInstance.ServerInitialize(data, team, spawnLocation);
-            entityInstance.RpcInitialize(data, team, built);
+            entityInstance.RpcInitialize(data, team, built, entityUID);
             
             return entityInstance;
         }, team, entityToIgnore, spawnerLocation);

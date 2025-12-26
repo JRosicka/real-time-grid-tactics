@@ -1,5 +1,4 @@
 using System;
-using Sirenix.OdinInspector;
 using TMPro;
 using UnityEngine;
 
@@ -10,10 +9,10 @@ namespace Gameplay.UI {
     public class InGameTimer : MonoBehaviour {
         public TMP_Text TimerText;
 
-        public string MatchLengthString => TimeSpan.FromSeconds(_matchLength).ToString("g");
+        public string MatchLengthString => TimeSpan.FromSeconds(MatchLength).ToString("g");
         
         private bool _timerStarted;
-        private float _matchLength;
+        private float MatchLength => GameManager.Instance.CommandManager.AbilityExecutor.MatchLength;
 
         private GameSetupManager GameSetupManager => GameManager.Instance.GameSetupManager;
         
@@ -29,8 +28,7 @@ namespace Gameplay.UI {
         private void Update() {
             if (!_timerStarted) return;
             
-            _matchLength += Time.deltaTime;
-            TimeSpan currentMatchLength = TimeSpan.FromSeconds(_matchLength);
+            TimeSpan currentMatchLength = TimeSpan.FromSeconds(MatchLength);
             SetText(currentMatchLength);
         }
         
@@ -45,16 +43,6 @@ namespace Gameplay.UI {
                     // : time.TotalHours < 10 ? $"{time:h}:{time:mm}:{time:ss}"
                 : time.ToString(@"h\:mm\:ss");
             TimerText.text = timeString;
-        }
-
-        [Button]
-        private void AddMinute() {
-            _matchLength += 60;
-        }
-
-        [Button]
-        private void AddHour() {
-            _matchLength += 60 * 60;
         }
     }
 }

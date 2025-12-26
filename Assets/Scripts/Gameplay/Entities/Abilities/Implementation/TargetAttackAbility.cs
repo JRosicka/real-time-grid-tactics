@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using Gameplay.Config.Abilities;
 using Gameplay.Grid;
@@ -113,6 +114,12 @@ namespace Gameplay.Entities.Abilities {
         public GridEntity Target;
         public void Serialize(NetworkWriter writer) {
             writer.Write(Target);
+        }
+
+        public string SerializeToJson() {
+            return JsonUtility.ToJson(new Dictionary<string, object> {
+                {"Target", Target?.UID ?? 0}
+            });
         }
 
         public void Deserialize(NetworkReader reader) {

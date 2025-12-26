@@ -67,6 +67,7 @@ namespace Gameplay.Managers {
             }
             
             IAbility abilityInstance = abilityData.CreateAbility(parameters, entity, overrideTeam);
+            TryRecordAbility(entity, abilityInstance);
             
             if (clearOtherAbilities) { 
                 CancelAllAbilities(entity); 
@@ -79,6 +80,17 @@ namespace Gameplay.Managers {
             }
             
             return true;
+        }
+
+        private void TryRecordAbility(GridEntity performer, IAbility ability) {
+            GameManager.Instance.ReplayManager.TryRecordAbility(performer, ability);
+        }
+        
+        public void PerformRecordedAbility(ReplayData.TimedCommand command) {
+            IAbilityData abilityData = GameManager.Instance.Configuration.GetAbility(command.abilityType).Content;
+            GridEntity performer = GameManager.Instance.CommandManager.EntitiesOnGrid.GetEntityByID(command.entityID);
+            IAbilityParameters parameters = abilityData.DeserializeParametersFromJson(JsonUtility.FromJson<Dictionary<string, object>>(command.abilityParameterJson));
+            StartPerformingAbility(performer, abilityData, parameters, true, true,  false, null); // TODO what to do about clearOtherAbilities and overrideTeam?
         }
         
         public void PerformOnStartAbilitiesForEntity(GridEntity entity) {
@@ -210,7 +222,7 @@ namespace Gameplay.Managers {
             }
             
             // Since we won't actually be performing this ability, we need to generate a UID for it now
-            int uid = IDUtil.GenerateUID();
+            int uid = CommandManager.AbilityIDGenerator.GenerateUID();
             if (GameTypeTracker.Instance.GameIsNetworked && !GameTypeTracker.Instance.HostForNetworkedGame) {
                 // MP client. Hack - use a different set of UIDs than what the server creates
                 uid *= -1;

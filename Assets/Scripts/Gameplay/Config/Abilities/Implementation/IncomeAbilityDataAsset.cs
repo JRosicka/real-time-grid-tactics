@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Gameplay.Entities;
 using Gameplay.Entities.Abilities;
 using UnityEngine;
@@ -35,6 +36,10 @@ namespace Gameplay.Config.Abilities {
 
         protected override IAbility CreateAbilityImpl(NullAbilityParameters parameters, GridEntity performer, GameTeam? overrideTeam) {
             return new IncomeAbility(this, parameters, performer, overrideTeam);
+        }
+
+        public override IAbilityParameters DeserializeParametersFromJson(Dictionary<string, object> json) {
+            return new NullAbilityParameters();
         }
     }
 }

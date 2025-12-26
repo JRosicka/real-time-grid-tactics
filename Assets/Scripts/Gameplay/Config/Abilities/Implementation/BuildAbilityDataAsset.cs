@@ -72,6 +72,13 @@ namespace Gameplay.Config.Abilities {
             return new BuildAbility(this, parameters, performer, overrideTeam);
         }
 
+        public override IAbilityParameters DeserializeParametersFromJson(Dictionary<string, object> json) {
+            return new BuildAbilityParameters {
+                Buildable = GameManager.Instance.Configuration.GetPurchasable((string)json["Buildable"]),
+                BuildLocation = (Vector2Int)json["BuildLocation"]
+            };
+        }
+
         public bool CanTargetCell(Vector2Int cellPosition, GridEntity selectedEntity, GameTeam selectorTeam, System.Object targetData) {
             EntityData entityToBuild = (EntityData)targetData;
             GameplayTile tileAtLocation = GridController.GridData.GetCell(cellPosition).Tile;

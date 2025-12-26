@@ -35,6 +35,7 @@ namespace Gameplay.Entities {
         [Header("Config")] 
         public string UnitName;
         public GameTeam Team;
+        public int UID;
         public string DisplayName => EntityData.ID;
         public List<EntityTag> Tags => EntityData.Tags;
         public IEnumerable<IAbilityData> Abilities => EntityData.Abilities.Select(a => a.Content);
@@ -180,17 +181,18 @@ namespace Gameplay.Entities {
         }
         
         [ClientRpc]
-        public void RpcInitialize(EntityData data, GameTeam team, bool built) {
+        public void RpcInitialize(EntityData data, GameTeam team, bool built, int entityUID) {
             transform.parent = CommandManager.SpawnBucket;
-            ClientInitialize(data, team, built);
+            ClientInitialize(data, team, built, entityUID);
         }
 
         /// <summary>
         /// Initialization that runs on each client
         /// </summary>
-        public void ClientInitialize(EntityData data, GameTeam team, bool built) {
+        public void ClientInitialize(EntityData data, GameTeam team, bool built, int entityUID) {
             EntityData = data;
             Team = team;
+            UID = entityUID;
             GameTeam localPlayerTeam = GameManager.Instance.LocalTeam;
 
             if (localPlayerTeam == GameTeam.Spectator) {

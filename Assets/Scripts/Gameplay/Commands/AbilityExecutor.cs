@@ -25,6 +25,7 @@ public class AbilityExecutor : MonoBehaviour {
     private AbilityAssignmentManager _abilityAssignmentManager;
 
     private float _timeUntilNextUpdate;
+    public float MatchLength { get; private set; }
 
     private class QueuedGridEntityUnregister {
         public GridEntity Entity;
@@ -46,6 +47,7 @@ public class AbilityExecutor : MonoBehaviour {
     private void Update() {
         if (!_initialized) return;
 
+        MatchLength += Time.deltaTime;
         _timeUntilNextUpdate -= Time.deltaTime;
         if (_timeUntilNextUpdate <= 0) {
             _timeUntilNextUpdate += UpdateFrequency;

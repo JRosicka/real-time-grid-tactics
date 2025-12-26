@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Gameplay.Entities;
 using Gameplay.Entities.Abilities;
 using UnityEngine;
@@ -29,6 +30,12 @@ namespace Gameplay.Config.Abilities {
 
         protected override IAbility CreateAbilityImpl(TargetAttackAbilityParameters parameters, GridEntity performer, GameTeam? overrideTeam) {
             return new TargetAttackAbility(this, parameters, performer, overrideTeam);
+        }
+
+        public override IAbilityParameters DeserializeParametersFromJson(Dictionary<string, object> json) {
+            return new TargetAttackAbilityParameters {
+                Target = GameManager.Instance.CommandManager.EntitiesOnGrid.GetEntityByID((int)json["Target"])
+            };
         }
 
         public bool CanTargetCell(Vector2Int cellPosition, GridEntity selectedEntity, GameTeam selectorTeam, System.Object targetData) {

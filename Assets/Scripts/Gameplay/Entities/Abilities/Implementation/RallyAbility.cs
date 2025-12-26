@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Gameplay.Config.Abilities;
 using Mirror;
 using UnityEngine;
@@ -45,6 +46,12 @@ namespace Gameplay.Entities.Abilities {
         public Vector2Int Destination;
         public void Serialize(NetworkWriter writer) {
             writer.Write(Destination);
+        }
+
+        public string SerializeToJson() {
+            return JsonUtility.ToJson(new Dictionary<string, object> {
+                {"Destination", Destination}
+            });
         }
 
         public void Deserialize(NetworkReader reader) {

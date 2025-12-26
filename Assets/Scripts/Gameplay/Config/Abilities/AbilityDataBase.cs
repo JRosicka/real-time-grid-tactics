@@ -157,5 +157,7 @@ namespace Gameplay.Config.Abilities {
             
             return ability;
         }
+
+        public abstract IAbilityParameters DeserializeParametersFromJson(Dictionary<string, object> json);
     }
 }

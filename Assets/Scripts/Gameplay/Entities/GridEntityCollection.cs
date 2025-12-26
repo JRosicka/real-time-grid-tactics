@@ -162,6 +162,10 @@ namespace Gameplay.Entities {
             return AllEntities().Contains(entity);
         }
 
+        public GridEntity GetEntityByID(int entityID) {
+            return AllEntities().FirstOrDefault(e => e.UID == entityID);
+        }
+
         private Dictionary<GameTeam, List<Vector2Int>> _locationsWithFriendlyEntities = new Dictionary<GameTeam, List<Vector2Int>>();
         public List<Vector2Int> LocationsWithFriendlyEntities(GameTeam team) {
             if (_locationsWithFriendlyEntities.TryGetValue(team, out var entities)) {

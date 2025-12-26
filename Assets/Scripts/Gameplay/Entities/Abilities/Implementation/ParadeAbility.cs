@@ -77,6 +77,12 @@ namespace Gameplay.Entities.Abilities {
             writer.Write(Target);
         }
 
+        public string SerializeToJson() {
+            return JsonUtility.ToJson(new Dictionary<string, object> {
+                {"Target", Target?.UID ?? 0}
+            });
+        }
+
         public void Deserialize(NetworkReader reader) {
             Target = reader.Read<GridEntity>();
         }

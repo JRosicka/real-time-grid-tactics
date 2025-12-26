@@ -34,6 +34,12 @@ namespace Gameplay.Config.Abilities {
             return new ParadeAbility(this, parameters, performer, overrideTeam);
         }
 
+        public override IAbilityParameters DeserializeParametersFromJson(Dictionary<string, object> json) {
+            return new ParadeAbilityParameters {
+                Target = GameManager.Instance.CommandManager.EntitiesOnGrid.GetEntityByID((int)json["Target"])
+            };
+        }
+
         public bool CanTargetCell(Vector2Int cellPosition, GridEntity selectedEntity, GameTeam selectorTeam, object targetData) {
             GridEntity resourceCollector = GameManager.Instance.ResourceEntityFinder.GetResourceCollectorAtLocation(cellPosition);
             return AbilityLegalityAtResourceCollector(selectedEntity, resourceCollector) == AbilityLegality.Legal;

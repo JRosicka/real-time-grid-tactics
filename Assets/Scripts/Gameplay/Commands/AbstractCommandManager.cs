@@ -26,6 +26,8 @@ public abstract class AbstractCommandManager : NetworkBehaviour, ICommandManager
     public Transform SpawnBucket { get; protected set; }
     [SerializeField] private AbilityExecutor _abilityExecutor;
     public AbilityExecutor AbilityExecutor => _abilityExecutor;
+    public IDGenerator AbilityIDGenerator { get; } = new IDGenerator();
+    private IDGenerator _entityIDGenerator = new IDGenerator();
 
     public GridEntity GridEntityPrefab;
     
@@ -101,13 +103,14 @@ public abstract class AbstractCommandManager : NetworkBehaviour, ICommandManager
     public abstract void QueueAbility(IAbility ability, IAbility abilityToDependOn);
     public abstract void MarkAbilityTimerExpired(IAbility ability);
 
-    protected void DoSpawnEntity(EntityData data, Vector2Int spawnLocation, Func<GridEntity> spawnFunc, GameTeam team, GridEntity spawnerEntity, Vector2Int spawnerLocation) {
+    protected void DoSpawnEntity(EntityData data, Vector2Int spawnLocation, Func<int, GridEntity> spawnFunc, GameTeam team, GridEntity spawnerEntity, Vector2Int spawnerLocation) {
         List<GridEntity> entitiesToIgnore = spawnerEntity != null ? new List<GridEntity> {spawnerEntity} : null;
         if (!PathfinderService.CanEntityEnterCell(spawnLocation, data, team, entitiesToIgnore)) {
             return;
         }
 
-        GridEntity entityInstance = spawnFunc();
+        int entityUID = _entityIDGenerator.GenerateUID();
+        GridEntity entityInstance = spawnFunc(entityUID);
         RegisterEntity(entityInstance, data, spawnLocation, spawnerEntity);
 
         if (spawnerLocation != spawnLocation) {
@@ -169,7 +172,7 @@ public abstract class AbstractCommandManager : NetworkBehaviour, ICommandManager
         
         // Assign a UID here since this is guaranteed to be on the server (if MP)
         if (ability.UID == default) {
-            ability.UID = IDUtil.GenerateUID();
+            ability.UID = AbilityIDGenerator.GenerateUID();
         }
 
         bool success = ability.TryDoAbilityStartEffect();

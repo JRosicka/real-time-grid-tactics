@@ -59,6 +59,16 @@ namespace Gameplay.Config.Abilities {
             return new ChargeAbility(this, parameters, performer, overrideTeam);
         }
 
+        public override IAbilityParameters DeserializeParametersFromJson(Dictionary<string, object> json) {
+            return new ChargeAbilityParameters {
+                Destination = (Vector2Int)json["Destination"],
+                MoveDestination = (Vector2Int)json["MoveDestination"],
+                ClickLocation = (Vector2Int)json["ClickLocation"],
+                SelectorTeam = (GameTeam)json["SelectorTeam"],
+                Attacking = (bool)json["Attacking"]
+            };
+        }
+
         public bool CanTargetCell(Vector2Int cellPosition, GridEntity selectedEntity, GameTeam selectorTeam, object targetData) {
             return CanChargeToCell(selectedEntity, cellPosition);
         }

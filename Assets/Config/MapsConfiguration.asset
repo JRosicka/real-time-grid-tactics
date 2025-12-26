@@ -2963,3 +2963,9 @@ MonoBehaviour:
         SpawnLocation:
           Location: {x: 4, y: -8}
   PreviewMaps: []
+  PreviewReplays:
+  - replayID: originsReplay1
+    mapID: origins
+    duration: 12
+    seed: 0
+    commands: []

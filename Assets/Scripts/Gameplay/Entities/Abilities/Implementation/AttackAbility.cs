@@ -198,6 +198,15 @@ namespace Gameplay.Entities.Abilities {
             writer.Write(ReactionTarget);
         }
 
+        public string SerializeToJson() {
+            return JsonUtility.ToJson(new Dictionary<string, object> {
+                {"Target", Target.UID},
+                {"Destination", Destination},
+                {"Reaction", Reaction},
+                {"ReactionTarget", ReactionTarget?.UID ?? 0}
+            });
+        }
+
         public void Deserialize(NetworkReader reader) {
             Target = reader.Read<GridEntity>();
             Destination = reader.Read<Vector2Int>();

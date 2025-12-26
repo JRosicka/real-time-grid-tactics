@@ -44,6 +44,15 @@ namespace Gameplay.Config.Abilities {
             return new MoveAbility(this, parameters, performer, overrideTeam);
         }
 
+        public override IAbilityParameters DeserializeParametersFromJson(Dictionary<string, object> json) {
+            return new MoveAbilityParameters {
+                Destination = (Vector2Int)json["Destination"],
+                NextMoveCell = (Vector2Int)json["NextMoveCell"],
+                BlockedByOccupation = (bool)json["BlockedByOccupation"],
+                PerformAfterAttacks = (bool)json["PerformAfterAttacks"]
+            };
+        }
+
         public bool CanTargetCell(Vector2Int cellPosition, GridEntity selectedEntity, GameTeam selectorTeam, object targetData) {
             if (selectedEntity == null) return false;
             if (selectedEntity.Team != selectorTeam) return false;

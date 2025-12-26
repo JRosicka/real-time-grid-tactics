@@ -7,6 +7,7 @@ using Gameplay.Entities.Upgrades;
 using Gameplay.Managers;
 using Mirror;
 using UnityEngine;
+using Util;
 
 /// <summary>
 /// Interface through which to do any game-related actions, like moving a unit, spawning a unit, using an ability, etc.
@@ -49,4 +50,5 @@ public interface ICommandManager {
     GridEntityCollection EntitiesOnGrid { get; }
     Transform SpawnBucket { get; }
     AbilityExecutor AbilityExecutor { get; }
+    IDGenerator AbilityIDGenerator { get; }
 }

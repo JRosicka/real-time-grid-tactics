@@ -120,6 +120,16 @@ namespace Gameplay.Entities.Abilities {
             writer.WriteBool(Attacking);
         }
 
+        public string SerializeToJson() {
+            return JsonUtility.ToJson(new Dictionary<string, object> {
+                {"Destination", Destination},
+                {"MoveDestination", MoveDestination},
+                {"ClickLocation", ClickLocation},
+                {"SelectorTeam", SelectorTeam},
+                {"Attacking", Attacking}
+            });
+        }
+
         public void Deserialize(NetworkReader reader) {
             Destination = reader.Read<Vector2Int>();
             MoveDestination = reader.Read<Vector2Int>();

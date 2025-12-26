@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Gameplay.Entities;
 using Gameplay.Entities.Abilities;
 using UnityEngine;
@@ -28,6 +29,12 @@ namespace Gameplay.Config.Abilities {
 
         protected override IAbility CreateAbilityImpl(HealAbilityParameters parameters, GridEntity performer, GameTeam? overrideTeam) {
             return new HealAbility(this, parameters, performer, overrideTeam);
+        }
+
+        public override IAbilityParameters DeserializeParametersFromJson(Dictionary<string, object> json) {
+            return new HealAbilityParameters {
+                Target = GameManager.Instance.CommandManager.EntitiesOnGrid.GetEntityByID((int)json["Target"])
+            };
         }
     }
 }

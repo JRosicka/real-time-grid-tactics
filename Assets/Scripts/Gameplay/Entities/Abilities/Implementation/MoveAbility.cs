@@ -77,6 +77,15 @@ namespace Gameplay.Entities.Abilities {
             writer.WriteBool(PerformAfterAttacks);
         }
 
+        public string SerializeToJson() {
+            return JsonUtility.ToJson(new Dictionary<string, object> {
+                {"Destination", Destination},
+                {"NextMoveCell", NextMoveCell},
+                {"BlockedByOccupation", BlockedByOccupation},
+                {"PerformAfterAttacks", PerformAfterAttacks}
+            });
+        }
+
         public void Deserialize(NetworkReader reader) {
             Destination = reader.Read<Vector2Int>();
             NextMoveCell = reader.Read<Vector2Int>();

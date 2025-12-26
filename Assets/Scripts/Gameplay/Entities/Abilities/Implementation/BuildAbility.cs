@@ -183,6 +183,13 @@ namespace Gameplay.Entities.Abilities {
             writer.Write(BuildLocation);
         }
 
+        public string SerializeToJson() {
+            return JsonUtility.ToJson(new Dictionary<string, object> {
+                {"Buildable", Buildable.ID},
+                {"BuildLocation", BuildLocation}
+            });
+        }
+
         public void Deserialize(NetworkReader reader) {
             Buildable = GameManager.Instance.Configuration.GetPurchasable(reader.ReadString());
             BuildLocation = reader.Read<Vector2Int>();
