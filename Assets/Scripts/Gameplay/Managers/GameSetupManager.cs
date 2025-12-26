@@ -275,6 +275,8 @@ public class GameSetupManager : MonoBehaviour {
         
         GameManager.AmberForgeAvailabilityNotifier.Initialize();
         GameManager.LeaderTracker.Initialize(GameManager.CommandManager);
+        
+        GameManager.ReplayManager.Initialize();
     }
     
     #region Multiplayer

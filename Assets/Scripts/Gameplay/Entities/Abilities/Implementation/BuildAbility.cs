@@ -7,6 +7,7 @@ using Gameplay.Config.Upgrades;
 using Gameplay.Entities.Upgrades;
 using Gameplay.Grid;
 using Mirror;
+using Newtonsoft.Json;
 using UnityEngine;
 
 namespace Gameplay.Entities.Abilities {
@@ -184,7 +185,7 @@ namespace Gameplay.Entities.Abilities {
         }
 
         public string SerializeToJson() {
-            return JsonUtility.ToJson(new Dictionary<string, object> {
+            return JsonConvert.SerializeObject(new Dictionary<string, object> {
                 {"Buildable", Buildable.ID},
                 {"BuildLocation", BuildLocation}
             });

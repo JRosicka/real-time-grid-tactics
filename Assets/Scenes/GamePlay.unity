@@ -4448,6 +4448,7 @@ MonoBehaviour:
   GameAudio: {fileID: 686395029}
   InGamePauseButton: {fileID: 803866180}
   GridIconDisplayer: {fileID: 1720434497}
+  ReplayManager: {fileID: 1791631560}
 --- !u!4 &1548131395
 Transform:
   m_ObjectHideFlags: 0
@@ -4468,6 +4469,7 @@ Transform:
   - {fileID: 2102163700}
   - {fileID: 93360965}
   - {fileID: 1720434496}
+  - {fileID: 1791631559}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1548131396
@@ -5118,6 +5120,51 @@ MonoBehaviour:
   _selectedUnitReticle: {fileID: 1261052757}
   _targetUnitReticle: {fileID: 111173281}
   _mapLoader: {fileID: 602790830}
+--- !u!1 &1791631558
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1791631559}
+  - component: {fileID: 1791631560}
+  m_Layer: 0
+  m_Name: ReplayManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1791631559
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1791631558}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1548131395}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1791631560
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1791631558}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8a12c73eff434ed1be10892a0f26201c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Gameplay.Managers.ReplayManager
+  Recording: 0
 --- !u!1 &1796051717
 GameObject:
   m_ObjectHideFlags: 0

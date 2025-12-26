@@ -4,6 +4,7 @@ using Gameplay.Config;
 using Gameplay.Config.Abilities;
 using Gameplay.Grid;
 using Mirror;
+using Newtonsoft.Json;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -199,8 +200,8 @@ namespace Gameplay.Entities.Abilities {
         }
 
         public string SerializeToJson() {
-            return JsonUtility.ToJson(new Dictionary<string, object> {
-                {"Target", Target.UID},
+            return JsonConvert.SerializeObject(new Dictionary<string, object> {
+                {"Target", Target?.UID ?? 0},
                 {"Destination", Destination},
                 {"Reaction", Reaction},
                 {"ReactionTarget", ReactionTarget?.UID ?? 0}

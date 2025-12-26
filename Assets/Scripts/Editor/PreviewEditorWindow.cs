@@ -46,7 +46,9 @@ namespace Gameplay.Config {
         private ReplayManager _replayManager;
         private ReplayManager ReplayManager {
             get {
-                _replayManager ??= GameManager.Instance?.ReplayManager;
+                if (!_replayManager) {
+                    _replayManager = FindFirstObjectByType<ReplayManager>();
+                }
                 return _replayManager;
             }
         }
@@ -173,9 +175,12 @@ namespace Gameplay.Config {
             _recording = false;
             UpdateRecordingFlags();
 
-            _pendingReplayData = ReplayManager.StopRecording();
-            _pendingReplayData.replayID = ReplayID;
-            PopulateFields(_pendingReplayData);
+            ReplayData newReplayData = ReplayManager.StopRecording();
+            if (newReplayData != null) {
+                _pendingReplayData = newReplayData;
+                _pendingReplayData.replayID = ReplayID;
+                PopulateFields(_pendingReplayData);
+            }
         }
         
         #endregion

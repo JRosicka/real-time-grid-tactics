@@ -18,7 +18,7 @@ namespace Menu {
         }
         
         private void OnMapChanged(string _, string newMapID) {
-            SceneLoader.Instance.SwitchLoadedMap(newMapID);
+            SceneLoader.Instance.SwitchLoadedMap(newMapID, null);
         }
 
         /// <summary>

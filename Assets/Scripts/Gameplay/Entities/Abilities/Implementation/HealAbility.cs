@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Gameplay.Config.Abilities;
 using Mirror;
+using Newtonsoft.Json;
 using UnityEngine;
 
 namespace Gameplay.Entities.Abilities {
@@ -116,7 +117,7 @@ namespace Gameplay.Entities.Abilities {
         }
 
         public string SerializeToJson() {
-            return JsonUtility.ToJson(new Dictionary<string, object> {
+            return JsonConvert.SerializeObject(new Dictionary<string, object> {
                 {"Target", Target?.UID ?? 0}
             });
         }

@@ -48,6 +48,8 @@ public class AbilityExecutor : MonoBehaviour {
         if (!_initialized) return;
 
         MatchLength += Time.deltaTime;
+        GameManager.Instance.ReplayManager.UpdateReplayPlayback(MatchLength);
+        
         _timeUntilNextUpdate -= Time.deltaTime;
         if (_timeUntilNextUpdate <= 0) {
             _timeUntilNextUpdate += UpdateFrequency;

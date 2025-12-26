@@ -5,6 +5,7 @@ using Gameplay.Config.Abilities;
 using Gameplay.Entities;
 using Gameplay.Entities.Abilities;
 using Mirror;
+using Newtonsoft.Json;
 using Scenes;
 using UnityEngine;
 using Util;
@@ -67,7 +68,10 @@ namespace Gameplay.Managers {
             }
             
             IAbility abilityInstance = abilityData.CreateAbility(parameters, entity, overrideTeam);
-            TryRecordAbility(entity, abilityInstance);
+
+            if (fromInput) {
+                TryRecordAbility(entity, abilityInstance);
+            }
             
             if (clearOtherAbilities) { 
                 CancelAllAbilities(entity); 
@@ -84,13 +88,6 @@ namespace Gameplay.Managers {
 
         private void TryRecordAbility(GridEntity performer, IAbility ability) {
             GameManager.Instance.ReplayManager.TryRecordAbility(performer, ability);
-        }
-        
-        public void PerformRecordedAbility(ReplayData.TimedCommand command) {
-            IAbilityData abilityData = GameManager.Instance.Configuration.GetAbility(command.abilityType).Content;
-            GridEntity performer = GameManager.Instance.CommandManager.EntitiesOnGrid.GetEntityByID(command.entityID);
-            IAbilityParameters parameters = abilityData.DeserializeParametersFromJson(JsonUtility.FromJson<Dictionary<string, object>>(command.abilityParameterJson));
-            StartPerformingAbility(performer, abilityData, parameters, true, true,  false, null); // TODO what to do about clearOtherAbilities and overrideTeam?
         }
         
         public void PerformOnStartAbilitiesForEntity(GridEntity entity) {

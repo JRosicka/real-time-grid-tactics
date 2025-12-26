@@ -35,7 +35,7 @@ MonoBehaviour:
         SpawnLocation:
           Location: {x: 5, y: 0}
   _savedCheats:
-    CheatsEnabled: 1
+    CheatsEnabled: 0
     PlayerMoney: 5000
     RemoveBuildTime: 0
     ControlAllPlayers: 1

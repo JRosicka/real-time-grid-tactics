@@ -75,8 +75,8 @@ namespace Scenes {
         /// <summary>
         /// Switch the map in the currently loaded game scene
         /// </summary>
-        public void SwitchLoadedMap(string newMapID) {
-            _gameTypeManager.SetMap(newMapID);
+        public void SwitchLoadedMap(string newMapID, string replayID) {
+            _gameTypeManager.SetMap(newMapID, replayID);
             
             if (_switchMapTask == null || _switchMapTask.IsCompleted) {
                 _switchMapTask = DoSwitchLoadedMap();

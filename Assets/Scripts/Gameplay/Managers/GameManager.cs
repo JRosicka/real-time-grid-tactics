@@ -42,6 +42,7 @@ public class GameManager : MonoBehaviour {
     public GameAudio GameAudio;
     public InGamePauseButton InGamePauseButton;
     public GridIconDisplayer GridIconDisplayer;
+    public ReplayManager ReplayManager;
     
     public PathfinderService PathfinderService;
     public EntitySelectionManager EntitySelectionManager;
@@ -52,7 +53,6 @@ public class GameManager : MonoBehaviour {
     public AttackManager AttackManager;
     public AmberForgeAvailabilityNotifier AmberForgeAvailabilityNotifier;
     public LeaderTracker LeaderTracker;
-    public ReplayManager ReplayManager;
     
     public IGamePlayer Player1;
     public IGamePlayer Player2;
@@ -71,7 +71,6 @@ public class GameManager : MonoBehaviour {
         QueuedStructureBuildsManager = new QueuedStructureBuildsManager(this);
         AmberForgeAvailabilityNotifier = new AmberForgeAvailabilityNotifier();
         LeaderTracker = new LeaderTracker();
-        ReplayManager = new ReplayManager();
     }
 
     private void Start() {
