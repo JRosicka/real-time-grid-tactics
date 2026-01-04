@@ -233,7 +233,6 @@ namespace Gameplay.Managers {
             }
 
             uid += $"{ability.Performer.UID}_{abilityType}_{ability.Performer.AbilityInstanceCount[abilityType]++}";
-            Debug.Log($"Generated ability UID {uid} for {ability.Performer.EntityData.ID} (adding to ability timer)");
             ability.UID = uid;
             
             // Add a new cooldown timer

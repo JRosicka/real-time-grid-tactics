@@ -267,7 +267,6 @@ namespace Gameplay.Entities {
         private void SetupView() {
             int stackOrder = EntityData.GetStackOrder();
             ViewCanvas.sortingOrder = stackOrder;
-            Debug.Log($"[{InGameTimer.MatchLengthString}] Instantiating view for {EntityData.ID}");
             _view = Instantiate(EntityData.ViewPrefab, ViewCanvas.transform);
             _view.Initialize(this, stackOrder);
         }

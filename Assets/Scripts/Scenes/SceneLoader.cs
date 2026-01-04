@@ -160,6 +160,7 @@ namespace Scenes {
             
             if (asActive) {
                 SceneManager.SetActiveScene(SceneManager.GetSceneByName(sceneName));
+                Debug.Log($"Loading new active scene: {sceneName}. Active map: {GameTypeTracker.Instance.MapID}");
             }
             
             SceneLoaded?.Invoke(sceneName);
@@ -233,6 +234,8 @@ namespace Scenes {
             string strippedSceneName = StrippedSceneName(newSceneName);
             if (_targetScene == strippedSceneName) return;
             _targetScene = strippedSceneName;
+            
+            Debug.Log($"Mirror changed scene: {newSceneName}. Active map: {GameTypeTracker.Instance.MapID}");
             
             bool lockMapLoading = strippedSceneName == GameSceneName;
             UpdateMapLock(lockMapLoading);

@@ -173,7 +173,6 @@ public abstract class AbstractCommandManager : NetworkBehaviour, ICommandManager
         if (ability.UID == null) {
             string abilityType = ability.AbilityData.ContentResourceID;
             ability.UID = $"{ability.Performer.UID}_{abilityType}_{ability.Performer.AbilityInstanceCount[abilityType]++}";
-            Debug.Log($"Generated ability UID {ability.UID} for {ability.AbilityData.ContentResourceID} for {ability.Performer.EntityData.ID}");
         }
 
         bool success = ability.TryDoAbilityStartEffect();
