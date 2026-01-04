@@ -3551,3 +3551,16 @@ MonoBehaviour:
       commandType: 0
       data: '{"abilityType":"Move Ability","abilityParameterJson":"{\"Destination\":\"(6,-3)\",\"NextMoveCell\":\"(6,-3)\",\"BlockedByOccupation\":true,\"PerformAfterAttacks\":false}","fromInput":true,"performEvenIfOnCooldown":true,"clearOtherAbilities":true,"overrideTeam":-2,"abilityID":"1026_Move
         Ability_28"}'
+  - replayID: originsReplay2
+    mapID: origins
+    duration: 6.0728974
+    seed: 1474938150
+    commands:
+    - time: 2.2095978
+      entityID: 1030
+      commandType: 1
+      data: '{"abilityInstance":0,"abilityType":"Attack Ability Melee"}'
+    - time: 2.2095978
+      entityID: 1030
+      commandType: 0
+      data: '{"abilityType":"Attack Ability Melee","abilityParameterJson":"{\"Target\":0,\"Destination\":\"(4,-1)\",\"Reaction\":false,\"ReactionTarget\":0}","fromInput":true,"performEvenIfOnCooldown":true,"clearOtherAbilities":true,"overrideTeam":-2}'

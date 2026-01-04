@@ -53,6 +53,7 @@ public class GameManager : MonoBehaviour {
     public AttackManager AttackManager;
     public AmberForgeAvailabilityNotifier AmberForgeAvailabilityNotifier;
     public LeaderTracker LeaderTracker;
+    public SeedManager SeedManager;
     
     public IGamePlayer Player1;
     public IGamePlayer Player2;
@@ -84,6 +85,14 @@ public class GameManager : MonoBehaviour {
         GameAudio.Initialize(GameSetupManager, Configuration.AudioConfiguration);
         AttackManager = new AttackManager();
         CanvasWidthSetter.Initialize();
+        
+        SeedManager = new SeedManager();
+        ReplayData replayData = GameConfigurationLocator.GameConfiguration.MapsConfiguration.GetReplay(GameTypeTracker.Instance.ReplayID);
+        if (replayData == null) {
+            SeedManager.InitializeWithRandomSeed();
+        } else {
+            SeedManager.InitializeWithSeed(replayData.seed);
+        }
     }
 
     private void OnDestroy() {

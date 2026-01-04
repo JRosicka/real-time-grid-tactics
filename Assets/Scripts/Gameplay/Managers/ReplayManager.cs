@@ -35,7 +35,6 @@ namespace Gameplay.Managers {
             _recordingReplayData = new ReplayData {
                 mapID = gameTypeTracker.MapID,
                 duration = 0,
-                seed = 0, // TODO
                 commands = new List<ReplayData.TimedCommand>()
             };
             Recording = true;
@@ -50,6 +49,7 @@ namespace Gameplay.Managers {
             }
             
             _recordingReplayData.duration = GameManager.Instance.CommandManager.AbilityExecutor.MatchLength;
+            _recordingReplayData.seed = GameManager.Instance.SeedManager.Seed;
             ReplayData ret = _recordingReplayData;
             _recordingReplayData = null;
             return ret;
@@ -90,7 +90,7 @@ namespace Gameplay.Managers {
                 time = GameManager.Instance.CommandManager.AbilityExecutor.MatchLength,
                 entityID = entity.UID,
                 commandType = ReplayData.CommandType.HoldPosition,
-                data = new TimedToggleHoldPositionCommandData() {
+                data = new TimedToggleHoldPositionCommandData {
                     holdPosition = holdPosition
                 }.SerializeToJson()
             };

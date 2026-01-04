@@ -7,7 +7,6 @@ using Mirror;
 using Newtonsoft.Json;
 using UnityEngine;
 using Util;
-using Random = UnityEngine.Random;
 
 namespace Gameplay.Entities.Abilities {
     /// <summary>
