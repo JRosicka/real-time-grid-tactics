@@ -51,11 +51,11 @@ namespace Audio {
         }
 
         public void ButtonClickSound() {
-            AudioPlayer.TryPlaySFX(_audioConfiguration.ButtonClickSound);
+            TryPlaySFX(_audioConfiguration.ButtonClickSound);
         }
 
         public void InvalidSound() {
-            AudioPlayer.TryPlaySFX(_audioConfiguration.InvalidSound);
+            TryPlaySFX(_audioConfiguration.InvalidSound);
         }
 
         public void EntitySelectionSound(EntityData entityData) {
@@ -86,37 +86,42 @@ namespace Audio {
             }
             
             lastPlayedSounds[entityType] = soundToPlay;
-            AudioPlayer.TryPlaySFX(soundToPlay);
+            TryPlaySFX(soundToPlay);
         }
 
         public void ArrowLandSound() {
-            AudioPlayer.TryPlaySFX(_audioConfiguration.ArrowLandSound);
+            TryPlaySFX(_audioConfiguration.ArrowLandSound);
         }
 
         public void ConstructionSound() {
-            AudioPlayer.TryPlaySFX(_audioConfiguration.ConstructionSound);
+            TryPlaySFX(_audioConfiguration.ConstructionSound);
         }
 
         public void EntityFinishedBuildingSound(EntityData entityData) {
             if (entityData.EntityFinishedBuildingSound.Clip != null) {
-                AudioPlayer.TryPlaySFX(entityData.EntityFinishedBuildingSound);
+                TryPlaySFX(entityData.EntityFinishedBuildingSound);
             }
         }
 
         public void GameStartSound() {
-            AudioPlayer.TryPlaySFX(_audioConfiguration.GameStartSound);
+            TryPlaySFX(_audioConfiguration.GameStartSound);
         }
         
         public void GameWinSound() {
-            AudioPlayer.TryPlaySFX(_audioConfiguration.GameWinSound);
+            TryPlaySFX(_audioConfiguration.GameWinSound);
         }
         
         public void GameLossSound() {
-            AudioPlayer.TryPlaySFX(_audioConfiguration.GameLossSound);
+            TryPlaySFX(_audioConfiguration.GameLossSound);
         }
 
         public void UpgradeCompleteSound() {
-            AudioPlayer.TryPlaySFX(_audioConfiguration.UpgradeCompleteSound);
+            TryPlaySFX(_audioConfiguration.UpgradeCompleteSound);
+        }
+
+        private void TryPlaySFX(AudioFile audioFile) {
+            if (GameManager.Instance.ReplayManager.PlayingReplay && !audioFile.PlayDuringReplay) return;
+            AudioPlayer.TryPlaySFX(audioFile);
         }
     }
 }

@@ -32,21 +32,25 @@ MonoBehaviour:
     Volume: 0.495
     AudioLayer: 0
     Interruptible: 1
+    PlayDuringReplay: 0
   OrderSounds:
   - Clip: {fileID: 8300000, guid: e8f4503c6d5b06546be91523b32808c7, type: 3}
     Volume: 0.391
     AudioLayer: 0
     Interruptible: 1
+    PlayDuringReplay: 0
   AttackSounds:
   - Clip: {fileID: 8300000, guid: c7158a52d3e379a48bf26536cdd04001, type: 3}
     Volume: 0.226
     AudioLayer: 0
     Interruptible: 0
+    PlayDuringReplay: 1
   EntityFinishedBuildingSound:
     Clip: {fileID: 0}
     Volume: 0
     AudioLayer: 0
     Interruptible: 0
+    PlayDuringReplay: 0
   HP: 24
   Range: 2
   Damage: 6

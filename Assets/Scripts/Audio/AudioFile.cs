@@ -13,5 +13,6 @@ namespace Audio {
         public float Volume;
         public AudioLayerName AudioLayer;
         public bool Interruptible;
+        public bool PlayDuringReplay;
     }
 }
