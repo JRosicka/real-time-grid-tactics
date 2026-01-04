@@ -10,8 +10,9 @@ namespace Scenes {
     public class MainMenuGamePreviewManager {
         private List<ReplayData> _replays;
         private bool _mainMenuLoaded;
-        private string _lastReplayID;
         private Random _random;
+        
+        public ReplayData LastReplay { get; private set; }
         
         public void Initialize(bool setInitialMap) {
             _replays = GameConfigurationLocator.GameConfiguration.MapsConfiguration.PreviewReplays;
@@ -32,8 +33,9 @@ namespace Scenes {
         }
 
         private ReplayData GetNextReplay() {
-            List<ReplayData> eligibleReplays = _replays.Where(r => r.replayID != _lastReplayID).ToList();
-            return eligibleReplays.ElementAt(_random.Next(eligibleReplays.Count));
+            List<ReplayData> eligibleReplays = _replays.Where(r => r != LastReplay).ToList();
+            LastReplay = eligibleReplays.ElementAt(_random.Next(eligibleReplays.Count));
+            return LastReplay;
         }
 
         private void SwitchMap(ReplayData replayData) {

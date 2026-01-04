@@ -35,7 +35,7 @@ namespace Gameplay.Entities {
         [Header("Config")] 
         public string UnitName;
         public GameTeam Team;
-        public int UID;
+        public long UID;
         public string DisplayName => EntityData.ID;
         public List<EntityTag> Tags => EntityData.Tags;
         public IEnumerable<IAbilityData> Abilities => EntityData.Abilities.Select(a => a.Content);
@@ -80,6 +80,11 @@ namespace Gameplay.Entities {
         /// This entity's queued abilities. Each ability stores the UID of the ability it depends upon. Only updated on server. 
         /// </summary>
         public List<IAbility> QueuedAbilities = new();
+        /// <summary>
+        /// Updated client-side. Tracks the number of instances of each ability type that this entity has performed
+        /// (i.e. put in progress) on a per-ability-type basis.  
+        /// </summary>
+        public Dictionary<string, int> AbilityInstanceCount = new();
 
         // Misc fields and properties
         [HideInInspector] 
@@ -181,7 +186,7 @@ namespace Gameplay.Entities {
         }
         
         [ClientRpc]
-        public void RpcInitialize(EntityData data, GameTeam team, bool built, int entityUID) {
+        public void RpcInitialize(EntityData data, GameTeam team, bool built, long entityUID) {
             transform.parent = CommandManager.SpawnBucket;
             ClientInitialize(data, team, built, entityUID);
         }
@@ -189,11 +194,15 @@ namespace Gameplay.Entities {
         /// <summary>
         /// Initialization that runs on each client
         /// </summary>
-        public void ClientInitialize(EntityData data, GameTeam team, bool built, int entityUID) {
+        public void ClientInitialize(EntityData data, GameTeam team, bool built, long entityUID) {
             EntityData = data;
             Team = team;
             UID = entityUID;
             GameTeam localPlayerTeam = GameManager.Instance.LocalTeam;
+            
+            foreach (AbilityDataScriptableObject abilityData in data.Abilities) {
+                AbilityInstanceCount[abilityData.Content.ContentResourceID] = 0;
+            }
 
             if (localPlayerTeam == GameTeam.Spectator) {
                 InteractBehavior = new UnownedInteractBehavior();
@@ -460,7 +469,7 @@ namespace Gameplay.Entities {
         public void CancelAllAbilities() {
             List<IAbility> cancelableAbilities = GetCancelableAbilities();
             if (cancelableAbilities.Count > 0) {
-                cancelableAbilities.ForEach(a => CommandManager.CancelAbility(a));
+                cancelableAbilities.ForEach(a => CommandManager.CancelAbility(a, true));
                     
                 // Update the rally point
                 var currentLocation = Location;
@@ -471,7 +480,7 @@ namespace Gameplay.Entities {
             }
             
             // Also stop holding position
-            ToggleHoldPosition(false);
+            ToggleHoldPosition(false, true);
         }
         
         public void UpdateInProgressAbilities(List<IAbility> newInProgressAbilitiesSet) {
@@ -521,7 +530,7 @@ namespace Gameplay.Entities {
         #endregion
         #region Moving
         
-        public bool TryMoveToCell(Vector2Int targetCell, bool fromInput) {
+        public bool TryMoveToCell(Vector2Int targetCell, bool fromInput, bool recordForReplay) {
             if (!CanMoveOrRally) return false;
 
             MoveAbilityData data = GetAbilityData<MoveAbilityData>();
@@ -529,7 +538,7 @@ namespace Gameplay.Entities {
                     Destination = targetCell, 
                     NextMoveCell = targetCell, 
                     BlockedByOccupation = true
-                }, fromInput, true, true)) {
+                }, fromInput, true, true, recordForReplay)) {
                 SetTargetLocation(targetCell, null, false);
             }
             return true;
@@ -574,14 +583,18 @@ namespace Gameplay.Entities {
             return normalMoveTime + normalMoveTime * extraMoveTimeFromTile;
         }
 
-        public void ToggleHoldPosition(bool holdPosition) {
+        public void ToggleHoldPosition(bool holdPosition, bool recordForReplay) {
+            if (recordForReplay) {
+                GameManager.Instance.ReplayManager.TryRecordHoldPosition(this, holdPosition);
+            }
+            
             HoldingPosition = holdPosition;
 
             if (!holdPosition) return;
             
             // Cancel any in-progress moves and attacks
             List<IAbility> abilities = InProgressAbilities.Where(a => a is MoveAbility or AttackAbility).ToList();
-            abilities.ForEach(a => CommandManager.CancelAbility(a));
+            abilities.ForEach(a => CommandManager.CancelAbility(a, false));
 
             // Update the rally point
             var currentLocation = Location;
@@ -594,7 +607,7 @@ namespace Gameplay.Entities {
         #endregion
         #region Attacking
 
-        public void TryAttack(Vector2Int targetCell, GridEntity targetEntity, bool fromInput) {
+        public void TryAttack(Vector2Int targetCell, GridEntity targetEntity) {
             if (!CanMoveOrRally) return;
 
             if (targetEntity == null) {
@@ -602,7 +615,7 @@ namespace Gameplay.Entities {
                 AttackAbilityData data = GetAbilityData<AttackAbilityData>();
                 if (AbilityAssignmentManager.StartPerformingAbility(this, data, new AttackAbilityParameters {
                         Destination = targetCell
-                    }, fromInput, true, true)) {
+                    }, false, true, true, false)) {
                     SetTargetLocation(targetCell, null, true);
                 }
             } else {
@@ -610,7 +623,7 @@ namespace Gameplay.Entities {
                 TargetAttackAbilityData data = GetAbilityData<TargetAttackAbilityData>();
                 if (AbilityAssignmentManager.StartPerformingAbility(this, data, new TargetAttackAbilityParameters {
                         Target = targetEntity
-                    }, fromInput, true, true)) {
+                    }, false, true, true, false)) {
                     SetTargetLocation(targetCell, targetEntity, true);
                 }
             }
@@ -651,7 +664,7 @@ namespace Gameplay.Entities {
             TargetAttackAbilityData data = GetAbilityData<TargetAttackAbilityData>();
             if (AbilityAssignmentManager.StartPerformingAbility(this, data, new TargetAttackAbilityParameters() {
                     Target = targetEntity, 
-                }, true, true, true)) {
+                }, true, true, true, true)) {
                 SetTargetLocation(targetCell, targetEntity, true);
             }
         }
@@ -767,7 +780,7 @@ namespace Gameplay.Entities {
                 Destination = sourceEntity.Location.Value,
                 Reaction = true,
                 ReactionTarget = sourceEntity
-            }, false, true, true);
+            }, false, true, true, false);
             
             if (actualAttackMove != null) {
                 // Re-queue

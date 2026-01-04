@@ -164,7 +164,8 @@ namespace Gameplay.Config {
                 seed = Seed,
                 commands = CopyCommands(TimedCommands)
             };
-            MapsConfiguration.AddReplay(_pendingReplayData); 
+            MapsConfiguration.AddReplay(_pendingReplayData);
+            DropdownReplayID = ReplayID;
             LoadReplay();
         }
 
@@ -204,8 +205,8 @@ namespace Gameplay.Config {
             return commands.Select(command => new ReplayData.TimedCommand {
                 time = command.time, 
                 entityID = command.entityID, 
-                abilityType = command.abilityType, 
-                abilityParameterJson = command.abilityParameterJson
+                commandType = command.commandType,
+                data = command.data
             }).ToList();
         }
     }

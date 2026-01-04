@@ -162,7 +162,7 @@ namespace Gameplay.Entities {
             return AllEntities().Contains(entity);
         }
 
-        public GridEntity GetEntityByID(int entityID) {
+        public GridEntity GetEntityByID(long entityID) {
             return AllEntities().FirstOrDefault(e => e.UID == entityID);
         }
 

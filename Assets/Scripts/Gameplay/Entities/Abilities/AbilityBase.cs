@@ -10,7 +10,7 @@ namespace Gameplay.Entities.Abilities {
     public abstract class AbilityBase<T, P> : IAbility where T : AbilityDataBase<P> where P : IAbilityParameters, new() {
         protected readonly T Data;
         public IAbilityData AbilityData => Data;
-        public int UID { get; set; }
+        public string UID { get; set; }
         public IAbilityParameters BaseParameters { get; }
         public GridEntity Performer { get; }
         public GameTeam PerformerTeam { get; set; }
@@ -37,7 +37,8 @@ namespace Gameplay.Entities.Abilities {
             }
             
             if (Data.RepeatWhenCooldownFinishes) {
-                AbilityAssignmentManager.StartPerformingAbility(Performer, AbilityData, BaseParameters, false, true, false);
+                AbilityAssignmentManager.StartPerformingAbility(Performer, AbilityData, BaseParameters, false, 
+                    true, false, false);
             }
 
             return true;
@@ -47,7 +48,7 @@ namespace Gameplay.Entities.Abilities {
         public virtual bool Cancelable => Data.Cancelable;
 
         public abstract void Cancel();
-        public int QueuedAfterAbilityID { get; set; }
+        public string QueuedAfterAbilityID { get; set; }
 
         protected abstract bool CompleteCooldownImpl();
 

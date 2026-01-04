@@ -52,7 +52,9 @@ public class AbilityExecutor : MonoBehaviour {
         
         _timeUntilNextUpdate -= Time.deltaTime;
         if (_timeUntilNextUpdate <= 0) {
-            _timeUntilNextUpdate += UpdateFrequency;
+            while (_timeUntilNextUpdate <= 0) {
+                _timeUntilNextUpdate += UpdateFrequency;
+            }
             
             // Time for an update
             ExecuteAbilities(false);
@@ -151,7 +153,7 @@ public class AbilityExecutor : MonoBehaviour {
 
         // Cycle through the abilities, trying to perform each one until one does not get completed or removed
         bool abilitySetUpdated = false;
-        List<int> seenAbilityIDs = new List<int>();
+        List<string> seenAbilityIDs = new List<string>();
         while (true) {
             // No-op if empty
             if (abilities.IsNullOrEmpty()) {
@@ -233,8 +235,9 @@ public class AbilityExecutor : MonoBehaviour {
         IAbility queuedAbility = completedAbility.Performer.QueuedAbilities.FirstOrDefault(a => a.QueuedAfterAbilityID == completedAbility.UID);
         if (queuedAbility == null) return;
         
+        // TODO for replays, we will need to record some queued abilities. Currently we only queue attack responses which don't require recording
         _abilityAssignmentManager.StartPerformingAbility(queuedAbility.Performer, queuedAbility.AbilityData, 
-                queuedAbility.BaseParameters, false, true, false);
+                queuedAbility.BaseParameters, false, true, false, false);
     }
 
     /// <summary>
@@ -259,7 +262,7 @@ public class AbilityExecutor : MonoBehaviour {
                 if (!entity.InProgressAbilities.Any(a => a.AbilityData.BlocksDefaultAttack)) {
                     _abilityAssignmentManager.StartPerformingAbility(entity, data, new AttackAbilityParameters {
                         Destination = location.Value
-                    }, false, true, false);
+                    }, false, true, false, false);
                 }
             }
         }
@@ -269,7 +272,7 @@ public class AbilityExecutor : MonoBehaviour {
                 if (entity.InProgressAbilities.All(a => a.AbilityData.GetType() != ability.Content.GetType())) {
                     _abilityAssignmentManager.StartPerformingAbility(entity, ability.Content, new ParadeAbilityParameters {
                         Target = null
-                    }, false, true, false);
+                    }, false, true, false, false);
                 }
             }
         }

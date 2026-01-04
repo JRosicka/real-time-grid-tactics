@@ -24,7 +24,7 @@ namespace Gameplay.Entities.Abilities {
         }
         
         protected override (bool, AbilityResult) DoAbilityEffect() {
-            Performer.ToggleHoldPosition(true);
+            Performer.ToggleHoldPosition(true, false);
             return (true, AbilityResult.CompletedWithEffect);
         }
     }

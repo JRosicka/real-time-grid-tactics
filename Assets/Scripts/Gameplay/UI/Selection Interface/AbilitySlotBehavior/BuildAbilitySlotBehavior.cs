@@ -55,7 +55,8 @@ namespace Gameplay.UI {
                 AbilityAssignmentManager.StartPerformingAbility(SelectedEntity, _buildAbilityData, new BuildAbilityParameters {
                     Buildable = Buildable, 
                     BuildLocation = selectedEntityLocation.Value
-                }, true, true, false, overrideTeam:GameManager.Instance.LocalTeam);
+                }, true, true, false, true, 
+                    overrideTeam:GameManager.Instance.LocalTeam);
             }
         }
 

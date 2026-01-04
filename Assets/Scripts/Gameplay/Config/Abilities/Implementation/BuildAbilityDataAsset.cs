@@ -6,6 +6,7 @@ using Gameplay.Entities.Abilities;
 using Gameplay.Grid;
 using Gameplay.Managers;
 using UnityEngine;
+using Util;
 using Object = UnityEngine.Object;
 
 namespace Gameplay.Config.Abilities {
@@ -75,7 +76,7 @@ namespace Gameplay.Config.Abilities {
         public override IAbilityParameters DeserializeParametersFromJson(Dictionary<string, object> json) {
             return new BuildAbilityParameters {
                 Buildable = GameManager.Instance.Configuration.GetPurchasable((string)json["Buildable"]),
-                BuildLocation = (Vector2Int)json["BuildLocation"]
+                BuildLocation = ((string)json["BuildLocation"]).ToVector2Int(),
             };
         }
 
@@ -90,7 +91,8 @@ namespace Gameplay.Config.Abilities {
         public void DoTargetableAbility(Vector2Int cellPosition, GridEntity selectedEntity, GameTeam selectorTeam, System.Object targetData) {
             PurchasableData purchasableData = (PurchasableData)targetData;
             BuildAbilityParameters buildParameters = new BuildAbilityParameters {Buildable = purchasableData, BuildLocation = cellPosition};
-            GameManager.Instance.AbilityAssignmentManager.StartPerformingAbility(selectedEntity, this, buildParameters, true, true, false);
+            GameManager.Instance.AbilityAssignmentManager.StartPerformingAbility(selectedEntity, this, buildParameters, 
+                true, true, false, true);
             selectedEntity.SetTargetLocation(cellPosition, null, false, true);
             
             if (GameManager.Instance.SelectionInterface.BuildMenuOpenFromSelection) {

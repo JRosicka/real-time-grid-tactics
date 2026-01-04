@@ -202,7 +202,7 @@ public class EntitySelectionManager {
             return true;
         }
 
-        _gameManager.AbilityAssignmentManager.CancelAllAbilities(SelectedEntity);
+        _gameManager.AbilityAssignmentManager.CancelAllAbilities(SelectedEntity, true);
 
         // TODO maybe move everything under here in this method to some other class, if things get more complicated
         if (_selectedTargetableAbility.MoveToTargetCellFirst && SelectedEntity.Location != clickedCell) {
@@ -210,7 +210,7 @@ public class EntitySelectionManager {
             // TODO if an ability has a range, like an attack, find a path to the nearest place in range. We only want to 
             // refrain from doing the targetable ability if it actually matters if the entity can move to the target. Not 
             // sure how best to handle that. 
-            if (!SelectedEntity.TryMoveToCell(clickedCell, false)) {
+            if (!SelectedEntity.TryMoveToCell(clickedCell, false, true)) {
                 // We failed to move to the destination, so don't do the targetable ability
                 return true;
             }

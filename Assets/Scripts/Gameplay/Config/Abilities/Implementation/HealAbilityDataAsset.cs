@@ -33,7 +33,7 @@ namespace Gameplay.Config.Abilities {
 
         public override IAbilityParameters DeserializeParametersFromJson(Dictionary<string, object> json) {
             return new HealAbilityParameters {
-                Target = GameManager.Instance.CommandManager.EntitiesOnGrid.GetEntityByID((int)json["Target"])
+                Target = GameManager.Instance.CommandManager.EntitiesOnGrid.GetEntityByID((long)json["Target"])
             };
         }
     }

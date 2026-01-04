@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Gameplay.Entities;
 
 // ReSharper disable InconsistentNaming     If we ever serialize this to JSON, then it will be convenient for the fields to be lowercase
 
@@ -18,9 +19,15 @@ namespace Gameplay.Config {
         [Serializable]
         public class TimedCommand {
             public float time;
-            public int entityID;
-            public string abilityType;
-            public string abilityParameterJson;
+            public long entityID;
+            public CommandType commandType;
+            public string data;
+        }
+
+        public enum CommandType {
+            Ability = 0,
+            CancelAbility = 1,
+            HoldPosition = 2
         }
     }
 }

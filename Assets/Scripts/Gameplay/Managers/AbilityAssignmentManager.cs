@@ -49,8 +49,9 @@ namespace Gameplay.Managers {
         #endregion
         #region Perform
 
-        public bool StartPerformingAbility(GridEntity entity, IAbilityData abilityData, IAbilityParameters parameters, bool fromInput,
-                                    bool startPerformingEvenIfOnCooldown, bool clearOtherAbilities, GameTeam? overrideTeam = null) {
+        public bool StartPerformingAbility(GridEntity entity, IAbilityData abilityData, IAbilityParameters parameters, 
+                                    bool fromInput, bool startPerformingEvenIfOnCooldown, bool clearOtherAbilities, 
+                                    bool recordForReplay, GameTeam? overrideTeam = null) {
             GameTeam team = overrideTeam ?? entity.Team;
             if (entity.BuildQueue != null && abilityData.TryingToPerformCancelsBuilds) {
                 entity.BuildQueue.CancelAllBuilds(team);
@@ -68,16 +69,18 @@ namespace Gameplay.Managers {
             }
             
             IAbility abilityInstance = abilityData.CreateAbility(parameters, entity, overrideTeam);
-
-            if (fromInput) {
-                TryRecordAbility(entity, abilityInstance);
-            }
             
             if (clearOtherAbilities) { 
-                CancelAllAbilities(entity); 
+                CancelAllAbilities(entity, false); 
             }
 
+            // Also sets the ability's UID
             CommandManager.StartPerformingAbility(abilityInstance, fromInput);
+
+            // TODO if we add replay recording for MP games, this should probably be moved to AbstractCommandManager.DoStartPerformingAbility so it actually executes on the server
+            if (recordForReplay) {
+                TryRecordAbility(entity, abilityInstance, fromInput, startPerformingEvenIfOnCooldown, clearOtherAbilities, overrideTeam);
+            }
 
             if (fromInput) {
                 GameManager.Instance.GameAudio.EntityOrderSound(entity.EntityData);
@@ -86,13 +89,13 @@ namespace Gameplay.Managers {
             return true;
         }
 
-        private void TryRecordAbility(GridEntity performer, IAbility ability) {
-            GameManager.Instance.ReplayManager.TryRecordAbility(performer, ability);
+        private void TryRecordAbility(GridEntity performer, IAbility ability, bool fromInput, bool performEvenIfOnCooldown, bool clearOtherAbilities, GameTeam? overrideTeam) {
+            GameManager.Instance.ReplayManager.TryRecordAbility(performer, ability, fromInput, performEvenIfOnCooldown, clearOtherAbilities, overrideTeam);
         }
         
         public void PerformOnStartAbilitiesForEntity(GridEntity entity) {
             foreach (IAbilityData abilityData in entity.Abilities.Where(a => a.PerformOnStart)) {
-                StartPerformingAbility(entity, abilityData, abilityData.OnStartParameters, false, true, false);
+                StartPerformingAbility(entity, abilityData, abilityData.OnStartParameters, false, true, false, false);
             }
         }
 
@@ -114,7 +117,10 @@ namespace Gameplay.Managers {
         /// Server method. Clear the ability timer locally if the ability is active, otherwise remove it from the
         /// set of in-progress abilities.
         /// </summary>
-        public void CancelAbility(GridEntity entity, IAbility ability) {
+        public void CancelAbility(GridEntity entity, IAbility ability, bool recordForReplay) {
+            if (recordForReplay) {
+                GameManager.Instance.ReplayManager.TryRecordCancelAbility(entity, ability);
+            }
             ability.Cancel();
             ExpireTimerForAbility(entity, ability, true);
             
@@ -127,9 +133,9 @@ namespace Gameplay.Managers {
             }
         }
 
-        public void CancelAllAbilities(GridEntity entity) {
+        public void CancelAllAbilities(GridEntity entity, bool recordForReplay) {
             List<IAbility> abilities = new List<IAbility>(entity.InProgressAbilities);
-            abilities.ForEach(a => GameManager.Instance.CommandManager.CancelAbility(a));
+            abilities.ForEach(a => GameManager.Instance.CommandManager.CancelAbility(a, recordForReplay));
         }
         
         /// <summary>
@@ -219,11 +225,15 @@ namespace Gameplay.Managers {
             }
             
             // Since we won't actually be performing this ability, we need to generate a UID for it now
-            int uid = CommandManager.AbilityIDGenerator.GenerateUID();
+            string abilityType = ability.AbilityData.ContentResourceID;
+            string uid = "";
             if (GameTypeTracker.Instance.GameIsNetworked && !GameTypeTracker.Instance.HostForNetworkedGame) {
                 // MP client. Hack - use a different set of UIDs than what the server creates
-                uid *= -1;
+                uid += "client_";
             }
+
+            uid += $"{ability.Performer.UID}_{abilityType}_{ability.Performer.AbilityInstanceCount[abilityType]++}";
+            Debug.Log($"Generated ability UID {uid} for {ability.Performer.EntityData.ID} (adding to ability timer)");
             ability.UID = uid;
             
             // Add a new cooldown timer

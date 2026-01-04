@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
-using JetBrains.Annotations;
+using UnityEditor;
 using UnityEngine;
 
 namespace Gameplay.Config {
@@ -30,6 +30,11 @@ namespace Gameplay.Config {
                 PreviewReplays.Remove(existingReplay);
             }
             PreviewReplays.Add(replayData);
+#if UNITY_EDITOR
+            EditorUtility.SetDirty(this);
+            AssetDatabase.SaveAssets();
+            AssetDatabase.Refresh();
+#endif
         }
     }
 }

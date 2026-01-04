@@ -71,8 +71,8 @@ public class MPCommandManager : AbstractCommandManager {
         CmdMarkUpgradeTimerExpired(upgradeData, team);
     }
 
-    public override void CancelAbility(IAbility ability) {
-        CmdCancelAbility(ability);
+    public override void CancelAbility(IAbility ability, bool recordForReplay) {
+        CmdCancelAbility(ability, recordForReplay);
     }
 
     public override void UpdateNetworkableField(NetworkBehaviour parent, string fieldName, INetworkableFieldValue newValue, string metadata) {
@@ -80,7 +80,7 @@ public class MPCommandManager : AbstractCommandManager {
     }
 
 
-    [Command(requiresAuthority = false)] // TODO this should definitely require authority
+    [Command(requiresAuthority = false)]
     private void CmdSpawnEntity(EntityData data, Vector2Int spawnLocation, GameTeam team, GridEntity entityToIgnore, Vector2Int spawnerLocation, bool built) {
         LogTimestamp(nameof(CmdSpawnEntity));
         DoSpawnEntity(data, spawnLocation, entityUID => {
@@ -179,8 +179,8 @@ public class MPCommandManager : AbstractCommandManager {
     }
 
     [Command(requiresAuthority = false)]
-    private void CmdCancelAbility(IAbility ability) {
-        bool success = DoCancelAbility(ability);
+    private void CmdCancelAbility(IAbility ability, bool recordForReplay) {
+        bool success = DoCancelAbility(ability, recordForReplay);
         if (success) {
             RpcMarkAbilityCanceled(ability);
         }

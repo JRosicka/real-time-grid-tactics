@@ -26,13 +26,12 @@ public abstract class AbstractCommandManager : NetworkBehaviour, ICommandManager
     public Transform SpawnBucket { get; protected set; }
     [SerializeField] private AbilityExecutor _abilityExecutor;
     public AbilityExecutor AbilityExecutor => _abilityExecutor;
-    public IDGenerator AbilityIDGenerator { get; } = new IDGenerator();
     private IDGenerator _entityIDGenerator = new IDGenerator();
 
     public GridEntity GridEntityPrefab;
     
     // Server only
-    private List<int> _canceledAbilities = new List<int>();
+    private List<string> _canceledAbilities = new List<string>();
     // Server only
     private bool AbilityAlreadyCanceled(IAbility ability) => _canceledAbilities.Contains(ability.UID);
 
@@ -49,7 +48,7 @@ public abstract class AbstractCommandManager : NetworkBehaviour, ICommandManager
 
     public abstract void UpdateUpgradeStatus(UpgradeData data, GameTeam team, UpgradeStatus newStatus);
     public abstract void MarkUpgradeTimerExpired(UpgradeData upgradeData, GameTeam team);
-    public abstract void CancelAbility(IAbility ability);
+    public abstract void CancelAbility(IAbility ability, bool recordForReplay);
     public abstract void UpdateNetworkableField(NetworkBehaviour parent, string fieldName, INetworkableFieldValue newValue, string metadata);
 
     /// <summary>
@@ -103,13 +102,13 @@ public abstract class AbstractCommandManager : NetworkBehaviour, ICommandManager
     public abstract void QueueAbility(IAbility ability, IAbility abilityToDependOn);
     public abstract void MarkAbilityTimerExpired(IAbility ability);
 
-    protected void DoSpawnEntity(EntityData data, Vector2Int spawnLocation, Func<int, GridEntity> spawnFunc, GameTeam team, GridEntity spawnerEntity, Vector2Int spawnerLocation) {
+    protected void DoSpawnEntity(EntityData data, Vector2Int spawnLocation, Func<long, GridEntity> spawnFunc, GameTeam team, GridEntity spawnerEntity, Vector2Int spawnerLocation) {
         List<GridEntity> entitiesToIgnore = spawnerEntity != null ? new List<GridEntity> {spawnerEntity} : null;
         if (!PathfinderService.CanEntityEnterCell(spawnLocation, data, team, entitiesToIgnore)) {
             return;
         }
 
-        int entityUID = _entityIDGenerator.GenerateUID();
+        long entityUID = _entityIDGenerator.GenerateUID();
         GridEntity entityInstance = spawnFunc(entityUID);
         RegisterEntity(entityInstance, data, spawnLocation, spawnerEntity);
 
@@ -127,10 +126,10 @@ public abstract class AbstractCommandManager : NetworkBehaviour, ICommandManager
         if (spawnerEntity != null && spawnerEntity.TargetLocationLogicValue.CanRally && spawnerEntity.TargetLocationLogicValue.CurrentTarget != spawnerLocation) {
             if (data.Tags.Contains(EntityTag.Worker)) {
                 // Workers get move-commanded
-                entityInstance.TryMoveToCell(spawnerEntity.TargetLocationLogicValue.CurrentTarget, false);
+                entityInstance.TryMoveToCell(spawnerEntity.TargetLocationLogicValue.CurrentTarget, false, false);
             } else {
                 // Everything else attacks
-                entityInstance.TryAttack(spawnerEntity.TargetLocationLogicValue.CurrentTarget, spawnerEntity.TargetLocationLogicValue.TargetEntity, false);
+                entityInstance.TryAttack(spawnerEntity.TargetLocationLogicValue.CurrentTarget, spawnerEntity.TargetLocationLogicValue.TargetEntity);
             }
         }
         
@@ -167,12 +166,14 @@ public abstract class AbstractCommandManager : NetworkBehaviour, ICommandManager
         if (ability.Performer == null || ability.Performer.DeadOrDying) return;
 
         if (fromInput) {
-            ability.Performer.ToggleHoldPosition(false);
+            ability.Performer.ToggleHoldPosition(false, false);
         }
         
         // Assign a UID here since this is guaranteed to be on the server (if MP)
-        if (ability.UID == default) {
-            ability.UID = AbilityIDGenerator.GenerateUID();
+        if (ability.UID == null) {
+            string abilityType = ability.AbilityData.ContentResourceID;
+            ability.UID = $"{ability.Performer.UID}_{abilityType}_{ability.Performer.AbilityInstanceCount[abilityType]++}";
+            Debug.Log($"Generated ability UID {ability.UID} for {ability.AbilityData.ContentResourceID} for {ability.Performer.EntityData.ID}");
         }
 
         bool success = ability.TryDoAbilityStartEffect();
@@ -247,12 +248,12 @@ public abstract class AbstractCommandManager : NetworkBehaviour, ICommandManager
     /// Try to cancel the given ability
     /// </summary>
     /// <returns>True if successfully canceled, otherwise false if can't be canceled or already canceled</returns>
-    protected bool DoCancelAbility(IAbility ability) {
+    protected bool DoCancelAbility(IAbility ability, bool recordForReplay) {
         if (!ability.AbilityData.CanBeCanceled) return false;
         if (AbilityAlreadyCanceled(ability)) return false;
 
         _canceledAbilities.Add(ability.UID);
-        AbilityAssignmentManager.CancelAbility(ability.Performer, ability);
+        AbilityAssignmentManager.CancelAbility(ability.Performer, ability, recordForReplay);
         return true;
     }
 

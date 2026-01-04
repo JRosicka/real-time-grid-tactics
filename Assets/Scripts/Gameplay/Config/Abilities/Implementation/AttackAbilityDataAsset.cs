@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Gameplay.Entities;
 using Gameplay.Entities.Abilities;
 using UnityEngine;
+using Util;
 
 namespace Gameplay.Config.Abilities {
     [CreateAssetMenu(menuName = "Abilities/AttackAbilityData")]
@@ -33,11 +34,11 @@ namespace Gameplay.Config.Abilities {
         }
 
         public override IAbilityParameters DeserializeParametersFromJson(Dictionary<string, object> json) {
-            GridEntity target = GameManager.Instance.CommandManager.EntitiesOnGrid.GetEntityByID((int)json["Target"]);
-            GridEntity reactionTarget = (int)json["ReactionTarget"] == 0 ? null : GameManager.Instance.CommandManager.EntitiesOnGrid.GetEntityByID((int)json["ReactionTarget"]);
+            GridEntity target = GameManager.Instance.CommandManager.EntitiesOnGrid.GetEntityByID((long)json["Target"]);
+            GridEntity reactionTarget = (long)json["ReactionTarget"] == 0 ? null : GameManager.Instance.CommandManager.EntitiesOnGrid.GetEntityByID((long)json["ReactionTarget"]);
             return new AttackAbilityParameters {
                 Target = target,
-                Destination = (Vector2Int)json["Destination"],
+                Destination = ((string)json["Destination"]).ToVector2Int(),
                 Reaction = (bool)json["Reaction"],
                 ReactionTarget = reactionTarget
             };
@@ -61,7 +62,7 @@ namespace Gameplay.Config.Abilities {
             GameManager.Instance.AbilityAssignmentManager.StartPerformingAbility(selectedEntity, this, new AttackAbilityParameters {
                     Target = target, 
                     Destination = cellPosition
-                }, true, true, true);
+                }, true, true, true, true);
             selectedEntity.SetTargetLocation(cellPosition, null, true);
         }
 

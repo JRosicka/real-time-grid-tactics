@@ -52,11 +52,11 @@ namespace Gameplay.Entities.BuildQueue {
                 return;
             }
             
-            GameManager.Instance.CommandManager.CancelAbility(abilityInBuildQueue);
+            GameManager.Instance.CommandManager.CancelAbility(abilityInBuildQueue, true);
         }
 
         public void CancelAllBuilds(GameTeam team) {
-            Queue(team).ForEach(b => GameManager.Instance.CommandManager.CancelAbility(b));
+            Queue(team).ForEach(b => GameManager.Instance.CommandManager.CancelAbility(b, false));
         }
         
         private void DetermineBuildQueue() {
@@ -65,7 +65,7 @@ namespace Gameplay.Entities.BuildQueue {
         }
 
         private void DetermineBuildQueueForTeam(GameTeam team) {
-            List<int> previousBuildQueueIDs = Queue(team).Select(a => a.UID).ToList();
+            List<string> previousBuildQueueIDs = Queue(team).Select(a => a.UID).ToList();
             
             List<BuildAbility> activeAbilities = _entity.ActiveTimers.Where(t => t.Ability is BuildAbility)
                 .Where(t => t.Team == team)
@@ -81,7 +81,7 @@ namespace Gameplay.Entities.BuildQueue {
                 .ToList();
             _buildAbilities[team] = activeAbilities.Concat(queuedAbilities).ToList();
             
-            List<int> newBuildQueueIDs = Queue(team).Select(a => a.UID).ToList();
+            List<string> newBuildQueueIDs = Queue(team).Select(a => a.UID).ToList();
             if (!newBuildQueueIDs.SequenceEqual(previousBuildQueueIDs)) {
                 BuildQueueUpdated?.Invoke(team, Queue(team));
             }

@@ -33,7 +33,7 @@ namespace Gameplay.Config.Abilities {
 
         public override IAbilityParameters DeserializeParametersFromJson(Dictionary<string, object> json) {
             return new ParadeAbilityParameters {
-                Target = GameManager.Instance.CommandManager.EntitiesOnGrid.GetEntityByID((int)json["Target"])
+                Target = GameManager.Instance.CommandManager.EntitiesOnGrid.GetEntityByID((long)json["Target"])
             };
         }
 
@@ -58,7 +58,7 @@ namespace Gameplay.Config.Abilities {
             GridEntity resourceCollector = GameManager.Instance.ResourceEntityFinder.GetResourceCollectorAtLocation(cellPosition);
             GameManager.Instance.AbilityAssignmentManager.StartPerformingAbility(selectedEntity, this, new ParadeAbilityParameters {
                 Target = resourceCollector
-            }, true, true, false);
+            }, true, true, false, true);
         }
 
         public void RecalculateTargetableAbilitySelection(GridEntity selector, object targetData) {

@@ -41,7 +41,7 @@ namespace Gameplay.Entities {
                 RallyAbilityData data = thisEntity.GetAbilityData<RallyAbilityData>();
                 GameManager.Instance.AbilityAssignmentManager.StartPerformingAbility(thisEntity, data, new RallyAbilityParameters {
                     Destination = targetCell
-                }, true, false, false);
+                }, true, false, false, true);
                 return;
             }
             
@@ -50,14 +50,14 @@ namespace Gameplay.Entities {
 
             // See if we should target this entity
             if (targetEntity != null && targetEntity.Team == GameTeam.Neutral) {
-                thisEntity.TryMoveToCell(targetCell, true);
+                thisEntity.TryMoveToCell(targetCell, true, true);
             } else if (targetEntity == thisEntity) {
                 // We are right-clicking the selected entity's cell? Cancel everything. 
                 thisEntity.CancelAllAbilities();
             } else if (targetEntity != null && thisEntity.Team != targetEntity.Team) {
                 TryTargetEntity(thisEntity, targetEntity, targetCell);
             } else {
-                thisEntity.TryMoveToCell(targetCell, true);
+                thisEntity.TryMoveToCell(targetCell, true, true);
             }
             
             GameManager.Instance.EntitySelectionManager.DeselectTargetableAbility();

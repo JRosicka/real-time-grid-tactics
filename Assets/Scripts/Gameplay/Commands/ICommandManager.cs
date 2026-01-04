@@ -36,7 +36,7 @@ public interface ICommandManager {
     void MarkAbilityTimerExpired(IAbility ability);
     void UpdateUpgradeStatus(UpgradeData data, GameTeam team, UpgradeStatus newStatus);
     void MarkUpgradeTimerExpired(UpgradeData upgradeData, GameTeam team);
-    void CancelAbility(IAbility ability);
+    void CancelAbility(IAbility ability, bool recordForReplay);
     void UpdateNetworkableField(NetworkBehaviour parent, string fieldName, INetworkableFieldValue newValue, string metaData);
     /// <summary>
     /// An entity was just registered (spawned). Triggered on server. 
@@ -50,5 +50,4 @@ public interface ICommandManager {
     GridEntityCollection EntitiesOnGrid { get; }
     Transform SpawnBucket { get; }
     AbilityExecutor AbilityExecutor { get; }
-    IDGenerator AbilityIDGenerator { get; }
 }

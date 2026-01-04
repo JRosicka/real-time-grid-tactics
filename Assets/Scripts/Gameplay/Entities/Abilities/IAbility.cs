@@ -18,7 +18,7 @@ namespace Gameplay.Entities.Abilities {
         bool TryDoAbilityStartEffect();
         IAbilityData AbilityData { get; }
         IAbilityParameters BaseParameters { get; }
-        int UID { get; set; }
+        string UID { get; set; }
         GridEntity Performer { get; }
         /// <summary>
         /// This can be different from the performer entity's team if the performing entity is a shared neutral entity
@@ -36,7 +36,7 @@ namespace Gameplay.Entities.Abilities {
         /// <summary>
         /// Start performing the ability after this ability (by id) finishes
         /// </summary>
-        int QueuedAfterAbilityID { get; set; }
+        string QueuedAfterAbilityID { get; set; }
 
         /// <summary>
         /// Write the <see cref="IAbility"/>'s parameters to the provided writer so that it can be properly networked. Other than the data
@@ -51,16 +51,16 @@ namespace Gameplay.Entities.Abilities {
     public static class AbilitySerializer {
         public static void WriteAbility(this NetworkWriter writer, IAbility ability) {
             writer.WriteString(ability.AbilityData.ContentResourceID);
-            writer.WriteInt(ability.UID);
-            writer.WriteInt(ability.QueuedAfterAbilityID);
+            writer.WriteString(ability.UID);
+            writer.WriteString(ability.QueuedAfterAbilityID);
             writer.WriteInt((int)ability.PerformerTeam);
             ability.SerializeParameters(writer);
         }
 
         public static IAbility ReadAbility(this NetworkReader reader) {
             AbilityDataScriptableObject dataAsset = GameManager.Instance.Configuration.GetAbility(reader.ReadString());
-            int uid = reader.ReadInt();
-            int abilityUIDThisIsQueuedAfter = reader.ReadInt();
+            string uid = reader.ReadString();
+            string abilityUIDThisIsQueuedAfter = reader.ReadString();
             GameTeam team = (GameTeam)reader.ReadInt();
             
             // Re-create the ability instance using the data asset we loaded

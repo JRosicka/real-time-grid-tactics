@@ -37,7 +37,7 @@ namespace Gameplay.Entities.Abilities {
                 // This is a targeted version of the ability, so detect and cancel any non-targeted instances of this ability
                 List<ParadeAbility> inProgressAbilities = Performer.InProgressAbilities.OfType<ParadeAbility>().ToList();
                 foreach (ParadeAbility paradeAbility in inProgressAbilities.Where(paradeAbility => paradeAbility.AbilityParameters.Target == null)) {
-                    GameManager.Instance.CommandManager.CancelAbility(paradeAbility);
+                    GameManager.Instance.CommandManager.CancelAbility(paradeAbility, false);
                 }
             }
             

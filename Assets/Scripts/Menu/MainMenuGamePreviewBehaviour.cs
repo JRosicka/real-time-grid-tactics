@@ -29,7 +29,7 @@ namespace Menu {
         
         private void SceneLoaded(string sceneName) {
             if (sceneName == SceneLoader.GameSceneName) {
-                _timeUntilNextMapSwitch = 10f; // TODO get map preview time from MainMenuGamePreviewManager
+                _timeUntilNextMapSwitch = _mainMenuGamePreviewManager.LastReplay.duration;
             }
         }
 

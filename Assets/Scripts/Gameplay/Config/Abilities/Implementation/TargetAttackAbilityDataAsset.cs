@@ -34,7 +34,7 @@ namespace Gameplay.Config.Abilities {
 
         public override IAbilityParameters DeserializeParametersFromJson(Dictionary<string, object> json) {
             return new TargetAttackAbilityParameters {
-                Target = GameManager.Instance.CommandManager.EntitiesOnGrid.GetEntityByID((int)json["Target"])
+                Target = GameManager.Instance.CommandManager.EntitiesOnGrid.GetEntityByID((long)json["Target"])
             };
         }
 
@@ -60,7 +60,7 @@ namespace Gameplay.Config.Abilities {
             }
             GameManager.Instance.AbilityAssignmentManager.StartPerformingAbility(selectedEntity, this, new TargetAttackAbilityParameters {
                 Target = target
-            }, true, true, true);
+            }, true, true, true, true);
             selectedEntity.SetTargetLocation(cellPosition, target, true);
         }
         

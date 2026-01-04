@@ -33,7 +33,7 @@ namespace Gameplay.Entities.Abilities {
             await Task.Yield();
             AbilityAssignmentManager.StartPerformingAbility(Performer, Data, new HealAbilityParameters {
                 Target = null
-            }, false, false, false);
+            }, false, false, false, false);
         }
 
         protected override bool CompleteCooldownImpl() {
@@ -45,7 +45,7 @@ namespace Gameplay.Entities.Abilities {
             // Cancel this ability since we are starting another one. We need to start another one instead of just
             // keeping this one because we can't update the target to null from here (in a way where it will persist on
             // the server)
-            GameManager.Instance.CommandManager.CancelAbility(this);
+            GameManager.Instance.CommandManager.CancelAbility(this, false);
             
             return true;
         }
@@ -89,7 +89,7 @@ namespace Gameplay.Entities.Abilities {
             
             if (target != AbilityParameters.Target || !CanHeal(AbilityParameters.Target)) {
                 // Either the entity moved, got killed, or has full HP. Cancel so that it gets re-performed with no target.
-                GameManager.Instance.CommandManager.CancelAbility(this);
+                GameManager.Instance.CommandManager.CancelAbility(this, false);
                 return (false, AbilityResult.Failed);
             }
             
@@ -106,7 +106,7 @@ namespace Gameplay.Entities.Abilities {
             AbilityParameters.Target.KilledEvent -= TargetEntityNoLongerValid;
          
             // Cancel the ability timer since the target is no longer heal-able
-            GameManager.Instance.CommandManager.CancelAbility(this);
+            GameManager.Instance.CommandManager.CancelAbility(this, false);
         }
     }
 

@@ -5,6 +5,7 @@ using Gameplay.Grid;
 using Mirror;
 using Newtonsoft.Json;
 using UnityEngine;
+using Util;
 
 namespace Gameplay.Entities.Abilities {
     /// <summary>
@@ -91,12 +92,12 @@ namespace Gameplay.Entities.Abilities {
                     Destination = AbilityParameters.ClickLocation,
                     Reaction = false,
                     ReactionTarget = null
-                }, false, true, true);
+                }, false, true, true, false);
             } else {
                 TargetAttackAbilityData attackData = Performer.GetAbilityData<TargetAttackAbilityData>();
                 AbilityAssignmentManager.StartPerformingAbility(Performer, attackData, new TargetAttackAbilityParameters {
                     Target = targetEntity
-                }, false, true, true);
+                }, false, true, true, false);
             }
             
             Performer.SetTargetLocation(AbilityParameters.ClickLocation, targetEntity, true);
@@ -123,9 +124,9 @@ namespace Gameplay.Entities.Abilities {
 
         public string SerializeToJson() {
             return JsonConvert.SerializeObject(new Dictionary<string, object> {
-                {"Destination", Destination},
-                {"MoveDestination", MoveDestination},
-                {"ClickLocation", ClickLocation},
+                {"Destination", Destination.ConvertToString()},
+                {"MoveDestination", MoveDestination.ConvertToString()},
+                {"ClickLocation", ClickLocation.ConvertToString()},
                 {"SelectorTeam", SelectorTeam},
                 {"Attacking", Attacking}
             });

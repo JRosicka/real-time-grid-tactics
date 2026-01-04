@@ -95,7 +95,7 @@ namespace Gameplay.Entities.Abilities {
                 NextMoveCell = nextMoveCell,
                 BlockedByOccupation = false,
                 PerformAfterAttacks = true
-            }, false, true, false, attacker.Team);
+            }, false, true, false, false, attacker.Team);
         }
 
         private void DoAttack(Vector2Int location) {

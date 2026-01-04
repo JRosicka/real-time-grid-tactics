@@ -6,6 +6,7 @@ using Gameplay.Grid;
 using Mirror;
 using Newtonsoft.Json;
 using UnityEngine;
+using Util;
 using Random = UnityEngine.Random;
 
 namespace Gameplay.Entities.Abilities {
@@ -171,7 +172,7 @@ namespace Gameplay.Entities.Abilities {
                 NextMoveCell = nextMoveCell,
                 BlockedByOccupation = false,
                 PerformAfterAttacks = true
-            }, false, true, false, attacker.Team);
+            }, false, true, false, false, attacker.Team);
         }
         
         private void DoAttack(Vector2Int location) {
@@ -202,7 +203,7 @@ namespace Gameplay.Entities.Abilities {
         public string SerializeToJson() {
             return JsonConvert.SerializeObject(new Dictionary<string, object> {
                 {"Target", Target?.UID ?? 0},
-                {"Destination", Destination},
+                {"Destination", Destination.ConvertToString()},
                 {"Reaction", Reaction},
                 {"ReactionTarget", ReactionTarget?.UID ?? 0}
             });

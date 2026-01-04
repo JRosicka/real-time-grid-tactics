@@ -4,6 +4,7 @@ using Gameplay.Pathfinding;
 using Mirror;
 using Newtonsoft.Json;
 using UnityEngine;
+using Util;
 
 namespace Gameplay.Entities.Abilities {
     /// <summary>
@@ -80,8 +81,8 @@ namespace Gameplay.Entities.Abilities {
 
         public string SerializeToJson() {
             return JsonConvert.SerializeObject(new Dictionary<string, object> {
-                {"Destination", Destination},
-                {"NextMoveCell", NextMoveCell},
+                {"Destination", Destination.ConvertToString()},
+                {"NextMoveCell", NextMoveCell.ConvertToString()},
                 {"BlockedByOccupation", BlockedByOccupation},
                 {"PerformAfterAttacks", PerformAfterAttacks}
             });

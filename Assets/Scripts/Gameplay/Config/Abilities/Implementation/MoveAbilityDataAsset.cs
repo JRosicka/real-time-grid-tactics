@@ -4,6 +4,7 @@ using Gameplay.Entities;
 using Gameplay.Entities.Abilities;
 using Gameplay.Pathfinding;
 using UnityEngine;
+using Util;
 
 namespace Gameplay.Config.Abilities {
     [CreateAssetMenu(menuName = "Abilities/MoveAbilityData")]
@@ -46,8 +47,8 @@ namespace Gameplay.Config.Abilities {
 
         public override IAbilityParameters DeserializeParametersFromJson(Dictionary<string, object> json) {
             return new MoveAbilityParameters {
-                Destination = (Vector2Int)json["Destination"],
-                NextMoveCell = (Vector2Int)json["NextMoveCell"],
+                Destination = ((string)json["Destination"]).ToVector2Int(),
+                NextMoveCell = ((string)json["NextMoveCell"]).ToVector2Int(),
                 BlockedByOccupation = (bool)json["BlockedByOccupation"],
                 PerformAfterAttacks = (bool)json["PerformAfterAttacks"]
             };

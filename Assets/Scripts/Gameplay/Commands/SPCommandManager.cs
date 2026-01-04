@@ -69,8 +69,8 @@ public class SPCommandManager : AbstractCommandManager {
         DoMarkUpgradeTimerExpired(upgradeData, team);
     }
 
-    public override void CancelAbility(IAbility ability) {
-        bool success = DoCancelAbility(ability);
+    public override void CancelAbility(IAbility ability, bool recordForReplay) {
+        bool success = DoCancelAbility(ability, recordForReplay);
         if (success) {
             DoMarkAbilityTimerExpired(ability, true);
         }

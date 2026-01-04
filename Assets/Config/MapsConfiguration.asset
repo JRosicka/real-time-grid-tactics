@@ -2966,6 +2966,588 @@ MonoBehaviour:
   PreviewReplays:
   - replayID: originsReplay1
     mapID: origins
-    duration: 12
+    duration: 16.117197
     seed: 0
-    commands: []
+    commands:
+    - time: 2.1125317
+      entityID: 1026
+      commandType: 0
+      data: '{"abilityType":"Attack Ability Melee","abilityParameterJson":"{\"Target\":0,\"Destination\":\"(-4,-4)\",\"Reaction\":false,\"ReactionTarget\":0}","fromInput":true,"performEvenIfOnCooldown":true,"clearOtherAbilities":true,"overrideTeam":-2,"abilityID":"1026_Attack
+        Ability Melee_0"}'
+    - time: 2.9163258
+      entityID: 1026
+      commandType: 1
+      data: '{"abilityInstance":0,"abilityType":"Attack Ability Melee","parameters":"{\"Target\":0,\"Destination\":\"(-4,-4)\",\"Reaction\":false,\"ReactionTarget\":0}"}'
+    - time: 2.9163258
+      entityID: 1026
+      commandType: 2
+      data: '{"holdPosition":false}'
+    - time: 3.7458084
+      entityID: 1026
+      commandType: 0
+      data: '{"abilityType":"Attack Ability Melee","abilityParameterJson":"{\"Target\":0,\"Destination\":\"(-3,-6)\",\"Reaction\":false,\"ReactionTarget\":0}","fromInput":true,"performEvenIfOnCooldown":true,"clearOtherAbilities":true,"overrideTeam":-2,"abilityID":"1026_Attack
+        Ability Melee_1"}'
+    - time: 4.6681433
+      entityID: 1026
+      commandType: 1
+      data: '{"abilityInstance":1,"abilityType":"Attack Ability Melee","parameters":"{\"Target\":0,\"Destination\":\"(-3,-6)\",\"Reaction\":false,\"ReactionTarget\":0}"}'
+    - time: 4.6681433
+      entityID: 1026
+      commandType: 2
+      data: '{"holdPosition":false}'
+    - time: 7.373142
+      entityID: 1026
+      commandType: 0
+      data: '{"abilityType":"Attack Ability Melee","abilityParameterJson":"{\"Target\":0,\"Destination\":\"(-6,-1)\",\"Reaction\":false,\"ReactionTarget\":0}","fromInput":true,"performEvenIfOnCooldown":true,"clearOtherAbilities":true,"overrideTeam":-2,"abilityID":"1026_Attack
+        Ability Melee_2"}'
+    - time: 8.312487
+      entityID: 1026
+      commandType: 1
+      data: '{"abilityInstance":2,"abilityType":"Attack Ability Melee","parameters":"{\"Target\":0,\"Destination\":\"(-6,-1)\",\"Reaction\":false,\"ReactionTarget\":0}"}'
+    - time: 8.312487
+      entityID: 1026
+      commandType: 2
+      data: '{"holdPosition":false}'
+    - time: 9.768453
+      entityID: 1026
+      commandType: 0
+      data: '{"abilityType":"Move Ability","abilityParameterJson":"{\"Destination\":\"(-4,-3)\",\"NextMoveCell\":\"(-4,-3)\",\"BlockedByOccupation\":true,\"PerformAfterAttacks\":false}","fromInput":false,"performEvenIfOnCooldown":true,"clearOtherAbilities":true,"overrideTeam":-2,"abilityID":"1026_Move
+        Ability_2"}'
+    - time: 12.304015
+      entityID: 1026
+      commandType: 1
+      data: '{"abilityInstance":2,"abilityType":"Move Ability","parameters":"{\"Destination\":\"(-4,-3)\",\"NextMoveCell\":\"(-4,-3)\",\"BlockedByOccupation\":true,\"PerformAfterAttacks\":false}"}'
+    - time: 12.304015
+      entityID: 1026
+      commandType: 0
+      data: '{"abilityType":"Move Ability","abilityParameterJson":"{\"Destination\":\"(-3,-5)\",\"NextMoveCell\":\"(-3,-5)\",\"BlockedByOccupation\":true,\"PerformAfterAttacks\":false}","fromInput":false,"performEvenIfOnCooldown":true,"clearOtherAbilities":true,"overrideTeam":-2,"abilityID":"1026_Move
+        Ability_3"}'
+    - time: 13.754018
+      entityID: 1026
+      commandType: 1
+      data: '{"abilityInstance":3,"abilityType":"Move Ability","parameters":"{\"Destination\":\"(-3,-5)\",\"NextMoveCell\":\"(-6,-5)\",\"BlockedByOccupation\":true,\"PerformAfterAttacks\":false}"}'
+    - time: 13.754018
+      entityID: 1026
+      commandType: 2
+      data: '{"holdPosition":false}'
+  - replayID: mountainPassReplay1
+    mapID: mountainPass
+    duration: 132.57962
+    seed: 0
+    commands:
+    - time: 1.9629111
+      entityID: 1027
+      commandType: 0
+      data: '{"abilityType":"Move Ability","abilityParameterJson":"{\"Destination\":\"(-5,-4)\",\"NextMoveCell\":\"(-5,-4)\",\"BlockedByOccupation\":true,\"PerformAfterAttacks\":false}","fromInput":false,"performEvenIfOnCooldown":true,"clearOtherAbilities":true,"overrideTeam":-2,"abilityID":"1027_Move
+        Ability_0"}'
+    - time: 1.9629111
+      entityID: 1027
+      commandType: 0
+      data: '{"abilityType":"Worker Build Ability","abilityParameterJson":"{\"Buildable\":\"Village\",\"BuildLocation\":\"(-5,-4)\"}","fromInput":true,"performEvenIfOnCooldown":true,"clearOtherAbilities":false,"overrideTeam":-2,"abilityID":"1027_Worker
+        Build Ability_0"}'
+    - time: 3.2467382
+      entityID: 1026
+      commandType: 1
+      data: '{"abilityInstance":0,"abilityType":"Parade Ability","parameters":"{\"Target\":0}"}'
+    - time: 3.2467382
+      entityID: 1026
+      commandType: 1
+      data: '{"abilityInstance":0,"abilityType":"Attack Ability Melee","parameters":"{\"Target\":0,\"Destination\":\"(-7,-5)\",\"Reaction\":false,\"ReactionTarget\":0}"}'
+    - time: 3.2467382
+      entityID: 1026
+      commandType: 0
+      data: '{"abilityType":"Attack Ability Melee","abilityParameterJson":"{\"Target\":0,\"Destination\":\"(-7,-3)\",\"Reaction\":false,\"ReactionTarget\":0}","fromInput":true,"performEvenIfOnCooldown":true,"clearOtherAbilities":true,"overrideTeam":-2,"abilityID":"1026_Attack
+        Ability Melee_1"}'
+    - time: 4.362646
+      entityID: 1025
+      commandType: 0
+      data: '{"abilityType":"Production Build Ability Village","abilityParameterJson":"{\"Buildable\":\"Peasant\",\"BuildLocation\":\"(-7,-5)\"}","fromInput":true,"performEvenIfOnCooldown":true,"clearOtherAbilities":false,"overrideTeam":1,"abilityID":"1025_Production
+        Build Ability Village_0"}'
+    - time: 5.545678
+      entityID: 1026
+      commandType: 1
+      data: '{"abilityInstance":1,"abilityType":"Attack Ability Melee","parameters":"{\"Target\":0,\"Destination\":\"(-7,-3)\",\"Reaction\":false,\"ReactionTarget\":0}"}'
+    - time: 5.545678
+      entityID: 1026
+      commandType: 1
+      data: '{"abilityInstance":1,"abilityType":"Parade Ability","parameters":"{\"Target\":0}"}'
+    - time: 5.545678
+      entityID: 1026
+      commandType: 0
+      data: '{"abilityType":"Attack Ability Melee","abilityParameterJson":"{\"Target\":1019,\"Destination\":\"(-7,-1)\",\"Reaction\":false,\"ReactionTarget\":0}","fromInput":true,"performEvenIfOnCooldown":true,"clearOtherAbilities":true,"overrideTeam":-2,"abilityID":"1026_Attack
+        Ability Melee_2"}'
+    - time: 5.839119
+      entityID: 1026
+      commandType: 1
+      data: '{"abilityInstance":2,"abilityType":"Attack Ability Melee","parameters":"{\"Target\":1019,\"Destination\":\"(-7,-1)\",\"Reaction\":false,\"ReactionTarget\":0}"}'
+    - time: 5.839119
+      entityID: 1026
+      commandType: 1
+      data: '{"abilityInstance":2,"abilityType":"Parade Ability","parameters":"{\"Target\":0}"}'
+    - time: 5.839119
+      entityID: 1026
+      commandType: 2
+      data: '{"holdPosition":false}'
+    - time: 6.8509717
+      entityID: 1026
+      commandType: 1
+      data: '{"abilityInstance":3,"abilityType":"Attack Ability Melee","parameters":"{\"Target\":0,\"Destination\":\"(-7,-4)\",\"Reaction\":false,\"ReactionTarget\":0}"}'
+    - time: 6.8509717
+      entityID: 1026
+      commandType: 1
+      data: '{"abilityInstance":3,"abilityType":"Parade Ability","parameters":"{\"Target\":0}"}'
+    - time: 6.8509717
+      entityID: 1026
+      commandType: 0
+      data: '{"abilityType":"Attack Ability Melee","abilityParameterJson":"{\"Target\":1019,\"Destination\":\"(-7,-1)\",\"Reaction\":false,\"ReactionTarget\":0}","fromInput":true,"performEvenIfOnCooldown":true,"clearOtherAbilities":true,"overrideTeam":-2,"abilityID":"1026_Attack
+        Ability Melee_4"}'
+    - time: 7.1002455
+      entityID: 1026
+      commandType: 1
+      data: '{"abilityInstance":4,"abilityType":"Attack Ability Melee","parameters":"{\"Target\":1019,\"Destination\":\"(-7,-1)\",\"Reaction\":false,\"ReactionTarget\":0}"}'
+    - time: 7.1002455
+      entityID: 1026
+      commandType: 1
+      data: '{"abilityInstance":4,"abilityType":"Parade Ability","parameters":"{\"Target\":0}"}'
+    - time: 7.1002455
+      entityID: 1026
+      commandType: 2
+      data: '{"holdPosition":false}'
+    - time: 7.666863
+      entityID: 1026
+      commandType: 1
+      data: '{"abilityInstance":5,"abilityType":"Attack Ability Melee","parameters":"{\"Target\":0,\"Destination\":\"(-7,-4)\",\"Reaction\":false,\"ReactionTarget\":0}"}'
+    - time: 7.666863
+      entityID: 1026
+      commandType: 1
+      data: '{"abilityInstance":5,"abilityType":"Parade Ability","parameters":"{\"Target\":0}"}'
+    - time: 7.666863
+      entityID: 1026
+      commandType: 0
+      data: '{"abilityType":"Attack Ability Melee","abilityParameterJson":"{\"Target\":1019,\"Destination\":\"(-7,-1)\",\"Reaction\":false,\"ReactionTarget\":0}","fromInput":true,"performEvenIfOnCooldown":true,"clearOtherAbilities":true,"overrideTeam":-2,"abilityID":"1026_Attack
+        Ability Melee_6"}'
+    - time: 12.014109
+      entityID: 1025
+      commandType: 0
+      data: '{"abilityType":"Rally Ability Village","abilityParameterJson":"{\"Destination\":\"(-5,-2)\"}","fromInput":true,"performEvenIfOnCooldown":false,"clearOtherAbilities":false,"overrideTeam":-2,"abilityID":"1025_Rally
+        Ability Village_0"}'
+    - time: 16.464678
+      entityID: 1026
+      commandType: 1
+      data: '{"abilityInstance":6,"abilityType":"Attack Ability Melee","parameters":"{\"Target\":1019,\"Destination\":\"(-7,-1)\",\"Reaction\":false,\"ReactionTarget\":0}"}'
+    - time: 16.464678
+      entityID: 1026
+      commandType: 1
+      data: '{"abilityInstance":6,"abilityType":"Parade Ability","parameters":"{\"Target\":0}"}'
+    - time: 16.464678
+      entityID: 1026
+      commandType: 0
+      data: '{"abilityType":"Move Ability","abilityParameterJson":"{\"Destination\":\"(-3,-4)\",\"NextMoveCell\":\"(-3,-4)\",\"BlockedByOccupation\":true,\"PerformAfterAttacks\":false}","fromInput":false,"performEvenIfOnCooldown":true,"clearOtherAbilities":true,"overrideTeam":-2,"abilityID":"1026_Move
+        Ability_4"}'
+    - time: 17.405022
+      entityID: 1026
+      commandType: 1
+      data: '{"abilityInstance":4,"abilityType":"Move Ability","parameters":"{\"Destination\":\"(-3,-4)\",\"NextMoveCell\":\"(-3,-4)\",\"BlockedByOccupation\":true,\"PerformAfterAttacks\":false}"}'
+    - time: 17.405022
+      entityID: 1026
+      commandType: 1
+      data: '{"abilityInstance":7,"abilityType":"Parade Ability","parameters":"{\"Target\":0}"}'
+    - time: 17.405022
+      entityID: 1026
+      commandType: 0
+      data: '{"abilityType":"Attack Ability Melee","abilityParameterJson":"{\"Target\":1021,\"Destination\":\"(-3,-4)\",\"Reaction\":false,\"ReactionTarget\":0}","fromInput":true,"performEvenIfOnCooldown":true,"clearOtherAbilities":true,"overrideTeam":-2,"abilityID":"1026_Attack
+        Ability Melee_7"}'
+    - time: 17.829954
+      entityID: 1026
+      commandType: 1
+      data: '{"abilityInstance":7,"abilityType":"Attack Ability Melee","parameters":"{\"Target\":1021,\"Destination\":\"(-3,-4)\",\"Reaction\":false,\"ReactionTarget\":0}"}'
+    - time: 17.829954
+      entityID: 1026
+      commandType: 1
+      data: '{"abilityInstance":8,"abilityType":"Parade Ability","parameters":"{\"Target\":0}"}'
+    - time: 17.829954
+      entityID: 1026
+      commandType: 0
+      data: '{"abilityType":"Attack Ability Melee","abilityParameterJson":"{\"Target\":1021,\"Destination\":\"(-3,-4)\",\"Reaction\":false,\"ReactionTarget\":0}","fromInput":true,"performEvenIfOnCooldown":true,"clearOtherAbilities":true,"overrideTeam":-2,"abilityID":"1026_Attack
+        Ability Melee_8"}'
+    - time: 18.904373
+      entityID: 1026
+      commandType: 1
+      data: '{"abilityInstance":8,"abilityType":"Attack Ability Melee","parameters":"{\"Target\":1021,\"Destination\":\"(-3,-4)\",\"Reaction\":false,\"ReactionTarget\":0}"}'
+    - time: 18.904373
+      entityID: 1026
+      commandType: 1
+      data: '{"abilityInstance":9,"abilityType":"Parade Ability","parameters":"{\"Target\":0}"}'
+    - time: 18.904373
+      entityID: 1026
+      commandType: 0
+      data: '{"abilityType":"Attack Ability Melee","abilityParameterJson":"{\"Target\":1022,\"Destination\":\"(4,-4)\",\"Reaction\":false,\"ReactionTarget\":0}","fromInput":true,"performEvenIfOnCooldown":true,"clearOtherAbilities":true,"overrideTeam":-2,"abilityID":"1026_Attack
+        Ability Melee_9"}'
+    - time: 20.44265
+      entityID: 1026
+      commandType: 0
+      data: '{"abilityType":"Hold Position Ability","abilityParameterJson":"{}","fromInput":true,"performEvenIfOnCooldown":false,"clearOtherAbilities":true,"overrideTeam":-2,"abilityID":"1026_Hold
+        Position Ability_0"}'
+    - time: 20.659243
+      entityID: 1026
+      commandType: 0
+      data: '{"abilityType":"Hold Position Ability","abilityParameterJson":"{}","fromInput":true,"performEvenIfOnCooldown":false,"clearOtherAbilities":true,"overrideTeam":-2,"abilityID":"1026_Hold
+        Position Ability_1"}'
+    - time: 20.859333
+      entityID: 1026
+      commandType: 0
+      data: '{"abilityType":"Hold Position Ability","abilityParameterJson":"{}","fromInput":true,"performEvenIfOnCooldown":false,"clearOtherAbilities":true,"overrideTeam":-2,"abilityID":"1026_Hold
+        Position Ability_2"}'
+    - time: 21.025656
+      entityID: 1026
+      commandType: 0
+      data: '{"abilityType":"Hold Position Ability","abilityParameterJson":"{}","fromInput":true,"performEvenIfOnCooldown":false,"clearOtherAbilities":true,"overrideTeam":-2,"abilityID":"1026_Hold
+        Position Ability_3"}'
+    - time: 21.94183
+      entityID: 1026
+      commandType: 1
+      data: '{"abilityInstance":13,"abilityType":"Attack Ability Melee","parameters":"{\"Target\":0,\"Destination\":\"(-6,-2)\",\"Reaction\":false,\"ReactionTarget\":0}"}'
+    - time: 21.94183
+      entityID: 1026
+      commandType: 1
+      data: '{"abilityInstance":14,"abilityType":"Parade Ability","parameters":"{\"Target\":0}"}'
+    - time: 21.94183
+      entityID: 1026
+      commandType: 0
+      data: '{"abilityType":"Attack Ability Melee","abilityParameterJson":"{\"Target\":1022,\"Destination\":\"(4,-4)\",\"Reaction\":false,\"ReactionTarget\":0}","fromInput":true,"performEvenIfOnCooldown":true,"clearOtherAbilities":true,"overrideTeam":-2,"abilityID":"1026_Attack
+        Ability Melee_14"}'
+    - time: 34.131428
+      entityID: 1031
+      commandType: 1
+      data: '{"abilityInstance":0,"abilityType":"Move Ability","parameters":"{\"Destination\":\"(-5,-2)\",\"NextMoveCell\":\"(-6,-3)\",\"BlockedByOccupation\":true,\"PerformAfterAttacks\":false}"}'
+    - time: 34.131428
+      entityID: 1031
+      commandType: 0
+      data: '{"abilityType":"Move Ability","abilityParameterJson":"{\"Destination\":\"(-5,-2)\",\"NextMoveCell\":\"(-5,-2)\",\"BlockedByOccupation\":true,\"PerformAfterAttacks\":false}","fromInput":false,"performEvenIfOnCooldown":true,"clearOtherAbilities":true,"overrideTeam":-2,"abilityID":"1031_Move
+        Ability_1"}'
+    - time: 34.131428
+      entityID: 1031
+      commandType: 0
+      data: '{"abilityType":"Worker Build Ability","abilityParameterJson":"{\"Buildable\":\"Barracks\",\"BuildLocation\":\"(-5,-2)\"}","fromInput":true,"performEvenIfOnCooldown":true,"clearOtherAbilities":false,"overrideTeam":-2,"abilityID":"1031_Worker
+        Build Ability_0"}'
+    - time: 39.915554
+      entityID: 1031
+      commandType: 1
+      data: '{"abilityInstance":0,"abilityType":"Worker Build Ability","parameters":"{\"Buildable\":\"Barracks\",\"BuildLocation\":\"(-5,-2)\"}"}'
+    - time: 39.915554
+      entityID: 1031
+      commandType: 2
+      data: '{"holdPosition":false}'
+    - time: 41.79508
+      entityID: 1031
+      commandType: 0
+      data: '{"abilityType":"Move Ability","abilityParameterJson":"{\"Destination\":\"(-5,-1)\",\"NextMoveCell\":\"(-5,-1)\",\"BlockedByOccupation\":true,\"PerformAfterAttacks\":false}","fromInput":false,"performEvenIfOnCooldown":true,"clearOtherAbilities":true,"overrideTeam":-2,"abilityID":"1031_Move
+        Ability_2"}'
+    - time: 41.79508
+      entityID: 1031
+      commandType: 0
+      data: '{"abilityType":"Worker Build Ability","abilityParameterJson":"{\"Buildable\":\"Barracks\",\"BuildLocation\":\"(-5,-1)\"}","fromInput":true,"performEvenIfOnCooldown":true,"clearOtherAbilities":false,"overrideTeam":-2,"abilityID":"1031_Worker
+        Build Ability_1"}'
+    - time: 49.09625
+      entityID: 1025
+      commandType: 0
+      data: '{"abilityType":"Production Build Ability Village","abilityParameterJson":"{\"Buildable\":\"Peasant\",\"BuildLocation\":\"(-7,-5)\"}","fromInput":true,"performEvenIfOnCooldown":true,"clearOtherAbilities":false,"overrideTeam":1,"abilityID":"1025_Production
+        Build Ability Village_1"}'
+    - time: 49.39194
+      entityID: 1025
+      commandType: 1
+      data: '{"abilityInstance":1,"abilityType":"Production Build Ability Village","parameters":"{\"Buildable\":\"Peasant\",\"BuildLocation\":\"(-7,-5)\"}"}'
+    - time: 49.53996
+      entityID: 1025
+      commandType: 0
+      data: '{"abilityType":"Production Build Ability Village","abilityParameterJson":"{\"Buildable\":\"Peasant\",\"BuildLocation\":\"(-7,-5)\"}","fromInput":true,"performEvenIfOnCooldown":true,"clearOtherAbilities":false,"overrideTeam":1,"abilityID":"1025_Production
+        Build Ability Village_2"}'
+    - time: 49.630306
+      entityID: 1025
+      commandType: 1
+      data: '{"abilityInstance":2,"abilityType":"Production Build Ability Village","parameters":"{\"Buildable\":\"Peasant\",\"BuildLocation\":\"(-7,-5)\"}"}'
+    - time: 49.779167
+      entityID: 1025
+      commandType: 0
+      data: '{"abilityType":"Production Build Ability Village","abilityParameterJson":"{\"Buildable\":\"Peasant\",\"BuildLocation\":\"(-7,-5)\"}","fromInput":true,"performEvenIfOnCooldown":true,"clearOtherAbilities":false,"overrideTeam":1,"abilityID":"1025_Production
+        Build Ability Village_3"}'
+    - time: 49.815342
+      entityID: 1025
+      commandType: 1
+      data: '{"abilityInstance":3,"abilityType":"Production Build Ability Village","parameters":"{\"Buildable\":\"Peasant\",\"BuildLocation\":\"(-7,-5)\"}"}'
+    - time: 50.013103
+      entityID: 1025
+      commandType: 0
+      data: '{"abilityType":"Production Build Ability Village","abilityParameterJson":"{\"Buildable\":\"Peasant\",\"BuildLocation\":\"(-7,-5)\"}","fromInput":true,"performEvenIfOnCooldown":true,"clearOtherAbilities":false,"overrideTeam":1,"abilityID":"1025_Production
+        Build Ability Village_4"}'
+    - time: 50.042816
+      entityID: 1025
+      commandType: 1
+      data: '{"abilityInstance":4,"abilityType":"Production Build Ability Village","parameters":"{\"Buildable\":\"Peasant\",\"BuildLocation\":\"(-7,-5)\"}"}'
+    - time: 50.347248
+      entityID: 1025
+      commandType: 0
+      data: '{"abilityType":"Production Build Ability Village","abilityParameterJson":"{\"Buildable\":\"Peasant\",\"BuildLocation\":\"(-7,-5)\"}","fromInput":true,"performEvenIfOnCooldown":true,"clearOtherAbilities":false,"overrideTeam":1,"abilityID":"1025_Production
+        Build Ability Village_5"}'
+    - time: 50.468224
+      entityID: 1025
+      commandType: 1
+      data: '{"abilityInstance":5,"abilityType":"Production Build Ability Village","parameters":"{\"Buildable\":\"Peasant\",\"BuildLocation\":\"(-7,-5)\"}"}'
+    - time: 50.580246
+      entityID: 1025
+      commandType: 0
+      data: '{"abilityType":"Production Build Ability Village","abilityParameterJson":"{\"Buildable\":\"Peasant\",\"BuildLocation\":\"(-7,-5)\"}","fromInput":true,"performEvenIfOnCooldown":true,"clearOtherAbilities":false,"overrideTeam":1,"abilityID":"1025_Production
+        Build Ability Village_6"}'
+    - time: 50.68882
+      entityID: 1025
+      commandType: 1
+      data: '{"abilityInstance":6,"abilityType":"Production Build Ability Village","parameters":"{\"Buildable\":\"Peasant\",\"BuildLocation\":\"(-7,-5)\"}"}'
+    - time: 50.789345
+      entityID: 1025
+      commandType: 0
+      data: '{"abilityType":"Production Build Ability Village","abilityParameterJson":"{\"Buildable\":\"Peasant\",\"BuildLocation\":\"(-7,-5)\"}","fromInput":true,"performEvenIfOnCooldown":true,"clearOtherAbilities":false,"overrideTeam":1,"abilityID":"1025_Production
+        Build Ability Village_7"}'
+    - time: 50.896183
+      entityID: 1025
+      commandType: 1
+      data: '{"abilityInstance":7,"abilityType":"Production Build Ability Village","parameters":"{\"Buildable\":\"Peasant\",\"BuildLocation\":\"(-7,-5)\"}"}'
+    - time: 50.984753
+      entityID: 1025
+      commandType: 0
+      data: '{"abilityType":"Production Build Ability Village","abilityParameterJson":"{\"Buildable\":\"Peasant\",\"BuildLocation\":\"(-7,-5)\"}","fromInput":true,"performEvenIfOnCooldown":true,"clearOtherAbilities":false,"overrideTeam":1,"abilityID":"1025_Production
+        Build Ability Village_8"}'
+    - time: 51.079872
+      entityID: 1025
+      commandType: 1
+      data: '{"abilityInstance":8,"abilityType":"Production Build Ability Village","parameters":"{\"Buildable\":\"Peasant\",\"BuildLocation\":\"(-7,-5)\"}"}'
+    - time: 51.184467
+      entityID: 1025
+      commandType: 0
+      data: '{"abilityType":"Production Build Ability Village","abilityParameterJson":"{\"Buildable\":\"Peasant\",\"BuildLocation\":\"(-7,-5)\"}","fromInput":true,"performEvenIfOnCooldown":true,"clearOtherAbilities":false,"overrideTeam":1,"abilityID":"1025_Production
+        Build Ability Village_9"}'
+    - time: 51.238213
+      entityID: 1025
+      commandType: 1
+      data: '{"abilityInstance":9,"abilityType":"Production Build Ability Village","parameters":"{\"Buildable\":\"Peasant\",\"BuildLocation\":\"(-7,-5)\"}"}'
+    - time: 56.33762
+      entityID: 1025
+      commandType: 0
+      data: '{"abilityType":"Production Build Ability Village","abilityParameterJson":"{\"Buildable\":\"Peasant\",\"BuildLocation\":\"(-7,-5)\"}","fromInput":true,"performEvenIfOnCooldown":true,"clearOtherAbilities":false,"overrideTeam":1,"abilityID":"1025_Production
+        Build Ability Village_10"}'
+    - time: 56.625427
+      entityID: 1025
+      commandType: 0
+      data: '{"abilityType":"Production Build Ability Village","abilityParameterJson":"{\"Buildable\":\"Peasant\",\"BuildLocation\":\"(-7,-5)\"}","fromInput":true,"performEvenIfOnCooldown":true,"clearOtherAbilities":false,"overrideTeam":1,"abilityID":"1025_Production
+        Build Ability Village_11"}'
+    - time: 57.798225
+      entityID: 1025
+      commandType: 1
+      data: '{"abilityInstance":10,"abilityType":"Production Build Ability Village","parameters":"{\"Buildable\":\"Peasant\",\"BuildLocation\":\"(-7,-5)\"}"}'
+    - time: 63.389534
+      entityID: 1032
+      commandType: 0
+      data: '{"abilityType":"Production Build Ability Village","abilityParameterJson":"{\"Buildable\":\"Peasant\",\"BuildLocation\":\"(-5,-4)\"}","fromInput":true,"performEvenIfOnCooldown":true,"clearOtherAbilities":false,"overrideTeam":1,"abilityID":"1032_Production
+        Build Ability Village_0"}'
+    - time: 63.52524
+      entityID: 1032
+      commandType: 0
+      data: '{"abilityType":"Production Build Ability Village","abilityParameterJson":"{\"Buildable\":\"Peasant\",\"BuildLocation\":\"(-5,-4)\"}","fromInput":true,"performEvenIfOnCooldown":true,"clearOtherAbilities":false,"overrideTeam":1,"abilityID":"1032_Production
+        Build Ability Village_1"}'
+    - time: 63.747375
+      entityID: 1032
+      commandType: 1
+      data: '{"abilityInstance":0,"abilityType":"Production Build Ability Village","parameters":"{\"Buildable\":\"Peasant\",\"BuildLocation\":\"(-5,-4)\"}"}'
+    - time: 65.28636
+      entityID: 1032
+      commandType: 0
+      data: '{"abilityType":"Rally Ability Village","abilityParameterJson":"{\"Destination\":\"(-6,-2)\"}","fromInput":true,"performEvenIfOnCooldown":false,"clearOtherAbilities":false,"overrideTeam":-2,"abilityID":"1032_Rally
+        Ability Village_0"}'
+    - time: 67.94516
+      entityID: 1026
+      commandType: 1
+      data: '{"abilityInstance":14,"abilityType":"Attack Ability Melee","parameters":"{\"Target\":1022,\"Destination\":\"(4,-4)\",\"Reaction\":false,\"ReactionTarget\":0}"}'
+    - time: 67.94516
+      entityID: 1026
+      commandType: 1
+      data: '{"abilityInstance":15,"abilityType":"Parade Ability","parameters":"{\"Target\":0}"}'
+    - time: 67.94516
+      entityID: 1026
+      commandType: 0
+      data: '{"abilityType":"Attack Ability Melee","abilityParameterJson":"{\"Target\":0,\"Destination\":\"(1,-4)\",\"Reaction\":false,\"ReactionTarget\":0}","fromInput":true,"performEvenIfOnCooldown":true,"clearOtherAbilities":true,"overrideTeam":-2,"abilityID":"1026_Attack
+        Ability Melee_15"}'
+    - time: 77.05686
+      entityID: 1033
+      commandType: 0
+      data: '{"abilityType":"Rally Ability Attack Structure","abilityParameterJson":"{\"Destination\":\"(-1,-1)\"}","fromInput":true,"performEvenIfOnCooldown":false,"clearOtherAbilities":false,"overrideTeam":-2,"abilityID":"1033_Rally
+        Ability Attack Structure_0"}'
+    - time: 79.84582
+      entityID: 1033
+      commandType: 0
+      data: '{"abilityType":"Production Build Ability Infantry","abilityParameterJson":"{\"Buildable\":\"Pikeman\",\"BuildLocation\":\"(-5,-1)\"}","fromInput":true,"performEvenIfOnCooldown":true,"clearOtherAbilities":false,"overrideTeam":1,"abilityID":"1033_Production
+        Build Ability Infantry_0"}'
+    - time: 81.69486
+      entityID: 1033
+      commandType: 1
+      data: '{"abilityInstance":0,"abilityType":"Production Build Ability Infantry","parameters":"{\"Buildable\":\"Pikeman\",\"BuildLocation\":\"(-5,-1)\"}"}'
+    - time: 88.19996
+      entityID: 1016
+      commandType: 0
+      data: '{"abilityType":"Production Build Ability AmberForge Upgrades","abilityParameterJson":"{\"Buildable\":\"Amber
+        Aura\",\"BuildLocation\":\"(0,-3)\"}","fromInput":true,"performEvenIfOnCooldown":true,"clearOtherAbilities":false,"overrideTeam":1,"abilityID":"1016_Production
+        Build Ability AmberForge Upgrades_0"}'
+    - time: 90.66424
+      entityID: 1033
+      commandType: 0
+      data: '{"abilityType":"Production Build Ability Infantry","abilityParameterJson":"{\"Buildable\":\"Swordsman\",\"BuildLocation\":\"(-5,-1)\"}","fromInput":true,"performEvenIfOnCooldown":true,"clearOtherAbilities":false,"overrideTeam":1,"abilityID":"1033_Production
+        Build Ability Infantry_1"}'
+    - time: 90.73417
+      entityID: 1033
+      commandType: 0
+      data: '{"abilityType":"Production Build Ability Infantry","abilityParameterJson":"{\"Buildable\":\"Pikeman\",\"BuildLocation\":\"(-5,-1)\"}","fromInput":true,"performEvenIfOnCooldown":true,"clearOtherAbilities":false,"overrideTeam":1,"abilityID":"1033_Production
+        Build Ability Infantry_2"}'
+    - time: 92.788635
+      entityID: 1033
+      commandType: 1
+      data: '{"abilityInstance":1,"abilityType":"Production Build Ability Infantry","parameters":"{\"Buildable\":\"Swordsman\",\"BuildLocation\":\"(-5,-1)\"}"}'
+    - time: 98.514984
+      entityID: 1026
+      commandType: 1
+      data: '{"abilityInstance":15,"abilityType":"Attack Ability Melee","parameters":"{\"Target\":0,\"Destination\":\"(1,-4)\",\"Reaction\":false,\"ReactionTarget\":0}"}'
+    - time: 98.514984
+      entityID: 1026
+      commandType: 1
+      data: '{"abilityInstance":16,"abilityType":"Parade Ability","parameters":"{\"Target\":0}"}'
+    - time: 98.514984
+      entityID: 1026
+      commandType: 0
+      data: '{"abilityType":"Attack Ability Melee","abilityParameterJson":"{\"Target\":0,\"Destination\":\"(7,-4)\",\"Reaction\":false,\"ReactionTarget\":0}","fromInput":true,"performEvenIfOnCooldown":true,"clearOtherAbilities":true,"overrideTeam":-2,"abilityID":"1026_Attack
+        Ability Melee_16"}'
+    - time: 101.720215
+      entityID: 1033
+      commandType: 0
+      data: '{"abilityType":"Rally Ability Attack Structure","abilityParameterJson":"{\"Destination\":\"(7,-5)\"}","fromInput":true,"performEvenIfOnCooldown":false,"clearOtherAbilities":false,"overrideTeam":-2,"abilityID":"1033_Rally
+        Ability Attack Structure_1"}'
+    - time: 106.06163
+      entityID: 1032
+      commandType: 0
+      data: '{"abilityType":"Production Build Ability Village","abilityParameterJson":"{\"Buildable\":\"Peasant\",\"BuildLocation\":\"(-5,-4)\"}","fromInput":true,"performEvenIfOnCooldown":true,"clearOtherAbilities":false,"overrideTeam":1,"abilityID":"1032_Production
+        Build Ability Village_2"}'
+    - time: 106.217316
+      entityID: 1032
+      commandType: 0
+      data: '{"abilityType":"Production Build Ability Village","abilityParameterJson":"{\"Buildable\":\"Peasant\",\"BuildLocation\":\"(-5,-4)\"}","fromInput":true,"performEvenIfOnCooldown":true,"clearOtherAbilities":false,"overrideTeam":1,"abilityID":"1032_Production
+        Build Ability Village_3"}'
+    - time: 106.373276
+      entityID: 1032
+      commandType: 0
+      data: '{"abilityType":"Production Build Ability Village","abilityParameterJson":"{\"Buildable\":\"Peasant\",\"BuildLocation\":\"(-5,-4)\"}","fromInput":true,"performEvenIfOnCooldown":true,"clearOtherAbilities":false,"overrideTeam":1,"abilityID":"1032_Production
+        Build Ability Village_4"}'
+    - time: 106.56742
+      entityID: 1032
+      commandType: 1
+      data: '{"abilityInstance":4,"abilityType":"Production Build Ability Village","parameters":"{\"Buildable\":\"Peasant\",\"BuildLocation\":\"(-5,-4)\"}"}'
+    - time: 106.739815
+      entityID: 1032
+      commandType: 1
+      data: '{"abilityInstance":3,"abilityType":"Production Build Ability Village","parameters":"{\"Buildable\":\"Peasant\",\"BuildLocation\":\"(-5,-4)\"}"}'
+    - time: 106.883865
+      entityID: 1032
+      commandType: 1
+      data: '{"abilityInstance":2,"abilityType":"Production Build Ability Village","parameters":"{\"Buildable\":\"Peasant\",\"BuildLocation\":\"(-5,-4)\"}"}'
+    - time: 107.05852
+      entityID: 1032
+      commandType: 0
+      data: '{"abilityType":"Production Build Ability Village","abilityParameterJson":"{\"Buildable\":\"Peasant\",\"BuildLocation\":\"(-5,-4)\"}","fromInput":true,"performEvenIfOnCooldown":true,"clearOtherAbilities":false,"overrideTeam":1,"abilityID":"1032_Production
+        Build Ability Village_5"}'
+    - time: 107.248085
+      entityID: 1032
+      commandType: 0
+      data: '{"abilityType":"Production Build Ability Village","abilityParameterJson":"{\"Buildable\":\"Peasant\",\"BuildLocation\":\"(-5,-4)\"}","fromInput":true,"performEvenIfOnCooldown":true,"clearOtherAbilities":false,"overrideTeam":1,"abilityID":"1032_Production
+        Build Ability Village_6"}'
+    - time: 107.359344
+      entityID: 1032
+      commandType: 0
+      data: '{"abilityType":"Production Build Ability Village","abilityParameterJson":"{\"Buildable\":\"Peasant\",\"BuildLocation\":\"(-5,-4)\"}","fromInput":true,"performEvenIfOnCooldown":true,"clearOtherAbilities":false,"overrideTeam":1,"abilityID":"1032_Production
+        Build Ability Village_7"}'
+    - time: 107.572685
+      entityID: 1032
+      commandType: 1
+      data: '{"abilityInstance":7,"abilityType":"Production Build Ability Village","parameters":"{\"Buildable\":\"Peasant\",\"BuildLocation\":\"(-5,-4)\"}"}'
+    - time: 107.75188
+      entityID: 1032
+      commandType: 1
+      data: '{"abilityInstance":6,"abilityType":"Production Build Ability Village","parameters":"{\"Buildable\":\"Peasant\",\"BuildLocation\":\"(-5,-4)\"}"}'
+    - time: 107.937126
+      entityID: 1032
+      commandType: 0
+      data: '{"abilityType":"Production Build Ability Village","abilityParameterJson":"{\"Buildable\":\"Peasant\",\"BuildLocation\":\"(-5,-4)\"}","fromInput":true,"performEvenIfOnCooldown":true,"clearOtherAbilities":false,"overrideTeam":1,"abilityID":"1032_Production
+        Build Ability Village_8"}'
+    - time: 108.064316
+      entityID: 1032
+      commandType: 1
+      data: '{"abilityInstance":8,"abilityType":"Production Build Ability Village","parameters":"{\"Buildable\":\"Peasant\",\"BuildLocation\":\"(-5,-4)\"}"}'
+    - time: 108.273476
+      entityID: 1032
+      commandType: 0
+      data: '{"abilityType":"Production Build Ability Village","abilityParameterJson":"{\"Buildable\":\"Peasant\",\"BuildLocation\":\"(-5,-4)\"}","fromInput":true,"performEvenIfOnCooldown":true,"clearOtherAbilities":false,"overrideTeam":1,"abilityID":"1032_Production
+        Build Ability Village_9"}'
+    - time: 108.326225
+      entityID: 1032
+      commandType: 1
+      data: '{"abilityInstance":9,"abilityType":"Production Build Ability Village","parameters":"{\"Buildable\":\"Peasant\",\"BuildLocation\":\"(-5,-4)\"}"}'
+    - time: 108.60809
+      entityID: 1032
+      commandType: 0
+      data: '{"abilityType":"Production Build Ability Village","abilityParameterJson":"{\"Buildable\":\"Peasant\",\"BuildLocation\":\"(-5,-4)\"}","fromInput":true,"performEvenIfOnCooldown":true,"clearOtherAbilities":false,"overrideTeam":1,"abilityID":"1032_Production
+        Build Ability Village_10"}'
+    - time: 108.70982
+      entityID: 1032
+      commandType: 1
+      data: '{"abilityInstance":10,"abilityType":"Production Build Ability Village","parameters":"{\"Buildable\":\"Peasant\",\"BuildLocation\":\"(-5,-4)\"}"}'
+    - time: 108.83807
+      entityID: 1032
+      commandType: 0
+      data: '{"abilityType":"Production Build Ability Village","abilityParameterJson":"{\"Buildable\":\"Peasant\",\"BuildLocation\":\"(-5,-4)\"}","fromInput":true,"performEvenIfOnCooldown":true,"clearOtherAbilities":false,"overrideTeam":1,"abilityID":"1032_Production
+        Build Ability Village_11"}'
+    - time: 108.922134
+      entityID: 1032
+      commandType: 1
+      data: '{"abilityInstance":11,"abilityType":"Production Build Ability Village","parameters":"{\"Buildable\":\"Peasant\",\"BuildLocation\":\"(-5,-4)\"}"}'
+    - time: 109.10223
+      entityID: 1032
+      commandType: 0
+      data: '{"abilityType":"Production Build Ability Village","abilityParameterJson":"{\"Buildable\":\"Peasant\",\"BuildLocation\":\"(-5,-4)\"}","fromInput":true,"performEvenIfOnCooldown":true,"clearOtherAbilities":false,"overrideTeam":1,"abilityID":"1032_Production
+        Build Ability Village_12"}'
+    - time: 109.26337
+      entityID: 1032
+      commandType: 1
+      data: '{"abilityInstance":12,"abilityType":"Production Build Ability Village","parameters":"{\"Buildable\":\"Peasant\",\"BuildLocation\":\"(-5,-4)\"}"}'
+    - time: 109.43865
+      entityID: 1032
+      commandType: 1
+      data: '{"abilityInstance":5,"abilityType":"Production Build Ability Village","parameters":"{\"Buildable\":\"Peasant\",\"BuildLocation\":\"(-5,-4)\"}"}'
+    - time: 119.307434
+      entityID: 1033
+      commandType: 0
+      data: '{"abilityType":"Production Build Ability Infantry","abilityParameterJson":"{\"Buildable\":\"Swordsman\",\"BuildLocation\":\"(-5,-1)\"}","fromInput":true,"performEvenIfOnCooldown":true,"clearOtherAbilities":false,"overrideTeam":1,"abilityID":"1033_Production
+        Build Ability Infantry_3"}'
+    - time: 119.508125
+      entityID: 1033
+      commandType: 0
+      data: '{"abilityType":"Production Build Ability Infantry","abilityParameterJson":"{\"Buildable\":\"Swordsman\",\"BuildLocation\":\"(-5,-1)\"}","fromInput":true,"performEvenIfOnCooldown":true,"clearOtherAbilities":false,"overrideTeam":1,"abilityID":"1033_Production
+        Build Ability Infantry_4"}'
+    - time: 119.56072
+      entityID: 1033
+      commandType: 0
+      data: '{"abilityType":"Production Build Ability Infantry","abilityParameterJson":"{\"Buildable\":\"Swordsman\",\"BuildLocation\":\"(-5,-1)\"}","fromInput":true,"performEvenIfOnCooldown":true,"clearOtherAbilities":false,"overrideTeam":1,"abilityID":"1033_Production
+        Build Ability Infantry_5"}'
+    - time: 121.439575
+      entityID: 1033
+      commandType: 0
+      data: '{"abilityType":"Production Build Ability Infantry","abilityParameterJson":"{\"Buildable\":\"Swordsman\",\"BuildLocation\":\"(-5,-1)\"}","fromInput":true,"performEvenIfOnCooldown":true,"clearOtherAbilities":false,"overrideTeam":1,"abilityID":"1033_Production
+        Build Ability Infantry_6"}'
+    - time: 129.4228
+      entityID: 1026
+      commandType: 0
+      data: '{"abilityType":"Move Ability","abilityParameterJson":"{\"Destination\":\"(6,-3)\",\"NextMoveCell\":\"(6,-3)\",\"BlockedByOccupation\":true,\"PerformAfterAttacks\":false}","fromInput":true,"performEvenIfOnCooldown":true,"clearOtherAbilities":true,"overrideTeam":-2,"abilityID":"1026_Move
+        Ability_28"}'

@@ -4,6 +4,7 @@ using Gameplay.Entities;
 using Gameplay.Entities.Abilities;
 using UnityEngine;
 using UnityEngine.Serialization;
+using Util;
 
 namespace Gameplay.Config.Abilities {
     [CreateAssetMenu(menuName = "Abilities/RallyAbilityData")]
@@ -38,7 +39,7 @@ namespace Gameplay.Config.Abilities {
 
         public override IAbilityParameters DeserializeParametersFromJson(Dictionary<string, object> json) {
             return new RallyAbilityParameters {
-                Destination = (Vector2Int)json["Destination"]
+                Destination = ((string)json["Destination"]).ToVector2Int()
             };
         }
     }

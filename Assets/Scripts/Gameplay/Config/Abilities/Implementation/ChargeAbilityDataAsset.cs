@@ -8,6 +8,7 @@ using Gameplay.Grid;
 using Gameplay.UI;
 using Unity.VisualScripting;
 using UnityEngine;
+using Util;
 
 namespace Gameplay.Config.Abilities {
     [CreateAssetMenu(menuName = "Abilities/ChargeAbilityData")]
@@ -61,10 +62,10 @@ namespace Gameplay.Config.Abilities {
 
         public override IAbilityParameters DeserializeParametersFromJson(Dictionary<string, object> json) {
             return new ChargeAbilityParameters {
-                Destination = (Vector2Int)json["Destination"],
-                MoveDestination = (Vector2Int)json["MoveDestination"],
-                ClickLocation = (Vector2Int)json["ClickLocation"],
-                SelectorTeam = (GameTeam)json["SelectorTeam"],
+                Destination = ((string)json["Destination"]).ToVector2Int(),
+                MoveDestination = ((string)json["MoveDestination"]).ToVector2Int(),
+                ClickLocation = ((string)json["ClickLocation"]).ToVector2Int(),
+                SelectorTeam = (GameTeam)Convert.ToInt32(json["SelectorTeam"]),
                 Attacking = (bool)json["Attacking"]
             };
         }
@@ -85,7 +86,7 @@ namespace Gameplay.Config.Abilities {
                 MoveDestination = destination.Value,
                 ClickLocation = cellPosition,
                 SelectorTeam = selectorTeam
-            }, true, false, true);
+            }, true, false, true, true);
         }
 
         public void RecalculateTargetableAbilitySelection(GridEntity selector, object targetData) {

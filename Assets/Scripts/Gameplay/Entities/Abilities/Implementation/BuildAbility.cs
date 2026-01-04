@@ -9,6 +9,7 @@ using Gameplay.Grid;
 using Mirror;
 using Newtonsoft.Json;
 using UnityEngine;
+using Util;
 
 namespace Gameplay.Entities.Abilities {
     /// <summary>
@@ -187,7 +188,7 @@ namespace Gameplay.Entities.Abilities {
         public string SerializeToJson() {
             return JsonConvert.SerializeObject(new Dictionary<string, object> {
                 {"Buildable", Buildable.ID},
-                {"BuildLocation", BuildLocation}
+                {"BuildLocation", BuildLocation.ConvertToString()}
             });
         }
 
