@@ -34,11 +34,11 @@ namespace Scenes {
             get {
 #if UNITY_EDITOR
                 if (string.IsNullOrEmpty(_mapID)) {
-                    _mapID = string.IsNullOrEmpty(_mapIDFromEditorWindow) ? "origins" : _mapIDFromEditorWindow;
+                    _mapID = string.IsNullOrEmpty(_mapIDFromEditorWindow) ? SceneLoader.DefaultMap : _mapIDFromEditorWindow;
                 }
 #else
                  if (string.IsNullOrEmpty(_mapID)) {
-                    _mapID = "origins";
+                    _mapID = SceneLoader.DefaultMap;
                 }
 #endif
                 return _mapID;

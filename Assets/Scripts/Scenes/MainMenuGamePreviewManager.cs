@@ -39,7 +39,7 @@ namespace Scenes {
         }
 
         private void SwitchMap(ReplayData replayData) {
-            SceneLoader.Instance.SwitchLoadedMap(replayData.mapID, replayData.replayID);
+            SceneLoader.Instance.SwitchLoadedMap(replayData.mapID, replayData.replayID, false);
         }
     }
 }

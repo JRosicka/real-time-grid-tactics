@@ -84,7 +84,7 @@ namespace Gameplay.Config {
             _everSetUp = true;
 
             if (_inGameScene && !_everPopulated) {
-                DropdownReplayID = "originsReplay1";
+                DropdownReplayID = SceneLoader.DefaultReplay;
                 PopulateFields(MapsConfiguration.GetReplay(DropdownReplayID));
                 
                 _everPopulated = true;

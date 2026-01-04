@@ -84,7 +84,7 @@ namespace Gameplay.Config {
             _everSetUp = true;
 
             if (_inGameScene && !_everPopulated) {
-                DropdownMapID = "origins";
+                DropdownMapID = SceneLoader.DefaultMap;
                 PopulateFields(MapSerializer.GetMap(DropdownMapID));
                 
                 _everPopulated = true;

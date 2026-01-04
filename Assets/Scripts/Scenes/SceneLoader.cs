@@ -19,6 +19,9 @@ namespace Scenes {
         public const string LobbySceneName = "Room";
         public const string GameSceneName = "GamePlay";
         
+        public const string DefaultMap = "origins";
+        public const string DefaultReplay = "originsReplay1";
+        
         [SerializeField] private float _minimumLoadTimeSeconds = .5f;
         [SerializeField] private float _tooCloseMapSwitchProximityTime = .25f;
         
@@ -26,6 +29,7 @@ namespace Scenes {
         public MainMenuGamePreviewManager MainMenuGamePreviewManager { get; private set; }
 
         public event Action<string> SceneLoaded;
+        public string LastLobbyMap;
         
         private string _targetScene;
         
@@ -67,6 +71,7 @@ namespace Scenes {
         /// </summary>
         public async void LoadIntoSinglePlayerGame() {
             _targetScene = GameSceneName;
+            _gameTypeManager.SetMap(DefaultMap);
             _gameTypeManager.SetGameType(false, true, true);
             await UnloadCurrentScenesAsync(true);
             await LoadScene(GameSceneName, true, true, true, true);
@@ -75,8 +80,11 @@ namespace Scenes {
         /// <summary>
         /// Switch the map in the currently loaded game scene
         /// </summary>
-        public void SwitchLoadedMap(string newMapID, string replayID) {
+        public void SwitchLoadedMap(string newMapID, string replayID, bool trackForLobby) {
             _gameTypeManager.SetMap(newMapID, replayID);
+            if (trackForLobby) {
+                LastLobbyMap = newMapID;
+            }
             
             if (_switchMapTask == null || _switchMapTask.IsCompleted) {
                 _switchMapTask = DoSwitchLoadedMap();

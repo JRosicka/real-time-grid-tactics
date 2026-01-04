@@ -7,7 +7,7 @@ namespace Menu {
     /// </summary>
     public class LobbyNetworkBehaviour : NetworkBehaviour {
         [SyncVar(hook = nameof(OnMapChanged))]
-        public string MapID = "origins";
+        public string MapID = SceneLoader.Instance.LastLobbyMap;
         
         /// <summary>
         /// Set the map and update the clients 
@@ -18,7 +18,7 @@ namespace Menu {
         }
         
         private void OnMapChanged(string _, string newMapID) {
-            SceneLoader.Instance.SwitchLoadedMap(newMapID, null);
+            SceneLoader.Instance.SwitchLoadedMap(newMapID, null, true);
         }
 
         /// <summary>
