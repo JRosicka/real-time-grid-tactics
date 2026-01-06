@@ -46,12 +46,12 @@ MonoBehaviour:
     AudioLayer: 0
     Interruptible: 1
     PlayDuringReplay: 0
-  AttackSounds:
   - Clip: {fileID: 8300000, guid: 1de3e99a07970c04b85dbe23ca5a10e6, type: 3}
-    Volume: 0.82
+    Volume: 0.844
     AudioLayer: 0
     Interruptible: 1
     PlayDuringReplay: 0
+  AttackSounds: []
   EntityFinishedBuildingSound:
     Clip: {fileID: 0}
     Volume: 0

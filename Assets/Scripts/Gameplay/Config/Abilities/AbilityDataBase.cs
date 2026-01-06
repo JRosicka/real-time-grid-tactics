@@ -104,6 +104,8 @@ namespace Gameplay.Config.Abilities {
         [Tooltip("Only relevant for targetable abilities")]
         [SerializeField] private AudioFile _targetedSound;
         public AudioFile TargetedSound => _targetedSound;
+        [FormerlySerializedAs("_triggersEntityOrderSound")] [SerializeField] private bool _triggersEntityOrderVoiceLine;
+        public bool TriggersEntityOrderVoiceLine => _triggersEntityOrderVoiceLine;
 
         public virtual string GetAttackTooltipMessage() {
             return "";

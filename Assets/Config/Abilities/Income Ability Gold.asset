@@ -51,6 +51,7 @@ MonoBehaviour:
       AudioLayer: 0
       Interruptible: 0
       PlayDuringReplay: 0
+    _triggersEntityOrderVoiceLine: 0
     ResourceAmountIncome:
       Type: 0
       Amount: 5

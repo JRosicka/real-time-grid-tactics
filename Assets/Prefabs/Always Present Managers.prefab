@@ -487,8 +487,8 @@ MonoBehaviour:
       _buttonLongPressExpiresIn: 0
       _buttonDeadZone: 0.5
       _buttonDownBuffer: 0
-      _buttonRepeatRate: 20
-      _buttonRepeatDelay: 0.2
+      _buttonRepeatRate: 15
+      _buttonRepeatDelay: 0.25
     mapCategories:
     - _name: Default
       _descriptiveName: Default
@@ -958,6 +958,7 @@ MonoBehaviour:
   _gameTypeManager: {fileID: 242126502615915125}
   _minimumLoadTimeSeconds: 0.6
   _tooCloseMapSwitchProximityTime: 0.25
+  LastLobbyMap: 
 --- !u!1 &8422299083395272486
 GameObject:
   m_ObjectHideFlags: 0

@@ -36,7 +36,6 @@ namespace Gameplay.UI {
         public Color DeselectedIconColor;
         public Vector2 IconUpPosition;
         public Vector2 IconDownPosition;
-        public float ButtonDeselectBufferForHotkeyDetection = .1f;
         
         [Header("References")]
         public Image AbilityImage;
@@ -51,7 +50,7 @@ namespace Gameplay.UI {
         private GridEntity _selectedEntity;
         private bool _selected;
         private bool _shouldDeselectWhenTimerElapses;
-        private float _lastAbilityClickTime;
+        private bool _beingPressed;
 
         /// <summary>
         /// Delegation of implementation-specific behaviour conducted through here
@@ -248,21 +247,18 @@ namespace Gameplay.UI {
         private void ToggleClicked() {
             IconsGroup.transform.localPosition = IconDownPosition;
             AbilityImage.color = SelectedIconColor;
+            DoSelectAbility(!_beingPressed);
+            _beingPressed = true;
         }
         
         private void ToggleUnClicked() {
             IconsGroup.transform.localPosition = IconUpPosition;
             AbilityImage.color = DeselectedIconColor;
-            
-            // The hotkey for this might have toggled a click and performed the ability logic at the same time. 
-            if (Time.time - _lastAbilityClickTime > ButtonDeselectBufferForHotkeyDetection) {
-                DoSelectAbility(false);
-            }
+            _beingPressed = false;
         }
 
-        public void DoSelectAbility(bool newlyPressed) {
+        private void DoSelectAbility(bool newlyPressed) {
             AbilityInterface.SelectAbility(this, newlyPressed);
-            _lastAbilityClickTime = Time.time;
         }
         
         #endregion

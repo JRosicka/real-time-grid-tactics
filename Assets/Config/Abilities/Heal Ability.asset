@@ -52,4 +52,5 @@ MonoBehaviour:
       AudioLayer: 0
       Interruptible: 0
       PlayDuringReplay: 0
+    _triggersEntityOrderVoiceLine: 0
     HealAmount: 2

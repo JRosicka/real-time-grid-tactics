@@ -82,7 +82,7 @@ namespace Gameplay.Managers {
                 TryRecordAbility(entity, abilityInstance, fromInput, startPerformingEvenIfOnCooldown, clearOtherAbilities, overrideTeam);
             }
 
-            if (fromInput) {
+            if (fromInput && abilityData.TriggersEntityOrderVoiceLine) {
                 GameManager.Instance.GameAudio.EntityOrderSound(entity.EntityData);
             }
             

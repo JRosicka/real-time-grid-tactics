@@ -29,7 +29,7 @@ MonoBehaviour:
   SelectionSounds: []
   OrderSounds:
   - Clip: {fileID: 8300000, guid: 71661fd9bce89964daaf2b0bd170ecae, type: 3}
-    Volume: 0.862
+    Volume: 0.699
     AudioLayer: 0
     Interruptible: 0
     PlayDuringReplay: 0

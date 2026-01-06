@@ -59,11 +59,6 @@ namespace Gameplay.UI {
                     button = PointerEventData.InputButton.Left,
                 });
             }
-
-            // Business logic
-            if (pressed) {
-                slot.DoSelectAbility(newlyPressed);
-            }
         }
         
         public void DeselectActiveAbility() {

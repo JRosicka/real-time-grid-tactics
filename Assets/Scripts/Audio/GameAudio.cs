@@ -21,9 +21,9 @@ namespace Audio {
         
         private GameSetupManager _gameSetupManager;
         private AudioFileConfiguration _audioConfiguration;
-        private Dictionary<string, AudioFile> _lastPlayedSelectionSounds = new Dictionary<string, AudioFile>();
-        private Dictionary<string, AudioFile> _lastPlayedOrderSounds = new Dictionary<string, AudioFile>();
-        private Dictionary<string, AudioFile> _lastPlayedAttackSounds = new Dictionary<string, AudioFile>();
+        private readonly Dictionary<string, AudioFile> _lastPlayedSelectionSounds = new Dictionary<string, AudioFile>();
+        private readonly Dictionary<string, AudioFile> _lastPlayedOrderSounds = new Dictionary<string, AudioFile>();
+        private readonly Dictionary<string, AudioFile> _lastPlayedAttackSounds = new Dictionary<string, AudioFile>();
         
         public void Initialize(GameSetupManager gameSetupManager, AudioFileConfiguration audioConfiguration) {
             _gameSetupManager = gameSetupManager;

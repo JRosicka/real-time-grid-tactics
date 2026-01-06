@@ -89,6 +89,7 @@ namespace Gameplay.Config.Abilities {
         bool PerformByDefault { get; }
         AudioFile SelectionSound { get; }
         AudioFile TargetedSound { get; }
+        bool TriggersEntityOrderVoiceLine { get; }
         string GetAttackTooltipMessage(GameTeam team);
         /// <summary>
         /// Respond to the user input intending to use this ability. Do not actually perform the ability (unless there is

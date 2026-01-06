@@ -29,7 +29,7 @@ MonoBehaviour:
   _viewPrefab: {fileID: 7504026570216467247, guid: 578b7f995f51c3845914f63ae14fc166, type: 3}
   SelectionSounds:
   - Clip: {fileID: 8300000, guid: e72a7d93dcc3ece47a861cca6ef6ae8d, type: 3}
-    Volume: 0.495
+    Volume: 0.312
     AudioLayer: 0
     Interruptible: 1
     PlayDuringReplay: 0
@@ -40,7 +40,7 @@ MonoBehaviour:
     PlayDuringReplay: 0
   OrderSounds:
   - Clip: {fileID: 8300000, guid: e8f4503c6d5b06546be91523b32808c7, type: 3}
-    Volume: 0.391
+    Volume: 0.223
     AudioLayer: 0
     Interruptible: 1
     PlayDuringReplay: 0
