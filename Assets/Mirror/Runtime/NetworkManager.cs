@@ -554,7 +554,8 @@ namespace Mirror
 
             if (!string.IsNullOrWhiteSpace(offlineScene))
             {
-                ServerChangeScene(offlineScene);
+                // Handled in DisconnectionHandler
+                // ServerChangeScene(offlineScene);
             }
 
             startPositionIndex = 0;
@@ -603,7 +604,8 @@ namespace Mirror
             // Check if NetworkServer.active because we can get here via Disconnect before server has started to change scenes.
             if (!string.IsNullOrWhiteSpace(offlineScene) && !IsSceneActive(offlineScene) && loadingSceneAsync == null && !NetworkServer.active)
             {
-                ClientChangeScene(offlineScene, SceneOperation.LoadAdditive);
+                // Handled in DisconnectionHandler
+                // ClientChangeScene(offlineScene, SceneOperation.LoadAdditive);
             }
 
             networkSceneName = "";

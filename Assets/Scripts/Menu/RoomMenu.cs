@@ -127,6 +127,8 @@ public class RoomMenu : MonoBehaviour {
             // We're just a little baby client, so just stop the client
             NetworkManager.StopClient();
         }
+        
+        SceneLoader.Instance.LoadMainMenu();
     }
 
     /// <summary>

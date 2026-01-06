@@ -27,13 +27,11 @@ namespace Gameplay.Managers {
         private async void DisconnectDetected() {
             Disconnected = true;
             OnDisconnected?.Invoke();
+            DisconnectFeedbackService.SetDisconnectReason(DisconnectFeedbackService.DisconnectReason.Unknown);
 
             await Task.Delay(TimeSpan.FromSeconds(3));
             
             GameNetworkManager gameNetworkManager = (GameNetworkManager)NetworkManager.singleton;
-            gameNetworkManager.ServerChangeScene(gameNetworkManager.RoomScene); 
-
-            DisconnectFeedbackService.SetDisconnectReason(DisconnectFeedbackService.DisconnectReason.Unknown);
             if (NetworkServer.active) {
                 // We're the host, so stop the whole server
                 gameNetworkManager.StopHost();
