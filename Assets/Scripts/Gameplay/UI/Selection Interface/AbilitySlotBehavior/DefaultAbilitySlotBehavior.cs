@@ -27,9 +27,13 @@ namespace Gameplay.UI {
         public bool IsAbilityTargetable => _abilityData.Targeted;
         public bool AnyPlayerCanSelect => _abilityData.SelectableForAllPlayers;
 
-        public void SelectSlot() {
+        public void SelectSlot(bool newlySelected) {
             if (_abilityData == null) return;
             
+            if (newlySelected) {
+                GameManager.Instance.GameAudio.AbilitySelectSound(_abilityData);
+            }
+
             _abilityData.SelectAbility(_selectedEntity);
             if (_abilityData is ITargetableAbilityData targetableAbilityData) {
                 GameManager.Instance.SelectionInterface.TooltipView.ToggleForTargetableAbility(targetableAbilityData, this);

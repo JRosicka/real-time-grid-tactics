@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Gameplay.Config;
+using Gameplay.Config.Abilities;
 using UnityEngine;
 
 namespace Audio {
@@ -69,6 +70,14 @@ namespace Audio {
         public void EntityAttackSound(EntityData entityData) {
             ChooseAndPlayEntitySound(entityData.ID, entityData.AttackSounds, _lastPlayedAttackSounds);
         }
+        
+        public void AbilitySelectSound(IAbilityData abilityData) {
+            TryPlaySFX(abilityData.SelectionSound);
+        }
+        
+        public void AbilityTargetedSound(ITargetableAbilityData abilityData) {
+            TryPlaySFX(abilityData.TargetedSound);
+        }
 
         private void ChooseAndPlayEntitySound(string entityType, List<AudioFile> audioFiles, Dictionary<string, AudioFile> lastPlayedSounds) {
             if (audioFiles.Count == 0) return;
@@ -120,6 +129,7 @@ namespace Audio {
         }
 
         private void TryPlaySFX(AudioFile audioFile) {
+            if (audioFile == null || audioFile.Clip == null) return;
             if (GameManager.Instance.ReplayManager.PlayingReplay && !audioFile.PlayDuringReplay) return;
             AudioPlayer.TryPlaySFX(audioFile);
         }

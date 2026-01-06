@@ -33,7 +33,7 @@ namespace Gameplay.UI {
         /// <summary>
         /// We just received user input to use the associated ability - do it
         /// </summary>
-        void SelectSlot();
+        void SelectSlot(bool newlySelected);
         /// <summary>
         /// We just received user input to select the slot, but we can not select it. Only gets called the first frame
         /// when holding down the hotkey for this.

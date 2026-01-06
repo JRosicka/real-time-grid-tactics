@@ -18,6 +18,7 @@ MonoBehaviour:
     _description: 
     _icon: {fileID: 0}
     _overrideIconForGrid: {fileID: 0}
+    _flipGridIcon: 0
     _gridIconColor: {r: 0, g: 0, b: 0, a: 0}
     _slotSprites: {fileID: 11400000, guid: ef653d486657bde49819c23db7683cf4, type: 2}
     _abilityTimerView: {fileID: 0}
@@ -37,4 +38,17 @@ MonoBehaviour:
     _tryingToPerformCancelsBuilds: 0
     _blocksDefaultAttack: 0
     _showTimerOnSelectionInterface: 0
+    _performByDefault: 0
+    _selectionSound:
+      Clip: {fileID: 0}
+      Volume: 0
+      AudioLayer: 0
+      Interruptible: 0
+      PlayDuringReplay: 0
+    _targetedSound:
+      Clip: {fileID: 0}
+      Volume: 0
+      AudioLayer: 0
+      Interruptible: 0
+      PlayDuringReplay: 0
     RallyingUnitsAreAttackers: 1

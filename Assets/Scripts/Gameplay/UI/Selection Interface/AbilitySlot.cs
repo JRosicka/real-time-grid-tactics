@@ -105,15 +105,16 @@ namespace Gameplay.UI {
             gameObject.SetActive(false);
         }
 
-        public bool SelectAbility() {
+        public void SelectAbility(bool newlySelected) {
             if (Availability != AvailabilityResult.Selectable) {
-                GameManager.Instance.GameAudio.InvalidSound();
-                return false;
+                if (newlySelected) {
+                    GameManager.Instance.GameAudio.InvalidSound();
+                }
+                return;
             }
             
             MarkSelected(true);
-            _slotBehavior?.SelectSlot();
-            return true;
+            _slotBehavior?.SelectSlot(newlySelected);
         }
 
         /// <summary>

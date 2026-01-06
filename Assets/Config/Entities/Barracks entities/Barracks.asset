@@ -26,13 +26,19 @@ MonoBehaviour:
   BaseSpriteIconOverride: {fileID: 0}
   _viewPrefab: {fileID: 6373076591908856349, guid: fe97602c9548e534eb21b66e57e65290, type: 3}
   SelectionSounds: []
-  OrderSounds: []
+  OrderSounds:
+  - Clip: {fileID: 8300000, guid: 71661fd9bce89964daaf2b0bd170ecae, type: 3}
+    Volume: 0.862
+    AudioLayer: 0
+    Interruptible: 0
+    PlayDuringReplay: 0
   AttackSounds: []
   EntityFinishedBuildingSound:
     Clip: {fileID: 8300000, guid: 267186cb9ea54f142a15627494771d08, type: 3}
     Volume: 0.382
     AudioLayer: 0
     Interruptible: 1
+    PlayDuringReplay: 0
   HP: 60
   Range: 0
   Damage: 0

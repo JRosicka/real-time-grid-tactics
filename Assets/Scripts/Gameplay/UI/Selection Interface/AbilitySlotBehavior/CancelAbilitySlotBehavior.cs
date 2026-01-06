@@ -37,7 +37,7 @@ namespace Gameplay.UI {
         public abstract bool AnyPlayerCanSelect { get; }
         public abstract AbilitySlotInfo AbilitySlotInfo { get; }
         public abstract bool CaresAboutAbilityChannels { get; }
-        public abstract void SelectSlot();
+        public abstract void SelectSlot(bool newlySelected);
         public abstract AbilitySlot.AvailabilityResult GetAvailability();
     }
 }

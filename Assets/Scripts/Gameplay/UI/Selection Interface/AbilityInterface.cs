@@ -89,10 +89,7 @@ namespace Gameplay.UI {
             GameManager.Instance.EntitySelectionManager.DeselectTargetableAbility();
 
             _selectedSlot = slot;
-            bool actuallySelected = _selectedSlot.SelectAbility();
-            if (newlyPressed && actuallySelected) {
-                GameManager.Instance.GameAudio.ButtonClickSound();
-            }
+            _selectedSlot.SelectAbility(newlyPressed);
             
             DeselectUnselectedSlots();
         }

@@ -25,7 +25,11 @@ namespace Gameplay.UI {
         public override AbilitySlotInfo AbilitySlotInfo => new AbilitySlotInfo("Cancel", _cancelButtonDescription);
         public override bool CaresAboutAbilityChannels => true;
 
-        public override void SelectSlot() {
+        public override void SelectSlot(bool newlySelected) {
+            if (newlySelected) {
+                GameManager.Instance.GameAudio.ButtonClickSound();
+            }
+            
             // Move out of a nested build menu if we are in one
             if (_canMoveOutOfBuildMenu) {
                 SelectionInterface.DeselectBuildAbility();

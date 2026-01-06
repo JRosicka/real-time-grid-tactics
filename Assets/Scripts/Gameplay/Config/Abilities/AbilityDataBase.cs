@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Audio;
 using Gameplay.Entities;
 using Gameplay.Entities.Abilities;
 using Gameplay.UI;
@@ -98,6 +99,11 @@ namespace Gameplay.Config.Abilities {
         public bool ShowTimerOnSelectionInterface => _showTimerOnSelectionInterface;
         [SerializeField] private bool _performByDefault;
         public bool PerformByDefault => _performByDefault;
+        [SerializeField] private AudioFile _selectionSound;
+        public AudioFile SelectionSound => _selectionSound;
+        [Tooltip("Only relevant for targetable abilities")]
+        [SerializeField] private AudioFile _targetedSound;
+        public AudioFile TargetedSound => _targetedSound;
 
         public virtual string GetAttackTooltipMessage() {
             return "";

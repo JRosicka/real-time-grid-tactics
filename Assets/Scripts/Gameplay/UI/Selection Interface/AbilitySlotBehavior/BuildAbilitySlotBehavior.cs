@@ -37,7 +37,7 @@ namespace Gameplay.UI {
             SelectedEntity = selectedEntity;
         }
         
-        public virtual void SelectSlot() {
+        public virtual void SelectSlot(bool newlySelected) {
             if (_buildAbilityData.Targetable) {
                 GameManager.Instance.EntitySelectionManager.SelectTargetableAbility(_buildAbilityData, SelectedEntity.Team, Buildable);
                 GameManager.Instance.SelectionInterface.TooltipView.ToggleForTargetableAbility(_buildAbilityData, this);
@@ -57,6 +57,10 @@ namespace Gameplay.UI {
                     BuildLocation = selectedEntityLocation.Value
                 }, true, true, false, true, 
                     overrideTeam:GameManager.Instance.LocalTeam);
+            }
+            
+            if (newlySelected) {
+                GameManager.Instance.GameAudio.AbilitySelectSound(_buildAbilityData);
             }
         }
 

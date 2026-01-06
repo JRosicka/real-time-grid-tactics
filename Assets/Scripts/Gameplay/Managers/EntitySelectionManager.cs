@@ -202,6 +202,8 @@ public class EntitySelectionManager {
             return true;
         }
 
+        GameManager.Instance.GameAudio.AbilityTargetedSound(_selectedTargetableAbility);
+        
         _gameManager.AbilityAssignmentManager.CancelAllAbilities(SelectedEntity, true);
 
         // TODO maybe move everything under here in this method to some other class, if things get more complicated

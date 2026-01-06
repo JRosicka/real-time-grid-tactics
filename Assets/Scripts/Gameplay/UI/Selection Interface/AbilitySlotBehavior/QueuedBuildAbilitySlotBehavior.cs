@@ -14,7 +14,11 @@ namespace Gameplay.UI {
             _buildAbility = buildAbility;
         }
 
-        public override void SelectSlot() {
+        public override void SelectSlot(bool newlySelected) {
+            if (newlySelected) {
+                GameManager.Instance.GameAudio.ButtonClickSound();
+            }
+
             SelectedEntity.BuildQueue.CancelBuild(_buildAbility, GameManager.Instance.LocalTeam);
         }
 

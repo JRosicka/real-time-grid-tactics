@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Audio;
 using Gameplay.Entities;
 using Gameplay.Entities.Abilities;
 using Gameplay.UI;
@@ -86,6 +87,8 @@ namespace Gameplay.Config.Abilities {
         /// </summary>
         bool ShowTimerOnSelectionInterface { get; }
         bool PerformByDefault { get; }
+        AudioFile SelectionSound { get; }
+        AudioFile TargetedSound { get; }
         string GetAttackTooltipMessage(GameTeam team);
         /// <summary>
         /// Respond to the user input intending to use this ability. Do not actually perform the ability (unless there is

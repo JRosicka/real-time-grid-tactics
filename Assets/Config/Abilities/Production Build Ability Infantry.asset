@@ -40,6 +40,18 @@ MonoBehaviour:
     _blocksDefaultAttack: 0
     _showTimerOnSelectionInterface: 0
     _performByDefault: 0
+    _selectionSound:
+      Clip: {fileID: 0}
+      Volume: 0
+      AudioLayer: 0
+      Interruptible: 0
+      PlayDuringReplay: 0
+    _targetedSound:
+      Clip: {fileID: 0}
+      Volume: 0
+      AudioLayer: 0
+      Interruptible: 0
+      PlayDuringReplay: 0
     Targetable: 0
     UsableEverywhereByBothTeams: 0
     Buildables:

@@ -19,6 +19,7 @@ MonoBehaviour:
       for the rest of their days.
     _icon: {fileID: 21300000, guid: dcdb6563c02b6bf43b698eea6b840db7, type: 3}
     _overrideIconForGrid: {fileID: 0}
+    _flipGridIcon: 0
     _gridIconColor: {r: 0, g: 0, b: 0, a: 0}
     _slotSprites: {fileID: 11400000, guid: cf3e96fef80ac354cbbe3535fa2b19bd, type: 2}
     _abilityTimerView: {fileID: 5971072852972127787, guid: ed3738731b7b747739ca456d1c5328a6, type: 3}
@@ -39,6 +40,19 @@ MonoBehaviour:
     _tryingToPerformCancelsBuilds: 0
     _blocksDefaultAttack: 1
     _showTimerOnSelectionInterface: 0
+    _performByDefault: 0
+    _selectionSound:
+      Clip: {fileID: 8300000, guid: 71661fd9bce89964daaf2b0bd170ecae, type: 3}
+      Volume: 0.862
+      AudioLayer: 0
+      Interruptible: 0
+      PlayDuringReplay: 0
+    _targetedSound:
+      Clip: {fileID: 8300000, guid: 71661fd9bce89964daaf2b0bd170ecae, type: 3}
+      Volume: 0.862
+      AudioLayer: 0
+      Interruptible: 0
+      PlayDuringReplay: 0
     Targetable: 1
     UsableEverywhereByBothTeams: 0
     Buildables:
