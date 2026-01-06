@@ -26,14 +26,40 @@ MonoBehaviour:
   TeamColorSprite: {fileID: 21300000, guid: 39b275ba18fa142daa2bc512789f023c, type: 3}
   BaseSpriteIconOverride: {fileID: 0}
   _viewPrefab: {fileID: 7504026570216467247, guid: 970946a288018114aba70df866efc53d, type: 3}
-  SelectionSounds: []
-  OrderSounds: []
+  SelectionSounds:
+  - Clip: {fileID: 8300000, guid: 8923c0c400b5d234083bda4ecd02318f, type: 3}
+    Volume: 0.742
+    AudioLayer: 0
+    Interruptible: 1
+    PlayDuringReplay: 0
+  - Clip: {fileID: 8300000, guid: 42c61192196f60743b45be6bf9f171c4, type: 3}
+    Volume: 0.77
+    AudioLayer: 0
+    Interruptible: 1
+    PlayDuringReplay: 0
+  - Clip: {fileID: 8300000, guid: d44cd923616fbea4292bf35928640245, type: 3}
+    Volume: 0.766
+    AudioLayer: 0
+    Interruptible: 1
+    PlayDuringReplay: 0
+  OrderSounds:
+  - Clip: {fileID: 8300000, guid: cf1c452e7ccaa454b91a8e25d6e5948d, type: 3}
+    Volume: 0.781
+    AudioLayer: 0
+    Interruptible: 1
+    PlayDuringReplay: 0
+  - Clip: {fileID: 8300000, guid: 3061feef3a83c454dbba29074facf57a, type: 3}
+    Volume: 0.758
+    AudioLayer: 0
+    Interruptible: 1
+    PlayDuringReplay: 0
   AttackSounds: []
   EntityFinishedBuildingSound:
     Clip: {fileID: 0}
     Volume: 0
     AudioLayer: 0
     Interruptible: 0
+    PlayDuringReplay: 0
   HP: 28
   Range: 1
   Damage: 4
