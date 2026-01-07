@@ -124,11 +124,10 @@ public class RoomMenu : MonoBehaviour {
             // We're the host, so stop the whole server
             NetworkManager.StopHost();
         } else {
-            // We're just a little baby client, so just stop the client
+            // We're just a little baby client, so just stop the client. This automatically takes us back to the main menu.
             NetworkManager.StopClient();
+            SceneLoader.Instance.LoadMainMenu();
         }
-        
-        SceneLoader.Instance.LoadMainMenu();
     }
 
     /// <summary>

@@ -35,12 +35,11 @@ namespace Gameplay.Managers {
             if (NetworkServer.active) {
                 // We're the host, so stop the whole server
                 gameNetworkManager.StopHost();
+                SceneLoader.Instance.LoadMainMenu();
             } else {
-                // We're just a little baby client, so just stop the client
+                // We're just a little baby client, so just stop the client. This automatically brings us back to the main menu.
                 gameNetworkManager.StopClient();
             }
-
-            SceneLoader.Instance.LoadMainMenu();
         }
     }
 }
