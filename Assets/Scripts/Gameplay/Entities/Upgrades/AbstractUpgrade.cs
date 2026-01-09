@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Audio;
 using Gameplay.Config;
 using Gameplay.Config.Upgrades;
 
@@ -70,7 +71,7 @@ namespace Gameplay.Entities.Upgrades {
             }
 
             if (newStatus == UpgradeStatus.Owned && Team == GameManager.Instance.LocalTeam) {
-                GameManager.Instance.GameAudio.UpgradeCompleteSound();
+                GameAudio.Instance.UpgradeCompleteSound();
             }
 
             if (Data.ApplyToGridEntitiesUponCompletion && newStatus == UpgradeStatus.Owned) {

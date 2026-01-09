@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Audio;
 using Gameplay.Config;
 using Gameplay.Config.Abilities;
 using Gameplay.Entities.Abilities;
@@ -216,7 +217,7 @@ namespace Gameplay.Entities {
                 InteractBehavior = new OwnerInteractBehavior(this);
                 if (built) {
                     // Play the sound effect
-                    GameManager.Instance.GameAudio.EntityFinishedBuildingSound(EntityData);
+                    GameAudio.Instance.EntityFinishedBuildingSound(EntityData);
                 }
             } else if (GameManager.Instance.Cheats.ControlAllPlayers) {
                 _normallyWouldBeAnEnemyButIsControllableDueToCheats = true;

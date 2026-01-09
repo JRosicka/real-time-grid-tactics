@@ -1,3 +1,4 @@
+using Audio;
 using Gameplay.Config.Abilities;
 using Gameplay.Entities;
 using Gameplay.Entities.Abilities;
@@ -16,7 +17,7 @@ namespace Gameplay.UI {
 
         public override void SelectSlot(bool newlySelected) {
             if (newlySelected) {
-                GameManager.Instance.GameAudio.ButtonClickSound();
+                GameAudio.Instance.ButtonClickSound();
             }
 
             SelectedEntity.BuildQueue.CancelBuild(_buildAbility, GameManager.Instance.LocalTeam);

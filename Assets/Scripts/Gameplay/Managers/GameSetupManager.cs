@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Audio;
 using Game.Network;
 using Gameplay.Config;
 using Gameplay.Entities;
@@ -80,6 +81,7 @@ public class GameSetupManager : MonoBehaviour {
     public event Action GameRunningEvent;
     public void TriggerGameRunningEvent() {
         GameRunningEvent?.Invoke();
+        GameAudio.Instance.StartMusic();
     }
 
     // Server event
@@ -144,20 +146,20 @@ public class GameSetupManager : MonoBehaviour {
         if (GameOver) return;
         GameOver = true;
         
-        GameManager.Instance.GameAudio.EndMusic(true);
+        GameAudio.Instance.EndMusic(true);
         
         if (winner == GameTeam.Neutral) {
             GameOverView.ShowTie();
             // TODO tie sound effect?
         } else if (GameManager.LocalTeam == GameTeam.Spectator) {
             GameOverView.ShowSpectatorThatPlayerWon(GameManager.GetPlayerForTeam(winner));
-            GameManager.Instance.GameAudio.GameWinSound();
+            GameAudio.Instance.GameWinSound();
         } else if (winner == GameManager.LocalTeam) {
             GameOverView.ShowVictory();
-            GameManager.Instance.GameAudio.GameWinSound();
+            GameAudio.Instance.GameWinSound();
         } else {
             GameOverView.ShowDefeat();
-            GameManager.Instance.GameAudio.GameLossSound();
+            GameAudio.Instance.GameLossSound();
         }
     }
 

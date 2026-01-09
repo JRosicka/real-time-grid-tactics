@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using Audio;
 using Gameplay.Config;
 using Gameplay.Config.Abilities;
 using Gameplay.Entities;
@@ -83,7 +84,7 @@ namespace Gameplay.Managers {
             }
 
             if (fromInput && abilityData.TriggersEntityOrderVoiceLine) {
-                GameManager.Instance.GameAudio.EntityOrderSound(entity.EntityData);
+                GameAudio.Instance.EntityOrderSound(entity.EntityData);
             }
             
             return true;

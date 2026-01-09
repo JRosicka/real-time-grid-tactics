@@ -1,3 +1,4 @@
+using Audio;
 using Gameplay.Config.Abilities;
 using Gameplay.Entities;
 using Gameplay.Entities.Abilities;
@@ -31,7 +32,7 @@ namespace Gameplay.UI {
             if (_abilityData == null) return;
             
             if (newlySelected) {
-                GameManager.Instance.GameAudio.AbilitySelectSound(_abilityData);
+                GameAudio.Instance.AbilitySelectSound(_abilityData);
             }
 
             _abilityData.SelectAbility(_selectedEntity);

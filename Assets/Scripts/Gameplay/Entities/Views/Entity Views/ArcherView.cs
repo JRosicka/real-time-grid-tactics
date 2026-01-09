@@ -1,3 +1,4 @@
+using Audio;
 using Gameplay.Entities.Abilities;
 using UnityEngine;
 
@@ -31,7 +32,7 @@ namespace Gameplay.Entities {
             if (attackLocation == null || targetLocation == null) return;
             EntityView.SetFacingDirection(attackLocation.Value, targetLocation.Value);
 
-            GameManager.Instance.GameAudio.EntityAttackSound(performer.EntityData);
+            GameAudio.Instance.EntityAttackSound(performer.EntityData);
         }
     }
 }

@@ -14,6 +14,8 @@ namespace Scenes {
         [SerializeField] private SceneLoader _sceneLoader;
         [SerializeField] private GameConfigurationLocator _gameConfigurationLocator;
         [FormerlySerializedAs("_gameNetworkStateManager")] [SerializeField] private GameTypeTracker _gameTypeManager;
+        
+        private GameAudio _gameAudio;
 
         /// <summary>
         /// Performs initialization. If initialization was already performed this app session, then destroys the GameObject. 
@@ -30,6 +32,7 @@ namespace Scenes {
             _gameTypeManager.Initialize();
             _gameConfigurationLocator.Initialize();
             _audioPlayer.Initialize();
+            _gameAudio = new GameAudio(_audioPlayer, GameConfigurationLocator.GameConfiguration.AudioConfiguration);
             _sceneLoader.Initialize();
         }
     }

@@ -6,49 +6,31 @@ using UnityEngine;
 
 namespace Audio {
     /// <summary>
-    /// Handles playing misc audio during gameplay. Keeps track of state of last played sounds. 
+    /// Handles playing specific audio. Keeps track of state of last played sounds.
+    /// All audio playing should go through this. 
     /// </summary>
-    public class GameAudio : MonoBehaviour {
-        private AudioPlayer _audioPlayer;
-        private AudioPlayer AudioPlayer {
-            get {
-                if (_audioPlayer == null) {
-                    _audioPlayer = FindFirstObjectByType<AudioPlayer>();
-                }
-                return _audioPlayer;
-            }
-        }
+    public class GameAudio {
+        public static GameAudio Instance;
         
-        private GameSetupManager _gameSetupManager;
-        private AudioFileConfiguration _audioConfiguration;
+        private readonly AudioPlayer _audioPlayer;
+        private readonly AudioFileConfiguration _audioConfiguration;
         private readonly Dictionary<string, AudioFile> _lastPlayedSelectionSounds = new Dictionary<string, AudioFile>();
         private readonly Dictionary<string, AudioFile> _lastPlayedOrderSounds = new Dictionary<string, AudioFile>();
         private readonly Dictionary<string, AudioFile> _lastPlayedAttackSounds = new Dictionary<string, AudioFile>();
         
-        public void Initialize(GameSetupManager gameSetupManager, AudioFileConfiguration audioConfiguration) {
-            _gameSetupManager = gameSetupManager;
+        public GameAudio(AudioPlayer audioPlayer, AudioFileConfiguration audioConfiguration) {
+            _audioPlayer = audioPlayer;
             _audioConfiguration = audioConfiguration;
-            
-            if (gameSetupManager.GameRunning) {
-                StartMusic();
-            } else {
-                gameSetupManager.GameRunningEvent += StartMusic;
-            }
+            Instance = this;
         }
-
-        public void UnregisterListeners() {
-            if (_gameSetupManager) {
-                _gameSetupManager.GameRunningEvent -= StartMusic;
-            }
-        }
-
-        private void StartMusic() {
+        
+        public void StartMusic() {
             if (_audioConfiguration.GameMusic.Clip == null) return;
-            AudioPlayer.PlayMusic(_audioConfiguration.GameMusic);
+            _audioPlayer.PlayMusic(_audioConfiguration.GameMusic);
         }
         
         public void EndMusic(bool fadeOut) {
-            AudioPlayer.EndMusic(fadeOut);
+            _audioPlayer.EndMusic(fadeOut);
         }
 
         public void ButtonClickSound() {
@@ -130,8 +112,9 @@ namespace Audio {
 
         private void TryPlaySFX(AudioFile audioFile) {
             if (audioFile == null || audioFile.Clip == null) return;
+            if (GameManager.Instance == null) return;
             if (GameManager.Instance.ReplayManager.PlayingReplay && !audioFile.PlayDuringReplay) return;
-            AudioPlayer.TryPlaySFX(audioFile);
+            _audioPlayer.TryPlaySFX(audioFile);
         }
     }
 }

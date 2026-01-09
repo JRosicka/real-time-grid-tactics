@@ -69,7 +69,7 @@ namespace Gameplay.Entities {
         
         public event Action KillAnimationFinishedEvent;
 
-        private GameAudio GameAudio => GameManager.Instance.GameAudio;
+        private GameAudio GameAudio => GameAudio.Instance;
         
         public void Initialize(GridEntity entity, int stackOrder) {
             Entity = entity;

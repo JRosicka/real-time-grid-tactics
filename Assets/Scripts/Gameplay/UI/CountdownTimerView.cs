@@ -1,5 +1,6 @@
 using System;
 using System.Threading.Tasks;
+using Audio;
 using TMPro;
 using UnityEngine;
 
@@ -35,7 +36,7 @@ namespace Gameplay.UI {
 
         private async void PlayGameStartSound() {
             await Task.Delay(TimeSpan.FromSeconds(SoundDelaySeconds));
-            GameManager.Instance.GameAudio.GameStartSound();
+            GameAudio.Instance.GameStartSound();
         }
 
         private void Update() {

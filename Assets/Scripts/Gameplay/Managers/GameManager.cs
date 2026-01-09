@@ -39,7 +39,6 @@ public class GameManager : MonoBehaviour {
     public InGameTimer InGameTimer;
     public ResourceEntityFinder ResourceEntityFinder;
     public CanvasWidthSetter CanvasWidthSetter;
-    public GameAudio GameAudio;
     public InGamePauseButton InGamePauseButton;
     public GridIconDisplayer GridIconDisplayer;
     public ReplayManager ReplayManager;
@@ -82,7 +81,6 @@ public class GameManager : MonoBehaviour {
         GridController.Initialize(EntitySelectionManager);
         GridInputController.Initialize(EntitySelectionManager, this);
         DisconnectionDialog.Initialize(DisconnectionHandler);
-        GameAudio.Initialize(GameSetupManager, Configuration.AudioConfiguration);
         AttackManager = new AttackManager();
         CanvasWidthSetter.Initialize();
         
@@ -97,7 +95,6 @@ public class GameManager : MonoBehaviour {
 
     private void OnDestroy() {
         DisconnectionHandler?.UnregisterListeners(); 
-        GameAudio.UnregisterListeners();
         Instance = null;
     }
 
@@ -178,7 +175,7 @@ public class GameManager : MonoBehaviour {
     }
 
     public void ReturnToMainMenu() {
-        GameAudio.EndMusic(false);
+        GameAudio.Instance.EndMusic(false);
 
         if (!GameTypeTracker.Instance.GameIsNetworked) {
             // SP. Just load into main menu

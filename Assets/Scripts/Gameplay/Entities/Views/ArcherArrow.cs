@@ -1,3 +1,4 @@
+using Audio;
 using Gameplay.Entities.Abilities;
 using Gameplay.Grid;
 using Mirror;
@@ -129,7 +130,7 @@ namespace Gameplay.Entities {
                 GameManager.Instance.AttackManager.DealDamage(_attacker, _target, _bonusDamage);
             }
             
-            GameManager.Instance.GameAudio.ArrowLandSound();
+            GameAudio.Instance.ArrowLandSound();
             Destroy(gameObject);
         }
     }

@@ -1,3 +1,4 @@
+using Audio;
 using Gameplay.Config;
 using Gameplay.Entities.Abilities;
 using UnityEngine;
@@ -50,7 +51,7 @@ namespace Gameplay.Entities {
             _animator.Play("WorkerBuild");
 
             if (GameManager.Instance.LocalTeam == GameTeam.Spectator || buildAbility.PerformerTeam == GameManager.Instance.LocalTeam) {
-                GameManager.Instance.GameAudio.ConstructionSound();
+                GameAudio.Instance.ConstructionSound();
             }
         }
 

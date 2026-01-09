@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using Audio;
 using Gameplay.Config;
 using Gameplay.Config.Abilities;
 using Gameplay.Config.Upgrades;
@@ -60,7 +61,7 @@ namespace Gameplay.UI {
             }
             
             if (newlySelected) {
-                GameManager.Instance.GameAudio.AbilitySelectSound(_buildAbilityData);
+                GameAudio.Instance.AbilitySelectSound(_buildAbilityData);
             }
         }
 

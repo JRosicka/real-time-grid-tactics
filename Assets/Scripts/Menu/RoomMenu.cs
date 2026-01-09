@@ -26,8 +26,6 @@ public class RoomMenu : MonoBehaviour {
     public TMP_Text ToggleReadyButtonText;
     public TMP_Text JoinCodeText;
     
-    public LobbyAudio LobbyAudio;
-    
     public CanvasWidthSetter CanvasWidthSetter;
 
     public Animator CopiedToClipboardAnimator;
@@ -117,7 +115,7 @@ public class RoomMenu : MonoBehaviour {
     }
 
     public void ExitRoom() {
-        LobbyAudio.ButtonClickSound();
+        GameAudio.Instance.ButtonClickSound();
 
         DisconnectFeedbackService.SetDisconnectReason(DisconnectFeedbackService.DisconnectReason.ClientDisconnect);
         if (NetworkServer.active) {
@@ -148,7 +146,7 @@ public class RoomMenu : MonoBehaviour {
         GUIUtility.systemCopyBuffer = _joinCode;
         CopiedToClipboardAnimator.Play("Copy Join Code");
         
-        LobbyAudio.ButtonClickSound();
+        GameAudio.Instance.ButtonClickSound();
     }
 
     private void TryShowStartButton() {
@@ -261,7 +259,7 @@ public class RoomMenu : MonoBehaviour {
             LocalPlayer.CmdChangeReadyState(true);
         }
         
-        LobbyAudio.ButtonClickSound();
+        GameAudio.Instance.ButtonClickSound();
     }
 
     /// <summary>
@@ -296,6 +294,6 @@ public class RoomMenu : MonoBehaviour {
         LobbyNetworkBehaviour.LockMapLoading();
         NetworkManager.ServerChangeScene(NetworkManager.GameplayScene);
         
-        LobbyAudio.ButtonClickSound();
+        GameAudio.Instance.ButtonClickSound();
     }
 }

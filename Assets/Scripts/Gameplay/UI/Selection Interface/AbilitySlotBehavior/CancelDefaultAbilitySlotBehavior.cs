@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using Audio;
 using Gameplay.Entities;
 using Gameplay.Entities.Abilities;
 
@@ -23,7 +24,7 @@ namespace Gameplay.UI {
 
         public override void SelectSlot(bool newlySelected) {
             if (newlySelected) {
-                GameManager.Instance.GameAudio.ButtonClickSound();
+                GameAudio.Instance.ButtonClickSound();
             }
             
             // Deselect the selected targetable ability if there is one

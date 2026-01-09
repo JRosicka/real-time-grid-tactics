@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using Audio;
 using Gameplay.Config.Abilities;
 using Gameplay.Entities;
 using Gameplay.Grid;
@@ -197,12 +198,12 @@ public class EntitySelectionManager {
         if (!_selectedTargetableAbility.CanTargetCell(clickedCell, SelectedEntity, _gameManager.LocalTeam, _targetData)) {
             // We clicked on a cell that the ability cannot be used on. Deselect the ability. 
             GameManager.Instance.AlertTextDisplayer.DisplayAlert($"Cannot {_selectedTargetableAbility.AbilityVerb} there.");
-            GameManager.Instance.GameAudio.InvalidSound();
+            GameAudio.Instance.InvalidSound();
             DeselectTargetableAbility();
             return true;
         }
 
-        GameManager.Instance.GameAudio.AbilityTargetedSound(_selectedTargetableAbility);
+        GameAudio.Instance.AbilityTargetedSound(_selectedTargetableAbility);
         
         _gameManager.AbilityAssignmentManager.CancelAllAbilities(SelectedEntity, true);
 

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Audio;
 using Gameplay.Entities;
 using Gameplay.Entities.Abilities;
 using TMPro;
@@ -107,7 +108,7 @@ namespace Gameplay.UI {
         public void SelectAbility(bool newlySelected) {
             if (Availability != AvailabilityResult.Selectable) {
                 if (newlySelected) {
-                    GameManager.Instance.GameAudio.InvalidSound();
+                    GameAudio.Instance.InvalidSound();
                 }
                 return;
             }
@@ -120,7 +121,7 @@ namespace Gameplay.UI {
         /// When holding down the hotkey to select this button, this only gets called for the first frame
         /// </summary>
         public void HandleFailedToSelect() {
-            GameManager.Instance.GameAudio.InvalidSound();
+            GameAudio.Instance.InvalidSound();
             _slotBehavior?.HandleFailedToSelect(Availability);
         }
 

@@ -19,11 +19,11 @@ MonoBehaviour:
     Interruptible: 0
     PlayDuringReplay: 1
   ButtonClickSound:
-    Clip: {fileID: 8300000, guid: 71661fd9bce89964daaf2b0bd170ecae, type: 3}
+    Clip: {fileID: 8300000, guid: d2b051ef1bb14e241bb839f774507e92, type: 3}
     Volume: 0.862
     AudioLayer: 0
     Interruptible: 0
-    PlayDuringReplay: 0
+    PlayDuringReplay: 1
   InvalidSound:
     Clip: {fileID: 8300000, guid: af34f7affe36a4947950abbb1169ade9, type: 3}
     Volume: 0.408
