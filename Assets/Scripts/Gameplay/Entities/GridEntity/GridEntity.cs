@@ -168,6 +168,10 @@ namespace Gameplay.Entities {
             EntityData = data;
             Team = team;
             
+            foreach (AbilityDataScriptableObject abilityData in data.Abilities) {
+                AbilityInstanceCount[abilityData.Content.ContentResourceID] = 0;
+            }
+            
             // We call this later on the client, but we need the stats set up immediately on the server too (at least for rallying) 
             SetupStats();
 
@@ -200,9 +204,12 @@ namespace Gameplay.Entities {
             Team = team;
             UID = entityUID;
             GameTeam localPlayerTeam = GameManager.Instance.LocalTeam;
-            
-            foreach (AbilityDataScriptableObject abilityData in data.Abilities) {
-                AbilityInstanceCount[abilityData.Content.ContentResourceID] = 0;
+
+            // Might have already been initialized on the server
+            if (AbilityInstanceCount.Count == 0) {
+                foreach (AbilityDataScriptableObject abilityData in data.Abilities) {
+                    AbilityInstanceCount[abilityData.Content.ContentResourceID] = 0;
+                }
             }
 
             if (localPlayerTeam == GameTeam.Spectator) {
