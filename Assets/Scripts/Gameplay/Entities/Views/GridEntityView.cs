@@ -120,6 +120,11 @@ namespace Gameplay.Entities {
 
             _selectionMaterial = GameManager.Instance.GetPlayerForTeam(entity)?.Data.SelectionMaterial;
             _targetedMaterial = GameManager.Instance.Configuration.TargetedMaterial;
+            
+            // In case there are any abilities already in progress
+            foreach (AbilityTimer timer in entity.ActiveTimers) {
+                CreateTimerView(timer.Ability, timer);
+            }
         }
 
         public void ToggleView(bool show) {
