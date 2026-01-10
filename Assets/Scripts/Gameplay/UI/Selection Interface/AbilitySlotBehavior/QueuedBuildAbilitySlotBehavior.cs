@@ -17,7 +17,7 @@ namespace Gameplay.UI {
 
         public override void SelectSlot(bool newlySelected) {
             if (newlySelected) {
-                GameAudio.Instance.ButtonClickSound();
+                GameAudio.Instance.ButtonClickDownSound();
             }
 
             SelectedEntity.BuildQueue.CancelBuild(_buildAbility, GameManager.Instance.LocalTeam);

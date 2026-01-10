@@ -115,16 +115,14 @@ public class RoomMenu : MonoBehaviour {
     }
 
     public void ExitRoom() {
-        GameAudio.Instance.ButtonClickSound();
-
         DisconnectFeedbackService.SetDisconnectReason(DisconnectFeedbackService.DisconnectReason.ClientDisconnect);
         if (NetworkServer.active) {
             // We're the host, so stop the whole server
             NetworkManager.StopHost();
+            SceneLoader.Instance.LoadMainMenu();
         } else {
             // We're just a little baby client, so just stop the client. This automatically takes us back to the main menu.
             NetworkManager.StopClient();
-            SceneLoader.Instance.LoadMainMenu();
         }
     }
 
@@ -145,8 +143,6 @@ public class RoomMenu : MonoBehaviour {
     public void CopyJoinCode() {
         GUIUtility.systemCopyBuffer = _joinCode;
         CopiedToClipboardAnimator.Play("Copy Join Code");
-        
-        GameAudio.Instance.ButtonClickSound();
     }
 
     private void TryShowStartButton() {
@@ -258,8 +254,6 @@ public class RoomMenu : MonoBehaviour {
             ToggleReadyButtonText.text = "Cancel";
             LocalPlayer.CmdChangeReadyState(true);
         }
-        
-        GameAudio.Instance.ButtonClickSound();
     }
 
     /// <summary>
@@ -293,7 +287,5 @@ public class RoomMenu : MonoBehaviour {
         SteamLobbyService.UpdateCurrentLobbyMetadata(SteamLobbyService.LobbyGameActiveKey, true.ToString());
         LobbyNetworkBehaviour.LockMapLoading();
         NetworkManager.ServerChangeScene(NetworkManager.GameplayScene);
-        
-        GameAudio.Instance.ButtonClickSound();
     }
 }

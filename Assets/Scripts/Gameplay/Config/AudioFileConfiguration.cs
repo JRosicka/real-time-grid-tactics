@@ -8,7 +8,8 @@ namespace Gameplay.Config {
     [CreateAssetMenu(menuName = "Configuration/AudioFileConfiguration", fileName = "AudioFileConfiguration")]
     public class AudioFileConfiguration : ScriptableObject {
         public AudioFile GameMusic;
-        public AudioFile ButtonClickSound;
+        public AudioFile ButtonClickDownSound;
+        public AudioFile ButtonClickUpSound;
         public AudioFile InvalidSound;
         public AudioFile GameLossSound;
         public AudioFile GameWinSound;

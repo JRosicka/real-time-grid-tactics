@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Audio;
 using Game.Network;
 using Gameplay.UI;
 using Scenes;
@@ -113,20 +112,15 @@ public class MultiplayerMenu : MonoBehaviour {
         ResetMultiplayerMenu();
 
         LobbyTypeSelection.SetActive(true);
-        
-        GameAudio.Instance.ButtonClickSound();
     }
 
     public void OnHostPrivateLobbyClicked() {
         SteamLobbyService.Instance.HostLobby(false);
 
         HideButtons();
-        
-        GameAudio.Instance.ButtonClickSound();
     }
 
     public async void OnHostPublicLobbyClicked() {
-        GameAudio.Instance.ButtonClickSound();
         SceneLoader.Instance.LockMapLoading();
         
         await SceneLoader.Instance.LoadLobby();
@@ -138,7 +132,6 @@ public class MultiplayerMenu : MonoBehaviour {
     }
 
     public void OnStartSinglePlayerGameClicked() {
-        GameAudio.Instance.ButtonClickSound();
         SceneLoader.Instance.LoadIntoSinglePlayerGame();
     }
 
@@ -147,54 +140,40 @@ public class MultiplayerMenu : MonoBehaviour {
         
         ResetMultiplayerMenu();
         StopHostButton.gameObject.SetActive(false);
-        
-        GameAudio.Instance.ButtonClickSound();
     }
 
     public void OnSearchForLobbiesClicked() {
         ResetMultiplayerMenu();
         
         DisplayLobbyMenu();
-        
-        GameAudio.Instance.ButtonClickSound();
     }
 
     public void OnJoinByIDButtonClicked() {
         ResetMultiplayerMenu();
         
         JoinByIDMenu.gameObject.SetActive(true);
-        
-        GameAudio.Instance.ButtonClickSound();
     }
 
     public void OnSinglePlayerButtonClicked() {
         ResetMultiplayerMenu();
 
         SinglePlayerConfirmationDialog.SetActive(true);
-        
-        GameAudio.Instance.ButtonClickSound();
     }
     
     public void OnTipsClicked() {
         ResetMultiplayerMenu();
         HideButtons();
         TipsMenu.Open(ResetMultiplayerMenu);
-        
-        GameAudio.Instance.ButtonClickSound();
     }
 
     public void OnSettingsClicked() {
         ResetMultiplayerMenu();
         HideButtons();
         SettingsMenu.Open(ResetMultiplayerMenu);
-        
-        GameAudio.Instance.ButtonClickSound();
     }
     
     public void OnQuitClicked() {
         Application.Quit(0);
-        
-        GameAudio.Instance.ButtonClickSound();
     }
 
     private event Action _onClickedOkayOnFailureDialog;
@@ -202,14 +181,10 @@ public class MultiplayerMenu : MonoBehaviour {
         FailureFeedbackDialog.SetActive(false);
         _onClickedOkayOnFailureDialog?.Invoke();
         _onClickedOkayOnFailureDialog = null;
-        
-        GameAudio.Instance.ButtonClickSound();
     }
 
     private string _joinCodeForLobbyWeAreAttemptingToJoin;
     public void OnSubmitLobbyJoinIDClicked() {
-        GameAudio.Instance.ButtonClickSound();
-        
         string id = JoinByIDField.text;
 
         // If we have a join code stored here, then we are expecting the user to input the correct join ID.

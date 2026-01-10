@@ -28,7 +28,7 @@ namespace Gameplay.UI {
 
         public override void SelectSlot(bool newlySelected) {
             if (newlySelected) {
-                GameAudio.Instance.ButtonClickSound();
+                GameAudio.Instance.ButtonClickDownSound();
             }
             
             // Move out of a nested build menu if we are in one

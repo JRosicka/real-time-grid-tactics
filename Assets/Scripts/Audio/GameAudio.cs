@@ -33,8 +33,12 @@ namespace Audio {
             _audioPlayer.EndMusic(fadeOut);
         }
 
-        public void ButtonClickSound() {
-            TryPlaySFX(_audioConfiguration.ButtonClickSound);
+        public void ButtonClickDownSound() {
+            TryPlaySFX(_audioConfiguration.ButtonClickDownSound);
+        }
+
+        public void ButtonClickUpSound() {
+            TryPlaySFX(_audioConfiguration.ButtonClickDownSound);
         }
 
         public void InvalidSound() {
