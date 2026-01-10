@@ -41,6 +41,7 @@ public class MultiplayerMenu : MonoBehaviour {
 
         if (SteamLobbyService.Instance == null || !SteamLobbyService.Instance.SteamEnabled) return;
         
+        SteamLobbyService.Instance.OnLobbyCreationComplete += OnLobbyCreationComplete;
         SteamLobbyService.Instance.OnLobbyJoinComplete += OnLobbyJoinComplete;
         LobbyListEntry.LobbyJoinAttemptStarted += PromptJoinIDForLobby;
         
@@ -50,6 +51,7 @@ public class MultiplayerMenu : MonoBehaviour {
     private void OnDestroy() {
         if (SteamLobbyService.Instance == null || !SteamLobbyService.Instance.SteamEnabled) return;
 
+        SteamLobbyService.Instance.OnLobbyCreationComplete -= OnLobbyCreationComplete;
         SteamLobbyService.Instance.OnLobbyJoinComplete -= OnLobbyJoinComplete;
         LobbyListEntry.LobbyJoinAttemptStarted -= PromptJoinIDForLobby;
     }
@@ -78,12 +80,18 @@ public class MultiplayerMenu : MonoBehaviour {
         FailureFeedbackDialog.SetActive(true);
     }
     
+    private void OnLobbyCreationComplete(bool success) {
+        if (!success) {
+            ResetMultiplayerMenu();
+            ShowFailureFeedback("Failed to create lobby");
+            SceneLoader.Instance.LobbyFailedToLoad();
+        }
+    }
+    
     private void OnLobbyJoinComplete(bool success, string failureMessage) {
         if (!success) {
             ResetMultiplayerMenu();
             ShowFailureFeedback($"Failed to join lobby: {failureMessage}");
-        } else {
-            // TODO I don't think we need to do anything here since we're about to be whisked away to the room scene. 
         }
     }
 

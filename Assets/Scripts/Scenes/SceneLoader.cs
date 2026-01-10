@@ -57,6 +57,11 @@ namespace Scenes {
             return _loadingScreen.ShowLoadingScreen(true, true);
         }
 
+        public void LobbyFailedToLoad() {
+            _gameTypeManager.SetGameType(false, false, true);
+            _loadingScreen.HideLoadingScreen(true);
+        }
+
         public async void LoadMainMenu() {
             _targetScene = MainMenuSceneName;
             _gameTypeManager.SetGameType(false, false, true);
