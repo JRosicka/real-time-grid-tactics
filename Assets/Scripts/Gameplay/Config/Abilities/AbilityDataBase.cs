@@ -104,6 +104,8 @@ namespace Gameplay.Config.Abilities {
         [Tooltip("Only relevant for targetable abilities")]
         [SerializeField] private AudioFile _targetedSound;
         public AudioFile TargetedSound => _targetedSound;
+        [SerializeField] private AudioFile _performedSound;
+        public AudioFile PerformedSound => _performedSound;
         [FormerlySerializedAs("_triggersEntityOrderSound")] [SerializeField] private bool _triggersEntityOrderVoiceLine;
         public bool TriggersEntityOrderVoiceLine => _triggersEntityOrderVoiceLine;
 

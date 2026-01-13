@@ -65,6 +65,10 @@ namespace Audio {
             TryPlaySFX(abilityData.TargetedSound);
         }
 
+        public void AbilityPerformedSound(IAbilityData abilityData) {
+            TryPlaySFX(abilityData.PerformedSound);
+        }
+
         private void ChooseAndPlayEntitySound(string entityType, List<AudioFile> audioFiles, Dictionary<string, AudioFile> lastPlayedSounds) {
             if (audioFiles.Count == 0) return;
 

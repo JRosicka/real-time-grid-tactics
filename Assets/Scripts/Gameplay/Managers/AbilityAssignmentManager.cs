@@ -5,11 +5,8 @@ using Gameplay.Config;
 using Gameplay.Config.Abilities;
 using Gameplay.Entities;
 using Gameplay.Entities.Abilities;
-using Mirror;
-using Newtonsoft.Json;
 using Scenes;
 using UnityEngine;
-using Util;
 
 namespace Gameplay.Managers {
     /// <summary>
@@ -86,6 +83,8 @@ namespace Gameplay.Managers {
             if (fromInput && abilityData.TriggersEntityOrderVoiceLine) {
                 GameAudio.Instance.EntityOrderSound(entity.EntityData);
             }
+
+            GameAudio.Instance.AbilityPerformedSound(abilityData);
             
             return true;
         }
