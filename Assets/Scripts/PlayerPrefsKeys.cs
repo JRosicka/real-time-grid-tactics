@@ -3,6 +3,7 @@
 /// </summary>
 public static class PlayerPrefsKeys {
     public const string SoundEffectVolumeKey = "SoundEffectsVolume";
+    public const string VoiceLineVolumeKey = "VoiceLinesVolume";
     public const string MusicVolumeKey = "MusicVolume";
     public const string EdgeScrollKey = "EdgeScroll";
     public const string EdgeScrollSpeed = "EdgeScrollSpeed";

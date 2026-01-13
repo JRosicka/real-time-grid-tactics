@@ -38,7 +38,7 @@ MonoBehaviour:
   EntityFinishedBuildingSound:
     Clip: {fileID: 8300000, guid: d56d48b1e0cb94449985abfa4c07e9dc, type: 3}
     Volume: 0.394
-    AudioLayer: 0
+    AudioLayer: 2
     Interruptible: 1
     PlayDuringReplay: 0
   HP: 60

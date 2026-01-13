@@ -181,6 +181,10 @@ namespace Audio {
             Mixer.SetFloat(PlayerPrefsKeys.SoundEffectVolumeKey, ToDecibels(newVolume * GlobalVolumeMultiplier));
         }
         
+        public void SetVoiceLineVolume(float newVolume) {
+            Mixer.SetFloat(PlayerPrefsKeys.VoiceLineVolumeKey, ToDecibels(newVolume * GlobalVolumeMultiplier));
+        }
+        
         public void SetMusicVolume(float newVolume) {
             Mixer.SetFloat(PlayerPrefsKeys.MusicVolumeKey, ToDecibels(newVolume * GlobalVolumeMultiplier));
         }
@@ -198,7 +202,10 @@ namespace Audio {
         public static int GetLayerPriority(AudioLayerName layer) {
             switch (layer) {
                 case AudioLayerName.SoundEffects:
+                    // ReSharper disable once DuplicatedStatements
                     return 200;
+                case AudioLayerName.VoiceLines:
+                    return 150;
                 case AudioLayerName.Music:
                     return 100;
                 case AudioLayerName.Undefined:

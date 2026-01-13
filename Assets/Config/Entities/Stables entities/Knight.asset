@@ -33,16 +33,19 @@ MonoBehaviour:
   SelectionSounds:
   - Clip: {fileID: 8300000, guid: 2a160808483721c42b2b53b2eb989891, type: 3}
     Volume: 0.719
-    AudioLayer: 0
+    AudioLayer: 2
     Interruptible: 1
+    PlayDuringReplay: 0
   - Clip: {fileID: 8300000, guid: 85329860bf0f91248bbc27d65c79c936, type: 3}
     Volume: 0.789
-    AudioLayer: 0
+    AudioLayer: 2
     Interruptible: 1
+    PlayDuringReplay: 0
   - Clip: {fileID: 8300000, guid: ae91d02db2375734c97d379e46521604, type: 3}
     Volume: 0.805
-    AudioLayer: 0
+    AudioLayer: 2
     Interruptible: 1
+    PlayDuringReplay: 0
   OrderSounds: []
   AttackSounds: []
   EntityFinishedBuildingSound:
@@ -50,6 +53,7 @@ MonoBehaviour:
     Volume: 0
     AudioLayer: 0
     Interruptible: 0
+    PlayDuringReplay: 0
   HP: 65
   Range: 1
   Damage: 14

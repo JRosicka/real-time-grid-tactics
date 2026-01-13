@@ -16,6 +16,7 @@ namespace Gameplay.UI {
         // };
         
         [SerializeField] private SettingSlider _sfxVolumeSlider;
+        [SerializeField] private SettingSlider _voiceLineVolumeSlider;
         [SerializeField] private SettingSlider _musicVolumeSlider;
         [SerializeField] private SettingToggle _edgeScrollToggle;
         [SerializeField] private SettingSlider _edgeScrollSpeedSlider;
@@ -36,6 +37,7 @@ namespace Gameplay.UI {
         private void Start() {
             // 0 - 100
             int sfxVolume = ToVolumeInt(PlayerPrefs.GetFloat(PlayerPrefsKeys.SoundEffectVolumeKey, PlayerPrefsKeys.DefaultVolume));
+            int voiceLineVolume = ToVolumeInt(PlayerPrefs.GetFloat(PlayerPrefsKeys.VoiceLineVolumeKey, PlayerPrefsKeys.DefaultVolume));
             int musicVolume = ToVolumeInt(PlayerPrefs.GetFloat(PlayerPrefsKeys.MusicVolumeKey, PlayerPrefsKeys.DefaultVolume));
             bool edgeScroll = PlayerPrefs.GetInt(PlayerPrefsKeys.EdgeScrollKey, 1) == 1;
             int edgeScrollSpeed = PlayerPrefs.GetInt(PlayerPrefsKeys.EdgeScrollSpeed, PlayerPrefsKeys.DefaultEdgeScrollSpeed);
@@ -45,7 +47,10 @@ namespace Gameplay.UI {
             
             _sfxVolumeSlider.Initialize(sfxVolume);
             _sfxVolumeSlider.ValueChanged += SFXVolumeChanged;
-            
+
+            _voiceLineVolumeSlider.Initialize(voiceLineVolume);
+            _voiceLineVolumeSlider.ValueChanged += VoiceLineVolumeChanged;
+
             _musicVolumeSlider.Initialize(musicVolume);
             _musicVolumeSlider.ValueChanged += MusicVolumeChanged;
             
@@ -72,6 +77,12 @@ namespace Gameplay.UI {
             AudioManager.Instance.SetSoundEffectVolume(sfxVolume);
         }
         
+        private static void VoiceLineVolumeChanged(int volume) {
+            float voiceLineVolume = ToPersistedVolumeFloat(volume);
+            PlayerPrefs.SetFloat(PlayerPrefsKeys.VoiceLineVolumeKey, voiceLineVolume);
+            AudioManager.Instance.SetVoiceLineVolume(voiceLineVolume);
+        }
+
         private static void MusicVolumeChanged(int volume) {
             float sfxVolume = ToPersistedVolumeFloat(volume);
             PlayerPrefs.SetFloat(PlayerPrefsKeys.MusicVolumeKey, sfxVolume);

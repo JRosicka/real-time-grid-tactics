@@ -6,5 +6,6 @@ namespace Audio {
         Undefined = -1,
         SoundEffects,
         Music,
+        VoiceLines
     }
 }

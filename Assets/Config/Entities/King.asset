@@ -27,28 +27,28 @@ MonoBehaviour:
   SelectionSounds:
   - Clip: {fileID: 8300000, guid: 5a15df5023bb703429dc7e77b5757468, type: 3}
     Volume: 0.789
-    AudioLayer: 0
+    AudioLayer: 2
     Interruptible: 1
     PlayDuringReplay: 0
   - Clip: {fileID: 8300000, guid: bee3ebf0c7f975f4b9dd713f98885f49, type: 3}
     Volume: 0.801
-    AudioLayer: 0
+    AudioLayer: 2
     Interruptible: 1
     PlayDuringReplay: 0
   - Clip: {fileID: 8300000, guid: d1b2f0d6b46b55c47bcc0f86c752c136, type: 3}
     Volume: 0.805
-    AudioLayer: 0
+    AudioLayer: 2
     Interruptible: 1
     PlayDuringReplay: 0
   OrderSounds:
   - Clip: {fileID: 8300000, guid: dee9f9e5fd1d7ff43aee828b46705a7a, type: 3}
     Volume: 0.82
-    AudioLayer: 0
+    AudioLayer: 2
     Interruptible: 1
     PlayDuringReplay: 0
   - Clip: {fileID: 8300000, guid: 1de3e99a07970c04b85dbe23ca5a10e6, type: 3}
     Volume: 0.844
-    AudioLayer: 0
+    AudioLayer: 2
     Interruptible: 1
     PlayDuringReplay: 0
   AttackSounds: []

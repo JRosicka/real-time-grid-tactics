@@ -21,6 +21,7 @@ namespace Audio {
             await Task.Yield();
             
             SetSoundEffectVolume(PlayerPrefs.GetFloat(PlayerPrefsKeys.SoundEffectVolumeKey, PlayerPrefsKeys.DefaultVolume));
+            SetVoiceLineVolume(PlayerPrefs.GetFloat(PlayerPrefsKeys.VoiceLineVolumeKey, PlayerPrefsKeys.DefaultVolume));
             SetMusicVolume(PlayerPrefs.GetFloat(PlayerPrefsKeys.MusicVolumeKey, PlayerPrefsKeys.DefaultVolume));
         }
 
@@ -64,6 +65,10 @@ namespace Audio {
             _audioManager.SetSoundEffectVolume(newVolume);
         }
         
+        public void SetVoiceLineVolume(float newVolume) {
+            _audioManager.SetVoiceLineVolume(newVolume);
+        }
+
         public void SetMusicVolume(float newVolume) {
             _audioManager.SetMusicVolume(newVolume);
         }

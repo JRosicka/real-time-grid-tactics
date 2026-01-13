@@ -31,14 +31,16 @@ MonoBehaviour:
   OrderSounds:
   - Clip: {fileID: 8300000, guid: e53880accaeec63418f562b58534f764, type: 3}
     Volume: 0.489
-    AudioLayer: 0
+    AudioLayer: 2
     Interruptible: 1
+    PlayDuringReplay: 0
   AttackSounds: []
   EntityFinishedBuildingSound:
     Clip: {fileID: 0}
     Volume: 0
     AudioLayer: 0
     Interruptible: 0
+    PlayDuringReplay: 0
   HP: 44
   Range: 1
   Damage: 8
