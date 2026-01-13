@@ -41,7 +41,7 @@ MonoBehaviour:
     _showTimerOnSelectionInterface: 1
     _performByDefault: 0
     _selectionSound:
-      Clip: {fileID: 8300000, guid: 71661fd9bce89964daaf2b0bd170ecae, type: 3}
+      Clip: {fileID: 8300000, guid: 3501aba8cbbc0bb48924b27d6ab8e2fc, type: 3}
       Volume: 0.82
       AudioLayer: 0
       Interruptible: 0
