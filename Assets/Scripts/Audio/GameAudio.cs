@@ -38,7 +38,7 @@ namespace Audio {
         }
 
         public void ButtonClickUpSound() {
-            TryPlaySFX(_audioConfiguration.ButtonClickDownSound);
+            TryPlaySFX(_audioConfiguration.ButtonClickUpSound);
         }
 
         public void InvalidSound() {
