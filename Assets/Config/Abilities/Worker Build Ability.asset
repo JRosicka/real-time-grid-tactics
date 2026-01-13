@@ -48,8 +48,14 @@ MonoBehaviour:
       Interruptible: 0
       PlayDuringReplay: 0
     _targetedSound:
-      Clip: {fileID: 8300000, guid: 71661fd9bce89964daaf2b0bd170ecae, type: 3}
+      Clip: {fileID: 8300000, guid: 731293a9d036dbf43ba751ac7e9aed0e, type: 3}
       Volume: 0.862
+      AudioLayer: 0
+      Interruptible: 0
+      PlayDuringReplay: 0
+    _performedSound:
+      Clip: {fileID: 0}
+      Volume: 0
       AudioLayer: 0
       Interruptible: 0
       PlayDuringReplay: 0

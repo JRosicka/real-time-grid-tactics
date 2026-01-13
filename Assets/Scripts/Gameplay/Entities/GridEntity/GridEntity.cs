@@ -537,7 +537,7 @@ namespace Gameplay.Entities {
         #endregion
         #region Moving
         
-        public bool TryMoveToCell(Vector2Int targetCell, bool fromInput, bool recordForReplay) {
+        public bool TryMoveToCell(Vector2Int targetCell, bool fromInput, bool recordForReplay, bool playTargetSound) {
             if (!CanMoveOrRally) return false;
 
             MoveAbilityData data = GetAbilityData<MoveAbilityData>();
@@ -547,6 +547,9 @@ namespace Gameplay.Entities {
                     BlockedByOccupation = true
                 }, fromInput, true, true, recordForReplay)) {
                 SetTargetLocation(targetCell, null, false);
+                if (playTargetSound) {
+                    GameAudio.Instance.AbilityTargetedSound(data);
+                }
             }
             return true;
         }
@@ -672,6 +675,7 @@ namespace Gameplay.Entities {
             if (AbilityAssignmentManager.StartPerformingAbility(this, data, new TargetAttackAbilityParameters() {
                     Target = targetEntity, 
                 }, true, true, true, true)) {
+                GameAudio.Instance.AbilityTargetedSound(data);
                 SetTargetLocation(targetCell, targetEntity, true);
             }
         }

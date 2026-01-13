@@ -1,3 +1,4 @@
+using Audio;
 using Gameplay.Config.Abilities;
 using Gameplay.Entities.Abilities;
 using Gameplay.UI;
@@ -50,14 +51,14 @@ namespace Gameplay.Entities {
 
             // See if we should target this entity
             if (targetEntity != null && targetEntity.Team == GameTeam.Neutral) {
-                thisEntity.TryMoveToCell(targetCell, true, true);
+                thisEntity.TryMoveToCell(targetCell, true, true, true);
             } else if (targetEntity == thisEntity) {
                 // We are right-clicking the selected entity's cell? Cancel everything. 
                 thisEntity.CancelAllAbilities();
             } else if (targetEntity != null && thisEntity.Team != targetEntity.Team) {
                 TryTargetEntity(thisEntity, targetEntity, targetCell);
             } else {
-                thisEntity.TryMoveToCell(targetCell, true, true);
+                thisEntity.TryMoveToCell(targetCell, true, true, true);
             }
             
             GameManager.Instance.EntitySelectionManager.DeselectTargetableAbility();

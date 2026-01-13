@@ -53,6 +53,12 @@ MonoBehaviour:
       AudioLayer: 0
       Interruptible: 0
       PlayDuringReplay: 0
+    _performedSound:
+      Clip: {fileID: 0}
+      Volume: 0
+      AudioLayer: 0
+      Interruptible: 0
+      PlayDuringReplay: 0
     _triggersEntityOrderVoiceLine: 1
     AddedAttackTime: 4
     AddedMovementTime: 0.6

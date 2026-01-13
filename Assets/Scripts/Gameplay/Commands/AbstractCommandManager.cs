@@ -126,7 +126,7 @@ public abstract class AbstractCommandManager : NetworkBehaviour, ICommandManager
         if (spawnerEntity != null && spawnerEntity.TargetLocationLogicValue.CanRally && spawnerEntity.TargetLocationLogicValue.CurrentTarget != spawnerLocation) {
             if (data.Tags.Contains(EntityTag.Worker)) {
                 // Workers get move-commanded
-                entityInstance.TryMoveToCell(spawnerEntity.TargetLocationLogicValue.CurrentTarget, false, false);
+                entityInstance.TryMoveToCell(spawnerEntity.TargetLocationLogicValue.CurrentTarget, false, false, false);
             } else {
                 // Everything else attacks
                 entityInstance.TryAttack(spawnerEntity.TargetLocationLogicValue.CurrentTarget, spawnerEntity.TargetLocationLogicValue.TargetEntity);
