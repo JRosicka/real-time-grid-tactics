@@ -47,7 +47,22 @@ MonoBehaviour:
     Interruptible: 1
     PlayDuringReplay: 0
   OrderSounds: []
-  AttackSounds: []
+  AttackSounds:
+  - Clip: {fileID: 8300000, guid: e3ea136890f2c73428d02a6614734e14, type: 3}
+    Volume: 0.5
+    AudioLayer: 0
+    Interruptible: 0
+    PlayDuringReplay: 1
+  - Clip: {fileID: 8300000, guid: 7ee29aeed194de2449eae4ae8ffbb427, type: 3}
+    Volume: 0.5
+    AudioLayer: 0
+    Interruptible: 0
+    PlayDuringReplay: 1
+  - Clip: {fileID: 8300000, guid: e4d6d5a4185fe8a438a124e17d6d24fb, type: 3}
+    Volume: 0.5
+    AudioLayer: 0
+    Interruptible: 0
+    PlayDuringReplay: 1
   EntityFinishedBuildingSound:
     Clip: {fileID: 0}
     Volume: 0
