@@ -67,8 +67,8 @@ MonoBehaviour:
     Interruptible: 0
     PlayDuringReplay: 1
   UpgradeCompleteSound:
-    Clip: {fileID: 8300000, guid: 152ec2e0b5844aa48b1834ca664552cb, type: 3}
-    Volume: 0.472
+    Clip: {fileID: 0}
+    Volume: 0
     AudioLayer: 2
-    Interruptible: 1
+    Interruptible: 0
     PlayDuringReplay: 0
