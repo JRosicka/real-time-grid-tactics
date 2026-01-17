@@ -26,7 +26,12 @@ MonoBehaviour:
   TeamColorSprite: {fileID: 0}
   BaseSpriteIconOverride: {fileID: 0}
   _viewPrefab: {fileID: 7504026570216467247, guid: 7dc0a13730d5c56438a0306afc8a0823, type: 3}
-  SelectionSounds: []
+  SelectionSounds:
+  - Clip: {fileID: 8300000, guid: fc565eed3f5c5b54c8a837601f6aa594, type: 3}
+    Volume: 0.826
+    AudioLayer: 0
+    Interruptible: 0
+    PlayDuringReplay: 0
   OrderSounds:
   - Clip: {fileID: 8300000, guid: 71661fd9bce89964daaf2b0bd170ecae, type: 3}
     Volume: 0.699
