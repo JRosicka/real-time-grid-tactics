@@ -26,8 +26,23 @@ MonoBehaviour:
   BaseSpriteIconOverride: {fileID: 0}
   _viewPrefab: {fileID: 6373076591908856349, guid: fe97602c9548e534eb21b66e57e65290, type: 3}
   SelectionSounds:
-  - Clip: {fileID: 8300000, guid: fc565eed3f5c5b54c8a837601f6aa594, type: 3}
-    Volume: 0.81
+  - Clip: {fileID: 8300000, guid: 9b465134c135fd1409e530c1b3235760, type: 3}
+    Volume: 0.562
+    AudioLayer: 0
+    Interruptible: 0
+    PlayDuringReplay: 0
+  - Clip: {fileID: 8300000, guid: 3b2f02c2c61e9a249ab8a69b846e5510, type: 3}
+    Volume: 0.554
+    AudioLayer: 0
+    Interruptible: 0
+    PlayDuringReplay: 0
+  - Clip: {fileID: 8300000, guid: fc1a49a0d97482c4886d0db9b01bf9b8, type: 3}
+    Volume: 0.578
+    AudioLayer: 0
+    Interruptible: 0
+    PlayDuringReplay: 0
+  - Clip: {fileID: 8300000, guid: c167ba029641c3545b5803561845c86e, type: 3}
+    Volume: 0.574
     AudioLayer: 0
     Interruptible: 0
     PlayDuringReplay: 0
