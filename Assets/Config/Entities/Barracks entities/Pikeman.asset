@@ -27,28 +27,33 @@ MonoBehaviour:
   BaseSpriteIconOverride: {fileID: 0}
   _viewPrefab: {fileID: 7504026570216467247, guid: 970946a288018114aba70df866efc53d, type: 3}
   SelectionSounds:
-  - Clip: {fileID: 8300000, guid: 8923c0c400b5d234083bda4ecd02318f, type: 3}
+  - Clip: {fileID: 8300000, guid: aba5de5712eff1e419e168525719fdfc, type: 3}
     Volume: 0.742
     AudioLayer: 2
     Interruptible: 1
     PlayDuringReplay: 0
-  - Clip: {fileID: 8300000, guid: 42c61192196f60743b45be6bf9f171c4, type: 3}
+  - Clip: {fileID: 8300000, guid: e4ebe9ed7e1dba24bbd0089b719f51c8, type: 3}
     Volume: 0.77
     AudioLayer: 2
     Interruptible: 1
     PlayDuringReplay: 0
-  - Clip: {fileID: 8300000, guid: d44cd923616fbea4292bf35928640245, type: 3}
+  - Clip: {fileID: 8300000, guid: 96869a4cece3f3f43b0844e3c1b58b04, type: 3}
     Volume: 0.766
     AudioLayer: 2
     Interruptible: 1
     PlayDuringReplay: 0
+  - Clip: {fileID: 8300000, guid: 5f4e6ac0da46cc34e8dfdcd0345fcbfc, type: 3}
+    Volume: 0.748
+    AudioLayer: 2
+    Interruptible: 1
+    PlayDuringReplay: 0
   OrderSounds:
-  - Clip: {fileID: 8300000, guid: cf1c452e7ccaa454b91a8e25d6e5948d, type: 3}
+  - Clip: {fileID: 8300000, guid: c27df4efe7315b044be86fbc94dfb512, type: 3}
     Volume: 0.781
     AudioLayer: 2
     Interruptible: 1
     PlayDuringReplay: 0
-  - Clip: {fileID: 8300000, guid: 3061feef3a83c454dbba29074facf57a, type: 3}
+  - Clip: {fileID: 8300000, guid: 45515204c7a54be4e8d0c97263013766, type: 3}
     Volume: 0.758
     AudioLayer: 2
     Interruptible: 1
