@@ -35,5 +35,9 @@ namespace Scenes {
             _gameAudio = new GameAudio(_audioPlayer, GameConfigurationLocator.GameConfiguration.AudioConfiguration);
             _sceneLoader.Initialize();
         }
+        
+        private void Update() {
+            _gameAudio.Update(Time.deltaTime);
+        }
     }
 }

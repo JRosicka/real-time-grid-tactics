@@ -49,6 +49,7 @@ MonoBehaviour:
     PlayDuringReplay: 0
   OrderSounds: []
   AttackSounds: []
+  AudioPlacementPrefix: StandardStructure
   EntityFinishedBuildingSound:
     Clip: {fileID: 0}
     Volume: 0

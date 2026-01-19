@@ -17,7 +17,6 @@ MonoBehaviour:
   Description: Awards 50 <sprite name="gold"> when moving a unit here.
   Cost: []
   Requirements: []
-  RequirementNeedsToBeAdjacent: 0
   BuildTime: 0
   BuildsImmediately: 0
   BaseSprite: {fileID: 21300000, guid: a7e6cb48d72b74aa0a1679a961dc6f10, type: 3}
@@ -27,20 +26,24 @@ MonoBehaviour:
   SelectionSounds: []
   OrderSounds: []
   AttackSounds: []
+  AudioPlacementPrefix: Pickup
   EntityFinishedBuildingSound:
     Clip: {fileID: 0}
     Volume: 0
     AudioLayer: 0
     Interruptible: 0
+    PlayDuringReplay: 0
   HP: 0
   Range: 0
   Damage: 0
   BonusDamage: 0
   TagsToApplyBonusDamageTo: 
   NormalMoveTime: 0
-  SlowMoveTime: 0
   AddedMovementTimeFromAttacking: 0
   Tags: 07000000
+  InaccessibleTiles: []
+  SlowTiles: []
+  OverrideEntityDataForPathfinding: {fileID: 0}
   AttackerTargetPriority: 0
   Abilities:
   - {fileID: 11400000, guid: d50fba4f48da240b7b8d5c84a17a6d1d, type: 2}
@@ -48,6 +51,7 @@ MonoBehaviour:
   AttackByDefault: 0
   IsResourceExtractor: 0
   ResourceThatThisCanExtract: {fileID: 0}
+  EntityIcon: {fileID: 0}
   MovementAndAttackUI: 0
   DisplaySelectionOutline: 1
   BuildQueueSize: 5

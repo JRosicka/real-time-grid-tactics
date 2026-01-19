@@ -55,6 +55,7 @@ MonoBehaviour:
     AudioLayer: 2
     Interruptible: 0
     PlayDuringReplay: 1
+  AudioPlacementPrefix: Archer
   EntityFinishedBuildingSound:
     Clip: {fileID: 0}
     Volume: 0

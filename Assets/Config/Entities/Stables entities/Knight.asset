@@ -63,6 +63,7 @@ MonoBehaviour:
     AudioLayer: 0
     Interruptible: 0
     PlayDuringReplay: 1
+  AudioPlacementPrefix: Knight
   EntityFinishedBuildingSound:
     Clip: {fileID: 0}
     Volume: 0

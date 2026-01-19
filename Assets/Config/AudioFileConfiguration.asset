@@ -18,57 +18,67 @@ MonoBehaviour:
     AudioLayer: 1
     Interruptible: 0
     PlayDuringReplay: 1
+    AllowInQuickSuccession: 0
   ButtonClickDownSound:
     Clip: {fileID: 8300000, guid: d2b051ef1bb14e241bb839f774507e92, type: 3}
     Volume: 0.83
     AudioLayer: 0
     Interruptible: 0
     PlayDuringReplay: 1
+    AllowInQuickSuccession: 1
   ButtonClickUpSound:
     Clip: {fileID: 0}
     Volume: 0
     AudioLayer: 0
     Interruptible: 0
     PlayDuringReplay: 0
+    AllowInQuickSuccession: 0
   InvalidSound:
     Clip: {fileID: 8300000, guid: af34f7affe36a4947950abbb1169ade9, type: 3}
     Volume: 0.408
     AudioLayer: 0
     Interruptible: 0
     PlayDuringReplay: 0
+    AllowInQuickSuccession: 0
   GameLossSound:
     Clip: {fileID: 8300000, guid: 731e6a5242a11a743a9a77c1bb00813d, type: 3}
     Volume: 0.2
     AudioLayer: 0
     Interruptible: 0
     PlayDuringReplay: 0
+    AllowInQuickSuccession: 0
   GameWinSound:
     Clip: {fileID: 8300000, guid: 5da1ea2314d33304cb03765866bb7e0c, type: 3}
     Volume: 0.2
     AudioLayer: 0
     Interruptible: 0
     PlayDuringReplay: 0
+    AllowInQuickSuccession: 0
   GameStartSound:
     Clip: {fileID: 8300000, guid: fd1ec9c326065d14180f94ec93e302cb, type: 3}
     Volume: 0.913
     AudioLayer: 0
     Interruptible: 0
     PlayDuringReplay: 0
+    AllowInQuickSuccession: 0
   ArrowLandSound:
     Clip: {fileID: 8300000, guid: da31cd59208f22641810c1f1631ae12a, type: 3}
     Volume: 0.23
     AudioLayer: 0
     Interruptible: 0
     PlayDuringReplay: 1
+    AllowInQuickSuccession: 1
   ConstructionSound:
     Clip: {fileID: 8300000, guid: 595a7c85eb982684fb52a27e0578846c, type: 3}
     Volume: 0.211
     AudioLayer: 0
     Interruptible: 0
     PlayDuringReplay: 1
+    AllowInQuickSuccession: 0
   UpgradeCompleteSound:
     Clip: {fileID: 0}
     Volume: 0
     AudioLayer: 2
     Interruptible: 0
     PlayDuringReplay: 0
+    AllowInQuickSuccession: 0

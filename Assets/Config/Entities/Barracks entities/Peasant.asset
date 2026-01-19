@@ -28,11 +28,13 @@ MonoBehaviour:
   SelectionSounds: []
   OrderSounds: []
   AttackSounds: []
+  AudioPlacementPrefix: Peasant
   EntityFinishedBuildingSound:
     Clip: {fileID: 0}
     Volume: 0
     AudioLayer: 0
     Interruptible: 0
+    PlayDuringReplay: 0
   HP: 16
   Range: 1
   Damage: 2

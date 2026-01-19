@@ -18,7 +18,6 @@ MonoBehaviour:
     a peasant to harvest.
   Cost: []
   Requirements: []
-  RequirementNeedsToBeAdjacent: 0
   BuildTime: 0
   BuildsImmediately: 0
   BaseSprite: {fileID: 21300000, guid: be22a8226151f4b40b9f5e3041c2a631, type: 3}
@@ -28,26 +27,31 @@ MonoBehaviour:
   SelectionSounds: []
   OrderSounds: []
   AttackSounds: []
+  AudioPlacementPrefix: Resource
   EntityFinishedBuildingSound:
     Clip: {fileID: 0}
     Volume: 0
     AudioLayer: 0
     Interruptible: 0
+    PlayDuringReplay: 0
   HP: 0
   Range: 0
   Damage: 0
   BonusDamage: 0
   TagsToApplyBonusDamageTo: 
   NormalMoveTime: 0
-  SlowMoveTime: 0
   AddedMovementTimeFromAttacking: 0
   Tags: 07000000
+  InaccessibleTiles: []
+  SlowTiles: []
+  OverrideEntityDataForPathfinding: {fileID: 0}
   AttackerTargetPriority: 0
   Abilities: []
   FriendlyUnitsCanShareCell: 1
   AttackByDefault: 0
   IsResourceExtractor: 0
   ResourceThatThisCanExtract: {fileID: 0}
+  EntityIcon: {fileID: 0}
   MovementAndAttackUI: 0
   DisplaySelectionOutline: 1
   BuildQueueSize: 5

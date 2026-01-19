@@ -59,6 +59,7 @@ MonoBehaviour:
     Interruptible: 1
     PlayDuringReplay: 0
   AttackSounds: []
+  AudioPlacementPrefix: Pikeman
   EntityFinishedBuildingSound:
     Clip: {fileID: 0}
     Volume: 0

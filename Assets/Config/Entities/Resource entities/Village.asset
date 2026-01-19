@@ -54,6 +54,7 @@ MonoBehaviour:
     Interruptible: 0
     PlayDuringReplay: 0
   AttackSounds: []
+  AudioPlacementPrefix: StandardStructure
   EntityFinishedBuildingSound:
     Clip: {fileID: 0}
     Volume: 0

@@ -48,6 +48,7 @@ MonoBehaviour:
     Interruptible: 1
     PlayDuringReplay: 0
   AttackSounds: []
+  AudioPlacementPrefix: Swordsman
   EntityFinishedBuildingSound:
     Clip: {fileID: 0}
     Volume: 0

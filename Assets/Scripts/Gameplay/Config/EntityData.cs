@@ -28,6 +28,7 @@ namespace Gameplay.Config {
         public List<AudioFile> SelectionSounds;
         public List<AudioFile> OrderSounds;
         public List<AudioFile> AttackSounds;
+        public string AudioPlacementPrefix;
         public AudioFile EntityFinishedBuildingSound;
         
         [Header("Stats")] 

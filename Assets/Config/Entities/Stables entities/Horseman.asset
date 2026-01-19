@@ -35,6 +35,7 @@ MonoBehaviour:
     Interruptible: 1
     PlayDuringReplay: 0
   AttackSounds: []
+  AudioPlacementPrefix: Horseman
   EntityFinishedBuildingSound:
     Clip: {fileID: 0}
     Volume: 0

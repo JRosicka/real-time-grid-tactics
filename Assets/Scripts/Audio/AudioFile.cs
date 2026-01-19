@@ -14,5 +14,6 @@ namespace Audio {
         public AudioLayerName AudioLayer;
         public bool Interruptible;
         public bool PlayDuringReplay;
+        public bool AllowInQuickSuccession;
     }
 }
