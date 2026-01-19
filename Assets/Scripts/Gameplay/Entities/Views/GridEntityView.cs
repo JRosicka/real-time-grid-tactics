@@ -176,7 +176,7 @@ namespace Gameplay.Entities {
 
         private void Selected() {
             if (Entity.Team == GameManager.Instance.LocalTeam) {
-                GameAudio.EntitySelectionSound(Entity.EntityData);
+                GameAudio.EntitySelectionSound(Entity);
             }
 
             if (Entity.EntityData.DisplaySelectionOutline) {
@@ -310,7 +310,7 @@ namespace Gameplay.Entities {
             // Face the x-direction that we are attacking
             SetFacingDirection(performerLocation.Value, targetLocation.Value);
             
-            GameAudio.EntityAttackSound(Entity.EntityData);
+            GameAudio.EntityAttackSound(Entity);
         }
         
         private void UpdateAttack() {

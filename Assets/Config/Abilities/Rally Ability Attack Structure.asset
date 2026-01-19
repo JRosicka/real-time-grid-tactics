@@ -45,17 +45,20 @@ MonoBehaviour:
       AudioLayer: 0
       Interruptible: 0
       PlayDuringReplay: 0
+      AllowInQuickSuccession: 0
     _targetedSound:
       Clip: {fileID: 0}
       Volume: 0
       AudioLayer: 0
       Interruptible: 0
       PlayDuringReplay: 0
+      AllowInQuickSuccession: 0
     _performedSound:
       Clip: {fileID: 8300000, guid: 731293a9d036dbf43ba751ac7e9aed0e, type: 3}
       Volume: 0.827
       AudioLayer: 0
       Interruptible: 0
       PlayDuringReplay: 0
+      AllowInQuickSuccession: 1
     _triggersEntityOrderVoiceLine: 0
     RallyingUnitsAreAttackers: 1

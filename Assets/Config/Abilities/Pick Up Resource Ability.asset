@@ -45,16 +45,19 @@ MonoBehaviour:
       AudioLayer: 0
       Interruptible: 0
       PlayDuringReplay: 0
+      AllowInQuickSuccession: 0
     _targetedSound:
       Clip: {fileID: 0}
       Volume: 0
       AudioLayer: 0
       Interruptible: 0
       PlayDuringReplay: 0
+      AllowInQuickSuccession: 0
     _performedSound:
       Clip: {fileID: 0}
       Volume: 0
       AudioLayer: 0
       Interruptible: 0
       PlayDuringReplay: 0
+      AllowInQuickSuccession: 0
     _triggersEntityOrderVoiceLine: 0

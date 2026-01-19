@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Gameplay.Config;
 using Gameplay.Config.Abilities;
+using Gameplay.Entities;
 using JetBrains.Annotations;
 using UnityEngine;
 
@@ -58,16 +59,16 @@ namespace Audio {
             TryPlaySFX(_audioConfiguration.InvalidSound, AudioClipName(_audioConfiguration.InvalidSound));
         }
 
-        public void EntitySelectionSound(EntityData entityData) {
-            ChooseAndPlayEntitySound(entityData, entityData.SelectionSounds, _lastPlayedSelectionSounds, "selection");
+        public void EntitySelectionSound(GridEntity entity) {
+            ChooseAndPlayEntitySound(entity, entity.EntityData.SelectionSounds, _lastPlayedSelectionSounds, "selection");
         }
 
-        public void EntityOrderSound(EntityData entityData) {
-            ChooseAndPlayEntitySound(entityData, entityData.OrderSounds, _lastPlayedOrderSounds, "order");
+        public void EntityOrderSound(GridEntity entity) {
+            ChooseAndPlayEntitySound(entity, entity.EntityData.OrderSounds, _lastPlayedOrderSounds, "order");
         }
 
-        public void EntityAttackSound(EntityData entityData) {
-            ChooseAndPlayEntitySound(entityData, entityData.AttackSounds, _lastPlayedAttackSounds, "attack");
+        public void EntityAttackSound(GridEntity entity) {
+            ChooseAndPlayEntitySound(entity, entity.EntityData.AttackSounds, _lastPlayedAttackSounds, "attack");
         }
         
         public void AbilitySelectSound(IAbilityData abilityData) {
@@ -82,7 +83,7 @@ namespace Audio {
             TryPlaySFX(abilityData.PerformedSound, AudioClipName(abilityData.PerformedSound)); 
         }
 
-        private void ChooseAndPlayEntitySound(EntityData entityData, List<AudioFile> audioFiles, Dictionary<string, AudioFile> lastPlayedSounds, string audioPlacement) {
+        private void ChooseAndPlayEntitySound(GridEntity entity, List<AudioFile> audioFiles, Dictionary<string, AudioFile> lastPlayedSounds, string audioPlacement) {
             if (audioFiles.Count == 0) return;
 
             AudioFile soundToPlay;
@@ -90,15 +91,15 @@ namespace Audio {
             if (soundsToPickFrom.Count == 1) {
                 soundToPlay = soundsToPickFrom[0];
             } else {
-                if (lastPlayedSounds.TryGetValue(entityData.ID, out AudioFile soundToExclude)) {
+                if (lastPlayedSounds.TryGetValue(entity.EntityData.ID, out AudioFile soundToExclude)) {
                     // Don't pick the last played sound for this entity type
                     soundsToPickFrom = audioFiles.Where(a => a != soundToExclude).ToList();
                 }
                 soundToPlay = soundsToPickFrom[Random.Range(0, soundsToPickFrom.Count)];
             }
             
-            lastPlayedSounds[entityData.ID] = soundToPlay;
-            TryPlaySFX(soundToPlay, $"{entityData.AudioPlacementPrefix}_{audioPlacement}");
+            lastPlayedSounds[entity.EntityData.ID] = soundToPlay;
+            TryPlaySFX(soundToPlay, $"{entity.EntityData.AudioPlacementPrefix}_{audioPlacement}", entity);
         }
 
         public void ArrowLandSound() {
@@ -131,7 +132,7 @@ namespace Audio {
             TryPlaySFX(_audioConfiguration.UpgradeCompleteSound, AudioClipName(_audioConfiguration.UpgradeCompleteSound));
         }
 
-        private void TryPlaySFX(AudioFile audioFile, string audioPlacement) {
+        private void TryPlaySFX(AudioFile audioFile, string audioPlacement, GridEntity performer = null) {
             if (audioFile == null || audioFile.Clip == null) return;
             if (GameManager.Instance == null) return;
             if (GameManager.Instance.ReplayManager.PlayingReplay && !audioFile.PlayDuringReplay) return;
@@ -139,7 +140,7 @@ namespace Audio {
                 if (_sfxCooldownTimes.ContainsKey(audioPlacement)) return;
                 _sfxCooldownTimes[audioPlacement] = MinAmountOfTimeBetweenSameSounds;
             }
-            _audioPlayer.TryPlaySFX(audioFile);
+            _audioPlayer.TryPlaySFX(audioFile, performer?.UID ?? -1);
         }
 
         [CanBeNull] private string AudioClipName(AudioFile audioFile) {

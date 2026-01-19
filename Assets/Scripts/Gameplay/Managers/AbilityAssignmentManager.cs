@@ -81,7 +81,7 @@ namespace Gameplay.Managers {
             }
 
             if (fromInput && abilityData.TriggersEntityOrderVoiceLine) {
-                GameAudio.Instance.EntityOrderSound(entity.EntityData);
+                GameAudio.Instance.EntityOrderSound(entity);
             }
 
             GameAudio.Instance.AbilityPerformedSound(abilityData);
