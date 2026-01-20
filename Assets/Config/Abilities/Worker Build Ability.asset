@@ -41,9 +41,9 @@ MonoBehaviour:
     _blocksDefaultAttack: 1
     _showTimerOnSelectionInterface: 0
     _performByDefault: 0
-    _selectionSound:
-      Clip: {fileID: 8300000, guid: 71661fd9bce89964daaf2b0bd170ecae, type: 3}
-      Volume: 0.862
+    _selectionSounds:
+    - Clip: {fileID: 8300000, guid: 71661fd9bce89964daaf2b0bd170ecae, type: 3}
+      Volume: 0.864
       AudioLayer: 0
       Interruptible: 0
       PlayDuringReplay: 0

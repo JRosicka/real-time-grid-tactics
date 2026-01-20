@@ -47,6 +47,13 @@ MonoBehaviour:
       Interruptible: 0
       PlayDuringReplay: 0
       AllowInQuickSuccession: 1
+    _selectionSounds:
+    - Clip: {fileID: 8300000, guid: 3501aba8cbbc0bb48924b27d6ab8e2fc, type: 3}
+      Volume: 0.856
+      AudioLayer: 0
+      Interruptible: 0
+      PlayDuringReplay: 0
+      AllowInQuickSuccession: 1
     _targetedSound:
       Clip: {fileID: 0}
       Volume: 0

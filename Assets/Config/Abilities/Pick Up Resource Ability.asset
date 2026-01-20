@@ -46,6 +46,7 @@ MonoBehaviour:
       Interruptible: 0
       PlayDuringReplay: 0
       AllowInQuickSuccession: 0
+    _selectionSounds: []
     _targetedSound:
       Clip: {fileID: 0}
       Volume: 0

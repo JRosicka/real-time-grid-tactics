@@ -41,7 +41,26 @@ MonoBehaviour:
     _performByDefault: 0
     _selectionSound:
       Clip: {fileID: 8300000, guid: 71661fd9bce89964daaf2b0bd170ecae, type: 3}
-      Volume: 0.862
+      Volume: 0
+      AudioLayer: 0
+      Interruptible: 0
+      PlayDuringReplay: 0
+      AllowInQuickSuccession: 1
+    _selectionSounds:
+    - Clip: {fileID: 8300000, guid: ec18c2e35295bc1469125181451f59f1, type: 3}
+      Volume: 0.672
+      AudioLayer: 0
+      Interruptible: 0
+      PlayDuringReplay: 0
+      AllowInQuickSuccession: 1
+    - Clip: {fileID: 8300000, guid: ac2dca5400e830d4dba55c139b8d400c, type: 3}
+      Volume: 0.672
+      AudioLayer: 0
+      Interruptible: 0
+      PlayDuringReplay: 0
+      AllowInQuickSuccession: 1
+    - Clip: {fileID: 8300000, guid: 4050f3972e8cbf445b4109d92262e253, type: 3}
+      Volume: 0.672
       AudioLayer: 0
       Interruptible: 0
       PlayDuringReplay: 0

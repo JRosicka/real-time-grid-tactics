@@ -99,8 +99,9 @@ namespace Gameplay.Config.Abilities {
         public bool ShowTimerOnSelectionInterface => _showTimerOnSelectionInterface;
         [SerializeField] private bool _performByDefault;
         public bool PerformByDefault => _performByDefault;
-        [SerializeField] private AudioFile _selectionSound;
-        public AudioFile SelectionSound => _selectionSound;
+        [SerializeField] private List<AudioFile> _selectionSounds;
+        public List<AudioFile> SelectionSounds => _selectionSounds;
+
         [Tooltip("Only relevant for targetable abilities")]
         [SerializeField] private AudioFile _targetedSound;
         public AudioFile TargetedSound => _targetedSound;

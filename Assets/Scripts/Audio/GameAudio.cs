@@ -21,6 +21,8 @@ namespace Audio {
         private readonly Dictionary<string, AudioFile> _lastPlayedSelectionSounds = new Dictionary<string, AudioFile>();
         private readonly Dictionary<string, AudioFile> _lastPlayedOrderSounds = new Dictionary<string, AudioFile>();
         private readonly Dictionary<string, AudioFile> _lastPlayedAttackSounds = new Dictionary<string, AudioFile>();
+        
+        private readonly Dictionary<string, AudioFile> _lastPlayedAbilitySelectionSounds = new Dictionary<string, AudioFile>();
         private readonly Dictionary<string, float> _sfxCooldownTimes = new Dictionary<string, float>();
         
         public GameAudio(AudioPlayer audioPlayer, AudioFileConfiguration audioConfiguration) {
@@ -72,7 +74,7 @@ namespace Audio {
         }
         
         public void AbilitySelectSound(IAbilityData abilityData) {
-            TryPlaySFX(abilityData.SelectionSound, AudioClipName(abilityData.SelectionSound));
+            ChooseAndPlayAbilitySound(abilityData, abilityData.SelectionSounds, _lastPlayedAbilitySelectionSounds, "abilitySelection");
         }
         
         public void AbilityTargetedSound(ITargetableAbilityData abilityData) {
@@ -100,6 +102,25 @@ namespace Audio {
             
             lastPlayedSounds[entity.EntityData.ID] = soundToPlay;
             TryPlaySFX(soundToPlay, $"{entity.EntityData.AudioPlacementPrefix}_{audioPlacement}", entity);
+        }
+        
+        private void ChooseAndPlayAbilitySound(IAbilityData abilityData, List<AudioFile> audioFiles, Dictionary<string, AudioFile> lastPlayedSounds, string audioPlacement) {
+            if (audioFiles.Count == 0) return;
+
+            AudioFile soundToPlay;
+            List<AudioFile> soundsToPickFrom  = new List<AudioFile>(audioFiles);
+            if (soundsToPickFrom.Count == 1) {
+                soundToPlay = soundsToPickFrom[0];
+            } else {
+                if (lastPlayedSounds.TryGetValue(abilityData.ContentResourceID, out AudioFile soundToExclude)) {
+                    // Don't pick the last played sound for this entity type
+                    soundsToPickFrom = audioFiles.Where(a => a != soundToExclude).ToList();
+                }
+                soundToPlay = soundsToPickFrom[Random.Range(0, soundsToPickFrom.Count)];
+            }
+            
+            lastPlayedSounds[abilityData.ContentResourceID] = soundToPlay;
+            TryPlaySFX(soundToPlay, $"{abilityData.ContentResourceID}_{audioPlacement}");
         }
 
         public void ArrowLandSound() {
