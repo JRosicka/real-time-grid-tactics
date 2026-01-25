@@ -34,7 +34,44 @@ MonoBehaviour:
     AudioLayer: 2
     Interruptible: 1
     PlayDuringReplay: 0
-  AttackSounds: []
+    AllowInQuickSuccession: 0
+  AttackSounds:
+  - Clip: {fileID: 8300000, guid: 58e279b27f9657e468a44121873b52c6, type: 3}
+    Volume: 0.721
+    AudioLayer: 0
+    Interruptible: 0
+    PlayDuringReplay: 1
+    AllowInQuickSuccession: 1
+  - Clip: {fileID: 8300000, guid: 34d437dcad5e50549a591a3d05e4684a, type: 3}
+    Volume: 0.717
+    AudioLayer: 0
+    Interruptible: 0
+    PlayDuringReplay: 1
+    AllowInQuickSuccession: 1
+  - Clip: {fileID: 8300000, guid: 7e1a4a2c9f9a6db4ebf97a3a0cc1bb20, type: 3}
+    Volume: 0.717
+    AudioLayer: 0
+    Interruptible: 0
+    PlayDuringReplay: 1
+    AllowInQuickSuccession: 1
+  - Clip: {fileID: 8300000, guid: 14df854f74ed8f74cbfb7e001fe09699, type: 3}
+    Volume: 0.709
+    AudioLayer: 0
+    Interruptible: 0
+    PlayDuringReplay: 1
+    AllowInQuickSuccession: 1
+  - Clip: {fileID: 8300000, guid: 5d671e3d51def8d4e80778eb536226e9, type: 3}
+    Volume: 0.744
+    AudioLayer: 0
+    Interruptible: 0
+    PlayDuringReplay: 1
+    AllowInQuickSuccession: 1
+  - Clip: {fileID: 8300000, guid: 9a52dfb6aee1edf47978ef62d35d23be, type: 3}
+    Volume: 0.775
+    AudioLayer: 0
+    Interruptible: 0
+    PlayDuringReplay: 1
+    AllowInQuickSuccession: 1
   AudioPlacementPrefix: Horseman
   EntityFinishedBuildingSound:
     Clip: {fileID: 0}
@@ -42,6 +79,7 @@ MonoBehaviour:
     AudioLayer: 0
     Interruptible: 0
     PlayDuringReplay: 0
+    AllowInQuickSuccession: 0
   HP: 44
   Range: 1
   Damage: 8

@@ -27,7 +27,31 @@ MonoBehaviour:
   _viewPrefab: {fileID: 7504026570216467247, guid: 686dc4cbc73b78143bd1b59d2ee8fed0, type: 3}
   SelectionSounds: []
   OrderSounds: []
-  AttackSounds: []
+  AttackSounds:
+  - Clip: {fileID: 8300000, guid: adcbdffa8d3f79148b7804948a26f0a3, type: 3}
+    Volume: 0.779
+    AudioLayer: 0
+    Interruptible: 0
+    PlayDuringReplay: 1
+    AllowInQuickSuccession: 1
+  - Clip: {fileID: 8300000, guid: 6285ad5cbb366fe41aff132eaefddcde, type: 3}
+    Volume: 0.779
+    AudioLayer: 0
+    Interruptible: 0
+    PlayDuringReplay: 1
+    AllowInQuickSuccession: 1
+  - Clip: {fileID: 8300000, guid: bde7996e3cf099e4aa8c953b58d59f5e, type: 3}
+    Volume: 0.76
+    AudioLayer: 0
+    Interruptible: 0
+    PlayDuringReplay: 1
+    AllowInQuickSuccession: 1
+  - Clip: {fileID: 8300000, guid: 7c0075a13f174cd46b036b56598a98d6, type: 3}
+    Volume: 0.76
+    AudioLayer: 0
+    Interruptible: 0
+    PlayDuringReplay: 1
+    AllowInQuickSuccession: 1
   AudioPlacementPrefix: Peasant
   EntityFinishedBuildingSound:
     Clip: {fileID: 0}
@@ -35,6 +59,7 @@ MonoBehaviour:
     AudioLayer: 0
     Interruptible: 0
     PlayDuringReplay: 0
+    AllowInQuickSuccession: 0
   HP: 16
   Range: 1
   Damage: 2

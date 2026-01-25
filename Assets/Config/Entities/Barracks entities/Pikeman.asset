@@ -32,33 +32,75 @@ MonoBehaviour:
     AudioLayer: 2
     Interruptible: 1
     PlayDuringReplay: 0
+    AllowInQuickSuccession: 0
   - Clip: {fileID: 8300000, guid: e4ebe9ed7e1dba24bbd0089b719f51c8, type: 3}
     Volume: 0.77
     AudioLayer: 2
     Interruptible: 1
     PlayDuringReplay: 0
+    AllowInQuickSuccession: 0
   - Clip: {fileID: 8300000, guid: 96869a4cece3f3f43b0844e3c1b58b04, type: 3}
     Volume: 0.766
     AudioLayer: 2
     Interruptible: 1
     PlayDuringReplay: 0
+    AllowInQuickSuccession: 0
   - Clip: {fileID: 8300000, guid: 5f4e6ac0da46cc34e8dfdcd0345fcbfc, type: 3}
     Volume: 0.748
     AudioLayer: 2
     Interruptible: 1
     PlayDuringReplay: 0
+    AllowInQuickSuccession: 0
   OrderSounds:
   - Clip: {fileID: 8300000, guid: c27df4efe7315b044be86fbc94dfb512, type: 3}
     Volume: 0.781
     AudioLayer: 2
     Interruptible: 1
     PlayDuringReplay: 0
+    AllowInQuickSuccession: 0
   - Clip: {fileID: 8300000, guid: 45515204c7a54be4e8d0c97263013766, type: 3}
     Volume: 0.758
     AudioLayer: 2
     Interruptible: 1
     PlayDuringReplay: 0
-  AttackSounds: []
+    AllowInQuickSuccession: 0
+  AttackSounds:
+  - Clip: {fileID: 8300000, guid: 0772370231a79b04480b475d8a11931c, type: 3}
+    Volume: 0.744
+    AudioLayer: 0
+    Interruptible: 0
+    PlayDuringReplay: 1
+    AllowInQuickSuccession: 1
+  - Clip: {fileID: 8300000, guid: 9575c593ad3e70145b3f0b8a9f7a4041, type: 3}
+    Volume: 0.756
+    AudioLayer: 0
+    Interruptible: 0
+    PlayDuringReplay: 1
+    AllowInQuickSuccession: 1
+  - Clip: {fileID: 8300000, guid: 8650abb70e301af40bbc60350a499a81, type: 3}
+    Volume: 0.752
+    AudioLayer: 0
+    Interruptible: 0
+    PlayDuringReplay: 1
+    AllowInQuickSuccession: 1
+  - Clip: {fileID: 8300000, guid: ea70a4f37ad11bf4da6f46eae2da4385, type: 3}
+    Volume: 0.771
+    AudioLayer: 0
+    Interruptible: 0
+    PlayDuringReplay: 1
+    AllowInQuickSuccession: 1
+  - Clip: {fileID: 8300000, guid: 9667e48ed424a05488ab7e8516baf29c, type: 3}
+    Volume: 0.771
+    AudioLayer: 0
+    Interruptible: 0
+    PlayDuringReplay: 1
+    AllowInQuickSuccession: 1
+  - Clip: {fileID: 8300000, guid: 3e6578d551fb04143a0237751895de5c, type: 3}
+    Volume: 0.775
+    AudioLayer: 0
+    Interruptible: 0
+    PlayDuringReplay: 1
+    AllowInQuickSuccession: 1
   AudioPlacementPrefix: Pikeman
   EntityFinishedBuildingSound:
     Clip: {fileID: 0}
@@ -66,6 +108,7 @@ MonoBehaviour:
     AudioLayer: 0
     Interruptible: 0
     PlayDuringReplay: 0
+    AllowInQuickSuccession: 0
   HP: 28
   Range: 1
   Damage: 4
