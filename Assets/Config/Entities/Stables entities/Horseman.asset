@@ -27,10 +27,40 @@ MonoBehaviour:
   TeamColorSprite: {fileID: 21300000, guid: 3a9a0e91bde52415dbb5d116597c884a, type: 3}
   BaseSpriteIconOverride: {fileID: 0}
   _viewPrefab: {fileID: 7504026570216467247, guid: e5e513743b6bca44c8284e21ac5b6fc7, type: 3}
-  SelectionSounds: []
+  SelectionSounds:
+  - Clip: {fileID: 8300000, guid: 7b128deef2e9b504ba25402cce1bd258, type: 3}
+    Volume: 0.388
+    AudioLayer: 2
+    Interruptible: 1
+    PlayDuringReplay: 0
+    AllowInQuickSuccession: 0
+  - Clip: {fileID: 8300000, guid: 23ed2b22d92d5034fa12c49b6a3e46f5, type: 3}
+    Volume: 0.422
+    AudioLayer: 2
+    Interruptible: 1
+    PlayDuringReplay: 0
+    AllowInQuickSuccession: 0
+  - Clip: {fileID: 8300000, guid: 7784da3d2ba71c34f8deab1017ab90a5, type: 3}
+    Volume: 0.264
+    AudioLayer: 2
+    Interruptible: 1
+    PlayDuringReplay: 0
+    AllowInQuickSuccession: 0
+  - Clip: {fileID: 8300000, guid: 62c9d314223f2b64da5c34364eae40a8, type: 3}
+    Volume: 0.422
+    AudioLayer: 2
+    Interruptible: 1
+    PlayDuringReplay: 0
+    AllowInQuickSuccession: 0
   OrderSounds:
   - Clip: {fileID: 8300000, guid: e53880accaeec63418f562b58534f764, type: 3}
     Volume: 0.489
+    AudioLayer: 2
+    Interruptible: 1
+    PlayDuringReplay: 0
+    AllowInQuickSuccession: 0
+  - Clip: {fileID: 8300000, guid: 45c173918151a1942ab85733a8be3085, type: 3}
+    Volume: 0.488
     AudioLayer: 2
     Interruptible: 1
     PlayDuringReplay: 0

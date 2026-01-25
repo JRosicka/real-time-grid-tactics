@@ -36,33 +36,51 @@ MonoBehaviour:
     AudioLayer: 2
     Interruptible: 1
     PlayDuringReplay: 0
+    AllowInQuickSuccession: 0
   - Clip: {fileID: 8300000, guid: 85329860bf0f91248bbc27d65c79c936, type: 3}
     Volume: 0.789
     AudioLayer: 2
     Interruptible: 1
     PlayDuringReplay: 0
+    AllowInQuickSuccession: 0
   - Clip: {fileID: 8300000, guid: ae91d02db2375734c97d379e46521604, type: 3}
     Volume: 0.805
     AudioLayer: 2
     Interruptible: 1
     PlayDuringReplay: 0
-  OrderSounds: []
+    AllowInQuickSuccession: 0
+  OrderSounds:
+  - Clip: {fileID: 8300000, guid: 938be05424a5dfc4dad17e16a0a2a04c, type: 3}
+    Volume: 0.539
+    AudioLayer: 2
+    Interruptible: 1
+    PlayDuringReplay: 0
+    AllowInQuickSuccession: 0
+  - Clip: {fileID: 8300000, guid: 2682ecf01cbe1234cbc4cdcd59d4bc25, type: 3}
+    Volume: 0.535
+    AudioLayer: 2
+    Interruptible: 1
+    PlayDuringReplay: 0
+    AllowInQuickSuccession: 0
   AttackSounds:
   - Clip: {fileID: 8300000, guid: e3ea136890f2c73428d02a6614734e14, type: 3}
     Volume: 0.5
     AudioLayer: 0
     Interruptible: 0
     PlayDuringReplay: 1
+    AllowInQuickSuccession: 0
   - Clip: {fileID: 8300000, guid: 7ee29aeed194de2449eae4ae8ffbb427, type: 3}
     Volume: 0.5
     AudioLayer: 0
     Interruptible: 0
     PlayDuringReplay: 1
+    AllowInQuickSuccession: 0
   - Clip: {fileID: 8300000, guid: e4d6d5a4185fe8a438a124e17d6d24fb, type: 3}
     Volume: 0.5
     AudioLayer: 0
     Interruptible: 0
     PlayDuringReplay: 1
+    AllowInQuickSuccession: 0
   AudioPlacementPrefix: Knight
   EntityFinishedBuildingSound:
     Clip: {fileID: 0}
@@ -70,6 +88,7 @@ MonoBehaviour:
     AudioLayer: 0
     Interruptible: 0
     PlayDuringReplay: 0
+    AllowInQuickSuccession: 0
   HP: 65
   Range: 1
   Damage: 14
