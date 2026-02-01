@@ -18,11 +18,11 @@ namespace Audio {
         
         private readonly AudioPlayer _audioPlayer;
         private readonly AudioFileConfiguration _audioConfiguration;
-        private readonly Dictionary<string, AudioFile> _lastPlayedSelectionSounds = new Dictionary<string, AudioFile>();
-        private readonly Dictionary<string, AudioFile> _lastPlayedOrderSounds = new Dictionary<string, AudioFile>();
-        private readonly Dictionary<string, AudioFile> _lastPlayedAttackSounds = new Dictionary<string, AudioFile>();
+        private readonly Dictionary<string, AudioFile> _lastPlayedSelectionSFX = new Dictionary<string, AudioFile>();
+        private readonly Dictionary<string, AudioFile> _lastPlayedOrderSFX = new Dictionary<string, AudioFile>();
+        private readonly Dictionary<string, AudioFile> _lastPlayedAttackSFX = new Dictionary<string, AudioFile>();
         
-        private readonly Dictionary<string, AudioFile> _lastPlayedAbilitySelectionSounds = new Dictionary<string, AudioFile>();
+        private readonly Dictionary<string, AudioFile> _lastPlayedAbilitySelectionSFX = new Dictionary<string, AudioFile>();
         private readonly Dictionary<string, float> _sfxCooldownTimes = new Dictionary<string, float>();
         
         public GameAudio(AudioPlayer audioPlayer, AudioFileConfiguration audioConfiguration) {
@@ -41,7 +41,7 @@ namespace Audio {
         }
         
         public void StartMusic() {
-            if (_audioConfiguration.GameMusic.Clip == null) return;
+            if (_audioConfiguration.GameMusic?.Clip == null) return;
             _audioPlayer.PlayMusic(_audioConfiguration.GameMusic);
         }
         
@@ -54,7 +54,7 @@ namespace Audio {
         }
 
         public void ButtonClickUpSound() {
-            TryPlaySFX(_audioConfiguration.ButtonClickUpSound, AudioClipName(_audioConfiguration.ButtonClickUpSound));
+            // Removed
         }
 
         public void InvalidSound() {
@@ -62,31 +62,31 @@ namespace Audio {
         }
 
         public void EntitySelectionSound(GridEntity entity) {
-            ChooseAndPlayEntitySound(entity, entity.EntityData.SelectionSounds, _lastPlayedSelectionSounds, "selection");
+            ChooseAndPlayEntitySound(entity, entity.EntityData.SelectionSFX?.AudioFiles, _lastPlayedSelectionSFX, "selection");
         }
 
         public void EntityOrderSound(GridEntity entity) {
-            ChooseAndPlayEntitySound(entity, entity.EntityData.OrderSounds, _lastPlayedOrderSounds, "order");
+            ChooseAndPlayEntitySound(entity, entity.EntityData.OrderSFX?.AudioFiles, _lastPlayedOrderSFX, "order");
         }
 
         public void EntityAttackSound(GridEntity entity) {
-            ChooseAndPlayEntitySound(entity, entity.EntityData.AttackSounds, _lastPlayedAttackSounds, "attack");
+            ChooseAndPlayEntitySound(entity, entity.EntityData.AttackSFX?.AudioFiles, _lastPlayedAttackSFX, "attack");
         }
         
         public void AbilitySelectSound(IAbilityData abilityData) {
-            ChooseAndPlayAbilitySound(abilityData, abilityData.SelectionSounds, _lastPlayedAbilitySelectionSounds, "abilitySelection");
+            ChooseAndPlayAbilitySound(abilityData, abilityData.SelectionSFX?.AudioFiles, _lastPlayedAbilitySelectionSFX, "abilitySelection");
         }
         
         public void AbilityTargetedSound(ITargetableAbilityData abilityData) {
-            TryPlaySFX(abilityData.TargetedSound, AudioClipName(abilityData.TargetedSound));
+            TryPlaySFX(abilityData.TargetedSFX, AudioClipName(abilityData.TargetedSFX));
         }
 
         public void AbilityPerformedSound(IAbilityData abilityData) {
-            TryPlaySFX(abilityData.PerformedSound, AudioClipName(abilityData.PerformedSound)); 
+            TryPlaySFX(abilityData.PerformedSFX, AudioClipName(abilityData.PerformedSFX)); 
         }
 
         private void ChooseAndPlayEntitySound(GridEntity entity, List<AudioFile> audioFiles, Dictionary<string, AudioFile> lastPlayedSounds, string audioPlacement) {
-            if (audioFiles.Count == 0) return;
+            if (audioFiles == null || audioFiles.Count == 0) return;
 
             AudioFile soundToPlay;
             List<AudioFile> soundsToPickFrom  = new List<AudioFile>(audioFiles);
@@ -105,7 +105,7 @@ namespace Audio {
         }
         
         private void ChooseAndPlayAbilitySound(IAbilityData abilityData, List<AudioFile> audioFiles, Dictionary<string, AudioFile> lastPlayedSounds, string audioPlacement) {
-            if (audioFiles.Count == 0) return;
+            if (audioFiles == null || audioFiles.Count == 0) return;
 
             AudioFile soundToPlay;
             List<AudioFile> soundsToPickFrom  = new List<AudioFile>(audioFiles);
@@ -132,8 +132,8 @@ namespace Audio {
         }
 
         public void EntityFinishedBuildingSound(EntityData entityData) {
-            if (entityData.EntityFinishedBuildingSound.Clip != null) {
-                TryPlaySFX(entityData.EntityFinishedBuildingSound, AudioClipName(entityData.EntityFinishedBuildingSound));
+            if (entityData.EntityFinishedBuildingSFX?.Clip != null) {
+                TryPlaySFX(entityData.EntityFinishedBuildingSFX, AudioClipName(entityData.EntityFinishedBuildingSFX));
             }
         }
 
@@ -148,11 +148,7 @@ namespace Audio {
         public void GameLossSound() {
             TryPlaySFX(_audioConfiguration.GameLossSound, AudioClipName(_audioConfiguration.GameLossSound));
         }
-
-        public void UpgradeCompleteSound() {
-            TryPlaySFX(_audioConfiguration.UpgradeCompleteSound, AudioClipName(_audioConfiguration.UpgradeCompleteSound));
-        }
-
+        
         private void TryPlaySFX(AudioFile audioFile, string audioPlacement, GridEntity performer = null) {
             if (audioFile == null || audioFile.Clip == null) return;
             if (GameManager.Instance == null) return;

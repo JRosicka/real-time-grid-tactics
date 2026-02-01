@@ -101,6 +101,9 @@ MonoBehaviour:
     Interruptible: 0
     PlayDuringReplay: 1
     AllowInQuickSuccession: 1
+  SelectionSFX: {fileID: 11400000, guid: b0288294554da447b9da15ba72589bf3, type: 2}
+  OrderSFX: {fileID: 11400000, guid: d850a535095384f18ac474b4edb23eb0, type: 2}
+  AttackSFX: {fileID: 11400000, guid: 63aa7d493c6e045ce9a0c3bad0611a78, type: 2}
   AudioPlacementPrefix: Pikeman
   EntityFinishedBuildingSound:
     Clip: {fileID: 0}
@@ -109,6 +112,7 @@ MonoBehaviour:
     Interruptible: 0
     PlayDuringReplay: 0
     AllowInQuickSuccession: 0
+  EntityFinishedBuildingSFX: {fileID: 0}
   HP: 28
   Range: 1
   Damage: 4

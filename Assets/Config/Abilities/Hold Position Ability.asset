@@ -40,32 +40,7 @@ MonoBehaviour:
     _blocksDefaultAttack: 0
     _showTimerOnSelectionInterface: 0
     _performByDefault: 0
-    _selectionSound:
-      Clip: {fileID: 8300000, guid: 71661fd9bce89964daaf2b0bd170ecae, type: 3}
-      Volume: 0.862
-      AudioLayer: 0
-      Interruptible: 0
-      PlayDuringReplay: 0
-      AllowInQuickSuccession: 1
-    _selectionSounds:
-    - Clip: {fileID: 8300000, guid: 71661fd9bce89964daaf2b0bd170ecae, type: 3}
-      Volume: 0.878
-      AudioLayer: 0
-      Interruptible: 0
-      PlayDuringReplay: 0
-      AllowInQuickSuccession: 1
-    _targetedSound:
-      Clip: {fileID: 0}
-      Volume: 0
-      AudioLayer: 0
-      Interruptible: 0
-      PlayDuringReplay: 0
-      AllowInQuickSuccession: 0
-    _performedSound:
-      Clip: {fileID: 0}
-      Volume: 0
-      AudioLayer: 0
-      Interruptible: 0
-      PlayDuringReplay: 0
-      AllowInQuickSuccession: 0
+    _selectionSFX: {fileID: 11400000, guid: 98230f8c1d3bc471098d366b7a5cbf4f, type: 2}
+    _targetedSFX: {fileID: 0}
+    _performedSFX: {fileID: 0}
     _triggersEntityOrderVoiceLine: 0

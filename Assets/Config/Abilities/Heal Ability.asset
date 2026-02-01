@@ -40,27 +40,8 @@ MonoBehaviour:
     _blocksDefaultAttack: 0
     _showTimerOnSelectionInterface: 0
     _performByDefault: 0
-    _selectionSound:
-      Clip: {fileID: 0}
-      Volume: 0
-      AudioLayer: 0
-      Interruptible: 0
-      PlayDuringReplay: 0
-      AllowInQuickSuccession: 0
-    _selectionSounds: []
-    _targetedSound:
-      Clip: {fileID: 0}
-      Volume: 0
-      AudioLayer: 0
-      Interruptible: 0
-      PlayDuringReplay: 0
-      AllowInQuickSuccession: 0
-    _performedSound:
-      Clip: {fileID: 0}
-      Volume: 0
-      AudioLayer: 0
-      Interruptible: 0
-      PlayDuringReplay: 0
-      AllowInQuickSuccession: 0
+    _selectionSFX: {fileID: 0}
+    _targetedSFX: {fileID: 0}
+    _performedSFX: {fileID: 0}
     _triggersEntityOrderVoiceLine: 0
     HealAmount: 2

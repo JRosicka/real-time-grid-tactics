@@ -25,11 +25,11 @@ namespace Gameplay.Config {
         public GridEntityView ViewPrefab => _viewPrefab;
 
         [Header("Audio")] 
-        public List<AudioFile> SelectionSounds;
-        public List<AudioFile> OrderSounds;
-        public List<AudioFile> AttackSounds;
+        public AudioFileCollection SelectionSFX;
+        public AudioFileCollection OrderSFX;
+        public AudioFileCollection AttackSFX;
         public string AudioPlacementPrefix;
-        public AudioFile EntityFinishedBuildingSound;
+        public AudioFile EntityFinishedBuildingSFX;
         
         [Header("Stats")] 
         public int HP;

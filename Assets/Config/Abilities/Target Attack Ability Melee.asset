@@ -40,45 +40,8 @@ MonoBehaviour:
     _blocksDefaultAttack: 1
     _showTimerOnSelectionInterface: 1
     _performByDefault: 0
-    _selectionSound:
-      Clip: {fileID: 8300000, guid: 71661fd9bce89964daaf2b0bd170ecae, type: 3}
-      Volume: 0.862
-      AudioLayer: 0
-      Interruptible: 0
-      PlayDuringReplay: 0
-      AllowInQuickSuccession: 1
-    _selectionSounds:
-    - Clip: {fileID: 8300000, guid: ec18c2e35295bc1469125181451f59f1, type: 3}
-      Volume: 0.749
-      AudioLayer: 0
-      Interruptible: 0
-      PlayDuringReplay: 0
-      AllowInQuickSuccession: 1
-    - Clip: {fileID: 8300000, guid: ac2dca5400e830d4dba55c139b8d400c, type: 3}
-      Volume: 0.768
-      AudioLayer: 0
-      Interruptible: 0
-      PlayDuringReplay: 0
-      AllowInQuickSuccession: 1
-    - Clip: {fileID: 8300000, guid: 4050f3972e8cbf445b4109d92262e253, type: 3}
-      Volume: 0.805
-      AudioLayer: 0
-      Interruptible: 0
-      PlayDuringReplay: 0
-      AllowInQuickSuccession: 1
-    _targetedSound:
-      Clip: {fileID: 8300000, guid: 731293a9d036dbf43ba751ac7e9aed0e, type: 3}
-      Volume: 0.862
-      AudioLayer: 0
-      Interruptible: 0
-      PlayDuringReplay: 0
-      AllowInQuickSuccession: 1
-    _performedSound:
-      Clip: {fileID: 0}
-      Volume: 0
-      AudioLayer: 0
-      Interruptible: 0
-      PlayDuringReplay: 0
-      AllowInQuickSuccession: 0
+    _selectionSFX: {fileID: 11400000, guid: 70eefff0cc3d841c3b7dfa1f4c7fc5f5, type: 2}
+    _targetedSFX: {fileID: 11400000, guid: 05b6c460463864379bf3859627a7ae6e, type: 2}
+    _performedSFX: {fileID: 0}
     _triggersEntityOrderVoiceLine: 1
     AttackType: 1

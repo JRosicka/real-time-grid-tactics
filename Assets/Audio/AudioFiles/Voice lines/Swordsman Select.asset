@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6063da4928234ad0a56a9debc5d444d6, type: 3}
+  m_Name: Swordsman Select
+  m_EditorClassIdentifier: Assembly-CSharp::Audio.AudioFileCollection
+  AudioFiles:
+  - {fileID: 11400000, guid: 6e4fe9d99a75f4fb5b3293794412e609, type: 2}
+  - {fileID: 11400000, guid: 274df8415b2b846d09016da2607d8b25, type: 2}

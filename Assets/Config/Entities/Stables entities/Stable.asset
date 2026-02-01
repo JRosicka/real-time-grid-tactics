@@ -60,6 +60,9 @@ MonoBehaviour:
     PlayDuringReplay: 0
     AllowInQuickSuccession: 1
   AttackSounds: []
+  SelectionSFX: {fileID: 11400000, guid: 6931b56cabbf145a08e2159cfd71e5f3, type: 2}
+  OrderSFX: {fileID: 0}
+  AttackSFX: {fileID: 0}
   AudioPlacementPrefix: StandardStructure
   EntityFinishedBuildingSound:
     Clip: {fileID: 8300000, guid: d56d48b1e0cb94449985abfa4c07e9dc, type: 3}
@@ -68,6 +71,7 @@ MonoBehaviour:
     Interruptible: 1
     PlayDuringReplay: 0
     AllowInQuickSuccession: 0
+  EntityFinishedBuildingSFX: {fileID: 0}
   HP: 60
   Range: 0
   Damage: 0

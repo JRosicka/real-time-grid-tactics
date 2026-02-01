@@ -102,6 +102,9 @@ MonoBehaviour:
     Interruptible: 0
     PlayDuringReplay: 1
     AllowInQuickSuccession: 1
+  SelectionSFX: {fileID: 11400000, guid: 76ea4555dc4454125a76c80bb03d7248, type: 2}
+  OrderSFX: {fileID: 11400000, guid: 5f150d3b2c65c4709825df69650cfe4a, type: 2}
+  AttackSFX: {fileID: 11400000, guid: 32433d8a1fb4b451faf9bcd31937c2e1, type: 2}
   AudioPlacementPrefix: Horseman
   EntityFinishedBuildingSound:
     Clip: {fileID: 0}
@@ -110,6 +113,7 @@ MonoBehaviour:
     Interruptible: 0
     PlayDuringReplay: 0
     AllowInQuickSuccession: 0
+  EntityFinishedBuildingSFX: {fileID: 0}
   HP: 44
   Range: 1
   Damage: 8

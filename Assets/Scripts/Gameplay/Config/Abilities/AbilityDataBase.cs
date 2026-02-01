@@ -99,14 +99,14 @@ namespace Gameplay.Config.Abilities {
         public bool ShowTimerOnSelectionInterface => _showTimerOnSelectionInterface;
         [SerializeField] private bool _performByDefault;
         public bool PerformByDefault => _performByDefault;
-        [SerializeField] private List<AudioFile> _selectionSounds;
-        public List<AudioFile> SelectionSounds => _selectionSounds;
+        [SerializeField] private AudioFileCollection _selectionSFX;
+        public AudioFileCollection SelectionSFX => _selectionSFX;
 
         [Tooltip("Only relevant for targetable abilities")]
-        [SerializeField] private AudioFile _targetedSound;
-        public AudioFile TargetedSound => _targetedSound;
-        [SerializeField] private AudioFile _performedSound;
-        public AudioFile PerformedSound => _performedSound;
+        [SerializeField] private AudioFile _targetedSFX;
+        public AudioFile TargetedSFX => _targetedSFX;
+        [SerializeField] private AudioFile _performedSFX;
+        public AudioFile PerformedSFX => _performedSFX;
         [FormerlySerializedAs("_triggersEntityOrderSound")] [SerializeField] private bool _triggersEntityOrderVoiceLine;
         public bool TriggersEntityOrderVoiceLine => _triggersEntityOrderVoiceLine;
 

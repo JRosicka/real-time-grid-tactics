@@ -81,6 +81,9 @@ MonoBehaviour:
     Interruptible: 0
     PlayDuringReplay: 1
     AllowInQuickSuccession: 0
+  SelectionSFX: {fileID: 11400000, guid: ab4fd18af3bbf4edab8a83c082e9eac6, type: 2}
+  OrderSFX: {fileID: 11400000, guid: 55169b496ad274862999aefb2e840dfc, type: 2}
+  AttackSFX: {fileID: 11400000, guid: 62cbc33c432544f80b4397659c6d04c3, type: 2}
   AudioPlacementPrefix: Knight
   EntityFinishedBuildingSound:
     Clip: {fileID: 0}
@@ -89,6 +92,7 @@ MonoBehaviour:
     Interruptible: 0
     PlayDuringReplay: 0
     AllowInQuickSuccession: 0
+  EntityFinishedBuildingSFX: {fileID: 0}
   HP: 65
   Range: 1
   Damage: 14

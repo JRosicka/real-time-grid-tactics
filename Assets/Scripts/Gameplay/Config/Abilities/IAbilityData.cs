@@ -87,9 +87,9 @@ namespace Gameplay.Config.Abilities {
         /// </summary>
         bool ShowTimerOnSelectionInterface { get; }
         bool PerformByDefault { get; }
-        List<AudioFile> SelectionSounds { get; }
-        AudioFile TargetedSound { get; }
-        AudioFile PerformedSound { get; }
+        AudioFileCollection SelectionSFX { get; }
+        AudioFile TargetedSFX { get; }
+        AudioFile PerformedSFX { get; }
         bool TriggersEntityOrderVoiceLine { get; }
         string GetAttackTooltipMessage(GameTeam team);
         /// <summary>

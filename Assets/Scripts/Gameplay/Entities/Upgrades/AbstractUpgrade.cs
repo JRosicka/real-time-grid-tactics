@@ -69,11 +69,7 @@ namespace Gameplay.Entities.Upgrades {
             if (newStatus == UpgradeStatus.Owned && Data.Timed) {
                 StartUpgradeTimer();
             }
-
-            if (newStatus == UpgradeStatus.Owned && Team == GameManager.Instance.LocalTeam) {
-                GameAudio.Instance.UpgradeCompleteSound();
-            }
-
+            
             if (Data.ApplyToGridEntitiesUponCompletion && newStatus == UpgradeStatus.Owned) {
                 FriendlyEntities.ForEach(e => e.UpgradeApplied(this));
             } else if ((Data.ApplyToGridEntitiesUponCompletion || Data.ApplyToGridEntitiesWhenTheySpawn) 

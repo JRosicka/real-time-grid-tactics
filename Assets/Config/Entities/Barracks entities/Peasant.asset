@@ -52,6 +52,9 @@ MonoBehaviour:
     Interruptible: 0
     PlayDuringReplay: 1
     AllowInQuickSuccession: 1
+  SelectionSFX: {fileID: 0}
+  OrderSFX: {fileID: 0}
+  AttackSFX: {fileID: 11400000, guid: df78dc31d26354146935f2a8872ac735, type: 2}
   AudioPlacementPrefix: Peasant
   EntityFinishedBuildingSound:
     Clip: {fileID: 0}
@@ -60,6 +63,7 @@ MonoBehaviour:
     Interruptible: 0
     PlayDuringReplay: 0
     AllowInQuickSuccession: 0
+  EntityFinishedBuildingSFX: {fileID: 0}
   HP: 16
   Range: 1
   Damage: 2

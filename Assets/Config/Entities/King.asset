@@ -30,28 +30,36 @@ MonoBehaviour:
     AudioLayer: 2
     Interruptible: 1
     PlayDuringReplay: 0
+    AllowInQuickSuccession: 0
   - Clip: {fileID: 8300000, guid: bee3ebf0c7f975f4b9dd713f98885f49, type: 3}
     Volume: 0.801
     AudioLayer: 2
     Interruptible: 1
     PlayDuringReplay: 0
+    AllowInQuickSuccession: 0
   - Clip: {fileID: 8300000, guid: d1b2f0d6b46b55c47bcc0f86c752c136, type: 3}
     Volume: 0.805
     AudioLayer: 2
     Interruptible: 1
     PlayDuringReplay: 0
+    AllowInQuickSuccession: 0
   OrderSounds:
   - Clip: {fileID: 8300000, guid: dee9f9e5fd1d7ff43aee828b46705a7a, type: 3}
     Volume: 0.82
     AudioLayer: 2
     Interruptible: 1
     PlayDuringReplay: 0
+    AllowInQuickSuccession: 0
   - Clip: {fileID: 8300000, guid: 1de3e99a07970c04b85dbe23ca5a10e6, type: 3}
     Volume: 0.844
     AudioLayer: 2
     Interruptible: 1
     PlayDuringReplay: 0
+    AllowInQuickSuccession: 0
   AttackSounds: []
+  SelectionSFX: {fileID: 11400000, guid: e1fd58dfa73524715b023c19523b2eed, type: 2}
+  OrderSFX: {fileID: 11400000, guid: b4618e86a362746ccba0fdfb0789d0a4, type: 2}
+  AttackSFX: {fileID: 11400000, guid: 32433d8a1fb4b451faf9bcd31937c2e1, type: 2}
   AudioPlacementPrefix: King
   EntityFinishedBuildingSound:
     Clip: {fileID: 0}
@@ -59,6 +67,8 @@ MonoBehaviour:
     AudioLayer: 0
     Interruptible: 0
     PlayDuringReplay: 0
+    AllowInQuickSuccession: 0
+  EntityFinishedBuildingSFX: {fileID: 0}
   HP: 80
   Range: 1
   Damage: 4

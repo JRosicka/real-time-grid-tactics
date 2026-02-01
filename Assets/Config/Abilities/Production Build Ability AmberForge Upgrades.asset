@@ -40,34 +40,9 @@ MonoBehaviour:
     _blocksDefaultAttack: 0
     _showTimerOnSelectionInterface: 1
     _performByDefault: 0
-    _selectionSound:
-      Clip: {fileID: 8300000, guid: 3501aba8cbbc0bb48924b27d6ab8e2fc, type: 3}
-      Volume: 0.82
-      AudioLayer: 0
-      Interruptible: 0
-      PlayDuringReplay: 0
-      AllowInQuickSuccession: 1
-    _selectionSounds:
-    - Clip: {fileID: 8300000, guid: 3501aba8cbbc0bb48924b27d6ab8e2fc, type: 3}
-      Volume: 0.838
-      AudioLayer: 0
-      Interruptible: 0
-      PlayDuringReplay: 0
-      AllowInQuickSuccession: 1
-    _targetedSound:
-      Clip: {fileID: 0}
-      Volume: 0
-      AudioLayer: 0
-      Interruptible: 0
-      PlayDuringReplay: 0
-      AllowInQuickSuccession: 0
-    _performedSound:
-      Clip: {fileID: 8300000, guid: 61b2ecf5b23acfa47902b5b25c35eb18, type: 3}
-      Volume: 0.754
-      AudioLayer: 0
-      Interruptible: 0
-      PlayDuringReplay: 1
-      AllowInQuickSuccession: 0
+    _selectionSFX: {fileID: 11400000, guid: 7d94eda45e38f4db1b1da5805b0e7073, type: 2}
+    _targetedSFX: {fileID: 0}
+    _performedSFX: {fileID: 11400000, guid: 96c3f4fdfb8504a02a7bc609c449f54e, type: 2}
     _triggersEntityOrderVoiceLine: 0
     Targetable: 0
     UsableEverywhereByBothTeams: 1
