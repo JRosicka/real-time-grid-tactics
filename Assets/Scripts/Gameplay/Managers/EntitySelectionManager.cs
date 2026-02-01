@@ -199,6 +199,7 @@ public class EntitySelectionManager {
             // We clicked on a cell that the ability cannot be used on. Deselect the ability. 
             GameManager.Instance.AlertTextDisplayer.DisplayAlert($"Cannot {_selectedTargetableAbility.AbilityVerb} there.");
             GameAudio.Instance.InvalidSound();
+            GameAudio.Instance.InvalidAbilitySound(_selectedTargetableAbility);
             DeselectTargetableAbility();
             return true;
         }

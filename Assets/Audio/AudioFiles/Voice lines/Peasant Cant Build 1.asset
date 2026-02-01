@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 26b394a4846743b792f7760541b00796, type: 3}
+  m_Name: Peasant Cant Build 1
+  m_EditorClassIdentifier: Assembly-CSharp::Audio.AudioFile
+  Clip: {fileID: 8300000, guid: 1d35e4ec84bf30843924f9e6b4a8429a, type: 3}
+  Volume: 0.748
+  AudioLayer: 2
+  Interruptible: 1
+  PlayDuringReplay: 0
+  AllowInQuickSuccession: 0

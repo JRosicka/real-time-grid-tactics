@@ -23,6 +23,7 @@ namespace Audio {
         private readonly Dictionary<string, AudioFile> _lastPlayedAttackSFX = new Dictionary<string, AudioFile>();
         
         private readonly Dictionary<string, AudioFile> _lastPlayedAbilitySelectionSFX = new Dictionary<string, AudioFile>();
+        private readonly Dictionary<string, AudioFile> _lastPlayedAbilityCantPerformSFX = new Dictionary<string, AudioFile>();
         private readonly Dictionary<string, float> _sfxCooldownTimes = new Dictionary<string, float>();
         
         public GameAudio(AudioPlayer audioPlayer, AudioFileConfiguration audioConfiguration) {
@@ -76,6 +77,10 @@ namespace Audio {
         public void AbilitySelectSound(IAbilityData abilityData) {
             ChooseAndPlayAbilitySound(abilityData, abilityData.SelectionSFX?.AudioFiles, _lastPlayedAbilitySelectionSFX, "abilitySelection");
         }
+
+        public void InvalidAbilitySound(IAbilityData abilityData) {
+            ChooseAndPlayAbilitySound(abilityData, abilityData.CantPerformSFX?.AudioFiles, _lastPlayedAbilityCantPerformSFX, "abilitySelection");
+        }
         
         public void AbilityTargetedSound(ITargetableAbilityData abilityData) {
             TryPlaySFX(abilityData.TargetedSFX, AudioClipName(abilityData.TargetedSFX));
@@ -100,8 +105,10 @@ namespace Audio {
                 soundToPlay = soundsToPickFrom[Random.Range(0, soundsToPickFrom.Count)];
             }
             
-            lastPlayedSounds[entity.EntityData.ID] = soundToPlay;
-            TryPlaySFX(soundToPlay, $"{entity.EntityData.AudioPlacementPrefix}_{audioPlacement}", entity);
+            bool played = TryPlaySFX(soundToPlay, $"{entity.EntityData.AudioPlacementPrefix}_{audioPlacement}", entity);
+            if (played) {
+                lastPlayedSounds[entity.EntityData.ID] = soundToPlay;
+            }
         }
         
         private void ChooseAndPlayAbilitySound(IAbilityData abilityData, List<AudioFile> audioFiles, Dictionary<string, AudioFile> lastPlayedSounds, string audioPlacement) {
@@ -119,8 +126,10 @@ namespace Audio {
                 soundToPlay = soundsToPickFrom[Random.Range(0, soundsToPickFrom.Count)];
             }
             
-            lastPlayedSounds[abilityData.ContentResourceID] = soundToPlay;
-            TryPlaySFX(soundToPlay, $"{abilityData.ContentResourceID}_{audioPlacement}");
+            bool played = TryPlaySFX(soundToPlay, $"{abilityData.ContentResourceID}_{audioPlacement}");
+            if (played) {
+                lastPlayedSounds[abilityData.ContentResourceID] = soundToPlay;
+            }
         }
 
         public void ArrowLandSound() {
@@ -149,15 +158,15 @@ namespace Audio {
             TryPlaySFX(_audioConfiguration.GameLossSound, AudioClipName(_audioConfiguration.GameLossSound));
         }
         
-        private void TryPlaySFX(AudioFile audioFile, string audioPlacement, GridEntity performer = null) {
-            if (audioFile == null || audioFile.Clip == null) return;
-            if (GameManager.Instance == null) return;
-            if (GameManager.Instance.ReplayManager.PlayingReplay && !audioFile.PlayDuringReplay) return;
+        private bool TryPlaySFX(AudioFile audioFile, string audioPlacement, GridEntity performer = null) {
+            if (audioFile == null || audioFile.Clip == null) return false;
+            if (GameManager.Instance == null) return false;
+            if (GameManager.Instance.ReplayManager.PlayingReplay && !audioFile.PlayDuringReplay) return false;
             if (!audioFile.AllowInQuickSuccession) {
-                if (_sfxCooldownTimes.ContainsKey(audioPlacement)) return;
+                if (_sfxCooldownTimes.ContainsKey(audioPlacement)) return false;
                 _sfxCooldownTimes[audioPlacement] = MinAmountOfTimeBetweenSameSounds;
             }
-            _audioPlayer.TryPlaySFX(audioFile, performer?.UID ?? -1);
+            return _audioPlayer.TryPlaySFX(audioFile, performer?.UID ?? -1);
         }
 
         [CanBeNull] private string AudioClipName(AudioFile audioFile) {

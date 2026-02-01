@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6063da4928234ad0a56a9debc5d444d6, type: 3}
+  m_Name: Peasant Command
+  m_EditorClassIdentifier: Assembly-CSharp::Audio.AudioFileCollection
+  AudioFiles:
+  - {fileID: 11400000, guid: e48b360b7783aa54a80aa041cc6cce26, type: 2}
+  - {fileID: 11400000, guid: c8f31a97b83a00c4ebb77bf6516b4f83, type: 2}
+  - {fileID: 11400000, guid: e4a28604ea448d04185b97c33cb562fb, type: 2}
+  - {fileID: 11400000, guid: 4a38016bb9e041d499f4eaee47cea5d7, type: 2}

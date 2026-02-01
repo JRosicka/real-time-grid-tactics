@@ -101,6 +101,8 @@ namespace Gameplay.Config.Abilities {
         public bool PerformByDefault => _performByDefault;
         [SerializeField] private AudioFileCollection _selectionSFX;
         public AudioFileCollection SelectionSFX => _selectionSFX;
+        [SerializeField] private AudioFileCollection _cantPerformSFX;
+        public AudioFileCollection CantPerformSFX => _cantPerformSFX;
 
         [Tooltip("Only relevant for targetable abilities")]
         [SerializeField] private AudioFile _targetedSFX;

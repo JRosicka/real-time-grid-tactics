@@ -35,19 +35,19 @@ namespace Audio {
         /// <param name="audioFile">The audio to play</param>
         /// <param name="sfxPerformerID">UID of whatever is performing the SFX. Ignored if -1, otherwise an interruptible
         /// SFX by the same performer will not be played if there is already one playing.</param>
-        public void TryPlaySFX(AudioFile audioFile, long sfxPerformerID) {
+        public bool TryPlaySFX(AudioFile audioFile, long sfxPerformerID) {
             if (audioFile.Interruptible) {
                 if (sfxPerformerID != -1) {
                     if (_interruptibleSFX is { IsPlaying: true }) {
                         // Don't play the sound if we are playing another interruptible one by the same performer
-                        if (_sfxPerformerID == sfxPerformerID) return;
+                        if (_sfxPerformerID == sfxPerformerID) return false;
                     }
                     _sfxPerformerID = sfxPerformerID;
                 }
                 
                 int priorityOfCurrentSFX = _interruptibleSFX?.Priority ?? int.MinValue;
                 int priorityOfNewSFX = AudioManager.GetLayerPriority(audioFile.AudioLayer);
-                if (priorityOfNewSFX < priorityOfCurrentSFX) return;
+                if (priorityOfNewSFX < priorityOfCurrentSFX) return false;
 
                 if (_interruptibleSFX != null) {
                     _audioManager.CancelAudio(_interruptibleSFX, false);
@@ -57,6 +57,8 @@ namespace Audio {
             } else {
                 _audioManager.PlaySound(audioFile, false, false);
             }
+
+            return true;
         }
 
         public void PlayMusic(AudioFile audioFile) {
