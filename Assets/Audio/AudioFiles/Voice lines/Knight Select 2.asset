@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Knight Select 2
   m_EditorClassIdentifier: Assembly-CSharp::Audio.AudioFile
   Clip: {fileID: 8300000, guid: 85329860bf0f91248bbc27d65c79c936, type: 3}
-  Volume: 0.791
+  Volume: 0.694
   AudioLayer: 2
   Interruptible: 1
   PlayDuringReplay: 0

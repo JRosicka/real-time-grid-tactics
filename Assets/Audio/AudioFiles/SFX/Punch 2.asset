@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Punch 2
   m_EditorClassIdentifier: Assembly-CSharp::Audio.AudioFile
   Clip: {fileID: 8300000, guid: 6285ad5cbb366fe41aff132eaefddcde, type: 3}
-  Volume: 0.791
+  Volume: 0.571
   AudioLayer: 0
   Interruptible: 0
   PlayDuringReplay: 1

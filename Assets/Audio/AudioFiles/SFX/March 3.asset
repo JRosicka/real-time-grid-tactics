@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: March 3
   m_EditorClassIdentifier: Assembly-CSharp::Audio.AudioFile
   Clip: {fileID: 8300000, guid: fc1a49a0d97482c4886d0db9b01bf9b8, type: 3}
-  Volume: 0.55
+  Volume: 0.452
   AudioLayer: 0
   Interruptible: 0
   PlayDuringReplay: 0

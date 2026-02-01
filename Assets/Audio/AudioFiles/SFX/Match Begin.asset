@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Match Begin
   m_EditorClassIdentifier: Assembly-CSharp::Audio.AudioFile
   Clip: {fileID: 8300000, guid: fd1ec9c326065d14180f94ec93e302cb, type: 3}
-  Volume: 0.896
+  Volume: 0.77
   AudioLayer: 0
   Interruptible: 0
   PlayDuringReplay: 0

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Sword Hit Low 2
   m_EditorClassIdentifier: Assembly-CSharp::Audio.AudioFile
   Clip: {fileID: 8300000, guid: 9575c593ad3e70145b3f0b8a9f7a4041, type: 3}
-  Volume: 0.755
+  Volume: 0.341
   AudioLayer: 0
   Interruptible: 0
   PlayDuringReplay: 1

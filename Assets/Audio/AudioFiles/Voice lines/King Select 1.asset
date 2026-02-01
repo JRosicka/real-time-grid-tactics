@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: King Select 1
   m_EditorClassIdentifier: Assembly-CSharp::Audio.AudioFile
   Clip: {fileID: 8300000, guid: 5a15df5023bb703429dc7e77b5757468, type: 3}
-  Volume: 0.804
+  Volume: 0.786
   AudioLayer: 2
   Interruptible: 1
   PlayDuringReplay: 0

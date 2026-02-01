@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Attack Ability Select 1
   m_EditorClassIdentifier: Assembly-CSharp::Audio.AudioFile
   Clip: {fileID: 8300000, guid: ec18c2e35295bc1469125181451f59f1, type: 3}
-  Volume: 0.737
+  Volume: 0.313
   AudioLayer: 0
   Interruptible: 0
   PlayDuringReplay: 0

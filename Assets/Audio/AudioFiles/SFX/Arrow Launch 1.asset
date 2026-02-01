@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Arrow Launch 1
   m_EditorClassIdentifier: Assembly-CSharp::Audio.AudioFile
   Clip: {fileID: 8300000, guid: c7158a52d3e379a48bf26536cdd04001, type: 3}
-  Volume: 0.278
+  Volume: 0.282
   AudioLayer: 0
   Interruptible: 0
   PlayDuringReplay: 1

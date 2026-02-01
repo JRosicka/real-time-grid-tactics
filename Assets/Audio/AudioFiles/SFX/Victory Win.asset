@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Victory Win
   m_EditorClassIdentifier: Assembly-CSharp::Audio.AudioFile
   Clip: {fileID: 8300000, guid: 5da1ea2314d33304cb03765866bb7e0c, type: 3}
-  Volume: 0.202
+  Volume: 0.163
   AudioLayer: 0
   Interruptible: 0
   PlayDuringReplay: 0

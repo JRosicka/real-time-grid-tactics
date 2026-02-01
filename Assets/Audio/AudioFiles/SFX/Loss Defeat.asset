@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Loss Defeat
   m_EditorClassIdentifier: Assembly-CSharp::Audio.AudioFile
   Clip: {fileID: 8300000, guid: 731e6a5242a11a743a9a77c1bb00813d, type: 3}
-  Volume: 0.202
+  Volume: 0.167
   AudioLayer: 0
   Interruptible: 0
   PlayDuringReplay: 0

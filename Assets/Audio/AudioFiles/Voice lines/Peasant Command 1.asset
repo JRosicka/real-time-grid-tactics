@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Peasant Command 1
   m_EditorClassIdentifier: Assembly-CSharp::Audio.AudioFile
   Clip: {fileID: 8300000, guid: 4841925a0276a694fb4b085fddd06a6f, type: 3}
-  Volume: 0.748
+  Volume: 0.786
   AudioLayer: 2
   Interruptible: 1
   PlayDuringReplay: 0

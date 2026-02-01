@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Anvil Two Strikes With Glow
   m_EditorClassIdentifier: Assembly-CSharp::Audio.AudioFile
   Clip: {fileID: 8300000, guid: 61b2ecf5b23acfa47902b5b25c35eb18, type: 3}
-  Volume: 0.737
+  Volume: 0.591
   AudioLayer: 0
   Interruptible: 0
   PlayDuringReplay: 1

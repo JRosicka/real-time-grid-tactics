@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Target With Ability
   m_EditorClassIdentifier: Assembly-CSharp::Audio.AudioFile
   Clip: {fileID: 8300000, guid: 731293a9d036dbf43ba751ac7e9aed0e, type: 3}
-  Volume: 0.834
+  Volume: 0.492
   AudioLayer: 0
   Interruptible: 0
   PlayDuringReplay: 0

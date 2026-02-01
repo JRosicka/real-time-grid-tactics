@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Sword Hit 6
   m_EditorClassIdentifier: Assembly-CSharp::Audio.AudioFile
   Clip: {fileID: 8300000, guid: 9a52dfb6aee1edf47978ef62d35d23be, type: 3}
-  Volume: 0.693
+  Volume: 0.341
   AudioLayer: 0
   Interruptible: 0
   PlayDuringReplay: 1

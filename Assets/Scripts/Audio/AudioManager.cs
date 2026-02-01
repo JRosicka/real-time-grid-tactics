@@ -17,7 +17,7 @@ namespace Audio {
         // Loudness (perceptually) ~doubles every 10 decibels -> 10/ln(2)
         private const float DecibelCoefficient = 14.4269504089f;
 
-        private const float GlobalVolumeMultiplier = 2.5f;
+        private const float GlobalVolumeMultiplier = 1.5f;
         
         public static AudioManager Instance;
 

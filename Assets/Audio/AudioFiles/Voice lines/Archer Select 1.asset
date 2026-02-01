@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Archer Select 1
   m_EditorClassIdentifier: Assembly-CSharp::Audio.AudioFile
   Clip: {fileID: 8300000, guid: e72a7d93dcc3ece47a861cca6ef6ae8d, type: 3}
-  Volume: 0.314
+  Volume: 0.409
   AudioLayer: 2
   Interruptible: 1
   PlayDuringReplay: 0
