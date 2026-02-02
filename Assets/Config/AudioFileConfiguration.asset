@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   GameMusic: {fileID: 0}
   ButtonClickDownSound: {fileID: 11400000, guid: a36475231b5a34b19a495756d1f88729, type: 2}
+  ButtonClickInGameSound: {fileID: 11400000, guid: b98ef733288afe748b7a81ee4a58e3cd, type: 2}
   InvalidSound: {fileID: 11400000, guid: f01f6622df06848c3a844f9ccfff402a, type: 2}
   GameLossSound: {fileID: 11400000, guid: 1156f81c3d8204dec9775c528a8118fb, type: 2}
   GameWinSound: {fileID: 11400000, guid: 94e2ee86fc2a0451997e916a6d222fbc, type: 2}

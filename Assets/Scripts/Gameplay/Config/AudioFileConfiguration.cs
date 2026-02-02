@@ -9,6 +9,7 @@ namespace Gameplay.Config {
     public class AudioFileConfiguration : ScriptableObject {
         public AudioFile GameMusic;
         public AudioFile ButtonClickDownSound;
+        public AudioFile ButtonClickInGameSound;
         public AudioFile InvalidSound;
         public AudioFile GameLossSound;
         public AudioFile GameWinSound;

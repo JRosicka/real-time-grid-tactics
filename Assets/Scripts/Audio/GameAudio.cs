@@ -58,6 +58,10 @@ namespace Audio {
             // Removed
         }
 
+        public void ButtonClickInGameSound() {
+            TryPlaySFX(_audioConfiguration.ButtonClickInGameSound, AudioClipName(_audioConfiguration.ButtonClickInGameSound));
+        }
+
         public void InvalidSound() {
             TryPlaySFX(_audioConfiguration.InvalidSound, AudioClipName(_audioConfiguration.InvalidSound));
         }

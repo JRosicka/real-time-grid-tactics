@@ -24,7 +24,7 @@ namespace Gameplay.UI {
 
         public override void SelectSlot(bool newlySelected) {
             if (newlySelected) {
-                GameAudio.Instance.ButtonClickDownSound();
+                GameAudio.Instance.ButtonClickInGameSound();
             }
             
             // Deselect the selected targetable ability if there is one

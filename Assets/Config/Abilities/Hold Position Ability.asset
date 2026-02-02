@@ -40,7 +40,8 @@ MonoBehaviour:
     _blocksDefaultAttack: 0
     _showTimerOnSelectionInterface: 0
     _performByDefault: 0
-    _selectionSFX: {fileID: 11400000, guid: 98230f8c1d3bc471098d366b7a5cbf4f, type: 2}
+    _selectionSFX: {fileID: 11400000, guid: 75b6c326a18e3384d897ccf638a3d097, type: 2}
+    _cantPerformSFX: {fileID: 0}
     _targetedSFX: {fileID: 0}
     _performedSFX: {fileID: 0}
     _triggersEntityOrderVoiceLine: 0

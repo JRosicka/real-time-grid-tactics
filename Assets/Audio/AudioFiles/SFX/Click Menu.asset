@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6063da4928234ad0a56a9debc5d444d6, type: 3}
-  m_Name: Click
+  m_Name: Click Menu
   m_EditorClassIdentifier: Assembly-CSharp::Audio.AudioFileCollection
   AudioFiles:
   - {fileID: 11400000, guid: a36475231b5a34b19a495756d1f88729, type: 2}
