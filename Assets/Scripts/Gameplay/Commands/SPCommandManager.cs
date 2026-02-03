@@ -17,7 +17,7 @@ public class SPCommandManager : AbstractCommandManager {
         DoSpawnEntity(data, spawnLocation, entityUID => {
             GridEntity entityInstance = Instantiate(GridEntityPrefab, GridController.GetWorldPosition(spawnLocation), Quaternion.identity, SpawnBucket);
             
-            entityInstance.ServerInitialize(data, team, spawnLocation); 
+            entityInstance.ServerInitialize(data, team, spawnLocation, entityUID); 
             entityInstance.ClientInitialize(data, team, built, entityUID);
             
             return entityInstance;

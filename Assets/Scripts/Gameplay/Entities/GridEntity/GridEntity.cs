@@ -164,9 +164,10 @@ namespace Gameplay.Entities {
         /// <summary>
         /// Initialization method ran only on the server, before <see cref="ClientInitialize"/>.
         /// </summary>
-        public void ServerInitialize(EntityData data, GameTeam team, Vector2Int spawnLocation) {
+        public void ServerInitialize(EntityData data, GameTeam team, Vector2Int spawnLocation, long entityUID) {
             EntityData = data;
             Team = team;
+            UID = entityUID;
             
             foreach (AbilityDataScriptableObject abilityData in data.Abilities) {
                 AbilityInstanceCount[abilityData.Content.ContentResourceID] = 0;
