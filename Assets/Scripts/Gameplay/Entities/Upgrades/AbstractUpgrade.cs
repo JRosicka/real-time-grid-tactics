@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Audio;
 using Gameplay.Config;
 using Gameplay.Config.Upgrades;
+using Gameplay.UI;
 
 namespace Gameplay.Entities.Upgrades {
     /// <summary>
@@ -77,6 +78,10 @@ namespace Gameplay.Entities.Upgrades {
             } else if ((Data.ApplyToGridEntitiesUponCompletion || Data.ApplyToGridEntitiesWhenTheySpawn) 
                        && newStatus == UpgradeStatus.NeitherOwnedNorInProgress) {
                 FriendlyEntities.ForEach(e => e.UpgradeRemoved(this));
+            }
+
+            if (newStatus == UpgradeStatus.Owned && Team != GameManager.Instance.LocalTeam) {
+                GameManager.Instance.AlertTextDisplayer.DisplayAlert($"{GameManager.Instance.GetPlayerForTeam(Team).DisplayName} has researched {Data.ID}");
             }
         }
 
