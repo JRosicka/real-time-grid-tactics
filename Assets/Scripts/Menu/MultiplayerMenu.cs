@@ -37,6 +37,13 @@ public class MultiplayerMenu : MonoBehaviour {
     
     private void Start() {
         CanvasWidthSetter.Initialize();
+        
+        #if !UNITY_EDITOR
+        // Just lock the mouse to the game window here
+        Cursor.lockState = PlayerPrefs.GetInt(PlayerPrefsKeys.LockCursorKey, 1) == 1 
+            ? CursorLockMode.Confined 
+            : CursorLockMode.None;
+        #endif
 
         if (SteamLobbyService.Instance == null || !SteamLobbyService.Instance.SteamEnabled) return;
         

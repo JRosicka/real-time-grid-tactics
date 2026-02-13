@@ -18,6 +18,7 @@ namespace Gameplay.UI {
         [SerializeField] private SettingSlider _sfxVolumeSlider;
         [SerializeField] private SettingSlider _voiceLineVolumeSlider;
         [SerializeField] private SettingSlider _musicVolumeSlider;
+        [SerializeField] private SettingToggle _lockCursorToggle;
         [SerializeField] private SettingToggle _edgeScrollToggle;
         [SerializeField] private SettingSlider _edgeScrollSpeedSlider;
         [SerializeField] private SettingSlider _edgeScrollSpeedSensitivitySlider;
@@ -39,6 +40,7 @@ namespace Gameplay.UI {
             int sfxVolume = ToVolumeInt(PlayerPrefs.GetFloat(PlayerPrefsKeys.SoundEffectVolumeKey, PlayerPrefsKeys.DefaultVolume));
             int voiceLineVolume = ToVolumeInt(PlayerPrefs.GetFloat(PlayerPrefsKeys.VoiceLineVolumeKey, PlayerPrefsKeys.DefaultVolume));
             int musicVolume = ToVolumeInt(PlayerPrefs.GetFloat(PlayerPrefsKeys.MusicVolumeKey, PlayerPrefsKeys.DefaultVolume));
+            bool lockCursor = PlayerPrefs.GetInt(PlayerPrefsKeys.LockCursorKey, 1) == 1;
             bool edgeScroll = PlayerPrefs.GetInt(PlayerPrefsKeys.EdgeScrollKey, 1) == 1;
             int edgeScrollSpeed = PlayerPrefs.GetInt(PlayerPrefsKeys.EdgeScrollSpeed, PlayerPrefsKeys.DefaultEdgeScrollSpeed);
             int edgeScrollSensitivity = PlayerPrefs.GetInt(PlayerPrefsKeys.EdgeScrollSensitivity, PlayerPrefsKeys.DefaultEdgeScrollSensitivity);
@@ -53,6 +55,9 @@ namespace Gameplay.UI {
 
             _musicVolumeSlider.Initialize(musicVolume);
             _musicVolumeSlider.ValueChanged += MusicVolumeChanged;
+            
+            _lockCursorToggle.Initialize(lockCursor);
+            _lockCursorToggle.ValueChanged += LockCursorChanged;
             
             _edgeScrollToggle.Initialize(edgeScroll);
             _edgeScrollToggle.ValueChanged += EdgeScrollChanged;
@@ -89,6 +94,14 @@ namespace Gameplay.UI {
             AudioManager.Instance.SetMusicVolume(sfxVolume);
         }
 
+        private void LockCursorChanged(bool lockCursor) {
+            PlayerPrefs.SetInt(PlayerPrefsKeys.LockCursorKey, lockCursor ? 1 : 0);
+            
+            #if !UNITY_EDITOR
+            Cursor.lockState = lockCursor ? CursorLockMode.Confined : CursorLockMode.None;
+            #endif
+        }
+        
         private void EdgeScrollChanged(bool edgeScroll) {
             PlayerPrefs.SetInt(PlayerPrefsKeys.EdgeScrollKey, edgeScroll ? 1 : 0);
             if (_inGame) {
