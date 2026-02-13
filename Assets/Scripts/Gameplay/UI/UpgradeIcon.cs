@@ -1,3 +1,4 @@
+using System;
 using Gameplay.Entities;
 using Gameplay.Entities.Upgrades;
 using UnityEngine;
@@ -17,7 +18,9 @@ namespace Gameplay.UI {
         
         private IUpgrade _upgrade;
         private PlayerOwnedPurchasablesController _ownedPurchasables;
-        private bool _upgradeActive;
+        
+        public bool UpgradeActive { get; private set; }
+        public event Action UpgradeStatusChanged;
         
         public void Initialize(IUpgrade upgrade, IGamePlayer player) {
             _upgrade = upgrade;
@@ -40,6 +43,12 @@ namespace Gameplay.UI {
             gameObject.SetActive(_upgrade.Status == UpgradeStatus.Owned);
             if (_upgrade.Status != UpgradeStatus.Owned) {
                 _tooltip.HideTooltip();
+            }
+
+            bool wasActive = UpgradeActive;
+            UpgradeActive = _upgrade.Status == UpgradeStatus.Owned;
+            if (wasActive != UpgradeActive) {
+                UpgradeStatusChanged?.Invoke();
             }
         }
         
