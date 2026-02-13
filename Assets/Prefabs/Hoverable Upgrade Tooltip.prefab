@@ -738,7 +738,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 841855802998704204, guid: a8d3a2c9ba4e0624097e46e4329b162e, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 141.03
+      value: 87.3587
       objectReference: {fileID: 0}
     - target: {fileID: 841855802998704204, guid: a8d3a2c9ba4e0624097e46e4329b162e, type: 3}
       propertyPath: m_SizeDelta.y
@@ -778,7 +778,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2680802905528662821, guid: a8d3a2c9ba4e0624097e46e4329b162e, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 179.6
+      value: 125.9286
       objectReference: {fileID: 0}
     - target: {fileID: 2680802905528662821, guid: a8d3a2c9ba4e0624097e46e4329b162e, type: 3}
       propertyPath: m_SizeDelta.y
@@ -818,7 +818,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2680802905528662821, guid: a8d3a2c9ba4e0624097e46e4329b162e, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 9.6
+      value: 10.5
       objectReference: {fileID: 0}
     - target: {fileID: 2680802905528662821, guid: a8d3a2c9ba4e0624097e46e4329b162e, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -836,21 +836,33 @@ PrefabInstance:
       propertyPath: m_Name
       value: Time Amount Container Variant
       objectReference: {fileID: 0}
+    - target: {fileID: 4812799234951456914, guid: a8d3a2c9ba4e0624097e46e4329b162e, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 31.5658
+      objectReference: {fileID: 0}
+    - target: {fileID: 4812799234951456914, guid: a8d3a2c9ba4e0624097e46e4329b162e, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -6.1277
+      objectReference: {fileID: 0}
+    - target: {fileID: 5583247413720749919, guid: a8d3a2c9ba4e0624097e46e4329b162e, type: 3}
+      propertyPath: m_fontSize
+      value: 23.85
+      objectReference: {fileID: 0}
     - target: {fileID: 5583247413720749919, guid: a8d3a2c9ba4e0624097e46e4329b162e, type: 3}
       propertyPath: 'm_ActiveFontFeatures.Array.data[0]'
       value: 1801810542
       objectReference: {fileID: 0}
     - target: {fileID: 8445533421971078344, guid: a8d3a2c9ba4e0624097e46e4329b162e, type: 3}
       propertyPath: m_text
-      value: 'Active time remaining:'
+      value: 'Expires in:'
       objectReference: {fileID: 0}
     - target: {fileID: 8445533421971078344, guid: a8d3a2c9ba4e0624097e46e4329b162e, type: 3}
       propertyPath: m_fontSize
-      value: 22
+      value: 26
       objectReference: {fileID: 0}
     - target: {fileID: 8445533421971078344, guid: a8d3a2c9ba4e0624097e46e4329b162e, type: 3}
       propertyPath: m_fontSizeBase
-      value: 22
+      value: 26
       objectReference: {fileID: 0}
     - target: {fileID: 8445533421971078344, guid: a8d3a2c9ba4e0624097e46e4329b162e, type: 3}
       propertyPath: 'm_ActiveFontFeatures.Array.data[0]'
