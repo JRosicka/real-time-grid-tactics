@@ -31,4 +31,5 @@ MonoBehaviour:
   ApplyToGridEntitiesUponCompletion: 1
   ApplyToGridEntitiesWhenTheySpawn: 1
   ExpirationSeconds: 30
+  OrderIndex: 100
   TimerSpeedMultiplier: 1.25

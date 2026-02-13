@@ -1,3 +1,4 @@
+using System;
 using Gameplay.Config.Upgrades;
 
 namespace Gameplay.Entities.Upgrades {
@@ -7,6 +8,7 @@ namespace Gameplay.Entities.Upgrades {
     public interface IUpgrade {
         UpgradeData UpgradeData { get; }
         UpgradeStatus Status { get; }
+        event Action<UpgradeDurationTimer> UpgradeTimerStarted;
         
         /// <summary>
         /// Triggered when the upgrade finishes being researched.

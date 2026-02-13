@@ -20,7 +20,7 @@ namespace Gameplay.Config.Abilities {
         bool FlipGridIcon { get; }
         Color GridIconColor { get; }
         ColoredButtonData SlotSprites { get; }
-        AbilityTimerView AbilityTimerViewPrefab { get; }
+        NetworkableTimerView NetworkableTimerViewPrefab { get; }
         List<PurchasableData> Requirements { get; }
         float PerformDuration { get; }
         float CooldownDuration { get; }

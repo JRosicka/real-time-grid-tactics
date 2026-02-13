@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Audio;
 using Gameplay.Config;
@@ -12,6 +13,7 @@ namespace Gameplay.Entities.Upgrades {
         public UpgradeData UpgradeData => Data;
         public UpgradeStatus Status { get; set; }
         public UpgradeDurationTimer UpgradeTimer { get; private set; }
+        public event Action<UpgradeDurationTimer> UpgradeTimerStarted;
         
         protected readonly GameTeam Team;
 
@@ -81,6 +83,7 @@ namespace Gameplay.Entities.Upgrades {
         private void StartUpgradeTimer() {
             UpgradeTimer = new UpgradeDurationTimer(this, Team, Data.ExpirationSeconds);
             TimerStartedLocally();
+            UpgradeTimerStarted?.Invoke(UpgradeTimer);
         }
 
         public bool ExpireUpgradeTimer() {

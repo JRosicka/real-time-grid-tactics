@@ -396,7 +396,7 @@ namespace Gameplay.Entities {
         
         private void CreateTimerView(IAbility ability, AbilityTimer abilityTimer) {
             if (!ability.ShouldShowAbilityTimer) return;
-            if (ability.AbilityData.AbilityTimerViewPrefab == null) return;
+            if (ability.AbilityData.NetworkableTimerViewPrefab == null) return;
 
             Transform timerLocation;
             switch (abilityTimer.Ability) {
@@ -440,7 +440,7 @@ namespace Gameplay.Entities {
                     break;
             }
 
-            AbilityTimerView timerView = Instantiate(ability.AbilityData.AbilityTimerViewPrefab, timerLocation);
+            NetworkableTimerView timerView = Instantiate(ability.AbilityData.NetworkableTimerViewPrefab, timerLocation);
             timerView.Initialize(abilityTimer, true, false, true, timerFill);
         }
 

@@ -35,6 +35,7 @@ MonoBehaviour:
   ApplyToGridEntitiesUponCompletion: 1
   ApplyToGridEntitiesWhenTheySpawn: 1
   ExpirationSeconds: 0
+  OrderIndex: 400
   ArcherData: {fileID: 11400000, guid: 938107a9fc68aa54586e46f7860fc6ff, type: 2}
   SlowTerrainSpeedModifierIntensity: 0
   AdditionalMovementTimeFromAttacking: -0.5

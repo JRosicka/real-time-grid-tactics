@@ -42,6 +42,7 @@ public class GameManager : MonoBehaviour {
     public InGamePauseButton InGamePauseButton;
     public GridIconDisplayer GridIconDisplayer;
     public ReplayManager ReplayManager;
+    public UpgradesUI UpgradesUI;
     
     public PathfinderService PathfinderService;
     public EntitySelectionManager EntitySelectionManager;
@@ -151,6 +152,7 @@ public class GameManager : MonoBehaviour {
         };
         ResourcesInterface.Initialize(resourcesObserver, localPlayer);
         InGamePauseButton.Initialize(localPlayer.Data.ColoredButtonData);
+        UpgradesUI.Initialize(player1, player2);
     }
 
     public void SetupCommandManager(ICommandManager commandManager) {

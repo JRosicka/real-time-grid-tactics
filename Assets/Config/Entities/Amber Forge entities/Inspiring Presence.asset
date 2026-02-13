@@ -31,4 +31,5 @@ MonoBehaviour:
   ApplyToGridEntitiesUponCompletion: 0
   ApplyToGridEntitiesWhenTheySpawn: 0
   ExpirationSeconds: 0
+  OrderIndex: 200
   BonusDamage: 3

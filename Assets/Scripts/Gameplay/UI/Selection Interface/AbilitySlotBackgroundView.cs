@@ -17,8 +17,9 @@ namespace Gameplay.UI {
     public class AbilitySlotBackgroundView : MonoBehaviour {
         [SerializeField] private Image _slotImage;
         [SerializeField] private Image _grayedOutSlotImage;
+        [FormerlySerializedAs("_abilityTimerView")]
         [FormerlySerializedAs("_cooldownTimerView")] 
-        [SerializeField] private AbilityTimerView _abilityTimerView;
+        [SerializeField] private NetworkableTimerView _timerView;
         [SerializeField] private ListenerButton _slotButton;
         
         private GridEntity _gridEntity;
@@ -67,8 +68,8 @@ namespace Gameplay.UI {
         }
         
         public void UnsubscribeFromTimers() {
-            if (_abilityTimerView != null) {
-                _abilityTimerView.UnsubscribeFromTimers();
+            if (_timerView != null) {
+                _timerView.UnsubscribeFromTimers();
             }
             if (_gridEntity != null) {
                 _gridEntity.AbilityPerformedEvent += AbilityPerformed;
@@ -83,7 +84,7 @@ namespace Gameplay.UI {
                 GameTeam localTeam = GameManager.Instance.LocalTeam;
                 AbilityTimer activeTimerForPlayer = activeAbilityTimers.FirstOrDefault(t => t.Team == localTeam);
                 if (activeTimerForPlayer != null) {
-                    _abilityTimerView.Initialize(activeTimerForPlayer, false, true, true);
+                    _timerView.Initialize(activeTimerForPlayer, false, true, true);
                     return;
                 }
             }

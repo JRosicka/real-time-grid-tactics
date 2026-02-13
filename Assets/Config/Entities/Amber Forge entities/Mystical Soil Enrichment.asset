@@ -35,6 +35,7 @@ MonoBehaviour:
   ApplyToGridEntitiesUponCompletion: 1
   ApplyToGridEntitiesWhenTheySpawn: 0
   ExpirationSeconds: 0
+  OrderIndex: 300
   VillageEntityData: {fileID: 11400000, guid: 5d9e30910c9795b49bea0c2c257e60eb, type: 2}
   ResourceAmountToAdd:
     Type: 0

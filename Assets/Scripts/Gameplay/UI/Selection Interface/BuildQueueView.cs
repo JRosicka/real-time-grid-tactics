@@ -11,7 +11,7 @@ namespace Gameplay.UI {
     /// </summary>
     public class BuildQueueView : MonoBehaviour {
         [SerializeField] private List<AbilitySlot> _slots;
-        [SerializeField] private AbilityTimerView _buildTimer; 
+        [SerializeField] private NetworkableTimerView _buildTimer; 
         [SerializeField] private AbilityChannel _buildChannel;
 
         private int SlotCount => _slots.Count;

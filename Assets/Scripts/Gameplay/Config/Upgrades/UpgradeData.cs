@@ -22,6 +22,7 @@ namespace Gameplay.Config.Upgrades {
         [Range(0, 60)]
         public int ExpirationSeconds;
         public bool Timed => ExpirationSeconds > 0;
+        public int OrderIndex;
         public abstract IUpgrade CreateUpgrade(GameTeam team);
     }
     

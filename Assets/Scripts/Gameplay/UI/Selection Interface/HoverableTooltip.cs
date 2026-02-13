@@ -17,6 +17,7 @@ namespace Gameplay.UI {
 
         private RectTransform _rectTransform;
         private int _initializingCount = 0;
+        protected bool Showing;
         
         private void Awake() {
             _rectTransform = GetComponent<RectTransform>();
@@ -37,10 +38,12 @@ namespace Gameplay.UI {
 
         public void ShowTooltip() {
             _canvasGroup.alpha = 1;
+            Showing = true;
         }
         
         public void HideTooltip() {
             _canvasGroup.alpha = 0;
+            Showing = false;
         }
 
         private void CheckForProperAdjustment() {

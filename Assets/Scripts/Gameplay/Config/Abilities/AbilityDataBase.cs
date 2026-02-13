@@ -41,8 +41,8 @@ namespace Gameplay.Config.Abilities {
         [SerializeField] private ColoredButtonData _slotSprites;
         public ColoredButtonData SlotSprites => _slotSprites;
         
-        [FormerlySerializedAs("_abilityTimerCooldownView")] [SerializeField] private AbilityTimerView _abilityTimerView;
-        public AbilityTimerView AbilityTimerViewPrefab => _abilityTimerView;
+        [FormerlySerializedAs("_abilityTimerView")] [FormerlySerializedAs("_abilityTimerCooldownView")] [SerializeField] private NetworkableTimerView _timerView;
+        public NetworkableTimerView NetworkableTimerViewPrefab => _timerView;
 
         [Tooltip("All of these must be owned in order to perform the ability")]
         [SerializeField] private List<PurchasableData> _requirements;

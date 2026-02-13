@@ -9,7 +9,8 @@ using UnityEngine.UI;
 
 namespace Gameplay.UI {
     /// <summary>
-    /// Handles displaying a tooltip for the currently selected entity/ability/terrain
+    /// Handles displaying a tooltip for the currently selected entity/ability/terrain. Appears to the left of the
+    /// selection interface. 
     /// </summary>
     public class TooltipView : MonoBehaviour {
         [SerializeField] private GameObject _view;
