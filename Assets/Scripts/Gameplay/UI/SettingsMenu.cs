@@ -43,7 +43,6 @@ namespace Gameplay.UI {
             bool lockCursor = PlayerPrefs.GetInt(PlayerPrefsKeys.LockCursorKey, 1) == 1;
             bool edgeScroll = PlayerPrefs.GetInt(PlayerPrefsKeys.EdgeScrollKey, 1) == 1;
             int edgeScrollSpeed = PlayerPrefs.GetInt(PlayerPrefsKeys.EdgeScrollSpeed, PlayerPrefsKeys.DefaultEdgeScrollSpeed);
-            int edgeScrollSensitivity = PlayerPrefs.GetInt(PlayerPrefsKeys.EdgeScrollSensitivity, PlayerPrefsKeys.DefaultEdgeScrollSensitivity);
             int chosenDisplay = PlayerPrefs.GetInt(PlayerPrefsKeys.ChosenDisplayKey, 0);
             // _resourcesUILocation = PlayerPrefs.GetInt(PlayerPrefsKeys.ResourcesUILocationKey, 0);
             
@@ -64,9 +63,6 @@ namespace Gameplay.UI {
             
             _edgeScrollSpeedSlider.Initialize(edgeScrollSpeed);
             _edgeScrollSpeedSlider.ValueChanged += EdgeScrollSpeedChanged;
-
-            _edgeScrollSpeedSensitivitySlider.Initialize(edgeScrollSensitivity);
-            _edgeScrollSpeedSensitivitySlider.ValueChanged += EdgeScrollSensitivityChanged;
 
             List<string> displayStrings = Display.displays.Take(8).Select((d, i) => $"Display {i + 1}").ToList();
             _displayList.Initialize(chosenDisplay, displayStrings);
@@ -115,14 +111,7 @@ namespace Gameplay.UI {
                 GameManager.CameraManager.SetEdgeScrollSpeed(speed);
             }
         }
-
-        private void EdgeScrollSensitivityChanged(int sensitivity) {
-            PlayerPrefs.SetInt(PlayerPrefsKeys.EdgeScrollSensitivity, sensitivity);
-            if (_inGame) {
-                GameManager.CameraManager.SetEdgeScrollSensitivity(sensitivity);
-            }
-        }
-
+        
         private void ChosenDisplayChanged(int display) {
             PlayerPrefs.SetInt(PlayerPrefsKeys.ChosenDisplayKey, display);
             if (Camera.main != null) {

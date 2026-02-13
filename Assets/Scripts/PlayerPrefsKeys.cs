@@ -8,7 +8,6 @@ public static class PlayerPrefsKeys {
     public const string LockCursorKey = "LockCursor";
     public const string EdgeScrollKey = "EdgeScroll";
     public const string EdgeScrollSpeed = "EdgeScrollSpeed";
-    public const string EdgeScrollSensitivity = "EdgeScrollSensitivity";
     public const string ChosenDisplayKey = "UnitySelectMonitor";
     public const string ResourcesUILocationKey = "ResourcesUILocation";
 

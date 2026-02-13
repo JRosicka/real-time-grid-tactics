@@ -1625,7 +1625,7 @@ MonoBehaviour:
   _boundaryBufferHorizontal: 0.6
   _boundaryBufferVertical: 0.6
   _additionalBoundaryBufferDown: 2.17
-  _edgeScrollNormalThreshold: 0.06
+  _edgeScrollNormalThresholdPixels: 5
   _gameWindow: {fileID: 251873017}
   _cameraWindow: {fileID: 2070169484}
 --- !u!1 &527040124

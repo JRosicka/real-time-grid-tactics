@@ -1,6 +1,7 @@
 using System;
 using Rewired;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 /// <summary>
 /// Handles camera movement/zoom
@@ -21,16 +22,15 @@ public class CameraManager : MonoBehaviour {
     [SerializeField] private float _boundaryBufferHorizontal, _boundaryBufferVertical;
     [Tooltip("To account for the bottom-screen UI that would otherwise get in the way")]
     [SerializeField] private float _additionalBoundaryBufferDown;
-    [SerializeField] [Range(0, .1f)] private float _edgeScrollNormalThreshold;
+    [SerializeField] private int _edgeScrollNormalThresholdPixels;
     [SerializeField] private RectTransform _gameWindow;
     [SerializeField] private RectTransform _cameraWindow;
-    private float VerticalEdgeScrollThreshold => _gameWindow.rect.height * _edgeScrollNormalThreshold * _edgeScrollSensitivityMultiplier;
-    private float HorizontalEdgeScrollThreshold => _gameWindow.rect.width * _edgeScrollNormalThreshold * _edgeScrollSensitivityMultiplier;
+    private int verticalEdgeScrollThresholdPixels => _edgeScrollNormalThresholdPixels;
+    private int horizontalEdgeScrollThresholdPixels => _edgeScrollNormalThresholdPixels;
     private CameraDirection? _currentEdgeScrollDirection_horizontal;
     private CameraDirection? _currentEdgeScrollDirection_vertical;
     private bool _edgeScrollEnabled;
     private float _edgeScrollSpeedMultiplier;
-    private float _edgeScrollSensitivityMultiplier;
     
     private float EdgeScrollSpeed => _cameraMoveSpeed * _edgeScrollSpeedMultiplier;
     
@@ -51,7 +51,6 @@ public class CameraManager : MonoBehaviour {
         SetCameraStartPosition(startPosition);
         _edgeScrollEnabled = PlayerPrefs.GetInt(PlayerPrefsKeys.EdgeScrollKey, 1) == 1;
         SetEdgeScrollSpeed(PlayerPrefs.GetInt(PlayerPrefsKeys.EdgeScrollSpeed, PlayerPrefsKeys.DefaultEdgeScrollSpeed));
-        SetEdgeScrollSensitivity(PlayerPrefs.GetInt(PlayerPrefsKeys.EdgeScrollSensitivity, PlayerPrefsKeys.DefaultEdgeScrollSensitivity));
         
         _playerInput = ReInput.players.GetPlayer(0);
     }
@@ -77,11 +76,7 @@ public class CameraManager : MonoBehaviour {
     public void SetEdgeScrollSpeed(int newSpeed) {
         _edgeScrollSpeedMultiplier = newSpeed / 75f + .25f; // .25 to 1.75
     }
-
-    public void SetEdgeScrollSensitivity(int newSensitivity) {
-        _edgeScrollSensitivityMultiplier = newSensitivity / 75f + .25f; // .25 to 1.75
-    }
-
+    
     public void StartMiddleMousePan(Vector2 startMousePosition) {
         _middleMouseDragLastPosition = _camera.ScreenToWorldPoint(startMousePosition);
     }
@@ -156,18 +151,18 @@ public class CameraManager : MonoBehaviour {
         // Horizontal
         float gameWindowOffset = (_cameraWindow.rect.width - _gameWindow.rect.width) / 2f;
         float cameraWindowMouseX = mouseGameWindowPosition.x - gameWindowOffset;
-        if (cameraWindowMouseX < HorizontalEdgeScrollThreshold) {
+        if (cameraWindowMouseX < horizontalEdgeScrollThresholdPixels) {
             _currentEdgeScrollDirection_horizontal = CameraDirection.Left;
-        } else if (cameraWindowMouseX > _gameWindow.rect.width - HorizontalEdgeScrollThreshold) {
+        } else if (cameraWindowMouseX > _gameWindow.rect.width - horizontalEdgeScrollThresholdPixels) {
             _currentEdgeScrollDirection_horizontal = CameraDirection.Right;
         } else {
             _currentEdgeScrollDirection_horizontal = null;
         }
         
         // Vertical
-        if (mouseGameWindowPosition.y < VerticalEdgeScrollThreshold) {
+        if (mouseGameWindowPosition.y < verticalEdgeScrollThresholdPixels) {
             _currentEdgeScrollDirection_vertical = CameraDirection.Down;
-        } else if (mouseGameWindowPosition.y > _gameWindow.rect.height - VerticalEdgeScrollThreshold) {
+        } else if (mouseGameWindowPosition.y > _gameWindow.rect.height - verticalEdgeScrollThresholdPixels) {
             _currentEdgeScrollDirection_vertical = CameraDirection.Up;
         } else {
             _currentEdgeScrollDirection_vertical = null;
