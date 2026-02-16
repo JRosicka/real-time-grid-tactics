@@ -35,7 +35,7 @@ MonoBehaviour:
   Damage: 2
   BonusDamage: 0
   TagsToApplyBonusDamageTo: 
-  NormalMoveTime: 3.5
+  NormalMoveTime: 3
   AddedMovementTimeFromAttacking: 1.2
   Tags: 0300000006000000
   InaccessibleTiles:
