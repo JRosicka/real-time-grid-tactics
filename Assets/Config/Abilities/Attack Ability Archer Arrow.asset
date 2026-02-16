@@ -21,7 +21,7 @@ MonoBehaviour:
     _flipGridIcon: 0
     _gridIconColor: {r: 1, g: 0, b: 0, a: 1}
     _slotSprites: {fileID: 11400000, guid: 0c6d76a5e9f6ec14fb683c53910d5b25, type: 2}
-    _abilityTimerView: {fileID: 3613232002330387423, guid: f40c3d65f7969d74995aff7c067ce52a, type: 3}
+    _timerView: {fileID: 3613232002330387423, guid: f40c3d65f7969d74995aff7c067ce52a, type: 3}
     _requirements: []
     _performDuration: 0
     _cooldownDuration: 4

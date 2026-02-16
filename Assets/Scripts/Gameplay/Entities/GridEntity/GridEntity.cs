@@ -4,8 +4,10 @@ using System.Linq;
 using Audio;
 using Gameplay.Config;
 using Gameplay.Config.Abilities;
+using Gameplay.Config.DeathAction;
 using Gameplay.Entities.Abilities;
 using Gameplay.Entities.BuildQueue;
+using Gameplay.Entities.DeathAction;
 using Gameplay.Entities.Upgrades;
 using Gameplay.Managers;
 using Gameplay.UI;
@@ -119,6 +121,8 @@ namespace Gameplay.Entities {
         }
         public bool DeadOrDying => this == null || HPHandler.MarkedForDeath || _unregistered;
 
+        public List<IDeathAction> DeathActions = new();
+        
         // Client flag
         private bool _unregistered;
         private GridEntityView _view;
@@ -189,6 +193,11 @@ namespace Gameplay.Entities {
             TargetLocationLogic.ValueChanged += TargetLocationLogicChanged;
             TargetLocationLogic.UpdateValue(new TargetLocationLogic(EntityData.CanRally, spawnLocation, null, false, false));
             LastAttackedEntity.UpdateValue(new NetworkableGridEntityValue(null));
+            
+            // Set up death actions
+            foreach (DeathActionData deathActionData in EntityData.DeathActions) {
+                DeathActions.Add(deathActionData.CreateDeathAction());
+            }
         }
         
         [ClientRpc]
@@ -332,7 +341,7 @@ namespace Gameplay.Entities {
         }
 
         public GridEntity GetAttackTarget() {
-            if (TargetLocationLogicValue.TargetEntity != null && TargetLocationLogicValue.TargetEntity.Team != GameTeam.Neutral) {
+            if (TargetLocationLogicValue.TargetEntity != null && (TargetLocationLogicValue.TargetEntity.Team != GameTeam.Neutral || TargetLocationLogicValue.TargetEntity.EntityData.Targetable)) {
                 return TargetLocationLogicValue.TargetEntity;
             }
 
@@ -663,7 +672,7 @@ namespace Gameplay.Entities {
         public float MovementTimeFromAttacking => EntityData.AddedMovementTimeFromAttacking + AdditionalMovementTimeFromAttacking;
 
         public enum TargetType {
-            Enemy = 1,
+            Attackable = 1,
             Ally = 2,
             Neutral = 3
         }
@@ -671,7 +680,7 @@ namespace Gameplay.Entities {
         public void TryTargetEntity(GridEntity targetEntity, Vector2Int targetCell) {
             TargetType targetType = GetTargetType(targetEntity);
 
-            if (targetType != TargetType.Enemy) return;
+            if (targetType != TargetType.Attackable) return;
             TargetAttackAbilityData data = GetAbilityData<TargetAttackAbilityData>();
             if (AbilityAssignmentManager.StartPerformingAbility(this, data, new TargetAttackAbilityParameters() {
                     Target = targetEntity, 
@@ -683,8 +692,8 @@ namespace Gameplay.Entities {
 
         public TargetType GetTargetType(GridEntity targetEntity) {
             if (targetEntity == null) return TargetType.Neutral;
-            if (targetEntity.Team == GameTeam.Neutral || Team == GameTeam.Neutral) return TargetType.Neutral;
-            return Team == targetEntity.Team ? TargetType.Ally : TargetType.Enemy;
+            if (!targetEntity.EntityData.Targetable && (targetEntity.Team == GameTeam.Neutral || Team == GameTeam.Neutral)) return TargetType.Neutral;
+            return Team == targetEntity.Team ? TargetType.Ally : TargetType.Attackable;
         }
         
         public string GetAttackTooltipMessageFromAbilities() {

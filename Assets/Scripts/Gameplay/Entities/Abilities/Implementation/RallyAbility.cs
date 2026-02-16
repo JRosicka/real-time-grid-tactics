@@ -36,7 +36,7 @@ namespace Gameplay.Entities.Abilities {
             GridEntity entityAtDestination = Data.RallyingUnitsAreAttackers
                 ? GameManager.Instance.GetTopEntityAtLocation(AbilityParameters.Destination)
                 : null;
-            if (entityAtDestination != null && entityAtDestination.Team != PerformerTeam.OpponentTeam()) {
+            if (entityAtDestination != null && (entityAtDestination.Team == PerformerTeam || (entityAtDestination.Team == GameTeam.Neutral && !entityAtDestination.EntityData.Targetable))) {
                 entityAtDestination = null;
             }
             Performer.SetTargetLocation(AbilityParameters.Destination, entityAtDestination, Data.RallyingUnitsAreAttackers);

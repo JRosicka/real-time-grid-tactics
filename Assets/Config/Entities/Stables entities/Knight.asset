@@ -30,68 +30,10 @@ MonoBehaviour:
   TeamColorSprite: {fileID: 21300000, guid: e8c167ea0d633c84789928cf9ff2549b, type: 3}
   BaseSpriteIconOverride: {fileID: 0}
   _viewPrefab: {fileID: 7504026570216467247, guid: 756acdd55b6cc334791cee33d2ee90d3, type: 3}
-  SelectionSounds:
-  - Clip: {fileID: 8300000, guid: 2a160808483721c42b2b53b2eb989891, type: 3}
-    Volume: 0.719
-    AudioLayer: 2
-    Interruptible: 1
-    PlayDuringReplay: 0
-    AllowInQuickSuccession: 0
-  - Clip: {fileID: 8300000, guid: 85329860bf0f91248bbc27d65c79c936, type: 3}
-    Volume: 0.789
-    AudioLayer: 2
-    Interruptible: 1
-    PlayDuringReplay: 0
-    AllowInQuickSuccession: 0
-  - Clip: {fileID: 8300000, guid: ae91d02db2375734c97d379e46521604, type: 3}
-    Volume: 0.805
-    AudioLayer: 2
-    Interruptible: 1
-    PlayDuringReplay: 0
-    AllowInQuickSuccession: 0
-  OrderSounds:
-  - Clip: {fileID: 8300000, guid: 938be05424a5dfc4dad17e16a0a2a04c, type: 3}
-    Volume: 0.539
-    AudioLayer: 2
-    Interruptible: 1
-    PlayDuringReplay: 0
-    AllowInQuickSuccession: 0
-  - Clip: {fileID: 8300000, guid: 2682ecf01cbe1234cbc4cdcd59d4bc25, type: 3}
-    Volume: 0.535
-    AudioLayer: 2
-    Interruptible: 1
-    PlayDuringReplay: 0
-    AllowInQuickSuccession: 0
-  AttackSounds:
-  - Clip: {fileID: 8300000, guid: e3ea136890f2c73428d02a6614734e14, type: 3}
-    Volume: 0.5
-    AudioLayer: 0
-    Interruptible: 0
-    PlayDuringReplay: 1
-    AllowInQuickSuccession: 0
-  - Clip: {fileID: 8300000, guid: 7ee29aeed194de2449eae4ae8ffbb427, type: 3}
-    Volume: 0.5
-    AudioLayer: 0
-    Interruptible: 0
-    PlayDuringReplay: 1
-    AllowInQuickSuccession: 0
-  - Clip: {fileID: 8300000, guid: e4d6d5a4185fe8a438a124e17d6d24fb, type: 3}
-    Volume: 0.5
-    AudioLayer: 0
-    Interruptible: 0
-    PlayDuringReplay: 1
-    AllowInQuickSuccession: 0
   SelectionSFX: {fileID: 11400000, guid: ab4fd18af3bbf4edab8a83c082e9eac6, type: 2}
   OrderSFX: {fileID: 11400000, guid: 55169b496ad274862999aefb2e840dfc, type: 2}
   AttackSFX: {fileID: 11400000, guid: 62cbc33c432544f80b4397659c6d04c3, type: 2}
   AudioPlacementPrefix: Knight
-  EntityFinishedBuildingSound:
-    Clip: {fileID: 0}
-    Volume: 0
-    AudioLayer: 0
-    Interruptible: 0
-    PlayDuringReplay: 0
-    AllowInQuickSuccession: 0
   EntityFinishedBuildingSFX: {fileID: 0}
   HP: 65
   Range: 1
@@ -108,7 +50,7 @@ MonoBehaviour:
   SlowTiles:
   - {fileID: 11400000, guid: 72bba8f070a4e784393726b1ad5d4c16, type: 2}
   OverrideEntityDataForPathfinding: {fileID: 0}
-  AttackerTargetPriority: 2
+  AttackerTargetPriority: 3
   Abilities:
   - {fileID: 11400000, guid: ec15a049dabc53b4d92ab14b2871752c, type: 2}
   - {fileID: 11400000, guid: a5c4aba93e508274894c2c6bfc4b751e, type: 2}
@@ -132,3 +74,4 @@ MonoBehaviour:
   StartingResourceSet:
     Type: 0
     Amount: 0
+  DeathActions: []

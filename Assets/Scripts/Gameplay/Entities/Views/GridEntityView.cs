@@ -376,9 +376,15 @@ namespace Gameplay.Entities {
         private void SetDeathParticleColors() {
             ParticleSystem.MainModule main = _deathParticleSystem.main;
             ParticleSystem.MinMaxGradient colors = _deathParticleSystem.main.startColor;
-            PlayerData playerData = GameManager.Instance.GetPlayerForTeam(Entity).Data;
-            colors.colorMin = playerData.DeathParticlesColor1;
-            colors.colorMax = playerData.DeathParticlesColor2;
+            IGamePlayer player = GameManager.Instance.GetPlayerForTeam(Entity);
+            if (player == null) {
+                colors.colorMin = GameManager.Instance.Configuration.NeutralDeathParticlesColor1;
+                colors.colorMax = GameManager.Instance.Configuration.NeutralDeathParticlesColor2;
+            } else {
+                PlayerData playerData = GameManager.Instance.GetPlayerForTeam(Entity).Data;
+                colors.colorMin = playerData.DeathParticlesColor1;
+                colors.colorMax = playerData.DeathParticlesColor2;
+            }
             main.startColor = colors;
         }
 

@@ -195,7 +195,7 @@ namespace Gameplay.Config.Abilities {
             if (viableCells.Count > indexAlongLine + 1) {
                 Vector2Int oneFurtherCell = viableCells[indexAlongLine + 1];
                 GridEntity entityAtCell = CommandManager.GetEntitiesAtCell(oneFurtherCell)?.GetTopEntity()?.Entity;
-                if (entityAtCell != null && entityAtCell.Team == selector.Team.OpponentTeam()) {
+                if (entityAtCell != null && (entityAtCell.Team == selector.Team.OpponentTeam() || entityAtCell.Team == GameTeam.Neutral && entityAtCell.EntityData.Targetable)) {
                     closestCell = oneFurtherCell;
                     closestDistance = CellDistanceLogic.DistanceBetweenCells(origin, oneFurtherCell);
                 }
@@ -231,7 +231,7 @@ namespace Gameplay.Config.Abilities {
                 if (entityAtCell.Team == selector.Team.OpponentTeam()) {
                     return true;
                 } 
-                if (entityAtCell.EntityData.IsStructure || entityAtCell.EntityData.Tags.Contains(EntityTag.Resource)) {
+                if (entityAtCell.EntityData.IsStructure) {
                     return false;
                 }
 
@@ -292,7 +292,7 @@ namespace Gameplay.Config.Abilities {
         
         private void ShowChargePathVisual(GridEntity selector, Vector2Int destination) {
             GridEntity entityAtDestination = GameManager.Instance.GetTopEntityAtLocation(destination);
-            bool enemyEntityPresent = selector.GetTargetType(entityAtDestination) == GridEntity.TargetType.Enemy;
+            bool enemyEntityPresent = selector.GetTargetType(entityAtDestination) == GridEntity.TargetType.Attackable;
             PathVisualizer.PathType pathType = enemyEntityPresent ? PathVisualizer.PathType.TargetAttack : PathVisualizer.PathType.Move;
             
             PathfinderService.Path path = GameManager.Instance.PathfinderService.GetPathInStraightLine(selector, destination);

@@ -118,11 +118,18 @@ namespace Gameplay.Entities.Abilities {
             List<Vector2Int> cellsInRange = GridData.GetCellsInRange(location, attacker.Range)
                 .Select(c => c.Location)
                 .ToList();
-            // Only get the top entities - can't attack an entity behind another entity
+            // Only get the top entities - can't attack an entity under another entity
             List<GridEntity> enemiesInRange = GameManager.Instance.CommandManager.EntitiesOnGrid.ActiveEntitiesForTeam(
                         attacker.Team.OpponentTeam(), true)
                     .Where(e => e.Location != null && cellsInRange.Contains(e.Location.Value))
                     .ToList();
+            if (enemiesInRange.Count == 0) {
+                // See if we can target a neutral then
+                enemiesInRange = GameManager.Instance.CommandManager.EntitiesOnGrid.ActiveEntitiesForTeam(
+                        GameTeam.Neutral, true)
+                    .Where(e => e.Location != null && cellsInRange.Contains(e.Location.Value) && e.EntityData.Targetable)
+                    .ToList();
+            }
             
             if (enemiesInRange.Count == 0) return null;
 

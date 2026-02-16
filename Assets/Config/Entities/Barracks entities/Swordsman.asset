@@ -25,80 +25,10 @@ MonoBehaviour:
   TeamColorSprite: {fileID: 21300000, guid: 7c85c0800115a46d4a4d64e48fd167c9, type: 3}
   BaseSpriteIconOverride: {fileID: 0}
   _viewPrefab: {fileID: 7504026570216467247, guid: c58f0c96c2c0e8f4fbf691600e98b9b6, type: 3}
-  SelectionSounds:
-  - Clip: {fileID: 8300000, guid: f692b30e89b766b49898af3dd2b456da, type: 3}
-    Volume: 0.482
-    AudioLayer: 2
-    Interruptible: 1
-    PlayDuringReplay: 0
-    AllowInQuickSuccession: 0
-  - Clip: {fileID: 8300000, guid: b2ea64ca3f284cf4ab515672375b3e3c, type: 3}
-    Volume: 0.465
-    AudioLayer: 2
-    Interruptible: 1
-    PlayDuringReplay: 0
-    AllowInQuickSuccession: 0
-  OrderSounds:
-  - Clip: {fileID: 8300000, guid: 9b9d4ddf4e9e01a4ba46433b1ec4ee9a, type: 3}
-    Volume: 0.482
-    AudioLayer: 2
-    Interruptible: 1
-    PlayDuringReplay: 0
-    AllowInQuickSuccession: 0
-  - Clip: {fileID: 8300000, guid: b7de08967d294964bb6f482ff963ef89, type: 3}
-    Volume: 0.496
-    AudioLayer: 2
-    Interruptible: 1
-    PlayDuringReplay: 0
-    AllowInQuickSuccession: 0
-  AttackSounds:
-  - Clip: {fileID: 8300000, guid: 58e279b27f9657e468a44121873b52c6, type: 3}
-    Volume: 0.709
-    AudioLayer: 0
-    Interruptible: 0
-    PlayDuringReplay: 1
-    AllowInQuickSuccession: 1
-  - Clip: {fileID: 8300000, guid: 34d437dcad5e50549a591a3d05e4684a, type: 3}
-    Volume: 0.721
-    AudioLayer: 0
-    Interruptible: 0
-    PlayDuringReplay: 1
-    AllowInQuickSuccession: 1
-  - Clip: {fileID: 8300000, guid: 7e1a4a2c9f9a6db4ebf97a3a0cc1bb20, type: 3}
-    Volume: 0.736
-    AudioLayer: 0
-    Interruptible: 0
-    PlayDuringReplay: 1
-    AllowInQuickSuccession: 1
-  - Clip: {fileID: 8300000, guid: 14df854f74ed8f74cbfb7e001fe09699, type: 3}
-    Volume: 0.721
-    AudioLayer: 0
-    Interruptible: 0
-    PlayDuringReplay: 1
-    AllowInQuickSuccession: 1
-  - Clip: {fileID: 8300000, guid: 5d671e3d51def8d4e80778eb536226e9, type: 3}
-    Volume: 0.709
-    AudioLayer: 0
-    Interruptible: 0
-    PlayDuringReplay: 1
-    AllowInQuickSuccession: 1
-  - Clip: {fileID: 8300000, guid: 9a52dfb6aee1edf47978ef62d35d23be, type: 3}
-    Volume: 0.733
-    AudioLayer: 0
-    Interruptible: 0
-    PlayDuringReplay: 1
-    AllowInQuickSuccession: 1
   SelectionSFX: {fileID: 11400000, guid: 2268fa2f248bd40c4a4f5cf84cd8e46b, type: 2}
   OrderSFX: {fileID: 11400000, guid: ba563483010cc4b2da24904d16700c07, type: 2}
   AttackSFX: {fileID: 11400000, guid: 32433d8a1fb4b451faf9bcd31937c2e1, type: 2}
   AudioPlacementPrefix: Swordsman
-  EntityFinishedBuildingSound:
-    Clip: {fileID: 0}
-    Volume: 0
-    AudioLayer: 0
-    Interruptible: 0
-    PlayDuringReplay: 0
-    AllowInQuickSuccession: 0
   EntityFinishedBuildingSFX: {fileID: 0}
   HP: 28
   Range: 1
@@ -115,7 +45,7 @@ MonoBehaviour:
   SlowTiles:
   - {fileID: 11400000, guid: 72bba8f070a4e784393726b1ad5d4c16, type: 2}
   OverrideEntityDataForPathfinding: {fileID: 0}
-  AttackerTargetPriority: 2
+  AttackerTargetPriority: 3
   Abilities:
   - {fileID: 11400000, guid: ec15a049dabc53b4d92ab14b2871752c, type: 2}
   - {fileID: 11400000, guid: a5c4aba93e508274894c2c6bfc4b751e, type: 2}
@@ -138,3 +68,4 @@ MonoBehaviour:
   StartingResourceSet:
     Type: 0
     Amount: 0
+  DeathActions: []

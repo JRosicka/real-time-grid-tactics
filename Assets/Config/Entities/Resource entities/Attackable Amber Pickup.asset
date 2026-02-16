@@ -10,26 +10,25 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fafa440752424124be5b9cbee86f1e06, type: 3}
-  m_Name: Wheat Field
+  m_Name: Attackable Amber Pickup
   m_EditorClassIdentifier: 
-  ID: Wheat Field
-  ShortDescription: Resource patch for <sprite name="gold">.
-  Description: Resource patch for <sprite name="gold">. Build a Village here with
-    a peasant to harvest.
+  ID: Amber Pickup
+  ShortDescription: Awards 50 <sprite name="amber">.
+  Description: Awards 50 <sprite name="amber"> when destroyed.
   Cost: []
   Requirements: []
   BuildTime: 0
   BuildsImmediately: 0
-  BaseSprite: {fileID: 21300000, guid: be22a8226151f4b40b9f5e3041c2a631, type: 3}
+  BaseSprite: {fileID: 21300000, guid: 176fa3504053b45e4a626bbe7e84c071, type: 3}
   TeamColorSprite: {fileID: 0}
   BaseSpriteIconOverride: {fileID: 0}
-  _viewPrefab: {fileID: 7504026570216467247, guid: b108302f5e1be4b2dbabafd9300e7a1c, type: 3}
+  _viewPrefab: {fileID: 7504026570216467247, guid: 493ae36f145794c8aa5028f4e51b0f7d, type: 3}
   SelectionSFX: {fileID: 0}
   OrderSFX: {fileID: 0}
   AttackSFX: {fileID: 0}
-  AudioPlacementPrefix: Resource
+  AudioPlacementPrefix: Pickup_attackable
   EntityFinishedBuildingSFX: {fileID: 0}
-  HP: 0
+  HP: 20
   Range: 0
   Damage: 0
   BonusDamage: 0
@@ -40,10 +39,10 @@ MonoBehaviour:
   InaccessibleTiles: []
   SlowTiles: []
   OverrideEntityDataForPathfinding: {fileID: 0}
-  AttackerTargetPriority: 0
-  Abilities: []
-  FriendlyUnitsCanShareCell: 1
-  Targetable: 0
+  AttackerTargetPriority: 1
+  Abilities:
+  - {fileID: 11400000, guid: d50fba4f48da240b7b8d5c84a17a6d1d, type: 2}
+  FriendlyUnitsCanShareCell: 0
   AttackByDefault: 0
   IsResourceExtractor: 0
   ResourceThatThisCanExtract: {fileID: 0}
@@ -58,6 +57,7 @@ MonoBehaviour:
   SharedUnitDamageTakenModifierTags: 
   CanRally: 0
   StartingResourceSet:
-    Type: 0
-    Amount: 700
-  DeathActions: []
+    Type: 1
+    Amount: 50
+  DeathActions:
+  - {fileID: 11400000, guid: 627b6107e883f49b8b1d4cddaa1298ed, type: 2}

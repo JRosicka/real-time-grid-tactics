@@ -10,26 +10,25 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fafa440752424124be5b9cbee86f1e06, type: 3}
-  m_Name: Wheat Field
+  m_Name: Attackable Gold Pickup
   m_EditorClassIdentifier: 
-  ID: Wheat Field
-  ShortDescription: Resource patch for <sprite name="gold">.
-  Description: Resource patch for <sprite name="gold">. Build a Village here with
-    a peasant to harvest.
+  ID: Gold Pickup
+  ShortDescription: Awards 50 <sprite name="gold">.
+  Description: Awards 50 <sprite name="gold"> when destroyed.
   Cost: []
   Requirements: []
   BuildTime: 0
   BuildsImmediately: 0
-  BaseSprite: {fileID: 21300000, guid: be22a8226151f4b40b9f5e3041c2a631, type: 3}
+  BaseSprite: {fileID: 21300000, guid: a7e6cb48d72b74aa0a1679a961dc6f10, type: 3}
   TeamColorSprite: {fileID: 0}
   BaseSpriteIconOverride: {fileID: 0}
-  _viewPrefab: {fileID: 7504026570216467247, guid: b108302f5e1be4b2dbabafd9300e7a1c, type: 3}
+  _viewPrefab: {fileID: 7504026570216467247, guid: 5ce3b38942dfb4a869bdce28f7bbcc09, type: 3}
   SelectionSFX: {fileID: 0}
   OrderSFX: {fileID: 0}
   AttackSFX: {fileID: 0}
-  AudioPlacementPrefix: Resource
+  AudioPlacementPrefix: Pickup_attackable
   EntityFinishedBuildingSFX: {fileID: 0}
-  HP: 0
+  HP: 20
   Range: 0
   Damage: 0
   BonusDamage: 0
@@ -40,10 +39,10 @@ MonoBehaviour:
   InaccessibleTiles: []
   SlowTiles: []
   OverrideEntityDataForPathfinding: {fileID: 0}
-  AttackerTargetPriority: 0
-  Abilities: []
-  FriendlyUnitsCanShareCell: 1
-  Targetable: 0
+  AttackerTargetPriority: 1
+  Abilities:
+  - {fileID: 11400000, guid: d50fba4f48da240b7b8d5c84a17a6d1d, type: 2}
+  FriendlyUnitsCanShareCell: 0
   AttackByDefault: 0
   IsResourceExtractor: 0
   ResourceThatThisCanExtract: {fileID: 0}
@@ -59,5 +58,6 @@ MonoBehaviour:
   CanRally: 0
   StartingResourceSet:
     Type: 0
-    Amount: 700
-  DeathActions: []
+    Amount: 50
+  DeathActions:
+  - {fileID: 11400000, guid: 9a81b34eebb26409eb3f790fb7114138, type: 2}

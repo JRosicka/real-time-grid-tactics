@@ -50,7 +50,7 @@ namespace Gameplay.Entities {
             GridEntity targetEntity = GameManager.Instance.GetTopEntityAtLocation(targetCell);
 
             // See if we should target this entity
-            if (targetEntity != null && targetEntity.Team == GameTeam.Neutral) {
+            if (targetEntity != null && targetEntity.Team == GameTeam.Neutral && !targetEntity.EntityData.Targetable) {
                 thisEntity.TryMoveToCell(targetCell, true, true, true);
             } else if (targetEntity == thisEntity) {
                 // We are right-clicking the selected entity's cell? Cancel everything. 

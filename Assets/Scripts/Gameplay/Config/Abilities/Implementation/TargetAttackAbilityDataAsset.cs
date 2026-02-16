@@ -48,13 +48,13 @@ namespace Gameplay.Config.Abilities {
             if (selector == null) return AbilityLegality.IndefinitelyIllegal;
             if (target == null) return AbilityLegality.IndefinitelyIllegal;    // Need a target to target-fire
             if (target.Team == selector.Team) return AbilityLegality.IndefinitelyIllegal;  // Can only target enemies
-            if (target.Team == GameTeam.Neutral) return AbilityLegality.IndefinitelyIllegal;  // Can only target enemies
+            if (target.Team == GameTeam.Neutral && !target.EntityData.Targetable) return AbilityLegality.IndefinitelyIllegal;  // Can not target friendly neutrals
             return AbilityLegality.Legal;
         }
 
         public void DoTargetableAbility(Vector2Int cellPosition, GridEntity selectedEntity, GameTeam selectorTeam, System.Object targetData) {
             GridEntity target = GameManager.Instance.GetTopEntityAtLocation(cellPosition);    // Only able to target the top entity!
-            if (target != null && (target.Team == selectedEntity.Team || target.Team == GameTeam.Neutral)) {
+            if (target != null && (target.Team == selectedEntity.Team || (target.Team == GameTeam.Neutral && !target.EntityData.Targetable))) {
                 Debug.LogWarning("No eligible target!");
                 return;
             }

@@ -3,6 +3,7 @@ using Gameplay.Config.Abilities;
 using Gameplay.Entities;
 using Gameplay.Entities.Abilities;
 using Gameplay.Entities.Upgrades;
+using JetBrains.Annotations;
 using UnityEngine;
 
 namespace Gameplay.Managers {
@@ -79,7 +80,7 @@ namespace Gameplay.Managers {
             return bonusDamage;
         }
 
-        private static void DoDealDamage(GridEntity attacker, GridEntity target, int bonusDamage) {
+        private static void DoDealDamage([NotNull] GridEntity attacker, GridEntity target, int bonusDamage) {
             attacker.LastAttackedEntity.UpdateValue(new NetworkableGridEntityValue(target));
             if (target.Location == null) {
                 Debug.LogWarning("Entity received attack but it is not registered or unregistered");

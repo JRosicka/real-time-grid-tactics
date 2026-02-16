@@ -24,6 +24,8 @@ MonoBehaviour:
   CancelButtonSlotSprites: {fileID: 11400000, guid: ef653d486657bde49819c23db7683cf4, type: 2}
   NeutralBannerColor: {r: 0.5294118, g: 0.5372549, b: 0.54901963, a: 1}
   TargetedMaterial: {fileID: 2100000, guid: 2c657a3b9a6b54b2d8a58d0f2d4ef543, type: 2}
+  NeutralDeathParticlesColor1: {r: 0.5377358, g: 0.5377358, b: 0.5377358, a: 1}
+  NeutralDeathParticlesColor2: {r: 0.2924528, g: 0.2924528, b: 0.2924528, a: 1}
   Purchasables:
   - {fileID: 11400000, guid: 991ad2a1d6801ee40b831e7850e0ff35, type: 2}
   - {fileID: 11400000, guid: 13a02f740ff7d294ca02fe7f547820c0, type: 2}
@@ -38,14 +40,14 @@ MonoBehaviour:
   - {fileID: 11400000, guid: f8a9d9571b0a8324587b160065ca7fce, type: 2}
   - {fileID: 11400000, guid: dfb82f31371a84690ae123195a14bf64, type: 2}
   - {fileID: 11400000, guid: 007fafa82b51345319298048e99631e6, type: 2}
-  - {fileID: 11400000, guid: a2899be04b8f54805a7f62c027e3675d, type: 2}
-  - {fileID: 11400000, guid: f3eb88eee96a64370827475771891374, type: 2}
   - {fileID: 11400000, guid: e16d9fca1b51810438ab31661f34df6f, type: 2}
   - {fileID: 11400000, guid: 9ab6d58fde8294daa9c3c7a99e68cb87, type: 2}
   - {fileID: 11400000, guid: 9bcd35c82053a44dfa5d90fcfe70f347, type: 2}
   - {fileID: 11400000, guid: e21fe53fdd5d5462889502085309b111, type: 2}
   - {fileID: 11400000, guid: db985c9c951de4c649817a7823176728, type: 2}
   - {fileID: 11400000, guid: 3564d2f2163ea409f8664fa350696e65, type: 2}
+  - {fileID: 11400000, guid: cf316c2fdb13348bda6f56494d192a01, type: 2}
+  - {fileID: 11400000, guid: 9a1d0599b667f47309b0c327306a69ce, type: 2}
   Abilities:
   - {fileID: 11400000, guid: ec15a049dabc53b4d92ab14b2871752c, type: 2}
   - {fileID: 11400000, guid: a5c4aba93e508274894c2c6bfc4b751e, type: 2}

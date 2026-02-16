@@ -311,6 +311,10 @@ public class PathfinderService {
             // Note that this means that structures can not be built on cells that contain units! This is intentional. 
             return false;
         }
+        if (entitiesAtLocation.Any(e => e.Team == GameTeam.Neutral && e.EntityData.Targetable)) {
+            // Can't enter a cell occupied by a targetable neutral entity
+            return false;
+        }
         // So the only entities here do indeed allow for non-structures to share space with them.
         // Still need to check if this is a structure. Can't put a structure on a structure!
         // Though if this is for the purpose of determining whether a production structure can rally here, then ignore the 

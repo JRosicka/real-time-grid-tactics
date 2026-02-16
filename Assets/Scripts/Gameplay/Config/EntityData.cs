@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Audio;
 using Gameplay.Config.Abilities;
+using Gameplay.Config.DeathAction;
 using Gameplay.Entities;
 using Gameplay.UI;
 using Mirror;
@@ -15,8 +16,9 @@ namespace Gameplay.Config {
     public class EntityData : PurchasableData {
         public enum TargetPriority {
             Structure = 0,
-            Worker = 1,
-            Fighter = 2
+            AttackableResource = 1,
+            Worker = 2,
+            Fighter = 3
         }
         
         // Must be private so that Weaver does not try to make a reader and writer for this type. Mirror does this for all public fields, thanks Mirror. 
@@ -53,8 +55,9 @@ namespace Gameplay.Config {
         public EntityData OverrideEntityDataForPathfinding;
         public TargetPriority AttackerTargetPriority;
         public List<AbilityDataScriptableObject> Abilities;
-        [Tooltip("Whether friendly (non-structure) entities can enter (spawn, move, etc) a cell with this entity")]
+        [Tooltip("Whether friendly (non-structure) entities can enter (spawn, move, etc) a cell with this entity. If this entity is neutral, then this applies to all units.")]
         public bool FriendlyUnitsCanShareCell;
+        public bool Targetable = true;
 
         public bool AttackByDefault;
 
@@ -80,6 +83,8 @@ namespace Gameplay.Config {
         public List<EntityTag> SharedUnitDamageTakenModifierTags;
         public bool CanRally;
         public ResourceAmount StartingResourceSet;
+        
+        public List<DeathActionData> DeathActions;
         
         /// <summary>
         /// The order that this should appear and be selectable compared to other entities at the same location.

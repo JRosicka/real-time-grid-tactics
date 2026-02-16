@@ -27,50 +27,10 @@ MonoBehaviour:
   TeamColorSprite: {fileID: 21300000, guid: 38c157c6b66f14284b3dfcdd76e10992, type: 3}
   BaseSpriteIconOverride: {fileID: 0}
   _viewPrefab: {fileID: 7504026570216467247, guid: 578b7f995f51c3845914f63ae14fc166, type: 3}
-  SelectionSounds:
-  - Clip: {fileID: 8300000, guid: e72a7d93dcc3ece47a861cca6ef6ae8d, type: 3}
-    Volume: 0.312
-    AudioLayer: 2
-    Interruptible: 1
-    PlayDuringReplay: 0
-    AllowInQuickSuccession: 0
-  - Clip: {fileID: 8300000, guid: dcb4eeb1e3a5f4d4ba797f519f31fe01, type: 3}
-    Volume: 0.527
-    AudioLayer: 2
-    Interruptible: 1
-    PlayDuringReplay: 0
-    AllowInQuickSuccession: 0
-  OrderSounds:
-  - Clip: {fileID: 8300000, guid: e8f4503c6d5b06546be91523b32808c7, type: 3}
-    Volume: 0.223
-    AudioLayer: 2
-    Interruptible: 1
-    PlayDuringReplay: 0
-    AllowInQuickSuccession: 0
-  - Clip: {fileID: 8300000, guid: b47c1542b66e0f94db4c5805bc214e1b, type: 3}
-    Volume: 0.391
-    AudioLayer: 2
-    Interruptible: 1
-    PlayDuringReplay: 0
-    AllowInQuickSuccession: 0
-  AttackSounds:
-  - Clip: {fileID: 8300000, guid: c7158a52d3e379a48bf26536cdd04001, type: 3}
-    Volume: 0.226
-    AudioLayer: 2
-    Interruptible: 0
-    PlayDuringReplay: 1
-    AllowInQuickSuccession: 0
   SelectionSFX: {fileID: 11400000, guid: 516fcd699dd9e46f0a187ecd4fbcd5e3, type: 2}
   OrderSFX: {fileID: 11400000, guid: 15edba65100a44263b5828549793855d, type: 2}
   AttackSFX: {fileID: 11400000, guid: 678fef9224ad84b7cbd300cd08139dc7, type: 2}
   AudioPlacementPrefix: Archer
-  EntityFinishedBuildingSound:
-    Clip: {fileID: 0}
-    Volume: 0
-    AudioLayer: 0
-    Interruptible: 0
-    PlayDuringReplay: 0
-    AllowInQuickSuccession: 0
   EntityFinishedBuildingSFX: {fileID: 0}
   HP: 24
   Range: 2
@@ -87,7 +47,7 @@ MonoBehaviour:
   SlowTiles:
   - {fileID: 11400000, guid: 72bba8f070a4e784393726b1ad5d4c16, type: 2}
   OverrideEntityDataForPathfinding: {fileID: 0}
-  AttackerTargetPriority: 2
+  AttackerTargetPriority: 3
   Abilities:
   - {fileID: 11400000, guid: ec15a049dabc53b4d92ab14b2871752c, type: 2}
   - {fileID: 11400000, guid: ab5b4bce08f844c0fb5f4803fe352787, type: 2}
@@ -110,3 +70,4 @@ MonoBehaviour:
   StartingResourceSet:
     Type: 0
     Amount: 0
+  DeathActions: []

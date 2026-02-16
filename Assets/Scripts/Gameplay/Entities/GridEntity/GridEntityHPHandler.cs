@@ -1,6 +1,8 @@
 using System;
 using System.Linq;
 using Gameplay.Config;
+using Gameplay.Entities.DeathAction;
+using JetBrains.Annotations;
 using Mirror;
 using UnityEngine;
 
@@ -51,8 +53,11 @@ namespace Gameplay.Entities {
         
         #endregion
         
-        /// <returns>True if this results in the entity dying, otherwise false</returns>
-        public bool ReceiveAttackFromEntity(GridEntity sourceEntity, int bonusDamage) {
+        /// <returns>
+        /// Deal damage. Server only. 
+        /// True if this results in the entity dying, otherwise false
+        /// </returns>
+        public bool ReceiveAttackFromEntity([NotNull] GridEntity sourceEntity, int bonusDamage) {
             // Get base damage
             int damage = sourceEntity.Damage;
             
@@ -78,7 +83,7 @@ namespace Gameplay.Entities {
             SetCurrentHP(CurrentHP - Mathf.RoundToInt(damage), true);
 
             if (CurrentHP <= 0) {
-                Kill();
+                Kill(sourceEntity);
                 return true;
             }
 
@@ -93,10 +98,13 @@ namespace Gameplay.Entities {
             SetCurrentHP(newHP, true);
         }
         
-        private void Kill() {
+        private void Kill([NotNull] GridEntity sourceEntity) {
             if (MarkedForDeath) return;
             MarkedForDeath = true;
             
+            foreach (IDeathAction deathAction in _gridEntity.DeathActions) {
+                deathAction.DoDeathAction(_gridEntity, sourceEntity);
+            }
             GameManager.Instance.CommandManager.AbilityExecutor.MarkForUnRegistration(_gridEntity, true);
         }
     }

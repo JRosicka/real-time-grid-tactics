@@ -143,7 +143,7 @@ namespace Gameplay.Config.Abilities {
                     ret.Add(viableTarget);
                     continue;
                 }
-                if (entities.Entities.All(e => e.Entity.Team == GameTeam.Neutral || e.Entity == selector)) {
+                if (entities.Entities.All(e => (e.Entity.Team == GameTeam.Neutral && !e.Entity.EntityData.Targetable) || e.Entity == selector)) {
                     // Entities there, but they are all neutral or the selected unit, so eligible 
                     ret.Add(viableTarget);
                 }
