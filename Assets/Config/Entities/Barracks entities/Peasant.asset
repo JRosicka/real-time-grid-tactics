@@ -35,7 +35,7 @@ MonoBehaviour:
   Damage: 2
   BonusDamage: 0
   TagsToApplyBonusDamageTo: 
-  NormalMoveTime: 5
+  NormalMoveTime: 3.5
   AddedMovementTimeFromAttacking: 1.2
   Tags: 0300000006000000
   InaccessibleTiles:
@@ -53,6 +53,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: a23c69f58674b4c0790e0e27e2d0dbcb, type: 2}
   - {fileID: 11400000, guid: ddf18332952084d23850a96e2fddd976, type: 2}
   FriendlyUnitsCanShareCell: 0
+  Targetable: 1
   AttackByDefault: 0
   IsResourceExtractor: 0
   ResourceThatThisCanExtract: {fileID: 0}
