@@ -54,6 +54,7 @@ public class GameManager : MonoBehaviour {
     public AmberForgeAvailabilityNotifier AmberForgeAvailabilityNotifier;
     public LeaderTracker LeaderTracker;
     public SeedManager SeedManager;
+    public TileAccessibilityManager TileAccessibilityManager;
     
     public IGamePlayer Player1;
     public IGamePlayer Player2;
@@ -72,6 +73,7 @@ public class GameManager : MonoBehaviour {
         QueuedStructureBuildsManager = new QueuedStructureBuildsManager(this);
         AmberForgeAvailabilityNotifier = new AmberForgeAvailabilityNotifier();
         LeaderTracker = new LeaderTracker();
+        TileAccessibilityManager = new TileAccessibilityManager();
     }
 
     private void Start() {
@@ -84,6 +86,7 @@ public class GameManager : MonoBehaviour {
         DisconnectionDialog.Initialize(DisconnectionHandler);
         AttackManager = new AttackManager();
         CanvasWidthSetter.Initialize();
+        TileAccessibilityManager.Initialize(GameConfigurationLocator.GameConfiguration);
         
         SeedManager = new SeedManager();
         ReplayData replayData = GameConfigurationLocator.GameConfiguration.MapsConfiguration.GetReplay(GameTypeTracker.Instance.ReplayID);

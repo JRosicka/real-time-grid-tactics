@@ -4,12 +4,14 @@ using System.Linq;
 using Gameplay.Config;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 [CreateAssetMenu(fileName = "Gameplay Tile", menuName = "Tiles/Rule Tile")]
 public class GameplayTile : HexagonalRuleTile<GameplayTile.Neighbor> {
     [Serializable]
     public class SlowedEntityTag {
         public EntityTag Tag;
+        [Tooltip("Multiplier to apply to the entity's move time. 2 means the entity will take twice as long to move through this tile, 0.5 means it will take half as long.")]
         public float SlowFactor;
     }
 
@@ -19,13 +21,17 @@ public class GameplayTile : HexagonalRuleTile<GameplayTile.Neighbor> {
     public string ShortDescription;
     public string LongDescription;
     /// <summary>
-    /// Any entities with these tags will be slowed when trying to move into cells of this tile type
+    /// Any entities with these tags will have their move time modified when trying to move into cells of this tile type
     /// </summary>
-    public List<SlowedEntityTag> SlowTags;
+    [FormerlySerializedAs("SlowTags")] public List<SlowedEntityTag> SpeedModifierTags;
     /// <summary>
     /// Any entities with these tags will not be able to move into cells of this tile type
     /// </summary>
     public List<EntityTag> InaccessibleTags;
+    /// <summary>
+    /// These entities will not be able to move into cells of this tile type
+    /// </summary>
+    public List<EntityData> InaccessibleEntities;
 
     [Space] 
     [Range(0, 6)]
@@ -42,12 +48,12 @@ public class GameplayTile : HexagonalRuleTile<GameplayTile.Neighbor> {
     }
 
     public float GetMoveModifier(List<EntityTag> tags) {
-        SlowedEntityTag slowedTag = SlowTags.FirstOrDefault(s => tags.Contains(s.Tag));
+        SlowedEntityTag slowedTag = SpeedModifierTags.FirstOrDefault(s => tags.Contains(s.Tag));
         return slowedTag?.SlowFactor ?? 1f;
     }
 
     public bool IsSlowed(List<EntityTag> tags) {
-        return SlowTags.Any(s => tags.Contains(s.Tag));
+        return SpeedModifierTags.Any(s => tags.Contains(s.Tag) && s.SlowFactor > 1f);
     }
 
     private const string DefenseFormat = "{0} occupying this tile receive {1} less damage from attacks.";
@@ -63,13 +69,19 @@ public class GameplayTile : HexagonalRuleTile<GameplayTile.Neighbor> {
     }
 
     private const string SlowFormat = "Slows {0} by {1}%.";
+    private const string QuickenFormat = "Speeds up {0} by {1}%.";
     public string GetMovementTooltip() {
-        if (SlowTags.Count == 0) return "";
+        if (SpeedModifierTags.Count == 0) return "";
         
         string tooltip = "";
-        for (int i = 0; i < SlowTags.Count; i++) {
-            tooltip += string.Format(SlowFormat, SlowTags[i].Tag.UnitDescriptorPlural(), Mathf.RoundToInt((1 - 1 / SlowTags[i].SlowFactor) * 100));
-            if (i < SlowTags.Count - 1) tooltip += "<br>";
+        for (int i = 0; i < SpeedModifierTags.Count; i++) {
+            string unitDescriptor = SpeedModifierTags[i].Tag.UnitDescriptorPlural();
+            if (SpeedModifierTags[i].SlowFactor >= 1f) {
+                tooltip += string.Format(SlowFormat, unitDescriptor, Mathf.RoundToInt((1 - 1 / SpeedModifierTags[i].SlowFactor) * 100));
+            } else {
+                tooltip += string.Format(QuickenFormat, unitDescriptor, -Mathf.RoundToInt((1 - 1 / SpeedModifierTags[i].SlowFactor) * 100));
+            }
+            if (i < SpeedModifierTags.Count - 1) tooltip += "<br>";
         }
         return tooltip;
     }

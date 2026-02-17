@@ -70,7 +70,8 @@ namespace Gameplay.Grid {
 
             if (_entity.CanMoveOrRally) {
                 // Apply any tile-specific overlays to tiles based on the selected entity's movement restrictions
-                SetTiles(_entity.EntityDataForPathfinding().InaccessibleTiles, _inaccessibleTile);
+                List<GameplayTile> inaccessibleTiles = GameManager.Instance.TileAccessibilityManager.InaccessibleTiles(_entity.EntityDataForPathfinding());
+                SetTiles(inaccessibleTiles, _inaccessibleTile);
             }
         }
 

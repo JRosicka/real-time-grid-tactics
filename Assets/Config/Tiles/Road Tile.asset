@@ -269,7 +269,12 @@ MonoBehaviour:
   DisplayName: Road
   ShortDescription: Takes you where you need to go!
   LongDescription: All units travel faster on roads.
-  SlowTags: []
+  SpeedModifierTags:
+  - Tag: 2
+    SlowFactor: 0.8
+  - Tag: 3
+    SlowFactor: 0.8
   InaccessibleTags: 
+  InaccessibleEntities: []
   _armorBonus: 0
   _defenseBoostTags: 

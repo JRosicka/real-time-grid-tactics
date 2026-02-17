@@ -35,11 +35,12 @@ MonoBehaviour:
   DisplayName: Forest
   ShortDescription: Defensible terrain.
   LongDescription: Provides defensive bonus for infantry units. Slows all units.
-  SlowTags:
+  SpeedModifierTags:
   - Tag: 3
     SlowFactor: 1.667
   - Tag: 2
     SlowFactor: 2
-  InaccessibleTags: 
+  InaccessibleTags: 01000000
+  InaccessibleEntities: []
   _armorBonus: 2
   _defenseBoostTags: 03000000

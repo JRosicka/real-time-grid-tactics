@@ -35,7 +35,11 @@ MonoBehaviour:
   DisplayName: Spirit-Amber Deposit
   ShortDescription: 
   LongDescription: 
-  SlowTags: []
+  SpeedModifierTags: []
   InaccessibleTags: 
+  InaccessibleEntities:
+  - {fileID: 11400000, guid: 43174010eb096460f944f7aa4f3b1791, type: 2}
+  - {fileID: 11400000, guid: f2089d06c5ba63e40a8078c1636cac5f, type: 2}
+  - {fileID: 11400000, guid: 5d9e30910c9795b49bea0c2c257e60eb, type: 2}
   _armorBonus: 0
   _defenseBoostTags: 

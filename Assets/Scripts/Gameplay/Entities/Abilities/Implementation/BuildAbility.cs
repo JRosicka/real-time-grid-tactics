@@ -117,8 +117,8 @@ namespace Gameplay.Entities.Abilities {
             if (path.Nodes.Count >= 2) {
                 // Spawn at the first node along the path to the rally point if we can.
                 Vector2Int firstCellAlongRallyPoint = path.Nodes[1].Location;
-                if (GameManager.Instance.GridController.GridData.GetCell(firstCellAlongRallyPoint).Tile.InaccessibleTags
-                        .All(t => !entityData.Tags.Contains(t))
+                GameplayTile tile = GameManager.Instance.GridController.GridData.GetCell(firstCellAlongRallyPoint).Tile;
+                if (!GameManager.Instance.TileAccessibilityManager.InaccessibleTiles(entityData).Contains(tile)
                     && PathfinderService.CanEntityEnterCell(firstCellAlongRallyPoint, entityData, Performer.Team)) {
                     return firstCellAlongRallyPoint;
                 }
@@ -131,7 +131,7 @@ namespace Gameplay.Entities.Abilities {
                 .OrderBy(c => CellDistanceLogic.DistanceBetweenCells(c.Location, Performer.TargetLocationLogicValue.CurrentTarget))
                 .ToList();
             foreach (GridData.CellData adjacentCell in orderedAdjacentCells) {
-                if (adjacentCell.Tile.InaccessibleTags.Any(t => entityData.Tags.Contains(t))) continue;
+                if (GameManager.Instance.TileAccessibilityManager.InaccessibleTiles(entityData).Contains(adjacentCell.Tile)) continue;
                 if (!PathfinderService.CanEntityEnterCell(adjacentCell.Location, entityData, Performer.Team)) continue;
                 return adjacentCell.Location;
             }

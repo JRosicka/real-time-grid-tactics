@@ -50,8 +50,6 @@ namespace Gameplay.Config {
 
         [Space] 
         public List<EntityTag> Tags;
-        public List<GameplayTile> InaccessibleTiles;
-        public List<GameplayTile> SlowTiles;
         public EntityData OverrideEntityDataForPathfinding;
         public TargetPriority AttackerTargetPriority;
         public List<AbilityDataScriptableObject> Abilities;

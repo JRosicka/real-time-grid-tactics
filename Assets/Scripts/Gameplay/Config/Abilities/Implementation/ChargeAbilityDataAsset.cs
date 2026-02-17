@@ -5,6 +5,7 @@ using Gameplay.Config.Upgrades;
 using Gameplay.Entities;
 using Gameplay.Entities.Abilities;
 using Gameplay.Grid;
+using Gameplay.Managers;
 using Gameplay.UI;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -209,6 +210,8 @@ namespace Gameplay.Config.Abilities {
         /// <see cref="GridEntity"/> can legally travel through. 
         /// </summary>
         private List<Vector2Int> GetViableCells(List<GridData.CellData> cells, GridEntity selector) {
+            TileAccessibilityManager tileAccessibilityManager = GameManager.Instance.TileAccessibilityManager;
+            
             // Caches and helper function for blocker calculations
             List<GridEntityCollection.PositionedGridEntityCollection> locationsWithEntities = cells
                 .Select(c => CommandManager.EntitiesOnGrid.EntitiesAtLocation(c.Location))
@@ -217,7 +220,8 @@ namespace Gameplay.Config.Abilities {
             
             bool DoesCellBlock(GridData.CellData cell) {
                 // Can not go through a cell if it hinders movement 
-                if (selector.EntityData.InaccessibleTiles.Contains(cell.Tile) || selector.EntityData.SlowTiles.Contains(cell.Tile)) {
+                if (tileAccessibilityManager.InaccessibleTiles(selector.EntityData).Contains(cell.Tile) 
+                        || tileAccessibilityManager.SlowTiles(selector.EntityData).Contains(cell.Tile)) {
                     return true;
                 }
                 
@@ -256,7 +260,8 @@ namespace Gameplay.Config.Abilities {
                     if (entityAtCell.Team == selector.Team && !entityAtCell.EntityData.FriendlyUnitsCanShareCell) {
                         break;
                     }
-                } else if (selector.EntityData.InaccessibleTiles.Contains(cell.Tile) || selector.EntityData.SlowTiles.Contains(cell.Tile)) {
+                } else if (tileAccessibilityManager.InaccessibleTiles(selector.EntityData).Contains(cell.Tile) 
+                           || tileAccessibilityManager.SlowTiles(selector.EntityData).Contains(cell.Tile)) {
                     // Otherwise can not charge to an empty cell if it hinders movement
                     break;
                 }

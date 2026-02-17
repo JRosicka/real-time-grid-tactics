@@ -25,56 +25,10 @@ MonoBehaviour:
   TeamColorSprite: {fileID: 0}
   BaseSpriteIconOverride: {fileID: 0}
   _viewPrefab: {fileID: 6373076591908856349, guid: fe97602c9548e534eb21b66e57e65290, type: 3}
-  SelectionSounds:
-  - Clip: {fileID: 8300000, guid: 9b465134c135fd1409e530c1b3235760, type: 3}
-    Volume: 0.562
-    AudioLayer: 0
-    Interruptible: 0
-    PlayDuringReplay: 0
-    AllowInQuickSuccession: 0
-  - Clip: {fileID: 8300000, guid: 3b2f02c2c61e9a249ab8a69b846e5510, type: 3}
-    Volume: 0.554
-    AudioLayer: 0
-    Interruptible: 0
-    PlayDuringReplay: 0
-    AllowInQuickSuccession: 0
-  - Clip: {fileID: 8300000, guid: fc1a49a0d97482c4886d0db9b01bf9b8, type: 3}
-    Volume: 0.578
-    AudioLayer: 0
-    Interruptible: 0
-    PlayDuringReplay: 0
-    AllowInQuickSuccession: 0
-  - Clip: {fileID: 8300000, guid: c167ba029641c3545b5803561845c86e, type: 3}
-    Volume: 0.574
-    AudioLayer: 0
-    Interruptible: 0
-    PlayDuringReplay: 0
-    AllowInQuickSuccession: 0
-  OrderSounds:
-  - Clip: {fileID: 8300000, guid: 71661fd9bce89964daaf2b0bd170ecae, type: 3}
-    Volume: 0.862
-    AudioLayer: 0
-    Interruptible: 0
-    PlayDuringReplay: 0
-    AllowInQuickSuccession: 1
-  AttackSounds:
-  - Clip: {fileID: 8300000, guid: 9b465134c135fd1409e530c1b3235760, type: 3}
-    Volume: 0
-    AudioLayer: 0
-    Interruptible: 0
-    PlayDuringReplay: 0
-    AllowInQuickSuccession: 0
   SelectionSFX: {fileID: 11400000, guid: 6931b56cabbf145a08e2159cfd71e5f3, type: 2}
   OrderSFX: {fileID: 0}
   AttackSFX: {fileID: 0}
   AudioPlacementPrefix: StandardStructure
-  EntityFinishedBuildingSound:
-    Clip: {fileID: 8300000, guid: 267186cb9ea54f142a15627494771d08, type: 3}
-    Volume: 0.382
-    AudioLayer: 2
-    Interruptible: 1
-    PlayDuringReplay: 0
-    AllowInQuickSuccession: 0
   EntityFinishedBuildingSFX: {fileID: 11400000, guid: f50217de9fec24773960372f3af38dc3, type: 2}
   HP: 60
   Range: 0
@@ -98,6 +52,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 0918ae4f6b3b09a42a15b2ea44c2bdf8, type: 2}
   - {fileID: 11400000, guid: 930b6968d79224dcba838459c0b63f49, type: 2}
   FriendlyUnitsCanShareCell: 1
+  Targetable: 1
   AttackByDefault: 0
   IsResourceExtractor: 0
   ResourceThatThisCanExtract: {fileID: 0}
@@ -109,9 +64,11 @@ MonoBehaviour:
   ControllableByAllPlayers: 0
   EligibleStructureLocations:
   - {fileID: 11400000, guid: 25ec46ce372031f4d904f708f269dcb4, type: 2}
+  - {fileID: 11400000, guid: 1bd1ef96b686fb8479bb7defd104ac0d, type: 2}
   SharedUnitArmorBonus: 0
   SharedUnitDamageTakenModifierTags: 
   CanRally: 1
   StartingResourceSet:
     Type: 0
     Amount: 0
+  DeathActions: []

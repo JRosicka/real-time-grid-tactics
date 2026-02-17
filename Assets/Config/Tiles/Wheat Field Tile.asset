@@ -35,7 +35,11 @@ MonoBehaviour:
   DisplayName: Wheat Field
   ShortDescription: 
   LongDescription: 
-  SlowTags: []
+  SpeedModifierTags: []
   InaccessibleTags: 
+  InaccessibleEntities:
+  - {fileID: 11400000, guid: 43174010eb096460f944f7aa4f3b1791, type: 2}
+  - {fileID: 11400000, guid: f2089d06c5ba63e40a8078c1636cac5f, type: 2}
+  - {fileID: 11400000, guid: 13a02f740ff7d294ca02fe7f547820c0, type: 2}
   _armorBonus: 0
   _defenseBoostTags: 

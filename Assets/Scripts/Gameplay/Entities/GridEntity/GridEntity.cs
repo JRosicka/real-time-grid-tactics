@@ -578,7 +578,7 @@ namespace Gameplay.Entities {
         /// Whether this entity can move to (or rally to) a cell with the given tile, assuming it starts adjacent to it.
         /// </summary>
         public bool CanPathFindToTile(GameplayTile tile) {
-            return !EntityDataForPathfinding().InaccessibleTiles.Contains(tile);
+            return !GameManager.Instance.TileAccessibilityManager.InaccessibleTiles(EntityDataForPathfinding()).Contains(tile);
         }
 
         public EntityData EntityDataForPathfinding() {
