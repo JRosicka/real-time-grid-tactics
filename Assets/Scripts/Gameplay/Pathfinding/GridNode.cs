@@ -55,7 +55,7 @@ namespace Gameplay.Pathfinding {
         public GridNode(GridEntity entity, GridData.CellData cellData, bool ignoreOtherEntities) {
             _entity = entity;
             _cellData = cellData;
-            _fastestEnterTime = entity.EntityDataForPathfinding().NormalMoveTime;
+            _fastestEnterTime = GameManager.Instance.TileAccessibilityManager.GetFastestMoveTime(entity.EntityDataForPathfinding());
             _ignoreOtherEntities = ignoreOtherEntities;
 
             Walkable = entity.CanPathFindToTile(cellData.Tile) && (ignoreOtherEntities || PathfinderService.CanEntityEnterCell(cellData.Location, 
