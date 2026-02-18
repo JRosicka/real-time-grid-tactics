@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d96cebf415fe44438d7a55b9cc8d2710, type: 3}
+  m_Name: ColorDataTeal
+  m_EditorClassIdentifier: Assembly-CSharp::Gameplay.Config.PlayerColorData
+  ID: teal
+  TeamColor: {r: 0, g: 0.84148407, b: 1, a: 1}
+  ColoredButtonData: {fileID: 11400000, guid: 010ac3faf8011b74190aee977cd8cee3, type: 2}
+  TeamBannerColor: {r: 0, g: 0.84313726, b: 1, a: 1}
+  DeathParticlesColor1: {r: 0.3820755, g: 0.6343624, b: 1, a: 1}
+  DeathParticlesColor2: {r: 0, g: 0.42836362, b: 0.735849, a: 1}
+  SelectionMaterial: {fileID: 2100000, guid: ea68780eeef494dd7a6b85e039e0cf54, type: 2}

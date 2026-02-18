@@ -16,10 +16,12 @@ MonoBehaviour:
   CurrencyConfiguration: {fileID: 11400000, guid: 3db5f2d7bb4f743459bc067c8714423b, type: 2}
   MapsConfiguration: {fileID: 11400000, guid: 56ac6738340180a4ea956ab823147789, type: 2}
   MaxPathFindingFCostBuffer: 36
-  PlayerConfigs:
-  - {fileID: 11400000, guid: db81b6365297c4740954a5fc43742225, type: 2}
-  - {fileID: 11400000, guid: 62144f0ee704e3f49830997baa308b81, type: 2}
-  - {fileID: 11400000, guid: 33caeaa811685415896ab82a400b3efa, type: 2}
+  PlayerColorConfigs:
+  - {fileID: 11400000, guid: e34410d5f7f6f4a71bd8ec0f4a4b9cb3, type: 2}
+  - {fileID: 11400000, guid: b1ff2a553acb040d1911a3247b0b4a80, type: 2}
+  - {fileID: 11400000, guid: a00982b4c9d00431bb55529f0d7e7256, type: 2}
+  - {fileID: 11400000, guid: e18fafdbb30c947b889bf5a24ec8e37a, type: 2}
+  - {fileID: 11400000, guid: ed34bf9881c4f4ef4aca8e94f5a0a863, type: 2}
   CancelButtonSprite: {fileID: 21300000, guid: ac6a5cd8c78757649b1eebb6c22b1ba4, type: 3}
   CancelButtonSlotSprites: {fileID: 11400000, guid: ef653d486657bde49819c23db7683cf4, type: 2}
   NeutralBannerColor: {r: 0.5294118, g: 0.5372549, b: 0.54901963, a: 1}

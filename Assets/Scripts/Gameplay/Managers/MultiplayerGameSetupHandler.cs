@@ -36,8 +36,8 @@ public class MultiplayerGameSetupHandler : NetworkBehaviour {
         GameManager.Instance.CommandManager = commandManager;
 
         List<MPGamePlayer> players = FindObjectsByType<MPGamePlayer>(FindObjectsSortMode.InstanceID).ToList(); 
-        MPGamePlayer player1 = players.FirstOrDefault(p => p.Data.Team == GameTeam.Player1);
-        MPGamePlayer player2 = players.FirstOrDefault(p => p.Data.Team == GameTeam.Player2);
+        MPGamePlayer player1 = players.FirstOrDefault(p => p.Team == GameTeam.Player1);
+        MPGamePlayer player2 = players.FirstOrDefault(p => p.Team == GameTeam.Player2);
         MPGamePlayer localPlayer = players.FirstOrDefault(p => p.isLocalPlayer);
 
         if (localPlayer == null) { 

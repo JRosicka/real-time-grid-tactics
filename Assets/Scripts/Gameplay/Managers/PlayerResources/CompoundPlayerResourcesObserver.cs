@@ -13,7 +13,7 @@ namespace Gameplay.Managers {
         public CompoundPlayerResourcesObserver(List<IGamePlayer> playersToTrack) {
             ObservedPlayers = playersToTrack;
             playersToTrack.ForEach(p => p.ResourcesController.BalanceChangedEvent += 
-                newResourceTotals => TrackedPlayerBalanceChanged(p.Data.Team, newResourceTotals)
+                newResourceTotals => TrackedPlayerBalanceChanged(p.Team, newResourceTotals)
             );
         }
 

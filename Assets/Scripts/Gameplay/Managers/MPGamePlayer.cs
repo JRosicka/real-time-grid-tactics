@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Gameplay.Config;
 using Gameplay.Config.Upgrades;
+using Gameplay.Entities;
 using Mirror;
 using UnityEngine;
 
@@ -9,7 +10,9 @@ using UnityEngine;
 /// </summary>
 public class MPGamePlayer : NetworkBehaviour, IGamePlayer {
     [field: SyncVar]
-    public PlayerData Data { get; set; }
+    public GameTeam Team { get; set; }
+    [field: SyncVar]
+    public PlayerColorData ColorData { get; set; }
     [field: SyncVar]
     public string DisplayName { get; set; }
     [field: SyncVar]
@@ -22,6 +25,9 @@ public class MPGamePlayer : NetworkBehaviour, IGamePlayer {
     [SerializeField]
     private PlayerOwnedPurchasablesController _ownedPurchasablesController;
     public PlayerOwnedPurchasablesController OwnedPurchasablesController => _ownedPurchasablesController;
+    /// <summary>
+    /// Client-side player initialization
+    /// </summary>
     public void Initialize(GameConfiguration gameConfiguration) {
         _ownedPurchasablesController.Initialize(this, gameConfiguration.GetUpgrades());
         _resourcesController.Initialize(gameConfiguration.CurrencyConfiguration);

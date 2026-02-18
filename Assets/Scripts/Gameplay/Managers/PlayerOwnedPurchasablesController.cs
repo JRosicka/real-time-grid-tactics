@@ -29,7 +29,7 @@ public class PlayerOwnedPurchasablesController : NetworkBehaviour {
     /// </summary>
     public void Initialize(IGamePlayer player, List<UpgradeData> upgradesToRegister) {
         _player = player;
-        Upgrades = new UpgradesCollection(_player.Data.Team);
+        Upgrades = new UpgradesCollection(_player.Team);
         Upgrades.RegisterUpgrades(upgradesToRegister);
         
         if (GameTypeTracker.Instance.HostForNetworkedGame || !GameTypeTracker.Instance.GameIsNetworked) {
@@ -46,7 +46,7 @@ public class PlayerOwnedPurchasablesController : NetworkBehaviour {
     public List<PurchasableData> OwnedPurchasables {
         get {
             List<PurchasableData> entityData = GameManager.Instance.CommandManager.EntitiesOnGrid
-                .ActiveEntitiesForTeam(_player.Data.Team).Select(e => e.EntityData).Cast<PurchasableData>().ToList();
+                .ActiveEntitiesForTeam(_player.Team).Select(e => e.EntityData).Cast<PurchasableData>().ToList();
             return entityData.Concat(Upgrades.GetOwnedUpgradeDatas()).ToList();
         }
     }
@@ -63,7 +63,7 @@ public class PlayerOwnedPurchasablesController : NetworkBehaviour {
                     throw new Exception("Game does not support a non-King adjacent required purchasable");
                 }
 
-                if (!GameManager.Instance.LeaderTracker.IsAdjacentToFriendlyLeader(purchaser.Location!.Value, _player.Data.Team)) {
+                if (!GameManager.Instance.LeaderTracker.IsAdjacentToFriendlyLeader(purchaser.Location!.Value, _player.Team)) {
                     whyNot = requirement.FailedRequirementExplanation;
                     return false;
                 }
@@ -91,7 +91,7 @@ public class PlayerOwnedPurchasablesController : NetworkBehaviour {
     }
 
     private void OwnedPurchasablesMayHaveChanged(GameTeam team) {
-        if (team != _player.Data.Team) return;
+        if (team != _player.Team) return;
         
         NotifyOwnedPurchasablesChanged();
     }

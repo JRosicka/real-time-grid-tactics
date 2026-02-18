@@ -1,4 +1,5 @@
 using System;
+using Menu;
 using Mirror;
 using Steamworks;
 using UnityEngine;
@@ -19,6 +20,9 @@ namespace Game.Network
         public string DisplayName;
         [SyncVar]
         public CSteamID SteamID;
+        [SyncVar]
+        public string ColorID;
+        public string GetColorID => string.IsNullOrEmpty(ColorID) ? "gray" : ColorID;
 
         public static event Action PlayerReadyStatusChanged;
         public static event Action PlayerSteamInfoDetermined;
@@ -32,6 +36,13 @@ namespace Game.Network
         
         private void OnDisplayNameSet(string oldName, string newName) {
             PlayerSteamInfoDetermined?.Invoke();
+        }
+        
+        [Command(requiresAuthority = false)]
+        public void CmdSetColor(string newColorID) {
+            if (!LobbyNetworkBehaviour.Instance.IsColorAvailable(newColorID)) return;
+            ColorID = newColorID;
+            LobbyNetworkBehaviour.Instance.AssignColor(this, newColorID);
         }
 
         [Server]

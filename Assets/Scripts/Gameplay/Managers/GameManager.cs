@@ -113,9 +113,9 @@ public class GameManager : MonoBehaviour {
     }
 
     public IGamePlayer GetPlayerForTeam(GameTeam team) {
-        if (Player1.Data.Team == team) {
+        if (Player1.Team == team) {
             return Player1;
-        } else if (Player2.Data.Team == team) {
+        } else if (Player2.Team == team) {
             return Player2;
         } else {
             return null;
@@ -137,7 +137,7 @@ public class GameManager : MonoBehaviour {
     #region Game setup
     
     public void SetPlayers(IGamePlayer player1, IGamePlayer player2, IGamePlayer localPlayer, int localIndex) {
-        LocalTeam = localPlayer.Data.Team;
+        LocalTeam = localPlayer.Team;
         LocalPlayerIndex = localIndex;
         
         // Set up players
@@ -154,7 +154,7 @@ public class GameManager : MonoBehaviour {
             _ => throw new Exception($"Invalid local team: {LocalTeam}")
         };
         ResourcesInterface.Initialize(resourcesObserver, localPlayer);
-        InGamePauseButton.Initialize(localPlayer.Data.ColoredButtonData);
+        InGamePauseButton.Initialize(localPlayer.ColorData.ColoredButtonData);
         UpgradesUI.Initialize(player1, player2);
     }
 

@@ -1,13 +1,27 @@
+using System.Collections.Generic;
+using System.Linq;
+using Game.Network;
+using Gameplay.Config;
 using Mirror;
 using Scenes;
+using Steamworks;
+using UnityEngine;
 
 namespace Menu {
     /// <summary>
     /// Networked logic for the lobby
     /// </summary>
     public class LobbyNetworkBehaviour : NetworkBehaviour {
+        public static LobbyNetworkBehaviour Instance { get; private set; }
+        private void Start() {
+            Instance = this;
+        }
+
         [SyncVar(hook = nameof(OnMapChanged))]
         public string MapID = SceneLoader.Instance.LastLobbyMap;
+
+        [SerializeField] private List<PlayerColorData> _availableColors;
+        private readonly Dictionary<CSteamID, PlayerColorData> _assignedColors = new Dictionary<CSteamID, PlayerColorData>();
         
         /// <summary>
         /// Set the map and update the clients 
@@ -26,6 +40,21 @@ namespace Menu {
         /// </summary>
         public void SetUpCurrentMapOnLobbyJoin() {
             GameTypeTracker.Instance.SetMap(MapID);
+        }
+        
+        public bool IsColorAvailable(string colorID) {
+            return !_assignedColors.Values.Select(c => c.ID).Contains(colorID);
+        }
+        
+        [Server]
+        public void AssignColor(GameNetworkPlayer player, string colorID) {
+            _assignedColors[player.SteamID] = _availableColors.First(c => c.ID == colorID);
+            RpcAssignColor(player.SteamID, colorID);
+        }
+        
+        [ClientRpc]
+        private void RpcAssignColor(CSteamID playerID, string colorID) {
+            // TODO: trigger event that the color views listen to so they can update the color visual
         }
         
         /// <summary>

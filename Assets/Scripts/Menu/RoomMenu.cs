@@ -10,6 +10,7 @@ using Scenes;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using Sirenix.OdinInspector;
 
 /// <summary>
 /// UI for the game lobby.
@@ -138,6 +139,19 @@ public class RoomMenu : MonoBehaviour {
         };
 
         LobbyNetworkBehaviour.SwitchMap(_mapID);
+    }
+
+    [Button]
+    public void SwitchPlayerColorToBlue() {
+        PlayersInLobby.First(p => p.isLocalPlayer).CmdSetColor("blue");
+    }
+    [Button]
+    public void SwitchPlayerColorToTeal() {
+        PlayersInLobby.First(p => p.isLocalPlayer).CmdSetColor("teal");
+    }
+    [Button]
+    public void SwitchPlayerColorToOrange() {
+        PlayersInLobby.First(p => p.isLocalPlayer).CmdSetColor("orange");
     }
 
     public void CopyJoinCode() {

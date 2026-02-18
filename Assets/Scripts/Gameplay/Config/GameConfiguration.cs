@@ -19,7 +19,7 @@ namespace Gameplay.Config {
         public float MaxPathFindingFCostBuffer;
         
         [Header("Player Configs")] 
-        public List<PlayerData> PlayerConfigs;
+        public List<PlayerColorData> PlayerColorConfigs;
         
         [Header("Misc Sprites")]
         public Sprite CancelButtonSprite;
@@ -62,9 +62,9 @@ namespace Gameplay.Config {
         public AbilityDataScriptableObject GetAbility(string id) {
             return Abilities.First(d => d.name == id); 
         }
-
-        public PlayerData GetPlayer(string id) {
-            return PlayerConfigs.First(c => c.name == id);
+        
+        public PlayerColorData GetPlayerColor(string id) {
+            return PlayerColorConfigs.First(c => c.ID == id);
         }
 
         public GameplayTile GetTile(string id) {

@@ -1,8 +1,10 @@
 using Gameplay.Config;
+using Gameplay.Entities;
 using UnityEngine;
 
 public class SPGamePlayer : MonoBehaviour, IGamePlayer {
-    public PlayerData Data { get; set; }
+    public GameTeam Team { get; set; }
+    public PlayerColorData ColorData { get; set; }
     public string DisplayName { get; set; }
     public int Index { get; set; }
     [SerializeField]

@@ -119,13 +119,13 @@ namespace Gameplay.UI {
                 secondaryAbilityImage.gameObject.SetActive(false);
             } else {
                 secondaryAbilityImage.sprite = Buildable.TeamColorSprite;
-                secondaryAbilityImage.color = GameManager.Instance.GetPlayerForTeam(SelectedEntity).Data.TeamColor;
+                secondaryAbilityImage.color = GameManager.Instance.GetPlayerForTeam(SelectedEntity).ColorData.TeamColor;
                 secondaryAbilityImage.gameObject.SetActive(true);
             }
 
             if (abilitySlotBackground) {
                 IGamePlayer player = GameManager.Instance.GetPlayerForTeam(SelectedEntity);
-                abilitySlotBackground.SetUpSlot(player.Data.ColoredButtonData);
+                abilitySlotBackground.SetUpSlot(player.ColorData.ColoredButtonData);
                 _abilitySlotBackgroundView = abilitySlotBackground;
             }
         }

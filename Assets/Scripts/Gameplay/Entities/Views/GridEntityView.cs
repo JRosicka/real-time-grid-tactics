@@ -81,7 +81,7 @@ namespace Gameplay.Entities {
             if (!entity.EntityData.TeamColorSprite) {
                 _teamColorImage.gameObject.SetActive(false);
             } else if (player != null) {
-                _teamColorImage.color = player.Data.TeamColor;
+                _teamColorImage.color = player.ColorData.TeamColor;
                 _teamColorImage.GetComponent<Canvas>().sortingOrder += stackOrder;
                 _teamColorImage.gameObject.SetActive(true);
             } else {
@@ -118,7 +118,7 @@ namespace Gameplay.Entities {
 
             _particularView.Initialize(entity);
 
-            _selectionMaterial = GameManager.Instance.GetPlayerForTeam(entity)?.Data.SelectionMaterial;
+            _selectionMaterial = GameManager.Instance.GetPlayerForTeam(entity)?.ColorData.SelectionMaterial;
             _targetedMaterial = GameManager.Instance.Configuration.TargetedMaterial;
             
             // In case there are any abilities already in progress
@@ -381,9 +381,9 @@ namespace Gameplay.Entities {
                 colors.colorMin = GameManager.Instance.Configuration.NeutralDeathParticlesColor1;
                 colors.colorMax = GameManager.Instance.Configuration.NeutralDeathParticlesColor2;
             } else {
-                PlayerData playerData = GameManager.Instance.GetPlayerForTeam(Entity).Data;
-                colors.colorMin = playerData.DeathParticlesColor1;
-                colors.colorMax = playerData.DeathParticlesColor2;
+                PlayerColorData colorData = GameManager.Instance.GetPlayerForTeam(Entity).ColorData;
+                colors.colorMin = colorData.DeathParticlesColor1;
+                colors.colorMax = colorData.DeathParticlesColor2;
             }
             main.startColor = colors;
         }

@@ -33,9 +33,6 @@ public class GameSetupManager : MonoBehaviour {
     public SPCommandManager SPCommandManagerPrefab;
 
     [Header("Data")]
-    public PlayerData Player1Data;
-    public PlayerData Player2Data;
-    public PlayerData SpectatorData;
     public float CountdownTimeSeconds = 3f;
     public int GameOverDelayMillis = 5 * 1000;
     private MapData MapData => MapSerializer.GetMap(GameTypeTracker.Instance.MapID);
@@ -114,7 +111,7 @@ public class GameSetupManager : MonoBehaviour {
         
         GameRunning = false;
 
-        GameTeam winningTeam = winner == null ? GameTeam.Neutral : winner.Data.Team;
+        GameTeam winningTeam = winner?.Team ?? GameTeam.Neutral;
         if (!GameTypeTracker.Instance.GameIsNetworked) {
             LeaveGameAsync();
             NotifyGameOver(winningTeam);
@@ -168,8 +165,8 @@ public class GameSetupManager : MonoBehaviour {
         SpawnPlayerStartingUnits(GameTeam.Neutral);
         
         // Then spawn player starting units
-        SpawnPlayerStartingUnits(Player1Data.Team);
-        SpawnPlayerStartingUnits(Player2Data.Team);
+        SpawnPlayerStartingUnits(GameTeam.Player1);
+        SpawnPlayerStartingUnits(GameTeam.Player2);
         
         // Then spawn any units from cheats
         GameManager.Cheats.SpawnUnits(false);
@@ -193,7 +190,7 @@ public class GameSetupManager : MonoBehaviour {
         if (localTeam != GameTeam.Spectator) {
             Vector2Int keepLocation = MapLoader.GetPlayerStartLocation(localTeam);
             StartLocationIndicator.PlayMovingAnimation(GameManager.GridController.GetWorldPosition(keepLocation), 
-                GameManager.GetPlayerForTeam(localTeam).Data.TeamColor, 
+                GameManager.GetPlayerForTeam(localTeam).ColorData.TeamColor, 
                 CountdownTimeSeconds);
         }
         
@@ -226,9 +223,11 @@ public class GameSetupManager : MonoBehaviour {
         
         // Set up players
         SPGamePlayer player1 = Instantiate(SPGamePlayerPrefab, GameManager.transform);
-        player1.Data = Player1Data;
+        player1.Team = GameTeam.Player1;
+        player1.ColorData = GameManager.Configuration.GetPlayerColor("blue");
         SPGamePlayer player2 = Instantiate(SPGamePlayerPrefab, GameManager.transform);
-        player2.Data = Player2Data;
+        player2.Team = GameTeam.Player2;
+        player2.ColorData = GameManager.Configuration.GetPlayerColor("red");
         
         // Attempt to set the local player name
         try {
@@ -242,7 +241,7 @@ public class GameSetupManager : MonoBehaviour {
         GameManager.SetPlayers(player1, player2, player1, 0);
 
         MapLoader.LoadMap(MapData);
-        MapLoader.SetUpCamera(player1.Data.Team);
+        MapLoader.SetUpCamera(player1.Team);
         SpawnStartingUnits();
 
         PerformClientSidePostMapSetupInitialization();
@@ -299,7 +298,7 @@ public class GameSetupManager : MonoBehaviour {
         if (players.Count == MPSetupHandler.PlayerCount) {
             // Load the map client-side first, then notify the server that the client setup is finished
             MapLoader.LoadMap(MapData);
-            MapLoader.SetUpCamera(players.First(p => p.isLocalPlayer).Data.Team);
+            MapLoader.SetUpCamera(players.First(p => p.isLocalPlayer).Team);
             MPSetupHandler.CmdNotifyPlayerReady(players.First(p => p.isLocalPlayer).DisplayName);
         } else if (players.Count > MPSetupHandler.PlayerCount) {
             throw new Exception($"Detected more player objects than the recorded player count! Expected: {MPSetupHandler.PlayerCount}. Actual: {players.Count}");
@@ -329,27 +328,29 @@ public class GameSetupManager : MonoBehaviour {
         MPSetupHandler.PlayerCount = playerCount;
 
         int index = networkPlayer.index;
-        PlayerData data = index switch {
-            0 => Player1Data,
-            1 => Player2Data,
-            _ => SpectatorData
+        GameTeam team = index switch {
+            0 => GameTeam.Player1,
+            1 => GameTeam.Player2,
+            _ => GameTeam.Spectator
         };
 
         gamePlayer.Index = index;
-        gamePlayer.Data = data;
+        gamePlayer.Team = team;
         gamePlayer.DisplayName = networkPlayer.DisplayName;
+        gamePlayer.ColorData = GameManager.Configuration.GetPlayerColor(networkPlayer.GetColorID);
+        
         gamePlayer.Connected = true;
         AllPlayers[index] = gamePlayer;
         
         Debug.Log($"Player ({gamePlayer.DisplayName}) has been detected. Index ({networkPlayer.index}).");
-        if (gamePlayer.Data.Team == GameTeam.Spectator) {
+        if (gamePlayer.Team == GameTeam.Spectator) {
             _spectatorPlayers.Add(gamePlayer);
         }
 
         if (networkPlayer.isLocalPlayer) {
             // This is the server's local player. Since no other clients will notify us that this player joined, we should do it here
             MapLoader.LoadMap(MapData);
-            MapLoader.SetUpCamera(gamePlayer.Data.Team); 
+            MapLoader.SetUpCamera(gamePlayer.Team); 
             MarkPlayerReady(networkPlayer.DisplayName + " (host)");
         }
     }
@@ -380,11 +381,18 @@ public class GameSetupManager : MonoBehaviour {
         
         // If we are missing any players (due to no one picking those slots), set them up as dummy players now 
         List<MPGamePlayer> players = FindObjectsByType<MPGamePlayer>(FindObjectsSortMode.InstanceID).ToList();
-        MPGamePlayer player1 = players.FirstOrDefault(p => p.Data.Team == GameTeam.Player1);
-        MPGamePlayer player2 = players.FirstOrDefault(p => p.Data.Team == GameTeam.Player2);
+        MPGamePlayer player1 = players.FirstOrDefault(p => p.Team == GameTeam.Player1);
+        MPGamePlayer player2 = players.FirstOrDefault(p => p.Team == GameTeam.Player2);
         if (!player1) {
             player1 = Instantiate(MPGamePlayerPrefab, GameManager.transform);
-            player1.Data = Player1Data;
+            player1.Team = GameTeam.Player1;
+            if (player2 != null && player2.ColorData is { ID: "blue" }) {
+                // Player 2 exists and picked blue, so use red instead
+                player1.ColorData = GameManager.Configuration.GetPlayerColor("red");
+            } else {
+                // Default
+                player1.ColorData = GameManager.Configuration.GetPlayerColor("blue");
+            }
             player1.DisplayName = "Player 1";
             player1.Connected = true;
             player1.Index = 0;
@@ -392,7 +400,14 @@ public class GameSetupManager : MonoBehaviour {
         }
         if (!player2) {
             player2 = Instantiate(MPGamePlayerPrefab, GameManager.transform);
-            player2.Data = Player2Data;
+            player2.Team = GameTeam.Player2;
+            if (player2 != null && player2.ColorData is { ID: "blue" }) {
+                // Player 1 exists and picked red, so use blue instead
+                player2.ColorData = GameManager.Configuration.GetPlayerColor("blue");
+            } else {
+                // Default
+                player2.ColorData = GameManager.Configuration.GetPlayerColor("red");
+            }
             player2.DisplayName = "Player 2";
             player2.Connected = true;
             player2.Index = 1;

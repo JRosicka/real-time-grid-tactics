@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using Gameplay.Config;
-using Gameplay.Config.Abilities;
 using Gameplay.Entities;
 using Gameplay.Entities.Abilities;
 using Gameplay.Entities.BuildQueue;
@@ -58,7 +57,7 @@ namespace Gameplay.UI {
                 }
                 
                 IGamePlayer player = GameManager.Instance.GetPlayerForTeam(Entity);
-                return player.Data.TeamBannerColor;
+                return player.ColorData.TeamBannerColor;
             }
         }
 
@@ -70,7 +69,7 @@ namespace Gameplay.UI {
             entityColorsIcon.gameObject.SetActive(true);
             entityColorsIcon.color = player != null 
                 ? entityData.TeamColorSprite
-                    ? player.Data.TeamColor 
+                    ? player.ColorData.TeamColor 
                     : Color.clear
                 : Color.clear;
         }

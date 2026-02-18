@@ -18,7 +18,7 @@ namespace Gameplay.Entities {
             GameTeam localTeam = GameManager.Instance.LocalTeam;
             if (localTeam == GameTeam.Spectator) return;
 
-            _notificationIcon.sprite = GameManager.Instance.GetPlayerForTeam(entity).Data.ColoredButtonData.Normal;
+            _notificationIcon.sprite = GameManager.Instance.GetPlayerForTeam(entity).ColorData.ColoredButtonData.Normal;
             
             AmberForgeAvailabilityNotifier.AmberForgeAvailabilityChanged += UpdateAvailability;
             UpdateAvailability(entity, false);

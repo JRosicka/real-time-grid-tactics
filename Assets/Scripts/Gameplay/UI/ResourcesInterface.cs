@@ -23,10 +23,10 @@ namespace Gameplay.UI {
         private GameConfiguration GameConfiguration => GameManager.Instance.Configuration;
         
         public void Initialize(IPlayerResourcesObserver resourcesObserver, IGamePlayer localPlayer) {
-            bool localPlayerIsSpectator = localPlayer.Data.Team == GameTeam.Spectator;
+            bool localPlayerIsSpectator = localPlayer.Team == GameTeam.Spectator;
             _mainBanner.color = localPlayerIsSpectator
                 ? GameConfiguration.NeutralBannerColor
-                : localPlayer.Data.TeamBannerColor;
+                : localPlayer.ColorData.TeamBannerColor;
 
             _localPlayerName.text = localPlayer.DisplayName;
             
@@ -35,9 +35,9 @@ namespace Gameplay.UI {
             // Create a view for each player
             foreach (IGamePlayer player in resourcesObserver.ObservedPlayers) {
                 PlayerResourcesView resourcesView = Instantiate(_playerResourcesViewPrefab, _resourcesViewParent);
-                resourcesView.SetPlayerDetails(player.DisplayName, player.Data.ColoredButtonData.Normal, localPlayerIsSpectator);
+                resourcesView.SetPlayerDetails(player.DisplayName, player.ColorData.ColoredButtonData.Normal, localPlayerIsSpectator);
                 resourcesView.UpdateAmounts(GameConfiguration.CurrencyConfiguration.StartingGoldAmount, GameConfiguration.CurrencyConfiguration.StartingAmberAmount);
-                _playerResourcesViews.Add(player.Data.Team, resourcesView);
+                _playerResourcesViews.Add(player.Team, resourcesView);
             }
         }
 

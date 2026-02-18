@@ -18,7 +18,7 @@ namespace Gameplay.Managers {
         }
 
         private void TrackedPlayerBalanceChanged(List<ResourceAmount> newResourceTotals) {
-            BalanceChanged?.Invoke(_trackedPlayer.Data.Team, newResourceTotals);
+            BalanceChanged?.Invoke(_trackedPlayer.Team, newResourceTotals);
         }
     }
 }

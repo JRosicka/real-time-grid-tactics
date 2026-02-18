@@ -3185,6 +3185,11 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0.1
   MapID: 
+  _availableColors:
+  - {fileID: 11400000, guid: e34410d5f7f6f4a71bd8ec0f4a4b9cb3, type: 2}
+  - {fileID: 11400000, guid: b1ff2a553acb040d1911a3247b0b4a80, type: 2}
+  - {fileID: 11400000, guid: a00982b4c9d00431bb55529f0d7e7256, type: 2}
+  - {fileID: 11400000, guid: e18fafdbb30c947b889bf5a24ec8e37a, type: 2}
 --- !u!114 &1218833064
 MonoBehaviour:
   m_ObjectHideFlags: 0

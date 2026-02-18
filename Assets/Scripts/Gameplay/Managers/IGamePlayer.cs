@@ -1,12 +1,14 @@
 using System.Collections.Generic;
 using Gameplay.Config;
 using Gameplay.Config.Upgrades;
+using Gameplay.Entities;
 
 /// <summary>
 /// Represents a player and its associated data and overall state
 /// </summary>
 public interface IGamePlayer {
-    PlayerData Data { get; }
+    GameTeam Team { get; }
+    PlayerColorData ColorData { get; }
     string DisplayName { get; set; }
     public int Index { get; set; }
     PlayerResourcesController ResourcesController { get; }
