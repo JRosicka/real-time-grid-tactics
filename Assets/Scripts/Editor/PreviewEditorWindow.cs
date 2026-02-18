@@ -26,9 +26,8 @@ namespace Gameplay.Config {
                 }
             };
             
-            // Ran whenever a scene loads
+            // Ran whenever a scene loads 
             EditorSceneManager.sceneOpened += (_, _) => Instance.SetUpWindow();
-            SceneManager.sceneLoaded += (_, _) => Instance.SetUpWindow();
         }
 
         private static PreviewEditorWindow _instance;
