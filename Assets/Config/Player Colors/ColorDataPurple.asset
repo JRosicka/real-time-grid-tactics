@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d96cebf415fe44438d7a55b9cc8d2710, type: 3}
+  m_Name: ColorDataPurple
+  m_EditorClassIdentifier: Assembly-CSharp::Gameplay.Config.PlayerColorData
+  ID: purple
+  TeamColor: {r: 0.5147662, g: 0, b: 1, a: 1}
+  ColoredButtonData: {fileID: 11400000, guid: b75d769d8bc85b84b98dcd11ecdcde7b, type: 2}
+  TeamBannerColor: {r: 0.5137255, g: 0, b: 1, a: 1}
+  DeathParticlesColor1: {r: 0.45882353, g: 0, b: 1, a: 1}
+  DeathParticlesColor2: {r: 0.33333334, g: 0, b: 0.5803922, a: 1}
+  SelectionMaterial: {fileID: 2100000, guid: 97f0a9553732e40b294f72d0a64eaef6, type: 2}

@@ -22,12 +22,14 @@ MonoBehaviour:
   - {fileID: 11400000, guid: a00982b4c9d00431bb55529f0d7e7256, type: 2}
   - {fileID: 11400000, guid: e18fafdbb30c947b889bf5a24ec8e37a, type: 2}
   - {fileID: 11400000, guid: ed34bf9881c4f4ef4aca8e94f5a0a863, type: 2}
+  - {fileID: 11400000, guid: aa0325f57dcf743ffa5fe30eb67f3b45, type: 2}
+  - {fileID: 11400000, guid: d2c2f520323a9403a81f0983237794b9, type: 2}
+  - {fileID: 11400000, guid: 513997ba2681c48a0b6d282a09df380c, type: 2}
+  - {fileID: 11400000, guid: 6a1ece7bd9ce4498e883a4933c4da9f6, type: 2}
   CancelButtonSprite: {fileID: 21300000, guid: ac6a5cd8c78757649b1eebb6c22b1ba4, type: 3}
   CancelButtonSlotSprites: {fileID: 11400000, guid: ef653d486657bde49819c23db7683cf4, type: 2}
-  NeutralBannerColor: {r: 0.5294118, g: 0.5372549, b: 0.54901963, a: 1}
+  NeutralColors: {fileID: 11400000, guid: ed34bf9881c4f4ef4aca8e94f5a0a863, type: 2}
   TargetedMaterial: {fileID: 2100000, guid: 2c657a3b9a6b54b2d8a58d0f2d4ef543, type: 2}
-  NeutralDeathParticlesColor1: {r: 0.5377358, g: 0.5377358, b: 0.5377358, a: 1}
-  NeutralDeathParticlesColor2: {r: 0.2924528, g: 0.2924528, b: 0.2924528, a: 1}
   Purchasables:
   - {fileID: 11400000, guid: 991ad2a1d6801ee40b831e7850e0ff35, type: 2}
   - {fileID: 11400000, guid: 13a02f740ff7d294ca02fe7f547820c0, type: 2}

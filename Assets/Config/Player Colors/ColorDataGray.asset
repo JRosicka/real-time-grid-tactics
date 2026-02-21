@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: ColorDataGray
   m_EditorClassIdentifier: Assembly-CSharp::Gameplay.Config.PlayerColorData
   ID: gray
-  TeamColor: {r: 0, g: 0, b: 0, a: 0}
+  TeamColor: {r: 0.5294118, g: 0.5372549, b: 0.54901963, a: 1}
   ColoredButtonData: {fileID: 11400000, guid: 8da38a391f5dd5140aff691c2020a9bc, type: 2}
-  TeamBannerColor: {r: 0, g: 0, b: 0, a: 0}
-  DeathParticlesColor1: {r: 0, g: 0, b: 0, a: 0}
-  DeathParticlesColor2: {r: 0, g: 0, b: 0, a: 0}
-  SelectionMaterial: {fileID: 0}
+  TeamBannerColor: {r: 0.5294118, g: 0.5372549, b: 0.54901963, a: 1}
+  DeathParticlesColor1: {r: 0.5294118, g: 0.5372549, b: 0.54901963, a: 1}
+  DeathParticlesColor2: {r: 0.29411766, g: 0.29411766, b: 0.29411766, a: 1}
+  SelectionMaterial: {fileID: 2100000, guid: 06eecbded632d4835a3c4ef4b3f78688, type: 2}

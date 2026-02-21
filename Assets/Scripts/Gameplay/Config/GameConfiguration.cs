@@ -24,10 +24,8 @@ namespace Gameplay.Config {
         [Header("Misc Sprites")]
         public Sprite CancelButtonSprite;
         public ColoredButtonData CancelButtonSlotSprites;
-        public Color NeutralBannerColor;
+        public PlayerColorData NeutralColors;
         public Material TargetedMaterial;
-        public Color NeutralDeathParticlesColor1;
-        public Color NeutralDeathParticlesColor2;
         
         [Header("Gameplay ScriptableObjects")]
         public List<PurchasableData> Purchasables;

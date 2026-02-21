@@ -25,7 +25,7 @@ namespace Gameplay.UI {
         public string Tags => string.Empty;
         public bool DisplayHP => false;
         public BuildAbility InProgressBuild => null;
-        public Color TeamBannerColor => GameManager.Instance.Configuration.NeutralBannerColor;
+        public Color TeamBannerColor => GameManager.Instance.Configuration.NeutralColors.TeamBannerColor;
         
         public void SetUpIcons(Image entityIcon, Image entityColorsIcon) {
             entityIcon.sprite = _tile.m_DefaultSprite;

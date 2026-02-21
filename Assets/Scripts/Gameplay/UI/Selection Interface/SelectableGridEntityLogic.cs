@@ -53,7 +53,7 @@ namespace Gameplay.UI {
         public Color TeamBannerColor {
             get {
                 if (Entity.Team == GameTeam.Neutral) {
-                    return GameManager.Instance.Configuration.NeutralBannerColor;
+                    return GameManager.Instance.Configuration.NeutralColors.TeamBannerColor;
                 }
                 
                 IGamePlayer player = GameManager.Instance.GetPlayerForTeam(Entity);

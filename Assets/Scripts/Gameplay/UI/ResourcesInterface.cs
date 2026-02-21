@@ -25,7 +25,7 @@ namespace Gameplay.UI {
         public void Initialize(IPlayerResourcesObserver resourcesObserver, IGamePlayer localPlayer) {
             bool localPlayerIsSpectator = localPlayer.Team == GameTeam.Spectator;
             _mainBanner.color = localPlayerIsSpectator
-                ? GameConfiguration.NeutralBannerColor
+                ? GameConfiguration.NeutralColors.TeamBannerColor
                 : localPlayer.ColorData.TeamBannerColor;
 
             _localPlayerName.text = localPlayer.DisplayName;
