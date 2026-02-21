@@ -612,15 +612,13 @@ namespace Gameplay.Entities {
 
             if (!holdPosition) return;
             
-            // Cancel any in-progress moves and attacks
+            // Cancel any in-progress moves and attacks, but not target-attacks
             List<IAbility> abilities = InProgressAbilities.Where(a => a is MoveAbility or AttackAbility).ToList();
             abilities.ForEach(a => CommandManager.CancelAbility(a, false));
 
-            // Update the rally point
-            var currentLocation = Location;
-            // The location might be null if the entity is being destroyed 
-            if (currentLocation != null) {
-                SetTargetLocation(currentLocation.Value, null, false);
+            if (Location != null && TargetLocationLogicValue.TargetEntity == null) {
+                // We are not target a specific unit (via target-attack), so update the rally point
+                SetTargetLocation(Location.Value, null, false);
             }
         }
         

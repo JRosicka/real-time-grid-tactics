@@ -165,7 +165,7 @@ public abstract class AbstractCommandManager : NetworkBehaviour, ICommandManager
         // Don't do anything if the performer has been killed 
         if (ability.Performer == null || ability.Performer.DeadOrDying) return;
 
-        if (fromInput) {
+        if (fromInput && ability.AbilityData.TryingToPerformCancelsHoldPosition) {
             ability.Performer.ToggleHoldPosition(false, false);
         }
         

@@ -93,6 +93,8 @@ namespace Gameplay.Config.Abilities {
         public virtual bool Targeted => this is ITargetableAbilityData;
         [SerializeField] private bool _tryingToPerformCancelsBuilds;
         public bool TryingToPerformCancelsBuilds => _tryingToPerformCancelsBuilds;
+        [SerializeField] private bool _tryingToPerformCancelsHoldPosition = true;
+        public bool TryingToPerformCancelsHoldPosition => _tryingToPerformCancelsHoldPosition;
         [SerializeField] private bool _blocksDefaultAttack;
         public bool BlocksDefaultAttack => _blocksDefaultAttack;
         [SerializeField] private bool _showTimerOnSelectionInterface;
