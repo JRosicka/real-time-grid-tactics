@@ -69,6 +69,8 @@ namespace Gameplay.Entities {
         public float SlowMoveSpeedMultiplier => ((NetworkableFloatValue)_slowMoveSpeedMultiplierField?.Value)?.Value ?? 0;
         private NetworkableField _additionalMovementTimeFromAttackingField;
         public float AdditionalMovementTimeFromAttacking => ((NetworkableFloatValue)_additionalMovementTimeFromAttackingField?.Value)?.Value ?? 0;
+        private NetworkableField _holdingPositionNetworkableField;
+        public bool HoldingPosition => ((NetworkableBoolValue)_holdingPositionNetworkableField?.Value)?.Value ?? false;
 
         // Abilities
         /// <summary>
@@ -100,7 +102,6 @@ namespace Gameplay.Entities {
         public bool CanTargetThings => Range > 0;
         public bool CanMoveOrRally => MoveTime > 0;
         public bool CanMove => CanMoveOrRally && !EntityData.IsStructure;
-        public bool HoldingPosition { get; private set; }
         /// <summary>
         /// Null if the entity is unregistered (or not yet registered)
         /// </summary>
@@ -142,6 +143,7 @@ namespace Gameplay.Entities {
         public event Action KilledEvent;
         public event Action<int> KillCountChanged;
         public event Action<int> IncomeRateChanged;
+        public event Action<bool> HoldingPositionChangedEvent;
         public event Action<List<IAbility>> InProgressAbilitiesUpdatedEvent;
         /// <summary>
         /// Only triggered on server
@@ -163,6 +165,7 @@ namespace Gameplay.Entities {
             _timerSpeedMultiplierField = new NetworkableField(this, nameof(_timerSpeedMultiplierField), new NetworkableFloatValue(1f));
             _slowMoveSpeedMultiplierField = new NetworkableField(this, nameof(_slowMoveSpeedMultiplierField), new NetworkableFloatValue(1f));
             _additionalMovementTimeFromAttackingField = new NetworkableField(this, nameof(_additionalMovementTimeFromAttackingField), new NetworkableFloatValue(0));
+            _holdingPositionNetworkableField = new NetworkableField(this, nameof(_holdingPositionNetworkableField), new NetworkableBoolValue(false));
         }
 
         /// <summary>
@@ -263,6 +266,7 @@ namespace Gameplay.Entities {
             TargetLocationLogic.ValueChanged += UpdateAttackTarget;
             _killCountField.ValueChanged += (_, _, _) => KillCountChanged?.Invoke(KillCount);
             _incomeRateField.ValueChanged += (_, _, _) => IncomeRateChanged?.Invoke(IncomeRate);
+            _holdingPositionNetworkableField.ValueChanged += (_, _, _) => HoldingPositionChangedEvent?.Invoke(HoldingPosition);
             
             Interactable = true;
         } 
@@ -603,12 +607,15 @@ namespace Gameplay.Entities {
             return normalMoveTime + normalMoveTime * extraMoveTimeFromTile;
         }
 
+        /// <summary>
+        /// Server method
+        /// </summary>
         public void ToggleHoldPosition(bool holdPosition, bool recordForReplay) {
             if (recordForReplay) {
                 GameManager.Instance.ReplayManager.TryRecordHoldPosition(this, holdPosition);
             }
-            
-            HoldingPosition = holdPosition;
+
+            SetHoldingPosition(holdPosition);
 
             if (!holdPosition) return;
             
@@ -666,7 +673,11 @@ namespace Gameplay.Entities {
         public void SetAdditionalMovementTimeFromAttacking(float newAdditionalMovementTime) {
             _additionalMovementTimeFromAttackingField.UpdateValue(new NetworkableFloatValue(newAdditionalMovementTime));
         }
-        
+
+        public void SetHoldingPosition(bool newHoldingPosition) {
+            _holdingPositionNetworkableField.UpdateValue(new NetworkableBoolValue(newHoldingPosition));
+        }
+
         public float MovementTimeFromAttacking => EntityData.AddedMovementTimeFromAttacking + AdditionalMovementTimeFromAttacking;
 
         public enum TargetType {

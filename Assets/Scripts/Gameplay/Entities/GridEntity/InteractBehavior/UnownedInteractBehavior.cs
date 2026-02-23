@@ -12,7 +12,7 @@ namespace Gameplay.Entities {
         /// <summary>
         /// Only show paths for spectators
         /// </summary>
-        public bool AllowedToSeeTargetLocation => GameManager.Instance.LocalTeam == GameTeam.Spectator;
+        public bool AllowedToSeeMiscInfo => GameManager.Instance.LocalTeam == GameTeam.Spectator;
         
         public bool AllowedToSeeQueuedBuilds(GameTeam team) {
             return GameManager.Instance.LocalTeam == GameTeam.Spectator;

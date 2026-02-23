@@ -12,9 +12,9 @@ namespace Gameplay.Entities {
         bool IsLocalTeam { get; }
         
         /// <summary>
-        /// Whether we should show the path to the entity's target location
+        /// Whether we should show misc details about this entity, like the path to the entity's target location
         /// </summary>
-        bool AllowedToSeeTargetLocation { get; }
+        bool AllowedToSeeMiscInfo { get; }
 
         /// <summary>
         /// Whether we should show queued builds for this entity for the given team

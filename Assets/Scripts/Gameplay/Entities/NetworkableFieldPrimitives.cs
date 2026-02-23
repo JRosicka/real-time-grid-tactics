@@ -4,6 +4,24 @@ using UnityEngine;
 
 namespace Gameplay.Entities {
     [Serializable]
+    public class NetworkableBoolValue : INetworkableFieldValue {
+        public bool Value;
+        public NetworkableBoolValue(bool value) {
+            Value = value;
+        }
+
+        public string ID => nameof(NetworkableBoolValue);
+
+        public void SerializeValue(NetworkWriter writer) {
+            writer.WriteBool(Value);
+        }
+
+        public static NetworkableBoolValue Deserialize(NetworkReader reader) {
+            return new NetworkableBoolValue(reader.ReadBool());
+        }
+    }
+
+    [Serializable]
     public class NetworkableIntegerValue : INetworkableFieldValue {
         public int Value;
         public NetworkableIntegerValue(int value) {

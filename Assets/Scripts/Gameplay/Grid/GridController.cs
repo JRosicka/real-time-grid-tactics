@@ -108,7 +108,7 @@ namespace Gameplay.Grid {
             _overlayTilemap.UpdateCellOverlaysForEntity(entity);
             if (entity != null) {
                 entity.AttackTargetUpdated += UpdateTargetEntity;
-                if (entity.InteractBehavior is { AllowedToSeeTargetLocation: true }) {
+                if (entity.InteractBehavior is { AllowedToSeeMiscInfo: true }) {
                     UpdateTargetEntity(entity, entity.GetAttackTarget());
                 }
             }

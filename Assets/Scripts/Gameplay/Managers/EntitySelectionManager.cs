@@ -232,7 +232,7 @@ public class EntitySelectionManager {
         if (SelectedEntity == null) return;
         if (!_gameManager.CommandManager.EntitiesOnGrid.IsEntityOnGrid(SelectedEntity)) return; // May be in the middle of getting unregistered
         if (!SelectedEntity.CanMoveOrRally && !SelectedEntity.TargetLocationLogicValue.CanRally) return;
-        if (SelectedEntity.InteractBehavior is not { AllowedToSeeTargetLocation: true }) return;
+        if (SelectedEntity.InteractBehavior is not { AllowedToSeeMiscInfo: true }) return;
 
         TargetLocationLogic targetLocationLogic = (TargetLocationLogic)newValue;
         PathfinderService.Path path = PathfinderService.FindPath(SelectedEntity, targetLocationLogic.CurrentTarget);

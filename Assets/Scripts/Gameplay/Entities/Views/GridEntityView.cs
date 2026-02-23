@@ -46,6 +46,7 @@ namespace Gameplay.Entities {
         [SerializeField] private List<CanvasGroup> _thingsToHideWhenDying;
         [SerializeField] private CanvasGroup _mainImageGroup;
         [SerializeField] private ParticleSystem _deathParticleSystem;
+        [SerializeField] private GameObject _holdPositionIcon;
         
         [Header("Config")]
         [FormerlySerializedAs("SecondsToMoveToAdjacentCell")]
@@ -98,6 +99,7 @@ namespace Gameplay.Entities {
             entity.HPHandler.AttackedEvent += AttackReceived;
             entity.HPHandler.HealedEvent += HealReceived;
             entity.KilledEvent += Killed;
+            entity.HoldingPositionChangedEvent += HoldingPositionChanged;
 
             bool hasHP = entity.MaxHP > 0;
             if (entity.EntityData.IsStructure) {
@@ -399,6 +401,12 @@ namespace Gameplay.Entities {
         }
         
         #endregion
+
+        private void HoldingPositionChanged(bool newHoldingPosition) {
+            if (!(Entity?.InteractBehavior?.AllowedToSeeMiscInfo ?? false)) return;
+            
+            _holdPositionIcon.SetActive(newHoldingPosition);
+        }
         
         private void CreateTimerView(IAbility ability, AbilityTimer abilityTimer) {
             if (!ability.ShouldShowAbilityTimer) return;
