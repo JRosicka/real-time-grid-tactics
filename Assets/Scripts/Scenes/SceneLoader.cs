@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Audio;
 using Game.Network;
 using Mirror;
 using UnityEngine;
@@ -166,6 +167,11 @@ namespace Scenes {
             if (asActive) {
                 SceneManager.SetActiveScene(SceneManager.GetSceneByName(sceneName));
                 Debug.Log($"Loading new active scene: {sceneName}. Active map: {GameTypeTracker.Instance.MapID}");
+                if (sceneName == GameSceneName) {
+                    GameAudio.Instance.PlayInGameMusic();
+                } else {
+                    GameAudio.Instance.PlayMenuMusic();
+                }
             }
             
             SceneLoaded?.Invoke(sceneName);
@@ -261,6 +267,7 @@ namespace Scenes {
                     break;
                 case GameSceneName:
                     _gameTypeManager.SetGameType(true, true, true);
+                    GameAudio.Instance.PlayInGameMusic();
                     break;
             }
         }

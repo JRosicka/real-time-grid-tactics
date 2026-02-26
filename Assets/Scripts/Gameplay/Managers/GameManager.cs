@@ -180,8 +180,6 @@ public class GameManager : MonoBehaviour {
     }
 
     public void ReturnToMainMenu() {
-        GameAudio.Instance.EndMusic(false);
-
         if (!GameTypeTracker.Instance.GameIsNetworked) {
             // SP. Just load into main menu
             SceneLoader.Instance.LoadMainMenu();

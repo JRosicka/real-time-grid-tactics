@@ -12,6 +12,8 @@ namespace Audio {
 		public bool HasSource => Source;
 
 		public string Name => Source.gameObject.name;
+		
+		public event Action Released;
 
 		public bool IsPlaying {
 			get {
@@ -29,6 +31,8 @@ namespace Audio {
 
 		private float _delayTime;
 		private bool _delayStart;
+
+		private bool _releasedAlready;
 		
 		private float _volume;
 		public float Volume {
@@ -80,6 +84,8 @@ namespace Audio {
 			Priority = AudioManager.GetLayerPriority(_audioFile.AudioLayer);
 			Source.priority = Priority;
 			_willRelease = false;
+			_releasedAlready = false;
+			Released = null;
 			UpdateVolume();
 		}
 
@@ -89,6 +95,10 @@ namespace Audio {
 			Source.clip = null;
 			_willRelease = false;
 			_audioFile = null;
+			if (!_releasedAlready) {
+				_releasedAlready = true;
+				Released?.Invoke();
+			}
 		}
 
 		public void Reserve() {

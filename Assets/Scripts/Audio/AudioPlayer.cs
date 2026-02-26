@@ -10,7 +10,7 @@ namespace Audio {
         [SerializeField] private AudioManager _audioManager;
         private OneShotAudio _interruptibleSFX;
         private long _sfxPerformerID;
-        private OneShotAudio _activeMusic;
+        public OneShotAudio ActiveMusic { get; private set; }
 
         public void Initialize() {
             _audioManager.Initialize();
@@ -61,17 +61,18 @@ namespace Audio {
             return true;
         }
 
-        public void PlayMusic(AudioFile audioFile) {
-            if (_activeMusic != null) {
-                _audioManager.CancelAudio(_activeMusic, false);
+        public OneShotAudio PlayMusic(AudioFile audioFile) {
+            if (ActiveMusic != null) {
+                _audioManager.CancelAudio(ActiveMusic, false);
             }
-            _activeMusic = _audioManager.PlaySound(audioFile, true, true);
+            ActiveMusic = _audioManager.PlaySound(audioFile, false, false);
+            return ActiveMusic;
         }
 
         public void EndMusic(bool fadeOut) {
-            if (_activeMusic == null) return;
+            if (ActiveMusic == null) return;
             
-            _audioManager.CancelAudio(_activeMusic, fadeOut);
+            _audioManager.CancelAudio(ActiveMusic, fadeOut);
         }
         
         public void SetSoundEffectVolume(float newVolume) {

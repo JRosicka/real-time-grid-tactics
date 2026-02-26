@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Audio;
 using UnityEngine;
 
@@ -7,7 +8,6 @@ namespace Gameplay.Config {
     /// </summary>
     [CreateAssetMenu(menuName = "Configuration/AudioFileConfiguration", fileName = "AudioFileConfiguration")]
     public class AudioFileConfiguration : ScriptableObject {
-        public AudioFile GameMusic;
         public AudioFile ButtonClickDownSound;
         public AudioFile ButtonClickInGameSound;
         public AudioFile InvalidSound;
@@ -16,5 +16,9 @@ namespace Gameplay.Config {
         public AudioFile GameStartSound;
         public AudioFile ArrowLandSound;
         public AudioFile ConstructionSound;
+        
+        [Header("Music")]
+        public List<MusicAudioFile> MenuMusic;
+        public List<MusicAudioFile> InGameMusic;
     }
 }

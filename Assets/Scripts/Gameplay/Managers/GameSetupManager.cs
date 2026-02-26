@@ -78,7 +78,7 @@ public class GameSetupManager : MonoBehaviour {
     public event Action GameRunningEvent;
     public void TriggerGameRunningEvent() {
         GameRunningEvent?.Invoke();
-        GameAudio.Instance.StartMusic();
+        GameAudio.Instance.PlayInGameMusic();
     }
 
     // Server event
@@ -143,7 +143,7 @@ public class GameSetupManager : MonoBehaviour {
         if (GameOver) return;
         GameOver = true;
         
-        GameAudio.Instance.EndMusic(true);
+        GameAudio.Instance.EndMusic();
         
         if (winner == GameTeam.Neutral) {
             GameOverView.ShowTie();

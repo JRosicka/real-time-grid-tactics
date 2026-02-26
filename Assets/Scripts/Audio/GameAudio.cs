@@ -16,8 +16,11 @@ namespace Audio {
         
         public static GameAudio Instance;
         
+        public PlaylistManager PlaylistManager { get; }
+        
         private readonly AudioPlayer _audioPlayer;
         private readonly AudioFileConfiguration _audioConfiguration;
+        
         private readonly Dictionary<string, AudioFile> _lastPlayedSelectionSFX = new Dictionary<string, AudioFile>();
         private readonly Dictionary<string, AudioFile> _lastPlayedOrderSFX = new Dictionary<string, AudioFile>();
         private readonly Dictionary<string, AudioFile> _lastPlayedAttackSFX = new Dictionary<string, AudioFile>();
@@ -29,6 +32,8 @@ namespace Audio {
         public GameAudio(AudioPlayer audioPlayer, AudioFileConfiguration audioConfiguration) {
             _audioPlayer = audioPlayer;
             _audioConfiguration = audioConfiguration;
+            PlaylistManager = new PlaylistManager(audioPlayer, audioConfiguration);
+            
             Instance = this;
         }
 
@@ -41,13 +46,20 @@ namespace Audio {
             }
         }
         
-        public void StartMusic() {
-            if (_audioConfiguration.GameMusic?.Clip == null) return;
-            _audioPlayer.PlayMusic(_audioConfiguration.GameMusic);
+        public void PlayMenuMusic() {
+            PlaylistManager.PlayMenuMusic();
+        }
+
+        public void PlayInGameMusic() {
+            PlaylistManager.PlayInGameMusic();
         }
         
-        public void EndMusic(bool fadeOut) {
-            _audioPlayer.EndMusic(fadeOut);
+        public void EndMusic() {
+            PlaylistManager.EndMusic();
+        }
+        
+        public void SetMusicSeed(int seed) {
+            PlaylistManager.SetMusicSeed(seed);
         }
 
         public void ButtonClickDownSound() {

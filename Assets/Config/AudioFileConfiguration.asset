@@ -12,7 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 963fcddd75f04ce9b5bc31d538b6df7f, type: 3}
   m_Name: AudioFileConfiguration
   m_EditorClassIdentifier: 
-  GameMusic: {fileID: 0}
   ButtonClickDownSound: {fileID: 11400000, guid: a36475231b5a34b19a495756d1f88729, type: 2}
   ButtonClickInGameSound: {fileID: 11400000, guid: b98ef733288afe748b7a81ee4a58e3cd, type: 2}
   InvalidSound: {fileID: 11400000, guid: f01f6622df06848c3a844f9ccfff402a, type: 2}
@@ -21,3 +20,5 @@ MonoBehaviour:
   GameStartSound: {fileID: 11400000, guid: 3741a2894c1c14f178b9e257d4edd0f7, type: 2}
   ArrowLandSound: {fileID: 11400000, guid: 64ae387a4a7e147a791106e91ceace64, type: 2}
   ConstructionSound: {fileID: 11400000, guid: da23988a9967b4927af46b1cc8f94ce5, type: 2}
+  MenuMusic: []
+  InGameMusic: []

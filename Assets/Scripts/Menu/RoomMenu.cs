@@ -82,6 +82,7 @@ public class RoomMenu : MonoBehaviour {
         SteamLobbyService.Lobby lobby =
             SteamLobbyService.Instance.GetLobbyData(SteamLobbyService.Instance.CurrentLobbyID, null);
         _joinCode = lobby[SteamLobbyService.LobbyUIDKey];
+        GameAudio.Instance.SetMusicSeed(_joinCode.GetHashCode());
         JoinCodeText.text = _joinCode;
         // steamLobbyService.OnCurrentLobbyMetadataChanged += AddUnassignedPlayers;    // TODO do we listen to this, or maybe to one of the GameNetworkPlayer methods, or maybe to the GameNetworkManager updatelobby event.
 
