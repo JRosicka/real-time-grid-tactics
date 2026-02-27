@@ -2738,6 +2738,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3756403102959328413, guid: 7a69aa95ecca6408f9f15724bd8f5379, type: 3}
+      propertyPath: _textFormat
+      value: 'Now Playing: {0}'
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -3286,6 +3290,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Menu.LobbyNetworkBehaviour
   syncMode: 0
   syncInterval: 0.1
+  MusicSeed: 0
   MapID: 
   _availableColors:
   - {fileID: 11400000, guid: e34410d5f7f6f4a71bd8ec0f4a4b9cb3, type: 2}

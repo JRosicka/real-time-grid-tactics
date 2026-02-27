@@ -52,6 +52,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Menu.MusicTrackDisplayer
   _text: {fileID: 2015222768881073271}
   _animator: {fileID: 6053825327370392955}
+  _textFormat: 'Track: {0}'
+  _animate: 1
 --- !u!95 &6053825327370392955
 Animator:
   serializedVersion: 7
@@ -182,9 +184,9 @@ MonoBehaviour:
   m_fontSize: 36
   m_fontSizeBase: 36
   m_fontWeight: 400
-  m_enableAutoSizing: 0
+  m_enableAutoSizing: 1
   m_fontSizeMin: 18
-  m_fontSizeMax: 72
+  m_fontSizeMax: 36
   m_fontStyle: 0
   m_HorizontalAlignment: 1
   m_VerticalAlignment: 512

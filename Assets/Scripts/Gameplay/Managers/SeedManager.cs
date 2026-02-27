@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace Gameplay.Managers {
     /// <summary>
-    /// Handles providing controlled randomness for the game. 
+    /// Handles providing controlled randomness for the game. Initialized client-side. 
     /// </summary>
     public class SeedManager {
         public int Seed { get; private set; }

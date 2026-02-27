@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using Audio;
 using Game.Network;
 using Gameplay.Config;
 using Mirror;
@@ -15,6 +16,19 @@ namespace Menu {
         public static LobbyNetworkBehaviour Instance { get; private set; }
         private void Start() {
             Instance = this;
+            if (isServer) {
+                MusicSeed = new System.Random().Next();
+                GameAudio.Instance.SetMusicSeed(MusicSeed);
+            } else {
+                SetMusicSeed(-1, MusicSeed);
+            }
+        }
+
+        [SyncVar(hook = nameof(SetMusicSeed))]
+        public int MusicSeed;
+
+        private void SetMusicSeed(int _, int newSeed) {
+            GameAudio.Instance.SetMusicSeed(newSeed);
         }
 
         [SyncVar(hook = nameof(OnMapChanged))]

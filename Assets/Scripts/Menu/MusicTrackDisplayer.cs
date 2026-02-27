@@ -9,21 +9,25 @@ namespace Menu {
     public class MusicTrackDisplayer : MonoBehaviour {
         [SerializeField] private TMP_Text _text;
         [SerializeField] private Animator _animator;
+        [SerializeField] private string _textFormat = "Track: {0}";
+        [SerializeField] private bool _animate;
         
         private static PlaylistManager PlaylistManager => GameAudio.Instance.PlaylistManager;
 
         private void Start() {
             SetText(PlaylistManager.CurrentlyPlayingTrack);
-            PlaylistManager.StartedPlayingTrack += SetText;
+            PlaylistManager.TrackChanged += SetText;
         }
         
         private void OnDestroy() {
-            PlaylistManager.StartedPlayingTrack -= SetText;
+            PlaylistManager.TrackChanged -= SetText;
         }
         
         private void SetText(MusicAudioFile track) {
-            _text.text = track?.DisplayName ?? string.Empty;
-            _animator.Play("ShowTrackInfo");
+            _text.text = !track ? string.Empty : string.Format(_textFormat, track.DisplayName);
+            if (_animate) {
+                _animator.Play("ShowTrackInfo");
+            }
         }
     }
 }

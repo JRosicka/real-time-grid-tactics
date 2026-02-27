@@ -12,11 +12,11 @@ namespace Audio {
         private readonly AudioFileConfiguration _audioConfiguration;
         
         private List<MusicAudioFile> _currentPlaylist;
+        private string _currentlyPlayingPlaylistName;
         private int _currentTrackIndex;
         private int _musicSeed = -1;
-        private string _currentlyPlayingPlaylist;
         
-        public event Action<MusicAudioFile> StartedPlayingTrack;
+        public event Action<MusicAudioFile> TrackChanged; 
 
         public MusicAudioFile CurrentlyPlayingTrack {
             get {
@@ -35,15 +35,15 @@ namespace Audio {
         }
         
         public void PlayMenuMusic() {
-            if (_currentlyPlayingPlaylist == nameof(_audioConfiguration.MenuMusic)) return;
-            _currentlyPlayingPlaylist = nameof(_audioConfiguration.MenuMusic);
+            if (_currentlyPlayingPlaylistName == nameof(_audioConfiguration.MenuMusic)) return;
+            _currentlyPlayingPlaylistName = nameof(_audioConfiguration.MenuMusic);
             
             PlayPlaylist(_audioConfiguration.MenuMusic, false);
         }
 
         public void PlayInGameMusic() {
-            if (_currentlyPlayingPlaylist == nameof(_audioConfiguration.InGameMusic)) return;
-            _currentlyPlayingPlaylist = nameof(_audioConfiguration.InGameMusic);
+            if (_currentlyPlayingPlaylistName == nameof(_audioConfiguration.InGameMusic)) return;
+            _currentlyPlayingPlaylistName = nameof(_audioConfiguration.InGameMusic);
 
             PlayPlaylist(_audioConfiguration.InGameMusic, true);
         }
@@ -53,7 +53,9 @@ namespace Audio {
                 _audioPlayer.ActiveMusic.Released -= PlayNextTrack;
             }
             _audioPlayer.EndMusic(true);
-            _currentlyPlayingPlaylist = null;
+            _currentPlaylist = null;
+            _currentlyPlayingPlaylistName = null;
+            TrackChanged?.Invoke(null);
         }
 
         private void PlayPlaylist(List<MusicAudioFile> playlist, bool useProvidedSeed) {
@@ -81,9 +83,11 @@ namespace Audio {
             }
 
             OneShotAudio audioInstance = _audioPlayer.PlayMusic(_currentPlaylist[_currentTrackIndex]);
-            audioInstance.Released += PlayNextTrack;
+            if (audioInstance != null) {
+                audioInstance.Released += PlayNextTrack;
+            }
 
-            StartedPlayingTrack?.Invoke(_currentPlaylist[_currentTrackIndex]);
+            TrackChanged?.Invoke(_currentPlaylist[_currentTrackIndex]);
         }
     }
 }
