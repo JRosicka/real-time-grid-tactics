@@ -20,5 +20,21 @@ MonoBehaviour:
   GameStartSound: {fileID: 11400000, guid: 3741a2894c1c14f178b9e257d4edd0f7, type: 2}
   ArrowLandSound: {fileID: 11400000, guid: 64ae387a4a7e147a791106e91ceace64, type: 2}
   ConstructionSound: {fileID: 11400000, guid: da23988a9967b4927af46b1cc8f94ce5, type: 2}
-  MenuMusic: []
-  InGameMusic: []
+  MenuMusic:
+  - {fileID: 11400000, guid: 299fc0a58f1f89b4484b5fef0c04e9bf, type: 2}
+  - {fileID: 11400000, guid: 886ce66f18b5c41428738c8b928ce715, type: 2}
+  - {fileID: 11400000, guid: 49105444274a5ac4ea7ffad6d78ae064, type: 2}
+  - {fileID: 11400000, guid: 23ce088a97d4fc3428b64ae5f2f96a1e, type: 2}
+  - {fileID: 11400000, guid: e8e83b9bd18ed1f40b003fdf2ba236d8, type: 2}
+  - {fileID: 11400000, guid: 763714337fa9a204894843b68d37478d, type: 2}
+  - {fileID: 11400000, guid: f9880cda29118324e90fb2bcbd712715, type: 2}
+  InGameMusic:
+  - {fileID: 11400000, guid: 0e86b5d22d0813347a2c308e5197100b, type: 2}
+  - {fileID: 11400000, guid: bb3532f445ab5264aa8f6589274e993c, type: 2}
+  - {fileID: 11400000, guid: 45df7ce243b8087458a9960566abb509, type: 2}
+  - {fileID: 11400000, guid: 8e008d0ac98b5304f95106dcebb0d24d, type: 2}
+  - {fileID: 11400000, guid: 7f28eb220f1e76348a7af104842e542c, type: 2}
+  - {fileID: 11400000, guid: ebf3b9dfbbd92bd4885a420eae7567e3, type: 2}
+  - {fileID: 11400000, guid: f19556ccad327124cb8f9a4c5ba9bb4c, type: 2}
+  - {fileID: 11400000, guid: e2ef14118974969419a9082cb6f7be78, type: 2}
+  - {fileID: 11400000, guid: 9d501cff8dd84174ab29adbcc01cb85e, type: 2}
