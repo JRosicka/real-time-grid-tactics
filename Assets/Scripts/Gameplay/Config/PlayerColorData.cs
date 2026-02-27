@@ -18,7 +18,7 @@ namespace Gameplay.Config {
     
     public static class PlayerColorDataSerializer {
         public static void WritePlayerData(this NetworkWriter writer, PlayerColorData playerData) {
-            writer.WriteString(playerData.name);
+            writer.WriteString(playerData.ID);
         }
 
         public static PlayerColorData ReadPlayerData(this NetworkReader reader) {
