@@ -167,9 +167,7 @@ namespace Scenes {
             if (asActive) {
                 SceneManager.SetActiveScene(SceneManager.GetSceneByName(sceneName));
                 Debug.Log($"Loading new active scene: {sceneName}. Active map: {GameTypeTracker.Instance.MapID}");
-                if (sceneName == GameSceneName) {
-                    GameAudio.Instance.PlayInGameMusic();
-                } else {
+                if (sceneName != GameSceneName) {
                     GameAudio.Instance.PlayMenuMusic();
                 }
             }
@@ -257,17 +255,19 @@ namespace Scenes {
 
             switch (strippedSceneName) {
                 case MainMenuSceneName:
+                    GameAudio.Instance.PlayMenuMusic();
                     MainMenuGamePreviewManager.PickNextMap();
                     _gameTypeManager.SetGameType(false, false, true);
                     await LoadScene(GameSceneName, false, true, true, true);
                     break;
                 case LobbySceneName:
+                    GameAudio.Instance.PlayMenuMusic();
                     _gameTypeManager.SetGameType(false, false, false);
                     await LoadScene(GameSceneName, false, true, true, true);
                     break;
                 case GameSceneName:
                     _gameTypeManager.SetGameType(true, true, true);
-                    GameAudio.Instance.PlayInGameMusic();
+                    GameAudio.Instance.EndMusic();
                     break;
             }
         }

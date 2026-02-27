@@ -73,6 +73,7 @@ namespace Audio {
             if (ActiveMusic == null) return;
             
             _audioManager.CancelAudio(ActiveMusic, fadeOut);
+            ActiveMusic = null;
         }
         
         public void SetSoundEffectVolume(float newVolume) {

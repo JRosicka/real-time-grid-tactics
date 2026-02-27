@@ -7,6 +7,7 @@ using Audio;
 using Game.Network;
 using Gameplay.Config;
 using Gameplay.Entities;
+using Gameplay.Managers;
 using Gameplay.UI;
 using Mirror;
 using Scenes;
@@ -35,6 +36,7 @@ public class GameSetupManager : MonoBehaviour {
     [Header("Data")]
     public float CountdownTimeSeconds = 3f;
     public int GameOverDelayMillis = 5 * 1000;
+    public float MusicStartDelaySeconds = 2f;
     private MapData MapData => MapSerializer.GetMap(GameTypeTracker.Instance.MapID);
     
     private static GameManager GameManager => GameManager.Instance;
@@ -76,9 +78,12 @@ public class GameSetupManager : MonoBehaviour {
         && !GameManager.DisconnectionHandler.Disconnected;
 
     public event Action GameRunningEvent;
-    public void TriggerGameRunningEvent() {
+    public async void TriggerGameRunningEvent() {
         GameRunningEvent?.Invoke();
-        GameAudio.Instance.PlayInGameMusic();
+        if (!GameManager.ReplayManager.PlayingReplay) {
+            await Task.Delay(TimeSpan.FromSeconds(MusicStartDelaySeconds));
+            GameAudio.Instance.PlayInGameMusic();
+        }
     }
 
     // Server event
