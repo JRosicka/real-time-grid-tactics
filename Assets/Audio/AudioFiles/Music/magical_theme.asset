@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: magical_theme
   m_EditorClassIdentifier: Assembly-CSharp::Audio.MusicAudioFile
   Clip: {fileID: 8300000, guid: 052e32b3213677c4382cc6e7ee96df80, type: 3}
-  Volume: 0.36
+  Volume: 0.4
   AudioLayer: 1
   Interruptible: 0
   PlayDuringReplay: 0

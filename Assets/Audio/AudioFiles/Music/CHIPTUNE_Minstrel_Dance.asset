@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: CHIPTUNE_Minstrel_Dance
   m_EditorClassIdentifier: Assembly-CSharp::Audio.MusicAudioFile
   Clip: {fileID: 8300000, guid: 23f981bac03148049a62d32386e05b27, type: 3}
-  Volume: 0.3
+  Volume: 0.255
   AudioLayer: 1
   Interruptible: 0
   PlayDuringReplay: 0

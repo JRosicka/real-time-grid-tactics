@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: western_heartland
   m_EditorClassIdentifier: Assembly-CSharp::Audio.MusicAudioFile
   Clip: {fileID: 8300000, guid: e4792864771cac047980ac88ad719be2, type: 3}
-  Volume: 0.3
+  Volume: 0.207
   AudioLayer: 1
   Interruptible: 0
   PlayDuringReplay: 0

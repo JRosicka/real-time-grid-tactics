@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: unicorn_catchers
   m_EditorClassIdentifier: Assembly-CSharp::Audio.MusicAudioFile
   Clip: {fileID: 8300000, guid: 6e9f5f155defe4849a473a864927cbf2, type: 3}
-  Volume: 0.3
+  Volume: 0.176
   AudioLayer: 1
   Interruptible: 0
   PlayDuringReplay: 0

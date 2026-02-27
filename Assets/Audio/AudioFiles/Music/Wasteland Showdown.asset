@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Wasteland Showdown
   m_EditorClassIdentifier: Assembly-CSharp::Audio.MusicAudioFile
   Clip: {fileID: 8300000, guid: eeee05e40d84c1446ada24199605f389, type: 3}
-  Volume: 0.3
+  Volume: 0.15
   AudioLayer: 1
   Interruptible: 0
   PlayDuringReplay: 0

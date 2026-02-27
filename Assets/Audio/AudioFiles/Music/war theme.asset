@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: war theme
   m_EditorClassIdentifier: Assembly-CSharp::Audio.MusicAudioFile
   Clip: {fileID: 8300000, guid: e68535437e9e98f409da73c1ae174c7b, type: 3}
-  Volume: 0.3
+  Volume: 0.22
   AudioLayer: 1
   Interruptible: 0
   PlayDuringReplay: 0

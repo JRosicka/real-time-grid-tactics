@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Woodland Fantasy
   m_EditorClassIdentifier: Assembly-CSharp::Audio.MusicAudioFile
   Clip: {fileID: 8300000, guid: 83f610a479423104c838ee43aa2c0759, type: 3}
-  Volume: 0.3
+  Volume: 0.267
   AudioLayer: 1
   Interruptible: 0
   PlayDuringReplay: 0

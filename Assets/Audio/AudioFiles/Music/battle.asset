@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: battle
   m_EditorClassIdentifier: Assembly-CSharp::Audio.MusicAudioFile
   Clip: {fileID: 8300000, guid: 86025a354e4c6c64cb315bd30a10f08c, type: 3}
-  Volume: 0.3
+  Volume: 0.227
   AudioLayer: 1
   Interruptible: 0
   PlayDuringReplay: 0

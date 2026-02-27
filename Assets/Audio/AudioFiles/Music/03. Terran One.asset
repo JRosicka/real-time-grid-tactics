@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: 03. Terran One
   m_EditorClassIdentifier: Assembly-CSharp::Audio.MusicAudioFile
   Clip: {fileID: 8300000, guid: 86bcbd6b683082340b67587850bd0f6c, type: 3}
-  Volume: 0.24
+  Volume: 0.171
   AudioLayer: 1
   Interruptible: 0
   PlayDuringReplay: 0
   AllowInQuickSuccession: 0
-  DisplayName: Terran Theme 1 - Starcraft 2
+  DisplayName: Terran One - Starcraft

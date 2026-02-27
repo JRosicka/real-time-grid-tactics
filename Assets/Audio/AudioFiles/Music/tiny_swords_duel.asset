@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: tiny_swords_duel
   m_EditorClassIdentifier: Assembly-CSharp::Audio.MusicAudioFile
   Clip: {fileID: 8300000, guid: f0cebfef6ac32854d82ad3c894598b1b, type: 3}
-  Volume: 0.3
+  Volume: 0.15
   AudioLayer: 1
   Interruptible: 0
   PlayDuringReplay: 0

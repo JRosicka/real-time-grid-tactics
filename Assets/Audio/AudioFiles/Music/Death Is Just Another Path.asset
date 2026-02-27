@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Death Is Just Another Path
   m_EditorClassIdentifier: Assembly-CSharp::Audio.MusicAudioFile
   Clip: {fileID: 8300000, guid: 5f6695e6cf0b2554ca3ca5aa5293eafc, type: 3}
-  Volume: 0.3
+  Volume: 0.215
   AudioLayer: 1
   Interruptible: 0
   PlayDuringReplay: 0

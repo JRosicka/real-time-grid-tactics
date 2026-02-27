@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: The_Old_Tower_Inn
   m_EditorClassIdentifier: Assembly-CSharp::Audio.MusicAudioFile
   Clip: {fileID: 8300000, guid: f64012439fc46e74c8bda213e54e69f6, type: 3}
-  Volume: 0.3
+  Volume: 0.256
   AudioLayer: 1
   Interruptible: 0
   PlayDuringReplay: 0
