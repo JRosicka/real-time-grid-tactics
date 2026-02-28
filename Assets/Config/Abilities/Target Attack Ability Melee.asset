@@ -17,8 +17,8 @@ MonoBehaviour:
     _id: Target Attack
     _description: Moves towards a target cell, attacking any enemies encountered
       on the way.
-    _icon: {fileID: 21300000, guid: e5a747f4f8a3042f5a9d0ab1b801e025, type: 3}
-    _overrideIconForGrid: {fileID: 21300000, guid: dc250a32bcb7a47cdb6d2aeb98bb903b, type: 3}
+    _icon: {fileID: 21300000, guid: 09f4153a33ec03d48b76946c306dfd96, type: 3}
+    _overrideIconForGrid: {fileID: 21300000, guid: 09f4153a33ec03d48b76946c306dfd96, type: 3}
     _flipGridIcon: 0
     _gridIconColor: {r: 0.8509804, g: 0.42352942, b: 0.03529412, a: 1}
     _slotSprites: {fileID: 11400000, guid: c443d76e6475d324c8295e3d9741d1a1, type: 2}

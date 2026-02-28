@@ -1,10 +1,19 @@
 fileFormatVersion: 2
-guid: a28436614d18ae64aacb25454a5e16ff
+guid: 7c72dd8153477f94287582c8aaf9c480
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 2127986495966625241
-    second: Road_2connection_2_0
+      213: -1820435722161465809
+    second: outline-frame_0
+  - first:
+      213: -3379189441689853037
+    second: outline-frame_1
+  - first:
+      213: 457132189508634713
+    second: outline-frame_2
+  - first:
+      213: -8486992271612776959
+    second: outline-frame_3
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -46,12 +55,12 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 1
+  spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 300
+  spritePixelsToUnits: 100
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -113,13 +122,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Road_2connection_2_0
+      name: outline-frame_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
-        width: 97
-        height: 116
+        x: 179
+        y: 663
+        width: 182
+        height: 182
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -128,8 +137,74 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 9dd3bea8170288d10800000000000000
-      internalID: 2127986495966625241
+      spriteID: f2652241b538cb6e0800000000000000
+      internalID: -1820435722161465809
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: outline-frame_1
+      rect:
+        serializedVersion: 2
+        x: 663
+        y: 663
+        width: 182
+        height: 182
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 39363534b15ba11d0800000000000000
+      internalID: -3379189441689853037
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: outline-frame_2
+      rect:
+        serializedVersion: 2
+        x: 179
+        y: 179
+        width: 182
+        height: 182
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9580f0bed4f085600800000000000000
+      internalID: 457132189508634713
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: outline-frame_3
+      rect:
+        serializedVersion: 2
+        x: 663
+        y: 179
+        width: 182
+        height: 182
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 10ee807be75283a80800000000000000
+      internalID: -8486992271612776959
       vertices: []
       indices: 
       edges: []
@@ -138,7 +213,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 5e97eb03825dee720800000000000000
+    spriteID: 
     internalID: 0
     vertices: []
     indices: 
@@ -148,7 +223,10 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Road_2connection_2_0: 2127986495966625241
+      outline-frame_0: -1820435722161465809
+      outline-frame_1: -3379189441689853037
+      outline-frame_2: 457132189508634713
+      outline-frame_3: -8486992271612776959
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
