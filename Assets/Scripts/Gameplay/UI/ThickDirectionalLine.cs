@@ -36,7 +36,7 @@ namespace Gameplay.UI {
             // Nothing to do
         }
 
-        public override void ShowDestinationIcon(PathVisualizer.PathType pathType) {
+        public override void ShowDestinationIcon(PathVisualizer.PathType pathType, Sprite overrideSprite = null) {
             Color color = _chargeLineSegment.color;
             color.a = 0;
             _chargeLineSegment.color = color;

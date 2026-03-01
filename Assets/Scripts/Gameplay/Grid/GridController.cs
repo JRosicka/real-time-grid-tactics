@@ -184,8 +184,9 @@ namespace Gameplay.Grid {
             }
         }
 
-        public void VisualizePath(PathfinderService.Path path, PathVisualizer.PathType pathType, Vector2Int targetLocation, bool hidePathDestination, bool thickLines) {
-            _pathVisualizer.Visualize(path, pathType, targetLocation, hidePathDestination, thickLines);
+        public void VisualizePath(PathfinderService.Path path, PathVisualizer.PathType pathType, Vector2Int targetLocation, 
+                bool hidePathDestination, bool thickLines, EntityPathfindingConfig pathfindingConfig) {
+            _pathVisualizer.Visualize(path, pathType, targetLocation, hidePathDestination, thickLines, pathfindingConfig);
         }
 
         #region Get Cells

@@ -47,6 +47,7 @@ namespace Gameplay.Config {
                  "is added to that timer. Otherwise, a new cooldown timer is added with this amount.")]
         [Range(0f, 5f)]
         public float AddedMovementTimeFromAttacking;
+        public EntityPathfindingConfig PathfindingConfig;
 
         [Space] 
         public List<EntityTag> Tags;
