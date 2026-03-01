@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using Gameplay.Config;
 using Gameplay.Grid;
 using Gameplay.Pathfinding;
 using UnityEngine;
@@ -42,20 +43,20 @@ namespace Gameplay.UI {
         /// <summary>
         /// Lay out a set of <see cref="AbstractDirectionalLine"/>s along a path
         /// </summary>
-        public void Visualize(PathfinderService.Path path, PathType pathType, Vector2Int targetLocation, bool hidePathDestination, bool thickLines) {
+        public void Visualize(PathfinderService.Path path, PathType pathType, Vector2Int targetLocation, bool hidePathDestination, bool thickLines, EntityPathfindingConfig pathfindingConfig) {
             ClearPath(thickLines);
             
             // If the path is too short, then no need to place any lines
             if (path.Nodes.Count < 1 
                 || (path.Nodes.Count < 2 && path.ContainsRequestedDestination)) return;
             
-            VisualizeRegularLines(path, pathType, hidePathDestination, thickLines);
+            VisualizeRegularLines(path, pathType, hidePathDestination, thickLines, pathfindingConfig);
             if (!thickLines) {
                 VisualizeStraightLine(path, pathType, targetLocation, hidePathDestination);
             }
         }
         
-        private void VisualizeRegularLines(PathfinderService.Path path, PathType pathType, bool hidePathDestination, bool thickLines) {
+        private void VisualizeRegularLines(PathfinderService.Path path, PathType pathType, bool hidePathDestination, bool thickLines, EntityPathfindingConfig pathfindingConfig) {
             List<GridNode> pathNodes = path.Nodes;
             if (pathNodes.Count < 3 && hidePathDestination && path.ContainsRequestedDestination) return;
 
@@ -77,12 +78,14 @@ namespace Gameplay.UI {
                 currentAngle = PathfinderService.AngleBetweenCells(pathNodes[i].Location, pathNodes[i + 1].Location);
                 line.SetRotation(currentAngle);
                 
+                Sprite overrideSprite = pathfindingConfig.GetIconOverride(pathType);
+                
                 // Hide/adjust parts of the line if this is the first or last cell in the path. 
                 if (i == 0) {
                     line.SetMask(AbstractDirectionalLine.LineType.StartHalf);
                     if (pathNodes.Count == 2) {
                         // This is the only line being displayed, so we should show the destination icon. 
-                        line.ShowDestinationIcon(pathType);
+                        line.ShowDestinationIcon(pathType, overrideSprite);
                     }
                 } else if (i == pathNodes.Count - 2) {
                     // This is the last node we care about visualizing
@@ -90,7 +93,7 @@ namespace Gameplay.UI {
                         line.SetMask(AbstractDirectionalLine.LineType.EndHalf);
                     } else {
                         line.SetMask(AbstractDirectionalLine.LineType.Full);
-                        line.ShowDestinationIcon(pathType);
+                        line.ShowDestinationIcon(pathType, overrideSprite);
                     }
                     
                     // Hide/show the previous line's dot if it has a different angle than this one.

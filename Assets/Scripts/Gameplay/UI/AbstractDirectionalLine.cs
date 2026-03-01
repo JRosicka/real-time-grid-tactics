@@ -50,7 +50,7 @@ namespace Gameplay.UI {
             SetRotationImpl(angle);
         }
 
-        public abstract void ShowDestinationIcon(PathVisualizer.PathType pathType);
+        public abstract void ShowDestinationIcon(PathVisualizer.PathType pathType, Sprite overrideSprite = null);
 
         public void SetColor(PathVisualizer.PathType pathType) {
             switch (pathType) {

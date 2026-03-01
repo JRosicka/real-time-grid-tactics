@@ -301,7 +301,7 @@ namespace Gameplay.Config.Abilities {
             PathVisualizer.PathType pathType = enemyEntityPresent ? PathVisualizer.PathType.TargetAttack : PathVisualizer.PathType.Move;
             
             PathfinderService.Path path = GameManager.Instance.PathfinderService.GetPathInStraightLine(selector, destination);
-            GameManager.Instance.GridController.VisualizePath(path, pathType, destination, enemyEntityPresent, true);
+            GameManager.Instance.GridController.VisualizePath(path, pathType, destination, enemyEntityPresent, true, selector.EntityData.PathfindingConfig);
         }
 
         #endregion

@@ -242,6 +242,6 @@ public class EntitySelectionManager {
                 ? PathVisualizer.PathType.AttackMove
                 : PathVisualizer.PathType.TargetAttack
             : PathVisualizer.PathType.Move;
-        GridController.VisualizePath(path, pathType, targetLocationLogic.CurrentTarget, targetLocationLogic.HidePathDestination, false);
+        GridController.VisualizePath(path, pathType, targetLocationLogic.CurrentTarget, targetLocationLogic.HidePathDestination, false, SelectedEntity.EntityData.PathfindingConfig);
     }
 }

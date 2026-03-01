@@ -1,3 +1,4 @@
+using System;
 using Gameplay.Grid;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -12,6 +13,9 @@ namespace Gameplay.UI {
         [SerializeField] private Image _moveDestinationIcon;
         [FormerlySerializedAs("_attackDestinationIcon")] [SerializeField] private Image _attackMoveDestinationIcon;
         [SerializeField] private Image _targetAttackDestinationIcon;
+
+        private Image _destinationIcon;
+        private Sprite _originalSprite;
         
         private bool _destination;
 
@@ -29,6 +33,10 @@ namespace Gameplay.UI {
         public override void Discard() {
             _destination = false;
             ToggleEndDot(true);
+            if (_originalSprite != null) {
+                _destinationIcon.sprite = _originalSprite;
+                _originalSprite = null;
+            }
             _attackMoveDestinationIcon.gameObject.SetActive(false);
             _moveDestinationIcon.gameObject.SetActive(false);
             _targetAttackDestinationIcon.gameObject.SetActive(false);
@@ -43,13 +51,23 @@ namespace Gameplay.UI {
             _endDot.color = color;
         }
 
-        public override void ShowDestinationIcon(PathVisualizer.PathType pathType) {
+        public override void ShowDestinationIcon(PathVisualizer.PathType pathType, Sprite overrideSprite = null) {
             _destination = true;
             ToggleEndDot(false);
             
-            _moveDestinationIcon.gameObject.SetActive(pathType == PathVisualizer.PathType.Move);
-            _attackMoveDestinationIcon.gameObject.SetActive(pathType == PathVisualizer.PathType.AttackMove);
-            _targetAttackDestinationIcon.gameObject.SetActive(pathType == PathVisualizer.PathType.TargetAttack);
+            _destinationIcon = pathType switch {
+                PathVisualizer.PathType.Move => _moveDestinationIcon,
+                PathVisualizer.PathType.AttackMove => _attackMoveDestinationIcon,
+                PathVisualizer.PathType.TargetAttack => _targetAttackDestinationIcon,
+                _ => throw new NotImplementedException(),
+            };
+
+            if (overrideSprite != null) {
+                _originalSprite = _destinationIcon.sprite;
+                _destinationIcon.sprite = overrideSprite;
+            }
+
+            _destinationIcon.gameObject.SetActive(true);
         }
     }
 }
