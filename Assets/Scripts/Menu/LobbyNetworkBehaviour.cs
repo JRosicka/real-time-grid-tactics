@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Audio;
@@ -11,6 +12,7 @@ using UnityEngine;
 namespace Menu {
     /// <summary>
     /// Networked logic for the lobby
+    /// TODO LobbyNetworkBehaviour, RoomMenu, and GameNetworkPlayer are all spaghettified, reaching into each other and each doing networking and view logic. Gross. 
     /// </summary>
     public class LobbyNetworkBehaviour : NetworkBehaviour {
         public static LobbyNetworkBehaviour Instance { get; private set; }
@@ -23,7 +25,11 @@ namespace Menu {
                 SetMusicSeed(-1, MusicSeed);
             }
         }
-
+        
+        public event Action<CSteamID, int, string> PlayerColorAssigned;
+        // Client event
+        public event Action PlayerSlotsAssigned;
+        
         [SyncVar(hook = nameof(SetMusicSeed))]
         public int MusicSeed;
 
@@ -36,6 +42,12 @@ namespace Menu {
 
         [SerializeField] private List<PlayerColorData> _availableColors;
         private readonly Dictionary<CSteamID, PlayerColorData> _assignedColors = new Dictionary<CSteamID, PlayerColorData>();
+
+        public RoomMenu RoomMenu { get; private set; }
+        
+        public void Initialize(RoomMenu roomMenu) {
+            RoomMenu = roomMenu;
+        }
         
         /// <summary>
         /// Set the map and update the clients 
@@ -61,14 +73,34 @@ namespace Menu {
         }
         
         [Server]
-        public void AssignColor(GameNetworkPlayer player, string colorID) {
+        public void AssignColor(GameNetworkPlayer player, int slotIndex, string colorID) {
             _assignedColors[player.SteamID] = _availableColors.First(c => c.ID == colorID);
-            RpcAssignColor(player.SteamID, colorID);
+            RpcAssignColor(player.SteamID, slotIndex, colorID);
+            
+            // Unassign color from other players if they had it
+            List<GameNetworkPlayer> playersToRemove = new List<GameNetworkPlayer>();
+            foreach (var assignColor in _assignedColors.Where(c => c.Key != player.SteamID)) {
+                GameNetworkPlayer otherPlayer = RoomMenu.PlayersInLobby.FirstOrDefault(p => p.SteamID == assignColor.Key);
+                if (otherPlayer?.GetColorID == colorID) {
+                    playersToRemove.Add(otherPlayer);
+                }
+            }
+            
+            foreach (GameNetworkPlayer playerToRemove in playersToRemove) {
+                _assignedColors.Remove(playerToRemove.SteamID);
+                playerToRemove.ColorID = "gray";
+                RpcAssignColor(playerToRemove.SteamID, -1, "gray");
+            }
         }
         
         [ClientRpc]
-        private void RpcAssignColor(CSteamID playerID, string colorID) {
-            // TODO: trigger event that the color views listen to so they can update the color visual
+        private void RpcAssignColor(CSteamID playerID, int slotIndex, string colorID) {
+            PlayerColorAssigned?.Invoke(playerID, slotIndex, colorID);
+        }
+        
+        [ClientRpc]
+        public void RpcPlayerSlotsAssigned() {
+            PlayerSlotsAssigned?.Invoke();
         }
         
         /// <summary>

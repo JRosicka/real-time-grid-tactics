@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 80614cd35c554e8b87c7e4bc1a0f922c, type: 3}
+  m_Name: Teal Buttons
+  m_EditorClassIdentifier: 
+  Normal: {fileID: 21300000, guid: 2aa81baa5f8d14fb99f139f38bad537d, type: 3}
+  Hovered: {fileID: 21300000, guid: 40a266be094d8442591c48b551ed2410, type: 3}
+  Pressed: {fileID: 21300000, guid: c2d4fd17a9e134c08bb40b9392e08669, type: 3}

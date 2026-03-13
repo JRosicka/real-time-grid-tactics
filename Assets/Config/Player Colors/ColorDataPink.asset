@@ -13,8 +13,9 @@ MonoBehaviour:
   m_Name: ColorDataPink
   m_EditorClassIdentifier: Assembly-CSharp::Gameplay.Config.PlayerColorData
   ID: pink
+  Pickable: 1
   TeamColor: {r: 1, g: 0.35500002, b: 0.8572842, a: 1}
-  ColoredButtonData: {fileID: 11400000, guid: 35069bbcc50cd694ba97d615a9a78b90, type: 2}
+  ColoredButtonData: {fileID: 11400000, guid: 4a0cb617714f8410c9b1fea7c45c7e5b, type: 2}
   TeamBannerColor: {r: 1, g: 0.35686275, b: 0.85882354, a: 1}
   DeathParticlesColor1: {r: 1, g: 0.47500002, b: 0.8847562, a: 1}
   DeathParticlesColor2: {r: 0.674, g: 0.24052553, b: 0.57884717, a: 1}

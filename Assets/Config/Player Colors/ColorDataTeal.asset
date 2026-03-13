@@ -13,8 +13,9 @@ MonoBehaviour:
   m_Name: ColorDataTeal
   m_EditorClassIdentifier: Assembly-CSharp::Gameplay.Config.PlayerColorData
   ID: teal
+  Pickable: 1
   TeamColor: {r: 0, g: 0.84148407, b: 1, a: 1}
-  ColoredButtonData: {fileID: 11400000, guid: 010ac3faf8011b74190aee977cd8cee3, type: 2}
+  ColoredButtonData: {fileID: 11400000, guid: f8688f8af57ff406aa88c00a9a60a880, type: 2}
   TeamBannerColor: {r: 0, g: 0.84313726, b: 1, a: 1}
   DeathParticlesColor1: {r: 0.3820755, g: 0.6343624, b: 1, a: 1}
   DeathParticlesColor2: {r: 0, g: 0.42836362, b: 0.735849, a: 1}

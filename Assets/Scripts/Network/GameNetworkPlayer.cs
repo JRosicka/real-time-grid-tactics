@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using Menu;
 using Mirror;
 using Steamworks;
@@ -8,6 +9,7 @@ using UnityEngine.SceneManagement;
 namespace Game.Network
 {
     // [AddComponentMenu("")]
+    // TODO LobbyNetworkBehaviour, RoomMenu, and GameNetworkPlayer are all spaghettified, reaching into each other and each doing networking and view logic. Gross. 
     public class GameNetworkPlayer : NetworkRoomPlayer
     {
         // Assume that we are using Steam for lobbying
@@ -21,6 +23,8 @@ namespace Game.Network
         [SyncVar]
         public CSteamID SteamID;
         [SyncVar]
+        public int PlayerSlotIndex = -1;
+        [SyncVar]
         public string ColorID;
         public string GetColorID => string.IsNullOrEmpty(ColorID) ? "gray" : ColorID;
 
@@ -32,6 +36,8 @@ namespace Game.Network
         private void CmdSetSteamIDs(CSteamID newSteamID, string newDisplayName) {
             SteamID = newSteamID;
             DisplayName = newDisplayName;
+
+            LobbyNetworkBehaviour.Instance.RoomMenu.AssignPlayerSlots();
         }
         
         private void OnDisplayNameSet(string oldName, string newName) {
@@ -39,10 +45,10 @@ namespace Game.Network
         }
         
         [Command(requiresAuthority = false)]
-        public void CmdSetColor(string newColorID) {
-            if (!LobbyNetworkBehaviour.Instance.IsColorAvailable(newColorID)) return;
+        public void CmdSetColor(string newColorID, int newSlotIndexOverride, bool unassignFromOthersIfTaken) {
+            if (!LobbyNetworkBehaviour.Instance.IsColorAvailable(newColorID) && !unassignFromOthersIfTaken) return;
             ColorID = newColorID;
-            LobbyNetworkBehaviour.Instance.AssignColor(this, newColorID);
+            LobbyNetworkBehaviour.Instance.AssignColor(this, newSlotIndexOverride, newColorID);
         }
 
         [Server]
@@ -67,6 +73,11 @@ namespace Game.Network
             
             // Swapping un-readies the player 
             CmdChangeReadyState(false);
+            
+            // Assign the color if the player has the neutral color
+            if (ColorID == "gray") {
+                CmdSetColor(LobbyNetworkBehaviour.Instance.RoomMenu.GetColorToAssign(slotIndex).ID, slotIndex, true);
+            }
             
             RpcSwapToSlot(slotIndex);
         }

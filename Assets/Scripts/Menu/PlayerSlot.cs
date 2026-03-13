@@ -1,4 +1,8 @@
+using System.Collections.Generic;
+using System.Linq;
 using Game.Network;
+using Gameplay.Config;
+using Menu;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -8,55 +12,85 @@ using UnityEngine.UI;
 /// </summary>
 public class PlayerSlot : MonoBehaviour {
     [Header("References")]
-    public TMP_Text PlayerName;
-    public TMP_Text ColorLabel;
-    public Image Color;
-    public TMP_Text EmptyLabel;
-    public Button KickButton;
-    public TMP_Text ReadyText;
-    public TMP_Text NotReadyText;
+    [SerializeField] private TMP_Text _playerName;
+    [SerializeField] private GameObject _hostText;
+    [SerializeField] private ColorPicker _colorPicker;
+    [SerializeField] private Button _playerKickButton;
+    [SerializeField] private Button _spectatorKickButton;
+    [SerializeField] private TMP_Text _readyText;
+    [SerializeField] private string _readyTextValue = "Ready";
+    [SerializeField] private string _notReadyTextValue = "Not Ready";
+    [SerializeField] private List<Image> _coloredImages;
+    [SerializeField] private List<GameObject> _occupiedObjects;
+    [SerializeField] private List<GameObject> _unOccupiedObjects;
+    [SerializeField] private Image _profilePicture;
     
     [Header("Config")]
-    public Color PlayerColor;
     public int SlotIndex;
     public GameNetworkPlayer AssignedPlayer;
     public bool SpectatorSlot;
+    public PlayerColorData DefaultColor;
 
     private RoomMenu _roomMenu;
+    private Button _activeKickButton;
+    private List<PlayerColorData> _availableColors;
+    private PlayerColorData _neutralColor;
 
     public void Start() {
-        // Configure
-        Color.color = PlayerColor;
-        
         // Show as empty
-        DisplayActive(false);
+        DisplayOccupied(false);
     }
 
-    public void Initialize(RoomMenu roomMenu) {
+    public void Initialize(RoomMenu roomMenu, List<PlayerColorData> availableColors) {
         _roomMenu = roomMenu;
+        _availableColors = availableColors;
+        _neutralColor = GameConfigurationLocator.GameConfiguration.NeutralColors;
+        
+        _playerKickButton.gameObject.SetActive(false);
+        _spectatorKickButton.gameObject.SetActive(false);
+        _colorPicker.Initialize(availableColors.Where(c => c.Pickable).ToList(), this, SlotIndex);
+        
+        if (SpectatorSlot) {
+            InitializeForSpectator();
+        } else {
+            InitializeForPlayer();
+        }
+    }
+
+    private void InitializeForPlayer() {
+        _activeKickButton = _playerKickButton;
+        _colorPicker.gameObject.SetActive(true);
+        UpdateColor(AssignedPlayer?.GetColorID ?? _neutralColor.ID);
+    }
+    
+    private void InitializeForSpectator() {
+        _activeKickButton = _spectatorKickButton;
+        _colorPicker.gameObject.SetActive(true);
+        UpdateColor(_neutralColor.ID);
     }
 
     public void AssignPlayer(GameNetworkPlayer player, bool kickable) {
         AssignedPlayer = player;
         
-        string displayName = player.DisplayName;
-        if (player.IsHostPlayer) {
-            displayName += " (Host)";
-        }
-        PlayerName.text = displayName;
+        _playerName.text = player.DisplayName;
+        _hostText.SetActive(player.IsHostPlayer);
         
         // Show as occupied
-        DisplayActive(true);
+        DisplayOccupied(true);
 
-        KickButton.gameObject.SetActive(kickable);
+        _activeKickButton.gameObject.SetActive(kickable);
+        
+        // Update color for the new player
+        UpdateColor(SpectatorSlot ? _neutralColor.ID : player.GetColorID);
     }
 
     public void UnassignPlayer() {
         AssignedPlayer = null;
-        PlayerName.text = "Player Name";
+        _playerName.text = "Player Name";
         
         // Show as empty
-        DisplayActive(false);
+        DisplayOccupied(false);
+        UpdateColor(_neutralColor.ID);
     }
 
     public void SwapToSlot() {
@@ -75,29 +109,34 @@ public class PlayerSlot : MonoBehaviour {
     }
 
     public void UpdateReadyStatus() {
-        if (AssignedPlayer == null) {
-            ReadyText.gameObject.SetActive(false);
-            NotReadyText.gameObject.SetActive(false);
+        if (!AssignedPlayer) {
+            _readyText.gameObject.SetActive(false);
             return;
         }
         
-        ReadyText.gameObject.SetActive(AssignedPlayer.readyToBegin && !SpectatorSlot);
-        NotReadyText.gameObject.SetActive(!AssignedPlayer.readyToBegin && !SpectatorSlot);
+        _readyText.gameObject.SetActive(!SpectatorSlot);
+        _readyText.text = AssignedPlayer.readyToBegin ? _readyTextValue : _notReadyTextValue;
     }
 
+    public void UpdateColor(string colorID) {
+        PlayerColorData colorData = _availableColors.First(c => c.ID == colorID);
+        _coloredImages.ForEach(i => i.color = colorData.TeamColor);
+        
+        // Color picker
+        _colorPicker.SetColor(colorData);
+        _colorPicker.SetCanChangeColor(AssignedPlayer && AssignedPlayer.isLocalPlayer);
+    }
+    
     /// <summary>
-    /// Either display the slot in its active or inactive state
+    /// Either display the slot in its occupied or unoccupied state
     /// </summary>
-    private void DisplayActive(bool active) {
-        PlayerName.gameObject.SetActive(active);
-        ColorLabel.gameObject.SetActive(active && !SpectatorSlot);
-        Color.gameObject.SetActive(active && !SpectatorSlot);
-        EmptyLabel.gameObject.SetActive(!active);
-        KickButton.gameObject.SetActive(false);
-        ReadyText.gameObject.SetActive(false);
-        NotReadyText.gameObject.SetActive(active && !SpectatorSlot);
-        if (active) {
+    private void DisplayOccupied(bool occupied) {
+        _occupiedObjects.ForEach(i => i.SetActive(occupied));
+        _unOccupiedObjects.ForEach(i => i.SetActive(!occupied));
+        
+        if (occupied) {
             UpdateReadyStatus();
+            UpdateColor(SpectatorSlot ? _neutralColor.ID : AssignedPlayer.GetColorID);
         }
     }
 }

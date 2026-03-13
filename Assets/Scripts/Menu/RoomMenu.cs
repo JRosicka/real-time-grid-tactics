@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Audio;
 using Game.Network;
+using Gameplay.Config;
 using JetBrains.Annotations;
 using Menu;
 using Mirror;
@@ -11,11 +12,12 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using Sirenix.OdinInspector;
+using Steamworks;
 
 /// <summary>
 /// UI for the game lobby.
-/// TODO: Also handles a lot of the business logic for swapping players around and starting the game. Might be good to
-/// separate that out into its own class. 
+/// TODO: Also handles a lot of the business logic for swapping players around and starting the game. Might be good to separate that out into its own class.
+/// TODO LobbyNetworkBehaviour, RoomMenu, and GameNetworkPlayer are all spaghettified, reaching into each other and each doing networking and view logic. Gross. 
 /// </summary>
 public class RoomMenu : MonoBehaviour {
     public PlayerSlot PlayerSlot1;
@@ -37,8 +39,11 @@ public class RoomMenu : MonoBehaviour {
     private SteamLobbyService SteamLobbyService => SteamLobbyService.Instance;
     private string _joinCode;
     private string _mapID;
+    
+    private List<PlayerColorData> _availableColors;
+    private PlayerColorData _neutralColor;
 
-    private List<GameNetworkPlayer> PlayersInLobby => FindObjectsByType<GameNetworkPlayer>(FindObjectsSortMode.InstanceID).ToList();
+    public List<GameNetworkPlayer> PlayersInLobby => FindObjectsByType<GameNetworkPlayer>(FindObjectsSortMode.InstanceID).ToList();
     private GameNetworkPlayer _cachedGameNetworkPlayer;
     private GameNetworkPlayer LocalPlayer {
         get {
@@ -50,10 +55,10 @@ public class RoomMenu : MonoBehaviour {
         }
     }
     
-    private List<PlayerSlot> AllPlayerSlots => new List<PlayerSlot> { PlayerSlot1, PlayerSlot2 }.Concat(SpectatorSlots).ToList();
+    public List<PlayerSlot> AllPlayerSlots => new List<PlayerSlot> { PlayerSlot1, PlayerSlot2 }.Concat(SpectatorSlots).ToList();
     
     private PlayerSlot GetSlotForIndex(int index) {
-        return AllPlayerSlots.First(s => s.SlotIndex == index);
+        return AllPlayerSlots.FirstOrDefault(s => s.SlotIndex == index);
     }
 
     [CanBeNull]
@@ -65,8 +70,12 @@ public class RoomMenu : MonoBehaviour {
 
     void Start() {
         CanvasWidthSetter.Initialize();
+        LobbyNetworkBehaviour.Initialize(this);
 
-        AllPlayerSlots.ForEach(s => s.Initialize(this));
+        _availableColors = GameConfigurationLocator.GameConfiguration.PlayerColorConfigs;
+        _neutralColor = GameConfigurationLocator.GameConfiguration.NeutralColors;
+
+        AllPlayerSlots.ForEach(s => s.Initialize(this, _availableColors));
         
         StartButton.gameObject.SetActive(false);
         SwitchMapButton.gameObject.SetActive(NetworkServer.active);
@@ -74,10 +83,12 @@ public class RoomMenu : MonoBehaviour {
         NetworkManager.RoomServerPlayersNotReadyAction += HideStartButton;
         NetworkManager.RoomServerSceneChangedAction += UpdateLobbyOpenStatus;
         NetworkManager.RoomClientSceneChangedAction += AddUnassignedPlayers;
+        LobbyNetworkBehaviour.PlayerSlotsAssigned += AddUnassignedPlayers;
         GameNetworkPlayer.PlayerSteamInfoDetermined += AddUnassignedPlayers;
         GameNetworkPlayer.PlayerReadyStatusChanged += UpdatePlayerReadyStatus;
         GameNetworkPlayer.PlayerExitedRoom += UpdatePlayers;
         GameNetworkPlayer.PlayerExitedRoom += ResetReadyButton;
+        LobbyNetworkBehaviour.PlayerColorAssigned += HandlePlayerColorAssigned;
 
         SteamLobbyService.Lobby lobby =
             SteamLobbyService.Instance.GetLobbyData(SteamLobbyService.Instance.CurrentLobbyID, null);
@@ -99,6 +110,7 @@ public class RoomMenu : MonoBehaviour {
             NetworkManager.RoomServerPlayersNotReadyAction -= HideStartButton;
             NetworkManager.RoomServerSceneChangedAction -= UpdateLobbyOpenStatus;
             NetworkManager.RoomClientSceneChangedAction -= AddUnassignedPlayers;
+            LobbyNetworkBehaviour.PlayerSlotsAssigned -= AddUnassignedPlayers;
         }
 
         foreach (GameNetworkPlayer player in AllPlayerSlots.Select(s => s.AssignedPlayer)
@@ -140,18 +152,16 @@ public class RoomMenu : MonoBehaviour {
 
         LobbyNetworkBehaviour.SwitchMap(_mapID);
     }
-
-    [Button]
-    public void SwitchPlayerColorToBlue() {
-        PlayersInLobby.First(p => p.isLocalPlayer).CmdSetColor("blue");
-    }
-    [Button]
-    public void SwitchPlayerColorToTeal() {
-        PlayersInLobby.First(p => p.isLocalPlayer).CmdSetColor("teal");
-    }
-    [Button]
-    public void SwitchPlayerColorToOrange() {
-        PlayersInLobby.First(p => p.isLocalPlayer).CmdSetColor("orange");
+    
+    private void HandlePlayerColorAssigned(CSteamID steamID, int slotIndex, string colorID) {
+        GameNetworkPlayer player = PlayersInLobby.FirstOrDefault(p => p.SteamID == steamID);
+        PlayerSlot slot = GetSlotForIndex(slotIndex);
+        if (slot == null) {
+            slot = SlotForPlayer(player);
+        }
+        slot.AssignPlayer(player, PlayerIsKickable(player));
+        player!.PlayerSwappedToSlot += HandlePlayerSwappedToSlot;
+        slot.UpdateColor(slot.SpectatorSlot ? _neutralColor.ID : colorID);
     }
 
     public void CopyJoinCode() {
@@ -186,7 +196,9 @@ public class RoomMenu : MonoBehaviour {
         
         // Assign any unassigned players
         foreach (GameNetworkPlayer player in players.Where(player => !AllPlayerSlots.Select(s => s.AssignedPlayer).Contains(player))) {
-            PlayerSlot slotToAssign = GetSlotForIndex(player.index);
+            if (player.PlayerSlotIndex == -1) continue;
+            
+            PlayerSlot slotToAssign = GetSlotForIndex(player.PlayerSlotIndex);
             if (slotToAssign == null) {
                 Debug.LogError("A new player joined, but we don't have any slots for them!");
             } else {
@@ -197,7 +209,42 @@ public class RoomMenu : MonoBehaviour {
 
         UpdatePlayerReadyStatus();
         ResetReadyButton();
-        // TODO: If players can update their info for their slots, do so here
+    }
+    
+    /// <summary>
+    /// Find any unassigned players and assign them to a slot
+    /// </summary>
+    [Server]
+    public void AssignPlayerSlots() { // TODO colors: This is not called. It should probably get called as a Cmd call when uhhhhh after uhhhh well... I guess from GameNetworkPlayer.CmdSetSteamIDs? 
+        foreach (GameNetworkPlayer player in PlayersInLobby) {
+            if (player.PlayerSlotIndex != -1) continue;
+            
+            // Find the first available slot
+            PlayerSlot slotToAssign = AllPlayerSlots.FirstOrDefault(s => s.AssignedPlayer == null);
+            if (slotToAssign == null) {
+                Debug.LogError("A new player joined, but we don't have any slots for them!");
+                continue;
+            }
+            player.PlayerSlotIndex = slotToAssign.SlotIndex;
+            
+            // Assign the color for the slot
+            PlayerColorData colorToAssign = GetColorToAssign(slotToAssign.SlotIndex);
+            player.CmdSetColor(colorToAssign.ID, slotToAssign.SlotIndex, true);
+        }
+
+        LobbyNetworkBehaviour.RpcPlayerSlotsAssigned();
+    }
+
+    public PlayerColorData GetColorToAssign(int slotIndex) {
+        PlayerSlot slot = GetSlotForIndex(slotIndex);
+        if (slot == null || slot.DefaultColor == _neutralColor) {
+            return _neutralColor;
+        }
+        
+        // Pick the first available default color between p1 and p2 slots, prioritizing the default for the given slot
+        PlayerSlot otherSlot = slot == PlayerSlot1 ? PlayerSlot2 : PlayerSlot1;
+        string colorTakenByOtherPlayer = otherSlot.AssignedPlayer?.ColorID ?? "gray";
+        return colorTakenByOtherPlayer == slot.DefaultColor.ID ? otherSlot.DefaultColor : slot.DefaultColor;
     }
     
     private void UpdatePlayerReadyStatus() {
@@ -227,7 +274,7 @@ public class RoomMenu : MonoBehaviour {
     // Client event
     private void HandlePlayerSwappedToSlot(ulong steamID, int slotIndex) {
         PlayerSlot slotToSwapTo = GetSlotForIndex(slotIndex);
-        if (slotToSwapTo.AssignedPlayer != null) {
+        if (slotToSwapTo == null || slotToSwapTo.AssignedPlayer != null) {
             // This is probably because the player slot already updated locally
             ResetReadyButton();
             TryShowStartButton();

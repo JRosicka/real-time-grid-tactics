@@ -8,6 +8,7 @@ namespace Gameplay.Config {
     [CreateAssetMenu(menuName = "PlayerColorData", fileName = "PlayerColorData", order = 0)]
     public class PlayerColorData : ScriptableObject {
         public string ID;
+        public bool Pickable = true; 
         public Color TeamColor;
         public ColoredButtonData ColoredButtonData;
         public Color TeamBannerColor;
