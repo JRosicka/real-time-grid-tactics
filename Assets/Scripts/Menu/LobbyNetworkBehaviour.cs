@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Audio;
 using Game.Network;
 using Gameplay.Config;
@@ -111,7 +112,10 @@ namespace Menu {
             PlayerColorAssigned?.Invoke(playerID, slotIndex, colorID);
         }
 
-        private void UnassignColorsForDisconnectedPlayers(NetworkConnectionToClient networkConnectionToClient) {
+        private async void UnassignColorsForDisconnectedPlayers(NetworkConnectionToClient networkConnectionToClient) {
+            // Wait to make sure that the player has left the room
+            await Task.Delay(100);
+            
             List<CSteamID> playersInLobby = RoomMenu.PlayersInLobby.Select(p => p.SteamID).ToList();
             for (int i = _assignedColors.Count - 1; i >= 0; i--) {
                 CSteamID playerID = _assignedColors.Keys.ElementAt(i);
