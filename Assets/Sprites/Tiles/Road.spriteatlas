@@ -1,0 +1,84 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!687078895 &4343727234628468602
+SpriteAtlas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Road
+  m_EditorData:
+    serializedVersion: 2
+    textureSettings:
+      serializedVersion: 2
+      anisoLevel: 1
+      compressionQuality: 50
+      maxTextureSize: 2048
+      textureCompression: 0
+      filterMode: 1
+      generateMipMaps: 0
+      readable: 0
+      crunchedCompression: 0
+      sRGB: 1
+    platformSettings: []
+    packingSettings:
+      serializedVersion: 2
+      padding: 4
+      blockOffset: 1
+      allowAlphaSplitting: 0
+      enableRotation: 1
+      enableTightPacking: 1
+      enableAlphaDilation: 0
+    secondaryTextureSettings: {}
+    variantMultiplier: 1
+    packables:
+    - {fileID: 102900000, guid: 60d00b2272f0d284e98e1e88bebd6e6f, type: 3}
+    bindAsDefault: 1
+    isAtlasV2: 0
+    cachedData: {fileID: 0}
+    packedSpriteRenderDataKeys:
+    - a9c74f105838c2e47b40d7909e4b164e: 21300000
+    - 15a76d604465b9e45889a1cd54c57a88: 21300000
+    - 58a159a0a3535644eac28843dc7ae746: 21300000
+    - a28436614d18ae64aacb25454a5e16ff: 21300000
+    - 1a575363226fee9488838eeff31147bd: 21300000
+    - 770d536408553d24b8e4e14a3b30ba8a: 21300000
+    - b74c76f5c19053f45a9c25e311bab8a9: 21300000
+    - caa6c24a823954248a84aace5434d880: 21300000
+    - 95e844cad95b2fa41a7081c92d66fc44: 21300000
+    - eab9ea6cccd5b404ab0c32f4b7bceb54: 21300000
+    - 7cbe419c9f0b5e24e8a716bd768e2668: 21300000
+    - c27f825efb1ee1f42a1572409f727c7d: 21300000
+    - 37a9150f49756ed4aa779ebbed09c704: 21300000
+  m_MasterAtlas: {fileID: 0}
+  m_PackedSprites:
+  - {fileID: 21300000, guid: a9c74f105838c2e47b40d7909e4b164e, type: 3}
+  - {fileID: 21300000, guid: 15a76d604465b9e45889a1cd54c57a88, type: 3}
+  - {fileID: 21300000, guid: 58a159a0a3535644eac28843dc7ae746, type: 3}
+  - {fileID: 21300000, guid: a28436614d18ae64aacb25454a5e16ff, type: 3}
+  - {fileID: 21300000, guid: 1a575363226fee9488838eeff31147bd, type: 3}
+  - {fileID: 21300000, guid: 770d536408553d24b8e4e14a3b30ba8a, type: 3}
+  - {fileID: 21300000, guid: b74c76f5c19053f45a9c25e311bab8a9, type: 3}
+  - {fileID: 21300000, guid: caa6c24a823954248a84aace5434d880, type: 3}
+  - {fileID: 21300000, guid: 95e844cad95b2fa41a7081c92d66fc44, type: 3}
+  - {fileID: 21300000, guid: eab9ea6cccd5b404ab0c32f4b7bceb54, type: 3}
+  - {fileID: 21300000, guid: 7cbe419c9f0b5e24e8a716bd768e2668, type: 3}
+  - {fileID: 21300000, guid: c27f825efb1ee1f42a1572409f727c7d, type: 3}
+  - {fileID: 21300000, guid: 37a9150f49756ed4aa779ebbed09c704, type: 3}
+  m_PackedSpriteNamesToIndex:
+  - Road_3connection_3
+  - Road_6connection_1
+  - Road_5connection_1
+  - Road_2connection_2
+  - Road_4connection_3
+  - Road_2connection_1
+  - Road_4connection_2
+  - Road_3connection_1
+  - Road_2connection_3
+  - Road_4connection_1
+  - Road_1connection_1
+  - Road_0connection_1
+  - Road_3connection_2
+  m_RenderDataMap: {}
+  m_Tag: Road
+  m_IsVariant: 0
