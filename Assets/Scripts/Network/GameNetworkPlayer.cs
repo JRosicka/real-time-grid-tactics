@@ -43,7 +43,7 @@ namespace Game.Network
         }
 
         private async void AssignPlayerSlotsAfterDelay() {
-            await Task.Yield();
+            await Task.Delay(5000);
             LobbyNetworkBehaviour.Instance.RoomMenu.AssignPlayerSlots();
         }
         
