@@ -22,7 +22,7 @@ MonoBehaviour:
     _flipGridIcon: 0
     _gridIconColor: {r: 0, g: 0, b: 0, a: 0}
     _slotSprites: {fileID: 11400000, guid: cf3e96fef80ac354cbbe3535fa2b19bd, type: 2}
-    _abilityTimerView: {fileID: 5971072852972127787, guid: ed3738731b7b747739ca456d1c5328a6, type: 3}
+    _timerView: {fileID: 5971072852972127787, guid: ed3738731b7b747739ca456d1c5328a6, type: 3}
     _requirements: []
     _performDuration: 0
     _cooldownDuration: 0
@@ -38,6 +38,7 @@ MonoBehaviour:
     _autoSelect: 0
     _selectableForAllPlayers: 1
     _tryingToPerformCancelsBuilds: 0
+    _tryingToPerformCancelsHoldPosition: 1
     _blocksDefaultAttack: 1
     _showTimerOnSelectionInterface: 0
     _performByDefault: 0
