@@ -215,7 +215,7 @@ public class RoomMenu : MonoBehaviour {
     /// Find any unassigned players and assign them to a slot
     /// </summary>
     [Server]
-    public void AssignPlayerSlots() { // TODO colors: This is not called. It should probably get called as a Cmd call when uhhhhh after uhhhh well... I guess from GameNetworkPlayer.CmdSetSteamIDs? 
+    public void AssignPlayerSlots() {
         foreach (GameNetworkPlayer player in PlayersInLobby) {
             if (player.PlayerSlotIndex != -1) continue;
             

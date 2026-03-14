@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using System.Threading.Tasks;
 using Menu;
 using Mirror;
 using Steamworks;
@@ -37,6 +38,12 @@ namespace Game.Network
             SteamID = newSteamID;
             DisplayName = newDisplayName;
 
+            // TODO this is a little yucky. We need to wait to set this so that the SyncVar for setting the SteamID gets sent out first, that way on the client the SteamID will be set when trying to find the player to assign to the player slot. It might be better to have the LobbyNetworkBehaviour.RpcPlayerSlotsAssigned call send the info for the joining player? 
+            AssignPlayerSlotsAfterDelay();
+        }
+
+        private async void AssignPlayerSlotsAfterDelay() {
+            await Task.Yield();
             LobbyNetworkBehaviour.Instance.RoomMenu.AssignPlayerSlots();
         }
         
