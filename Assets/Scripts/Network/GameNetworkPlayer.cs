@@ -77,6 +77,7 @@ namespace Game.Network
         [Command(requiresAuthority = false)]
         public void CmdSwapToSlot(int slotIndex) {
             index = slotIndex;
+            PlayerSlotIndex = slotIndex;
             
             // Swapping un-readies the player 
             CmdChangeReadyState(false);
