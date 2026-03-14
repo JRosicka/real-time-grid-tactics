@@ -92,13 +92,20 @@ namespace Game.Network {
             base.OnRoomServerConnect(conn);
         }
 
-        public event Action<NetworkConnectionToClient> RoomServerDisconnectAction;
-        public override void OnRoomServerDisconnect(NetworkConnectionToClient conn) {
-            DebugLog(nameof(OnRoomServerDisconnect));
-            RoomServerDisconnectAction?.Invoke(conn);
-            base.OnRoomServerDisconnect(conn);
+        public event Action<NetworkConnectionToClient> RoomServerWillDisconnectAction;
+        public override void OnRoomServerWillDisconnect(NetworkConnectionToClient conn) {
+            DebugLog(nameof(OnRoomServerWillDisconnect));
+            RoomServerWillDisconnectAction?.Invoke(conn);
+            base.OnRoomServerWillDisconnect(conn);
         }
-        
+
+        public event Action<NetworkConnectionToClient> RoomServerDidDisconnectAction;
+        public override void OnRoomServerDidDisconnect(NetworkConnectionToClient conn) {
+            DebugLog(nameof(OnRoomServerDidDisconnect));
+            RoomServerDidDisconnectAction?.Invoke(conn);
+            base.OnRoomServerDidDisconnect(conn);
+        }
+
         public event Action RoomServerPlayersNotReadyAction;
         public override void OnRoomServerPlayersNotReady() {
             DebugLog(nameof(OnRoomServerPlayersNotReady));

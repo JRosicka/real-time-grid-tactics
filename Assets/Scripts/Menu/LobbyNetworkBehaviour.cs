@@ -50,7 +50,7 @@ namespace Menu {
             if (isServer) {
                 GameNetworkManager gameNetworkManager = (GameNetworkManager)NetworkManager.singleton;
                 if (gameNetworkManager != null) {
-                    gameNetworkManager.RoomServerDisconnectAction += UnassignColorsForDisconnectedPlayers;
+                    gameNetworkManager.RoomServerDidDisconnectAction += UnassignColorsForDisconnectedPlayers;
                 }
             }
         }
@@ -58,7 +58,7 @@ namespace Menu {
         private void OnDestroy() {
             GameNetworkManager gameNetworkManager = (GameNetworkManager)NetworkManager.singleton;
             if (gameNetworkManager != null) {
-                gameNetworkManager.RoomServerDisconnectAction -= UnassignColorsForDisconnectedPlayers;
+                gameNetworkManager.RoomServerDidDisconnectAction -= UnassignColorsForDisconnectedPlayers;
             }
         }
 

@@ -111,7 +111,7 @@ public class GameSetupManager : MonoBehaviour {
     private void HandleGameOver(IGamePlayer winner) {
         GameNetworkManager gameNetworkManager = (GameNetworkManager)NetworkManager.singleton;
         if (gameNetworkManager != null) {
-            gameNetworkManager.RoomServerDisconnectAction -= ReDetermineWhichPlayersAreConnected;
+            gameNetworkManager.RoomServerDidDisconnectAction -= ReDetermineWhichPlayersAreConnected;
         }
         
         GameRunning = false;
@@ -128,7 +128,7 @@ public class GameSetupManager : MonoBehaviour {
     private void OnDestroy() {
         GameNetworkManager gameNetworkManager = (GameNetworkManager)NetworkManager.singleton;
         if (gameNetworkManager != null) {
-            gameNetworkManager.RoomServerDisconnectAction -= ReDetermineWhichPlayersAreConnected;
+            gameNetworkManager.RoomServerDidDisconnectAction -= ReDetermineWhichPlayersAreConnected;
         }
     } 
     
@@ -421,7 +421,7 @@ public class GameSetupManager : MonoBehaviour {
         
         // Listen for disconnects
         GameNetworkManager gameNetworkManager = (GameNetworkManager)NetworkManager.singleton;
-        gameNetworkManager.RoomServerDisconnectAction += ReDetermineWhichPlayersAreConnected;
+        gameNetworkManager.RoomServerDidDisconnectAction += ReDetermineWhichPlayersAreConnected;
         
         // Set up the command controller - only done on the server
         MPCommandManager newManager = Instantiate(MPCommandManagerPrefab, transform);

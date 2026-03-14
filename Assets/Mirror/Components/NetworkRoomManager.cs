@@ -296,8 +296,9 @@ namespace Mirror
                     player.GetComponent<NetworkRoomPlayer>().readyToBegin = false;
             }
             
-            OnRoomServerDisconnect(conn);
+            OnRoomServerWillDisconnect(conn);
             base.OnServerDisconnect(conn);
+            OnRoomServerDidDisconnect(conn);
 
 #if UNITY_SERVER
             if (numPlayers < 1)
@@ -553,10 +554,16 @@ namespace Mirror
         public virtual void OnRoomServerConnect(NetworkConnectionToClient conn) {}
 
         /// <summary>
-        /// This is called on the server when a client disconnects.
+        /// This is called on the server when a client is about to disconnect.
         /// </summary>
         /// <param name="conn">The connection that disconnected.</param>
-        public virtual void OnRoomServerDisconnect(NetworkConnectionToClient conn) {}
+        public virtual void OnRoomServerWillDisconnect(NetworkConnectionToClient conn) {}
+
+        /// <summary>
+        /// This is called on the server when a client just disconnected.
+        /// </summary>
+        /// <param name="conn">The connection that disconnected.</param>
+        public virtual void OnRoomServerDidDisconnect(NetworkConnectionToClient conn) {}
 
         /// <summary>
         /// This is called on the server when a networked scene finishes loading.
