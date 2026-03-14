@@ -47,8 +47,21 @@ namespace Menu {
         
         public void Initialize(RoomMenu roomMenu) {
             RoomMenu = roomMenu;
+            if (isServer) {
+                GameNetworkManager gameNetworkManager = (GameNetworkManager)NetworkManager.singleton;
+                if (gameNetworkManager != null) {
+                    gameNetworkManager.RoomServerDisconnectAction += UnassignColorsForDisconnectedPlayers;
+                }
+            }
         }
-        
+
+        private void OnDestroy() {
+            GameNetworkManager gameNetworkManager = (GameNetworkManager)NetworkManager.singleton;
+            if (gameNetworkManager != null) {
+                gameNetworkManager.RoomServerDisconnectAction -= UnassignColorsForDisconnectedPlayers;
+            }
+        }
+
         /// <summary>
         /// Set the map and update the clients 
         /// </summary>
@@ -96,6 +109,16 @@ namespace Menu {
         [ClientRpc]
         private void RpcAssignColor(CSteamID playerID, int slotIndex, string colorID) {
             PlayerColorAssigned?.Invoke(playerID, slotIndex, colorID);
+        }
+
+        private void UnassignColorsForDisconnectedPlayers(NetworkConnectionToClient networkConnectionToClient) {
+            List<CSteamID> playersInLobby = RoomMenu.PlayersInLobby.Select(p => p.SteamID).ToList();
+            for (int i = _assignedColors.Count - 1; i >= 0; i--) {
+                CSteamID playerID = _assignedColors.Keys.ElementAt(i);
+                if (!playersInLobby.Contains(playerID)) {
+                    _assignedColors.Remove(playerID);
+                }
+            }
         }
         
         [ClientRpc]
