@@ -15,3 +15,6 @@ MonoBehaviour:
   AudioFiles:
   - {fileID: 11400000, guid: 6e4fe9d99a75f4fb5b3293794412e609, type: 2}
   - {fileID: 11400000, guid: 274df8415b2b846d09016da2607d8b25, type: 2}
+  - {fileID: 11400000, guid: a991839d44e6a71499ca16ca252de858, type: 2}
+  - {fileID: 11400000, guid: e35b3bcc30648c340a19a7fd45326122, type: 2}
+  - {fileID: 11400000, guid: 3876e0cf1acb462409ba2edad49ef28b, type: 2}
