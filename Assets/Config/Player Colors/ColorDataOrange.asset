@@ -13,7 +13,9 @@ MonoBehaviour:
   m_Name: ColorDataOrange
   m_EditorClassIdentifier: Assembly-CSharp::Gameplay.Config.PlayerColorData
   ID: orange
-  TeamColor: {r: 1, g: 0.6058416, b: 0, a: 1}
+  Pickable: 1
+  TeamColor: {r: 0.90588236, g: 0.44705883, b: 0.13333334, a: 1}
+  DarkTeamColor: {r: 0.2784314, g: 0.18431373, b: 0.12941177, a: 1}
   ColoredButtonData: {fileID: 11400000, guid: c443d76e6475d324c8295e3d9741d1a1, type: 2}
   TeamBannerColor: {r: 1, g: 0.6039216, b: 0, a: 1}
   DeathParticlesColor1: {r: 1, g: 0.68333334, b: 0, a: 1}

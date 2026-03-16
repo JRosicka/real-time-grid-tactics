@@ -10,6 +10,7 @@ namespace Gameplay.Config {
         public string ID;
         public bool Pickable = true; 
         public Color TeamColor;
+        public Color DarkTeamColor;
         public ColoredButtonData ColoredButtonData;
         public Color TeamBannerColor;
         public Color DeathParticlesColor1;

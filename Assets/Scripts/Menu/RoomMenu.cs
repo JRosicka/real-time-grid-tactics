@@ -167,6 +167,7 @@ public class RoomMenu : MonoBehaviour {
         }
         
         slot.AssignPlayer(player, PlayerIsKickable(player));
+        player!.PlayerSwappedToSlot -= HandlePlayerSwappedToSlot;
         player!.PlayerSwappedToSlot += HandlePlayerSwappedToSlot;
         slot.UpdateColor(slot.SpectatorSlot ? _neutralColor.ID : colorID);
     }

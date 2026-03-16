@@ -22,6 +22,7 @@ public class PlayerSlot : MonoBehaviour {
     [SerializeField] private string _readyTextValue = "Ready";
     [SerializeField] private string _notReadyTextValue = "Not Ready";
     [SerializeField] private List<Image> _coloredImages;
+    [SerializeField] private List<Image> _darkColoredImages;
     [SerializeField] private List<GameObject> _occupiedObjects;
     [SerializeField] private List<GameObject> _unOccupiedObjects;
     [SerializeField] private SetUserAvatar _userAvatarSetter;
@@ -125,6 +126,7 @@ public class PlayerSlot : MonoBehaviour {
     public void UpdateColor(string colorID) {
         PlayerColorData colorData = _availableColors.First(c => c.ID == colorID);
         _coloredImages.ForEach(i => i.color = colorData.TeamColor);
+        _darkColoredImages.ForEach(i => i.color = colorData.DarkTeamColor);
         
         // Color picker
         _colorPicker.SetColor(colorData);

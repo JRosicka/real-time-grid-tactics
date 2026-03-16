@@ -3878,9 +3878,10 @@ MonoBehaviour:
   _notReadyTextValue: Not Ready
   _coloredImages:
   - {fileID: 5519603637627755303}
-  - {fileID: 5354529244468634174}
   - {fileID: 5090780340135957974}
   - {fileID: 7689004565961209298}
+  _darkColoredImages:
+  - {fileID: 5354529244468634174}
   _occupiedObjects:
   - {fileID: 2324511017579052105}
   - {fileID: 7498997245483621949}
