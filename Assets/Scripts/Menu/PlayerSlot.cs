@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Game.Network;
 using Gameplay.Config;
+using HeathenEngineering.SteamworksIntegration.UI;
 using Menu;
 using TMPro;
 using UnityEngine;
@@ -23,7 +24,7 @@ public class PlayerSlot : MonoBehaviour {
     [SerializeField] private List<Image> _coloredImages;
     [SerializeField] private List<GameObject> _occupiedObjects;
     [SerializeField] private List<GameObject> _unOccupiedObjects;
-    [SerializeField] private Image _profilePicture;
+    [SerializeField] private SetUserAvatar _userAvatarSetter;
     
     [Header("Config")]
     public int SlotIndex;
@@ -65,7 +66,7 @@ public class PlayerSlot : MonoBehaviour {
     
     private void InitializeForSpectator() {
         _activeKickButton = _spectatorKickButton;
-        _colorPicker.gameObject.SetActive(true);
+        _colorPicker.gameObject.SetActive(false);
         UpdateColor(_neutralColor.ID);
     }
 
@@ -82,6 +83,9 @@ public class PlayerSlot : MonoBehaviour {
         
         // Update color for the new player
         UpdateColor(SpectatorSlot ? _neutralColor.ID : player.GetColorID);
+        
+        // Load the avatar
+        _userAvatarSetter.LoadAvatar(player.SteamID);
     }
 
     public void UnassignPlayer() {
