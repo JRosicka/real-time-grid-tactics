@@ -7,6 +7,7 @@ using Menu;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using Util;
 
 /// <summary>
 /// Handles displaying info for a player slot, including any assigned player
@@ -26,6 +27,7 @@ public class PlayerSlot : MonoBehaviour {
     [SerializeField] private List<GameObject> _occupiedObjects;
     [SerializeField] private List<GameObject> _unOccupiedObjects;
     [SerializeField] private SetUserAvatar _userAvatarSetter;
+    [SerializeField] private ButtonDim _buttonDim;
     
     [Header("Config")]
     public int SlotIndex;
@@ -87,6 +89,8 @@ public class PlayerSlot : MonoBehaviour {
         
         // Load the avatar
         _userAvatarSetter.LoadAvatar(player.SteamID);
+        
+        _buttonDim.Interactable = false;
     }
 
     public void UnassignPlayer() {
@@ -96,10 +100,12 @@ public class PlayerSlot : MonoBehaviour {
         // Show as empty
         DisplayOccupied(false);
         UpdateColor(_neutralColor.ID);
+        
+        _buttonDim.Interactable = true;
     }
 
     public void SwapToSlot() {
-        if (AssignedPlayer != null) return;
+        if (AssignedPlayer) return;
         _roomMenu.SwapLocalPlayerToSlot(this);
     }
 
