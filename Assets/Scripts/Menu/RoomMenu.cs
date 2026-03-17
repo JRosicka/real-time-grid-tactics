@@ -28,6 +28,7 @@ public class RoomMenu : MonoBehaviour {
     public Button ToggleReadyButton;
     public TMP_Text ToggleReadyButtonText;
     public TMP_Text JoinCodeText;
+    public LobbyMapSelectionList LobbyMapSelectionList;
     
     public CanvasWidthSetter CanvasWidthSetter;
 
@@ -38,7 +39,6 @@ public class RoomMenu : MonoBehaviour {
     private static GameNetworkManager NetworkManager => (GameNetworkManager)Mirror.NetworkManager.singleton;
     private SteamLobbyService SteamLobbyService => SteamLobbyService.Instance;
     private string _joinCode;
-    private string _mapID;
     
     private List<PlayerColorData> _availableColors;
     private PlayerColorData _neutralColor;
@@ -90,14 +90,20 @@ public class RoomMenu : MonoBehaviour {
         GameNetworkPlayer.PlayerExitedRoom += ResetReadyButton;
         LobbyNetworkBehaviour.PlayerColorAssigned += HandlePlayerColorAssigned;
 
-        SteamLobbyService.Lobby lobby =
-            SteamLobbyService.Instance.GetLobbyData(SteamLobbyService.Instance.CurrentLobbyID, null);
+        SteamLobbyService.Lobby lobby = SteamLobbyService.Instance.GetLobbyData(SteamLobbyService.Instance.CurrentLobbyID, null);
         _joinCode = lobby[SteamLobbyService.LobbyUIDKey];
         JoinCodeText.text = _joinCode;
         // steamLobbyService.OnCurrentLobbyMetadataChanged += AddUnassignedPlayers;    // TODO do we listen to this, or maybe to one of the GameNetworkPlayer methods, or maybe to the GameNetworkManager updatelobby event.
 
+        // Maps
+        if (NetworkServer.active) {
+            string mapToLoad = string.IsNullOrEmpty(SceneLoader.Instance.LastLobbyMap) 
+                ? SceneLoader.DefaultMap 
+                : SceneLoader.Instance.LastLobbyMap;
+            LobbyNetworkBehaviour.SwitchMap(mapToLoad);
+        }
         LobbyNetworkBehaviour.SetUpCurrentMapOnLobbyJoin();
-        _mapID = GameTypeTracker.Instance.MapID;
+        LobbyMapSelectionList.Initialize(GameConfigurationLocator.GameConfiguration, LobbyNetworkBehaviour);
     }
     
     private void OnDestroy() {
@@ -137,20 +143,6 @@ public class RoomMenu : MonoBehaviour {
             // We're just a little baby client, so just stop the client. This automatically takes us back to the main menu.
             NetworkManager.StopClient();
         }
-    }
-
-    /// <summary>
-    /// Temporary logic to cycle between maps. Server method.
-    /// </summary>
-    public void SwitchMap() {
-        _mapID = _mapID switch {
-            "origins" => "mountainPass",
-            "mountainPass" => "oakcrest",
-            "oakcrest" => "origins",
-            _ => throw new ArgumentOutOfRangeException(_mapID, $"Unexpected map ID: {_mapID}")
-        };
-
-        LobbyNetworkBehaviour.SwitchMap(_mapID);
     }
     
     private void HandlePlayerColorAssigned(CSteamID steamID, int slotIndex, string colorID) {

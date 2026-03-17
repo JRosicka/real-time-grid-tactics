@@ -29,9 +29,10 @@ namespace Menu {
             }
         }
         
+        // Client events
         public event Action<CSteamID, int, string> PlayerColorAssigned;
-        // Client event
         public event Action PlayerSlotsAssigned;
+        public event Action<string> MapChanged;
         
         [SyncVar(hook = nameof(SetMusicSeed))]
         public int MusicSeed;
@@ -75,6 +76,7 @@ namespace Menu {
         
         private void OnMapChanged(string _, string newMapID) {
             SceneLoader.Instance.SwitchLoadedMap(newMapID, null, true);
+            MapChanged?.Invoke(newMapID);
         }
 
         /// <summary>
