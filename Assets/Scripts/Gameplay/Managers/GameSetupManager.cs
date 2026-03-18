@@ -345,7 +345,8 @@ public class GameSetupManager : MonoBehaviour {
         gamePlayer.ColorData = GameManager.Configuration.GetPlayerColor(networkPlayer.GetColorID);
         
         gamePlayer.Connected = true;
-        AllPlayers[index] = gamePlayer;
+        int connectionID = networkPlayer.connectionToClient.connectionId;
+        AllPlayers[connectionID] = gamePlayer;
         
         Debug.Log($"Player ({gamePlayer.DisplayName}) has been detected. Index ({networkPlayer.index}).");
         if (gamePlayer.Team == GameTeam.Spectator) {
@@ -433,10 +434,8 @@ public class GameSetupManager : MonoBehaviour {
     }
 
     private void ReDetermineWhichPlayersAreConnected(NetworkConnectionToClient connection) {
-        IGamePlayer gamePlayer = connection.identity.gameObject.GetComponent<IGamePlayer>();
-        int index = gamePlayer.Index;
-        
-        AllPlayers[index].Connected = false;
+        int connectionID = connection.connectionId;
+        AllPlayers[connectionID].Connected = false;
         PlayerDisconnected?.Invoke();
     }
 
