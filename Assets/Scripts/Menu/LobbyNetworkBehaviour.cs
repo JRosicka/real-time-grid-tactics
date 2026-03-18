@@ -17,6 +17,9 @@ namespace Menu {
     /// </summary>
     public class LobbyNetworkBehaviour : NetworkBehaviour {
         private const int PlayerSlotCount = 2;
+        private const float TooCloseMapSwitchProximityTime = .5f;
+
+        private bool _mapLoadingLocked;
         
         public static LobbyNetworkBehaviour Instance { get; private set; }
         private void Start() {
@@ -42,7 +45,7 @@ namespace Menu {
         }
 
         [SyncVar(hook = nameof(OnMapChanged))]
-        public string MapID = SceneLoader.Instance.LastLobbyMap;
+        public string MapID;
 
         [SerializeField] private List<PlayerColorData> _availableColors;
         private readonly Dictionary<GameNetworkPlayer, PlayerColorData> _assignedColors = new Dictionary<GameNetworkPlayer, PlayerColorData>();
@@ -51,15 +54,27 @@ namespace Menu {
         
         public void Initialize(RoomMenu roomMenu) {
             RoomMenu = roomMenu;
+
+            SceneLoader.Instance.SceneLoaded += SceneLoaded;
             if (isServer) {
+                // Set the map tracked in the lobby
+                string mapToLoad = string.IsNullOrEmpty(SceneLoader.Instance.LastLobbyMap) 
+                    ? SceneLoader.DefaultMap 
+                    : SceneLoader.Instance.LastLobbyMap;
+                GameTypeTracker.Instance.SetMap(mapToLoad);
+                TrySwitchMap(mapToLoad);
+
                 GameNetworkManager gameNetworkManager = (GameNetworkManager)NetworkManager.singleton;
                 if (gameNetworkManager != null) {
                     gameNetworkManager.RoomServerDidDisconnectAction += UnassignColorsForDisconnectedPlayers;
                 }
+            } else {
+                GameTypeTracker.Instance.SetMap(MapID);
             }
         }
 
         private void OnDestroy() {
+            SceneLoader.Instance.SceneLoaded -= SceneLoaded;
             GameNetworkManager gameNetworkManager = (GameNetworkManager)NetworkManager.singleton;
             if (gameNetworkManager != null) {
                 gameNetworkManager.RoomServerDidDisconnectAction -= UnassignColorsForDisconnectedPlayers;
@@ -70,20 +85,33 @@ namespace Menu {
         /// Set the map and update the clients 
         /// </summary>
         [Server]
-        public void SwitchMap(string mapID) {
+        public void TrySwitchMap(string mapID) {
+            if (_mapLoadingLocked) return;
+            if (!string.IsNullOrEmpty(MapID) && (!NetworkManager.singleton || !NetworkManager.singleton.CanChangeScene)) {
+                return;
+            }
+            _mapLoadingLocked = true;
+            
+            string oldMapID = MapID;
             MapID = mapID;
+            OnMapChanged(oldMapID, mapID);
         }
         
-        private void OnMapChanged(string _, string newMapID) {
+        private void OnMapChanged(string oldMapID, string newMapID) {
+            if (string.IsNullOrEmpty(oldMapID) || oldMapID == newMapID) {
+                _mapLoadingLocked = false;
+                MapChanged?.Invoke(newMapID);
+                return;
+            }
             SceneLoader.Instance.SwitchLoadedMap(newMapID, null, true);
             MapChanged?.Invoke(newMapID);
         }
 
-        /// <summary>
-        /// Load the map that the lobby is set to
-        /// </summary>
-        public void SetUpCurrentMapOnLobbyJoin() {
-            GameTypeTracker.Instance.SetMap(MapID);
+        private async void SceneLoaded(string newScene) {
+            if (SceneLoader.StrippedSceneName(newScene) != SceneLoader.GameSceneName) return;
+
+            await Task.Delay(TimeSpan.FromSeconds(TooCloseMapSwitchProximityTime));
+            _mapLoadingLocked = false;
         }
         
         [Server]

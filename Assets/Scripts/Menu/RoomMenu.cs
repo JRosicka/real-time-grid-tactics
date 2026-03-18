@@ -96,13 +96,6 @@ public class RoomMenu : MonoBehaviour {
         // steamLobbyService.OnCurrentLobbyMetadataChanged += AddUnassignedPlayers;    // TODO do we listen to this, or maybe to one of the GameNetworkPlayer methods, or maybe to the GameNetworkManager updatelobby event.
 
         // Maps
-        if (NetworkServer.active) {
-            string mapToLoad = string.IsNullOrEmpty(SceneLoader.Instance.LastLobbyMap) 
-                ? SceneLoader.DefaultMap 
-                : SceneLoader.Instance.LastLobbyMap;
-            LobbyNetworkBehaviour.SwitchMap(mapToLoad);
-        }
-        LobbyNetworkBehaviour.SetUpCurrentMapOnLobbyJoin();
         LobbyMapSelectionList.Initialize(GameConfigurationLocator.GameConfiguration, LobbyNetworkBehaviour);
     }
     

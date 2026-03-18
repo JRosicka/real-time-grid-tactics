@@ -82,7 +82,7 @@ namespace Scenes {
             await UnloadCurrentScenesAsync(true);
             await LoadScene(GameSceneName, true, true, true, true);
         }
-        
+
         /// <summary>
         /// Switch the map in the currently loaded game scene
         /// </summary>
@@ -286,7 +286,7 @@ namespace Scenes {
             await Task.WhenAll(unloadTasks);
         }
 
-        private static string StrippedSceneName(string sceneName) {
+        public static string StrippedSceneName(string sceneName) {
             if (sceneName == null || !sceneName.Contains("/") || !sceneName.Contains(".")) {
                 return sceneName;
             }

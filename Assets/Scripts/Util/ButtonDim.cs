@@ -51,6 +51,8 @@ namespace Util {
 
         public void OnPointerDown(PointerEventData eventData) {
             if (!Interactable) return;
+
+            UnDim();
             
             // Get child components to darken
             Image[] imagesToDim = GetComponentsInChildren<Image>();

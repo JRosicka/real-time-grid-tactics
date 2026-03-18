@@ -56,7 +56,8 @@ namespace Gameplay.UI {
         private async void MonitorAfterImproperAdjustment() {
             for (int i = 0; i < 5; i++) {
                 await Task.Delay(TimeSpan.FromSeconds(0.1f));
-                if ((_rectTransform?.rect.height ?? -1) == 0) {
+                if (!this || !_rectTransform) return;
+                if (_rectTransform.rect.height == 0) {
                     Debug.LogWarning($"Hoverable tooltip content height STILL not adjusted after {.1f * (i+1)}s! Initializing count: {_initializingCount}");
                 }
             }

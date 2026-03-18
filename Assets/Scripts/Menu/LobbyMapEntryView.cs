@@ -33,6 +33,7 @@ namespace Menu {
 
         public void SetSelected(bool selected) {
             _coloredImages.ForEach(i => i.color = selected ? _selectedColor : _unselectedColor);
+            _buttonDim.UnDim();
         }
 
         public void SelectMap() {
@@ -41,7 +42,7 @@ namespace Menu {
                 return;
             }
             
-            _lobbyNetworkBehaviour.SwitchMap(MapData.mapID);
+            _lobbyNetworkBehaviour.TrySwitchMap(MapData.mapID);
         }
     }
 }
