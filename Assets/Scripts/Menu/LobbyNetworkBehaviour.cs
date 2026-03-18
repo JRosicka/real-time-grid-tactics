@@ -98,7 +98,9 @@ namespace Menu {
         }
         
         private void OnMapChanged(string oldMapID, string newMapID) {
-            if (string.IsNullOrEmpty(oldMapID) || oldMapID == newMapID) {
+            // If we are the host and don't have a current map ID, then don't bother switching the map since we already 
+            // loaded it when loading into the lobby scene.
+            if ((NetworkServer.active && string.IsNullOrEmpty(oldMapID)) || oldMapID == newMapID) {
                 _mapLoadingLocked = false;
                 MapChanged?.Invoke(newMapID);
                 return;

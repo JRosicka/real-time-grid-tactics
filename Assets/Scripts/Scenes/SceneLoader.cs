@@ -263,7 +263,10 @@ namespace Scenes {
                 case LobbySceneName:
                     GameAudio.Instance.PlayMenuMusic();
                     _gameTypeManager.SetGameType(false, false, false);
-                    await LoadScene(GameSceneName, false, true, true, true);
+                    if (NetworkServer.active) {
+                        // Load the game scene right away for the host. For clients, wait until we know what the map is. 
+                        await LoadScene(GameSceneName, false, true, true, true);
+                    }
                     break;
                 case GameSceneName:
                     _gameTypeManager.SetGameType(true, true, true);
