@@ -45,14 +45,14 @@ public class PlayerSlot : MonoBehaviour {
         DisplayOccupied(false);
     }
 
-    public void Initialize(RoomMenu roomMenu, List<PlayerColorData> availableColors) {
+    public void Initialize(RoomMenu roomMenu, List<PlayerColorData> availableColors, Transform colorMenuParent) {
         _roomMenu = roomMenu;
         _availableColors = availableColors;
         _neutralColor = GameConfigurationLocator.GameConfiguration.NeutralColors;
         
         _playerKickButton.gameObject.SetActive(false);
         _spectatorKickButton.gameObject.SetActive(false);
-        _colorPicker.Initialize(availableColors.Where(c => c.Pickable).ToList(), this, SlotIndex);
+        _colorPicker.Initialize(availableColors.Where(c => c.Pickable).ToList(), this, colorMenuParent);
         
         if (SpectatorSlot) {
             InitializeForSpectator();

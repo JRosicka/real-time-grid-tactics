@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Gameplay.Config;
 using UnityEngine;
 using UnityEngine.UI;
@@ -15,18 +17,23 @@ namespace Menu {
         
         private List<PlayerColorData> _availableColors;
         private bool _locked;
-        private int _slotIndex;
         private PlayerSlot _playerSlot;
 
-        public void Initialize(List<PlayerColorData> availableColors, PlayerSlot playerSlot, int slotIndex) {
+        public void Initialize(List<PlayerColorData> availableColors, PlayerSlot playerSlot, Transform colorMenuParent) {
             _colorPickerMenu.SetActive(false);
-            _slotIndex = slotIndex;
+            AdjustColorPickerMenu(colorMenuParent);
+            
             _playerSlot = playerSlot;
             _availableColors = availableColors;
             
             for (int i = 0; i < availableColors.Count; i++) {
                 _colorOptions[i].sprite = availableColors[i].ColoredButtonData.Normal;
             }
+        }
+
+        private async void AdjustColorPickerMenu(Transform colorMenuParent) {
+            await Task.Delay(TimeSpan.FromMilliseconds(100));
+            _colorPickerMenu.transform.SetParent(colorMenuParent);
         }
         
         public void SetCanChangeColor(bool canChangeColor) {

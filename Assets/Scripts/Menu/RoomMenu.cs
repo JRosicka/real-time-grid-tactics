@@ -29,6 +29,7 @@ public class RoomMenu : MonoBehaviour {
     public TMP_Text ToggleReadyButtonText;
     public TMP_Text JoinCodeText;
     public LobbyMapSelectionList LobbyMapSelectionList;
+    public Transform ColorMenuParent;
     
     public CanvasWidthSetter CanvasWidthSetter;
 
@@ -75,7 +76,7 @@ public class RoomMenu : MonoBehaviour {
         _availableColors = GameConfigurationLocator.GameConfiguration.PlayerColorConfigs;
         _neutralColor = GameConfigurationLocator.GameConfiguration.NeutralColors;
 
-        AllPlayerSlots.ForEach(s => s.Initialize(this, _availableColors));
+        AllPlayerSlots.ForEach(s => s.Initialize(this, _availableColors, ColorMenuParent));
         
         StartButton.gameObject.SetActive(false);
         SwitchMapButton.gameObject.SetActive(NetworkServer.active);
