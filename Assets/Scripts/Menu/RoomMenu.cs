@@ -29,6 +29,7 @@ public class RoomMenu : MonoBehaviour {
     public TMP_Text ToggleReadyButtonText;
     public TMP_Text JoinCodeText;
     public LobbyMapSelectionList LobbyMapSelectionList;
+    public LobbyMapDisplayer LobbyMapDisplayer;
     public Transform ColorMenuParent;
     
     public CanvasWidthSetter CanvasWidthSetter;
@@ -98,6 +99,7 @@ public class RoomMenu : MonoBehaviour {
 
         // Maps
         LobbyMapSelectionList.Initialize(GameConfigurationLocator.GameConfiguration, LobbyNetworkBehaviour);
+        LobbyMapDisplayer.Initialize(GameConfigurationLocator.GameConfiguration, LobbyNetworkBehaviour);
     }
     
     private void OnDestroy() {

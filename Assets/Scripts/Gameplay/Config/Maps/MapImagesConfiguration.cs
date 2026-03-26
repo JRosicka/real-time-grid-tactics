@@ -13,12 +13,17 @@ namespace Gameplay.Config {
         public class MapPreviewImage {
             public string MapID;
             public Sprite PreviewImage;
+            public Sprite FullMapImage;
         }
         
         [SerializeField] private List<MapPreviewImage> _mapPreviewImages;
         
         public Sprite GetMapPreviewImage(string mapID) {
             return _mapPreviewImages.FirstOrDefault(m => m.MapID == mapID)?.PreviewImage;
+        }
+        
+        public Sprite GetFullMapImage(string mapID) {
+            return _mapPreviewImages.FirstOrDefault(m => m.MapID == mapID)?.FullMapImage;
         }
     }
 }
