@@ -8,8 +8,8 @@ namespace Gameplay.Managers {
     /// Game runtime object for applying cheats. 
     /// </summary>
     public class Cheats : MonoBehaviour {
-        [SerializeField]
-        private CheatConfiguration _cheatConfiguration;
+        [SerializeField] private CheatConfiguration _cheatConfiguration;
+        [SerializeField] private GameObject _canvas;
         
         public bool RemoveBuildTime => _cheatConfiguration.CheatsEnabled && _cheatConfiguration.RemoveBuildTime;
         public int? PlayerMoneyFromCheats => _cheatConfiguration.CheatsEnabled ? _cheatConfiguration.PlayerMoney : null;
@@ -55,6 +55,26 @@ namespace Gameplay.Managers {
                 foreach (EntitySpawnData entitySpawnData in entitySet.Entities) {
                     GameManager.Instance.CommandManager.SpawnEntity(entitySpawnData.Data, entitySpawnData.SpawnLocation.Location,
                         entitySet.Team, null, entitySpawnData.SpawnLocation.Location, built);
+                }
+            }
+        }
+
+        public void DisableUI(bool disableEntityUIFrames) {
+            _canvas.SetActive(false);
+            
+            // Disable King parade animation
+            foreach (KingView kingView in FindObjectsByType<KingView>(FindObjectsSortMode.None)) {
+                kingView.DisableParadeAnimation();
+            }
+            
+            // Disable income animation
+            foreach (IncomeAnimationBehavior incomeAnimationBehavior in FindObjectsByType<IncomeAnimationBehavior>(FindObjectsSortMode.None)) {
+                incomeAnimationBehavior.DisableIncomeAnimation();
+            }
+            
+            if (disableEntityUIFrames) {
+                foreach(GridEntityView entityView in FindObjectsByType<GridEntityView>(FindObjectsSortMode.None)) {
+                    entityView.DisableUI();
                 }
             }
         }

@@ -31,6 +31,10 @@ namespace Gameplay.Entities {
                     return true;
             }
         }
+        
+        public void DisableParadeAnimation() {
+            _paradeTextAnimator.gameObject.SetActive(false);
+        }
 
         private void DoParadeAnimation() {
             _paradeTextAnimator.Play("ParadeActive");

@@ -133,6 +133,11 @@ namespace Gameplay.Entities {
             _mainCanvasGroup.alpha = show ? 1 : 0;
         }
 
+        public void DisableUI() {
+            _unitUIFrame?.ForEach(g => g.SetActive(false));
+            _structureUIFrame?.SetActive(false);
+        }
+
         private void OnDestroy() {
             if (Entity == null) return;
             

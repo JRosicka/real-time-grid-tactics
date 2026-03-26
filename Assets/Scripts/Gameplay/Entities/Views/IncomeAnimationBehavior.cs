@@ -42,6 +42,10 @@ namespace Gameplay.Entities {
             ToggleOutOfResourcesIcon(_entity.InteractBehavior is { IsLocalTeam: true });
         }
 
+        public void DisableIncomeAnimation() {
+            gameObject.SetActive(false);
+        }
+
         /// <summary>
         /// See if we should show the out-of-resources icon, and show/hide it accordingly
         /// </summary>

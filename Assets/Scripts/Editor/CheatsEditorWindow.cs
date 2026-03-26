@@ -249,6 +249,22 @@ public class CheatsEditorWindow : OdinEditorWindow {
             }
         }
     }
+    
+    [PropertyOrder(8)]
+    [Button]
+    public void DisableUIExceptForEntityUIFrames() {
+        ThrowExceptionIfNotInGame();
+
+        GameManager.Instance.Cheats.DisableUI(false);
+    }
+    
+    [PropertyOrder(9)]
+    [Button]
+    public void DisableAllUI() {
+        ThrowExceptionIfNotInGame();
+
+        GameManager.Instance.Cheats.DisableUI(true);
+    }
 
     private static void ThrowExceptionIfNotInGame() {
         if (!EditorApplication.isPlaying) {
