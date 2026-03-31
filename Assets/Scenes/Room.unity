@@ -1822,7 +1822,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: b59072c105362402f94614906da9930a, type: 3}
+  m_Sprite: {fileID: 21300000, guid: b9d499f852be04e5686b13db25f119f5, type: 3}
   m_Type: 0
   m_PreserveAspect: 1
   m_FillCenter: 1
@@ -1857,7 +1857,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 964, y: 346}
+  m_SizeDelta: {x: 964, y: 340}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1001 &185133644
 PrefabInstance:
@@ -2349,8 +2349,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -0.000061035156, y: -382.2}
-  m_SizeDelta: {x: -29.999975, y: 369}
+  m_AnchoredPosition: {x: -0.000061035156, y: -377.75955}
+  m_SizeDelta: {x: -30, y: 373.4404}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &343379519
 MonoBehaviour:
@@ -4197,6 +4197,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 588118368}
+  - component: {fileID: 588118372}
   - component: {fileID: 588118371}
   - component: {fileID: 588118370}
   - component: {fileID: 588118369}
@@ -4274,9 +4275,21 @@ MonoBehaviour:
   m_GameObject: {fileID: 588118367}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Script: {fileID: 11500000, guid: 5a9e65b0d30f48fb9cc56072832ef182, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Button
+  m_EditorClassIdentifier: Assembly-CSharp::Audio.ButtonClickSound
+--- !u!114 &588118372
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 588118367}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c32e8343c9b24009bc46b0a3097651fb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Util.ListenerButton
   m_Navigation:
     m_Mode: 3
     m_WrapAround: 0
@@ -5254,8 +5267,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 682498735}
   m_HandleRect: {fileID: 1690174636}
   m_Direction: 2
-  m_Value: 0.4999996
-  m_Size: 0.749566
+  m_Value: 0.49999923
+  m_Size: 0.7397351
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -10714,7 +10727,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 1688590824}
   m_Direction: 0
   m_Value: 0.5000003
-  m_Size: 0.7758175
+  m_Size: 0.78053707
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -12933,8 +12946,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -0.000061035156, y: -15.199982}
-  m_SizeDelta: {x: -29.999996, y: 369}
+  m_AnchoredPosition: {x: 0, y: -15.199982}
+  m_SizeDelta: {x: -25.800001, y: 364.47}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &1291100312
 MonoBehaviour:
@@ -14544,7 +14557,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0.000039748847, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 889.9, y: 460.8}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1469079642
@@ -15440,7 +15453,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1588236279}
   m_HandleRect: {fileID: 1060757367}
   m_Direction: 2
-  m_Value: 0.99999994
+  m_Value: 1.0000001
   m_Size: 0.44841525
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -17185,17 +17198,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 1803233700}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1aa08ab6e0800fa44ae55d278d1423e3, type: 3}
+  m_Script: {fileID: 11500000, guid: e921bb48720248c69a676fb0f3ae9bcb, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.ScrollRect
+  m_EditorClassIdentifier: Assembly-CSharp::Util.ScrollRectNoDrag
   m_Content: {fileID: 1702554055}
   m_Horizontal: 0
   m_Vertical: 1
   m_MovementType: 2
   m_Elasticity: 0.1
-  m_Inertia: 1
+  m_Inertia: 0
   m_DecelerationRate: 0.135
-  m_ScrollSensitivity: 8
+  m_ScrollSensitivity: 30
   m_Viewport: {fileID: 1852963682}
   m_HorizontalScrollbar: {fileID: 0}
   m_VerticalScrollbar: {fileID: 1588236278}
@@ -17720,7 +17733,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:

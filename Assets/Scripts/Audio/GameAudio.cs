@@ -74,6 +74,10 @@ namespace Audio {
             TryPlaySFX(_audioConfiguration.ButtonClickInGameSound, AudioClipName(_audioConfiguration.ButtonClickInGameSound));
         }
 
+        public void MenuThumpSound() {
+            TryPlaySFX(_audioConfiguration.MenuThumpSound, AudioClipName(_audioConfiguration.MenuThumpSound));
+        }
+
         public void InvalidSound() {
             TryPlaySFX(_audioConfiguration.InvalidSound, AudioClipName(_audioConfiguration.InvalidSound));
         }

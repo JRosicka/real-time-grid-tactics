@@ -80,6 +80,7 @@ GameObject:
   - component: {fileID: 2542762289113476479}
   - component: {fileID: 6512635631113263271}
   - component: {fileID: 6731246232206800277}
+  - component: {fileID: 2476221179590877899}
   m_Layer: 5
   m_Name: Color button
   m_TagString: Untagged
@@ -200,6 +201,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &2476221179590877899
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 463284098591522581}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a9e65b0d30f48fb9cc56072832ef182, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Audio.ButtonClickSound
 --- !u!1 &496124846488785621
 GameObject:
   m_ObjectHideFlags: 0
@@ -1386,6 +1399,7 @@ GameObject:
   - component: {fileID: 6586305735966822411}
   - component: {fileID: 4214811345125437467}
   - component: {fileID: 4389768860070487003}
+  - component: {fileID: 798240276880270627}
   m_Layer: 5
   m_Name: Color button
   m_TagString: Untagged
@@ -1506,6 +1520,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &798240276880270627
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3793757669200572572}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a9e65b0d30f48fb9cc56072832ef182, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Audio.ButtonClickSound
 --- !u!1 &4210045281718234024
 GameObject:
   m_ObjectHideFlags: 0
@@ -1518,6 +1544,7 @@ GameObject:
   - component: {fileID: 3996811171122084216}
   - component: {fileID: 5659494316945227192}
   - component: {fileID: 1915369288530045099}
+  - component: {fileID: 6961815665733334740}
   m_Layer: 5
   m_Name: Color button
   m_TagString: Untagged
@@ -1638,6 +1665,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &6961815665733334740
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4210045281718234024}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a9e65b0d30f48fb9cc56072832ef182, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Audio.ButtonClickSound
 --- !u!1 &4640946495094536427
 GameObject:
   m_ObjectHideFlags: 0
@@ -1650,6 +1689,7 @@ GameObject:
   - component: {fileID: 2129838305859187869}
   - component: {fileID: 8640546356392439420}
   - component: {fileID: 5103313495455935886}
+  - component: {fileID: 5276645714283223284}
   m_Layer: 5
   m_Name: Color button
   m_TagString: Untagged
@@ -1770,6 +1810,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &5276645714283223284
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4640946495094536427}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a9e65b0d30f48fb9cc56072832ef182, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Audio.ButtonClickSound
 --- !u!1 &4782566903904988688
 GameObject:
   m_ObjectHideFlags: 0
@@ -1782,6 +1834,7 @@ GameObject:
   - component: {fileID: 6467521005457284688}
   - component: {fileID: 8064473601955567840}
   - component: {fileID: 3062911898981033786}
+  - component: {fileID: 2854163041597618386}
   m_Layer: 5
   m_Name: Color button
   m_TagString: Untagged
@@ -1902,6 +1955,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &2854163041597618386
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4782566903904988688}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a9e65b0d30f48fb9cc56072832ef182, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Audio.ButtonClickSound
 --- !u!1 &4810400781711816855
 GameObject:
   m_ObjectHideFlags: 0
@@ -2051,6 +2116,7 @@ GameObject:
   - component: {fileID: 716137729169576060}
   - component: {fileID: 323373243427332698}
   - component: {fileID: 6987897577727178753}
+  - component: {fileID: 2598553073449728116}
   m_Layer: 5
   m_Name: Color button
   m_TagString: Untagged
@@ -2171,6 +2237,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &2598553073449728116
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4953886649404225196}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a9e65b0d30f48fb9cc56072832ef182, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Audio.ButtonClickSound
 --- !u!1 &5689086927159061619
 GameObject:
   m_ObjectHideFlags: 0
@@ -2493,9 +2571,9 @@ RectTransform:
   - {fileID: 6830583040811884009}
   m_Father: {fileID: 2882851172573708554}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 1, y: 0.5}
-  m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: 29.699951, y: -23.7}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 59.649952, y: -23.7}
   m_SizeDelta: {x: 119.3, y: 68.3}
   m_Pivot: {x: 1, y: 1}
 --- !u!222 &1374392538471961328
@@ -2926,6 +3004,7 @@ GameObject:
   - component: {fileID: 2832385437621629929}
   - component: {fileID: 7358270983563270203}
   - component: {fileID: 9060875471807575067}
+  - component: {fileID: 2878419679332089288}
   m_Layer: 5
   m_Name: Color Picker Button
   m_TagString: Untagged
@@ -3048,6 +3127,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &2878419679332089288
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7519482822537834652}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a9e65b0d30f48fb9cc56072832ef182, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Audio.ButtonClickSound
 --- !u!1 &7664746216337786036
 GameObject:
   m_ObjectHideFlags: 0
@@ -3162,6 +3253,7 @@ GameObject:
   - component: {fileID: 213147434283054095}
   - component: {fileID: 6913553116049338431}
   - component: {fileID: 6427877485805741537}
+  - component: {fileID: 3724847171331428744}
   m_Layer: 5
   m_Name: Color button
   m_TagString: Untagged
@@ -3282,6 +3374,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &3724847171331428744
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8138957417349021791}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a9e65b0d30f48fb9cc56072832ef182, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Audio.ButtonClickSound
 --- !u!1 &8273518945579157191
 GameObject:
   m_ObjectHideFlags: 0
@@ -3495,6 +3599,7 @@ GameObject:
   - component: {fileID: 3814222895014458009}
   - component: {fileID: 7711517234778583925}
   - component: {fileID: 1213478695611574152}
+  - component: {fileID: 2904345704457484706}
   m_Layer: 5
   m_Name: Color button
   m_TagString: Untagged
@@ -3615,6 +3720,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &2904345704457484706
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8517972771769223550}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a9e65b0d30f48fb9cc56072832ef182, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Audio.ButtonClickSound
 --- !u!1 &9021304527194561451
 GameObject:
   m_ObjectHideFlags: 0

@@ -20,6 +20,7 @@ MonoBehaviour:
   GameStartSound: {fileID: 11400000, guid: 3741a2894c1c14f178b9e257d4edd0f7, type: 2}
   ArrowLandSound: {fileID: 11400000, guid: 64ae387a4a7e147a791106e91ceace64, type: 2}
   ConstructionSound: {fileID: 11400000, guid: da23988a9967b4927af46b1cc8f94ce5, type: 2}
+  MenuThumpSound: {fileID: 11400000, guid: b78e9e80b25a16b4cba44176837ce178, type: 2}
   MenuMusic:
   - {fileID: 11400000, guid: 299fc0a58f1f89b4484b5fef0c04e9bf, type: 2}
   - {fileID: 11400000, guid: 886ce66f18b5c41428738c8b928ce715, type: 2}

@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using Audio;
 using Game.Network;
 using Gameplay.Config;
 using HeathenEngineering.SteamworksIntegration.UI;
@@ -106,6 +107,7 @@ public class PlayerSlot : MonoBehaviour {
 
     public void SwapToSlot() {
         if (AssignedPlayer) return;
+        GameAudio.Instance.MenuThumpSound();
         _roomMenu.SwapLocalPlayerToSlot(this);
     }
 

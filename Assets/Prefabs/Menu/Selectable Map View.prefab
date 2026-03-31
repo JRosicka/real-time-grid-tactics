@@ -240,6 +240,7 @@ GameObject:
   - component: {fileID: 5280628844190322530}
   - component: {fileID: 1750179804159160486}
   - component: {fileID: 8667902191790158026}
+  - component: {fileID: 6953800365270953315}
   m_Layer: 5
   m_Name: Selectable Map View
   m_TagString: Untagged
@@ -365,6 +366,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Util.ButtonDim
   DimFactor: 0.75
+--- !u!114 &6953800365270953315
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2530344193333811778}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a9e65b0d30f48fb9cc56072832ef182, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Audio.ButtonClickSound
 --- !u!1 &5382000427363807559
 GameObject:
   m_ObjectHideFlags: 0
