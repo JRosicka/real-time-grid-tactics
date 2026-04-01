@@ -89,8 +89,13 @@ namespace Gameplay.Grid {
         public void ProcessClick(PointerEventData eventData) {
             ProcessMouseMove(eventData);
             Vector2Int mousePos = _gridController.GetCellPosition(eventData.pointerPressRaycast.worldPosition);
-            if (!_gridController.IsInBounds(mousePos)) return;
+            if (!_gridController.IsInBounds(mousePos)) {
+                // Dismiss the selection interface
+                _gameManager.SelectionInterface.UpdateSelectedEntity(null);
+                return;
+            }
 
+            // Click on the particular cell
             MouseClick click = eventData.button switch {
                 PointerEventData.InputButton.Left => MouseClick.Left,
                 PointerEventData.InputButton.Right => MouseClick.Right,
