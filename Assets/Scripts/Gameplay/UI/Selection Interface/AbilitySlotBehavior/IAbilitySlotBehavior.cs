@@ -1,5 +1,3 @@
-using Gameplay.Config.Abilities;
-using UnityEngine;
 using UnityEngine.UI;
 
 namespace Gameplay.UI {
@@ -30,6 +28,10 @@ namespace Gameplay.UI {
         /// </summary>
         /// <returns></returns>
         bool AnyPlayerCanSelect { get; }
+        /// <summary>
+        /// The cost to display for the associated behavior
+        /// </summary>
+        float TimeCost { get; }
         /// <summary>
         /// We just received user input to use the associated ability - do it
         /// </summary>

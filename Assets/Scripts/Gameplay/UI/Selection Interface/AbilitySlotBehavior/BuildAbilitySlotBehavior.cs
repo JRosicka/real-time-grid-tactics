@@ -29,6 +29,7 @@ namespace Gameplay.UI {
         public bool CaresAboutLeaderPosition => true;
         public bool IsAbilityTargetable => _buildAbilityData.Targeted;
         public bool AnyPlayerCanSelect => false;
+        public float TimeCost => Mathf.Round(Buildable.BuildTime);
         private GridController GridController => GameManager.Instance.GridController;
         private AbilityAssignmentManager AbilityAssignmentManager => GameManager.Instance.AbilityAssignmentManager;
 

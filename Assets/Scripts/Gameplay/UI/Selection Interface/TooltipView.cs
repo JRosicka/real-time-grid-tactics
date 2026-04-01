@@ -5,6 +5,7 @@ using Gameplay.Entities;
 using Gameplay.Entities.Abilities;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 namespace Gameplay.UI {
@@ -26,9 +27,12 @@ namespace Gameplay.UI {
         [SerializeField] private TMP_Text _advancedResourceCostAmount;
         [SerializeField] private GameObject _buildTimeContainer;
         [SerializeField] private TMP_Text _buildTimeAmount;
+        [SerializeField] private GameObject _cooldownTimeContainer;
+        [SerializeField] private TMP_Text _cooldownTimeAmount;
         
+        [FormerlySerializedAs("_buildTimeFormat")]
         [Header("Config")]
-        [SerializeField] private string _buildTimeFormat = "{0}s";
+        [SerializeField] private string _timeFormat = "{0}s";
 
         private ISelectableObjectLogic _selectedObject;
         private ITargetableAbilityData _selectedTargetableAbility;
@@ -97,6 +101,7 @@ namespace Gameplay.UI {
             _basicResourceCostContainer.SetActive(false);
             _advancedResourceCostContainer.SetActive(false);
             _buildTimeContainer.SetActive(false);
+            _cooldownTimeContainer.SetActive(false);
         }
 
         private void SetUpForInProgressBuild(BuildAbility buildAbility) {
@@ -117,18 +122,27 @@ namespace Gameplay.UI {
                 _basicResourceCostAmount.text = basicCost.ToString();
                 _advancedResourceCostContainer.SetActive(advancedCost > 0);
                 _advancedResourceCostAmount.text = advancedCost.ToString();
+                _cooldownTimeContainer.SetActive(false);
                 if (buildAbilitySlotBehavior.Buildable.BuildsImmediately) {
                     _buildTimeContainer.SetActive(false);
                 } else {
                     _buildTimeContainer.SetActive(true);
-                    _buildTimeAmount.text = string.Format(_buildTimeFormat, Mathf.RoundToInt(buildAbilitySlotBehavior.Buildable.BuildTime));
+                    _buildTimeAmount.text = string.Format(_timeFormat, abilitySlotBehavior.TimeCost);
                 }
             } else {
                 _name.text = abilityInfo.ID;
                 _description.text = abilityInfo.Description;
                 _basicResourceCostContainer.SetActive(false);
                 _advancedResourceCostContainer.SetActive(false);
+                
                 _buildTimeContainer.SetActive(false);
+                float timeCost = abilitySlotBehavior.TimeCost;
+                if (timeCost <= 0) {
+                    _cooldownTimeContainer.SetActive(false);
+                } else {
+                    _cooldownTimeContainer.SetActive(true);
+                    _cooldownTimeAmount.text = string.Format(_timeFormat, timeCost);
+                }
             }
         }
         

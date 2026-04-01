@@ -27,6 +27,9 @@ namespace Gameplay.UI {
         public bool CaresAboutLeaderPosition => false;
         public bool IsAbilityTargetable => _abilityData.Targeted;
         public bool AnyPlayerCanSelect => _abilityData.SelectableForAllPlayers;
+        public float TimeCost => _abilityData is MoveAbilityData 
+            ? _selectedEntity.EntityData.NormalMoveTime 
+            : Mathf.Round(_abilityData.CooldownDuration * 100) / 100;
 
         public void SelectSlot(bool newlySelected) {
             if (_abilityData == null) return;

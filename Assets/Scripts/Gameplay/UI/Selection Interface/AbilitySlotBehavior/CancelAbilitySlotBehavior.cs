@@ -1,5 +1,4 @@
 using Gameplay.Config;
-using UnityEngine;
 using UnityEngine.UI;
 
 namespace Gameplay.UI {
@@ -35,6 +34,7 @@ namespace Gameplay.UI {
         }
 
         public abstract bool AnyPlayerCanSelect { get; }
+        public float TimeCost => 0;
         public abstract AbilitySlotInfo AbilitySlotInfo { get; }
         public abstract bool CaresAboutAbilityChannels { get; }
         public abstract void SelectSlot(bool newlySelected);
