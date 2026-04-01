@@ -94,6 +94,7 @@ namespace Gameplay.Config.Abilities {
         AudioFile PerformedSFX { get; }
         bool TriggersEntityOrderVoiceLine { get; }
         string GetAttackTooltipMessage(GameTeam team);
+        string GetHealTooltipMessage();
         /// <summary>
         /// Respond to the user input intending to use this ability. Do not actually perform the ability (unless there is
         /// nothing else to do first) - rather, handle any client-side stuff by sending events to prompt for further input. 

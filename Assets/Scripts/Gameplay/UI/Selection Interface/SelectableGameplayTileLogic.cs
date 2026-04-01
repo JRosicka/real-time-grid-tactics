@@ -62,7 +62,7 @@ namespace Gameplay.UI {
             incomeRateField.text = string.Empty;
         }
 
-        public void SetUpHoverableInfo(HoverableInfoIcon defenseHoverableInfoIcon, HoverableInfoIcon attackHoverableInfoIcon, HoverableInfoIcon moveHoverableInfoIcon) {
+        public void SetUpHoverableInfo(HoverableInfoIcon defenseHoverableInfoIcon, HoverableInfoIcon attackHoverableInfoIcon, HoverableInfoIcon moveHoverableInfoIcon, HoverableInfoIcon healHoverableInfoIcon) {
             string defenseTooltip = _tile.GetDefenseTooltip();
             if (!string.IsNullOrEmpty(defenseTooltip)) {
                 defenseHoverableInfoIcon.ShowIcon(defenseTooltip);

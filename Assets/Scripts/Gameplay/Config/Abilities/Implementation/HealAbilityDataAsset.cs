@@ -19,6 +19,10 @@ namespace Gameplay.Config.Abilities {
         public override bool Cancelable => false;
         public override IAbilityParameters OnStartParameters => new HealAbilityParameters { Target = null };
 
+        public override string GetHealTooltipMessage() {
+            return $"Heals {HealAmount} HP every {CooldownDuration}s to occupying units.";
+        }
+        
         public override void SelectAbility(GridEntity selector) {
             // Nothing to do
         }

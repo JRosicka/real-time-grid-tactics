@@ -754,6 +754,21 @@ namespace Gameplay.Entities {
             
             return currentTooltipMessage;
         }
+
+        public string GetHealTooltipMessageFromAbilities() {
+            string tooltipMessage = "";
+            foreach (IAbilityData abilityData in Abilities) {
+                string healTooltipMessage = abilityData.GetHealTooltipMessage();
+                if (string.IsNullOrEmpty(healTooltipMessage)) continue;
+
+                if (!string.IsNullOrEmpty(tooltipMessage)) {
+                    tooltipMessage += "<br>";
+                }
+                tooltipMessage += healTooltipMessage;
+            }
+
+            return tooltipMessage;
+        }
         
         public int GetStructureDefenseModifier() {
             if (EntityData.IsStructure) {

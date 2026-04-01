@@ -41,6 +41,7 @@ namespace Gameplay.UI {
         [SerializeField] private HoverableInfoIcon _defenseHoverableInfoIcon;
         [SerializeField] private HoverableInfoIcon _attackHoverableInfoIcon;
         [SerializeField] private HoverableInfoIcon _moveHoverableInfoIcon;
+        [SerializeField] private HoverableInfoIcon _healHoverableInfoIcon;
 
         [SerializeField] private BuildQueueView _buildQueueForStructure;
         [SerializeField] private BuildQueueView _buildQueueForWorker;
@@ -112,6 +113,7 @@ namespace Gameplay.UI {
             _defenseHoverableInfoIcon.HideIcon();
             _attackHoverableInfoIcon.HideIcon();
             _moveHoverableInfoIcon.HideIcon();
+            _healHoverableInfoIcon.HideIcon();
             if (_displayedSelectable == null) return;
 
             _displayedSelectable.UnregisterListeners();
@@ -136,6 +138,7 @@ namespace Gameplay.UI {
                 _defenseHoverableInfoIcon.HideIcon();
                 _attackHoverableInfoIcon.HideIcon();
                 _moveHoverableInfoIcon.HideIcon();
+                _healHoverableInfoIcon.HideIcon();
             } else {
                 TeamColorBanner.color = selectableObject.TeamBannerColor;
             }
@@ -158,7 +161,7 @@ namespace Gameplay.UI {
             _displayedSelectable.SetUpBuildQueueView(_buildQueueForStructure, _buildQueueForWorker);
             _displayedSelectable.SetUpKillCountView(_killCountRow, _killCountField);
             _displayedSelectable.SetUpIncomeRateView(_incomeRateRow, _incomeRateField);
-            _displayedSelectable.SetUpHoverableInfo(_defenseHoverableInfoIcon, _attackHoverableInfoIcon, _moveHoverableInfoIcon);
+            _displayedSelectable.SetUpHoverableInfo(_defenseHoverableInfoIcon, _attackHoverableInfoIcon, _moveHoverableInfoIcon, _healHoverableInfoIcon);
         }
         
         /// <summary>

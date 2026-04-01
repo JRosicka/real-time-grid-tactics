@@ -175,10 +175,12 @@ namespace Gameplay.UI {
         private HoverableInfoIcon _defenseHoverableInfoIcon;
         private HoverableInfoIcon _attackHoverableInfoIcon;
         private HoverableInfoIcon _moveHoverableInfoIcon;
-        public void SetUpHoverableInfo(HoverableInfoIcon defenseHoverableInfoIcon, HoverableInfoIcon attackHoverableInfoIcon, HoverableInfoIcon moveHoverableInfoIcon) {
+        private HoverableInfoIcon _healHoverableInfoIcon;
+        public void SetUpHoverableInfo(HoverableInfoIcon defenseHoverableInfoIcon, HoverableInfoIcon attackHoverableInfoIcon, HoverableInfoIcon moveHoverableInfoIcon, HoverableInfoIcon healHoverableInfoIcon) {
             _defenseHoverableInfoIcon = defenseHoverableInfoIcon;
             _attackHoverableInfoIcon = attackHoverableInfoIcon;
             _moveHoverableInfoIcon = moveHoverableInfoIcon;
+            _healHoverableInfoIcon = healHoverableInfoIcon;
             
             string defenseTooltip = GetDefenseTooltip();
             if (!string.IsNullOrEmpty(defenseTooltip)) {
@@ -200,6 +202,13 @@ namespace Gameplay.UI {
             } else {
                 moveHoverableInfoIcon.HideIcon();
             }
+
+            string healTooltip = GetHealTooltip();
+            if (!string.IsNullOrEmpty(healTooltip)) {
+                healHoverableInfoIcon.ShowIcon(healTooltip);
+            } else {
+                healHoverableInfoIcon.HideIcon();
+            }
         }
 
         public void UnregisterListeners() {
@@ -216,7 +225,7 @@ namespace Gameplay.UI {
         
         private void OnEntityAbilityPerformed(IAbility iAbility, AbilityTimer abilityTimer) {
             SetUpResourceView(_resourceRow, _resourceLabel, _resourceField);
-            SetUpHoverableInfo(_defenseHoverableInfoIcon, _attackHoverableInfoIcon, _moveHoverableInfoIcon);
+            SetUpHoverableInfo(_defenseHoverableInfoIcon, _attackHoverableInfoIcon, _moveHoverableInfoIcon, _healHoverableInfoIcon);
         }
         
         private void OnEntityResourceAmountChanged(INetworkableFieldValue oldValue, INetworkableFieldValue newValue, object metadata) {
@@ -224,12 +233,12 @@ namespace Gameplay.UI {
         }
 
         private void OnOwnedPurchasablesChanged() {
-            SetUpHoverableInfo(_defenseHoverableInfoIcon, _attackHoverableInfoIcon, _moveHoverableInfoIcon);
+            SetUpHoverableInfo(_defenseHoverableInfoIcon, _attackHoverableInfoIcon, _moveHoverableInfoIcon, _healHoverableInfoIcon);
         }
 
         private void OnLeaderMoved(GridEntity leader) {
             if (leader.Team != Entity.Team) return;
-            SetUpHoverableInfo(_defenseHoverableInfoIcon, _attackHoverableInfoIcon, _moveHoverableInfoIcon);
+            SetUpHoverableInfo(_defenseHoverableInfoIcon, _attackHoverableInfoIcon, _moveHoverableInfoIcon, _healHoverableInfoIcon);
         }
 
         private void KillCountChanged(int newKillCount) {
@@ -287,6 +296,11 @@ namespace Gameplay.UI {
 
         private string GetMoveTooltip() {
             string tooltipMessage = Entity.GetMoveTooltipMessageFromUpgrades();
+            return tooltipMessage;
+        }
+
+        private string GetHealTooltip() {
+            string tooltipMessage = Entity.GetHealTooltipMessageFromAbilities();
             return tooltipMessage;
         }
 
