@@ -17229,6 +17229,22 @@ PrefabInstance:
       propertyPath: m_Name
       value: Selection Interface
       objectReference: {fileID: 0}
+    - target: {fileID: 837429461050335436, guid: 672db4341c4888042a48631d9a245ccc, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 837429461050335436, guid: 672db4341c4888042a48631d9a245ccc, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 837429461050335436, guid: 672db4341c4888042a48631d9a245ccc, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 837429461050335436, guid: 672db4341c4888042a48631d9a245ccc, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1030704784401371997, guid: 672db4341c4888042a48631d9a245ccc, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0

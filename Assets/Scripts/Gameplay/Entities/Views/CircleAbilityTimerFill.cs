@@ -8,9 +8,10 @@ namespace Gameplay.Entities {
     public class CircleAbilityTimerFill : AbilityTimerFill {
         public Image TimerFill;
         public Gradient FillGradient;
+        public bool Fill01;
         
         public override void UpdateFillAmount01(float amount) {
-            TimerFill.fillAmount = amount;
+            TimerFill.fillAmount = Fill01 ? 1 - amount : amount;
             TimerFill.color = FillGradient.Evaluate(amount);
         }
     }
