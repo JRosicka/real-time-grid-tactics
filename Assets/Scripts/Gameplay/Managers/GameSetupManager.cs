@@ -342,7 +342,7 @@ public class GameSetupManager : MonoBehaviour {
         gamePlayer.Index = index;
         gamePlayer.Team = team;
         gamePlayer.DisplayName = networkPlayer.DisplayName;
-        gamePlayer.ColorData = GameManager.Configuration.GetPlayerColor(networkPlayer.GetColorID);
+        gamePlayer.ColorData = GameManager.Configuration.GetPlayerColor(team == GameTeam.Spectator ? "gray" : networkPlayer.GetColorID);
         
         gamePlayer.Connected = true;
         int connectionID = networkPlayer.connectionToClient.connectionId;
