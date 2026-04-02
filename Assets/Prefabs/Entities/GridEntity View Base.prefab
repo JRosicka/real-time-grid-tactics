@@ -6372,7 +6372,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _dividerTemplate: {fileID: 4012879414505173361}
   _dividerBounds: {fileID: 3428219838230137253}
-  _hpInterval: 5
+  _hpInterval: 10
   _outerBound: 0.09
 --- !u!114 &1495927906612246566
 MonoBehaviour:
@@ -6605,7 +6605,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _dividerTemplate: {fileID: 642393336426056681}
   _dividerBounds: {fileID: 3957252923342504023}
-  _hpInterval: 5
+  _hpInterval: 10
   _outerBound: 0.09
 --- !u!114 &551367174149240072
 MonoBehaviour:
