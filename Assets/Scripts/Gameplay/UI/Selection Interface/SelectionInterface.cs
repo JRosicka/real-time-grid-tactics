@@ -151,7 +151,7 @@ namespace Gameplay.UI {
 
             NameField.text = _displayedSelectable.Name;
             DescriptionField.text = _displayedSelectable.ShortDescription;
-            TagsField.text = _displayedSelectable.Tags;
+            TagsField.text = _displayedSelectable.TagsText;
 
             _healthDisplay.gameObject.SetActive(_displayedSelectable.DisplayHP);
             _displayedSelectable.SetUpMoveView(MovesRow, MovesField);

@@ -15,8 +15,7 @@ MonoBehaviour:
   Data:
     _contentResourceID: Target Attack Ability Archer Arrow
     _id: Target Attack
-    _description: Moves towards a target cell, attacking any enemies encountered
-      on the way.
+    _description: Target an enemy unit to move towards it and attack it.
     _icon: {fileID: 21300000, guid: 45c8ed6b1c7304c2b8c2da42a84e8873, type: 3}
     _overrideIconForGrid: {fileID: 21300000, guid: dc250a32bcb7a47cdb6d2aeb98bb903b, type: 3}
     _flipGridIcon: 0

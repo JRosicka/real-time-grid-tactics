@@ -22,7 +22,7 @@ namespace Gameplay.UI {
         public string Name => _tile.DisplayName;
         public string ShortDescription => _tile.ShortDescription;
         public string LongDescription => _tile.LongDescription;
-        public string Tags => string.Empty;
+        public string TagsText => string.Empty;
         public bool DisplayHP => false;
         public BuildAbility InProgressBuild => null;
         public Color TeamBannerColor => GameManager.Instance.Configuration.NeutralColors.TeamBannerColor;

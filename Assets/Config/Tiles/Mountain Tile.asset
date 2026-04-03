@@ -34,8 +34,9 @@ MonoBehaviour:
   Selectable: 1
   DisplayName: Mountain
   ShortDescription: Impassible terrain.
-  LongDescription: Impassible terrain.
-  SlowTags: []
+  LongDescription: Trying to get through here? Yeah good luck with that.
+  SpeedModifierTags: []
   InaccessibleTags: 020000000300000001000000
+  InaccessibleEntities: []
   _armorBonus: 0
   _defenseBoostTags: 

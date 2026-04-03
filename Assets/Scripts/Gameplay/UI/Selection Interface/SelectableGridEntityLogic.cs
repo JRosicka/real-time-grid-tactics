@@ -36,7 +36,7 @@ namespace Gameplay.UI {
         public string Name => Entity.EntityData.ID;
         public string ShortDescription => Entity.EntityData.ShortDescription;
         public string LongDescription => Entity.EntityData.Description;
-        public string Tags => string.Join(", ", Entity.EntityData.Tags);
+        public string TagsText => $"Tags: {string.Join(", ", Entity.EntityData.Tags)}";
         public bool DisplayHP => Entity.EntityData.HP > 0;
         public BuildAbility InProgressBuild {
             get {

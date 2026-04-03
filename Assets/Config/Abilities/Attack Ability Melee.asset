@@ -15,7 +15,8 @@ MonoBehaviour:
   Data:
     _contentResourceID: Attack Ability Melee
     _id: Attack Move
-    _description: Target an enemy unit to move towards it and attack it.
+    _description: Move to a target cell, attacking any enemies encountered on the
+      way.
     _icon: {fileID: 21300000, guid: 62e5900c3d31c1f4299dec996742757c, type: 3}
     _overrideIconForGrid: {fileID: 21300000, guid: 8c5e03b6b52e16d4192cb394e92e32d5, type: 3}
     _flipGridIcon: 0

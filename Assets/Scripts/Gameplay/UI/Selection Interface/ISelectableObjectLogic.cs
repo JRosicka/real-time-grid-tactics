@@ -17,7 +17,7 @@ namespace Gameplay.UI {
         string Name { get; }
         string ShortDescription { get; }
         string LongDescription { get; }
-        string Tags { get; }
+        string TagsText { get; }
         bool DisplayHP { get; }
         [CanBeNull] BuildAbility InProgressBuild { get; }
         Color TeamBannerColor { get; }

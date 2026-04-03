@@ -267,8 +267,8 @@ MonoBehaviour:
   TileID: road
   Selectable: 1
   DisplayName: Road
-  ShortDescription: Takes you where you need to go!
-  LongDescription: All units travel faster on roads.
+  ShortDescription: Quickening terrain.
+  LongDescription: Makes all units go zoomy fast.
   SpeedModifierTags:
   - Tag: 2
     SlowFactor: 0.8

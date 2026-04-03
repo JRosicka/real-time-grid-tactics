@@ -34,8 +34,9 @@ MonoBehaviour:
   Selectable: 1
   DisplayName: Grass
   ShortDescription: Plain terrain.
-  LongDescription: Provides no effect.
-  SlowTags: []
+  LongDescription: Nice work you've touched some grass.
+  SpeedModifierTags: []
   InaccessibleTags: 
+  InaccessibleEntities: []
   _armorBonus: 0
   _defenseBoostTags: 
