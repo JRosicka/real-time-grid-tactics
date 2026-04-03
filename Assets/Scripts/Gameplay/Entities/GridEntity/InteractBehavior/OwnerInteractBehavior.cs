@@ -1,4 +1,6 @@
+using System.Linq;
 using Audio;
+using Gameplay.Config;
 using Gameplay.Config.Abilities;
 using Gameplay.Entities.Abilities;
 using Gameplay.UI;
@@ -49,6 +51,13 @@ namespace Gameplay.Entities {
             // Target the top entity
             GridEntity targetEntity = GameManager.Instance.GetTopEntityAtLocation(targetCell);
 
+            // Don't move/target the cell if this is a worker in the middle of building
+            if (thisEntity.Tags.Contains(EntityTag.Worker) && thisEntity.ActiveTimers.Any(t => t.Ability is BuildAbility)) {
+                GameManager.Instance.EntitySelectionManager.DeselectTargetableAbility();
+                GameManager.Instance.AlertTextDisplayer.DisplayAlert("You must cancel the structure first.");
+                return;
+            }
+            
             // See if we should target this entity
             if (targetEntity != null && targetEntity.Team == GameTeam.Neutral && !targetEntity.EntityData.Targetable) {
                 thisEntity.TryMoveToCell(targetCell, true, true, true);
