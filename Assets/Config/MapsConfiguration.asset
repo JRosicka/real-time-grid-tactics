@@ -2099,7 +2099,7 @@ MonoBehaviour:
     - location: {x: -5, y: -5}
       cellType: grass
     - location: {x: -5, y: -4}
-      cellType: grass
+      cellType: road
     - location: {x: -5, y: -3}
       cellType: grass
     - location: {x: -5, y: -2}
@@ -2143,11 +2143,11 @@ MonoBehaviour:
     - location: {x: -4, y: -6}
       cellType: grass
     - location: {x: -4, y: -5}
-      cellType: grass
+      cellType: road
     - location: {x: -4, y: -4}
-      cellType: grass
+      cellType: road
     - location: {x: -4, y: -3}
-      cellType: grass
+      cellType: road
     - location: {x: -4, y: -2}
       cellType: forest
     - location: {x: -4, y: -1}
@@ -2189,15 +2189,15 @@ MonoBehaviour:
     - location: {x: -3, y: -6}
       cellType: grass
     - location: {x: -3, y: -5}
-      cellType: grass
+      cellType: road
     - location: {x: -3, y: -4}
       cellType: grass
     - location: {x: -3, y: -3}
       cellType: grass
     - location: {x: -3, y: -2}
-      cellType: grass
+      cellType: road
     - location: {x: -3, y: -1}
-      cellType: grass
+      cellType: road
     - location: {x: -3, y: 0}
       cellType: grass
     - location: {x: -3, y: 1}
@@ -2235,7 +2235,7 @@ MonoBehaviour:
     - location: {x: -2, y: -6}
       cellType: grass
     - location: {x: -2, y: -5}
-      cellType: grass
+      cellType: road
     - location: {x: -2, y: -4}
       cellType: forest
     - location: {x: -2, y: -3}
@@ -2281,7 +2281,7 @@ MonoBehaviour:
     - location: {x: -1, y: -6}
       cellType: grass
     - location: {x: -1, y: -5}
-      cellType: grass
+      cellType: road
     - location: {x: -1, y: -4}
       cellType: grass
     - location: {x: -1, y: -3}
@@ -2347,7 +2347,7 @@ MonoBehaviour:
     - location: {x: 0, y: 4}
       cellType: grass
     - location: {x: 0, y: 5}
-      cellType: grass
+      cellType: road
     - location: {x: 0, y: 6}
       cellType: wheat
     - location: {x: 0, y: 7}
@@ -2393,7 +2393,7 @@ MonoBehaviour:
     - location: {x: 1, y: 4}
       cellType: grass
     - location: {x: 1, y: 5}
-      cellType: grass
+      cellType: road
     - location: {x: 1, y: 6}
       cellType: grass
     - location: {x: 1, y: 7}
@@ -2431,7 +2431,7 @@ MonoBehaviour:
     - location: {x: 2, y: 0}
       cellType: grass
     - location: {x: 2, y: 1}
-      cellType: grass
+      cellType: road
     - location: {x: 2, y: 2}
       cellType: grass
     - location: {x: 2, y: 3}
@@ -2439,7 +2439,7 @@ MonoBehaviour:
     - location: {x: 2, y: 4}
       cellType: forest
     - location: {x: 2, y: 5}
-      cellType: grass
+      cellType: road
     - location: {x: 2, y: 6}
       cellType: grass
     - location: {x: 2, y: 7}
@@ -2479,13 +2479,13 @@ MonoBehaviour:
     - location: {x: 3, y: 1}
       cellType: grass
     - location: {x: 3, y: 2}
-      cellType: grass
+      cellType: road
     - location: {x: 3, y: 3}
-      cellType: grass
+      cellType: road
     - location: {x: 3, y: 4}
       cellType: grass
     - location: {x: 3, y: 5}
-      cellType: grass
+      cellType: road
     - location: {x: 3, y: 6}
       cellType: grass
     - location: {x: 3, y: 7}
@@ -2529,7 +2529,7 @@ MonoBehaviour:
     - location: {x: 4, y: 3}
       cellType: grass
     - location: {x: 4, y: 4}
-      cellType: grass
+      cellType: road
     - location: {x: 4, y: 5}
       cellType: grass
     - location: {x: 4, y: 6}
@@ -2575,7 +2575,7 @@ MonoBehaviour:
     - location: {x: 5, y: 3}
       cellType: grass
     - location: {x: 5, y: 4}
-      cellType: grass
+      cellType: road
     - location: {x: 5, y: 5}
       cellType: grass
     - location: {x: 5, y: 6}
