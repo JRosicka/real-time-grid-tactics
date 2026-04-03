@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Gameplay.Config;
+using Gameplay.Config.Abilities;
 using Gameplay.Config.Upgrades;
 using Gameplay.Entities;
 using Gameplay.Entities.Abilities;
@@ -124,12 +125,18 @@ public abstract class AbstractCommandManager : NetworkBehaviour, ICommandManager
 
         // Handle starting movement
         if (spawnerEntity != null && spawnerEntity.TargetLocationLogicValue.CanRally && spawnerEntity.TargetLocationLogicValue.CurrentTarget != spawnerLocation) {
-            if (data.Tags.Contains(EntityTag.Worker)) {
-                // Workers get move-commanded
-                entityInstance.TryMoveToCell(spawnerEntity.TargetLocationLogicValue.CurrentTarget, false, false, false);
-            } else {
-                // Everything else attacks
-                entityInstance.TryAttack(spawnerEntity.TargetLocationLogicValue.CurrentTarget, spawnerEntity.TargetLocationLogicValue.TargetEntity);
+            RallyAbilityData rallyAbilityData = spawnerEntity.GetAbilityData<RallyAbilityData>();
+            if (rallyAbilityData != null) {
+                if (rallyAbilityData.RallyingUnitsCanTargetAttack && spawnerEntity.TargetLocationLogicValue.TargetEntity) {
+                    // Target-attack the target entity
+                    entityInstance.TryAttack(spawnerEntity.TargetLocationLogicValue.CurrentTarget, spawnerEntity.TargetLocationLogicValue.TargetEntity);
+                } else if (rallyAbilityData.RallyingUnitsAreAttackers) {
+                    // Attack-move
+                    entityInstance.TryAttack(spawnerEntity.TargetLocationLogicValue.CurrentTarget, null);
+                } else {
+                    // Move command
+                    entityInstance.TryMoveToCell(spawnerEntity.TargetLocationLogicValue.CurrentTarget, false, false, false);
+                }
             }
         }
         

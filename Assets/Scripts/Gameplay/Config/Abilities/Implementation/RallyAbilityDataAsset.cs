@@ -24,6 +24,7 @@ namespace Gameplay.Config.Abilities {
         
         [FormerlySerializedAs("UseAttackIconOnPath")] 
         public bool RallyingUnitsAreAttackers;
+        public bool RallyingUnitsCanTargetAttack;
 
         public override void SelectAbility(GridEntity selector) {
             // Nothing to do

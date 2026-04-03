@@ -17,6 +17,7 @@ MonoBehaviour:
     _id: Rally
     _description: 
     _icon: {fileID: 0}
+    _iconScaleInSelectionInterface: 1
     _overrideIconForGrid: {fileID: 0}
     _flipGridIcon: 0
     _gridIconColor: {r: 0, g: 0, b: 0, a: 0}
@@ -46,3 +47,4 @@ MonoBehaviour:
     _performedSFX: {fileID: 11400000, guid: 05b6c460463864379bf3859627a7ae6e, type: 2}
     _triggersEntityOrderVoiceLine: 0
     RallyingUnitsAreAttackers: 0
+    RallyingUnitsCanTargetAttack: 1

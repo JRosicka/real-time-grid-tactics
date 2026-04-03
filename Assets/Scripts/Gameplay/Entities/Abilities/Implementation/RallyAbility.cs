@@ -33,13 +33,14 @@ namespace Gameplay.Entities.Abilities {
         }
         
         protected override (bool, AbilityResult) DoAbilityEffect() {
-            GridEntity entityAtDestination = Data.RallyingUnitsAreAttackers
+            GridEntity entityAtDestination = Data.RallyingUnitsCanTargetAttack
                 ? GameManager.Instance.GetTopEntityAtLocation(AbilityParameters.Destination)
                 : null;
-            if (entityAtDestination != null && (entityAtDestination.Team == PerformerTeam || (entityAtDestination.Team == GameTeam.Neutral && !entityAtDestination.EntityData.Targetable))) {
+            if (entityAtDestination && (entityAtDestination.Team == PerformerTeam || (entityAtDestination.Team == GameTeam.Neutral && !entityAtDestination.EntityData.Targetable))) {
                 entityAtDestination = null;
             }
-            Performer.SetTargetLocation(AbilityParameters.Destination, entityAtDestination, Data.RallyingUnitsAreAttackers);
+            bool attacking = Data.RallyingUnitsAreAttackers || entityAtDestination;
+            Performer.SetTargetLocation(AbilityParameters.Destination, entityAtDestination, attacking);
             return (true, AbilityResult.CompletedWithEffect);
         }
     }
