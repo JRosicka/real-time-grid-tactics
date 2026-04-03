@@ -190,7 +190,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e18702261f244b8a1473ecdb7437aae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _versionFormat: AmberForge alpha v{0}
+  _versionFormat: AmberForge beta v{0}
   _versionText: {fileID: 2111750594133485564}
 --- !u!222 &2111750594133485567
 CanvasRenderer:
@@ -220,7 +220,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: AmberForge Alpha v0.4.2
+  m_text: AmberForge beta v0.4.2
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: c40b1b51a4a5fa043bb9c7c1898211bd, type: 2}
   m_sharedMaterial: {fileID: 8900443813055667733, guid: c40b1b51a4a5fa043bb9c7c1898211bd, type: 2}
