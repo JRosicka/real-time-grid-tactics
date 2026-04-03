@@ -11,6 +11,8 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class MultiplayerMenu : MonoBehaviour {
+    public static MultiplayerMenu Instance;
+    
     public GameObject LobbyTypeSelection;
 
     public Button StopHostButton;
@@ -34,9 +36,13 @@ public class MultiplayerMenu : MonoBehaviour {
     public Color EnabledTextColor;
     
     public CanvasWidthSetter CanvasWidthSetter;
+    public UIScaler UIScaler;
     
     private void Start() {
+        Instance = this;
+        
         CanvasWidthSetter.Initialize();
+        UIScaler.Initialize();
         
         #if !UNITY_EDITOR
         // Just lock the mouse to the game window here

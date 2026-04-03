@@ -21,7 +21,8 @@ namespace Gameplay.UI {
         [SerializeField] private SettingToggle _lockCursorToggle;
         [SerializeField] private SettingToggle _edgeScrollToggle;
         [SerializeField] private SettingSlider _edgeScrollSpeedSlider;
-        [SerializeField] private SettingSlider _edgeScrollSpeedSensitivitySlider;
+        [SerializeField] private SettingSlider _menuUIScalingSlider;
+        [SerializeField] private SettingSlider _inGameUIScalingSlider;
         [SerializeField] private SettingDropdownList _displayList;
         [SerializeField] private SettingDropdownList _resourcesUIList;
 
@@ -43,6 +44,8 @@ namespace Gameplay.UI {
             bool lockCursor = PlayerPrefs.GetInt(PlayerPrefsKeys.LockCursorKey, 1) == 1;
             bool edgeScroll = PlayerPrefs.GetInt(PlayerPrefsKeys.EdgeScrollKey, 1) == 1;
             int edgeScrollSpeed = PlayerPrefs.GetInt(PlayerPrefsKeys.EdgeScrollSpeed, PlayerPrefsKeys.DefaultEdgeScrollSpeed);
+            int uiScaleMenu = PlayerPrefs.GetInt(PlayerPrefsKeys.UIScaleMenu, PlayerPrefsKeys.DefaultUIScale);
+            int uiScaleInGame = PlayerPrefs.GetInt(PlayerPrefsKeys.UIScaleInGame, PlayerPrefsKeys.DefaultUIScale);
             int chosenDisplay = PlayerPrefs.GetInt(PlayerPrefsKeys.ChosenDisplayKey, 0);
             // _resourcesUILocation = PlayerPrefs.GetInt(PlayerPrefsKeys.ResourcesUILocationKey, 0);
             
@@ -63,6 +66,12 @@ namespace Gameplay.UI {
             
             _edgeScrollSpeedSlider.Initialize(edgeScrollSpeed);
             _edgeScrollSpeedSlider.ValueChanged += EdgeScrollSpeedChanged;
+            
+            _menuUIScalingSlider.Initialize(uiScaleMenu);
+            _menuUIScalingSlider.ValueChanged += MenuUIScaleChanged;
+
+            _inGameUIScalingSlider.Initialize(uiScaleInGame);
+            _inGameUIScalingSlider.ValueChanged += InGameUIScaleChanged;
 
             List<string> displayStrings = Display.displays.Take(8).Select((d, i) => $"Display {i + 1}").ToList();
             _displayList.Initialize(chosenDisplay, displayStrings);
@@ -111,7 +120,21 @@ namespace Gameplay.UI {
                 GameManager.CameraManager.SetEdgeScrollSpeed(speed);
             }
         }
-        
+
+        private void MenuUIScaleChanged(int scale) {
+            PlayerPrefs.SetInt(PlayerPrefsKeys.UIScaleMenu, scale);
+            if (!_inGame) {
+                MultiplayerMenu.Instance.UIScaler.SetScale(scale);
+            }
+        }
+
+        private void InGameUIScaleChanged(int scale) {
+            PlayerPrefs.SetInt(PlayerPrefsKeys.UIScaleInGame, scale);
+            if (_inGame) {
+                GameManager.UIScaler.SetScale(scale);
+            }
+        }
+
         private void ChosenDisplayChanged(int display) {
             PlayerPrefs.SetInt(PlayerPrefsKeys.ChosenDisplayKey, display);
             if (Camera.main != null) {

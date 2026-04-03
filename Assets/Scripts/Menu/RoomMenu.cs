@@ -1,7 +1,5 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using Audio;
 using Game.Network;
 using Gameplay.Config;
 using JetBrains.Annotations;
@@ -11,7 +9,6 @@ using Scenes;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using Sirenix.OdinInspector;
 using Steamworks;
 
 /// <summary>
@@ -24,7 +21,6 @@ public class RoomMenu : MonoBehaviour {
     public PlayerSlot PlayerSlot2;
     public List<PlayerSlot> SpectatorSlots;
     public Button StartButton;
-    public Button SwitchMapButton;
     public Button ToggleReadyButton;
     public TMP_Text ToggleReadyButtonText;
     public TMP_Text JoinCodeText;
@@ -33,6 +29,7 @@ public class RoomMenu : MonoBehaviour {
     public Transform ColorMenuParent;
     
     public CanvasWidthSetter CanvasWidthSetter;
+    public UIScaler UIScaler;
 
     public Animator CopiedToClipboardAnimator;
     
@@ -72,6 +69,7 @@ public class RoomMenu : MonoBehaviour {
 
     void Start() {
         CanvasWidthSetter.Initialize();
+        UIScaler.Initialize();
         LobbyNetworkBehaviour.Initialize(this);
 
         _availableColors = GameConfigurationLocator.GameConfiguration.PlayerColorConfigs;
@@ -80,7 +78,6 @@ public class RoomMenu : MonoBehaviour {
         AllPlayerSlots.ForEach(s => s.Initialize(this, _availableColors, ColorMenuParent));
         
         StartButton.gameObject.SetActive(false);
-        SwitchMapButton.gameObject.SetActive(NetworkServer.active);
         NetworkManager.RoomServerPlayersReadyAction += TryShowStartButton;
         NetworkManager.RoomServerPlayersNotReadyAction += HideStartButton;
         NetworkManager.RoomServerSceneChangedAction += UpdateLobbyOpenStatus;

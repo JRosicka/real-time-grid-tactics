@@ -55,6 +55,7 @@ public class GameManager : MonoBehaviour {
     public LeaderTracker LeaderTracker;
     public SeedManager SeedManager;
     public TileAccessibilityManager TileAccessibilityManager;
+    public UIScaler UIScaler;
     
     public IGamePlayer Player1;
     public IGamePlayer Player2;
@@ -67,6 +68,7 @@ public class GameManager : MonoBehaviour {
         }
         
         Instance = this;
+        UIScaler.Initialize();
         GameEndManager = new GameEndManager(this);
         DisconnectionHandler = new DisconnectionHandler();
         AbilityAssignmentManager = new AbilityAssignmentManager();
