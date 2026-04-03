@@ -5700,6 +5700,7 @@ MonoBehaviour:
   ColorFlashBehaviour: {fileID: 1530196826150473110}
   _unitHealthBar: {fileID: 2271217030354002039}
   _structureHealthBar: {fileID: 3296355212887048963}
+  _structureHealthBarImage: {fileID: 3396406605549919443}
   _unitUIFrame:
   - {fileID: 5193744382658690052}
   - {fileID: 5090515305287165812}

@@ -40,6 +40,7 @@ namespace Gameplay.Entities {
         [SerializeField] private ColorFlashBehaviour ColorFlashBehaviour;
         [SerializeField] private VisualBarV2 _unitHealthBar;
         [SerializeField] private VisualBarV2 _structureHealthBar;
+        [SerializeField] private Image _structureHealthBarImage;
         [SerializeField] private List<GameObject> _unitUIFrame;
         [SerializeField] private GameObject _structureUIFrame;
         [SerializeField] private Image _entityIcon;
@@ -74,6 +75,7 @@ namespace Gameplay.Entities {
         
         public void Initialize(GridEntity entity, int stackOrder) {
             Entity = entity;
+            PlayerColorData teamColor = GameManager.Instance.GetPlayerForTeam(entity)?.ColorData;
             
             _mainImage.sprite = entity.EntityData.BaseSprite;
             _mainImage.GetComponent<Canvas>().sortingOrder += stackOrder;
@@ -106,6 +108,10 @@ namespace Gameplay.Entities {
                 if (hasHP) {
                     _structureHealthBar.Initialize(new HealthBarLogic(entity));
                     _entityIcon.sprite = entity.EntityData.EntityIcon;
+                    if (teamColor) {
+                        _entityIcon.color = teamColor.TeamColor;
+                        _structureHealthBarImage.color = teamColor.TeamColor;
+                    }
                 }
                 _unitUIFrame.ForEach(g => g.SetActive(false));
                 _structureUIFrame.SetActive(hasHP);
