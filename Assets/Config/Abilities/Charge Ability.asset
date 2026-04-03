@@ -18,6 +18,7 @@ MonoBehaviour:
     _description: 'Instantly move in a straight line across a clear path. Attacks
       an enemy if there is one at the destination. '
     _icon: {fileID: 21300000, guid: b57c4120c8015b744a4fc3667c7fba31, type: 3}
+    _iconScaleInSelectionInterface: 1
     _overrideIconForGrid: {fileID: 0}
     _flipGridIcon: 0
     _gridIconColor: {r: 0, g: 0, b: 0, a: 0}

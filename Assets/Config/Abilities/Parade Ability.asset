@@ -18,6 +18,7 @@ MonoBehaviour:
     _description: Permanently increase the income rate of a friendly resource collection
       structure.
     _icon: {fileID: 21300000, guid: 2f83c1de204d34dc9b424e03c6d27723, type: 3}
+    _iconScaleInSelectionInterface: 1
     _overrideIconForGrid: {fileID: 21300000, guid: fdbe5cc5acca24050a982258af9abd8f, type: 3}
     _flipGridIcon: 0
     _gridIconColor: {r: 0.45490196, g: 0.8784314, b: 0.4509804, a: 1}

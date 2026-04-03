@@ -17,6 +17,7 @@ MonoBehaviour:
     _id: Target Attack
     _description: Target an enemy unit to move towards it and attack it.
     _icon: {fileID: 21300000, guid: 09f4153a33ec03d48b76946c306dfd96, type: 3}
+    _iconScaleInSelectionInterface: 1
     _overrideIconForGrid: {fileID: 21300000, guid: 8c5e03b6b52e16d4192cb394e92e32d5, type: 3}
     _flipGridIcon: 0
     _gridIconColor: {r: 0.8509804, g: 0.42352942, b: 0.03529412, a: 1}

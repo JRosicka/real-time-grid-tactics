@@ -31,6 +31,7 @@ MonoBehaviour:
     m_RuleTransform: 0
   m_FlatTop: 0
   TileID: mountain
+  IconScaleInSelectionInterface: 1.4
   Selectable: 1
   DisplayName: Mountain
   ShortDescription: Impassible terrain.

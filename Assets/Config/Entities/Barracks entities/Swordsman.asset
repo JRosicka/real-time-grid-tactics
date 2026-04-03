@@ -24,6 +24,7 @@ MonoBehaviour:
   BaseSprite: {fileID: 21300000, guid: 71dd4226a734045c29d78ae96344e958, type: 3}
   TeamColorSprite: {fileID: 21300000, guid: 7c85c0800115a46d4a4d64e48fd167c9, type: 3}
   BaseSpriteIconOverride: {fileID: 0}
+  IconScaleInSelectionInterface: 1.3
   _viewPrefab: {fileID: 7504026570216467247, guid: c58f0c96c2c0e8f4fbf691600e98b9b6, type: 3}
   SelectionSFX: {fileID: 11400000, guid: 2268fa2f248bd40c4a4f5cf84cd8e46b, type: 2}
   OrderSFX: {fileID: 11400000, guid: ba563483010cc4b2da24904d16700c07, type: 2}
@@ -37,13 +38,11 @@ MonoBehaviour:
   TagsToApplyBonusDamageTo: 
   NormalMoveTime: 4
   AddedMovementTimeFromAttacking: 1.2
+  PathfindingConfig:
+    MoveIconOverride: {fileID: 0}
+    AttackIconOverride: {fileID: 0}
+    TargetAttackIconOverride: {fileID: 0}
   Tags: 03000000
-  InaccessibleTiles:
-  - {fileID: 11400000, guid: 21c254da385bdd14eb49ce66d1a541a9, type: 2}
-  - {fileID: 11400000, guid: d73b2f2ca718f89489ab7d1ab3d344cb, type: 2}
-  - {fileID: 11400000, guid: 247c5b5526252334798aa3ad951dcf40, type: 2}
-  SlowTiles:
-  - {fileID: 11400000, guid: 72bba8f070a4e784393726b1ad5d4c16, type: 2}
   OverrideEntityDataForPathfinding: {fileID: 0}
   AttackerTargetPriority: 3
   Abilities:
@@ -52,6 +51,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: a23c69f58674b4c0790e0e27e2d0dbcb, type: 2}
   - {fileID: 11400000, guid: ddf18332952084d23850a96e2fddd976, type: 2}
   FriendlyUnitsCanShareCell: 0
+  Targetable: 1
   AttackByDefault: 1
   IsResourceExtractor: 0
   ResourceThatThisCanExtract: {fileID: 0}

@@ -22,6 +22,7 @@ MonoBehaviour:
   BaseSprite: {fileID: 21300000, guid: 7fa8782288016429f89ba3d148e6cf92, type: 3}
   TeamColorSprite: {fileID: 0}
   BaseSpriteIconOverride: {fileID: 0}
+  IconScaleInSelectionInterface: 0.8
   _viewPrefab: {fileID: 7504026570216467247, guid: 8e9c0853f67eb4cc59e4dfd7c7e42e4a, type: 3}
   SelectionSFX: {fileID: 0}
   OrderSFX: {fileID: 0}
@@ -50,7 +51,6 @@ MonoBehaviour:
   IsResourceExtractor: 0
   ResourceThatThisCanExtract: {fileID: 0}
   EntityIcon: {fileID: 0}
-  IconScaleInSelectionInterface: 0.8
   MovementAndAttackUI: 0
   DisplaySelectionOutline: 1
   BuildQueueSize: 5
