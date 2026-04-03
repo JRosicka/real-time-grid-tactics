@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: Mystical Soil Enrichment
   m_EditorClassIdentifier: 
   ID: Mystical Soil Enrichment
-  ShortDescription: Adds more collectible <sprite name="gold"> to villages.
-  Description: Adds 200 collectible <sprite name="gold"> to each friendly Village
+  ShortDescription: Adds more collectible <sprite name="food"> to villages.
+  Description: Adds 200 collectible <sprite name="food"> to each friendly Village
     at the time of research.
   Cost:
   - Type: 1

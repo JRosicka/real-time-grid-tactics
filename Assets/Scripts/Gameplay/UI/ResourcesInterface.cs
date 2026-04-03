@@ -36,15 +36,15 @@ namespace Gameplay.UI {
             foreach (IGamePlayer player in resourcesObserver.ObservedPlayers) {
                 PlayerResourcesView resourcesView = Instantiate(_playerResourcesViewPrefab, _resourcesViewParent);
                 resourcesView.SetPlayerDetails(player.DisplayName, player.ColorData.ColoredButtonData.Normal, localPlayerIsSpectator);
-                resourcesView.UpdateAmounts(GameConfiguration.CurrencyConfiguration.StartingGoldAmount, GameConfiguration.CurrencyConfiguration.StartingAmberAmount);
+                resourcesView.UpdateAmounts(GameConfiguration.CurrencyConfiguration.StartingFoodAmount, GameConfiguration.CurrencyConfiguration.StartingAmberAmount);
                 _playerResourcesViews.Add(player.Team, resourcesView);
             }
         }
 
         private void UpdateBalancesView(GameTeam team, List<ResourceAmount> resourceAmounts) {
-            int newGoldAmount = resourceAmounts.First(r => r.Type == ResourceType.Basic).Amount;
+            int newFoodAmount = resourceAmounts.First(r => r.Type == ResourceType.Basic).Amount;
             int newAmberAmount = resourceAmounts.First(r => r.Type == ResourceType.Advanced).Amount;
-            _playerResourcesViews[team].UpdateAmounts(newGoldAmount, newAmberAmount);
+            _playerResourcesViews[team].UpdateAmounts(newFoodAmount, newAmberAmount);
         }
     }
 }

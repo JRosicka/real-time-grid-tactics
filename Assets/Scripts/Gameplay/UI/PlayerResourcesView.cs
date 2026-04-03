@@ -24,8 +24,8 @@ namespace Gameplay.UI {
             }
         }
 
-        public void UpdateAmounts(int gold, int amber) {
-            BasicResourcesAmount.text = gold.ToString();
+        public void UpdateAmounts(int food, int amber) {
+            BasicResourcesAmount.text = food.ToString();
             AdvancedResourcesAmount.text = amber.ToString();
         }
     }

@@ -15,7 +15,7 @@ public enum ResourceType {
 public static class ResourceTypeExtensions {
     public static string DisplayName(this ResourceType resourceType) {
         return resourceType switch {
-            ResourceType.Basic => "Gold",
+            ResourceType.Basic => "Food",
             ResourceType.Advanced => "Spirit-Amber",
             _ => throw new ArgumentOutOfRangeException(nameof(resourceType), resourceType, null)
         };
@@ -23,7 +23,7 @@ public static class ResourceTypeExtensions {
     
     public static string DisplayIcon(this ResourceType resourceType) {
         return resourceType switch {
-            ResourceType.Basic => TextIcons.Gold,
+            ResourceType.Basic => TextIcons.Food,
             ResourceType.Advanced => TextIcons.Amber,
             _ => throw new ArgumentOutOfRangeException(nameof(resourceType), resourceType, null)
         };
@@ -74,11 +74,11 @@ public class PlayerResourcesController : NetworkBehaviour {
     }
 
     public void Initialize(CurrencyConfiguration currencyConfiguration) {
-        int startingGold = currencyConfiguration.StartingGoldAmount;
-        if (startingGold > 0) {
+        int startingFood = currencyConfiguration.StartingFoodAmount;
+        if (startingFood > 0) {
             Earn(new ResourceAmount {
                 Type = ResourceType.Basic,
-                Amount = startingGold
+                Amount = startingFood
             });
         }
 

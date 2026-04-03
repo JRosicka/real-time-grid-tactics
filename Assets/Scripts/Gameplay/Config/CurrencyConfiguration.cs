@@ -21,7 +21,7 @@ namespace Gameplay.Config {
         public List<Currency> Currencies;
         
         
-        public int StartingGoldAmount => GameManager.Instance?.Cheats.PlayerMoneyFromCheats != null 
+        public int StartingFoodAmount => GameManager.Instance?.Cheats.PlayerMoneyFromCheats != null 
                     ? GameManager.Instance.Cheats.PlayerMoneyFromCheats.Value 
                     : Currencies.First(c => c.Type == ResourceType.Basic).StartingAmount;
 

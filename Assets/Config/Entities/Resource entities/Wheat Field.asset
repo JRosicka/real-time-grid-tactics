@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: Wheat Field
   m_EditorClassIdentifier: 
   ID: Wheat Field
-  ShortDescription: Resource patch for <sprite name="gold">.
-  Description: Resource patch for <sprite name="gold">. Build a Village here with
+  ShortDescription: Resource patch for <sprite name="food">.
+  Description: Resource patch for <sprite name="food">. Build a Village here with
     a peasant to harvest.
   Cost: []
   Requirements: []
@@ -36,9 +36,11 @@ MonoBehaviour:
   TagsToApplyBonusDamageTo: 
   NormalMoveTime: 0
   AddedMovementTimeFromAttacking: 0
+  PathfindingConfig:
+    MoveIconOverride: {fileID: 0}
+    AttackIconOverride: {fileID: 0}
+    TargetAttackIconOverride: {fileID: 0}
   Tags: 07000000
-  InaccessibleTiles: []
-  SlowTiles: []
   OverrideEntityDataForPathfinding: {fileID: 0}
   AttackerTargetPriority: 0
   Abilities: []

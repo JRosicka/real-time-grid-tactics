@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: Village
   m_EditorClassIdentifier: 
   ID: Village
-  ShortDescription: Resource collector for <sprite name="gold">.
-  Description: Resource collector for <sprite name="gold">. Buildable on an empty
+  ShortDescription: Resource collector for <sprite name="food">.
+  Description: Resource collector for <sprite name="food">. Buildable on an empty
     Wheat Field.
   Cost:
   - Type: 0

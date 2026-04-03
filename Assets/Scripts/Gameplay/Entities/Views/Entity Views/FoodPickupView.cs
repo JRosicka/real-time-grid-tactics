@@ -2,7 +2,7 @@ using Gameplay.Entities.Abilities;
 using UnityEngine;
 
 namespace Gameplay.Entities {
-    public class AttackableGoldPickupView : GridEntityParticularView {
+    public class FoodPickupView : GridEntityParticularView {
         [SerializeField] private Animator _animator;
         
         public override void Initialize(GridEntity entity) {

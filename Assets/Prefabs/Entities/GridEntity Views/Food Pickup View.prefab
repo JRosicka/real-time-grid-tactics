@@ -11,7 +11,7 @@ PrefabInstance:
     - target: {fileID: 133772266710080777, guid: 9d77d3ce03b813d42b6c2efebbdefd02, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: a7e6cb48d72b74aa0a1679a961dc6f10, type: 3}
+      objectReference: {fileID: 21300000, guid: 7fa8782288016429f89ba3d148e6cf92, type: 3}
     - target: {fileID: 1729579879077070622, guid: 9d77d3ce03b813d42b6c2efebbdefd02, type: 3}
       propertyPath: m_SizeDelta.x
       value: 97
@@ -38,12 +38,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2517421855927553431, guid: 9d77d3ce03b813d42b6c2efebbdefd02, type: 3}
       propertyPath: m_Name
-      value: Attackable Gold Pickup View
+      value: Gold Pickup View
       objectReference: {fileID: 0}
     - target: {fileID: 5299271008241535793, guid: 9d77d3ce03b813d42b6c2efebbdefd02, type: 3}
       propertyPath: _particularView
       value: 
-      objectReference: {fileID: 5656841035477956430}
+      objectReference: {fileID: 4107352163062245496}
     - target: {fileID: 6720547402385952072, guid: 9d77d3ce03b813d42b6c2efebbdefd02, type: 3}
       propertyPath: m_RootOrder
       value: 3
@@ -159,20 +159,17 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 2517421855927553431, guid: 9d77d3ce03b813d42b6c2efebbdefd02, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 5656841035477956430}
+      addedObject: {fileID: 4107352163062245496}
     - targetCorrespondingSourceObject: {fileID: 3523105734711461116, guid: 9d77d3ce03b813d42b6c2efebbdefd02, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1562307012670718513}
-    - targetCorrespondingSourceObject: {fileID: 1910710874141268627, guid: 9d77d3ce03b813d42b6c2efebbdefd02, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 9079006091324281910}
   m_SourcePrefab: {fileID: 100100000, guid: 9d77d3ce03b813d42b6c2efebbdefd02, type: 3}
 --- !u!1 &236104011512999305 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2517421855927553431, guid: 9d77d3ce03b813d42b6c2efebbdefd02, type: 3}
   m_PrefabInstance: {fileID: 2425578244529659934}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &5656841035477956430
+--- !u!114 &4107352163062245496
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -181,9 +178,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 236104011512999305}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 16507f27b9cc4823b285996f201849c4, type: 3}
+  m_Script: {fileID: 11500000, guid: e2beb07a98054a0da657bdf0a7e8d02a, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Gameplay.Entities.AttackableGoldPickupView
+  m_EditorClassIdentifier: 
   _animator: {fileID: 1562307012670718513}
 --- !u!1 &1246924733191382242 stripped
 GameObject:
@@ -212,23 +209,3 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!1 &4264161064351021709 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1910710874141268627, guid: 9d77d3ce03b813d42b6c2efebbdefd02, type: 3}
-  m_PrefabInstance: {fileID: 2425578244529659934}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &9079006091324281910
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4264161064351021709}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cfabb0440166ab443bba8876756fdfa9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Shadow
-  m_EffectColor: {r: 0, g: 0, b: 0, a: 0.6509804}
-  m_EffectDistance: {x: 1.5, y: -1.5}
-  m_UseGraphicAlpha: 1

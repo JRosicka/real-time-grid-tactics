@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 779b33ad652446d6a06162a3e47e3234, type: 3}
-  m_Name: DeathActionGiveGold
+  m_Name: DeathActionGiveFood
   m_EditorClassIdentifier: Assembly-CSharp::Gameplay.Config.DeathAction.GiveResourcesDeathActionData
   ResourceToAward:
     Type: 0
