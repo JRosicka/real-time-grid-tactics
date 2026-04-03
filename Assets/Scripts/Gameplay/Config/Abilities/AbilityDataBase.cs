@@ -31,6 +31,8 @@ namespace Gameplay.Config.Abilities {
 
         [SerializeField] private Sprite _icon;
         public Sprite Icon => _icon;
+        [SerializeField] private float _iconScaleInSelectionInterface = 1f;
+        public float IconScaleInSelectionInterface => _iconScaleInSelectionInterface;
         [SerializeField] private Sprite _overrideIconForGrid;
         public Sprite OverrideIconForGrid => _overrideIconForGrid;
         [SerializeField] private bool _flipGridIcon;

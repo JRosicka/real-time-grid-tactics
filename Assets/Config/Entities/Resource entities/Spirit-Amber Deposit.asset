@@ -23,6 +23,7 @@ MonoBehaviour:
   BaseSprite: {fileID: 21300000, guid: ce5b1db206f7b4f3b82aca78af7f6ff4, type: 3}
   TeamColorSprite: {fileID: 0}
   BaseSpriteIconOverride: {fileID: 0}
+  IconScaleInSelectionInterface: 1.2
   _viewPrefab: {fileID: 7504026570216467247, guid: 73ae2ea6cc4fe46278c933adff406740, type: 3}
   SelectionSFX: {fileID: 0}
   OrderSFX: {fileID: 0}
@@ -36,9 +37,11 @@ MonoBehaviour:
   TagsToApplyBonusDamageTo: 
   NormalMoveTime: 0
   AddedMovementTimeFromAttacking: 0
+  PathfindingConfig:
+    MoveIconOverride: {fileID: 0}
+    AttackIconOverride: {fileID: 0}
+    TargetAttackIconOverride: {fileID: 0}
   Tags: 07000000
-  InaccessibleTiles: []
-  SlowTiles: []
   OverrideEntityDataForPathfinding: {fileID: 0}
   AttackerTargetPriority: 0
   Abilities: []

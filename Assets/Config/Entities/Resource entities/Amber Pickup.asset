@@ -35,9 +35,11 @@ MonoBehaviour:
   TagsToApplyBonusDamageTo: 
   NormalMoveTime: 0
   AddedMovementTimeFromAttacking: 0
+  PathfindingConfig:
+    MoveIconOverride: {fileID: 0}
+    AttackIconOverride: {fileID: 0}
+    TargetAttackIconOverride: {fileID: 0}
   Tags: 07000000
-  InaccessibleTiles: []
-  SlowTiles: []
   OverrideEntityDataForPathfinding: {fileID: 0}
   AttackerTargetPriority: 0
   Abilities:
@@ -48,6 +50,7 @@ MonoBehaviour:
   IsResourceExtractor: 0
   ResourceThatThisCanExtract: {fileID: 0}
   EntityIcon: {fileID: 0}
+  IconScaleInSelectionInterface: 0.8
   MovementAndAttackUI: 0
   DisplaySelectionOutline: 1
   BuildQueueSize: 5

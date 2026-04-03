@@ -63,6 +63,7 @@ namespace Gameplay.UI {
 
         public void SetUpIcons(Image entityIcon, Image entityColorsIcon) {
             EntityData entityData = Entity.EntityData;
+            entityIcon.transform.localScale = new Vector3(entityData.IconScaleInSelectionInterface, entityData.IconScaleInSelectionInterface, 1);
             entityIcon.sprite = entityData.BaseSpriteIconOverride == null ? entityData.BaseSprite : entityData.BaseSpriteIconOverride;
             entityColorsIcon.sprite = entityData.TeamColorSprite;
             IGamePlayer player = GameManager.Instance.GetPlayerForTeam(Entity);

@@ -31,11 +31,13 @@ MonoBehaviour:
     m_RuleTransform: 0
   m_FlatTop: 0
   TileID: amberForge
+  IconScaleInSelectionInterface: 1.4
   Selectable: 0
   DisplayName: Amber Forge
   ShortDescription: 
   LongDescription: 
-  SlowTags: []
+  SpeedModifierTags: []
   InaccessibleTags: 020000000300000001000000
+  InaccessibleEntities: []
   _armorBonus: 0
   _defenseBoostTags: 

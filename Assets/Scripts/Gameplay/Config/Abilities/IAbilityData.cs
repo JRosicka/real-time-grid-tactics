@@ -16,6 +16,7 @@ namespace Gameplay.Config.Abilities {
         AbilitySlotInfo AbilitySlotInfo { get; }
         string ContentResourceID { get; set; }
         Sprite Icon { get; }
+        float IconScaleInSelectionInterface { get; }
         Sprite OverrideIconForGrid { get; }
         bool FlipGridIcon { get; }
         Color GridIconColor { get; }

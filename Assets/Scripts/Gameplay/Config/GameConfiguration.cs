@@ -24,6 +24,7 @@ namespace Gameplay.Config {
         
         [Header("Misc Sprites")]
         public Sprite CancelButtonSprite;
+        public float CancelIconScaleInSelectionInterface = 1f;
         public ColoredButtonData CancelButtonSlotSprites;
         public PlayerColorData NeutralColors;
         public Material TargetedMaterial;

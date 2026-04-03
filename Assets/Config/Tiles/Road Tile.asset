@@ -265,6 +265,7 @@ MonoBehaviour:
     m_RuleTransform: 5
   m_FlatTop: 0
   TileID: road
+  IconScaleInSelectionInterface: 1.4
   Selectable: 1
   DisplayName: Road
   ShortDescription: Quickening terrain.

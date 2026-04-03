@@ -1,4 +1,3 @@
-using Gameplay.Config.Abilities;
 using Gameplay.Entities;
 using Gameplay.Entities.Abilities;
 using Gameplay.Entities.BuildQueue;
@@ -28,6 +27,7 @@ namespace Gameplay.UI {
         public Color TeamBannerColor => GameManager.Instance.Configuration.NeutralColors.TeamBannerColor;
         
         public void SetUpIcons(Image entityIcon, Image entityColorsIcon) {
+            entityIcon.transform.localScale = new Vector3(_tile.IconScaleInSelectionInterface, _tile.IconScaleInSelectionInterface, 1);
             entityIcon.sprite = _tile.m_DefaultSprite;
             entityColorsIcon.gameObject.SetActive(false);
         }

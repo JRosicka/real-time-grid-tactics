@@ -31,6 +31,7 @@ MonoBehaviour:
   BaseSprite: {fileID: 21300000, guid: b57c4120c8015b744a4fc3667c7fba31, type: 3}
   TeamColorSprite: {fileID: 0}
   BaseSpriteIconOverride: {fileID: 0}
+  IconScaleInSelectionInterface: 1
   Repeatable: 0
   ApplyToGridEntitiesUponCompletion: 0
   ApplyToGridEntitiesWhenTheySpawn: 0

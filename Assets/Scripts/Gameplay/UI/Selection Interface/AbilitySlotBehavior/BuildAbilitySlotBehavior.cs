@@ -114,6 +114,7 @@ namespace Gameplay.UI {
         }
 
         public void SetUpSprites(Image abilityImage, Image secondaryAbilityImage, AbilitySlotBackgroundView abilitySlotBackground) {
+            abilityImage.transform.localScale = new Vector3(Buildable.IconScaleInSelectionInterface, Buildable.IconScaleInSelectionInterface, 1);
             abilityImage.sprite = Buildable.BaseSpriteIconOverride == null ? Buildable.BaseSprite : Buildable.BaseSpriteIconOverride;
 
             if (Buildable.TeamColorSprite == null) {

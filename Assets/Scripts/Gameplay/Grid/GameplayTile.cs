@@ -15,7 +15,8 @@ public class GameplayTile : HexagonalRuleTile<GameplayTile.Neighbor> {
         public float SlowFactor;
     }
 
-    public string TileID; 
+    public string TileID;
+    public float IconScaleInSelectionInterface = 1.4f;
     public bool Selectable;
     public string DisplayName;
     public string ShortDescription;

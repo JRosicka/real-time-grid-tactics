@@ -58,6 +58,7 @@ namespace Gameplay.UI {
         }
 
         public void SetUpSprites(Image abilityImage, Image secondaryAbilityImage, AbilitySlotBackgroundView abilitySlotBackground) {
+            abilityImage.transform.localScale = new Vector3(_abilityData.IconScaleInSelectionInterface, _abilityData.IconScaleInSelectionInterface, 1);
             abilityImage.sprite = _abilityData.Icon;
             secondaryAbilityImage.sprite = null;
             secondaryAbilityImage.gameObject.SetActive(false);

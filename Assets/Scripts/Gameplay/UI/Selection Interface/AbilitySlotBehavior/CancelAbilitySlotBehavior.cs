@@ -1,4 +1,5 @@
 using Gameplay.Config;
+using UnityEngine;
 using UnityEngine.UI;
 
 namespace Gameplay.UI {
@@ -18,6 +19,7 @@ namespace Gameplay.UI {
         }
         
         public void SetUpSprites(Image abilityImage, Image secondaryAbilityImage, AbilitySlotBackgroundView abilitySlotBackground) {
+            abilityImage.transform.localScale = new Vector3(GameConfiguration.CancelIconScaleInSelectionInterface, GameConfiguration.CancelIconScaleInSelectionInterface, 1);
             abilityImage.sprite = GameConfiguration.CancelButtonSprite;
             secondaryAbilityImage.gameObject.SetActive(false);
             if (abilitySlotBackground) {

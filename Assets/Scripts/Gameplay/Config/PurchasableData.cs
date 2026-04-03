@@ -30,6 +30,7 @@ namespace Gameplay.Config {
         public Sprite TeamColorSprite;
         [Tooltip("Optional sprite to use for the base unit icon instead of the BaseSprite")]
         public Sprite BaseSpriteIconOverride;
+        public float IconScaleInSelectionInterface = 1.3f;
     }
     
     public static class PurchasableDataSerializer {
