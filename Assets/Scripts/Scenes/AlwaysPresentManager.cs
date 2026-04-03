@@ -29,6 +29,10 @@ namespace Scenes {
             DontDestroyOnLoad(gameObject);
             _instance = this;
             
+            // Data update check
+            PersistentDataUpdater.UpdateData();
+            
+            // Cross-scene object initialization
             _gameTypeManager.Initialize();
             _gameConfigurationLocator.Initialize();
             _audioPlayer.Initialize();

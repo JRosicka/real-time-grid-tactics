@@ -14,4 +14,6 @@ public static class PlayerPrefsKeys {
     public const float DefaultVolume = .5f;
     public const int DefaultEdgeScrollSpeed = 50;
     public const int DefaultEdgeScrollSensitivity = 50;
+
+    public const string LastSeenVersionKey = "LastSeenUpdate";
 }
