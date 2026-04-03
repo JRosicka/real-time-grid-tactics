@@ -14,11 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Gameplay.Config.MapImagesConfiguration
   _mapPreviewImages:
   - MapID: origins
-    PreviewImage: {fileID: 21300000, guid: e4904926c3766430090e36c291d58b53, type: 3}
-    FullMapImage: {fileID: 21300000, guid: b9d499f852be04e5686b13db25f119f5, type: 3}
+    PreviewImage: {fileID: 21300000, guid: 0341b3bed1bbd4576bfe27162eef61ba, type: 3}
+    FullMapImage: {fileID: 21300000, guid: 903b4aede315246b48834754b0ba6964, type: 3}
   - MapID: mountainPass
-    PreviewImage: {fileID: 21300000, guid: 5e0c44b0bfa03410197570ea293d3e70, type: 3}
-    FullMapImage: {fileID: 21300000, guid: 5700107b96dbb431c9e6ee579dfcfd90, type: 3}
+    PreviewImage: {fileID: 21300000, guid: f065b30b1825e4cec94cf2dc84f4c36e, type: 3}
+    FullMapImage: {fileID: 21300000, guid: 8d99d37db7de44da0940ce11602b2ff0, type: 3}
   - MapID: oakcrest
     PreviewImage: {fileID: 21300000, guid: 057177d111e574692b5dcdee6d82e9ab, type: 3}
-    FullMapImage: {fileID: 21300000, guid: e0d64fc77fd4942bdb2f949791c44920, type: 3}
+    FullMapImage: {fileID: 21300000, guid: c1eb054914d5c4962b7f3cf34481bb52, type: 3}

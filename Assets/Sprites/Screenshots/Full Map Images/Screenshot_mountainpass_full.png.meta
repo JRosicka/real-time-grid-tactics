@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 5700107b96dbb431c9e6ee579dfcfd90
+guid: 8d99d37db7de44da0940ce11602b2ff0
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -6228390671630808202
-    second: "Screenshot 2026-03-25 at 10.34.39\u202FPM_0"
+      213: 1118442262729499017
+    second: Screenshot_mountainpass_full 1_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -100,13 +100,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: "Screenshot 2026-03-25 at 10.34.39\u202FPM_0"
+      name: Screenshot_mountainpass_full 1_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 2594
-        height: 1464
+        width: 3069
+        height: 1698
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -115,8 +115,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 67bc61ffeaf4099a0800000000000000
-      internalID: -6228390671630808202
+      spriteID: 981a6cbef41858f00800000000000000
+      internalID: 1118442262729499017
       vertices: []
       indices: 
       edges: []
@@ -135,7 +135,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      "Screenshot 2026-03-25 at 10.34.39\u202FPM_0": -6228390671630808202
+      Screenshot_mountainpass_full 1_0: 1118442262729499017
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

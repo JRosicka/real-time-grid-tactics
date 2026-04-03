@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: e0d64fc77fd4942bdb2f949791c44920
+guid: c1eb054914d5c4962b7f3cf34481bb52
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 8354709759571665392
-    second: "Screenshot 2026-03-25 at 10.56.07\u202FPM_0"
+      213: 7191003119637103863
+    second: Screenshot_oakcrest_full 1_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -100,13 +100,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: "Screenshot 2026-03-25 at 10.56.07\u202FPM_0"
+      name: Screenshot_oakcrest_full 1_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 2466
-        height: 1634
+        width: 2592
+        height: 1714
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -115,8 +115,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 0f122ccd244e1f370800000000000000
-      internalID: 8354709759571665392
+      spriteID: 7f402bcdc339bc360800000000000000
+      internalID: 7191003119637103863
       vertices: []
       indices: 
       edges: []
@@ -135,7 +135,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      "Screenshot 2026-03-25 at 10.56.07\u202FPM_0": 8354709759571665392
+      Screenshot_oakcrest_full 1_0: 7191003119637103863
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
