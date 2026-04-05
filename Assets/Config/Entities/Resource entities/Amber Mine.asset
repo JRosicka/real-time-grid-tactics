@@ -23,7 +23,7 @@ MonoBehaviour:
   BuildTime: 30
   BuildsImmediately: 0
   BaseSprite: {fileID: 21300000, guid: 3fb4b33424bf341809e17cc92cd5cfc5, type: 3}
-  TeamColorSprite: {fileID: 0}
+  TeamColorSprite: {fileID: 21300000, guid: 636d71c9d33a04bcabe48462585aa567, type: 3}
   BaseSpriteIconOverride: {fileID: 0}
   IconScaleInSelectionInterface: 1.2
   _viewPrefab: {fileID: 7504026570216467247, guid: 42f5b58318770954babb8bbc6d214577, type: 3}
