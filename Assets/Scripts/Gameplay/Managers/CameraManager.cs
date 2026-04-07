@@ -63,10 +63,7 @@ public class CameraManager : MonoBehaviour {
     }
 
     private void SetCameraStartPosition(Vector3 startPosition) {
-        Vector3 cameraStartPosition = _camera.transform.position;
-        Vector3 newPosition = ClampCamera(startPosition);
-        newPosition.z = cameraStartPosition.z;
-        _camera.transform.position = newPosition;
+        SnapToPosition(startPosition);
     }
 
     public void ToggleEdgeScroll(bool enable) {
@@ -101,6 +98,13 @@ public class CameraManager : MonoBehaviour {
         // if (Math.Abs(scroll) > 0.01f) {
         //     _camera.orthographicSize = Mathf.Clamp(_camera.orthographicSize - scroll * 2, 2, 10);
         // }
+    }
+
+    public void SnapToPosition(Vector2 location) {
+        Vector3 cameraStartPosition = _camera.transform.position;
+        Vector3 newPosition = ClampCamera(location);
+        newPosition.z = cameraStartPosition.z;
+        _camera.transform.position = newPosition;
     }
     
     private void Update() {

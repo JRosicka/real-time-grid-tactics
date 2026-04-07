@@ -43,6 +43,8 @@ public class GameManager : MonoBehaviour {
     public GridIconDisplayer GridIconDisplayer;
     public ReplayManager ReplayManager;
     public UpgradesUI UpgradesUI;
+    public UIScaler UIScaler;
+    public ControlGroupsViewZone ControlGroupsViewZone;
     
     public PathfinderService PathfinderService;
     public EntitySelectionManager EntitySelectionManager;
@@ -55,7 +57,7 @@ public class GameManager : MonoBehaviour {
     public LeaderTracker LeaderTracker;
     public SeedManager SeedManager;
     public TileAccessibilityManager TileAccessibilityManager;
-    public UIScaler UIScaler;
+    public ControlGroupsManager ControlGroupsManager;
     
     public IGamePlayer Player1;
     public IGamePlayer Player2;
@@ -163,6 +165,12 @@ public class GameManager : MonoBehaviour {
     public void SetupCommandManager(ICommandManager commandManager) {
         CommandManager = commandManager;
         CommandManager.Initialize(SpawnBucketPrefab, this, AbilityAssignmentManager);
+    }
+
+    public void SetUpControlGroups() {
+        ControlGroupsManager = new ControlGroupsManager();
+        ControlGroupsManager.Initialize(CommandManager, LocalTeam);
+        ControlGroupsViewZone.Initialize(ControlGroupsManager);
     }
 
     #endregion

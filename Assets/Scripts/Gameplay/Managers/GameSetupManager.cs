@@ -277,6 +277,7 @@ public class GameSetupManager : MonoBehaviour {
 
     private void DoPerformClientSidePostMapSetupInitialization() {
         GameManager.CommandManager.EntityCollectionChangedEvent -= DoPerformClientSidePostMapSetupInitialization;
+        GameManager.SetUpControlGroups();
         
         GameManager.AmberForgeAvailabilityNotifier.Initialize();
         GameManager.LeaderTracker.Initialize(GameManager.CommandManager);

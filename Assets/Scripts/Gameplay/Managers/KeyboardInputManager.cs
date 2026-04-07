@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Gameplay.UI;
 using Rewired;
@@ -15,6 +16,12 @@ namespace Gameplay.Managers {
             "Z", "X", "C", "V"
         };
 
+        private static readonly List<string> ControlGroupButtons = new List<string> {
+            "1", "2", "3", "4", "5", "6", "7", "8", "9", "0"
+        };
+        private const string ShiftAction = "Shift";
+        private const string ControlAction = "Control";
+
         private const string EscapeAction = "Escape";
         
         private const string MoveCameraLeftAction = "CameraLeft";
@@ -24,10 +31,16 @@ namespace Gameplay.Managers {
 
         public CameraManager CameraManager;
         public InGamePauseMenu PauseMenu;
+
+        public float ControlGroupCameraSnapWindowSeconds = .2f;
         
         private Player _playerInput;
+        
+        private int _lastSelectedControlGroup;
+        private float _lastSelectedControlGroupTime;
 
         private static SelectionInterface SelectionInterface => GameManager.Instance.SelectionInterface;
+        private static ControlGroupsManager ControlGroupsManager => GameManager.Instance.ControlGroupsManager;
         
         private void Start() {
             _playerInput = ReInput.players.GetPlayer(0);
@@ -64,6 +77,37 @@ namespace Gameplay.Managers {
                     SelectionInterface.HandleAbilityHotkey(input, false, false);
                 }
             }
+            
+            if (_playerInput.GetButton(ShiftAction) || _playerInput.GetButton(ControlAction)) {
+                // Assigning control groups
+                foreach (string input in ControlGroupButtons) {
+                    if (_playerInput.GetButtonDown(input)) {
+                        ControlGroupsManager.AssignControlGroup(Convert.ToInt32(input));
+                    }
+                }
+            } else {
+                // Selecting control groups
+                foreach (string input in ControlGroupButtons) {
+                    if (_playerInput.GetButtonDown(input)) {
+                        HandleControlGroupSelection(input);
+                    } else if (_playerInput.GetButtonUp(input)) {
+                        ControlGroupsManager.SelectControlGroup(Convert.ToInt32(input), false, true);
+                    }
+                }
+            }
+        }
+
+        private void HandleControlGroupSelection(string input) {
+            int inputInt = Convert.ToInt32(input);
+            ControlGroupsManager.SelectControlGroup(inputInt, true, true);
+
+            if (inputInt == _lastSelectedControlGroup &&
+                    Time.time < _lastSelectedControlGroupTime + ControlGroupCameraSnapWindowSeconds) {
+                ControlGroupsManager.SnapCameraToControlGroup(inputInt);
+            }
+
+            _lastSelectedControlGroup = inputInt;
+            _lastSelectedControlGroupTime = Time.time;
         }
 
         private void HandleEscape() {

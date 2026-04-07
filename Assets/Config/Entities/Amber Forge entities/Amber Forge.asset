@@ -22,7 +22,7 @@ MonoBehaviour:
   BaseSprite: {fileID: 21300000, guid: 79cb111de4a8b486083049344c580e4d, type: 3}
   TeamColorSprite: {fileID: 0}
   BaseSpriteIconOverride: {fileID: 0}
-  IconScaleInSelectionInterface: 1.2
+  IconScaleInSelectionInterface: 1
   _viewPrefab: {fileID: 6373076591908856349, guid: 71e787fd29b557941b66de4409e178f9, type: 3}
   SelectionSFX: {fileID: 0}
   OrderSFX: {fileID: 0}
