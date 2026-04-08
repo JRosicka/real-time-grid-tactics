@@ -91,7 +91,7 @@ namespace Gameplay.Grid {
             Vector2Int mousePos = _gridController.GetCellPosition(eventData.pointerPressRaycast.worldPosition);
             if (!_gridController.IsInBounds(mousePos)) {
                 // Dismiss the selection interface
-                _gameManager.SelectionInterface.UpdateSelectedEntity(null);
+                _gameManager.EntitySelectionManager.SelectEntity(null);
                 return;
             }
 
