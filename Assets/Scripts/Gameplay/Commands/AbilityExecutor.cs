@@ -46,6 +46,7 @@ public class AbilityExecutor : MonoBehaviour {
 
     private void Update() {
         if (!_initialized) return;
+        if (!GameManager.Instance.GameSetupManager.GameRunning) return;
 
         MatchLength += Time.deltaTime;
         GameManager.Instance.ReplayManager.UpdateReplayPlayback(MatchLength);
