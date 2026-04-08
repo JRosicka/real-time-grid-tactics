@@ -170,7 +170,7 @@ public class GameManager : MonoBehaviour {
     public void SetUpControlGroups() {
         ControlGroupsManager = new ControlGroupsManager();
         ControlGroupsManager.Initialize(CommandManager, LocalTeam);
-        ControlGroupsViewZone.Initialize(ControlGroupsManager);
+        ControlGroupsViewZone.Initialize(ControlGroupsManager, LocalTeam);
     }
 
     #endregion

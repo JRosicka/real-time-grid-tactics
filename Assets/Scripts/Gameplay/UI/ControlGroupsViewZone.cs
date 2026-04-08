@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using Gameplay.Entities;
 using Gameplay.Managers;
 using UnityEngine;
 
@@ -11,13 +12,17 @@ namespace Gameplay.UI {
         private ControlGroupsManager _controlGroupsManager;
         [SerializeField] private List<ControlGroupButton> _buttons;
 
-        public void Initialize(ControlGroupsManager controlGroupsManager) {
+        public void Initialize(ControlGroupsManager controlGroupsManager, GameTeam localTeam) {
             _controlGroupsManager = controlGroupsManager;
             controlGroupsManager.ControlGroupSelected += ControlGroupSelected;
             
             foreach (ControlGroupButton b in _buttons) {
                 b.Initialize(controlGroupsManager);
                 b.ControlGroupUpdated += UpdateControlGroupRows;
+            }
+
+            if (localTeam == GameTeam.Spectator) {
+                gameObject.SetActive(false);
             }
         }
 
