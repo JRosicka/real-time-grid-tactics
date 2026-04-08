@@ -35,7 +35,7 @@ MonoBehaviour:
   Selectable: 1
   DisplayName: Grass
   ShortDescription: Plain terrain.
-  LongDescription: Nice work you've touched some grass.
+  LongDescription: You've finally touched it.
   SpeedModifierTags: []
   InaccessibleTags: 
   InaccessibleEntities: []
