@@ -39,7 +39,7 @@ MonoBehaviour:
   BonusDamage: 6
   TagsToApplyBonusDamageTo: 08000000
   NormalMoveTime: 2.1333
-  AddedMovementTimeFromAttacking: 1.6
+  AddedMovementTimeFromAttacking: 1.8
   PathfindingConfig:
     MoveIconOverride: {fileID: 0}
     AttackIconOverride: {fileID: 0}
