@@ -18,7 +18,7 @@ MonoBehaviour:
     after attacking reduced by 0.5s.
   Cost:
   - Type: 1
-    Amount: 100
+    Amount: 50
   Requirements:
   - Purchasable: {fileID: 11400000, guid: 43174010eb096460f944f7aa4f3b1791, type: 2}
     MustBeAdjacent: 0
