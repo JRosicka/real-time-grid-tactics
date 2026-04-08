@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: CheatConfiguration
   m_EditorClassIdentifier: 
   _currentCheats:
-    CheatsEnabled: 0
+    CheatsEnabled: 1
     PlayerMoney: 5000
-    RemoveBuildTime: 0
+    RemoveBuildTime: 1
     ControlAllPlayers: 1
     SpawnData:
     - Team: 1
@@ -26,6 +26,15 @@ MonoBehaviour:
       - Data: {fileID: 11400000, guid: ab21f1dc552bf344ba9f886807dcb498, type: 2}
         SpawnLocation:
           Location: {x: 0, y: -4}
+      - Data: {fileID: 11400000, guid: b52e5f177d13b1b4580a21f9c5ad0bf1, type: 2}
+        SpawnLocation:
+          Location: {x: 2, y: -2}
+      - Data: {fileID: 11400000, guid: b52e5f177d13b1b4580a21f9c5ad0bf1, type: 2}
+        SpawnLocation:
+          Location: {x: 2, y: -3}
+      - Data: {fileID: 11400000, guid: b52e5f177d13b1b4580a21f9c5ad0bf1, type: 2}
+        SpawnLocation:
+          Location: {x: 3, y: -3}
     - Team: 2
       Entities:
       - Data: {fileID: 11400000, guid: 991ad2a1d6801ee40b831e7850e0ff35, type: 2}
