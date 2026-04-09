@@ -32,7 +32,7 @@ MonoBehaviour:
   EntityFinishedBuildingSFX: {fileID: 0}
   HP: 120
   Range: 1
-  Damage: 4
+  Damage: 3
   BonusDamage: 0
   TagsToApplyBonusDamageTo: 
   NormalMoveTime: 4
