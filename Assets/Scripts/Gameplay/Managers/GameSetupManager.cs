@@ -346,7 +346,7 @@ public class GameSetupManager : MonoBehaviour {
         gamePlayer.ColorData = GameManager.Configuration.GetPlayerColor(team == GameTeam.Spectator ? "gray" : networkPlayer.GetColorID);
         
         gamePlayer.Connected = true;
-        int connectionID = networkPlayer.connectionToClient.connectionId;
+        int connectionID = networkPlayer.PlayerSlotIndex;
         AllPlayers[connectionID] = gamePlayer;
         
         Debug.Log($"Player ({gamePlayer.DisplayName}) has been detected. Index ({networkPlayer.index}).");
