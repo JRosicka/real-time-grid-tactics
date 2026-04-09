@@ -18,9 +18,9 @@ MonoBehaviour:
     Wheat Field.
   Cost:
   - Type: 0
-    Amount: 75
+    Amount: 125
   Requirements: []
-  BuildTime: 30
+  BuildTime: 40
   BuildsImmediately: 0
   BaseSprite: {fileID: 21300000, guid: 7d82f38ea06e3498285dc389919511c5, type: 3}
   TeamColorSprite: {fileID: 21300000, guid: 141f96b5559ab4058b127fdfc7ef0836, type: 3}
