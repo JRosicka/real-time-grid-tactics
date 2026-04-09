@@ -20,7 +20,7 @@ MonoBehaviour:
   - Type: 0
     Amount: 50
   Requirements: []
-  BuildTime: 32
+  BuildTime: 30
   BuildsImmediately: 0
   BaseSprite: {fileID: 21300000, guid: db6438da45c564799ae40e49c7a30133, type: 3}
   TeamColorSprite: {fileID: 21300000, guid: 39b275ba18fa142daa2bc512789f023c, type: 3}
@@ -34,8 +34,8 @@ MonoBehaviour:
   EntityFinishedBuildingSFX: {fileID: 0}
   HP: 48
   Range: 1
-  Damage: 4
-  BonusDamage: 9
+  Damage: 5
+  BonusDamage: 8
   TagsToApplyBonusDamageTo: 02000000
   NormalMoveTime: 3.5
   AddedMovementTimeFromAttacking: 1.8
