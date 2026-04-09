@@ -30,7 +30,7 @@ MonoBehaviour:
   AttackSFX: {fileID: 11400000, guid: 32433d8a1fb4b451faf9bcd31937c2e1, type: 2}
   AudioPlacementPrefix: King
   EntityFinishedBuildingSFX: {fileID: 0}
-  HP: 90
+  HP: 120
   Range: 1
   Damage: 4
   BonusDamage: 0

@@ -31,12 +31,12 @@ MonoBehaviour:
   AttackSFX: {fileID: 11400000, guid: 32433d8a1fb4b451faf9bcd31937c2e1, type: 2}
   AudioPlacementPrefix: Swordsman
   EntityFinishedBuildingSFX: {fileID: 0}
-  HP: 36
+  HP: 48
   Range: 1
   Damage: 8
   BonusDamage: 0
   TagsToApplyBonusDamageTo: 
-  NormalMoveTime: 4
+  NormalMoveTime: 3.5
   AddedMovementTimeFromAttacking: 1.8
   PathfindingConfig:
     MoveIconOverride: {fileID: 0}

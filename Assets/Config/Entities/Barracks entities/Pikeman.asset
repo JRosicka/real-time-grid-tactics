@@ -32,12 +32,12 @@ MonoBehaviour:
   AttackSFX: {fileID: 11400000, guid: 63aa7d493c6e045ce9a0c3bad0611a78, type: 2}
   AudioPlacementPrefix: Pikeman
   EntityFinishedBuildingSFX: {fileID: 0}
-  HP: 36
+  HP: 48
   Range: 1
   Damage: 4
   BonusDamage: 9
   TagsToApplyBonusDamageTo: 02000000
-  NormalMoveTime: 4
+  NormalMoveTime: 3.5
   AddedMovementTimeFromAttacking: 1.8
   PathfindingConfig:
     MoveIconOverride: {fileID: 0}

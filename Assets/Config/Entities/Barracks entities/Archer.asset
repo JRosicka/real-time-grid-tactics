@@ -33,12 +33,12 @@ MonoBehaviour:
   AttackSFX: {fileID: 11400000, guid: 678fef9224ad84b7cbd300cd08139dc7, type: 2}
   AudioPlacementPrefix: Archer
   EntityFinishedBuildingSFX: {fileID: 0}
-  HP: 32
+  HP: 40
   Range: 2
   Damage: 6
   BonusDamage: 0
   TagsToApplyBonusDamageTo: 
-  NormalMoveTime: 3.5
+  NormalMoveTime: 3
   AddedMovementTimeFromAttacking: 2
   PathfindingConfig:
     MoveIconOverride: {fileID: 0}

@@ -32,7 +32,7 @@ MonoBehaviour:
   AttackSFX: {fileID: 0}
   AudioPlacementPrefix: StandardStructure
   EntityFinishedBuildingSFX: {fileID: 0}
-  HP: 90
+  HP: 120
   Range: 0
   Damage: 0
   BonusDamage: 0

@@ -31,12 +31,12 @@ MonoBehaviour:
   AttackSFX: {fileID: 11400000, guid: df78dc31d26354146935f2a8872ac735, type: 2}
   AudioPlacementPrefix: Peasant
   EntityFinishedBuildingSFX: {fileID: 0}
-  HP: 20
+  HP: 26
   Range: 1
   Damage: 2
   BonusDamage: 0
   TagsToApplyBonusDamageTo: 
-  NormalMoveTime: 3
+  NormalMoveTime: 2.75
   AddedMovementTimeFromAttacking: 1.8
   PathfindingConfig:
     MoveIconOverride: {fileID: 0}

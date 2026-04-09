@@ -33,12 +33,12 @@ MonoBehaviour:
   AttackSFX: {fileID: 11400000, guid: 32433d8a1fb4b451faf9bcd31937c2e1, type: 2}
   AudioPlacementPrefix: Horseman
   EntityFinishedBuildingSFX: {fileID: 0}
-  HP: 44
+  HP: 56
   Range: 1
   Damage: 8
   BonusDamage: 6
   TagsToApplyBonusDamageTo: 08000000
-  NormalMoveTime: 2.1333
+  NormalMoveTime: 2
   AddedMovementTimeFromAttacking: 1.8
   PathfindingConfig:
     MoveIconOverride: {fileID: 0}

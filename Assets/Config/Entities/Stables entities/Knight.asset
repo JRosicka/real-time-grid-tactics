@@ -36,12 +36,12 @@ MonoBehaviour:
   AttackSFX: {fileID: 11400000, guid: 62cbc33c432544f80b4397659c6d04c3, type: 2}
   AudioPlacementPrefix: Knight
   EntityFinishedBuildingSFX: {fileID: 0}
-  HP: 65
+  HP: 80
   Range: 1
   Damage: 14
   BonusDamage: 0
   TagsToApplyBonusDamageTo: 
-  NormalMoveTime: 3.333
+  NormalMoveTime: 3.25
   AddedMovementTimeFromAttacking: 1.8
   PathfindingConfig:
     MoveIconOverride: {fileID: 0}
