@@ -15,10 +15,10 @@ MonoBehaviour:
   _mapPreviewImages:
   - MapID: origins
     PreviewImage: {fileID: 21300000, guid: 0341b3bed1bbd4576bfe27162eef61ba, type: 3}
-    FullMapImage: {fileID: 21300000, guid: 903b4aede315246b48834754b0ba6964, type: 3}
+    FullMapImage: {fileID: 21300000, guid: 18e838407a4714cde92da2936dd0ca5d, type: 3}
   - MapID: mountainPass
-    PreviewImage: {fileID: 21300000, guid: f065b30b1825e4cec94cf2dc84f4c36e, type: 3}
-    FullMapImage: {fileID: 21300000, guid: 8d99d37db7de44da0940ce11602b2ff0, type: 3}
+    PreviewImage: {fileID: 21300000, guid: 22ed729988dbc4506a55234915e3a08b, type: 3}
+    FullMapImage: {fileID: 21300000, guid: 40b4cb08f7aa94485958fd4b1506a807, type: 3}
   - MapID: oakcrest
     PreviewImage: {fileID: 21300000, guid: 057177d111e574692b5dcdee6d82e9ab, type: 3}
     FullMapImage: {fileID: 21300000, guid: c1eb054914d5c4962b7f3cf34481bb52, type: 3}
