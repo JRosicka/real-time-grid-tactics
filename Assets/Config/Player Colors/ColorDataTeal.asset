@@ -17,7 +17,7 @@ MonoBehaviour:
   TeamColor: {r: 0.05882353, g: 0.84705883, b: 0.9843137, a: 1}
   DarkTeamColor: {r: 0.10980392, g: 0.26666668, b: 0.29411766, a: 1}
   ColoredButtonData: {fileID: 11400000, guid: f8688f8af57ff406aa88c00a9a60a880, type: 2}
-  TeamBannerColor: {r: 0, g: 0.84313726, b: 1, a: 1}
+  TeamBannerColor: {r: 0, g: 0.7175098, b: 0.851, a: 1}
   DeathParticlesColor1: {r: 0.3820755, g: 0.6343624, b: 1, a: 1}
   DeathParticlesColor2: {r: 0, g: 0.42836362, b: 0.735849, a: 1}
   SelectionMaterial: {fileID: 2100000, guid: 00b18475e74d342328e96034f6d13bc4, type: 2}
