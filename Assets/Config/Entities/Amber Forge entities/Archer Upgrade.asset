@@ -39,6 +39,6 @@ MonoBehaviour:
   OrderIndex: 400
   ArcherData: {fileID: 11400000, guid: 938107a9fc68aa54586e46f7860fc6ff, type: 2}
   SlowTerrainSpeedModifierIntensity: 0
-  AdditionalMovementTimeFromAttacking: -0.6
+  AdditionalMovementTimeFromAttacking: -1
   MoveTooltipMessage: Not slowed by Forests.<br>Move cooldown penalty after attacking
     reduced by 0.5s.
