@@ -139,9 +139,9 @@ namespace Gameplay.Entities {
             _mainCanvasGroup.alpha = show ? 1 : 0;
         }
 
-        public void DisableUI() {
-            _unitUIFrame?.ForEach(g => g.SetActive(false));
-            _structureUIFrame?.SetActive(false);
+        public void ToggleUI(bool active) {
+            _unitUIFrame?.ForEach(g => g.SetActive(active));
+            _structureUIFrame?.SetActive(active);
         }
 
         private void OnDestroy() {

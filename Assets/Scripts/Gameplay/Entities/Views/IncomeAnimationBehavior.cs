@@ -42,8 +42,8 @@ namespace Gameplay.Entities {
             ToggleOutOfResourcesIcon(_entity.InteractBehavior is { IsLocalTeam: true });
         }
 
-        public void DisableIncomeAnimation() {
-            gameObject.SetActive(false);
+        public void ToggleIncomeAnimation(bool active) {
+            gameObject.SetActive(active);
         }
 
         /// <summary>

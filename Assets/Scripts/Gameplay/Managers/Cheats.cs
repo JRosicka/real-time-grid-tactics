@@ -59,22 +59,25 @@ namespace Gameplay.Managers {
             }
         }
 
-        public void DisableUI(bool disableEntityUIFrames) {
-            _canvas.SetActive(false);
+        private bool _uiActive = true;
+        public void ToggleUI(bool disableEntityUIFrames) {
+            _uiActive = !_uiActive;
+            
+            _canvas.SetActive(_uiActive);
             
             // Disable King parade animation
             foreach (KingView kingView in FindObjectsByType<KingView>(FindObjectsSortMode.None)) {
-                kingView.DisableParadeAnimation();
+                kingView.ToggleParadeAnimation(_uiActive);
             }
             
             // Disable income animation
             foreach (IncomeAnimationBehavior incomeAnimationBehavior in FindObjectsByType<IncomeAnimationBehavior>(FindObjectsSortMode.None)) {
-                incomeAnimationBehavior.DisableIncomeAnimation();
+                incomeAnimationBehavior.ToggleIncomeAnimation(_uiActive);
             }
             
             if (disableEntityUIFrames) {
                 foreach(GridEntityView entityView in FindObjectsByType<GridEntityView>(FindObjectsSortMode.None)) {
-                    entityView.DisableUI();
+                    entityView.ToggleUI(_uiActive);
                 }
             }
         }

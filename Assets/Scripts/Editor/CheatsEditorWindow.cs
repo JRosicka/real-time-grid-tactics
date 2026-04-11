@@ -252,18 +252,18 @@ public class CheatsEditorWindow : OdinEditorWindow {
     
     [PropertyOrder(8)]
     [Button]
-    public void DisableUIExceptForEntityUIFrames() {
+    public void ToggleUIExceptForEntityUIFrames() {
         ThrowExceptionIfNotInGame();
 
-        GameManager.Instance.Cheats.DisableUI(false);
+        GameManager.Instance.Cheats.ToggleUI(false);
     }
     
     [PropertyOrder(9)]
     [Button]
-    public void DisableAllUI() {
+    public void ToggleAllUI() {
         ThrowExceptionIfNotInGame();
 
-        GameManager.Instance.Cheats.DisableUI(true);
+        GameManager.Instance.Cheats.ToggleUI(true);
     }
 
     private static void ThrowExceptionIfNotInGame() {
