@@ -4181,8 +4181,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 682498735}
   m_HandleRect: {fileID: 1690174636}
   m_Direction: 2
-  m_Value: 0.5
-  m_Size: 0.73973536
+  m_Value: 0.5000001
+  m_Size: 0.73973525
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -8074,7 +8074,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1081408133}
   m_Layer: 5
-  m_Name: Band fillingz
+  m_Name: Band filling
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -8495,7 +8495,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1158930822}
   m_HandleRect: {fileID: 1688590824}
   m_Direction: 0
-  m_Value: 0.5000002
+  m_Value: 0.5
   m_Size: 0.7805372
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -11898,7 +11898,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 1060757367}
   m_Direction: 2
   m_Value: 0.99999994
-  m_Size: 0.44841525
+  m_Size: 0.44841528
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -12463,6 +12463,7 @@ MonoBehaviour:
   - {fileID: 2022254308}
   - {fileID: 1186737160}
   - {fileID: 1121677344}
+  _inGame: 0
   _scaleFactor: 0.005
   _scaleAddition: 0.5
 --- !u!1001 &1777935597
