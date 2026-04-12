@@ -156,6 +156,10 @@ namespace Gameplay.Managers {
             TimedAbilityCommandData data = TimedAbilityCommandData.DeserializeFromJson(command.data);
             IAbilityData abilityData = GameManager.Instance.Configuration.GetAbility(data.abilityType).Content;
             GridEntity performer = GameManager.Instance.CommandManager.EntitiesOnGrid.GetEntityByID(command.entityID);
+            if (!performer) {
+                Debug.LogError($"Could not find performer for command: {command.entityID}, {command.time}, {command.commandType}, {command.data}");
+                return;
+            }
             IAbilityParameters parameters = abilityData.DeserializeParametersFromJson(JsonConvert.DeserializeObject<Dictionary<string, object>>(data.abilityParameterJson));
             GameManager.Instance.AbilityAssignmentManager.StartPerformingAbility(performer, abilityData, parameters, 
                 data.fromInput, data.performEvenIfOnCooldown,  data.clearOtherAbilities, false, 
@@ -165,12 +169,21 @@ namespace Gameplay.Managers {
         private void PerformRecordedHoldPosition(ReplayData.TimedCommand command) {
             TimedToggleHoldPositionCommandData data = TimedToggleHoldPositionCommandData.DeserializeFromJson(command.data);
             GridEntity performer = GameManager.Instance.CommandManager.EntitiesOnGrid.GetEntityByID(command.entityID);
+            if (!performer) {
+                Debug.LogError($"Could not find performer for command: {command.entityID}, {command.time}, {command.commandType}, {command.data}");
+                return;
+            }
+            
             performer.ToggleHoldPosition(data.holdPosition, false);
         }
 
         private void PerformRecordedCancelAbility(ReplayData.TimedCommand command) {
             TimedCancelAbilityCommandData data = TimedCancelAbilityCommandData.DeserializeFromJson(command.data);
             GridEntity performer = GameManager.Instance.CommandManager.EntitiesOnGrid.GetEntityByID(command.entityID);
+            if (!performer) {
+                Debug.LogError($"Could not find performer for command: {command.entityID}, {command.time}, {command.commandType}, {command.data}");
+                return;
+            }
             
             // Construct the ability UID that we expect to find
             string abilityUID = $"{performer.UID}_{data.abilityType}_{data.abilityInstance}";

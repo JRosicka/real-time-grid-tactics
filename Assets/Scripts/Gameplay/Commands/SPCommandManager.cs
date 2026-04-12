@@ -34,7 +34,10 @@ public class SPCommandManager : AbstractCommandManager {
     }
 
     public override void DestroyEntity(GridEntity entity) {
-        Destroy(entity.gameObject);
+        // Might have already been destroyed if transitioning between preview replays
+        if (entity) {
+            Destroy(entity.gameObject);
+        }
     }
 
     public override void StartPerformingAbility(IAbility ability, bool fromInput) {

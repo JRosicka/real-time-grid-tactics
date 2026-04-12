@@ -14,6 +14,7 @@ namespace Gameplay.Config {
         public string mapID;
         public float duration;
         public int seed;
+        public bool active = true;
         public List<TimedCommand> commands;
         
         [Serializable]

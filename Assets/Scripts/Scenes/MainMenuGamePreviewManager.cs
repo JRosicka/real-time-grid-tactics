@@ -15,7 +15,7 @@ namespace Scenes {
         public ReplayData LastReplay { get; private set; }
         
         public void Initialize(bool setInitialMap) {
-            _replays = GameConfigurationLocator.GameConfiguration.MapsConfiguration.PreviewReplays;
+            _replays = GameConfigurationLocator.GameConfiguration.MapsConfiguration.PreviewReplays.Where(r => r.active).ToList();
             if (setInitialMap) {
                 ReplayData replay = GetNextReplay();
                 GameTypeTracker.Instance.SetMap(replay.mapID, replay.replayID);

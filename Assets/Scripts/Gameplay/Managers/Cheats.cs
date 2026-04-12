@@ -12,7 +12,7 @@ namespace Gameplay.Managers {
         [SerializeField] private GameObject _canvas;
         
         public bool RemoveBuildTime => _cheatConfiguration.CheatsEnabled && _cheatConfiguration.RemoveBuildTime;
-        public int? PlayerMoneyFromCheats => _cheatConfiguration.CheatsEnabled ? _cheatConfiguration.PlayerMoney : null;
+        public int? PlayerMoneyFromCheats => _cheatConfiguration.CheatsEnabled && _cheatConfiguration.PlayerMoney > 0 ? _cheatConfiguration.PlayerMoney : null;
         public bool ControlAllPlayers => _cheatConfiguration.CheatsEnabled && _cheatConfiguration.ControlAllPlayers;
         private List<StartingEntitySet> SpawnData => _cheatConfiguration.CheatsEnabled ? _cheatConfiguration.SpawnData : new List<StartingEntitySet>();
 

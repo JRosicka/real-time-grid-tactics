@@ -3,6 +3,7 @@ using System.Linq;
 using Gameplay.Config;
 using Gameplay.Config.Abilities;
 using Gameplay.Grid;
+using JetBrains.Annotations;
 using Mirror;
 using Newtonsoft.Json;
 using UnityEngine;
@@ -48,16 +49,23 @@ namespace Gameplay.Entities.Abilities {
             }
             
             // First check to see if there is anything in range to attack
-            GridEntity target = DetermineTargetForAttackMove(Performer, attackerLocation.Value);  // TODO-abilities if this is too expensive to do every update tick when there are a lot of entities, then we might need to keep track of when the last collection update occurred, and cache that in the parameters and check it before performing this operation.  
-            if (target != null) {
+            List<GridEntity> viableTargets = DetermineTargetsForAttackMove(Performer, attackerLocation.Value);  // TODO-abilities if this is too expensive to do every update tick when there are a lot of entities, then we might need to keep track of when the last collection update occurred, and cache that in the parameters and check it before performing this operation.  
+            if (viableTargets != null && viableTargets.Any()) {
                 if (Performer.ActiveTimers.Any(t => t.Ability.AbilityData.Channel == AbilityData.Channel)) {
                     // We are in range of a target, but attacking is on cooldown. Do nothing for now. 
                     return (false, AbilityResult.IncompleteWithoutEffect);
                 }
 
-                // Attack the target
+                // Pick the target
+                GridEntity target;
+                if (viableTargets.Count == 1) {
+                    target = viableTargets[0];
+                } else {
+                    target = viableTargets[GameManager.Instance.SeedManager.GetRNG(Performer.UID).Next(0, viableTargets.Count)];
+                }
+
                 AbilityParameters.Target = target;
-                DoAttack(target.Location!.Value);
+                DoAttack(target!.Location!.Value);
                 return (true, AbilityResult.IncompleteWithEffect);
             }
 
@@ -108,10 +116,11 @@ namespace Gameplay.Entities.Abilities {
         }
 
         /// <summary>
-        /// Try to find the best target in range for this attack move
+        /// Try to find available targets in range for this attack move
         /// </summary>
-        /// <returns>The best target, otherwise null if there is no viable target</returns>
-        private GridEntity DetermineTargetForAttackMove(GridEntity attacker, Vector2Int location) {
+        /// <returns>A list of viable targets, or null if there are no valid targets</returns>
+        [ItemCanBeNull]
+        private List<GridEntity> DetermineTargetsForAttackMove(GridEntity attacker, Vector2Int location) {
             Vector2Int? attackerLocation = attacker.Location;
             if (attackerLocation == null) return null;
             
@@ -155,11 +164,11 @@ namespace Gameplay.Entities.Abilities {
             // If the attacker's last target is a viable target, then pick that one
             Vector2Int? lastAttackedEntityLocation = attacker.LastAttackedEntityValue == null ? null : attacker.LastAttackedEntityValue.Location;
             if (lastAttackedEntityLocation != null && enemiesInRange.Contains(attacker.LastAttackedEntityValue)) {
-                return attacker.LastAttackedEntityValue;
+                return new List<GridEntity> { attacker.LastAttackedEntityValue };
             }
-            // Otherwise arbitrarily pick one to attack.
-            GridEntity target = enemiesInRange[Random.Range(0, enemiesInRange.Count)];
-            return target;
+            
+            enemiesInRange = enemiesInRange.OrderBy(e => e.UID).ToList();
+            return enemiesInRange;
         }
 
         /// <summary>

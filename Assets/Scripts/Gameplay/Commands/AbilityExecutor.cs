@@ -96,7 +96,7 @@ public class AbilityExecutor : MonoBehaviour {
         }
         
         // First, execute abilities that involve updating the GridEntityCollection (or that don't depend on that)
-        List<GridEntity> allEntities = _commandManager.EntitiesOnGrid.AllEntities();
+        List<GridEntity> allEntities = _commandManager.EntitiesOnGrid.AllEntities().OrderBy(e => e.UID).ToList();
         foreach (GridEntity entity in allEntities) {
             bool updated = ExecuteAbilitiesForEntity(entity, AbilityExecutionType.PreInteractionGridUpdate);
             if (updated) {
