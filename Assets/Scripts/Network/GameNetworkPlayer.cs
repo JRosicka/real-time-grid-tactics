@@ -17,7 +17,7 @@ namespace Game.Network
         private SteamLobbyService steamLobbyService => SteamLobbyService.Instance;
 
         // TODO: Neither of these are true for the hosting player on other client machines...
-        public bool IsHostPlayer => isLocalPlayer && isServer;
+        public bool IsHostPlayer => netIdentity && isLocalPlayer && isServer;
         
         [SyncVar(hook = nameof(OnDisplayNameSet))]
         public string DisplayName;

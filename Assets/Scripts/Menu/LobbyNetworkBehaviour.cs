@@ -24,7 +24,7 @@ namespace Menu {
         public static LobbyNetworkBehaviour Instance { get; private set; }
         private void Start() {
             Instance = this;
-            if (isServer) {
+            if (netIdentity && isServer) {
                 MusicSeed = new System.Random().Next();
                 GameAudio.Instance.SetMusicSeed(MusicSeed);
             } else {
@@ -56,7 +56,7 @@ namespace Menu {
             RoomMenu = roomMenu;
 
             SceneLoader.Instance.SceneLoaded += SceneLoaded;
-            if (isServer) {
+            if (netIdentity && isServer) {
                 // Set the map tracked in the lobby
                 string mapToLoad = string.IsNullOrEmpty(SceneLoader.Instance.LastLobbyMap) 
                     ? SceneLoader.DefaultMap 
