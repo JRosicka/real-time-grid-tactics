@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Audio;
 using Gameplay.Entities;
+using Gameplay.Managers;
 using Mirror;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -34,7 +35,9 @@ public class MultiplayerGameSetupHandler : NetworkBehaviour {
     public void RpcAssignPlayers() {
         ICommandManager commandManager = FindFirstObjectByType<MPCommandManager>();
         GameManager.Instance.CommandManager = commandManager;
-
+        // Client initialization in case this was not initialized on the server pass
+        commandManager.AbilityExecutor.Initialize(commandManager, GameManager.Instance.GameEndManager, GameManager.Instance.AbilityAssignmentManager, false);
+        
         List<MPGamePlayer> players = FindObjectsByType<MPGamePlayer>(FindObjectsSortMode.InstanceID).ToList(); 
         MPGamePlayer player1 = players.FirstOrDefault(p => p.Team == GameTeam.Player1);
         MPGamePlayer player2 = players.FirstOrDefault(p => p.Team == GameTeam.Player2);

@@ -23,6 +23,7 @@ public class AbilityExecutor : MonoBehaviour {
     private ICommandManager _commandManager;
     private GameEndManager _gameEndManager;
     private AbilityAssignmentManager _abilityAssignmentManager;
+    private bool _isServer;
 
     private float _timeUntilNextUpdate;
     public float MatchLength { get; private set; }
@@ -35,13 +36,16 @@ public class AbilityExecutor : MonoBehaviour {
 
     private readonly List<GridEntity> _dirtyInProgressAbilityEntities = new();
     
-    public void Initialize(ICommandManager commandManager, GameEndManager gameEndManager, AbilityAssignmentManager abilityAssignmentManager) {
+    public void Initialize(ICommandManager commandManager, GameEndManager gameEndManager, AbilityAssignmentManager abilityAssignmentManager, bool isServer) {
+        if (_initialized) return;
+        
         _commandManager = commandManager;
         _gameEndManager = gameEndManager;
         _abilityAssignmentManager = abilityAssignmentManager;
         _timeUntilNextUpdate = UpdateFrequency;
 
         _initialized = true;
+        _isServer = isServer;
     }
 
     private void Update() {
@@ -50,6 +54,8 @@ public class AbilityExecutor : MonoBehaviour {
 
         MatchLength += Time.deltaTime;
         GameManager.Instance.ReplayManager.UpdateReplayPlayback(MatchLength);
+
+        if (!_isServer) return;
         
         _timeUntilNextUpdate -= Time.deltaTime;
         if (_timeUntilNextUpdate <= 0) {

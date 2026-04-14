@@ -10,7 +10,7 @@ using UnityEngine;
 public class SPCommandManager : AbstractCommandManager {
     public override void Initialize(Transform spawnBucketPrefab, GameManager gameManager, AbilityAssignmentManager abilityAssignmentManager) {
         SpawnBucket = Instantiate(spawnBucketPrefab, gameManager.transform);
-        AbilityExecutor.Initialize(this, gameManager.GameEndManager, abilityAssignmentManager);
+        AbilityExecutor.Initialize(this, gameManager.GameEndManager, abilityAssignmentManager, true);
     }
 
     public override void SpawnEntity(EntityData data, Vector2Int spawnLocation, GameTeam team, GridEntity spawnerEntity, Vector2Int spawnerLocation, bool built) {

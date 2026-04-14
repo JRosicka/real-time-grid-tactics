@@ -15,7 +15,7 @@ public class MPCommandManager : AbstractCommandManager {
         NetworkServer.Spawn(SpawnBucket.gameObject);
         
         // Only initialize this on the server. Clients do not need to handle ability execution.
-        AbilityExecutor.Initialize(this, gameManager.GameEndManager, abilityAssignmentManager);
+        AbilityExecutor.Initialize(this, gameManager.GameEndManager, abilityAssignmentManager, true);
     }
 
     public override void SpawnEntity(EntityData data, Vector2Int spawnLocation, GameTeam team, GridEntity spawnerEntity, Vector2Int spawnerLocation, bool built) {
