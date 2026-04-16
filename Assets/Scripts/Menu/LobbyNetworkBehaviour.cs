@@ -50,6 +50,8 @@ namespace Menu {
         [SerializeField] private List<PlayerColorData> _availableColors;
         private readonly Dictionary<GameNetworkPlayer, PlayerColorData> _assignedColors = new Dictionary<GameNetworkPlayer, PlayerColorData>();
 
+        private PlayerColorData neutralColor => GameConfigurationLocator.GameConfiguration.NeutralColors;
+
         public RoomMenu RoomMenu { get; private set; }
         
         public void Initialize(RoomMenu roomMenu) {
@@ -118,6 +120,7 @@ namespace Menu {
         
         [Server]
         public bool IsColorAvailable(string colorID) {
+            if (colorID == neutralColor.ID) return true;
             foreach (var kvp in _assignedColors) {
                 if (kvp.Value.ID == colorID && kvp.Key.PlayerSlotIndex < PlayerSlotCount) {
                     return false;
@@ -129,22 +132,23 @@ namespace Menu {
         
         [Server]
         public void AssignColor(GameNetworkPlayer player, int slotIndex, string colorID) {
-            _assignedColors[player] = _availableColors.First(c => c.ID == colorID);
+            _assignedColors[player] = _availableColors.FirstOrDefault(c => c.ID == colorID) ?? neutralColor;
             RpcAssignColor(player.SteamID, slotIndex, colorID);
-            
-            // Unassign color from other players if they had it
-            List<GameNetworkPlayer> playersToRemove = new List<GameNetworkPlayer>();
-            foreach (var assignColor in _assignedColors.Where(c => c.Key.SteamID != player.SteamID)) {
-                GameNetworkPlayer otherPlayer = RoomMenu.PlayersInLobby.FirstOrDefault(p => p == assignColor.Key);
-                if (otherPlayer?.GetColorID == colorID) {
-                    playersToRemove.Add(otherPlayer);
+
+            if (colorID != "gray") {
+                // Unassign color from other players if they had it
+                List<GameNetworkPlayer> playersToRemove = new List<GameNetworkPlayer>();
+                foreach (var assignColor in _assignedColors.Where(c => c.Key.SteamID != player.SteamID)) {
+                    GameNetworkPlayer otherPlayer = RoomMenu.PlayersInLobby.FirstOrDefault(p => p == assignColor.Key);
+                    if (otherPlayer?.GetColorID == colorID) {
+                        playersToRemove.Add(otherPlayer);
+                    }
                 }
-            }
-            
-            foreach (GameNetworkPlayer playerToRemove in playersToRemove) {
-                _assignedColors.Remove(playerToRemove);
-                playerToRemove.ColorID = "gray";
-                RpcAssignColor(playerToRemove.SteamID, -1, "gray");
+                foreach (GameNetworkPlayer playerToRemove in playersToRemove) {
+                    _assignedColors.Remove(playerToRemove);
+                    playerToRemove.ColorID = "gray";
+                    RpcAssignColor(playerToRemove.SteamID, -1, "gray");
+                }
             }
         }
         
