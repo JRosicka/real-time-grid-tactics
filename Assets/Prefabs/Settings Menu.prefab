@@ -300,8 +300,8 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 4349995546043038013}
   - {fileID: 8627144178476337313}
+  - {fileID: 4349995546043038013}
   m_Father: {fileID: 4349995546364175832}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
@@ -334,7 +334,7 @@ MonoBehaviour:
   m_ChildControlHeight: 0
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
-  m_ReverseArrangement: 0
+  m_ReverseArrangement: 1
 --- !u!114 &1411210798796269911
 MonoBehaviour:
   m_ObjectHideFlags: 0
