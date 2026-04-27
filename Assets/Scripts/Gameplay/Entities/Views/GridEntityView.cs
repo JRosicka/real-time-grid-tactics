@@ -30,6 +30,7 @@ namespace Gameplay.Entities {
         [SerializeField] private AbilityTimerFill _moveTimerFill;
         [SerializeField] private AbilityTimerFill _attackTimerFill;
         [SerializeField] private Transform _buildTimerLocation;
+        [SerializeField] private Transform _collectTimerLocation;
         [SerializeField] private Transform _uniqueAbilityTimerLocation;
         [SerializeField] private Transform _spectatorPlayer1SharedAbilityTimerLocation;
         [SerializeField] private Transform _spectatorPlayer2SharedAbilityTimerLocation;
@@ -426,6 +427,7 @@ namespace Gameplay.Entities {
             Transform timerLocation;
             switch (abilityTimer.Ability) {
                 case AttackAbility:
+                case MoveAbility:
                     timerLocation = transform;
                     break;
                 case BuildAbility buildAbility:
@@ -443,8 +445,8 @@ namespace Gameplay.Entities {
                         timerLocation = _uniqueAbilityTimerLocation;
                     }
                     break;
-                case MoveAbility:
-                    timerLocation = transform;
+                case CollectResourceAbility:
+                    timerLocation = _collectTimerLocation;
                     break;
                 default:
                     timerLocation = _uniqueAbilityTimerLocation;

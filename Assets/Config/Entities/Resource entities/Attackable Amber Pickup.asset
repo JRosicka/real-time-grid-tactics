@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fafa440752424124be5b9cbee86f1e06, type: 3}
   m_Name: Attackable Amber Pickup
   m_EditorClassIdentifier: 
-  ID: Amber Pickup
+  ID: Attackable Amber
   ShortDescription: Awards 50 <sprite name="amber">.
   Description: Awards 50 <sprite name="amber"> when destroyed.
   Cost: []
@@ -47,6 +47,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: d50fba4f48da240b7b8d5c84a17a6d1d, type: 2}
   FriendlyUnitsCanShareCell: 0
   Targetable: 1
+  Attackable: 1
   AttackByDefault: 0
   IsResourceExtractor: 0
   ResourceThatThisCanExtract: {fileID: 0}

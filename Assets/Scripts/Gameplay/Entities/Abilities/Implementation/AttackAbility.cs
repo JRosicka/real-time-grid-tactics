@@ -136,7 +136,7 @@ namespace Gameplay.Entities.Abilities {
                 // See if we can target a neutral then
                 enemiesInRange = GameManager.Instance.CommandManager.EntitiesOnGrid.ActiveEntitiesForTeam(
                         GameTeam.Neutral, true)
-                    .Where(e => e.Location != null && cellsInRange.Contains(e.Location.Value) && e.EntityData.Targetable)
+                    .Where(e => e.Location != null && cellsInRange.Contains(e.Location.Value) && e.EntityData.Attackable)
                     .ToList();
             }
             

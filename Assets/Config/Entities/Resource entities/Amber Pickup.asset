@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ID: Amber Pickup
   ShortDescription: Awards 50 <sprite name="amber">.
-  Description: Awards 50 <sprite name="amber"> when moving a unit here.
+  Description: Awards 50 <sprite name="amber"> when collected by a peasant.
   Cost: []
   Requirements: []
   BuildTime: 0
@@ -43,10 +43,10 @@ MonoBehaviour:
   Tags: 07000000
   OverrideEntityDataForPathfinding: {fileID: 0}
   AttackerTargetPriority: 0
-  Abilities:
-  - {fileID: 11400000, guid: d50fba4f48da240b7b8d5c84a17a6d1d, type: 2}
-  FriendlyUnitsCanShareCell: 1
-  Targetable: 0
+  Abilities: []
+  FriendlyUnitsCanShareCell: 0
+  Targetable: 1
+  Attackable: 0
   AttackByDefault: 0
   IsResourceExtractor: 0
   ResourceThatThisCanExtract: {fileID: 0}

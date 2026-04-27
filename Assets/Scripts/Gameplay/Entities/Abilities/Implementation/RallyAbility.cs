@@ -36,7 +36,7 @@ namespace Gameplay.Entities.Abilities {
             GridEntity entityAtDestination = Data.RallyingUnitsCanTargetAttack
                 ? GameManager.Instance.GetTopEntityAtLocation(AbilityParameters.Destination)
                 : null;
-            if (entityAtDestination && (entityAtDestination.Team == PerformerTeam || (entityAtDestination.Team == GameTeam.Neutral && !entityAtDestination.EntityData.Targetable))) {
+            if (entityAtDestination && (entityAtDestination.Team == PerformerTeam || (entityAtDestination.Team == GameTeam.Neutral && !entityAtDestination.EntityData.Attackable))) {
                 entityAtDestination = null;
             }
             bool attacking = Data.RallyingUnitsAreAttackers || entityAtDestination;

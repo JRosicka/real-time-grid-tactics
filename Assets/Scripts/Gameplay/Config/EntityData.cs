@@ -57,6 +57,7 @@ namespace Gameplay.Config {
         [Tooltip("Whether friendly (non-structure) entities can enter (spawn, move, etc) a cell with this entity. If this entity is neutral, then this applies to all units.")]
         public bool FriendlyUnitsCanShareCell;
         public bool Targetable = true;
+        public bool Attackable = true;
 
         public bool AttackByDefault;
 

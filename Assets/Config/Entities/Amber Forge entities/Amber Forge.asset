@@ -47,6 +47,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 398205458218140e09d13e7ff7663dc9, type: 2}
   FriendlyUnitsCanShareCell: 0
   Targetable: 0
+  Attackable: 0
   AttackByDefault: 0
   IsResourceExtractor: 0
   ResourceThatThisCanExtract: {fileID: 0}

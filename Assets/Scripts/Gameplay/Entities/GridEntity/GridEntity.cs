@@ -345,7 +345,7 @@ namespace Gameplay.Entities {
         }
 
         public GridEntity GetAttackTarget() {
-            if (TargetLocationLogicValue.TargetEntity != null && (TargetLocationLogicValue.TargetEntity.Team != GameTeam.Neutral || TargetLocationLogicValue.TargetEntity.EntityData.Targetable)) {
+            if (TargetLocationLogicValue.TargetEntity != null && (TargetLocationLogicValue.TargetEntity.Team != GameTeam.Neutral || TargetLocationLogicValue.TargetEntity.EntityData.Attackable)) {
                 return TargetLocationLogicValue.TargetEntity;
             }
 
@@ -686,10 +686,21 @@ namespace Gameplay.Entities {
             Neutral = 3
         }
 
-        public void TryTargetEntity(GridEntity targetEntity, Vector2Int targetCell) {
+        public bool TryTargetEntity(GridEntity targetEntity, Vector2Int targetCell) {
             TargetType targetType = GetTargetType(targetEntity);
+            
+            CollectResourceAbilityData collectResourceData = GetAbilityData<CollectResourceAbilityData>();
+            if (targetType == TargetType.Neutral && collectResourceData != null &&
+                    collectResourceData.CollectableResourceEntities.Contains(targetEntity.EntityData)) {
+                if (AbilityAssignmentManager.StartPerformingAbility(this, collectResourceData, new CollectResourceAbilityParameters() {
+                        Target = targetEntity, 
+                    }, true, true, true, true)) {
+                    GameAudio.Instance.AbilityTargetedSound(collectResourceData);
+                }
+                return true;
+            }
 
-            if (targetType != TargetType.Attackable) return;
+            if (targetType != TargetType.Attackable) return false;
             TargetAttackAbilityData data = GetAbilityData<TargetAttackAbilityData>();
             if (AbilityAssignmentManager.StartPerformingAbility(this, data, new TargetAttackAbilityParameters() {
                     Target = targetEntity, 
@@ -697,11 +708,12 @@ namespace Gameplay.Entities {
                 GameAudio.Instance.AbilityTargetedSound(data);
                 SetTargetLocation(targetCell, targetEntity, true);
             }
+            return true;
         }
 
         public TargetType GetTargetType(GridEntity targetEntity) {
             if (targetEntity == null) return TargetType.Neutral;
-            if (!targetEntity.EntityData.Targetable && (targetEntity.Team == GameTeam.Neutral || Team == GameTeam.Neutral)) return TargetType.Neutral;
+            if (!targetEntity.EntityData.Attackable && (targetEntity.Team == GameTeam.Neutral || Team == GameTeam.Neutral)) return TargetType.Neutral;
             return Team == targetEntity.Team ? TargetType.Ally : TargetType.Attackable;
         }
         

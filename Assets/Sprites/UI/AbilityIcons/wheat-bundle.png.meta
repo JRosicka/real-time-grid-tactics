@@ -1,0 +1,1157 @@
+fileFormatVersion: 2
+guid: b5864771841e14d59ac82a099af2a0bf
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 6530072340689793612
+    second: wheat-bundle_0
+  - first:
+      213: 3911222501831782468
+    second: wheat-bundle_1
+  - first:
+      213: 2547027809899595563
+    second: wheat-bundle_2
+  - first:
+      213: -445839392539339956
+    second: wheat-bundle_3
+  - first:
+      213: 5330198135398184086
+    second: wheat-bundle_4
+  - first:
+      213: -1768311195571411364
+    second: wheat-bundle_5
+  - first:
+      213: -11515673788366184
+    second: wheat-bundle_6
+  - first:
+      213: 4838088589317827932
+    second: wheat-bundle_7
+  - first:
+      213: -1270140132837527925
+    second: wheat-bundle_8
+  - first:
+      213: 3702744464377844186
+    second: wheat-bundle_9
+  - first:
+      213: 7513565646267160874
+    second: wheat-bundle_10
+  - first:
+      213: -2062347348999486922
+    second: wheat-bundle_11
+  - first:
+      213: -538819556783150352
+    second: wheat-bundle_12
+  - first:
+      213: 7042138118768921551
+    second: wheat-bundle_13
+  - first:
+      213: -9106844906612757769
+    second: wheat-bundle_14
+  - first:
+      213: 6676410559398328438
+    second: wheat-bundle_15
+  - first:
+      213: -6821314466022024297
+    second: wheat-bundle_16
+  - first:
+      213: 8072323487530398208
+    second: wheat-bundle_17
+  - first:
+      213: -3085125687428496594
+    second: wheat-bundle_18
+  - first:
+      213: -5386036806805174463
+    second: wheat-bundle_19
+  - first:
+      213: -3054896532142817459
+    second: wheat-bundle_20
+  - first:
+      213: 5531145689306867543
+    second: wheat-bundle_21
+  - first:
+      213: -3713708317126255566
+    second: wheat-bundle_22
+  - first:
+      213: 6318164532326174604
+    second: wheat-bundle_23
+  - first:
+      213: 6734795784583091575
+    second: wheat-bundle_24
+  - first:
+      213: -6280693640172362534
+    second: wheat-bundle_25
+  - first:
+      213: -5045476758426555798
+    second: wheat-bundle_26
+  - first:
+      213: -4043346918010454928
+    second: wheat-bundle_27
+  - first:
+      213: 3660641482414104871
+    second: wheat-bundle_28
+  - first:
+      213: -4787735876182648858
+    second: wheat-bundle_29
+  - first:
+      213: 1429186802514626526
+    second: wheat-bundle_30
+  - first:
+      213: 8586131960877068062
+    second: wheat-bundle_31
+  - first:
+      213: 8512165542869006493
+    second: wheat-bundle_32
+  - first:
+      213: -8998883345522735223
+    second: wheat-bundle_33
+  - first:
+      213: -8467208711587593580
+    second: wheat-bundle_34
+  - first:
+      213: 6735367786231546877
+    second: wheat-bundle_35
+  - first:
+      213: 677491323492156119
+    second: wheat-bundle_36
+  - first:
+      213: 3814828598164486067
+    second: wheat-bundle_37
+  - first:
+      213: -149937726437977256
+    second: wheat-bundle_38
+  - first:
+      213: 2687550439562813924
+    second: wheat-bundle_39
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 1
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: wheat-bundle_0
+      rect:
+        serializedVersion: 2
+        x: 44
+        y: 394
+        width: 38
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c423b60323a7f9a50800000000000000
+      internalID: 6530072340689793612
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: wheat-bundle_1
+      rect:
+        serializedVersion: 2
+        x: 209
+        y: 409
+        width: 34
+        height: 39
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 440b2339424774630800000000000000
+      internalID: 3911222501831782468
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: wheat-bundle_2
+      rect:
+        serializedVersion: 2
+        x: 238
+        y: 436
+        width: 35
+        height: 55
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b274b126c4cd85320800000000000000
+      internalID: 2547027809899595563
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: wheat-bundle_3
+      rect:
+        serializedVersion: 2
+        x: 324
+        y: 388
+        width: 33
+        height: 54
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c4311d44f6f00d9f0800000000000000
+      internalID: -445839392539339956
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: wheat-bundle_4
+      rect:
+        serializedVersion: 2
+        x: 88
+        y: 381
+        width: 23
+        height: 35
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 694bbdaa6faa8f940800000000000000
+      internalID: 5330198135398184086
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: wheat-bundle_5
+      rect:
+        serializedVersion: 2
+        x: 120
+        y: 385
+        width: 38
+        height: 49
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c56ae972652b577e0800000000000000
+      internalID: -1768311195571411364
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: wheat-bundle_6
+      rect:
+        serializedVersion: 2
+        x: 163
+        y: 366
+        width: 28
+        height: 46
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 892ce724e8617dff0800000000000000
+      internalID: -11515673788366184
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: wheat-bundle_7
+      rect:
+        serializedVersion: 2
+        x: 204
+        y: 372
+        width: 33
+        height: 39
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c5de82e40f7542340800000000000000
+      internalID: 4838088589317827932
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: wheat-bundle_8
+      rect:
+        serializedVersion: 2
+        x: 258
+        y: 406
+        width: 41
+        height: 29
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b8e6047574e8f5ee0800000000000000
+      internalID: -1270140132837527925
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: wheat-bundle_9
+      rect:
+        serializedVersion: 2
+        x: 399
+        y: 363
+        width: 26
+        height: 47
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ad1194de87ac26330800000000000000
+      internalID: 3702744464377844186
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: wheat-bundle_10
+      rect:
+        serializedVersion: 2
+        x: 432
+        y: 381
+        width: 38
+        height: 47
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a29155e852c854860800000000000000
+      internalID: 7513565646267160874
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: wheat-bundle_11
+      rect:
+        serializedVersion: 2
+        x: 31
+        y: 362
+        width: 46
+        height: 19
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 632ca6b43021163e0800000000000000
+      internalID: -2062347348999486922
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: wheat-bundle_12
+      rect:
+        serializedVersion: 2
+        x: 107
+        y: 353
+        width: 46
+        height: 19
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0fa28e7c77ab588f0800000000000000
+      internalID: -538819556783150352
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: wheat-bundle_13
+      rect:
+        serializedVersion: 2
+        x: 181
+        y: 333
+        width: 28
+        height: 47
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fcb8574ee43bab160800000000000000
+      internalID: 7042138118768921551
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: wheat-bundle_14
+      rect:
+        serializedVersion: 2
+        x: 253
+        y: 368
+        width: 40
+        height: 31
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7fa65ccbeccfd9180800000000000000
+      internalID: -9106844906612757769
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: wheat-bundle_15
+      rect:
+        serializedVersion: 2
+        x: 303
+        y: 364
+        width: 21
+        height: 31
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 678ba97d70067ac50800000000000000
+      internalID: 6676410559398328438
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: wheat-bundle_16
+      rect:
+        serializedVersion: 2
+        x: 338
+        y: 358
+        width: 30
+        height: 23
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 79b168f42a2d551a0800000000000000
+      internalID: -6821314466022024297
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: wheat-bundle_17
+      rect:
+        serializedVersion: 2
+        x: 379
+        y: 332
+        width: 26
+        height: 47
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 002ba426177a60070800000000000000
+      internalID: 8072323487530398208
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: wheat-bundle_18
+      rect:
+        serializedVersion: 2
+        x: 49
+        y: 329
+        width: 46
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e234461788e6f25d0800000000000000
+      internalID: -3085125687428496594
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: wheat-bundle_19
+      rect:
+        serializedVersion: 2
+        x: 200
+        y: 299
+        width: 27
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 147c2378f04f045b0800000000000000
+      internalID: -5386036806805174463
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: wheat-bundle_20
+      rect:
+        serializedVersion: 2
+        x: 248
+        y: 325
+        width: 40
+        height: 36
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d4ffd002ac3da95d0800000000000000
+      internalID: -3054896532142817459
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: wheat-bundle_21
+      rect:
+        serializedVersion: 2
+        x: 297
+        y: 328
+        width: 17
+        height: 27
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 757a11cf2b392cc40800000000000000
+      internalID: 5531145689306867543
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: wheat-bundle_22
+      rect:
+        serializedVersion: 2
+        x: 358
+        y: 298
+        width: 26
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 23c964e26f1467cc0800000000000000
+      internalID: -3713708317126255566
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: wheat-bundle_23
+      rect:
+        serializedVersion: 2
+        x: 434
+        y: 346
+        width: 47
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c8f06c5ca21aea750800000000000000
+      internalID: 6318164532326174604
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: wheat-bundle_24
+      rect:
+        serializedVersion: 2
+        x: 125
+        y: 320
+        width: 46
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7759fd6651dc67d50800000000000000
+      internalID: 6734795784583091575
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: wheat-bundle_25
+      rect:
+        serializedVersion: 2
+        x: 274
+        y: 288
+        width: 29
+        height: 37
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ad4a87a296e76d8a0800000000000000
+      internalID: -6280693640172362534
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: wheat-bundle_26
+      rect:
+        serializedVersion: 2
+        x: 328
+        y: 321
+        width: 18
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a6aee7bce9ddaf9b0800000000000000
+      internalID: -5045476758426555798
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: wheat-bundle_27
+      rect:
+        serializedVersion: 2
+        x: 414
+        y: 314
+        width: 47
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 07cf050966523e7c0800000000000000
+      internalID: -4043346918010454928
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: wheat-bundle_28
+      rect:
+        serializedVersion: 2
+        x: 68
+        y: 288
+        width: 46
+        height: 27
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7212a5988063dc230800000000000000
+      internalID: 3660641482414104871
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: wheat-bundle_29
+      rect:
+        serializedVersion: 2
+        x: 125
+        y: 164
+        width: 72
+        height: 129
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6e75dbd469b8e8db0800000000000000
+      internalID: -4787735876182648858
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: wheat-bundle_30
+      rect:
+        serializedVersion: 2
+        x: 144
+        y: 280
+        width: 45
+        height: 27
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ed78f8123dd75d310800000000000000
+      internalID: 1429186802514626526
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: wheat-bundle_31
+      rect:
+        serializedVersion: 2
+        x: 241
+        y: 170
+        width: 22
+        height: 144
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e1fa4b2f681182770800000000000000
+      internalID: 8586131960877068062
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: wheat-bundle_32
+      rect:
+        serializedVersion: 2
+        x: 318
+        y: 278
+        width: 33
+        height: 30
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d98f60c3679412670800000000000000
+      internalID: 8512165542869006493
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: wheat-bundle_33
+      rect:
+        serializedVersion: 2
+        x: 393
+        y: 277
+        width: 47
+        height: 25
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 98740fe764b8d1380800000000000000
+      internalID: -8998883345522735223
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: wheat-bundle_34
+      rect:
+        serializedVersion: 2
+        x: 200
+        y: 169
+        width: 40
+        height: 116
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4928abab98e6e7a80800000000000000
+      internalID: -8467208711587593580
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: wheat-bundle_35
+      rect:
+        serializedVersion: 2
+        x: 270
+        y: 169
+        width: 41
+        height: 108
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: df3c0f9e055d87d50800000000000000
+      internalID: 6735367786231546877
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: wheat-bundle_36
+      rect:
+        serializedVersion: 2
+        x: 312
+        y: 162
+        width: 69
+        height: 121
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7d2c82be4cee66900800000000000000
+      internalID: 677491323492156119
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: wheat-bundle_37
+      rect:
+        serializedVersion: 2
+        x: 168
+        y: 104
+        width: 183
+        height: 50
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3b77890f56ef0f430800000000000000
+      internalID: 3814828598164486067
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: wheat-bundle_38
+      rect:
+        serializedVersion: 2
+        x: 198
+        y: 21
+        width: 83
+        height: 78
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8531c35ae605bedf0800000000000000
+      internalID: -149937726437977256
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: wheat-bundle_39
+      rect:
+        serializedVersion: 2
+        x: 292
+        y: 30
+        width: 24
+        height: 66
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4e12612b2e81c4520800000000000000
+      internalID: 2687550439562813924
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      wheat-bundle_0: 6530072340689793612
+      wheat-bundle_1: 3911222501831782468
+      wheat-bundle_10: 7513565646267160874
+      wheat-bundle_11: -2062347348999486922
+      wheat-bundle_12: -538819556783150352
+      wheat-bundle_13: 7042138118768921551
+      wheat-bundle_14: -9106844906612757769
+      wheat-bundle_15: 6676410559398328438
+      wheat-bundle_16: -6821314466022024297
+      wheat-bundle_17: 8072323487530398208
+      wheat-bundle_18: -3085125687428496594
+      wheat-bundle_19: -5386036806805174463
+      wheat-bundle_2: 2547027809899595563
+      wheat-bundle_20: -3054896532142817459
+      wheat-bundle_21: 5531145689306867543
+      wheat-bundle_22: -3713708317126255566
+      wheat-bundle_23: 6318164532326174604
+      wheat-bundle_24: 6734795784583091575
+      wheat-bundle_25: -6280693640172362534
+      wheat-bundle_26: -5045476758426555798
+      wheat-bundle_27: -4043346918010454928
+      wheat-bundle_28: 3660641482414104871
+      wheat-bundle_29: -4787735876182648858
+      wheat-bundle_3: -445839392539339956
+      wheat-bundle_30: 1429186802514626526
+      wheat-bundle_31: 8586131960877068062
+      wheat-bundle_32: 8512165542869006493
+      wheat-bundle_33: -8998883345522735223
+      wheat-bundle_34: -8467208711587593580
+      wheat-bundle_35: 6735367786231546877
+      wheat-bundle_36: 677491323492156119
+      wheat-bundle_37: 3814828598164486067
+      wheat-bundle_38: -149937726437977256
+      wheat-bundle_39: 2687550439562813924
+      wheat-bundle_4: 5330198135398184086
+      wheat-bundle_5: -1768311195571411364
+      wheat-bundle_6: -11515673788366184
+      wheat-bundle_7: 4838088589317827932
+      wheat-bundle_8: -1270140132837527925
+      wheat-bundle_9: 3702744464377844186
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

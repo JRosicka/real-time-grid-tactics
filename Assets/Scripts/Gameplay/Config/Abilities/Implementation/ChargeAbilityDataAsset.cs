@@ -196,7 +196,7 @@ namespace Gameplay.Config.Abilities {
             if (viableCells.Count > indexAlongLine + 1) {
                 Vector2Int oneFurtherCell = viableCells[indexAlongLine + 1];
                 GridEntity entityAtCell = CommandManager.GetEntitiesAtCell(oneFurtherCell)?.GetTopEntity()?.Entity;
-                if (entityAtCell != null && (entityAtCell.Team == selector.Team.OpponentTeam() || entityAtCell.Team == GameTeam.Neutral && entityAtCell.EntityData.Targetable)) {
+                if (entityAtCell != null && (entityAtCell.Team == selector.Team.OpponentTeam() || entityAtCell.Team == GameTeam.Neutral && entityAtCell.EntityData.Attackable)) {
                     closestCell = oneFurtherCell;
                     closestDistance = CellDistanceLogic.DistanceBetweenCells(origin, oneFurtherCell);
                 }
@@ -257,7 +257,7 @@ namespace Gameplay.Config.Abilities {
                     ?.GetTopEntity()?.Entity;
                 if (entityAtCell != null) {
                     // Can not target a cell with a friendly unit that we can't share the cell with
-                    if (entityAtCell.Team == selector.Team && !entityAtCell.EntityData.FriendlyUnitsCanShareCell) {
+                    if ((entityAtCell.Team == selector.Team || entityAtCell.Team == GameTeam.Neutral) && !entityAtCell.EntityData.FriendlyUnitsCanShareCell) {
                         break;
                     }
                 } else if (tileAccessibilityManager.InaccessibleTiles(selector.EntityData).Contains(cell.Tile) 

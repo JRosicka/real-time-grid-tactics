@@ -48,15 +48,15 @@ namespace Gameplay.Entities {
                 return;
             }
             
-            // Target the top entity
-            GridEntity targetEntity = GameManager.Instance.GetTopEntityAtLocation(targetCell);
-
             // Don't move/target the cell if this is a worker in the middle of building
             if (thisEntity.Tags.Contains(EntityTag.Worker) && thisEntity.ActiveTimers.Any(t => t.Ability is BuildAbility)) {
                 GameManager.Instance.EntitySelectionManager.DeselectTargetableAbility();
                 GameManager.Instance.AlertTextDisplayer.DisplayAlert("You must cancel the structure first.");
                 return;
             }
+            
+            // Target the top entity
+            GridEntity targetEntity = GameManager.Instance.GetTopEntityAtLocation(targetCell);
             
             // See if we should target this entity
             if (targetEntity != null && targetEntity.Team == GameTeam.Neutral && !targetEntity.EntityData.Targetable) {
@@ -65,7 +65,9 @@ namespace Gameplay.Entities {
                 // We are right-clicking the selected entity's cell? Cancel everything. 
                 thisEntity.CancelAllAbilities();
             } else if (targetEntity != null && thisEntity.Team != targetEntity.Team) {
-                TryTargetEntity(thisEntity, targetEntity, targetCell);
+                if (!TryTargetEntity(thisEntity, targetEntity, targetCell)) {
+                    thisEntity.TryMoveToCell(targetCell, true, true, true);
+                }
             } else {
                 thisEntity.TryMoveToCell(targetCell, true, true, true);
             }
@@ -73,11 +75,11 @@ namespace Gameplay.Entities {
             GameManager.Instance.EntitySelectionManager.DeselectTargetableAbility();
         }
         
-        private void TryTargetEntity(GridEntity thisEntity, GridEntity targetEntity, Vector2Int targetCell) {
+        private bool TryTargetEntity(GridEntity thisEntity, GridEntity targetEntity, Vector2Int targetCell) {
             if (!thisEntity.CanTargetThings)
-                return;
+                return false;
 
-            thisEntity.TryTargetEntity(targetEntity, targetCell);
+            return thisEntity.TryTargetEntity(targetEntity, targetCell);
         }
     }
 }

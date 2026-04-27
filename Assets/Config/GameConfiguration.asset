@@ -28,6 +28,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 513997ba2681c48a0b6d282a09df380c, type: 2}
   - {fileID: 11400000, guid: 6a1ece7bd9ce4498e883a4933c4da9f6, type: 2}
   CancelButtonSprite: {fileID: 21300000, guid: ac6a5cd8c78757649b1eebb6c22b1ba4, type: 3}
+  CancelIconScaleInSelectionInterface: 1
   CancelButtonSlotSprites: {fileID: 11400000, guid: ef653d486657bde49819c23db7683cf4, type: 2}
   NeutralColors: {fileID: 11400000, guid: ed34bf9881c4f4ef4aca8e94f5a0a863, type: 2}
   TargetedMaterial: {fileID: 2100000, guid: 2c657a3b9a6b54b2d8a58d0f2d4ef543, type: 2}
@@ -53,6 +54,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 3564d2f2163ea409f8664fa350696e65, type: 2}
   - {fileID: 11400000, guid: cf316c2fdb13348bda6f56494d192a01, type: 2}
   - {fileID: 11400000, guid: 9a1d0599b667f47309b0c327306a69ce, type: 2}
+  - {fileID: 11400000, guid: a2899be04b8f54805a7f62c027e3675d, type: 2}
+  - {fileID: 11400000, guid: f3eb88eee96a64370827475771891374, type: 2}
   Abilities:
   - {fileID: 11400000, guid: ec15a049dabc53b4d92ab14b2871752c, type: 2}
   - {fileID: 11400000, guid: a5c4aba93e508274894c2c6bfc4b751e, type: 2}
@@ -73,6 +76,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 2f4545e8d76a04b89857caffdb6d37bb, type: 2}
   - {fileID: 11400000, guid: d50fba4f48da240b7b8d5c84a17a6d1d, type: 2}
   - {fileID: 11400000, guid: 398205458218140e09d13e7ff7663dc9, type: 2}
+  - {fileID: 11400000, guid: 29b46a85b311c4691a019192edc965da, type: 2}
   Tiles:
   - {fileID: 11400000, guid: 72bba8f070a4e784393726b1ad5d4c16, type: 2}
   - {fileID: 11400000, guid: 25ec46ce372031f4d904f708f269dcb4, type: 2}
