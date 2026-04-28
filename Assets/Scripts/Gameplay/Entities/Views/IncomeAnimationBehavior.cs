@@ -1,5 +1,6 @@
 using System.Linq;
 using Gameplay.Config;
+using Gameplay.Config.Abilities;
 using Gameplay.Config.Upgrades;
 using Gameplay.Entities.Upgrades;
 using TMPro;
@@ -35,9 +36,12 @@ namespace Gameplay.Entities {
         }
         
         public void DoIncomeAnimation() {
-            _incomeText.text = string.Format(_incomeTextFormat, _entity.IncomeRate, _textIconGlyph);
-            _incomeText.color = _textColor;
-            _animator.Play("ShowIncome");
+            IncomeAbilityData incomeAbilityData = _entity.GetAbilityData<IncomeAbilityData>();
+            if (incomeAbilityData != null && _entity.HPHandler.TimeSinceLastReceivedAttack() >= incomeAbilityData.CooldownSecondsFromBeingAttacked) {
+                _incomeText.text = string.Format(_incomeTextFormat, _entity.IncomeRate, _textIconGlyph);
+                _incomeText.color = _textColor;
+                _animator.Play("ShowIncome");
+            }
             
             ToggleOutOfResourcesIcon(_entity.InteractBehavior is { IsLocalTeam: true });
         }

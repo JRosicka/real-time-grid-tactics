@@ -49,3 +49,4 @@ MonoBehaviour:
     ResourceAmountIncome:
       Type: 0
       Amount: 5
+    CooldownSecondsFromBeingAttacked: 26.5

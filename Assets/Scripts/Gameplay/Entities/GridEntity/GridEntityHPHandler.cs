@@ -24,12 +24,16 @@ namespace Gameplay.Entities {
         public bool MarkedForDeath { get; private set; }
 
         public int CurrentHP => ((NetworkableIntegerValue)_currentHP?.Value)?.Value ?? 0;
+        private float LastAttackedTime => ((NetworkableFloatValue)_lastAttackedTime?.Value)?.Value ?? 0;
         
         private NetworkableField _currentHP;
+        private NetworkableField _lastAttackedTime;
 
         private void Awake() {
             _currentHP = new NetworkableField(this, nameof(_currentHP), new NetworkableIntegerValue(0));
             _currentHP.ValueChanged += HPChanged;
+            
+            _lastAttackedTime = new NetworkableField(this, nameof(_lastAttackedTime), new NetworkableFloatValue(-1000));
         }
         
         #region Update HP
@@ -52,6 +56,14 @@ namespace Gameplay.Entities {
         }
         
         #endregion
+
+        /// <summary>
+        /// Report that an attack hit on this location and dealt damage, either onto this entity or onto some other entity
+        /// at this location
+        /// </summary>
+        public void AttackLandedAtLocation() {
+            _lastAttackedTime.UpdateValue(new NetworkableFloatValue(Time.time));
+        }
         
         /// <returns>
         /// Deal damage. Server only. 
@@ -96,6 +108,13 @@ namespace Gameplay.Entities {
             int newHP = CurrentHP + healAmount;
             newHP = Mathf.Min(newHP, _gridEntity.MaxHP);
             SetCurrentHP(newHP, true);
+        }
+
+        /// <summary>
+        /// Returns the amount of seconds since the last attack. 
+        /// </summary>
+        public float TimeSinceLastReceivedAttack() {
+            return Time.time - LastAttackedTime;
         }
         
         private void Kill([NotNull] GridEntity sourceEntity) {

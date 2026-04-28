@@ -1,9 +1,11 @@
 using System.Collections.Generic;
+using System.Linq;
 using Gameplay.Config.Abilities;
 using Gameplay.Entities;
 using Gameplay.Entities.Abilities;
 using Gameplay.Entities.Upgrades;
 using JetBrains.Annotations;
+using Sirenix.Utilities;
 using UnityEngine;
 
 namespace Gameplay.Managers {
@@ -89,7 +91,9 @@ namespace Gameplay.Managers {
             
             // Apply any bonus damage from upgrades
             bonusDamage += BonusDamageFromUpgrades(attacker);
-            
+
+            GameManager.Instance.CommandManager.EntitiesOnGrid.EntitiesAtLocation(target.Location.Value).Entities
+                .ForEach(e => e.Entity.HPHandler.AttackLandedAtLocation());
             bool killed = target.HPHandler.ReceiveAttackFromEntity(attacker, bonusDamage);
             target.TryRespondToAttack(attacker);
 
