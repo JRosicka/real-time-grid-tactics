@@ -123,11 +123,18 @@ public abstract class AbstractCommandManager : NetworkBehaviour, ICommandManager
         IGamePlayer player = GameManager.Instance.GetPlayerForTeam(team);
         player?.OwnedPurchasablesController.Upgrades.ApplyUpgrades(entityInstance);
 
-        // Handle starting movement
+        // Handle starting ability
         if (spawnerEntity != null && spawnerEntity.TargetLocationLogicValue.CanRally && spawnerEntity.TargetLocationLogicValue.CurrentTarget != spawnerLocation) {
             RallyAbilityData rallyAbilityData = spawnerEntity.GetAbilityData<RallyAbilityData>();
             if (rallyAbilityData != null) {
-                if (rallyAbilityData.RallyingUnitsCanTargetAttack && spawnerEntity.TargetLocationLogicValue.TargetEntity) {
+                CollectResourceAbilityData collectAbilityData = entityInstance.GetAbilityData<CollectResourceAbilityData>();
+                GridEntity target = GameManager.Instance.GetTopEntityAtLocation(spawnerEntity.TargetLocationLogicValue.CurrentTarget);
+                if (collectAbilityData != null && collectAbilityData.CollectableResourceEntities.Contains(target?.EntityData)) {
+                    // Collect the entity
+                    GameManager.Instance.AbilityAssignmentManager.StartPerformingAbility(entityInstance, collectAbilityData, new CollectResourceAbilityParameters {
+                        Target = target
+                    }, false, true, true, true);
+                } else if (rallyAbilityData.RallyingUnitsCanTargetAttack && spawnerEntity.TargetLocationLogicValue.TargetEntity) {
                     // Target-attack the target entity
                     entityInstance.TryAttack(spawnerEntity.TargetLocationLogicValue.CurrentTarget, spawnerEntity.TargetLocationLogicValue.TargetEntity);
                 } else if (rallyAbilityData.RallyingUnitsAreAttackers) {
