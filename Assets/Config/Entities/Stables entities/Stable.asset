@@ -33,7 +33,7 @@ MonoBehaviour:
   AttackSFX: {fileID: 0}
   AudioPlacementPrefix: StandardStructure
   EntityFinishedBuildingSFX: {fileID: 11400000, guid: c00e4012763954a089f8f0ba8606da75, type: 2}
-  HP: 80
+  HP: 70
   Range: 0
   Damage: 0
   BonusDamage: 0
@@ -52,6 +52,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 930b6968d79224dcba838459c0b63f49, type: 2}
   FriendlyUnitsCanShareCell: 1
   Targetable: 1
+  Attackable: 1
   AttackByDefault: 0
   IsResourceExtractor: 0
   ResourceThatThisCanExtract: {fileID: 0}

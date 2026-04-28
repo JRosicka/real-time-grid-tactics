@@ -32,7 +32,7 @@ MonoBehaviour:
   AttackSFX: {fileID: 0}
   AudioPlacementPrefix: StandardStructure
   EntityFinishedBuildingSFX: {fileID: 0}
-  HP: 100
+  HP: 80
   Range: 0
   Damage: 0
   BonusDamage: 0
@@ -53,6 +53,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 5c3d4a15ccf544323ae1076ff64f26d0, type: 2}
   FriendlyUnitsCanShareCell: 1
   Targetable: 0
+  Attackable: 1
   AttackByDefault: 0
   IsResourceExtractor: 1
   ResourceThatThisCanExtract: {fileID: 11400000, guid: 007fafa82b51345319298048e99631e6, type: 2}
@@ -64,7 +65,7 @@ MonoBehaviour:
   ControllableByAllPlayers: 0
   EligibleStructureLocations:
   - {fileID: 11400000, guid: be8d7ccbdc543194e9649f8f9fadbf2b, type: 2}
-  SharedUnitArmorBonus: 2
+  SharedUnitArmorBonus: 1
   SharedUnitDamageTakenModifierTags: 
   CanRally: 1
   StartingResourceSet:
