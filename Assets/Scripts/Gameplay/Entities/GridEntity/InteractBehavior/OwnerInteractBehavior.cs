@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using Audio;
 using Gameplay.Config;
@@ -62,8 +63,18 @@ namespace Gameplay.Entities {
             if (targetEntity != null && targetEntity.Team == GameTeam.Neutral && !targetEntity.EntityData.Targetable) {
                 thisEntity.TryMoveToCell(targetCell, true, true, true);
             } else if (targetEntity == thisEntity) {
-                // We are right-clicking the selected entity's cell? Cancel everything. 
-                thisEntity.CancelAllAbilities();
+                // We are right-clicking the selected entity's cell? Cancel all move and attack abilities. 
+                List<IAbility> abilitiesToCancel = thisEntity.GetMoveAndAttackAbilities();
+                if (abilitiesToCancel.Any()) {
+                    abilitiesToCancel.ForEach(a => GameManager.Instance.CommandManager.CancelAbility(a, true));
+                    
+                    // Update the rally point
+                    Vector2Int? currentLocation = thisEntity.Location;
+                    // The location might be null if the entity is being destroyed 
+                    if (currentLocation != null) {
+                        thisEntity.SetTargetLocation(currentLocation.Value, null, false);
+                    }
+                }
             } else if (targetEntity != null && thisEntity.Team != targetEntity.Team) {
                 if (!TryTargetEntity(thisEntity, targetEntity, targetCell)) {
                     thisEntity.TryMoveToCell(targetCell, true, true, true);
