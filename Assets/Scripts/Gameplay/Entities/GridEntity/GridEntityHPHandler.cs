@@ -56,20 +56,14 @@ namespace Gameplay.Entities {
         }
         
         #endregion
-
-        /// <summary>
-        /// Report that an attack hit on this location and dealt damage, either onto this entity or onto some other entity
-        /// at this location
-        /// </summary>
-        public void AttackLandedAtLocation() {
-            _lastAttackedTime.UpdateValue(new NetworkableFloatValue(Time.time));
-        }
         
         /// <returns>
         /// Deal damage. Server only. 
         /// True if this results in the entity dying, otherwise false
         /// </returns>
         public bool ReceiveAttackFromEntity([NotNull] GridEntity sourceEntity, int bonusDamage) {
+            _lastAttackedTime.UpdateValue(new NetworkableFloatValue(Time.time));
+
             // Get base damage
             int damage = sourceEntity.Damage;
             
