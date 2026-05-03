@@ -57,30 +57,37 @@ namespace Gameplay.Entities {
             }
             
             // Target the top entity
-            GridEntity targetEntity = GameManager.Instance.GetTopEntityAtLocation(targetCell);
-            
-            // See if we should target this entity
-            if (targetEntity != null && targetEntity.Team == GameTeam.Neutral && !targetEntity.EntityData.Targetable) {
+            List<GridEntity> entitiesAtLocation = GameManager.Instance.CommandManager.EntitiesOnGrid.EntitiesAtLocation(targetCell)
+                ?.Entities?.OrderByDescending(o => o.Order).Select(e => e.Entity).ToList();
+            if (entitiesAtLocation == null || entitiesAtLocation.Count == 0) {
                 thisEntity.TryMoveToCell(targetCell, true, true, true);
-            } else if (targetEntity == thisEntity) {
-                // We are right-clicking the selected entity's cell? Cancel all move and attack abilities. 
-                List<IAbility> abilitiesToCancel = thisEntity.GetMoveAndAttackAbilities();
-                if (abilitiesToCancel.Any()) {
-                    abilitiesToCancel.ForEach(a => GameManager.Instance.CommandManager.CancelAbility(a, true));
-                    
-                    // Update the rally point
-                    Vector2Int? currentLocation = thisEntity.Location;
-                    // The location might be null if the entity is being destroyed 
-                    if (currentLocation != null) {
-                        thisEntity.SetTargetLocation(currentLocation.Value, null, false);
+            } else {
+                bool locationContainsThisEntity = entitiesAtLocation.Contains(thisEntity);
+                GridEntity targetEntity = entitiesAtLocation.FirstOrDefault(e => e != thisEntity);
+                
+                // See if we should target this entity
+                if (targetEntity != null && targetEntity.Team == GameTeam.Neutral && !targetEntity.EntityData.Targetable) {
+                    thisEntity.TryMoveToCell(targetCell, true, true, true);
+                } else if (targetEntity != null && thisEntity.Team != targetEntity.Team) {
+                    if (!TryTargetEntity(thisEntity, targetEntity, targetCell)) {
+                        thisEntity.TryMoveToCell(targetCell, true, true, true);
                     }
-                }
-            } else if (targetEntity != null && thisEntity.Team != targetEntity.Team) {
-                if (!TryTargetEntity(thisEntity, targetEntity, targetCell)) {
+                } else if (locationContainsThisEntity) {
+                    // We are right-clicking the selected entity's cell? Cancel all move and attack abilities. 
+                    List<IAbility> abilitiesToCancel = thisEntity.GetMoveAndAttackAbilities();
+                    if (abilitiesToCancel.Any()) {
+                        abilitiesToCancel.ForEach(a => GameManager.Instance.CommandManager.CancelAbility(a, true));
+                    
+                        // Update the rally point
+                        Vector2Int? currentLocation = thisEntity.Location;
+                        // The location might be null if the entity is being destroyed 
+                        if (currentLocation != null) {
+                            thisEntity.SetTargetLocation(currentLocation.Value, null, false);
+                        }
+                    }
+                } else {
                     thisEntity.TryMoveToCell(targetCell, true, true, true);
                 }
-            } else {
-                thisEntity.TryMoveToCell(targetCell, true, true, true);
             }
             
             GameManager.Instance.EntitySelectionManager.DeselectTargetableAbility();
