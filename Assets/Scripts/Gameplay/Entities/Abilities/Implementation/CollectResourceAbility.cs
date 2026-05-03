@@ -39,8 +39,8 @@ namespace Gameplay.Entities.Abilities {
             
             UpdateTargetLocation();
 
-            // Try to collect the target if it is in range
-            if (CellDistanceLogic.DistanceBetweenCells(Performer.Location.Value, AbilityParameters.Target.Location.Value) == 1) {
+            // Try to collect the target if at that location
+            if (Performer.Location.Value == AbilityParameters.Target.Location.Value) {
                 if (Performer.ActiveTimers.Any(t => t.Ability.AbilityData.Channel == AbilityData.Channel)) {
                     // We are in range of the target, but collecting is in-progress. Do nothing for now. 
                     return (false, AbilityResult.IncompleteWithoutEffect);

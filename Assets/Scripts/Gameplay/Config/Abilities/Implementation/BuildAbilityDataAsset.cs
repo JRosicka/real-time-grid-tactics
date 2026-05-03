@@ -80,15 +80,12 @@ namespace Gameplay.Config.Abilities {
             };
         }
 
-        public bool CanTargetCell(Vector2Int cellPosition, GridEntity selectedEntity, GameTeam selectorTeam, System.Object targetData) {
+        public bool CanTargetCell(Vector2Int cellPosition, GridEntity selectedEntity, GameTeam selectorTeam, object targetData) {
             EntityData entityToBuild = (EntityData)targetData;
-            GameplayTile tileAtLocation = GridController.GridData.GetCell(cellPosition).Tile;
-            return entityToBuild.EligibleStructureLocations.Contains(tileAtLocation)
-                   && !GameManager.Instance.QueuedStructureBuildsManager.LocationsWithQueuedStructures.Contains(cellPosition)
-                   && PathfinderService.CanEntityEnterCell(cellPosition, entityToBuild, selectorTeam, new List<GridEntity>{selectedEntity});
+            return GetViableTargets(selectedEntity, entityToBuild).Contains(cellPosition);
         }
 
-        public void DoTargetableAbility(Vector2Int cellPosition, GridEntity selectedEntity, GameTeam selectorTeam, System.Object targetData) {
+        public void DoTargetableAbility(Vector2Int cellPosition, GridEntity selectedEntity, GameTeam selectorTeam, object targetData) {
             PurchasableData purchasableData = (PurchasableData)targetData;
             BuildAbilityParameters buildParameters = new BuildAbilityParameters {Buildable = purchasableData, BuildLocation = cellPosition};
             GameManager.Instance.AbilityAssignmentManager.StartPerformingAbility(selectedEntity, this, buildParameters, 
@@ -143,8 +140,8 @@ namespace Gameplay.Config.Abilities {
                     ret.Add(viableTarget);
                     continue;
                 }
-                if (entities.Entities.All(e => (e.Entity.Team == GameTeam.Neutral && !e.Entity.EntityData.Targetable) || e.Entity == selector)) {
-                    // Entities there, but they are all neutral or the selected unit, so eligible 
+                if (entities.Entities.All(e => (e.Entity.Team == GameTeam.Neutral && e.Entity.EntityData.CanBuildFriendlyStructureOnTop) || e.Entity == selector)) {
+                    // Entities there, but they are all neutral and buildable on (or the selected unit), so eligible 
                     ret.Add(viableTarget);
                 }
             }
