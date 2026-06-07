@@ -33,8 +33,8 @@ namespace Game.Network
         public event Action<ulong, int> PlayerSwappedToSlot;
 
         [Command(requiresAuthority = false)]
-        private void CmdSetSteamIDs(CSteamID newSteamID, string newDisplayName) {
-            IsHostPlayer = isServer;
+        private void CmdInitialize(bool host, CSteamID newSteamID, string newDisplayName) {
+            IsHostPlayer = host;
             SteamID = newSteamID;
             DisplayName = newDisplayName;
 
@@ -99,7 +99,7 @@ namespace Game.Network
         {
             Debug.Log($"OnStartClient {gameObject}");
             if (isLocalPlayer) {
-                CmdSetSteamIDs(SteamUser.GetSteamID(), SteamFriends.GetPersonaName());
+                CmdInitialize(isServer, SteamUser.GetSteamID(), SteamFriends.GetPersonaName());
             }
         }
 
