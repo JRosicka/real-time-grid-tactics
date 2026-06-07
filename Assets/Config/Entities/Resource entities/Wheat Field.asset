@@ -49,6 +49,7 @@ MonoBehaviour:
   Targetable: 0
   CanBuildFriendlyStructureOnTop: 1
   Attackable: 0
+  CanBlockMovement: 0
   AttackByDefault: 0
   IsResourceExtractor: 0
   ResourceThatThisCanExtract: {fileID: 0}

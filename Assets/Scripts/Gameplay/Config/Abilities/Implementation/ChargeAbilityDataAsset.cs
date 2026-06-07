@@ -238,6 +238,9 @@ namespace Gameplay.Config.Abilities {
                 if (entityAtCell.EntityData.IsStructure) {
                     return false;
                 }
+                if (!entityAtCell.EntityData.CanBlockMovement) {
+                    return false;
+                }
 
                 return true;
             }

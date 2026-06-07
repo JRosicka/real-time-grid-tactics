@@ -2912,6 +2912,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CameraManager: {fileID: 504119508}
   PauseMenu: {fileID: 1723025850449871020}
+  ControlGroupCameraSnapWindowSeconds: 0.2
 --- !u!1001 &1261052756
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -17171,8 +17172,20 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5924472466639315221, guid: 62e9ce8826cf3cb43ad4281058d3310d, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5924472466639315221, guid: 62e9ce8826cf3cb43ad4281058d3310d, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5924472466639315221, guid: 62e9ce8826cf3cb43ad4281058d3310d, type: 3}
       propertyPath: m_SizeDelta.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5924472466639315221, guid: 62e9ce8826cf3cb43ad4281058d3310d, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -204.84029
       objectReference: {fileID: 0}
     - target: {fileID: 6308525483425415807, guid: 62e9ce8826cf3cb43ad4281058d3310d, type: 3}
       propertyPath: m_AnchorMax.y
@@ -17315,6 +17328,18 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7332361610553341931, guid: 62e9ce8826cf3cb43ad4281058d3310d, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7829725838432897071, guid: 62e9ce8826cf3cb43ad4281058d3310d, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7829725838432897071, guid: 62e9ce8826cf3cb43ad4281058d3310d, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7829725838432897071, guid: 62e9ce8826cf3cb43ad4281058d3310d, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}

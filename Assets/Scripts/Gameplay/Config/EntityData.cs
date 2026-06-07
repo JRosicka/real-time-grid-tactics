@@ -59,6 +59,7 @@ namespace Gameplay.Config {
         public bool Targetable = true;
         public bool CanBuildFriendlyStructureOnTop = false;
         public bool Attackable = true;
+        public bool CanBlockMovement = true;
 
         public bool AttackByDefault;
 
