@@ -58,6 +58,16 @@ namespace Game.Network
             LobbyNetworkBehaviour.Instance.AssignColor(this, newSlotIndexOverride, newColorID);
         }
 
+        /// <summary>
+        /// Update the color on the LobbyNetworkBehaviour (which respawns every time returning to the lobby) with the
+        /// pre-existing color for the player, if that exists. 
+        /// </summary>
+        [Server]
+        private void UpdateColor() {
+            if (ColorID == null || ColorID == "gray" || PlayerSlotIndex == -1) return;
+            LobbyNetworkBehaviour.Instance.AssignColor(this, PlayerSlotIndex, ColorID);
+        }
+
         [Server]
         public void Kick() {
             TargetPrepareForKick(netIdentity.connectionToClient);
@@ -106,6 +116,10 @@ namespace Game.Network
         public override void OnClientEnterRoom()
         {
             Debug.Log($"OnClientEnterRoom {SceneManager.GetActiveScene().path}");
+            if (NetworkServer.active) {
+                UpdateColor();
+            }
+
         }
 
         public static event Action PlayerExitedRoom;
