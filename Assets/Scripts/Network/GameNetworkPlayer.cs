@@ -16,9 +16,8 @@ namespace Game.Network
         // Assume that we are using Steam for lobbying
         private SteamLobbyService steamLobbyService => SteamLobbyService.Instance;
 
-        // TODO: Neither of these are true for the hosting player on other client machines...
-        public bool IsHostPlayer => netIdentity && isLocalPlayer && isServer;
-        
+        [SyncVar]
+        public bool IsHostPlayer;
         [SyncVar(hook = nameof(OnDisplayNameSet))]
         public string DisplayName;
         [SyncVar]
@@ -35,6 +34,7 @@ namespace Game.Network
 
         [Command(requiresAuthority = false)]
         private void CmdSetSteamIDs(CSteamID newSteamID, string newDisplayName) {
+            IsHostPlayer = isServer;
             SteamID = newSteamID;
             DisplayName = newDisplayName;
 
