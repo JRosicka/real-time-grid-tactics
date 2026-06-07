@@ -21,6 +21,8 @@ namespace Menu {
 
         private bool _mapLoadingLocked;
         
+        private static GameNetworkManager GameNetworkManager => (GameNetworkManager)NetworkManager.singleton;
+        
         public static LobbyNetworkBehaviour Instance { get; private set; }
         private void Start() {
             Instance = this;
@@ -66,9 +68,8 @@ namespace Menu {
                 GameTypeTracker.Instance.SetMap(mapToLoad);
                 TrySwitchMap(mapToLoad);
 
-                GameNetworkManager gameNetworkManager = (GameNetworkManager)NetworkManager.singleton;
-                if (gameNetworkManager != null) {
-                    gameNetworkManager.RoomServerDidDisconnectAction += UnassignColorsForDisconnectedPlayers;
+                if (GameNetworkManager != null) {
+                    GameNetworkManager.RoomServerDidDisconnectAction += UnassignColorsForDisconnectedPlayers;
                 }
             } else {
                 GameTypeTracker.Instance.SetMap(MapID);
@@ -187,6 +188,13 @@ namespace Menu {
         [ClientRpc]
         private void RpcLockMapLoading() {
             SceneLoader.Instance.LockMapLoading();
+        }
+
+        [Command(requiresAuthority = false)]
+        public void CmdStartGame() {
+            SteamLobbyService.Instance.UpdateCurrentLobbyMetadata(SteamLobbyService.LobbyGameActiveKey, true.ToString());
+            LockMapLoading();
+            GameNetworkManager.ServerChangeScene(GameNetworkManager.GameplayScene);
         }
     }
 }
