@@ -223,7 +223,7 @@ namespace Game.Network {
             
             // See if the local player is still in the lobby. If not, then this is us as the lobby host leaving,
             // so let's leave the steam lobby as well
-            if (!roomSlots.Any(p => p.isLocalPlayer)) {
+            if (NetworkServer.active && !roomSlots.Cast<GameNetworkPlayer>().Any(p => p.IsHostPlayer)) {
                 SteamLobbyService.Instance.ExitLobby();
             }
 
