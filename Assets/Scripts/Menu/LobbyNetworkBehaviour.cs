@@ -196,5 +196,15 @@ namespace Menu {
             LockMapLoading();
             GameNetworkManager.ServerChangeScene(GameNetworkManager.GameplayScene);
         }
+
+        [Command(requiresAuthority = false)]
+        public void CmdToggleStartButton(bool active) {
+            RpcToggleStartButton(active);
+        }
+
+        [ClientRpc]
+        private void RpcToggleStartButton(bool active) {
+            RoomMenu.ToggleStartButton(active);
+        }
     }
 }

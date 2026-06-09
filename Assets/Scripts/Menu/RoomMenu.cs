@@ -162,23 +162,31 @@ public class RoomMenu : MonoBehaviour {
         CopiedToClipboardAnimator.Play("Copy Join Code");
     }
 
+    
     private void TryShowStartButton() {
+        bool showButton = false;
         if (PlayerSlot1.AssignedPlayer == null && PlayerSlot2.AssignedPlayer == null) {
             // Need at least one filled team slot to start a game
-            StartButton.gameObject.SetActive(false);
         } else if (PlayerSlot1.AssignedPlayer != null && !PlayerSlot1.AssignedPlayer.readyToBegin) {
             // Player 1 not ready
-            StartButton.gameObject.SetActive(false);
         } else if (PlayerSlot2.AssignedPlayer != null && !PlayerSlot2.AssignedPlayer.readyToBegin) {
             // Player 2 not ready
-            StartButton.gameObject.SetActive(false);
         } else {
-            StartButton.gameObject.SetActive(true);
+            showButton = true;
         }
+        
+        LobbyNetworkBehaviour.CmdToggleStartButton(showButton);
     }
 
     private void HideStartButton() {
-        StartButton.gameObject.SetActive(false);
+        LobbyNetworkBehaviour.CmdToggleStartButton(false);
+    }
+
+    /// <summary>
+    /// Client event
+    /// </summary>
+    public void ToggleStartButton(bool active) {
+        StartButton.gameObject.SetActive(active);
     }
 
     private void AddUnassignedPlayers() {
