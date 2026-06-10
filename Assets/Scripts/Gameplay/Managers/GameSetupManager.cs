@@ -108,7 +108,7 @@ public class GameSetupManager : MonoBehaviour {
     }
     
     // TODO it would be good to move all of this game over logic to GameEndManager, but we currently can't do server-side logic in that class
-    private void HandleGameOver(IGamePlayer winner) {
+    private void HandleGameOver(IGamePlayer winner, bool forcedEnd) {
         GameNetworkManager gameNetworkManager = (GameNetworkManager)NetworkManager.singleton;
         if (gameNetworkManager != null) {
             gameNetworkManager.RoomServerDidDisconnectAction -= ReDetermineWhichPlayersAreConnected;
@@ -119,9 +119,9 @@ public class GameSetupManager : MonoBehaviour {
         GameTeam winningTeam = winner?.Team ?? GameTeam.Neutral;
         if (!GameTypeTracker.Instance.GameIsNetworked) {
             LeaveGameAsync();
-            NotifyGameOver(winningTeam);
+            NotifyGameOver(winningTeam, forcedEnd);
         } else {
-            MPSetupHandler.CmdGameOver(winningTeam);
+            MPSetupHandler.CmdGameOver(winningTeam, forcedEnd);
         }
     }
 
@@ -143,16 +143,21 @@ public class GameSetupManager : MonoBehaviour {
     /// <summary>
     /// Client/SP logic for ending the game
     /// </summary>
-    /// <param name="winner"></param>
-    public void NotifyGameOver(GameTeam winner) {
+    public void NotifyGameOver(GameTeam winner, bool forcedEnd) {
         if (GameOver) return;
         GameOver = true;
         
         GameAudio.Instance.EndMusic();
+
+        if (forcedEnd) {
+            GameOverView.ShowForcedEnd();
+            GameAudio.Instance.GameLossSound();
+            return;
+        }
         
         if (winner == GameTeam.Neutral) {
             GameOverView.ShowTie();
-            // TODO tie sound effect?
+            GameAudio.Instance.GameLossSound();
         } else if (GameManager.LocalTeam == GameTeam.Spectator) {
             GameOverView.ShowSpectatorThatPlayerWon(GameManager.GetPlayerForTeam(winner));
             GameAudio.Instance.GameWinSound();

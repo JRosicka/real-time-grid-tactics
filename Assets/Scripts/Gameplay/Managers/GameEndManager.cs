@@ -8,7 +8,7 @@ using UnityEngine;
 /// Detects and handles the end of the game
 /// </summary>
 public class GameEndManager {
-    public event Action<IGamePlayer> GameEnded;
+    public event Action<IGamePlayer, bool> GameEnded;
     
     private readonly GameManager _gameManager;
     private bool _gameOver;
@@ -48,7 +48,13 @@ public class GameEndManager {
             Debug.Log($"Game over - the winner is {winner.DisplayName}");
         }
         
-        GameEnded?.Invoke(winner);
+        GameEnded?.Invoke(winner, false);
+    }
+
+    public void ForceEndGame() {
+        _gameOver = true;
+        Debug.Log("Game over - forced end");
+        GameEnded?.Invoke(null, true);
     }
     
     private bool PlayerHasLost(IGamePlayer player) {

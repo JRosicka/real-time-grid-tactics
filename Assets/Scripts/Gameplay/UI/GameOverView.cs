@@ -9,6 +9,7 @@ namespace Gameplay.UI {
         public GameObject VictoryText;
         public GameObject DefeatText;
         public GameObject TieText;
+        public GameObject ForcedEndText;
         public TMP_Text ResultTextForSpectator;
         public string ResultTextForSpectatorText = "Game over. {0} won!";
         
@@ -17,6 +18,7 @@ namespace Gameplay.UI {
             VictoryText.SetActive(true);
             DefeatText.SetActive(false);
             TieText.SetActive(false);
+            ForcedEndText.SetActive(false);
             ResultTextForSpectator.gameObject.SetActive(false);
         }
         
@@ -25,6 +27,7 @@ namespace Gameplay.UI {
             VictoryText.SetActive(false);
             DefeatText.SetActive(true);
             TieText.SetActive(false);
+            ForcedEndText.SetActive(false);
             ResultTextForSpectator.gameObject.SetActive(false);
         }
 
@@ -33,6 +36,16 @@ namespace Gameplay.UI {
             VictoryText.SetActive(false);
             DefeatText.SetActive(false);
             TieText.SetActive(true);
+            ForcedEndText.SetActive(false);
+            ResultTextForSpectator.gameObject.SetActive(false);
+        }
+
+        public void ShowForcedEnd() {
+            gameObject.SetActive(true);
+            VictoryText.SetActive(false);
+            DefeatText.SetActive(false);
+            TieText.SetActive(false);
+            ForcedEndText.SetActive(true);
             ResultTextForSpectator.gameObject.SetActive(false);
         }
 
@@ -41,6 +54,7 @@ namespace Gameplay.UI {
             VictoryText.SetActive(false);
             DefeatText.SetActive(false);
             TieText.SetActive(false);
+            ForcedEndText.SetActive(false);
             ResultTextForSpectator.gameObject.SetActive(true);
             ResultTextForSpectator.text = string.Format(ResultTextForSpectatorText, winner.DisplayName);
         }

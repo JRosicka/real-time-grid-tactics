@@ -67,13 +67,13 @@ public class MultiplayerGameSetupHandler : NetworkBehaviour {
     }
 
     [Command(requiresAuthority = false)]
-    public void CmdGameOver(GameTeam winner) {
+    public void CmdGameOver(GameTeam winner, bool forcedEnd) {
         GameSetupManager.LeaveGameAsync();
-        RpcNotifyGameOver(winner);
+        RpcNotifyGameOver(winner, forcedEnd);
     }
 
     [ClientRpc]
-    private void RpcNotifyGameOver(GameTeam winner) {
-        GameSetupManager.NotifyGameOver(winner);
+    private void RpcNotifyGameOver(GameTeam winner, bool forcedEnd) {
+        GameSetupManager.NotifyGameOver(winner, forcedEnd);
     }
 }
