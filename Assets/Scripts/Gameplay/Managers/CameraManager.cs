@@ -144,7 +144,7 @@ public class CameraManager : MonoBehaviour {
     }
 
     private void CheckForEdgeScroll(Vector2 mouseScreenPosition) {
-        if (!_edgeScrollEnabled) {
+        if (!_edgeScrollEnabled || !Application.isFocused) {
             _currentEdgeScrollDirection_horizontal = null;
             _currentEdgeScrollDirection_vertical = null;
             return;
