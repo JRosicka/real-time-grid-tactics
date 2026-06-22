@@ -25,7 +25,6 @@ namespace Gameplay.Entities {
         // GameManager getters
         private static ICommandManager CommandManager => GameManager.Instance?.CommandManager;
         private static AbilityAssignmentManager AbilityAssignmentManager => GameManager.Instance.AbilityAssignmentManager;
-        private static InGameTimer InGameTimer => GameManager.Instance.InGameTimer;
 
         #region Fields
         
@@ -809,6 +808,9 @@ namespace Gameplay.Entities {
         }
 
         public void TryRespondToAttack(GridEntity sourceEntity) {
+            // Check for whether reactive attacks are enabled
+            if (!GameManager.Instance.Configuration.ReactiveAttacksEnabled) return;
+            
             // If we not an attacker, no response
             if (!EntityData.AttackByDefault) return;
             // If somehow no location (not registered), no response
