@@ -55,14 +55,14 @@ namespace Gameplay.Entities.Abilities {
             }
 
             
-            // If no move available, then don't do anything else for now
-            if (Performer.ActiveTimers.Any(t => t.Ability is MoveAbility)) {
+            // If already moving, then don't do anything else for now
+            if (Performer.InProgressAbilities.Any(t => t is MoveAbility) || Performer.ActiveTimers.Any(t => t.Ability is MoveAbility)) {
                 return (false, AbilityResult.IncompleteWithoutEffect);
             }
             
             // Otherwise move closer to the target if not holding position 
             if (!Performer.HoldingPosition) {
-                StepTowardsDestination(Performer, AbilityParameters.Target.Location.Value);
+                MoveToDestination(Performer, AbilityParameters.Target.Location.Value);
             }
             
             return (false, AbilityResult.IncompleteWithoutEffect);
@@ -71,20 +71,19 @@ namespace Gameplay.Entities.Abilities {
         /// <summary>
         /// Move a single cell towards the destination
         /// </summary>
-        private void StepTowardsDestination(GridEntity attacker, Vector2Int destination) {
+        private void MoveToDestination(GridEntity attacker, Vector2Int destination) {
             PathfinderService.Path path = GameManager.Instance.PathfinderService.FindPath(Performer, destination);
             if (path.Nodes.Count < 2) {
                 return;
             }
             
-            Vector2Int nextMoveCell = path.Nodes[1].Location;
             MoveAbilityData moveAbilityData = attacker.GetAbilityData<MoveAbilityData>();
             AbilityAssignmentManager.StartPerformingAbility(attacker, moveAbilityData, new MoveAbilityParameters {
-                Destination = nextMoveCell,
-                NextMoveCell = nextMoveCell,
+                Destination = destination,
+                NextMoveCell = destination,
                 BlockedByOccupation = false,
                 PerformAfterAttacks = true
-            }, false, true, false, false, attacker.Team);
+            }, false, false, false, false, attacker.Team);
         }
 
         private void UpdateTargetLocation() {
