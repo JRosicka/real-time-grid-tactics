@@ -53,10 +53,10 @@ namespace Gameplay.Entities {
             // Don't move/target the cell if this is a worker in the middle of building or collecting
             if (thisEntity.Tags.Contains(EntityTag.Worker)) {
                 if (thisEntity.ActiveTimers.Any(t => t.Ability is BuildAbility)) {
-                GameManager.Instance.EntitySelectionManager.DeselectTargetableAbility();
-                GameManager.Instance.AlertTextDisplayer.DisplayAlert("You must cancel the structure first.");
-                return;
-            }
+                    GameManager.Instance.EntitySelectionManager.DeselectTargetableAbility();
+                    GameManager.Instance.AlertTextDisplayer.DisplayAlert("You must cancel the structure first.");
+                    return;
+                }
                 if (thisEntity.ActiveTimers.Any(t => t.Ability is CollectResourceAbility)) {
                     GameManager.Instance.EntitySelectionManager.DeselectTargetableAbility();
                     GameManager.Instance.AlertTextDisplayer.DisplayAlert("You must cancel the the resource collection first.");
@@ -81,8 +81,8 @@ namespace Gameplay.Entities {
                         thisEntity.TryMoveToCell(targetCell, true, true, true);
                     }
                 } else if (locationContainsThisEntity) {
-                    // We are right-clicking the selected entity's cell? Cancel all move and attack abilities. 
-                    List<IAbility> abilitiesToCancel = thisEntity.GetMoveAndAttackAbilities();
+                    // We are right-clicking the selected entity's cell? Cancel all move and attack abilities. (and collection) 
+                    List<IAbility> abilitiesToCancel = thisEntity.GetAbilities(new List<Type> {typeof(MoveAbility), typeof(AttackAbility), typeof(TargetAttackAbility), typeof(CollectResourceAbility)});
                     if (abilitiesToCancel.Any()) {
                         abilitiesToCancel.ForEach(a => GameManager.Instance.CommandManager.CancelAbility(a, true));
                     

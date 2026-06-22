@@ -486,8 +486,8 @@ namespace Gameplay.Entities {
             return abilities;
         }
 
-        public List<IAbility> GetMoveAndAttackAbilities() {
-            return GetCancelableAbilities().Where(a => a is AttackAbility or TargetAttackAbility or MoveAbility).ToList();
+        public List<IAbility> GetAbilities(List<Type> types) {
+            return GetCancelableAbilities().Where(a => types.Contains(a.GetType())).ToList();
         }
 
         public void CancelAllAbilities() {
