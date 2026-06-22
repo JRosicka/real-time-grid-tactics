@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Audio;
@@ -49,11 +50,18 @@ namespace Gameplay.Entities {
                 return;
             }
             
-            // Don't move/target the cell if this is a worker in the middle of building
-            if (thisEntity.Tags.Contains(EntityTag.Worker) && thisEntity.ActiveTimers.Any(t => t.Ability is BuildAbility)) {
+            // Don't move/target the cell if this is a worker in the middle of building or collecting
+            if (thisEntity.Tags.Contains(EntityTag.Worker)) {
+                if (thisEntity.ActiveTimers.Any(t => t.Ability is BuildAbility)) {
                 GameManager.Instance.EntitySelectionManager.DeselectTargetableAbility();
                 GameManager.Instance.AlertTextDisplayer.DisplayAlert("You must cancel the structure first.");
                 return;
+            }
+                if (thisEntity.ActiveTimers.Any(t => t.Ability is CollectResourceAbility)) {
+                    GameManager.Instance.EntitySelectionManager.DeselectTargetableAbility();
+                    GameManager.Instance.AlertTextDisplayer.DisplayAlert("You must cancel the the resource collection first.");
+                    return;
+                }
             }
             
             // Target the top entity
