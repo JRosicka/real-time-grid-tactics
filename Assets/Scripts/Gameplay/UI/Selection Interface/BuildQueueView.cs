@@ -53,7 +53,7 @@ namespace Gameplay.UI {
         }
 
         private void UpdateBuildQueue(GameTeam team, List<BuildAbility> currentQueuedAbilities) {
-            if (team != GameManager.Instance.LocalTeam) return;
+            if (GameManager.Instance.LocalTeam != GameTeam.Spectator && team != GameManager.Instance.LocalTeam) return;
             
             _slots.ForEach(s => s.Clear());
             
