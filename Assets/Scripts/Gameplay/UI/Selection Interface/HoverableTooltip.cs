@@ -30,6 +30,7 @@ namespace Gameplay.UI {
             
             _contentSizeFitter.SetLayoutVertical();
             await Task.Delay(TimeSpan.FromSeconds(0.1f));
+            if (!this || !_layoutGroup) return;
             _layoutGroup.CalculateLayoutInputVertical();
             _tooltipContentSizeFitter.SetLayoutVertical();
             CheckForProperAdjustment();
