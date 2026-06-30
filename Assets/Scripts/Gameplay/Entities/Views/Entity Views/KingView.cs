@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Gameplay.Config.Abilities;
 using Gameplay.Entities.Abilities;
 using UnityEngine;
@@ -5,6 +6,7 @@ using UnityEngine;
 namespace Gameplay.Entities {
     public class KingView : GridEntityParticularView {
         [SerializeField] private Animator _paradeTextAnimator;
+        [SerializeField] private List<ParticleSystem> _particles;
         [SerializeField] private int _minSecondsBetweenUnderAttackAlerts = 30;
 
         private GridEntity _entity;
@@ -37,7 +39,8 @@ namespace Gameplay.Entities {
         }
 
         private void DoParadeAnimation() {
-            _paradeTextAnimator.Play("ParadeActive");
+            _paradeTextAnimator.Play("ShowIncome");
+            _particles.ForEach(p => p.Play());
         }
     }
 }
