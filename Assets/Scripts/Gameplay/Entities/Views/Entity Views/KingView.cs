@@ -39,7 +39,7 @@ namespace Gameplay.Entities {
         }
 
         private void DoParadeAnimation() {
-            _paradeTextAnimator.Play("ShowIncome");
+            _paradeTextAnimator.Play("ParadeActive");
             _particles.ForEach(p => p.Play());
         }
     }
