@@ -34,6 +34,7 @@ namespace Gameplay.Config.Abilities {
         /// </summary>
         bool PerformOnStart { get; }
         IAbilityParameters OnStartParameters { get; }
+        bool CooldownOnStart { get; }
         /// <summary>
         /// Whether this ability can ever be canceled.
         /// </summary>

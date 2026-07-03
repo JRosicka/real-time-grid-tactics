@@ -97,6 +97,10 @@ namespace Gameplay.Managers {
             foreach (IAbilityData abilityData in entity.Abilities.Where(a => a.PerformOnStart)) {
                 StartPerformingAbility(entity, abilityData, abilityData.OnStartParameters, false, true, false, false);
             }
+            foreach (IAbilityData abilityData in entity.Abilities.Where(a => a.CooldownOnStart)) {
+                IAbility newAbility = abilityData.CreateAbility(abilityData.OnStartParameters, entity, null);
+                AddToAbilityTimer(entity, newAbility, abilityData.CooldownDuration);
+            }
         }
 
         public void QueueAbility(GridEntity entity, IAbilityData abilityData, IAbilityParameters parameters, IAbility abilityToDependOn) {

@@ -74,6 +74,9 @@ namespace Gameplay.Config.Abilities {
         public bool PerformOnStart => _performOnStart;
         public virtual IAbilityParameters OnStartParameters => new NullAbilityParameters();
         
+        [SerializeField] private bool _cooldownOnStart;
+        public bool CooldownOnStart => _cooldownOnStart;
+
         public bool CanBeCanceled => CancelableWhileOnCooldown || CancelableWhileInProgress;
         public abstract bool CancelableWhileOnCooldown { get; }
         public abstract bool CancelableWhileInProgress { get; }
