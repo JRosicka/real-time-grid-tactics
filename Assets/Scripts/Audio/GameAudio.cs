@@ -160,6 +160,14 @@ namespace Audio {
             TryPlaySFX(_audioConfiguration.ConstructionSound, AudioClipName(_audioConfiguration.ConstructionSound));
         }
 
+        public void ParadeStartSound() {
+            TryPlaySFX(_audioConfiguration.ParadeStartSound, AudioClipName(_audioConfiguration.ParadeStartSound));
+        }
+
+        public void ParadeUpgradeSound() {
+            TryPlaySFX(_audioConfiguration.ParadeUpgradeSound, AudioClipName(_audioConfiguration.ParadeUpgradeSound));
+        }
+
         public void EntityFinishedBuildingSound(EntityData entityData) {
             if (entityData.EntityFinishedBuildingSFX?.Clip != null) {
                 TryPlaySFX(entityData.EntityFinishedBuildingSFX, AudioClipName(entityData.EntityFinishedBuildingSFX));

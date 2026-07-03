@@ -21,6 +21,8 @@ MonoBehaviour:
   ArrowLandSound: {fileID: 11400000, guid: 64ae387a4a7e147a791106e91ceace64, type: 2}
   ConstructionSound: {fileID: 11400000, guid: da23988a9967b4927af46b1cc8f94ce5, type: 2}
   MenuThumpSound: {fileID: 11400000, guid: b78e9e80b25a16b4cba44176837ce178, type: 2}
+  ParadeStartSound: {fileID: 11400000, guid: 61ee60136eb0c4f3baf86101b4908912, type: 2}
+  ParadeUpgradeSound: {fileID: 11400000, guid: e2827a1b58ebf4f9fa292cc5eb5aacad, type: 2}
   MenuMusic:
   - {fileID: 11400000, guid: 299fc0a58f1f89b4484b5fef0c04e9bf, type: 2}
   - {fileID: 11400000, guid: 886ce66f18b5c41428738c8b928ce715, type: 2}

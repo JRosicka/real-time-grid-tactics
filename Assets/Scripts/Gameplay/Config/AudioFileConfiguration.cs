@@ -17,6 +17,8 @@ namespace Gameplay.Config {
         public AudioFile ArrowLandSound;
         public AudioFile ConstructionSound;
         public AudioFile MenuThumpSound;
+        public AudioFile ParadeStartSound;
+        public AudioFile ParadeUpgradeSound;
         
         [Header("Music")]
         public List<MusicAudioFile> MenuMusic;

@@ -104,7 +104,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: +5
+  m_text: +1
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 7ac333444fd246d40b1442c2167d58cf, type: 2}
   m_sharedMaterial: {fileID: 8699955367555193940, guid: 7ac333444fd246d40b1442c2167d58cf, type: 2}
@@ -131,14 +131,14 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 16.2
+  m_fontSize: 15
   m_fontSizeBase: 16.2
   m_fontWeight: 400
-  m_enableAutoSizing: 0
-  m_fontSizeMin: 18
-  m_fontSizeMax: 72
+  m_enableAutoSizing: 1
+  m_fontSizeMin: 10
+  m_fontSizeMax: 15
   m_fontStyle: 1
-  m_HorizontalAlignment: 2
+  m_HorizontalAlignment: 4
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
@@ -170,7 +170,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: 0, w: 0}
+  m_margin: {x: 0, y: 0, z: 2, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -413,6 +413,7 @@ GameObject:
   - component: {fileID: 2947506047532531824}
   - component: {fileID: 2490498517209029405}
   - component: {fileID: 1449304003840817362}
+  - component: {fileID: 2473675992935641602}
   m_Layer: 0
   m_Name: ParadeAnimationBehavior
   m_TagString: Untagged
@@ -486,6 +487,18 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &2473675992935641602
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5028123871862752556}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 13049ef22ddf46aebeabf2e4235abd7a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Util.AnimationEventListener
 --- !u!1 &5336851633343248658
 GameObject:
   m_ObjectHideFlags: 0
@@ -558,7 +571,7 @@ RectTransform:
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 16, y: 0}
+  m_SizeDelta: {x: 14.6473, y: 0}
   m_Pivot: {x: 1, y: 0.5}
 --- !u!222 &5484749164745229152
 CanvasRenderer:
@@ -683,7 +696,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 19.9007, y: 0}
+  m_SizeDelta: {x: 21.2534, y: 0}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!114 &7701221869445513104
 MonoBehaviour:
@@ -764,7 +777,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: +6
+  m_text: +1
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 7ac333444fd246d40b1442c2167d58cf, type: 2}
   m_sharedMaterial: {fileID: 8699955367555193940, guid: 7ac333444fd246d40b1442c2167d58cf, type: 2}
@@ -791,14 +804,14 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 16.2
+  m_fontSize: 15
   m_fontSizeBase: 16.2
   m_fontWeight: 400
-  m_enableAutoSizing: 0
-  m_fontSizeMin: 18
-  m_fontSizeMax: 72
+  m_enableAutoSizing: 1
+  m_fontSizeMin: 10
+  m_fontSizeMax: 15
   m_fontStyle: 1
-  m_HorizontalAlignment: 2
+  m_HorizontalAlignment: 4
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
@@ -830,7 +843,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: 0, w: 0}
+  m_margin: {x: 0, y: 0, z: 2, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
