@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: DeathActionGiveFood
   m_EditorClassIdentifier: Assembly-CSharp::Gameplay.Config.DeathAction.GiveResourcesDeathActionData
   ResourceToAward:
-    Type: 0
+    Type: 1
     Amount: 50

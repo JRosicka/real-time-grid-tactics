@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: DeathActionGiveAmber
   m_EditorClassIdentifier: Assembly-CSharp::Gameplay.Config.DeathAction.GiveResourcesDeathActionData
   ResourceToAward:
-    Type: 1
+    Type: 2
     Amount: 50

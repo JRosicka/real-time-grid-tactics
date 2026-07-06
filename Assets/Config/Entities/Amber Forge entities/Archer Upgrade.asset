@@ -17,7 +17,7 @@ MonoBehaviour:
   Description: Archers are no longer slowed by Forests. Archer move cooldown penalty
     after attacking reduced by 1s.
   Cost:
-  - Type: 1
+  - Type: 2
     Amount: 50
   Requirements:
   - Purchasable: {fileID: 11400000, guid: 43174010eb096460f944f7aa4f3b1791, type: 2}

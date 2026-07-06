@@ -53,6 +53,7 @@ MonoBehaviour:
   AttackByDefault: 0
   IsResourceExtractor: 0
   ResourceThatThisCanExtract: {fileID: 0}
+  AssociatedResource: 0
   EntityIcon: {fileID: 0}
   MovementAndAttackUI: 0
   DisplaySelectionOutline: 1
@@ -64,6 +65,6 @@ MonoBehaviour:
   SharedUnitDamageTakenModifierTags: 
   CanRally: 0
   StartingResourceSet:
-    Type: 0
+    Type: 1
     Amount: 700
   DeathActions: []

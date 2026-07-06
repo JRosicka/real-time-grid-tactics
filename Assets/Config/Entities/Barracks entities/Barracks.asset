@@ -16,7 +16,7 @@ MonoBehaviour:
   ShortDescription: Produces infantry units.
   Description: Produces infantry units.
   Cost:
-  - Type: 0
+  - Type: 1
     Amount: 75
   Requirements: []
   BuildTime: 30
@@ -50,10 +50,13 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 930b6968d79224dcba838459c0b63f49, type: 2}
   FriendlyUnitsCanShareCell: 1
   Targetable: 1
+  CanBuildFriendlyStructureOnTop: 0
   Attackable: 1
+  CanBlockMovement: 1
   AttackByDefault: 0
   IsResourceExtractor: 0
   ResourceThatThisCanExtract: {fileID: 0}
+  AssociatedResource: 0
   EntityIcon: {fileID: 21300000, guid: 520f35c555538426c9fbbcb5190c1500, type: 3}
   MovementAndAttackUI: 0
   DisplaySelectionOutline: 1

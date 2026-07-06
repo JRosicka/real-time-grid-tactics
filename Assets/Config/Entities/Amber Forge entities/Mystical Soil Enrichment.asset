@@ -16,7 +16,7 @@ MonoBehaviour:
   ShortDescription: Adds harvestable <sprite name="food"> to villages.
   Description: Adds 200 harvestable <sprite name="food"> to each friendly Village.
   Cost:
-  - Type: 1
+  - Type: 2
     Amount: 150
   Requirements:
   - Purchasable: {fileID: 11400000, guid: 5d9e30910c9795b49bea0c2c257e60eb, type: 2}
@@ -38,5 +38,5 @@ MonoBehaviour:
   OrderIndex: 300
   VillageEntityData: {fileID: 11400000, guid: 5d9e30910c9795b49bea0c2c257e60eb, type: 2}
   ResourceAmountToAdd:
-    Type: 0
+    Type: 1
     Amount: 200

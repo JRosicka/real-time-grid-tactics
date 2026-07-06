@@ -16,7 +16,7 @@ MonoBehaviour:
   ShortDescription: Temporary speed boost to all timers.
   Description: Speeds up all friendly timers by 25% for 30 seconds.
   Cost:
-  - Type: 1
+  - Type: 2
     Amount: 100
   Requirements:
   - Purchasable: {fileID: 11400000, guid: f8a9d9571b0a8324587b160065ca7fce, type: 2}

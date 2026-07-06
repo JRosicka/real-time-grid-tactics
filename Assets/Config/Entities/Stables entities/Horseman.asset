@@ -16,9 +16,9 @@ MonoBehaviour:
   ShortDescription: Speedy cavalry unit.
   Description: Speedy cavalry unit. Deals extra damage to Villages and Amber Mines.
   Cost:
-  - Type: 0
-    Amount: 75
   - Type: 1
+    Amount: 75
+  - Type: 2
     Amount: 25
   Requirements: []
   BuildTime: 32
@@ -55,9 +55,13 @@ MonoBehaviour:
   - {fileID: 11400000, guid: ddf18332952084d23850a96e2fddd976, type: 2}
   FriendlyUnitsCanShareCell: 0
   Targetable: 1
+  CanBuildFriendlyStructureOnTop: 0
+  Attackable: 1
+  CanBlockMovement: 1
   AttackByDefault: 1
   IsResourceExtractor: 0
   ResourceThatThisCanExtract: {fileID: 0}
+  AssociatedResource: 0
   EntityIcon: {fileID: 0}
   MovementAndAttackUI: 1
   DisplaySelectionOutline: 1

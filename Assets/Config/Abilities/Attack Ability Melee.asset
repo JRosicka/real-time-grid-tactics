@@ -31,6 +31,7 @@ MonoBehaviour:
     _channelBlockers: []
     _slotLocation: 5
     _performOnStart: 0
+    _cooldownOnStart: 0
     _repeatWhenCooldownFinishes: 0
     _animateWhenCooldownComplete: 0
     _selectable: 1

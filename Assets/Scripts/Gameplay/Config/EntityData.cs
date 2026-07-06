@@ -66,6 +66,7 @@ namespace Gameplay.Config {
         public bool IsStructure => Tags.Contains(EntityTag.Structure);
         public bool IsResourceExtractor;
         public EntityData ResourceThatThisCanExtract;
+        public ResourceType AssociatedResource;
         public Sprite EntityIcon;
         public bool MovementAndAttackUI;
         public bool DisplaySelectionOutline = true;

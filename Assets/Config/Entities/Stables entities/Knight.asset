@@ -16,9 +16,9 @@ MonoBehaviour:
   ShortDescription: Powerful cavalry unit.
   Description: Powerful cavalry unit. Requires High-Protein Horse Feed.
   Cost:
-  - Type: 0
-    Amount: 125
   - Type: 1
+    Amount: 125
+  - Type: 2
     Amount: 125
   Requirements:
   - Purchasable: {fileID: 11400000, guid: 9ab6d58fde8294daa9c3c7a99e68cb87, type: 2}
@@ -58,10 +58,13 @@ MonoBehaviour:
   - {fileID: 11400000, guid: ddf18332952084d23850a96e2fddd976, type: 2}
   FriendlyUnitsCanShareCell: 0
   Targetable: 1
+  CanBuildFriendlyStructureOnTop: 0
   Attackable: 1
+  CanBlockMovement: 1
   AttackByDefault: 1
   IsResourceExtractor: 0
   ResourceThatThisCanExtract: {fileID: 0}
+  AssociatedResource: 0
   EntityIcon: {fileID: 0}
   MovementAndAttackUI: 1
   DisplaySelectionOutline: 1

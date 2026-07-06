@@ -16,9 +16,9 @@ MonoBehaviour:
   ShortDescription: Standard ranged unit.
   Description: Standard ranged unit. Can attack up to two tiles away.
   Cost:
-  - Type: 0
-    Amount: 75
   - Type: 1
+    Amount: 75
+  - Type: 2
     Amount: 50
   Requirements: []
   BuildTime: 35
@@ -54,9 +54,13 @@ MonoBehaviour:
   - {fileID: 11400000, guid: fb30d761c934740269c2ba10068b2423, type: 2}
   FriendlyUnitsCanShareCell: 0
   Targetable: 1
+  CanBuildFriendlyStructureOnTop: 0
+  Attackable: 1
+  CanBlockMovement: 1
   AttackByDefault: 1
   IsResourceExtractor: 0
   ResourceThatThisCanExtract: {fileID: 0}
+  AssociatedResource: 0
   EntityIcon: {fileID: 0}
   MovementAndAttackUI: 1
   DisplaySelectionOutline: 1

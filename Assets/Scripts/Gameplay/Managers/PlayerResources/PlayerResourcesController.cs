@@ -8,13 +8,15 @@ using Scenes;
 using UnityEngine;
 
 public enum ResourceType {
-    Basic,
-    Advanced
+    None = 0,
+    Basic = 1,
+    Advanced = 2
 }
 
 public static class ResourceTypeExtensions {
     public static string DisplayName(this ResourceType resourceType) {
         return resourceType switch {
+            ResourceType.None => "None",
             ResourceType.Basic => "Food",
             ResourceType.Advanced => "Spirit-Amber",
             _ => throw new ArgumentOutOfRangeException(nameof(resourceType), resourceType, null)
@@ -23,6 +25,7 @@ public static class ResourceTypeExtensions {
     
     public static string DisplayIcon(this ResourceType resourceType) {
         return resourceType switch {
+            ResourceType.None => string.Empty,
             ResourceType.Basic => TextIcons.Food,
             ResourceType.Advanced => TextIcons.Amber,
             _ => throw new ArgumentOutOfRangeException(nameof(resourceType), resourceType, null)

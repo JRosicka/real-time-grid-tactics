@@ -1,32 +1,17 @@
-using System.Collections.Generic;
-using Audio;
-using Gameplay.Config;
 using Gameplay.Config.Abilities;
 using Gameplay.Entities.Abilities;
-using TMPro;
 using UnityEngine;
-using Util;
 
 namespace Gameplay.Entities {
     public class KingView : GridEntityParticularView {
-        [SerializeField] private Animator _paradeTextAnimator;
-        [SerializeField] private List<ParticleSystem> _particles;
-        [SerializeField] private ParticleSystem _hexParticle;
-        [SerializeField] private AnimationEventListener _eventListener;
-        [SerializeField] private TextMeshProUGUI _incomeAmountPrevious;
-        [SerializeField] private TextMeshProUGUI _incomeAmountNext;
         [SerializeField] private int _minSecondsBetweenUnderAttackAlerts = 30;
+        [SerializeField] private ParadeAnimationBehavior _paradeAnimationPrefab;
 
         private GridEntity _entity;
         private float _timeOfLastDamageReceived;
 
         public override void Initialize(GridEntity entity) {
             _entity = entity;
-            _eventListener.EventTriggered += PlayUpgradeSound;
-            
-            PlayerColorData colorData = GameManager.Instance.GetPlayerForTeam(entity).ColorData;
-            ParticleSystem.MainModule main = _hexParticle.main;
-            main.startColor = colorData.TeamColor;
         }
         
         public override void LethalDamageReceived() { }
@@ -48,24 +33,10 @@ namespace Gameplay.Entities {
             }
         }
         
-        public void ToggleParadeAnimation(bool active) {
-            _paradeTextAnimator.gameObject.SetActive(active);
-        }
-
         private void DoParadeAnimation() {
-            if (_entity.Location == null) return;
-            
-            GridEntity target = GameManager.Instance.ResourceEntityFinder.GetResourceCollectorAtLocation(_entity.Location.Value);
-            _incomeAmountPrevious.text = $"+{target.IncomeRate - 1}";
-            _incomeAmountNext.text = $"+{target.IncomeRate.ToString()}";
-
-            _paradeTextAnimator.Play("ParadeActive");
-            _particles.ForEach(p => p.Play());
-            GameAudio.Instance.ParadeStartSound();
-        }
-
-        private static void PlayUpgradeSound() {
-            GameAudio.Instance.ParadeUpgradeSound();
+            ParadeAnimationBehavior animationBehavior = Instantiate(_paradeAnimationPrefab, GameManager.Instance.CommandManager.SpawnBucket);
+            animationBehavior.transform.position = GameManager.Instance.GridController.GetWorldPosition(_entity.Location!.Value);
+            animationBehavior.Initialize(_entity);
         }
     }
 }
