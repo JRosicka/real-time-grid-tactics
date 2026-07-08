@@ -1,5 +1,6 @@
 using Gameplay.Config.Abilities;
 using Gameplay.Entities.Abilities;
+using Gameplay.Entities.Upgrades;
 using UnityEngine;
 
 namespace Gameplay.Entities {
@@ -41,6 +42,8 @@ namespace Gameplay.Entities {
                     return true;
             }
         }
+        
+        public override void UpgradeApplied(IUpgrade upgrade) { }
         
         private void EntityCollectionChanged() {
             if (_dying) return;

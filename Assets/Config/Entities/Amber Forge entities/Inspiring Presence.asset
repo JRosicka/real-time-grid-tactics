@@ -29,7 +29,7 @@ MonoBehaviour:
   BaseSpriteIconOverride: {fileID: 0}
   IconScaleInSelectionInterface: 1
   Repeatable: 0
-  ApplyToGridEntitiesUponCompletion: 0
+  ApplyToGridEntitiesUponCompletion: 1
   ApplyToGridEntitiesWhenTheySpawn: 0
   ExpirationSeconds: 0
   OrderIndex: 200

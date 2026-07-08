@@ -15,6 +15,8 @@ namespace Gameplay.Config {
         public Color TeamBannerColor;
         public Color DeathParticlesColor1;
         public Color DeathParticlesColor2;
+        public Color BrightParticlesColor1;
+        public Color BrightParticlesColor2;
         public Material SelectionMaterial;
     }
     

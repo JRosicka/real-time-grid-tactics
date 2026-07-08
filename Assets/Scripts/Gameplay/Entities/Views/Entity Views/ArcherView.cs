@@ -1,5 +1,6 @@
 using Audio;
 using Gameplay.Entities.Abilities;
+using Gameplay.Entities.Upgrades;
 using UnityEngine;
 
 namespace Gameplay.Entities {
@@ -22,6 +23,8 @@ namespace Gameplay.Entities {
                     return true;
             }
         }
+        
+        public override void UpgradeApplied(IUpgrade upgrade) { }
 
         private void DoAttackAnimation(GridEntity performer, GridEntity target) {
             if (target.DeadOrDying) return;

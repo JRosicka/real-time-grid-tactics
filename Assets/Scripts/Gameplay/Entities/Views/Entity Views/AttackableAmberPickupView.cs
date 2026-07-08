@@ -1,4 +1,5 @@
 using Gameplay.Entities.Abilities;
+using Gameplay.Entities.Upgrades;
 using UnityEngine;
 
 namespace Gameplay.Entities {
@@ -14,5 +15,7 @@ namespace Gameplay.Entities {
         public override bool DoAbility(IAbility ability, AbilityTimer abilityTimer) {
             return true;
         }
+
+        public override void UpgradeApplied(IUpgrade upgrade) { }
     }
 }

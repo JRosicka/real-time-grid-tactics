@@ -1,4 +1,5 @@
 using Gameplay.Entities.Abilities;
+using Gameplay.Entities.Upgrades;
 using UnityEngine;
 
 namespace Gameplay.Entities {
@@ -11,5 +12,6 @@ namespace Gameplay.Entities {
         /// </summary>
         /// <returns>True if generic animation work should be performed, otherwise false</returns>
         public abstract bool DoAbility(IAbility ability, AbilityTimer abilityTimer);
+        public abstract void UpgradeApplied(IUpgrade upgrade);
     }
 }

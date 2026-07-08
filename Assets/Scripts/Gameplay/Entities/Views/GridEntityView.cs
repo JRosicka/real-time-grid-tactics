@@ -180,7 +180,7 @@ namespace Gameplay.Entities {
 
         private void UpgradeApplied(IUpgrade upgrade) {
             if (Entity == null || Entity.DeadOrDying) return;
-            // TODO
+            _particularView.UpgradeApplied(upgrade);
         }
         
         private void UpgradeRemoved(IUpgrade upgrade) {
@@ -396,7 +396,7 @@ namespace Gameplay.Entities {
                 colors.colorMin = GameManager.Instance.Configuration.NeutralColors.DeathParticlesColor1;
                 colors.colorMax = GameManager.Instance.Configuration.NeutralColors.DeathParticlesColor2;
             } else {
-                PlayerColorData colorData = GameManager.Instance.GetPlayerForTeam(Entity).ColorData;
+                PlayerColorData colorData = player.ColorData;
                 colors.colorMin = colorData.DeathParticlesColor1;
                 colors.colorMax = colorData.DeathParticlesColor2;
             }

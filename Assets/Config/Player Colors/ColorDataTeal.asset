@@ -20,4 +20,6 @@ MonoBehaviour:
   TeamBannerColor: {r: 0, g: 0.7175098, b: 0.851, a: 1}
   DeathParticlesColor1: {r: 0.3820755, g: 0.6343624, b: 1, a: 1}
   DeathParticlesColor2: {r: 0, g: 0.42836362, b: 0.735849, a: 1}
+  BrightParticlesColor1: {r: 0.4009434, g: 0.91115695, b: 1, a: 1}
+  BrightParticlesColor2: {r: 0, g: 0.85169506, b: 1, a: 1}
   SelectionMaterial: {fileID: 2100000, guid: 00b18475e74d342328e96034f6d13bc4, type: 2}

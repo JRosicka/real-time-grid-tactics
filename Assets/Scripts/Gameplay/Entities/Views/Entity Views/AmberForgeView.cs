@@ -1,4 +1,5 @@
 using Gameplay.Entities.Abilities;
+using Gameplay.Entities.Upgrades;
 using Gameplay.Managers;
 using UnityEngine;
 using UnityEngine.UI;
@@ -30,6 +31,8 @@ namespace Gameplay.Entities {
             return true;
         }
         
+        public override void UpgradeApplied(IUpgrade upgrade) { }
+
         private void UpdateAvailability(GridEntity amberForge, bool available) {
             if (amberForge != _amberForgeEntity) return;
             _notificationView.SetActive(available);

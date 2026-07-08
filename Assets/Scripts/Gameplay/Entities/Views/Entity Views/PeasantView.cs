@@ -1,6 +1,7 @@
 using Audio;
 using Gameplay.Config;
 using Gameplay.Entities.Abilities;
+using Gameplay.Entities.Upgrades;
 using UnityEngine;
 
 namespace Gameplay.Entities {
@@ -32,7 +33,9 @@ namespace Gameplay.Entities {
                     return true;
             }
         }
-        
+
+        public override void UpgradeApplied(IUpgrade upgrade) { }
+
         private void DoBuildAnimation(BuildAbility buildAbility, AbilityTimer timer) {
             // Make a temporary image of the building being built
             Vector2 position = GameManager.Instance.GridController.GetWorldPosition(buildAbility.AbilityParameters.BuildLocation);

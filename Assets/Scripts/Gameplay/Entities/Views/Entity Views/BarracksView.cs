@@ -1,4 +1,5 @@
 using Gameplay.Entities.Abilities;
+using Gameplay.Entities.Upgrades;
 
 namespace Gameplay.Entities {
     public class BarracksView : GridEntityParticularView {
@@ -11,5 +12,7 @@ namespace Gameplay.Entities {
                 _ => true
             };
         }
+
+        public override void UpgradeApplied(IUpgrade upgrade) { }
     }
 }

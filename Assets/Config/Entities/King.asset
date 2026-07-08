@@ -52,9 +52,13 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 2f4545e8d76a04b89857caffdb6d37bb, type: 2}
   FriendlyUnitsCanShareCell: 0
   Targetable: 1
+  CanBuildFriendlyStructureOnTop: 0
+  Attackable: 1
+  CanBlockMovement: 1
   AttackByDefault: 1
   IsResourceExtractor: 0
   ResourceThatThisCanExtract: {fileID: 0}
+  AssociatedResource: 0
   EntityIcon: {fileID: 0}
   MovementAndAttackUI: 1
   DisplaySelectionOutline: 1
