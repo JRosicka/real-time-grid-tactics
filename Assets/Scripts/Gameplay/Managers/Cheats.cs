@@ -65,11 +65,6 @@ namespace Gameplay.Managers {
             
             _canvas.SetActive(_uiActive);
             
-            // Disable King parade animation
-            foreach (KingView kingView in FindObjectsByType<KingView>(FindObjectsSortMode.None)) {
-                kingView.ToggleParadeAnimation(_uiActive);
-            }
-            
             // Disable income animation
             foreach (IncomeAnimationBehavior incomeAnimationBehavior in FindObjectsByType<IncomeAnimationBehavior>(FindObjectsSortMode.None)) {
                 incomeAnimationBehavior.ToggleIncomeAnimation(_uiActive);
