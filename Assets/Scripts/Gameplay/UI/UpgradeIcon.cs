@@ -1,4 +1,5 @@
 using System;
+using Coffee.UIExtensions;
 using Gameplay.Entities;
 using Gameplay.Entities.Upgrades;
 using UnityEngine;
@@ -15,6 +16,7 @@ namespace Gameplay.UI {
         [SerializeField] private Image _timerBackground;
         [SerializeField] private HoverableUpgradeTooltip _tooltip;
         [SerializeField] private NetworkableTimerView _timerView;
+        [SerializeField] private UIParticle _particles;
         
         private IUpgrade _upgrade;
         private PlayerOwnedPurchasablesController _ownedPurchasables;
@@ -50,6 +52,14 @@ namespace Gameplay.UI {
             if (wasActive != UpgradeActive) {
                 UpgradeStatusChanged?.Invoke();
             }
+        }
+
+        public void PlayParticles() {
+            _particles.Play();
+        }
+
+        public void StopParticles() {
+            _particles.Stop();
         }
         
         public void OnPointerEnter(PointerEventData eventData) {
