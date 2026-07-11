@@ -70,6 +70,7 @@ namespace Gameplay.Config {
         public Sprite EntityIcon;
         public bool MovementAndAttackUI;
         public bool DisplaySelectionOutline = true;
+        public bool ShowSpawnAnimation => !IsStructure;
 
         public int BuildQueueSize = 5;
         public bool CanBuild => Abilities.Any(a => a.Content is BuildAbilityData);

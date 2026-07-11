@@ -88,7 +88,7 @@ public class MPCommandManager : AbstractCommandManager {
             NetworkServer.Spawn(entityInstance.gameObject);
             
             entityInstance.ServerInitialize(data, team, spawnLocation, entityUID);
-            entityInstance.RpcInitialize(data, team, built, entityUID);
+            entityInstance.RpcInitialize(data, team, built, entityUID, spawnerLocation);
             
             return entityInstance;
         }, team, entityToIgnore, spawnerLocation);

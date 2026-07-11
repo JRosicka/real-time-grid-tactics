@@ -788,6 +788,7 @@ MonoBehaviour:
   _spectatorPlayer1SharedAbilityTimerLocation: {fileID: 2440762504742642026}
   _spectatorPlayer2SharedAbilityTimerLocation: {fileID: 2253787846048362217}
   _unitAnimator: {fileID: 8551011409483650164}
+  _unitView: {fileID: 1729579879077070622}
   _healAnimator: {fileID: 7010898409609744855}
   _directionContainer: {fileID: 4630265928891351562}
   ShakeBehaviour: {fileID: 8158837482416130505}
@@ -922,6 +923,55 @@ MonoBehaviour:
   _attackShakeTriggerTime: 0.12
   _timeToDisappearWhenDying: 0.4
   Entity: {fileID: 0}
+  _spawnScaleAnimationCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  _spawnMoveAnimationCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  _spawnLengthSeconds: 2
 --- !u!225 &2233979341856810367
 CanvasGroup:
   m_ObjectHideFlags: 0

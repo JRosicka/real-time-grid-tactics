@@ -35,6 +35,7 @@ namespace Gameplay.Entities {
         [SerializeField] private Transform _spectatorPlayer1SharedAbilityTimerLocation;
         [SerializeField] private Transform _spectatorPlayer2SharedAbilityTimerLocation;
         [FormerlySerializedAs("UnitAnimator")] [SerializeField] private Animator _unitAnimator;
+        [SerializeField] private Transform _unitView;
         [SerializeField] private Animator _healAnimator;
         [SerializeField] private Transform _directionContainer;
         [SerializeField] private PerlinShakeBehaviour ShakeBehaviour;
@@ -73,8 +74,15 @@ namespace Gameplay.Entities {
         public event Action KillAnimationFinishedEvent;
 
         private GameAudio GameAudio => GameAudio.Instance;
+
+        public void Start() {
+            if (!_playedSpawnAnimation) {
+                ToggleView(false);
+            }
+        }
         
-        public void Initialize(GridEntity entity, int stackOrder) {
+        // Runs on the client a frame or so after spawning
+        public void Initialize(GridEntity entity, int stackOrder, Vector2Int spawnerLocation) {
             Entity = entity;
             PlayerColorData teamColor = GameManager.Instance.GetPlayerForTeam(entity)?.ColorData;
             
@@ -134,6 +142,9 @@ namespace Gameplay.Entities {
             foreach (AbilityTimer timer in entity.ActiveTimers) {
                 CreateTimerView(timer.Ability, timer);
             }
+            
+            // Spawn animation
+            DoSpawnAnimation(spawnerLocation);
         }
 
         public void ToggleView(bool show) {
@@ -165,6 +176,7 @@ namespace Gameplay.Entities {
         }
 
         private void Update() {
+            UpdateSpawn();
             UpdateMove();
             // Need to do attack after movement in order to properly handle when both are happening
             UpdateAttack();
@@ -246,6 +258,68 @@ namespace Gameplay.Entities {
             }
         }
 
+        #region Spawning
+        
+        [SerializeField] private AnimationCurve _spawnScaleAnimationCurve;
+        [SerializeField] private AnimationCurve _spawnMoveAnimationCurve;
+        [SerializeField] private float _spawnLengthSeconds;
+        
+        private Vector2 _spawnStartPosition;
+        private Vector2 _spawnTargetPosition;
+        private float _spawnTime;
+        private bool _spawning;
+        private bool _playedSpawnAnimation;
+        
+        private void DoSpawnAnimation(Vector2Int spawnerLocation) {
+            ToggleView(true);
+            _playedSpawnAnimation = true;
+            
+            if (!Entity.EntityData.ShowSpawnAnimation) return;
+            
+            _spawnStartPosition = GameManager.Instance.GridController.GetWorldPosition(spawnerLocation);
+            _spawnTargetPosition =  transform.position;
+            _spawnTime = 0;
+            _spawning = true;
+
+            // Face the x-direction that we are going
+            SetFacingDirection(_spawnStartPosition, _spawnTargetPosition);
+        }
+        
+        private void UpdateSpawn() {
+            if (!_spawning) return;
+
+            if (_moving) {
+                // We are moving, so instantly finish the spawn animation to not disrupt that
+                EndSpawnAnimationEarly();
+                return;
+            }
+
+            _spawnTime += Time.deltaTime;
+
+            // Lerp across size AnimationCurve from 0 to full size
+            float scaleEvaluationProgress = _spawnScaleAnimationCurve.Evaluate(_spawnTime / _spawnLengthSeconds);
+            _unitView.localScale = new Vector3(scaleEvaluationProgress, scaleEvaluationProgress, scaleEvaluationProgress);
+            
+            // Lerp across spawn location AnimationCurve from spawner location (converted to worldspace) to transform position
+            float moveEvaluationProgress = _spawnMoveAnimationCurve.Evaluate(_spawnTime / _spawnLengthSeconds);
+            _unitView.position = Vector2.Lerp(_spawnStartPosition, _spawnTargetPosition, moveEvaluationProgress);
+            
+            if (_spawnTime > _spawnLengthSeconds) {
+                _spawning = false;
+            }
+        }
+
+        private void EndSpawnAnimationEarly() {
+            float scaleEvaluationProgress = _spawnScaleAnimationCurve.Evaluate(1);
+            _unitView.localScale = new Vector3(scaleEvaluationProgress, scaleEvaluationProgress, scaleEvaluationProgress);
+            
+            float moveEvaluationProgress = _spawnMoveAnimationCurve.Evaluate(1);
+            _unitView.position = Vector2.Lerp(_spawnStartPosition, _spawnTargetPosition, moveEvaluationProgress);
+            
+            _spawning = false;
+        }
+        
+        #endregion
         #region Shmovement
         
         private Vector2 _movementStartPosition;
@@ -307,7 +381,7 @@ namespace Gameplay.Entities {
             Vector2Int? performerLocation = Entity.Location;
             if (performerLocation == null || targetLocation == null) return;
             
-            _attackFromMove = _moving;
+            _attackFromMove = _moving || _spawning;
             
             // Figure out the direction from the performer location to the target location, and convert that to the distance of one cell in world space
             Vector2 performerWorldPosition = GameManager.Instance.GridController.GetWorldPosition(performerLocation.Value);
