@@ -18,9 +18,9 @@ public class MPCommandManager : AbstractCommandManager {
         AbilityExecutor.Initialize(this, gameManager.GameEndManager, abilityAssignmentManager, true);
     }
 
-    public override void SpawnEntity(EntityData data, Vector2Int spawnLocation, GameTeam team, GridEntity spawnerEntity, Vector2Int spawnerLocation, bool built) {
+    public override void SpawnEntity(EntityData data, Vector2Int spawnLocation, GameTeam team, GridEntity spawnerEntity, Vector2Int spawnerLocation, bool built, bool playSpawnAnimation) {
         LogTimestamp(nameof(SpawnEntity));
-        CmdSpawnEntity(data, spawnLocation, team, spawnerEntity, spawnerLocation, built);
+        CmdSpawnEntity(data, spawnLocation, team, spawnerEntity, spawnerLocation, built, playSpawnAnimation);
     }
 
     protected override void RegisterEntity(GridEntity entity, EntityData data, Vector2Int position, GridEntity entityToIgnore) {
@@ -81,14 +81,14 @@ public class MPCommandManager : AbstractCommandManager {
 
 
     [Command(requiresAuthority = false)]
-    private void CmdSpawnEntity(EntityData data, Vector2Int spawnLocation, GameTeam team, GridEntity entityToIgnore, Vector2Int spawnerLocation, bool built) {
+    private void CmdSpawnEntity(EntityData data, Vector2Int spawnLocation, GameTeam team, GridEntity entityToIgnore, Vector2Int spawnerLocation, bool built, bool playSpawnAnimation) {
         LogTimestamp(nameof(CmdSpawnEntity));
         DoSpawnEntity(data, spawnLocation, entityUID => {
             GridEntity entityInstance = Instantiate(GridEntityPrefab, GridController.GetWorldPosition(spawnLocation), Quaternion.identity, SpawnBucket);
             NetworkServer.Spawn(entityInstance.gameObject);
             
             entityInstance.ServerInitialize(data, team, spawnLocation, entityUID);
-            entityInstance.RpcInitialize(data, team, built, entityUID, spawnerLocation);
+            entityInstance.RpcInitialize(data, team, built, entityUID, spawnerLocation, playSpawnAnimation);
             
             return entityInstance;
         }, team, entityToIgnore, spawnerLocation);

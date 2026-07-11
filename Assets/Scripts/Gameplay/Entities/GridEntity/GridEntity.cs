@@ -203,15 +203,15 @@ namespace Gameplay.Entities {
         }
         
         [ClientRpc]
-        public void RpcInitialize(EntityData data, GameTeam team, bool built, long entityUID, Vector2Int spawnerLocation) {
+        public void RpcInitialize(EntityData data, GameTeam team, bool built, long entityUID, Vector2Int spawnerLocation, bool playSpawnAnimation) {
             transform.parent = CommandManager.SpawnBucket;
-            ClientInitialize(data, team, built, entityUID, spawnerLocation);
+            ClientInitialize(data, team, built, entityUID, spawnerLocation, playSpawnAnimation);
         }
 
         /// <summary>
         /// Initialization that runs on each client
         /// </summary>
-        public void ClientInitialize(EntityData data, GameTeam team, bool built, long entityUID, Vector2Int spawnerLocation) {
+        public void ClientInitialize(EntityData data, GameTeam team, bool built, long entityUID, Vector2Int spawnerLocation, bool playSpawnAnimation) {
             EntityData = data;
             Team = team;
             UID = entityUID;
@@ -252,7 +252,7 @@ namespace Gameplay.Entities {
                 : new NullBuildQueue();
 
             SetupStats();
-            SetupView(spawnerLocation);
+            SetupView(spawnerLocation, playSpawnAnimation);
             
             // Set up view portion of any in-progress upgrades
             IGamePlayer player = GameManager.Instance.GetPlayerForTeam(team);
@@ -285,11 +285,11 @@ namespace Gameplay.Entities {
         #endregion
         #region View
 
-        private void SetupView(Vector2Int spawnerLocation) {
+        private void SetupView(Vector2Int spawnerLocation, bool playSpawnAnimation) {
             int stackOrder = EntityData.GetStackOrder();
             ViewCanvas.sortingOrder = stackOrder;
             _view = Instantiate(EntityData.ViewPrefab, ViewCanvas.transform);
-            _view.Initialize(this, stackOrder, spawnerLocation);
+            _view.Initialize(this, stackOrder, spawnerLocation, playSpawnAnimation);
         }
 
         public void ToggleView(bool show) {

@@ -100,7 +100,7 @@ namespace Gameplay.Entities.Abilities {
         // Server method
         private void SpawnEntity(EntityData entityData, Vector2Int buildLocation, Vector2Int spawnerLocation) {
             if (GameManager.Instance == null) return;
-            GameManager.Instance.CommandManager.SpawnEntity(entityData, buildLocation, Performer.Team, Performer, spawnerLocation, true);
+            GameManager.Instance.CommandManager.SpawnEntity(entityData, buildLocation, Performer.Team, Performer, spawnerLocation, true, true);
             if (entityData.IsStructure) {
                 // Destroy the builder.
                 GameManager.Instance.CommandManager.AbilityExecutor.MarkForUnRegistration(Performer, false);

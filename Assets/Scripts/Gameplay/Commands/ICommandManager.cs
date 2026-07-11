@@ -15,7 +15,7 @@ using Util;
 /// </summary>
 public interface ICommandManager {
     void Initialize(Transform spawnBucketPrefab, GameManager gameManager, AbilityAssignmentManager abilityAssignmentManager);
-    void SpawnEntity(EntityData data, Vector2Int spawnLocation, GameTeam team, GridEntity spawnerEntity, Vector2Int spawnerLocation, bool built);
+    void SpawnEntity(EntityData data, Vector2Int spawnLocation, GameTeam team, GridEntity spawnerEntity, Vector2Int spawnerLocation, bool built, bool playSpawnAnimation);
     /// <summary>
     /// Stop keeping track of an entity and also destroy it.
     /// Waits for one update cycle before doing so, so that any commands that the entity is executing in the execution

@@ -13,12 +13,12 @@ public class SPCommandManager : AbstractCommandManager {
         AbilityExecutor.Initialize(this, gameManager.GameEndManager, abilityAssignmentManager, true);
     }
 
-    public override void SpawnEntity(EntityData data, Vector2Int spawnLocation, GameTeam team, GridEntity spawnerEntity, Vector2Int spawnerLocation, bool built) {
+    public override void SpawnEntity(EntityData data, Vector2Int spawnLocation, GameTeam team, GridEntity spawnerEntity, Vector2Int spawnerLocation, bool built, bool playSpawnAnimation) {
         DoSpawnEntity(data, spawnLocation, entityUID => {
             GridEntity entityInstance = Instantiate(GridEntityPrefab, GridController.GetWorldPosition(spawnLocation), Quaternion.identity, SpawnBucket);
             
             entityInstance.ServerInitialize(data, team, spawnLocation, entityUID); 
-            entityInstance.ClientInitialize(data, team, built, entityUID, spawnerLocation);
+            entityInstance.ClientInitialize(data, team, built, entityUID, spawnerLocation, playSpawnAnimation);
             
             return entityInstance;
         }, team, spawnerEntity, spawnerLocation); 

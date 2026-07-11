@@ -81,8 +81,10 @@ namespace Gameplay.Entities {
             }
         }
         
-        // Runs on the client a frame or so after spawning
-        public void Initialize(GridEntity entity, int stackOrder, Vector2Int spawnerLocation) {
+        /// <summary>
+        /// Runs on the client, not necessarily the same frame that it spawns
+        /// </summary>
+        public void Initialize(GridEntity entity, int stackOrder, Vector2Int spawnerLocation, bool playSpawnAnimation) {
             Entity = entity;
             PlayerColorData teamColor = GameManager.Instance.GetPlayerForTeam(entity)?.ColorData;
             
@@ -144,7 +146,7 @@ namespace Gameplay.Entities {
             }
             
             // Spawn animation
-            DoSpawnAnimation(spawnerLocation);
+            DoSpawnAnimation(spawnerLocation, playSpawnAnimation);
         }
 
         public void ToggleView(bool show) {
@@ -181,6 +183,16 @@ namespace Gameplay.Entities {
             // Need to do attack after movement in order to properly handle when both are happening
             UpdateAttack();
             UpdateDeath();
+        }
+
+        private void LateUpdate() {
+            if (!Mathf.Approximately(_unitView.localScale.x, _scaleEvaluationProgress)) {
+                _unitView.localScale = new Vector3(_scaleEvaluationProgress, _scaleEvaluationProgress, _scaleEvaluationProgress);
+            }
+            
+            if (_spawnCurrentPosition != null && !_unitView.position.Equals(_spawnCurrentPosition.Value)) {
+                _unitView.position = _spawnCurrentPosition.Value;
+            }
         }
 
         private void DoAbility(IAbility ability, AbilityTimer abilityTimer) {
@@ -266,15 +278,20 @@ namespace Gameplay.Entities {
         
         private Vector2 _spawnStartPosition;
         private Vector2 _spawnTargetPosition;
+        private Vector2? _spawnCurrentPosition;
         private float _spawnTime;
         private bool _spawning;
         private bool _playedSpawnAnimation;
+        private float _scaleEvaluationProgress;
         
-        private void DoSpawnAnimation(Vector2Int spawnerLocation) {
+        private void DoSpawnAnimation(Vector2Int spawnerLocation, bool playSpawnAnimation) {
             ToggleView(true);
             _playedSpawnAnimation = true;
-            
-            if (!Entity.EntityData.ShowSpawnAnimation) return;
+
+            if (!Entity.EntityData.ShowSpawnAnimation || !playSpawnAnimation) {
+                _scaleEvaluationProgress = _unitView.localScale.x;
+                return;
+            }
             
             _spawnStartPosition = GameManager.Instance.GridController.GetWorldPosition(spawnerLocation);
             _spawnTargetPosition =  transform.position;
@@ -297,25 +314,28 @@ namespace Gameplay.Entities {
             _spawnTime += Time.deltaTime;
 
             // Lerp across size AnimationCurve from 0 to full size
-            float scaleEvaluationProgress = _spawnScaleAnimationCurve.Evaluate(_spawnTime / _spawnLengthSeconds);
-            _unitView.localScale = new Vector3(scaleEvaluationProgress, scaleEvaluationProgress, scaleEvaluationProgress);
+            _scaleEvaluationProgress = _spawnScaleAnimationCurve.Evaluate(_spawnTime / _spawnLengthSeconds);
+            _unitView.localScale = new Vector3(_scaleEvaluationProgress, _scaleEvaluationProgress, _scaleEvaluationProgress);
             
             // Lerp across spawn location AnimationCurve from spawner location (converted to worldspace) to transform position
             float moveEvaluationProgress = _spawnMoveAnimationCurve.Evaluate(_spawnTime / _spawnLengthSeconds);
-            _unitView.position = Vector2.Lerp(_spawnStartPosition, _spawnTargetPosition, moveEvaluationProgress);
+            _spawnCurrentPosition = Vector2.Lerp(_spawnStartPosition, _spawnTargetPosition, moveEvaluationProgress);
+            _unitView.position = _spawnCurrentPosition.Value;
             
             if (_spawnTime > _spawnLengthSeconds) {
+                _spawnCurrentPosition = null;
                 _spawning = false;
             }
         }
 
         private void EndSpawnAnimationEarly() {
-            float scaleEvaluationProgress = _spawnScaleAnimationCurve.Evaluate(1);
-            _unitView.localScale = new Vector3(scaleEvaluationProgress, scaleEvaluationProgress, scaleEvaluationProgress);
+            _scaleEvaluationProgress = _spawnScaleAnimationCurve.Evaluate(1);
+            _unitView.localScale = new Vector3(_scaleEvaluationProgress, _scaleEvaluationProgress, _scaleEvaluationProgress);
             
             float moveEvaluationProgress = _spawnMoveAnimationCurve.Evaluate(1);
             _unitView.position = Vector2.Lerp(_spawnStartPosition, _spawnTargetPosition, moveEvaluationProgress);
             
+            _spawnCurrentPosition = null;
             _spawning = false;
         }
         
