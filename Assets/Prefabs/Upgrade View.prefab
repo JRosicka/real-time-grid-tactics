@@ -224,7 +224,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 0.90099996, g: 0.83281624, b: 0, a: 1}
+  m_Color: {r: 1, g: 0.55099326, b: 0, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -398,7 +398,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 0.90099996, g: 0.83281624, b: 0, a: 1}
+  m_Color: {r: 1, g: 0.55099326, b: 0, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -794,11 +794,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7060394451612863463, guid: a5bf1ce621c49ff46b913d96dc0fc584, type: 3}
       propertyPath: InitialModule.startColor.maxColor.g
-      value: 0.83137256
+      value: 0.5529412
       objectReference: {fileID: 0}
     - target: {fileID: 7060394451612863463, guid: a5bf1ce621c49ff46b913d96dc0fc584, type: 3}
       propertyPath: InitialModule.startColor.maxColor.r
-      value: 0.9019608
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7060394451612863463, guid: a5bf1ce621c49ff46b913d96dc0fc584, type: 3}
       propertyPath: SizeModule.curve.maxCurve.m_Curve.Array.data[0].value

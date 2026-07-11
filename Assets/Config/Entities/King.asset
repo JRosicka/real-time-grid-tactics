@@ -35,7 +35,7 @@ MonoBehaviour:
   Damage: 4
   BonusDamage: 0
   TagsToApplyBonusDamageTo: 
-  NormalMoveTime: 4
+  NormalMoveTime: 0.43
   AddedMovementTimeFromAttacking: 1.8
   PathfindingConfig:
     MoveIconOverride: {fileID: 0}
