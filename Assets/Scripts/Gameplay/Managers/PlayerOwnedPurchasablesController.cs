@@ -18,6 +18,11 @@ public class PlayerOwnedPurchasablesController : NetworkBehaviour {
     /// Triggers on clients. 
     /// </summary>
     public event Action OwnedPurchasablesChangedEvent;
+    /// <summary>
+    /// An upgrade has been completed.
+    /// Triggers on clients. 
+    /// </summary>
+    public event Action<UpgradeData> UpgradeCompletedEvent;
 
     public UpgradesCollection Upgrades { get; private set; }
     public List<UpgradeData> InProgressUpgrades => Upgrades.GetInProgressUpgrades();
@@ -82,6 +87,9 @@ public class PlayerOwnedPurchasablesController : NetworkBehaviour {
         IUpgrade upgrade = Upgrades.GetUpgrade(upgradeData);
         upgrade.UpdateStatus(newStatus);
         OwnedPurchasablesChangedEvent?.Invoke();
+        if (newStatus == UpgradeStatus.Owned) {
+            UpgradeCompletedEvent?.Invoke(upgradeData);
+        }
     }
     
     public void ExpireUpgradeTimer(UpgradeData upgradeData) {
