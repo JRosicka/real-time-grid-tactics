@@ -346,7 +346,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 628795672384837917, guid: 1ec2f9740f4cf46ba8366ecc7f3d7a48, type: 3}
       propertyPath: VelocityModule.radial.scalar
-      value: 800
+      value: 1200
+      objectReference: {fileID: 0}
+    - target: {fileID: 628795672384837917, guid: 1ec2f9740f4cf46ba8366ecc7f3d7a48, type: 3}
+      propertyPath: InitialModule.startSize.scalar
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 628795672384837917, guid: 1ec2f9740f4cf46ba8366ecc7f3d7a48, type: 3}
+      propertyPath: InitialModule.startSize.minScalar
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 628795672384837917, guid: 1ec2f9740f4cf46ba8366ecc7f3d7a48, type: 3}
       propertyPath: InitialModule.startLifetime.scalar
@@ -1200,11 +1208,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7994458925218004854, guid: 68d96abe88ecb5144b6eec784b3fabf5, type: 3}
       propertyPath: ColorModule.gradient.maxGradient.atime0
-      value: 42598
+      value: 36044
       objectReference: {fileID: 0}
     - target: {fileID: 7994458925218004854, guid: 68d96abe88ecb5144b6eec784b3fabf5, type: 3}
       propertyPath: ColorModule.gradient.maxGradient.atime1
-      value: 50501
+      value: 42598
       objectReference: {fileID: 0}
     - target: {fileID: 7994458925218004854, guid: 68d96abe88ecb5144b6eec784b3fabf5, type: 3}
       propertyPath: ColorModule.gradient.maxGradient.atime2
@@ -1376,14 +1384,6 @@ PrefabInstance:
     - target: {fileID: 3781756477263345340, guid: 8b6bed903b7694548b34dc1f169c0c64, type: 3}
       propertyPath: m_Name
       value: Flashy Particle
-      objectReference: {fileID: 0}
-    - target: {fileID: 6669181808583881027, guid: 8b6bed903b7694548b34dc1f169c0c64, type: 3}
-      propertyPath: InitialModule.startLifetime.scalar
-      value: 1.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 6669181808583881027, guid: 8b6bed903b7694548b34dc1f169c0c64, type: 3}
-      propertyPath: InitialModule.startLifetime.minScalar
-      value: 1.2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
