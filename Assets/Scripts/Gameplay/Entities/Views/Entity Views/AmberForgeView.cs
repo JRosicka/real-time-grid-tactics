@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Gameplay.Config;
 using Gameplay.Config.Upgrades;
 using Gameplay.Entities.Abilities;
 using Gameplay.Entities.Upgrades;
@@ -12,6 +13,8 @@ namespace Gameplay.Entities {
         [SerializeField] private GameObject _notificationView;
         [SerializeField] private Image _notificationIcon;
         [SerializeField] private List<ParticleSystem> _upgradeParticles;
+        [SerializeField] private List<ParticleSystem> _teamColorUpgradeParticles;
+        [SerializeField] private List<ParticleSystem> _monoTeamColoredUpgradeParticles;
         
         private GridEntity _amberForgeEntity;
         
@@ -25,8 +28,24 @@ namespace Gameplay.Entities {
             if (localTeam == GameTeam.Spectator) return;
 
             IGamePlayer player = GameManager.Instance.GetPlayerForTeam(entity);
-            _notificationIcon.sprite = player.ColorData.ColoredButtonData.Normal;
+            PlayerColorData colorData = player.ColorData;
+            _notificationIcon.sprite = colorData.ColoredButtonData.Normal;
 
+            // Set team color particles
+            foreach (ParticleSystem particles in _teamColorUpgradeParticles) {
+                ParticleSystem.MainModule main = particles.main;
+                ParticleSystem.MinMaxGradient colors = main.startColor;
+                colors.colorMin = colorData.BrightParticlesColor1;
+                colors.colorMax = colorData.BrightParticlesColor2;
+                main.startColor = colors;
+            }
+            foreach (ParticleSystem particles in _monoTeamColoredUpgradeParticles) {
+                ParticleSystem.MainModule main = particles.main;
+                ParticleSystem.MinMaxGradient colors = main.startColor;
+                colors.color = colorData.TeamColor;
+                main.startColor = colors;
+            }
+            
             player.OwnedPurchasablesController.UpgradeCompletedEvent += UpgradeCompleted;
             
             AmberForgeAvailabilityNotifier.AmberForgeAvailabilityChanged += UpdateAvailability;
