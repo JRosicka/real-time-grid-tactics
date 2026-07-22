@@ -3,6 +3,7 @@ using System.Linq;
 using Gameplay.Config;
 using Gameplay.Entities;
 using Gameplay.Grid;
+using Gameplay.Managers;
 using UnityEngine;
 
 /// <summary>
@@ -20,7 +21,7 @@ public class MapLoader : MonoBehaviour {
     public bool WideRightSide { get; private set; }
     public List<StartingEntitySet> UnitSpawns { get; private set; }
     
-    public void LoadMap(MapData mapData) {
+    public void LoadMap(MapData mapData, WorldParticlesManager particlesManager) {
         _currentMap = mapData;
         
         LowerLeftCell = mapData.lowerLeftCell;
@@ -40,6 +41,9 @@ public class MapLoader : MonoBehaviour {
         } 
         
         GridController.LoadMap(mapData);
+        
+        // Adjust world particles
+        particlesManager?.Initialize(mapData);
     }
     
     public void SetUpCamera(GameTeam teamToCenterOn) {

@@ -1,7 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using Audio;
 using Game.Network;
 using Gameplay.Config;
 using Gameplay.Entities;
@@ -12,9 +10,6 @@ using JetBrains.Annotations;
 using Mirror;
 using Scenes;
 using UnityEngine;
-using UnityEngine.SceneManagement;
-using UnityEngine.Serialization;
-using Util;
 
 /// <summary>
 /// Central manager for accessing entities, players, and other managers
@@ -45,6 +40,7 @@ public class GameManager : MonoBehaviour {
     public UpgradesUI UpgradesUI;
     public UIScaler UIScaler;
     public ControlGroupsViewZone ControlGroupsViewZone;
+    public WorldParticlesManager ParticlesManager;
     
     public PathfinderService PathfinderService;
     public EntitySelectionManager EntitySelectionManager;

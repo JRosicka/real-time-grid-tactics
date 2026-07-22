@@ -250,7 +250,7 @@ public class GameSetupManager : MonoBehaviour {
         
         GameManager.SetPlayers(player1, player2, player1, 0);
 
-        MapLoader.LoadMap(MapData);
+        MapLoader.LoadMap(MapData, GameManager.ParticlesManager);
         MapLoader.SetUpCamera(player1.Team);
         SpawnStartingUnits();
 
@@ -308,7 +308,7 @@ public class GameSetupManager : MonoBehaviour {
         List<MPGamePlayer> players = FindObjectsByType<MPGamePlayer>(FindObjectsSortMode.InstanceID).ToList();
         if (players.Count == MPSetupHandler.PlayerCount) {
             // Load the map client-side first, then notify the server that the client setup is finished
-            MapLoader.LoadMap(MapData);
+            MapLoader.LoadMap(MapData, GameManager.ParticlesManager);
             MapLoader.SetUpCamera(players.First(p => p.isLocalPlayer).Team);
             MPSetupHandler.CmdNotifyPlayerReady(players.First(p => p.isLocalPlayer).DisplayName);
         } else if (players.Count > MPSetupHandler.PlayerCount) {
@@ -361,7 +361,7 @@ public class GameSetupManager : MonoBehaviour {
 
         if (networkPlayer.isLocalPlayer) {
             // This is the server's local player. Since no other clients will notify us that this player joined, we should do it here
-            MapLoader.LoadMap(MapData);
+            MapLoader.LoadMap(MapData, GameManager.ParticlesManager);
             MapLoader.SetUpCamera(gamePlayer.Team); 
             MarkPlayerReady(networkPlayer.DisplayName + " (host)");
         }

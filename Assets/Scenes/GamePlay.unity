@@ -2897,6 +2897,56 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1153804042}
   m_CullTransparentMesh: 1
+--- !u!1 &1165091242
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1165091243}
+  - component: {fileID: 1165091244}
+  m_Layer: 0
+  m_Name: World Particles
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1165091243
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1165091242}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1840214634}
+  m_Father: {fileID: 1769013661}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1165091244
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1165091242}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a064f6d297a34516a5325b34a80366dd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Gameplay.Managers.WorldParticlesManager
+  _amberForgeOrangeParticles: {fileID: 1840214635}
+  _particleTransformShiftPerHorizontalHex: 0.433
+  _particleShapeRadiusPerVerticalHex: 40
+  _particleShapeRadiusAddition: 80
+  _particleRateOverTimePerVerticalHex: 3.5
 --- !u!1 &1178696973
 GameObject:
   m_ObjectHideFlags: 0
@@ -3434,6 +3484,7 @@ MonoBehaviour:
   UpgradesUI: {fileID: 2961190534492791133}
   UIScaler: {fileID: 251873020}
   ControlGroupsViewZone: {fileID: 2961190534492791134}
+  ParticlesManager: {fileID: 1165091244}
 --- !u!4 &1548131395
 Transform:
   m_ObjectHideFlags: 0
@@ -3995,6 +4046,7 @@ Transform:
   - {fileID: 636985549}
   - {fileID: 1261052758}
   - {fileID: 111173282}
+  - {fileID: 1165091243}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1769013662
@@ -4166,6 +4218,16 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1809320854}
   m_CullTransparentMesh: 1
+--- !u!4 &1840214634 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4801615603778114165, guid: ca1da4a4075424822844a1434c5df365, type: 3}
+  m_PrefabInstance: {fileID: 7286914114198542490}
+  m_PrefabAsset: {fileID: 0}
+--- !u!198 &1840214635 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 3886544031619682950, guid: ca1da4a4075424822844a1434c5df365, type: 3}
+  m_PrefabInstance: {fileID: 7286914114198542490}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1848933314
 GameObject:
   m_ObjectHideFlags: 0
@@ -15181,7 +15243,7 @@ Tilemap:
   - m_RefCount: 529
     m_Data: {r: 1, g: 1, b: 1, a: 1}
   m_TileObjectToInstantiateArray:
-  - m_RefCount: 97
+  - m_RefCount: 285
     m_Data: {fileID: 4404776725374675252, guid: 39464c8f3c4f3a349ba4702a6a953f71, type: 3}
   m_AnimationFrameRate: 1
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -18086,6 +18148,71 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 282.5, y: 129.7}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1001 &7286914114198542490
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 1165091243}
+    m_Modifications:
+    - target: {fileID: 1094657726948770032, guid: ca1da4a4075424822844a1434c5df365, type: 3}
+      propertyPath: m_Name
+      value: AmberForge Orange Particles
+      objectReference: {fileID: 0}
+    - target: {fileID: 3886544031619682950, guid: ca1da4a4075424822844a1434c5df365, type: 3}
+      propertyPath: ShapeModule.radius.value
+      value: 500
+      objectReference: {fileID: 0}
+    - target: {fileID: 3886544031619682950, guid: ca1da4a4075424822844a1434c5df365, type: 3}
+      propertyPath: EmissionModule.rateOverTime.scalar
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 4801615603778114165, guid: ca1da4a4075424822844a1434c5df365, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 3.24
+      objectReference: {fileID: 0}
+    - target: {fileID: 4801615603778114165, guid: ca1da4a4075424822844a1434c5df365, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4801615603778114165, guid: ca1da4a4075424822844a1434c5df365, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4801615603778114165, guid: ca1da4a4075424822844a1434c5df365, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4801615603778114165, guid: ca1da4a4075424822844a1434c5df365, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4801615603778114165, guid: ca1da4a4075424822844a1434c5df365, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4801615603778114165, guid: ca1da4a4075424822844a1434c5df365, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4801615603778114165, guid: ca1da4a4075424822844a1434c5df365, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4801615603778114165, guid: ca1da4a4075424822844a1434c5df365, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4801615603778114165, guid: ca1da4a4075424822844a1434c5df365, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: ca1da4a4075424822844a1434c5df365, type: 3}
 --- !u!224 &7996065954853756735
 RectTransform:
   m_ObjectHideFlags: 0
