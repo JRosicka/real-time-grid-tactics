@@ -117,7 +117,7 @@ namespace Gameplay.Config {
         [Button("Load")]
         public void LoadMap() {
             MapData mapData = MapSerializer.GetMap(DropdownMapID);
-            MapLoader.LoadMap(mapData, null);
+            MapLoader.LoadMap(mapData);
             PopulateFields(mapData);
             GameTypeTracker.SetMapIDFromEditorWindow(DropdownMapID);
             

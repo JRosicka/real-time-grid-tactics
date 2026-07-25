@@ -28,6 +28,7 @@ namespace Gameplay.Managers {
         private float _amberForgeParticlesTime;
         
         public void Initialize(MapData mapData) {
+            gameObject.SetActive(true);
             _mapData = mapData;
             SetUpParticles(mapData);
 

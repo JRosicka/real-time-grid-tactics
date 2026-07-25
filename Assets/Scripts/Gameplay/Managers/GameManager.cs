@@ -156,6 +156,7 @@ public class GameManager : MonoBehaviour {
         ResourcesInterface.Initialize(resourcesObserver, localPlayer);
         InGamePauseButton.Initialize(localPlayer.ColorData.ColoredButtonData);
         UpgradesUI.Initialize(player1, player2);
+        GameSetupManager.MapLoader.FinalizeMapSetup(ParticlesManager);
     }
 
     public void SetupCommandManager(ICommandManager commandManager) {

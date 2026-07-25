@@ -14,14 +14,16 @@ public class MapLoader : MonoBehaviour {
     public CameraManager CameraManager;
     public List<GameObject> PPObjects = new();
     
-    private MapData _currentMap;
     public Vector2Int LowerLeftCell { get; private set; }
     public Vector2Int UpperRightCell { get; private set; }
     public bool WideLeftSide { get; private set; }
     public bool WideRightSide { get; private set; }
     public List<StartingEntitySet> UnitSpawns { get; private set; }
     
-    public void LoadMap(MapData mapData, WorldParticlesManager particlesManager) {
+    private MapData _currentMap;
+    private WorldParticlesManager _particlesManager;
+
+    public void LoadMap(MapData mapData) {
         _currentMap = mapData;
         
         LowerLeftCell = mapData.lowerLeftCell;
@@ -42,8 +44,21 @@ public class MapLoader : MonoBehaviour {
         
         GridController.LoadMap(mapData);
         
-        // Adjust world particles
-        particlesManager?.Initialize(mapData);
+        InitializeParticlesManagerIfReady();
+    }
+    
+    /// <summary>
+    /// Finalize setup after all players are loaded. 
+    /// Client method. 
+    /// </summary>
+    public void FinalizeMapSetup(WorldParticlesManager particlesManager) {
+        _particlesManager = particlesManager;
+        InitializeParticlesManagerIfReady();
+    }
+
+    private void InitializeParticlesManagerIfReady() {
+        if (_currentMap == null || _particlesManager == null) return;
+        _particlesManager.Initialize(_currentMap);
     }
     
     public void SetUpCamera(GameTeam teamToCenterOn) {
