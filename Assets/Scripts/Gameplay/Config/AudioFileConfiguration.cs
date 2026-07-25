@@ -19,6 +19,7 @@ namespace Gameplay.Config {
         public AudioFile MenuThumpSound;
         public AudioFile ParadeStartSound;
         public AudioFile ParadeUpgradeSound;
+        public AudioFile FlameWooshSound;
         
         [Header("Music")]
         public List<MusicAudioFile> MenuMusic;

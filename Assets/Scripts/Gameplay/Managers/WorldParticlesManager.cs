@@ -1,5 +1,8 @@
+using System.Collections.Generic;
 using System.Linq;
+using Audio;
 using Gameplay.Config;
+using Gameplay.Config.Upgrades;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
@@ -17,11 +20,43 @@ namespace Gameplay.Managers {
         [SerializeField] private int _particleShapeRadiusAddition = 80;
         [SerializeField] private float _particleRateOverTimePerVerticalHex = 3.5f;
 
+        [Header("Config")] 
+        [SerializeField] private float _amberForgeUpgradeParticlesDurationSeconds = 2f;
+        [SerializeField] private AnimationCurve _amberForgeUpgradeParticlesAlphaCurve;
+
         private MapData _mapData;
+        private float _amberForgeParticlesTime;
         
         public void Initialize(MapData mapData) {
             _mapData = mapData;
             SetUpParticles(mapData);
+
+            foreach (IGamePlayer player in new List<IGamePlayer> { GameManager.Instance.Player1, GameManager.Instance.Player2 }) {
+                player.OwnedPurchasablesController.UpgradeCompletedEvent += PlayAmberForgeParticles;
+            }
+        }
+
+        private void PlayAmberForgeParticles(UpgradeData d) {
+            _amberForgeOrangeParticles.Play();
+            _amberForgeParticlesTime = _amberForgeUpgradeParticlesDurationSeconds;
+            GameAudio.Instance.FlameWooshSound();
+        }
+
+        private void Update() {
+            if (_amberForgeParticlesTime <= 0) return;
+
+            _amberForgeParticlesTime -= Time.deltaTime;
+            
+            // Adjust simulation speed
+            float simulationSpeed = _amberForgeUpgradeParticlesAlphaCurve.Evaluate((_amberForgeUpgradeParticlesDurationSeconds - _amberForgeParticlesTime) / _amberForgeUpgradeParticlesDurationSeconds);
+            ParticleSystem.MainModule main = _amberForgeOrangeParticles.main;
+            main.simulationSpeed = simulationSpeed;
+            
+            // See if we should stop
+            if (_amberForgeParticlesTime <= 0) {
+                _amberForgeOrangeParticles.Stop();
+                _amberForgeParticlesTime = 0;
+            }
         }
         
         #if UNITY_EDITOR

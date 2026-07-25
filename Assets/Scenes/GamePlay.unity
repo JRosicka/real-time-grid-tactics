@@ -2907,6 +2907,9 @@ GameObject:
   m_Component:
   - component: {fileID: 1165091243}
   - component: {fileID: 1165091244}
+  - component: {fileID: 1165091245}
+  - component: {fileID: 1165091248}
+  - component: {fileID: 1165091247}
   m_Layer: 0
   m_Name: World Particles
   m_TagString: Untagged
@@ -2914,22 +2917,26 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &1165091243
-Transform:
+--- !u!224 &1165091243
+RectTransform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1165091242}
-  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0, y: 0, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1840214634}
   m_Father: {fileID: 1769013661}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1165091244
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2946,7 +2953,108 @@ MonoBehaviour:
   _particleTransformShiftPerHorizontalHex: 0.433
   _particleShapeRadiusPerVerticalHex: 40
   _particleShapeRadiusAddition: 80
-  _particleRateOverTimePerVerticalHex: 3.5
+  _particleRateOverTimePerVerticalHex: 7
+  _amberForgeUpgradeParticlesDurationSeconds: 1.2
+  _amberForgeUpgradeParticlesAlphaCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 3.007595
+      inSlope: -1.9788407
+      outSlope: -1.9788407
+      tangentMode: 0
+      weightedMode: 2
+      inWeight: 0.33333334
+      outWeight: 0.70886207
+    - serializedVersion: 3
+      time: 0.78989196
+      value: 1.0018125
+      inSlope: 0.028308569
+      outSlope: 0.028308569
+      tangentMode: 0
+      weightedMode: 3
+      inWeight: 0.09408492
+      outWeight: 0.44049296
+    - serializedVersion: 3
+      time: 0.9997158
+      value: 0.9997091
+      inSlope: 0.03863954
+      outSlope: 0.03863954
+      tangentMode: 0
+      weightedMode: 1
+      inWeight: 0.37356028
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+--- !u!223 &1165091245
+Canvas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1165091242}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_RenderMode: 2
+  m_Camera: {fileID: 1050066544}
+  m_PlaneDistance: 100
+  m_PixelPerfect: 0
+  m_ReceivesEvents: 1
+  m_OverrideSorting: 0
+  m_OverridePixelPerfect: 0
+  m_SortingBucketNormalizedSize: 0
+  m_VertexColorAlwaysGammaSpace: 0
+  m_AdditionalShaderChannelsFlag: 0
+  m_UpdateRectTransformForStandalone: 0
+  m_SortingLayerID: 0
+  m_SortingOrder: 7
+  m_TargetDisplay: 0
+--- !u!114 &1165091247
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1165091242}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 16f0b0b6d0b7542bfbd20a3e05b04ff1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Coffee.UIParticle::Coffee.UIExtensions.UIParticle
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_IsTrail: 0
+  m_IgnoreCanvasScaler: 0
+  m_AbsoluteMode: 0
+  m_Scale3D: {x: 1, y: 1, z: 1}
+  m_AnimatableProperties: []
+  m_Particles:
+  - {fileID: 1840214635}
+  m_MeshSharing: 0
+  m_GroupId: 0
+  m_GroupMaxId: 0
+  m_PositionMode: 0
+  m_AutoScaling: 0
+  m_AutoScalingMode: 2
+  m_UseCustomView: 0
+  m_CustomViewSize: 10
+  m_TimeScaleMultiplier: 1
+--- !u!222 &1165091248
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1165091242}
+  m_CullTransparentMesh: 1
 --- !u!1 &1178696973
 GameObject:
   m_ObjectHideFlags: 0
@@ -4218,8 +4326,8 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1809320854}
   m_CullTransparentMesh: 1
---- !u!4 &1840214634 stripped
-Transform:
+--- !u!224 &1840214634 stripped
+RectTransform:
   m_CorrespondingSourceObject: {fileID: 4801615603778114165, guid: ca1da4a4075424822844a1434c5df365, type: 3}
   m_PrefabInstance: {fileID: 7286914114198542490}
   m_PrefabAsset: {fileID: 0}
@@ -18160,17 +18268,13 @@ PrefabInstance:
       propertyPath: m_Name
       value: AmberForge Orange Particles
       objectReference: {fileID: 0}
-    - target: {fileID: 3886544031619682950, guid: ca1da4a4075424822844a1434c5df365, type: 3}
-      propertyPath: ShapeModule.radius.value
-      value: 500
-      objectReference: {fileID: 0}
-    - target: {fileID: 3886544031619682950, guid: ca1da4a4075424822844a1434c5df365, type: 3}
-      propertyPath: EmissionModule.rateOverTime.scalar
-      value: 50
+    - target: {fileID: 2024300201564847548, guid: ca1da4a4075424822844a1434c5df365, type: 3}
+      propertyPath: m_Enabled
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4801615603778114165, guid: ca1da4a4075424822844a1434c5df365, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 3.24
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4801615603778114165, guid: ca1da4a4075424822844a1434c5df365, type: 3}
       propertyPath: m_LocalPosition.y
@@ -18194,6 +18298,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4801615603778114165, guid: ca1da4a4075424822844a1434c5df365, type: 3}
       propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4801615603778114165, guid: ca1da4a4075424822844a1434c5df365, type: 3}
+      propertyPath: m_AnchoredPosition.x
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4801615603778114165, guid: ca1da4a4075424822844a1434c5df365, type: 3}

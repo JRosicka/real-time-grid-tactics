@@ -168,6 +168,10 @@ namespace Audio {
             TryPlaySFX(_audioConfiguration.ParadeUpgradeSound, AudioClipName(_audioConfiguration.ParadeUpgradeSound));
         }
 
+        public void FlameWooshSound() {
+            TryPlaySFX(_audioConfiguration.FlameWooshSound, AudioClipName(_audioConfiguration.FlameWooshSound));
+        }
+
         public void EntityFinishedBuildingSound(EntityData entityData) {
             if (entityData.EntityFinishedBuildingSFX?.Clip != null) {
                 TryPlaySFX(entityData.EntityFinishedBuildingSFX, AudioClipName(entityData.EntityFinishedBuildingSFX));

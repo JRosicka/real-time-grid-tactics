@@ -15,12 +15,12 @@ using UnityEngine;
 public class PlayerOwnedPurchasablesController : NetworkBehaviour {
     /// <summary>
     /// The currently active owned purchasables has been updated (something added or removed).
-    /// Triggers on clients. 
+    /// Triggers on all clients. 
     /// </summary>
     public event Action OwnedPurchasablesChangedEvent;
     /// <summary>
     /// An upgrade has been completed.
-    /// Triggers on clients. 
+    /// Triggers on all clients. 
     /// </summary>
     public event Action<UpgradeData> UpgradeCompletedEvent;
 
