@@ -46,7 +46,8 @@ namespace Gameplay.Entities {
                 main.startColor = colors;
             }
             
-            player.OwnedPurchasablesController.UpgradeCompletedEvent += UpgradeCompleted;
+            GameManager.Instance.Player1.OwnedPurchasablesController.UpgradeCompletedEvent += UpgradeCompleted;
+            GameManager.Instance.Player2.OwnedPurchasablesController.UpgradeCompletedEvent += UpgradeCompleted;
             
             AmberForgeAvailabilityNotifier.AmberForgeAvailabilityChanged += UpdateAvailability;
             UpdateAvailability(entity, false);
