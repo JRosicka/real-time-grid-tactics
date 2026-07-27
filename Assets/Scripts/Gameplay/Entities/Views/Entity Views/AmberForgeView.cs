@@ -31,6 +31,9 @@ namespace Gameplay.Entities {
             GameTeam localTeam = GameManager.Instance.LocalTeam;
             if (localTeam == GameTeam.Spectator) return;
             
+            PlayerColorData colorData = GameManager.Instance.GetPlayerForTeam(localTeam).ColorData;
+            _notificationIcon.sprite = colorData.ColoredButtonData.Normal;
+
             AmberForgeAvailabilityNotifier.AmberForgeAvailabilityChanged += UpdateAvailability;
             UpdateAvailability(entity, false);
         }
@@ -49,7 +52,6 @@ namespace Gameplay.Entities {
             if (performer != _amberForgeEntity) return;
             
             PlayerColorData colorData = GameManager.Instance.GetPlayerForTeam(team).ColorData;
-            _notificationIcon.sprite = colorData.ColoredButtonData.Normal;
 
             // Set team color particles
             foreach (ParticleSystem particles in _teamColorUpgradeParticles) {
