@@ -190,8 +190,8 @@ namespace Gameplay.Entities {
                 _unitView.localScale = new Vector3(_scaleEvaluationProgress, _scaleEvaluationProgress, _scaleEvaluationProgress);
             }
             
-            if (_spawnCurrentPosition != null && !_unitView.position.Equals(_spawnCurrentPosition.Value)) {
-                _unitView.position = _spawnCurrentPosition.Value;
+            if (_spawnCurrentPosition != null && !transform.position.Equals(_spawnCurrentPosition.Value)) {
+                transform.position = _spawnCurrentPosition.Value;
             }
         }
 
@@ -300,8 +300,10 @@ namespace Gameplay.Entities {
 
             // Face the x-direction that we are going
             SetFacingDirection(_spawnStartPosition, _spawnTargetPosition);
+            
+            DoUpdateSpawn();
         }
-        
+
         private void UpdateSpawn() {
             if (!_spawning) return;
 
@@ -312,7 +314,10 @@ namespace Gameplay.Entities {
             }
 
             _spawnTime += Time.deltaTime;
-
+            DoUpdateSpawn();
+        }
+        
+        private void DoUpdateSpawn() {
             // Lerp across size AnimationCurve from 0 to full size
             _scaleEvaluationProgress = _spawnScaleAnimationCurve.Evaluate(_spawnTime / _spawnLengthSeconds);
             _unitView.localScale = new Vector3(_scaleEvaluationProgress, _scaleEvaluationProgress, _scaleEvaluationProgress);
@@ -320,7 +325,7 @@ namespace Gameplay.Entities {
             // Lerp across spawn location AnimationCurve from spawner location (converted to worldspace) to transform position
             float moveEvaluationProgress = _spawnMoveAnimationCurve.Evaluate(_spawnTime / _spawnLengthSeconds);
             _spawnCurrentPosition = Vector2.Lerp(_spawnStartPosition, _spawnTargetPosition, moveEvaluationProgress);
-            _unitView.position = _spawnCurrentPosition.Value;
+            transform.position = _spawnCurrentPosition.Value;
             
             if (_spawnTime > _spawnLengthSeconds) {
                 _spawnCurrentPosition = null;
@@ -333,7 +338,7 @@ namespace Gameplay.Entities {
             _unitView.localScale = new Vector3(_scaleEvaluationProgress, _scaleEvaluationProgress, _scaleEvaluationProgress);
             
             float moveEvaluationProgress = _spawnMoveAnimationCurve.Evaluate(1);
-            _unitView.position = Vector2.Lerp(_spawnStartPosition, _spawnTargetPosition, moveEvaluationProgress);
+            transform.position = Vector2.Lerp(_spawnStartPosition, _spawnTargetPosition, moveEvaluationProgress);
             
             _spawnCurrentPosition = null;
             _spawning = false;

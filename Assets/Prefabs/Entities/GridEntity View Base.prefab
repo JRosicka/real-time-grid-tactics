@@ -971,7 +971,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  _spawnLengthSeconds: 0.25
+  _spawnLengthSeconds: 0.18
 --- !u!225 &2233979341856810367
 CanvasGroup:
   m_ObjectHideFlags: 0
