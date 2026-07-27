@@ -5,6 +5,7 @@ using Gameplay.Entities;
 using Gameplay.Entities.Abilities;
 using Gameplay.Entities.Upgrades;
 using Gameplay.Managers;
+using JetBrains.Annotations;
 using Mirror;
 using UnityEngine;
 using Util;
@@ -34,7 +35,7 @@ public interface ICommandManager {
     void UpdateInProgressAbilities(GridEntity entity);
     void QueueAbility(IAbility ability, IAbility abilityToDependOn);
     void MarkAbilityTimerExpired(IAbility ability);
-    void UpdateUpgradeStatus(UpgradeData data, GameTeam team, UpgradeStatus newStatus);
+    void UpdateUpgradeStatus(UpgradeData data, [CanBeNull] GridEntity performer, GameTeam team, UpgradeStatus newStatus);
     void MarkUpgradeTimerExpired(UpgradeData upgradeData, GameTeam team);
     void CancelAbility(IAbility ability, bool recordForReplay);
     void UpdateNetworkableField(NetworkBehaviour parent, string fieldName, INetworkableFieldValue newValue, string metaData);

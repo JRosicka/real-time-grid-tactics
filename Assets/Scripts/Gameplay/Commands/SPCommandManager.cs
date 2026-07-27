@@ -4,6 +4,7 @@ using Gameplay.Entities;
 using Gameplay.Entities.Abilities;
 using Gameplay.Entities.Upgrades;
 using Gameplay.Managers;
+using JetBrains.Annotations;
 using Mirror;
 using UnityEngine;
 
@@ -63,9 +64,9 @@ public class SPCommandManager : AbstractCommandManager {
         DoMarkAbilityTimerExpired(ability, false);
     }
 
-    public override void UpdateUpgradeStatus(UpgradeData data, GameTeam team, UpgradeStatus newStatus) {
+    public override void UpdateUpgradeStatus(UpgradeData data, [CanBeNull] GridEntity performer, GameTeam team, UpgradeStatus newStatus) {
         DoUpdateUpgradeStatus(data, team, newStatus);
-        DoMarkUpgradeStatusUpdated(data, team, newStatus);
+        DoMarkUpgradeStatusUpdated(data, performer, team, newStatus);
     }
 
     public override void MarkUpgradeTimerExpired(UpgradeData upgradeData, GameTeam team) {

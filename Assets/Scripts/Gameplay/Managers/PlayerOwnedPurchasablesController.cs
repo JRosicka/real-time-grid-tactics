@@ -5,6 +5,7 @@ using Gameplay.Config;
 using Gameplay.Config.Upgrades;
 using Gameplay.Entities;
 using Gameplay.Entities.Upgrades;
+using JetBrains.Annotations;
 using Mirror;
 using Scenes;
 using UnityEngine;
@@ -22,7 +23,7 @@ public class PlayerOwnedPurchasablesController : NetworkBehaviour {
     /// An upgrade has been completed.
     /// Triggers on all clients. 
     /// </summary>
-    public event Action<UpgradeData> UpgradeCompletedEvent;
+    public event Action<UpgradeData, GridEntity, GameTeam> UpgradeCompletedEvent;
 
     public UpgradesCollection Upgrades { get; private set; }
     public List<UpgradeData> InProgressUpgrades => Upgrades.GetInProgressUpgrades();
@@ -83,12 +84,12 @@ public class PlayerOwnedPurchasablesController : NetworkBehaviour {
         return Upgrades.GetOwnedUpgradeDatas().Contains(upgrade);
     }
     
-    public void UpdateUpgradeStatus(UpgradeData upgradeData, UpgradeStatus newStatus) {
+    public void UpdateUpgradeStatus(UpgradeData upgradeData, [CanBeNull] GridEntity performer, GameTeam team, UpgradeStatus newStatus) {
         IUpgrade upgrade = Upgrades.GetUpgrade(upgradeData);
         upgrade.UpdateStatus(newStatus);
         OwnedPurchasablesChangedEvent?.Invoke();
         if (newStatus == UpgradeStatus.Owned) {
-            UpgradeCompletedEvent?.Invoke(upgradeData);
+            UpgradeCompletedEvent?.Invoke(upgradeData, performer, team);
         }
     }
     

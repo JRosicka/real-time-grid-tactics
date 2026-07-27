@@ -5,6 +5,7 @@ using Gameplay.Entities;
 using Gameplay.Entities.Abilities;
 using Gameplay.Entities.Upgrades;
 using Gameplay.Managers;
+using JetBrains.Annotations;
 using Mirror;
 using Scenes;
 using UnityEngine;
@@ -63,8 +64,8 @@ public class MPCommandManager : AbstractCommandManager {
         CmdMarkAbilityCooldownExpired(ability);
     }
 
-    public override void UpdateUpgradeStatus(UpgradeData data, GameTeam team, UpgradeStatus newStatus) {
-        CmdUpdateUpgradeStatus(data, team, newStatus);
+    public override void UpdateUpgradeStatus(UpgradeData data, [CanBeNull] GridEntity performer, GameTeam team, UpgradeStatus newStatus) {
+        CmdUpdateUpgradeStatus(data, performer, team, newStatus);
     }
 
     public override void MarkUpgradeTimerExpired(UpgradeData upgradeData, GameTeam team) {
@@ -95,9 +96,9 @@ public class MPCommandManager : AbstractCommandManager {
     }
 
     [Command(requiresAuthority = false)]
-    private void CmdUpdateUpgradeStatus(UpgradeData data, GameTeam team, UpgradeStatus newStatus) {
+    private void CmdUpdateUpgradeStatus(UpgradeData data, [CanBeNull] GridEntity performer, GameTeam team, UpgradeStatus newStatus) {
         DoUpdateUpgradeStatus(data, team, newStatus);
-        RpcUpdateUpgradeStatus(data, team, newStatus);
+        RpcUpdateUpgradeStatus(data, performer, team, newStatus);
     }
     
     [Command(requiresAuthority = false)]
@@ -164,8 +165,8 @@ public class MPCommandManager : AbstractCommandManager {
     }
     
     [ClientRpc]
-    private void RpcUpdateUpgradeStatus(UpgradeData data, GameTeam team, UpgradeStatus newStatus) {
-        DoMarkUpgradeStatusUpdated(data, team, newStatus);
+    private void RpcUpdateUpgradeStatus(UpgradeData data, [CanBeNull] GridEntity performer, GameTeam team, UpgradeStatus newStatus) {
+        DoMarkUpgradeStatusUpdated(data, performer, team, newStatus);
     }
 
     [Command(requiresAuthority = false)]

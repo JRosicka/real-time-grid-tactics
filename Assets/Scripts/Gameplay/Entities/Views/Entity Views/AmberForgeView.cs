@@ -4,6 +4,7 @@ using Gameplay.Config.Upgrades;
 using Gameplay.Entities.Abilities;
 using Gameplay.Entities.Upgrades;
 using Gameplay.Managers;
+using JetBrains.Annotations;
 using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.UI;
@@ -23,12 +24,31 @@ namespace Gameplay.Entities {
         public override void Initialize(GridEntity entity) {
             _amberForgeEntity = entity;
             
+            GameManager.Instance.Player1.OwnedPurchasablesController.UpgradeCompletedEvent += UpgradeCompleted;
+            GameManager.Instance.Player2.OwnedPurchasablesController.UpgradeCompletedEvent += UpgradeCompleted;
+            
             // Only do these for actual players, not spectators
             GameTeam localTeam = GameManager.Instance.LocalTeam;
             if (localTeam == GameTeam.Spectator) return;
+            
+            AmberForgeAvailabilityNotifier.AmberForgeAvailabilityChanged += UpdateAvailability;
+            UpdateAvailability(entity, false);
+        }
+        public override void LethalDamageReceived() { }
+        public override void NonLethalDamageReceived() { }
 
-            IGamePlayer player = GameManager.Instance.GetPlayerForTeam(entity);
-            PlayerColorData colorData = player.ColorData;
+        public override bool DoAbility(IAbility ability, AbilityTimer abilityTimer) {
+            return true;
+        }
+        
+        public override void UpgradeApplied(IUpgrade upgrade) { }
+
+        [Button]
+        public void UpgradeCompleted(UpgradeData upgrade, [CanBeNull] GridEntity performer, GameTeam team) {
+            // This might have happened at a different Amber Forge
+            if (performer != _amberForgeEntity) return;
+            
+            PlayerColorData colorData = GameManager.Instance.GetPlayerForTeam(team).ColorData;
             _notificationIcon.sprite = colorData.ColoredButtonData.Normal;
 
             // Set team color particles
@@ -45,24 +65,7 @@ namespace Gameplay.Entities {
                 colors.color = colorData.TeamColor;
                 main.startColor = colors;
             }
-            
-            GameManager.Instance.Player1.OwnedPurchasablesController.UpgradeCompletedEvent += UpgradeCompleted;
-            GameManager.Instance.Player2.OwnedPurchasablesController.UpgradeCompletedEvent += UpgradeCompleted;
-            
-            AmberForgeAvailabilityNotifier.AmberForgeAvailabilityChanged += UpdateAvailability;
-            UpdateAvailability(entity, false);
-        }
-        public override void LethalDamageReceived() { }
-        public override void NonLethalDamageReceived() { }
 
-        public override bool DoAbility(IAbility ability, AbilityTimer abilityTimer) {
-            return true;
-        }
-        
-        public override void UpgradeApplied(IUpgrade upgrade) { }
-
-        [Button]
-        public void UpgradeCompleted(UpgradeData upgrade) {
             _upgradeParticles.ForEach(p => p.Play());
         }
 

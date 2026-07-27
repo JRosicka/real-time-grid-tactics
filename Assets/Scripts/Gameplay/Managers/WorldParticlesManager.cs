@@ -3,6 +3,7 @@ using System.Linq;
 using Audio;
 using Gameplay.Config;
 using Gameplay.Config.Upgrades;
+using Gameplay.Entities;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
@@ -37,7 +38,7 @@ namespace Gameplay.Managers {
             }
         }
 
-        private void PlayAmberForgeParticles(UpgradeData d) {
+        private void PlayAmberForgeParticles(UpgradeData d, GridEntity p, GameTeam t) {
             _amberForgeOrangeParticles.Play();
             _amberForgeParticlesTime = _amberForgeUpgradeParticlesDurationSeconds;
             GameAudio.Instance.FlameWooshSound();

@@ -10,6 +10,7 @@ using Gameplay.Entities.Abilities;
 using Gameplay.Entities.Upgrades;
 using Gameplay.Grid;
 using Gameplay.Managers;
+using JetBrains.Annotations;
 using Mirror;
 using Scenes;
 using Sirenix.Utilities;
@@ -47,7 +48,7 @@ public abstract class AbstractCommandManager : NetworkBehaviour, ICommandManager
         EntityCollectionChangedEvent?.Invoke();
     }
 
-    public abstract void UpdateUpgradeStatus(UpgradeData data, GameTeam team, UpgradeStatus newStatus);
+    public abstract void UpdateUpgradeStatus(UpgradeData data, [CanBeNull] GridEntity performer, GameTeam team, UpgradeStatus newStatus);
     public abstract void MarkUpgradeTimerExpired(UpgradeData upgradeData, GameTeam team);
     public abstract void CancelAbility(IAbility ability, bool recordForReplay);
     public abstract void UpdateNetworkableField(NetworkBehaviour parent, string fieldName, INetworkableFieldValue newValue, string metadata);
@@ -239,8 +240,8 @@ public abstract class AbstractCommandManager : NetworkBehaviour, ICommandManager
         }
     }
     
-    protected void DoMarkUpgradeStatusUpdated(UpgradeData data, GameTeam team, UpgradeStatus newStatus) {
-        GameManager.Instance.GetPlayerForTeam(team).OwnedPurchasablesController.UpdateUpgradeStatus(data, newStatus);
+    protected void DoMarkUpgradeStatusUpdated(UpgradeData data, [CanBeNull] GridEntity performer, GameTeam team, UpgradeStatus newStatus) {
+        GameManager.Instance.GetPlayerForTeam(team).OwnedPurchasablesController.UpdateUpgradeStatus(data, performer, team, newStatus);
     }
 
     protected void DoMarkUpgradeTimerExpired(UpgradeData upgradeData, GameTeam team) {

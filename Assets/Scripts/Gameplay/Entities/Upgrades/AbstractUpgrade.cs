@@ -98,7 +98,7 @@ namespace Gameplay.Entities.Upgrades {
             UpgradeTimer = null;
             
             if (Data.Repeatable) {
-                GameManager.Instance.CommandManager.UpdateUpgradeStatus(Data, Team, UpgradeStatus.NeitherOwnedNorInProgress);
+                GameManager.Instance.CommandManager.UpdateUpgradeStatus(Data, null, Team, UpgradeStatus.NeitherOwnedNorInProgress);
             }
             
             return true;
