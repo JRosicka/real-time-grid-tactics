@@ -55,12 +55,6 @@ namespace Gameplay.Entities.Abilities {
                 }
             }
             
-            // Is target out of resources?
-            GridEntity resourceEntity = GameManager.Instance.ResourceEntityFinder.GetMatchingResourceEntity(target, target.EntityData);
-            if (resourceEntity.CurrentResourcesValue?.Amount <= 0) {
-                return (false, AbilityResult.IncompleteWithoutEffect);
-            }
-            
             // Check to see if not currently at target
             Vector2Int targetLocation = target.Location!.Value;
             if (Performer.Location.Value != targetLocation) return (false, AbilityResult.IncompleteWithoutEffect);

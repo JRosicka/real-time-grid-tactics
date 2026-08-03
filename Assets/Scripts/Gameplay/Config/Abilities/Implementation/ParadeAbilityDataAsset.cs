@@ -49,8 +49,6 @@ namespace Gameplay.Config.Abilities {
             if (resourceCollector == null) return AbilityLegality.NotCurrentlyLegal;
             if (resourceCollector.Team != performer.Team) return AbilityLegality.NotCurrentlyLegal;
             if (!resourceCollector.EntityData.IsResourceExtractor) return AbilityLegality.NotCurrentlyLegal;
-            GridEntity resourceProvider = GameManager.Instance.ResourceEntityFinder.GetMatchingResourceEntity(resourceCollector, resourceCollector.EntityData);
-            if (resourceProvider.CurrentResourcesValue.Amount <= 0) return AbilityLegality.NotCurrentlyLegal;
             return AbilityLegality.Legal;
         }
 
