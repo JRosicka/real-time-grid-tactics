@@ -2,6 +2,9 @@
 /// References for player prefs keys and default values
 /// </summary>
 public static class PlayerPrefsKeys {
+    public const string RightClickBehaviorKey = "RightClickBehavior";
+    public const string TargetCommandBehaviorKey = "TargetCommandBehavior";
+    public const string MasterVolumeKey = "MasterVolume";
     public const string SoundEffectVolumeKey = "SoundEffectsVolume";
     public const string VoiceLineVolumeKey = "VoiceLinesVolume";
     public const string MusicVolumeKey = "MusicVolume";
@@ -11,7 +14,6 @@ public static class PlayerPrefsKeys {
     public const string ChosenDisplayKey = "UnitySelectMonitor";
     public const string UIScaleMenu = "UIScaleMenu";
     public const string UIScaleInGame = "UIScaleInGame";
-    public const string ResourcesUILocationKey = "ResourcesUILocation";
 
     public const float DefaultVolume = .5f;
     public const int DefaultEdgeScrollSpeed = 50;

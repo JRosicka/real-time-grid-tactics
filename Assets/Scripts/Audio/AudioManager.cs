@@ -177,6 +177,10 @@ namespace Audio {
             }
         }
 
+        public void SetMasterVolume(float newVolume) {
+            Mixer.SetFloat(PlayerPrefsKeys.MasterVolumeKey, ToDecibels(newVolume * GlobalVolumeMultiplier));
+        }
+        
         public void SetSoundEffectVolume(float newVolume) {
             Mixer.SetFloat(PlayerPrefsKeys.SoundEffectVolumeKey, ToDecibels(newVolume * GlobalVolumeMultiplier));
         }

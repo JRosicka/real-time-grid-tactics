@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Audio;
+using TMPro;
 using UnityEngine;
 
 namespace Gameplay.UI {
@@ -9,12 +10,22 @@ namespace Gameplay.UI {
     /// Settings menu that appears in-game and in the main menu
     /// </summary>
     public class SettingsMenu : MonoBehaviour {
-        // private readonly List<string> _resourcesCornerLocations = new List<string> {
-        //     "Bottom Left",
-        //     "Top Left",
-        //     "Top Right",
-        // };
+        [Header("Config")] 
+        [Tooltip("Whether this is a settings menu instance that appears in-game")]
+        [SerializeField] private bool _inGame;
+
+        [Header("References")]
+        [SerializeField] private List<SettingSubMenuButton> _settingSubMenuButtons;
+        [SerializeField] private SettingSubMenuButton _exitButton;
+        [SerializeField] private Transform _settingSubMenuVerticalLine;
+        [SerializeField] private List<SettingEntry> _settingEntries;
+        [SerializeField] private Transform _settingEntryVerticalLine;
+        [SerializeField] private TMP_Text _descriptionText;
         
+        [Header("Settings fields")]
+        [SerializeField] private SettingDropdownList _rightClickBehaviorList;
+        [SerializeField] private SettingDropdownList _targetCommandBehaviorList;
+        [SerializeField] private SettingSlider _masterVolumeSlider;
         [SerializeField] private SettingSlider _sfxVolumeSlider;
         [SerializeField] private SettingSlider _voiceLineVolumeSlider;
         [SerializeField] private SettingSlider _musicVolumeSlider;
@@ -24,10 +35,6 @@ namespace Gameplay.UI {
         [SerializeField] private SettingSlider _menuUIScalingSlider;
         [SerializeField] private SettingSlider _inGameUIScalingSlider;
         [SerializeField] private SettingDropdownList _displayList;
-        [SerializeField] private SettingDropdownList _resourcesUIList;
-
-        [Tooltip("Whether this is a settings menu instance that appears in-game")]
-        [SerializeField] private bool _inGame;
 
         private Action _onDismiss;
         
@@ -37,7 +44,71 @@ namespace Gameplay.UI {
         private GameManager GameManager => GameManager.Instance;
         
         private void Start() {
+            InitializeMenu();
+            InitializeSettingsFields();
+        }
+
+        public void Open(Action onDismiss) {
+            _onDismiss = onDismiss;
+            gameObject.SetActive(true);
+            Active = true;
+        }
+
+        public void Close() {
+            gameObject.SetActive(false);
+            Active = false;
+            _onDismiss?.Invoke();
+            _onDismiss = null;
+        }
+        
+        #region Menu View/UI
+
+        private void InitializeMenu() {
+            // Button events
+            foreach (SettingSubMenuButton button in _settingSubMenuButtons) {
+                button.Initialize();
+                button.Entered += SwitchSubMenu;
+            }
+            
+            // Initial button state
+            SwitchSubMenu(_settingSubMenuButtons[0]);
+            
+            // Entry events
+            foreach (SettingEntry setting in _settingEntries) {
+                setting.Initialize();
+                setting.Entered += SwitchHoveredSetting;
+            }
+        }
+
+        private void SwitchSubMenu(SettingSubMenuButton selectedButton) {
+            _settingSubMenuVerticalLine.position = new Vector2(_settingSubMenuVerticalLine.position.x, selectedButton.HeightWorldPosition);
+            _settingEntryVerticalLine.gameObject.SetActive(false);
+            
+            _descriptionText.text = string.Empty;
+            
+            // Don't switch submenus if we are hovering over the exit button
+            if (selectedButton != _exitButton) {
+                foreach (SettingSubMenuButton button in _settingSubMenuButtons) {
+                    bool selected = button == selectedButton;
+                    button.SetSelected(selected);
+                }
+            }
+        }
+
+        private void SwitchHoveredSetting(SettingEntry settingEntry) {
+            _settingEntryVerticalLine.gameObject.SetActive(true);
+            _settingEntryVerticalLine.position = new Vector2(_settingEntryVerticalLine.position.x, settingEntry.HeightWorldPosition);
+            _descriptionText.text = settingEntry.Description;
+        }
+        
+        #endregion
+        #region Individual Settings
+
+        private void InitializeSettingsFields() {
             // 0 - 100
+            int rightClickBehavior = PlayerPrefs.GetInt(PlayerPrefsKeys.RightClickBehaviorKey, 0);
+            int targetCommandBehavior = PlayerPrefs.GetInt(PlayerPrefsKeys.TargetCommandBehaviorKey, 0);
+            int masterVolume = ToVolumeInt(PlayerPrefs.GetFloat(PlayerPrefsKeys.MasterVolumeKey, PlayerPrefsKeys.DefaultVolume));
             int sfxVolume = ToVolumeInt(PlayerPrefs.GetFloat(PlayerPrefsKeys.SoundEffectVolumeKey, PlayerPrefsKeys.DefaultVolume));
             int voiceLineVolume = ToVolumeInt(PlayerPrefs.GetFloat(PlayerPrefsKeys.VoiceLineVolumeKey, PlayerPrefsKeys.DefaultVolume));
             int musicVolume = ToVolumeInt(PlayerPrefs.GetFloat(PlayerPrefsKeys.MusicVolumeKey, PlayerPrefsKeys.DefaultVolume));
@@ -47,8 +118,16 @@ namespace Gameplay.UI {
             int uiScaleMenu = PlayerPrefs.GetInt(PlayerPrefsKeys.UIScaleMenu, PlayerPrefsKeys.DefaultUIScale);
             int uiScaleInGame = PlayerPrefs.GetInt(PlayerPrefsKeys.UIScaleInGame, PlayerPrefsKeys.DefaultUIScale);
             int chosenDisplay = PlayerPrefs.GetInt(PlayerPrefsKeys.ChosenDisplayKey, 0);
-            // _resourcesUILocation = PlayerPrefs.GetInt(PlayerPrefsKeys.ResourcesUILocationKey, 0);
             
+            _rightClickBehaviorList.Initialize(rightClickBehavior, new List<string> {"Attack", "Move"});
+            _masterVolumeSlider.ValueChanged += RightClickBehaviorChanged;
+
+            _targetCommandBehaviorList.Initialize(targetCommandBehavior, new List<string> {"Left Click", "Left/Right Click"});
+            _masterVolumeSlider.ValueChanged += TargetCommandBehaviorChanged;
+
+            _masterVolumeSlider.Initialize(masterVolume);
+            _masterVolumeSlider.ValueChanged += MasterVolumeChanged;
+
             _sfxVolumeSlider.Initialize(sfxVolume);
             _sfxVolumeSlider.ValueChanged += SFXVolumeChanged;
 
@@ -73,14 +152,25 @@ namespace Gameplay.UI {
             _inGameUIScalingSlider.Initialize(uiScaleInGame);
             _inGameUIScalingSlider.ValueChanged += InGameUIScaleChanged;
 
-            List<string> displayStrings = Display.displays.Take(8).Select((d, i) => $"Display {i + 1}").ToList();
+            List<string> displayStrings = Display.displays.Take(8).Select((_, i) => $"Display {i + 1}").ToList();
             _displayList.Initialize(chosenDisplay, displayStrings);
             _displayList.ValueChanged += ChosenDisplayChanged;
-            
-            // _resourcesUIList.Initialize(_resourcesUILocation, _resourcesCornerLocations);
-            // _resourcesUIList.ValueChanged += ResourcesUILocationChanged;
         }
 
+        private void RightClickBehaviorChanged(int newSetting) {
+            // TODO
+        }
+
+        private void TargetCommandBehaviorChanged(int newSetting) {
+            // TODO
+        }
+
+        private static void MasterVolumeChanged(int volume) {
+            float masterVolume = ToPersistedVolumeFloat(volume);
+            PlayerPrefs.SetFloat(PlayerPrefsKeys.MasterVolumeKey, masterVolume);
+            AudioManager.Instance.SetMasterVolume(masterVolume);
+        }
+                
         private static void SFXVolumeChanged(int volume) {
             float sfxVolume = ToPersistedVolumeFloat(volume);
             PlayerPrefs.SetFloat(PlayerPrefsKeys.SoundEffectVolumeKey, sfxVolume);
@@ -97,6 +187,13 @@ namespace Gameplay.UI {
             float sfxVolume = ToPersistedVolumeFloat(volume);
             PlayerPrefs.SetFloat(PlayerPrefsKeys.MusicVolumeKey, sfxVolume);
             AudioManager.Instance.SetMusicVolume(sfxVolume);
+        }
+        
+        private static int ToVolumeInt(float volume) {
+            return (int) (volume * 100);
+        }
+        private static float ToPersistedVolumeFloat(int volume) {
+            return volume / 100f;
         }
 
         private void LockCursorChanged(bool lockCursor) {
@@ -144,33 +241,6 @@ namespace Gameplay.UI {
             }
         }
 
-        // private void ResourcesUILocationChanged(int location) {
-        //     PlayerPrefs.SetInt(PlayerPrefsKeys.ResourcesUILocationKey, location);
-        //     if (_inGame) {
-        //         // TODO
-        //         
-        //     }
-        // }
-
-        public void Open(Action onDismiss) {
-            _onDismiss = onDismiss;
-            gameObject.SetActive(true);
-            Active = true;
-        }
-
-        public void Close() {
-            gameObject.SetActive(false);
-            _resourcesUIList.DismissList();
-            Active = false;
-            _onDismiss?.Invoke();
-            _onDismiss = null;
-        }
-        
-        private static int ToVolumeInt(float volume) {
-            return (int) (volume * 100);
-        }
-        private static float ToPersistedVolumeFloat(int volume) {
-            return volume / 100f;
-        }
+        #endregion
     }
 }
