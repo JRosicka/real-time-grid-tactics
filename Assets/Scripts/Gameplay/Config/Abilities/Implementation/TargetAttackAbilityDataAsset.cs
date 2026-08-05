@@ -33,8 +33,9 @@ namespace Gameplay.Config.Abilities {
         }
 
         public override IAbilityParameters DeserializeParametersFromJson(Dictionary<string, object> json) {
+            GridEntity target = GameManager.Instance.CommandManager.EntitiesOnGrid.GetEntityByID((long)json["Target"]);
             return new TargetAttackAbilityParameters {
-                Target = GameManager.Instance.CommandManager.EntitiesOnGrid.GetEntityByID((long)json["Target"])
+                Target = target
             };
         }
 

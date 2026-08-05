@@ -5,6 +5,7 @@ using Gameplay.Grid;
 using Mirror;
 using Newtonsoft.Json;
 using UnityEngine;
+using Util;
 
 namespace Gameplay.Entities.Abilities {
     /// <summary>
@@ -22,7 +23,7 @@ namespace Gameplay.Entities.Abilities {
         protected override float AddedMovementTime => Performer.MovementTimeFromAttacking;
 
         public override void Cancel() {
-            // Nothing to do
+            UnRegisterTargetDeathListener();
         }
 
         protected override bool CompleteCooldownImpl() {
@@ -31,6 +32,9 @@ namespace Gameplay.Entities.Abilities {
         }
 
         public override bool TryDoAbilityStartEffect() {
+            if (AbilityParameters.Target != null) {
+                AbilityParameters.Target.UnregisteredEvent += DoFollowUpAttackMove;
+            }
             return true;
         }
 
@@ -39,12 +43,14 @@ namespace Gameplay.Entities.Abilities {
                 .ActiveEntitiesForTeam(Performer.Team)
                 .Contains(Performer)) {
                 // The entity must be in the process of being killed since it is not present in the entities collection
+                UnRegisterTargetDeathListener(); 
                 return (false, AbilityResult.Failed);
             }
 
             // Check to make sure that the performer still exists
             Vector2Int? attackerLocation = Performer == null ? null : Performer.Location;
             if (attackerLocation == null) {
+                UnRegisterTargetDeathListener();
                 return (false, AbilityResult.Failed);
             }
             
@@ -53,7 +59,7 @@ namespace Gameplay.Entities.Abilities {
                 : AbilityParameters.Target.Location;
             if (targetLocation == null) {
                 // If the target no longer exists, then it must have been killed or turned into a structure or something. 
-                // STOP in that case.
+                UnRegisterTargetDeathListener();
                 return (false, AbilityResult.CompletedWithoutEffect);
             }
 
@@ -112,6 +118,23 @@ namespace Gameplay.Entities.Abilities {
             
             GameManager.Instance.AttackManager.PerformAttack(Performer, target, 0, false);
         }
+
+        private void DoFollowUpAttackMove() {
+            if (!Performer || Performer.DeadOrDying) {
+                UnRegisterTargetDeathListener();
+                return;
+            }
+            
+            if (AbilityParameters?.Target?.Location != null) {
+                Performer.TryAttack(AbilityParameters.Target.Location.Value, null);
+            }
+        }
+
+        private void UnRegisterTargetDeathListener() {
+            if (AbilityParameters?.Target) {
+                AbilityParameters.Target.UnregisteredEvent -= DoFollowUpAttackMove;
+            }
+        }
     }
     
     public class TargetAttackAbilityParameters : IAbilityParameters {
@@ -122,7 +145,7 @@ namespace Gameplay.Entities.Abilities {
 
         public string SerializeToJson() {
             return JsonConvert.SerializeObject(new Dictionary<string, object> {
-                {"Target", Target?.UID ?? 0}
+                {"Target", Target?.UID ?? 0},
             });
         }
 
