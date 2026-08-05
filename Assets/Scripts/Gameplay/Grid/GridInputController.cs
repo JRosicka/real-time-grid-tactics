@@ -126,6 +126,11 @@ namespace Gameplay.Grid {
                     _entitySelectionManager.SelectCell(clickPosition);
                     break;
                 case MouseClick.Right:
+                    // If enabled in the settings, allow for executing targetable commands with right click
+                    bool allowRightClickTargetCommands = PlayerPrefs.GetInt(PlayerPrefsKeys.TargetCommandBehaviorKey, 0) == 1;
+                    if (allowRightClickTargetCommands && _entitySelectionManager.TryUseTargetableAbility(clickPosition)) {
+                        return;
+                    }
                     _entitySelectionManager.TryInteractWithCell(clickPosition);
                     break;
                 case MouseClick.Middle:

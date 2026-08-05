@@ -378,7 +378,7 @@ namespace Gameplay.Entities {
         }
 
         /// <summary>
-        /// Try to move or use an ability on the indicated location
+        /// Try to use an ability on the indicated location
         /// </summary>
         public void InteractWithCell(Vector2Int location) {
             if (!Interactable) return;

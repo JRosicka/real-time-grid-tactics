@@ -68,17 +68,18 @@ namespace Gameplay.Entities {
             List<GridEntity> entitiesAtLocation = GameManager.Instance.CommandManager.EntitiesOnGrid.EntitiesAtLocation(targetCell)
                 ?.Entities?.OrderByDescending(o => o.Order).Select(e => e.Entity).ToList();
             if (entitiesAtLocation == null || entitiesAtLocation.Count == 0) {
-                thisEntity.TryMoveToCell(targetCell, true, true, true);
+                // No entities at target cell, so do default ability
+                DoDefaultCommand(thisEntity, targetCell);
             } else {
                 bool locationContainsThisEntity = entitiesAtLocation.Contains(thisEntity);
                 GridEntity targetEntity = entitiesAtLocation.FirstOrDefault(e => e != thisEntity);
                 
                 // See if we should target this entity
                 if (targetEntity != null && targetEntity.Team == GameTeam.Neutral && !targetEntity.EntityData.Targetable) {
-                    thisEntity.TryMoveToCell(targetCell, true, true, true);
+                    DoDefaultCommand(thisEntity, targetCell);
                 } else if (targetEntity != null && thisEntity.Team != targetEntity.Team) {
                     if (!TryTargetEntity(thisEntity, targetEntity, targetCell)) {
-                        thisEntity.TryMoveToCell(targetCell, true, true, true);
+                        DoDefaultCommand(thisEntity, targetCell);
                     }
                 } else if (locationContainsThisEntity) {
                     // We are right-clicking the selected entity's cell? Cancel all move and attack abilities. (and collection) 
@@ -94,11 +95,20 @@ namespace Gameplay.Entities {
                         }
                     }
                 } else {
-                    thisEntity.TryMoveToCell(targetCell, true, true, true);
+                    DoDefaultCommand(thisEntity, targetCell);
                 }
             }
             
             GameManager.Instance.EntitySelectionManager.DeselectTargetableAbility();
+        }
+
+        private void DoDefaultCommand(GridEntity thisEntity, Vector2Int targetCell) {
+            bool attack = PlayerPrefs.GetInt(PlayerPrefsKeys.RightClickBehaviorKey, 0) == 0;
+            if (attack) {
+                thisEntity.TryAttack(targetCell, null);
+            } else {
+                thisEntity.TryMoveToCell(targetCell, true, true, true);
+            }
         }
         
         private bool TryTargetEntity(GridEntity thisEntity, GridEntity targetEntity, Vector2Int targetCell) {

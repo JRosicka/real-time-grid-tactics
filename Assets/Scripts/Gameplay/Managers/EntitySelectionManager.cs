@@ -190,7 +190,7 @@ public class EntitySelectionManager {
 
     /// <summary>
     /// Use the selected targetable ability if we have one and can use it at the selected cell.
-    /// <returns>True if we have a targetable ability selected, otherwise False.</returns>
+    /// <returns>True if we have a targetable ability selected and have attempted to use it, otherwise False.</returns>
     /// </summary>
     public bool TryUseTargetableAbility(Vector2Int clickedCell) {
         if (_selectedTargetableAbility == null) return false;

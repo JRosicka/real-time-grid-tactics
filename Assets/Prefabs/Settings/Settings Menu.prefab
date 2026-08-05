@@ -4838,7 +4838,7 @@ PrefabInstance:
     - target: {fileID: 7221487557653538243, guid: f3f0a904acdd147d2a0fa18d0444c6bb, type: 3}
       propertyPath: _description
       value: Choose the default command that gets issued when selecting a unit and
-        right-clicking on a target hex.
+        right-clicking on an empty target hex.
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

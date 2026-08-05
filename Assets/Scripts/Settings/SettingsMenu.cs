@@ -120,10 +120,10 @@ namespace Gameplay.UI {
             int chosenDisplay = PlayerPrefs.GetInt(PlayerPrefsKeys.ChosenDisplayKey, 0);
             
             _rightClickBehaviorList.Initialize(rightClickBehavior, new List<string> {"Attack", "Move"});
-            _masterVolumeSlider.ValueChanged += RightClickBehaviorChanged;
+            _rightClickBehaviorList.ValueChanged += RightClickBehaviorChanged;
 
             _targetCommandBehaviorList.Initialize(targetCommandBehavior, new List<string> {"Left Click", "Left/Right Click"});
-            _masterVolumeSlider.ValueChanged += TargetCommandBehaviorChanged;
+            _targetCommandBehaviorList.ValueChanged += TargetCommandBehaviorChanged;
 
             _masterVolumeSlider.Initialize(masterVolume);
             _masterVolumeSlider.ValueChanged += MasterVolumeChanged;
@@ -158,11 +158,11 @@ namespace Gameplay.UI {
         }
 
         private void RightClickBehaviorChanged(int newSetting) {
-            // TODO
+            PlayerPrefs.SetInt(PlayerPrefsKeys.RightClickBehaviorKey, newSetting);
         }
 
         private void TargetCommandBehaviorChanged(int newSetting) {
-            // TODO
+            PlayerPrefs.SetInt(PlayerPrefsKeys.TargetCommandBehaviorKey, newSetting); 
         }
 
         private static void MasterVolumeChanged(int volume) {
