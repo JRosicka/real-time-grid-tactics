@@ -35,7 +35,7 @@ namespace Gameplay.Entities.Abilities {
             resourcesController.Earn(resourceAmount);
             
             // Now destroy the resource pickup
-            GameManager.Instance.CommandManager.AbilityExecutor.MarkForUnRegistration(Performer, false);
+            GameManager.Instance.CommandManager.AbilityExecutor.MarkForUnRegistration(Performer, false, false);
             return (true, AbilityResult.CompletedWithEffect);
         }
     }

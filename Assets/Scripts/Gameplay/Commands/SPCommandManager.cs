@@ -29,8 +29,8 @@ public class SPCommandManager : AbstractCommandManager {
         DoRegisterEntity(entity, data, position, entityToIgnore);
     }
 
-    public override void UnRegisterEntity(GridEntity entity, bool showDeathAnimation) {
-        DoMarkEntityUnregistered(entity, showDeathAnimation);
+    public override void UnRegisterEntity(GridEntity entity, bool showDeathAnimation, bool selectStructureOnLocation) {
+        DoMarkEntityUnregistered(entity, showDeathAnimation, selectStructureOnLocation);
         DoUnRegisterEntity(entity);
     }
 

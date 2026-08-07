@@ -118,7 +118,7 @@ namespace Gameplay.Entities.Abilities {
             resourcesController.Earn(resourceAmount);
             
             // Now destroy the resource pickup
-            GameManager.Instance.CommandManager.AbilityExecutor.MarkForUnRegistration(AbilityParameters.Target, false);
+            GameManager.Instance.CommandManager.AbilityExecutor.MarkForUnRegistration(AbilityParameters.Target, false, false);
             
             // Now cancel the ability since we are done with it 
             CancelCollection();

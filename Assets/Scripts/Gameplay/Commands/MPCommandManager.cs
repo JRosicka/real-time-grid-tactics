@@ -29,9 +29,9 @@ public class MPCommandManager : AbstractCommandManager {
         CmdRegisterEntity(entity, data, position, entityToIgnore);
     }
 
-    public override void UnRegisterEntity(GridEntity entity, bool showDeathAnimation) {
+    public override void UnRegisterEntity(GridEntity entity, bool showDeathAnimation, bool selectStructureAtLocation) {
         LogTimestamp(nameof(UnRegisterEntity));
-        CmdUnRegisterEntity(entity, showDeathAnimation);
+        CmdUnRegisterEntity(entity, showDeathAnimation, selectStructureAtLocation);
     }
 
     public override void DestroyEntity(GridEntity entity) {
@@ -108,11 +108,11 @@ public class MPCommandManager : AbstractCommandManager {
     }
 
     [Command(requiresAuthority = false)]
-    private void CmdUnRegisterEntity(GridEntity entity, bool showDeathAnimation) {
+    private void CmdUnRegisterEntity(GridEntity entity, bool showDeathAnimation, bool selectStructureAtLocation) {
         LogTimestamp(nameof(CmdUnRegisterEntity));
         // TODO it would be better to have these both (entity collection sync and this rpc call) go out at the same time.
         // Can't do that cleanly currently since the entity collection is a syncvar.
-        RpcEntityUnregistered(entity, showDeathAnimation);
+        RpcEntityUnregistered(entity, showDeathAnimation, selectStructureAtLocation);
         DoUnRegisterEntity(entity);
     }
 
@@ -122,9 +122,9 @@ public class MPCommandManager : AbstractCommandManager {
     }
 
     [ClientRpc]
-    private void RpcEntityUnregistered(GridEntity entity, bool showDeathAnimation) {
+    private void RpcEntityUnregistered(GridEntity entity, bool showDeathAnimation, bool selectStructureAtLocation) {
         LogTimestamp(nameof(RpcEntityUnregistered));
-        DoMarkEntityUnregistered(entity, showDeathAnimation);
+        DoMarkEntityUnregistered(entity, showDeathAnimation, selectStructureAtLocation);
     }
     
     [ClientRpc]

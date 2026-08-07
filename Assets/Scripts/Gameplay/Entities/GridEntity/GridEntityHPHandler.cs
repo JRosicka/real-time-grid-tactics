@@ -118,7 +118,7 @@ namespace Gameplay.Entities {
             foreach (IDeathAction deathAction in _gridEntity.DeathActions) {
                 deathAction.DoDeathAction(_gridEntity, sourceEntity);
             }
-            GameManager.Instance.CommandManager.AbilityExecutor.MarkForUnRegistration(_gridEntity, true);
+            GameManager.Instance.CommandManager.AbilityExecutor.MarkForUnRegistration(_gridEntity, true, false);
         }
     }
 }

@@ -31,6 +31,7 @@ public class AbilityExecutor : MonoBehaviour {
     private class QueuedGridEntityUnregister {
         public GridEntity Entity;
         public bool ShowDeathAnimation;
+        public bool SelectStructureAtLocation;
     }
     private readonly List<QueuedGridEntityUnregister> _gridEntitiesToUnRegister = new();
 
@@ -72,10 +73,11 @@ public class AbilityExecutor : MonoBehaviour {
     }
 
     // Server method
-    public void MarkForUnRegistration(GridEntity entity, bool showDeathAnimation) {
+    public void MarkForUnRegistration(GridEntity entity, bool showDeathAnimation, bool selectStructureAtLocation) {
         _gridEntitiesToUnRegister.Add(new QueuedGridEntityUnregister {
             Entity = entity,
-            ShowDeathAnimation = showDeathAnimation
+            ShowDeathAnimation = showDeathAnimation,
+            SelectStructureAtLocation = selectStructureAtLocation
         });
     }
     
@@ -137,7 +139,7 @@ public class AbilityExecutor : MonoBehaviour {
         
         // Then, unregister any marked entities
         foreach (QueuedGridEntityUnregister unregistration in _gridEntitiesToUnRegister) {
-            GameManager.Instance.CommandManager.UnRegisterEntity(unregistration.Entity, unregistration.ShowDeathAnimation);
+            GameManager.Instance.CommandManager.UnRegisterEntity(unregistration.Entity, unregistration.ShowDeathAnimation, unregistration.SelectStructureAtLocation);
         }
         _gridEntitiesToUnRegister.Clear();
     }

@@ -22,7 +22,7 @@ public interface ICommandManager {
     /// Waits for one update cycle before doing so, so that any commands that the entity is executing in the execution
     /// cycle can be performed.
     /// </summary>
-    void UnRegisterEntity(GridEntity entity, bool showDeathAnimation);
+    void UnRegisterEntity(GridEntity entity, bool showDeathAnimation, bool selectStructureAtLocation);
     void DestroyEntity(GridEntity entity);
     void MoveEntityToCell(GridEntity entity, Vector2Int destination);
     GridEntityCollection.PositionedGridEntityCollection GetEntitiesAtCell(Vector2Int location);

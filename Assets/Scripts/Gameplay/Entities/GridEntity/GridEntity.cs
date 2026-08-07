@@ -378,7 +378,7 @@ namespace Gameplay.Entities {
         }
 
         /// <summary>
-        /// Try to use an ability on the indicated location
+        /// Try to move or use an ability on the indicated location
         /// </summary>
         public void InteractWithCell(Vector2Int location) {
             if (!Interactable) return;
@@ -868,8 +868,13 @@ namespace Gameplay.Entities {
         /// There might be other clients that need this to be around still.
         /// So instead of destroying this, just disallow interaction.
         /// </summary>
-        public void OnUnregistered(bool showDeathAnimation) {
+        public void OnUnregistered(bool showDeathAnimation, bool selectStructureOnLocation) {
             DisallowInteraction();
+            
+            if (selectStructureOnLocation && GameManager.Instance.EntitySelectionManager.SelectedEntity == this && Location != null) {
+                GridEntity entityToSelect = GameManager.Instance.GetEntitiesAtLocation(Location.Value)?.Entities.Select(e => e.Entity).FirstOrDefault(e => e.EntityData.IsStructure);
+                entityToSelect?.Select();
+            }
             
             if (showDeathAnimation) {
                 // When the view is done animating death, mark this client as ready to die so that the server knows when it can destroy this entity
