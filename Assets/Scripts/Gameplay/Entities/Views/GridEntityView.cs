@@ -186,7 +186,7 @@ namespace Gameplay.Entities {
         }
 
         private void LateUpdate() {
-            if (!Mathf.Approximately(_unitView.localScale.x, _scaleEvaluationProgress)) {
+            if (!Mathf.Approximately(_unitView.localScale.x, _scaleEvaluationProgress) && !_particularView.ControlsScale) {
                 _unitView.localScale = new Vector3(_scaleEvaluationProgress, _scaleEvaluationProgress, _scaleEvaluationProgress);
             }
             

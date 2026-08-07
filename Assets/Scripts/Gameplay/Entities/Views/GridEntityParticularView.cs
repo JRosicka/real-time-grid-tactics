@@ -4,6 +4,7 @@ using UnityEngine;
 
 namespace Gameplay.Entities {
     public abstract class GridEntityParticularView : MonoBehaviour {
+        public virtual bool ControlsScale => false;
         public abstract void Initialize(GridEntity entity);
         public abstract void LethalDamageReceived();
         public abstract void NonLethalDamageReceived();

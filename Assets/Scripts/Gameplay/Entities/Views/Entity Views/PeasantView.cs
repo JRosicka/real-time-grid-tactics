@@ -12,6 +12,9 @@ namespace Gameplay.Entities {
         private GridEntity _entity;
         private GridEntity _currentResourceEntityBeingBuiltOn;
 
+        private bool _controlsScale;
+        public override bool ControlsScale => _controlsScale;
+        
         public override void Initialize(GridEntity entity) {
             _entity = entity;
         }
@@ -56,6 +59,8 @@ namespace Gameplay.Entities {
             if (GameManager.Instance.LocalTeam == GameTeam.Spectator || buildAbility.PerformerTeam == GameManager.Instance.LocalTeam) {
                 GameAudio.Instance.ConstructionSound();
             }
+
+            _controlsScale = true;
         }
 
         private void BuildAbilityCompleted(bool canceled) {
@@ -70,6 +75,8 @@ namespace Gameplay.Entities {
                 _currentResourceEntityBeingBuiltOn.ToggleView(true);
                 _currentResourceEntityBeingBuiltOn = null;
             }
+
+            _controlsScale = false;
         }
     }
 }
