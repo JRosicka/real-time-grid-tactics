@@ -26,6 +26,7 @@ namespace Gameplay.UI {
         /// Current color state from unselected (0) to selected (1)
         /// </summary>
         private float _color01;
+        private float _alpha01;
         private bool _selected;
 
         public void Initialize() {
@@ -35,8 +36,11 @@ namespace Gameplay.UI {
         public void SetSelected(bool selected) {
             _selected = selected;
             _associatedSubMenu?.gameObject.SetActive(selected);
-            if (selected && _associatedSubMenu) {
+            if (!selected && _associatedSubMenu) {
+                _backgroundImage.color = _unselectedColor;
+                _color01 = 0;
                 _associatedSubMenu.alpha = 0;
+                _alpha01 = 0;
             }
         }
 
@@ -62,9 +66,13 @@ namespace Gameplay.UI {
 
         private void UpdateMenuFadeIn() {
             if (!_selected) return;
-            if (_color01 >= 1) return;
+            if (_selected && _alpha01 >= 1) return;
+            if (!_selected && _alpha01 <= 0) return;
 
-            _associatedSubMenu.alpha = _color01;
+            float sign = _selected ? 1 : -1;
+            _alpha01 += sign * (Time.deltaTime / _colorTransitionSeconds);
+            _alpha01 = Mathf.Clamp01(_alpha01);
+            _associatedSubMenu.alpha = _alpha01; 
         }
     }
 }
