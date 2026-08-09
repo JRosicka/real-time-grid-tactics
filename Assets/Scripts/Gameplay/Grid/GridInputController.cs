@@ -1,4 +1,5 @@
 using System;
+using System.Runtime.CompilerServices;
 using Gameplay.Config;
 using Scenes;
 using UnityEngine;
@@ -110,6 +111,10 @@ namespace Gameplay.Grid {
             if (eventData.button == PointerEventData.InputButton.Middle) {
                 _cameraManager.StartMiddleMousePan(eventData.pointerPressRaycast.screenPosition);
             }
+        }
+
+        public void ProcessZoom(float zoomDelta) {
+            _cameraManager.Zoom(zoomDelta > 0);
         }
 
         private void TryClickOnCell(MouseClick clickType, Vector2Int clickPosition) {

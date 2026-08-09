@@ -1508,7 +1508,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 83b8edc92fe248a1a1822678b72e7475, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _camera: {fileID: 1050066544}
+  _mainCamera: {fileID: 1050066544}
+  _innerCamera: {fileID: 15024977}
   _cameraMoveSpeed: 11
   _cameraPanSpeed: 0.05
   _boundaryBufferHorizontal: 0.6
@@ -1517,6 +1518,48 @@ MonoBehaviour:
   _edgeScrollNormalThresholdPixels: 5
   _gameWindow: {fileID: 251873017}
   _cameraWindow: {fileID: 2070169484}
+  _cameraZoomInLimit: 1.75
+  _cameraZoomOutLimit: 3.65
+  _cameraZoomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: -0.00012588501
+      value: 1.0043335
+      inSlope: 17.34124
+      outSlope: 17.34124
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.80152136
+    - serializedVersion: 3
+      time: 0.3517753
+      value: 6
+      inSlope: -0.010952389
+      outSlope: -0.010952389
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.14970843
+    - serializedVersion: 3
+      time: 1.000061
+      value: 6
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  _cameraZoomIncrementsCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  _zoomIncrements: 4
 --- !u!1 &527040124
 GameObject:
   m_ObjectHideFlags: 0
@@ -1666,6 +1709,22 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2118833099676330802, guid: 2e034c5bbdde74d1ab83dab6a6de269f, type: 3}
+      propertyPath: _userData.mouseMaps.Array.data[0].actionElementMaps.Array.data[2]._actionId
+      value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2118833099676330802, guid: 2e034c5bbdde74d1ab83dab6a6de269f, type: 3}
+      propertyPath: _userData.mouseMaps.Array.data[0].actionElementMaps.Array.data[2]._axisRange
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2118833099676330802, guid: 2e034c5bbdde74d1ab83dab6a6de269f, type: 3}
+      propertyPath: _userData.mouseMaps.Array.data[0].actionElementMaps.Array.data[2]._elementType
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2118833099676330802, guid: 2e034c5bbdde74d1ab83dab6a6de269f, type: 3}
+      propertyPath: _userData.mouseMaps.Array.data[0].actionElementMaps.Array.data[2]._elementIdentifierId
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 7961294086651181830, guid: 2e034c5bbdde74d1ab83dab6a6de269f, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
