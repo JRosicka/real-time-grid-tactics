@@ -21,6 +21,7 @@ namespace Audio {
             // Delay a frame since we need to wait for the audio mixer to finish loading
             await Task.Yield();
             
+            SetMasterVolume(PlayerPrefs.GetFloat(PlayerPrefsKeys.MasterVolumeKey, PlayerPrefsKeys.DefaultVolume));
             SetSoundEffectVolume(PlayerPrefs.GetFloat(PlayerPrefsKeys.SoundEffectVolumeKey, PlayerPrefsKeys.DefaultVolume));
             SetVoiceLineVolume(PlayerPrefs.GetFloat(PlayerPrefsKeys.VoiceLineVolumeKey, PlayerPrefsKeys.DefaultVolume));
             SetMusicVolume(PlayerPrefs.GetFloat(PlayerPrefsKeys.MusicVolumeKey, PlayerPrefsKeys.DefaultVolume));
@@ -76,15 +77,19 @@ namespace Audio {
             ActiveMusic = null;
         }
         
-        public void SetSoundEffectVolume(float newVolume) {
+        private void SetMasterVolume(float newVolume) {
+            _audioManager.SetMasterVolume(newVolume);
+        }
+        
+        private void SetSoundEffectVolume(float newVolume) {
             _audioManager.SetSoundEffectVolume(newVolume);
         }
         
-        public void SetVoiceLineVolume(float newVolume) {
+        private void SetVoiceLineVolume(float newVolume) {
             _audioManager.SetVoiceLineVolume(newVolume);
         }
 
-        public void SetMusicVolume(float newVolume) {
+        private void SetMusicVolume(float newVolume) {
             _audioManager.SetMusicVolume(newVolume);
         }
     }
