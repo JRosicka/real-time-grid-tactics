@@ -29,6 +29,9 @@ namespace Gameplay.Managers {
         private const string MoveCameraUpAction = "CameraUp";
         private const string MoveCameraDownAction = "CameraDown";
 
+        private const string ZoomFarOutAction = "ZoomFarOut";
+        private const string ZoomVeryFarOutAction = "ZoomVeryFarOut";
+
         public CameraManager CameraManager;
         public InGamePauseMenu PauseMenu;
 
@@ -67,6 +70,14 @@ namespace Gameplay.Managers {
             }
             if (_playerInput.GetButton(MoveCameraDownAction)) {
                 CameraManager.MoveCameraOrthogonally(CameraManager.CameraDirection.Down);
+            }
+            
+            // Camera zoom far out (spectator only)
+            if (_playerInput.GetButtonDown(ZoomVeryFarOutAction)) {
+                CameraManager.ToggleZoomFarOut(true);
+            }
+            if (_playerInput.GetButtonDown(ZoomFarOutAction)) {
+                CameraManager.ToggleZoomFarOut(false);
             }
             
             // Abilities

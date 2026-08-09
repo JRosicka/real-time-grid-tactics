@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Gameplay.Entities;
 using Rewired;
 using UnityEngine;
 
@@ -29,9 +30,10 @@ public class CameraManager : MonoBehaviour {
     [SerializeField] private RectTransform _cameraWindow;
     [SerializeField] private float _cameraZoomInLimit = 2f;
     [SerializeField] private float _cameraZoomOutLimit = 10f;
+    [SerializeField] private float _spectatorZoomFarOutAmount = 4.65f;
+    [SerializeField] private float _spectatorZoomVeryFarOutAmount = 5.25f;
     [Tooltip("Controls acceleration/deceleration dampening and max zoom speed")]
     [SerializeField] private AnimationCurve _cameraZoomCurve;
-    [SerializeField] private AnimationCurve _cameraZoomIncrementsCurve;
     [SerializeField] private int _zoomIncrements = 4;
     private int verticalEdgeScrollThresholdPixels => _edgeScrollNormalThresholdPixels;
     private int horizontalEdgeScrollThresholdPixels => _edgeScrollNormalThresholdPixels;
@@ -55,6 +57,8 @@ public class CameraManager : MonoBehaviour {
     private float _targetOrthographicSize;
     private float _latestOrthographicSize;
     private float _orthographicSizeAtLastZoomOrigin;
+    private bool _toggledExtraZoom;
+    private float _currentMaxZoomOutAmount;
 
     private Player _playerInput;
 
@@ -66,7 +70,7 @@ public class CameraManager : MonoBehaviour {
         
         _playerInput = ReInput.players.GetPlayer(0);
         
-        _targetOrthographicSize = _latestOrthographicSize = _orthographicSizeAtLastZoomOrigin = _cameraZoomOutLimit;
+        _targetOrthographicSize = _latestOrthographicSize = _orthographicSizeAtLastZoomOrigin = _currentMaxZoomOutAmount = _cameraZoomOutLimit;
     }
     
     private void SetBoundaries(float boundaryLeft, float boundaryRight, float boundaryUp, float boundaryDown) {
@@ -117,6 +121,9 @@ public class CameraManager : MonoBehaviour {
     }
 
     public void Zoom(bool zoomIn) {
+        // Don't do normal zoom if we are a spectator currently extra zoomed out
+        if (_toggledExtraZoom) return;
+        
         bool currentlyAdjustingZoom = Mathf.Abs(_latestOrthographicSize - _targetOrthographicSize) > 0;
         
         int zoomDirection = zoomIn ? 1 : -1;
@@ -132,6 +139,18 @@ public class CameraManager : MonoBehaviour {
         }
     }
 
+    public void ToggleZoomFarOut(bool veryFar) {
+        if (GameManager.Instance.LocalTeam != GameTeam.Spectator) return;
+        
+        float targetZoom = veryFar ? _spectatorZoomVeryFarOutAmount : _spectatorZoomFarOutAmount;
+        
+        // This is a toggle command -- if already at the target zoom, then zoom back in to default
+        _toggledExtraZoom = Mathf.Abs(targetZoom - _targetOrthographicSize) > 0;
+        _targetOrthographicSize = _toggledExtraZoom ? targetZoom : _cameraZoomOutLimit;
+        _currentMaxZoomOutAmount = _targetOrthographicSize;
+        _orthographicSizeAtLastZoomOrigin = _latestOrthographicSize; 
+    }
+
     private void ApplyCameraZoom() {
         if (_mainCamera.orthographicSize - _targetOrthographicSize == 0) return;
 
@@ -143,7 +162,12 @@ public class CameraManager : MonoBehaviour {
         // Apply zoom
         float zoomDirection = Mathf.Sign(_targetOrthographicSize - _latestOrthographicSize);
         _latestOrthographicSize += zoomDirection * delta * Time.deltaTime;
-        _latestOrthographicSize = Mathf.Clamp(_latestOrthographicSize, _cameraZoomInLimit, _cameraZoomOutLimit);
+        if (zoomDirection > 0) {
+            _latestOrthographicSize = Mathf.Clamp(_latestOrthographicSize, _cameraZoomInLimit, _currentMaxZoomOutAmount);
+        } else {
+            // Don't clamp to max zoom amount since we might be zoomed out past that from a previous extra zoom
+            _latestOrthographicSize = Mathf.Max(_latestOrthographicSize, _cameraZoomInLimit);
+        }
         
         // If we are very close to the target size, just snap to that
         if (Mathf.Abs(_latestOrthographicSize - _targetOrthographicSize) < CameraZoomEpsilon) {

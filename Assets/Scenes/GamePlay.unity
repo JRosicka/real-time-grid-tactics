@@ -1520,6 +1520,8 @@ MonoBehaviour:
   _cameraWindow: {fileID: 2070169484}
   _cameraZoomInLimit: 1.75
   _cameraZoomOutLimit: 3.65
+  _spectatorZoomFarOutAmount: 4.55
+  _spectatorZoomVeryFarOutAmount: 5.45
   _cameraZoomCurve:
     serializedVersion: 2
     m_Curve:
