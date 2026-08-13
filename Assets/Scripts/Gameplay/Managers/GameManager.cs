@@ -54,6 +54,7 @@ public class GameManager : MonoBehaviour {
     public SeedManager SeedManager;
     public TileAccessibilityManager TileAccessibilityManager;
     public ControlGroupsManager ControlGroupsManager;
+    public EntityLockTracker EntityLockTracker;
     
     public IGamePlayer Player1;
     public IGamePlayer Player2;
@@ -74,6 +75,7 @@ public class GameManager : MonoBehaviour {
         AmberForgeAvailabilityNotifier = new AmberForgeAvailabilityNotifier();
         LeaderTracker = new LeaderTracker();
         TileAccessibilityManager = new TileAccessibilityManager();
+        EntityLockTracker = new EntityLockTracker();
     }
 
     private void Start() {

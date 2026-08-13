@@ -70,6 +70,9 @@ namespace Gameplay.Entities {
         public float AdditionalMovementTimeFromAttacking => ((NetworkableFloatValue)_additionalMovementTimeFromAttackingField?.Value)?.Value ?? 0;
         private NetworkableField _holdingPositionNetworkableField;
         public bool HoldingPosition => ((NetworkableBoolValue)_holdingPositionNetworkableField?.Value)?.Value ?? false;
+        private NetworkableField _lockedFromFriendlyUnitsEnteringField;
+        // Only relevant for structures that can share with friendly units
+        private bool LockedFromFriendlyUnitsEntering => ((NetworkableBoolValue)_lockedFromFriendlyUnitsEnteringField?.Value)?.Value ?? false;
 
         // Abilities
         /// <summary>
@@ -123,6 +126,8 @@ namespace Gameplay.Entities {
 
         public List<IDeathAction> DeathActions = new();
         
+        public bool FriendlyUnitsCanShareCell => EntityData.FriendlyUnitsCanShareCell && LockedFromFriendlyUnitsEntering;
+        
         // Client flag
         private bool _unregistered;
         private GridEntityView _view;
@@ -165,6 +170,7 @@ namespace Gameplay.Entities {
             _slowMoveSpeedMultiplierField = new NetworkableField(this, nameof(_slowMoveSpeedMultiplierField), new NetworkableFloatValue(1f));
             _additionalMovementTimeFromAttackingField = new NetworkableField(this, nameof(_additionalMovementTimeFromAttackingField), new NetworkableFloatValue(0));
             _holdingPositionNetworkableField = new NetworkableField(this, nameof(_holdingPositionNetworkableField), new NetworkableBoolValue(false));
+            _lockedFromFriendlyUnitsEnteringField = new NetworkableField(this, nameof(_lockedFromFriendlyUnitsEnteringField), new NetworkableBoolValue(false));
         }
 
         /// <summary>
@@ -266,6 +272,7 @@ namespace Gameplay.Entities {
             _killCountField.ValueChanged += (_, _, _) => KillCountChanged?.Invoke(KillCount);
             _incomeRateField.ValueChanged += (_, _, _) => IncomeRateChanged?.Invoke(IncomeRate);
             _holdingPositionNetworkableField.ValueChanged += (_, _, _) => HoldingPositionChangedEvent?.Invoke(HoldingPosition);
+            _lockedFromFriendlyUnitsEnteringField.ValueChanged += UpdateLockStatus;
             
             Interactable = true;
         } 
@@ -280,6 +287,14 @@ namespace Gameplay.Entities {
         private void Update() {
             List<AbilityTimer> activeTimersCopy = new List<AbilityTimer>(ActiveTimers);
             activeTimersCopy.ForEach(t => t.UpdateTimer(Time.deltaTime * TimerSpeedMultiplier));
+        }
+
+        private void UpdateLockStatus(INetworkableFieldValue oldValue, INetworkableFieldValue newValue, string metadata) {
+            GameManager.Instance.EntityLockTracker.TriggerLockStatusEvent(Team);
+        }
+
+        public void SetLockStatus(bool newStatus) {
+            _lockedFromFriendlyUnitsEnteringField.UpdateValue(new NetworkableBoolValue(newStatus));
         }
 
         #endregion

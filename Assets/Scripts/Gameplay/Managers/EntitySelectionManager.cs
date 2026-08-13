@@ -41,6 +41,7 @@ public class EntitySelectionManager {
 
     private void RegisterEvents() {
         _gameManager.CommandManager.EntityCollectionChangedEvent += EntityCollectionChanged;
+        _gameManager.EntityLockTracker.LockStatusChanged += LockStatusChanged;
         IGamePlayer player = GameManager.Instance.GetPlayerForTeam(GameManager.Instance.LocalTeam);
         if (player != null) {
             player.OwnedPurchasablesController.OwnedPurchasablesChangedEvent += OwnedPurchasablesChanged;
@@ -129,6 +130,11 @@ public class EntitySelectionManager {
             // especially for expensive calculations like the charge ability selection. 
             _selectedTargetableAbility.RecalculateTargetableAbilitySelection(SelectedEntity, _targetData);
         }
+    }
+
+    private void LockStatusChanged(GameTeam ownerTeam) {
+        if (ownerTeam != GameManager.Instance.LocalTeam) return;
+        EntityCollectionChanged();
     }
 
     private void UpdateSelectedEntity() {

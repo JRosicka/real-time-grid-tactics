@@ -305,7 +305,7 @@ public class PathfinderService {
             // There are enemies here
             return false;
         }
-        if (entitiesAtLocation.Any(e => (e.Team == entityTeam || e.Team == GameTeam.Neutral) && !e.EntityData.FriendlyUnitsCanShareCell)) {
+        if (entitiesAtLocation.Any(e => (e.Team == entityTeam || e.Team == GameTeam.Neutral) && !e.FriendlyUnitsCanShareCell)) {
             // Can only enter a friendly/neutral entity's cell if they are specifically configured to allow for that
             // or if we are set to ignore that entity.
             // Note that this means that structures can not be built on cells that contain units! This is intentional. 

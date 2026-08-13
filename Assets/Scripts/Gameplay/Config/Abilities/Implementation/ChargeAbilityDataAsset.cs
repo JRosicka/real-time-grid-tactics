@@ -260,7 +260,7 @@ namespace Gameplay.Config.Abilities {
                     ?.GetTopEntity()?.Entity;
                 if (entityAtCell != null) {
                     // Can not target a cell with a friendly unit that we can't share the cell with
-                    if ((entityAtCell.Team == selector.Team || entityAtCell.Team == GameTeam.Neutral) && !entityAtCell.EntityData.FriendlyUnitsCanShareCell) {
+                    if ((entityAtCell.Team == selector.Team || entityAtCell.Team == GameTeam.Neutral) && !entityAtCell.FriendlyUnitsCanShareCell) {
                         break;
                     }
                 } else if (tileAccessibilityManager.InaccessibleTiles(selector.EntityData).Contains(cell.Tile) 
