@@ -31,6 +31,7 @@ namespace Gameplay.Entities.Abilities {
         public abstract AbilityExecutionType ExecutionType { get; }
         public virtual float CooldownDuration => Data.CooldownDuration;
 
+        // Server method
         public bool CompleteCooldown() {
             if (!CompleteCooldownImpl()) {
                 return false;
@@ -50,6 +51,7 @@ namespace Gameplay.Entities.Abilities {
         public abstract void Cancel();
         public string QueuedAfterAbilityID { get; set; }
 
+        // Server method
         protected abstract bool CompleteCooldownImpl();
 
         public virtual void SerializeParameters(NetworkWriter writer) {
@@ -75,7 +77,7 @@ namespace Gameplay.Entities.Abilities {
         public abstract bool TryDoAbilityStartEffect();
 
         public AbilityResult PerformAbility() {
-            AbilityLegality legality = Data.AbilityLegal(BaseParameters, Performer, false, PerformerTeam);
+            AbilityLegality legality = Data.AbilityLegal(BaseParameters, Performer, false, PerformerTeam, out _);
             switch (legality) {
                 case AbilityLegality.Legal:
                     // Continue on to try to perform the ability

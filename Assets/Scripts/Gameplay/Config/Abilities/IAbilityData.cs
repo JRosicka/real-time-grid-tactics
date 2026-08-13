@@ -109,7 +109,7 @@ namespace Gameplay.Config.Abilities {
         /// Should be checked on the client before creating the ability, and checked again on the server before performing
         /// the ability. If the server check fails, let the client know. 
         /// </summary>
-        AbilityLegality AbilityLegal(IAbilityParameters parameters, GridEntity entity, bool ignoreBlockingTimers, GameTeam team);
+        AbilityLegality AbilityLegal(IAbilityParameters parameters, GridEntity entity, bool ignoreBlockingTimers, GameTeam team, out string failureReason);
         
         /// <summary>
         /// Create an instance of this ability, passing in any user input. This created instance should be passed to the

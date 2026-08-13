@@ -55,8 +55,11 @@ namespace Gameplay.Managers {
                 entity.BuildQueue.CancelAllBuilds(team);
             }
 
-            AbilityLegality legality = abilityData.AbilityLegal(parameters, entity, startPerformingEvenIfOnCooldown, team);
+            AbilityLegality legality = abilityData.AbilityLegal(parameters, entity, startPerformingEvenIfOnCooldown, team, out string failureReason);
             if (legality == AbilityLegality.IndefinitelyIllegal) {
+                if (!string.IsNullOrEmpty(failureReason)) {
+                    GameManager.Instance.AlertTextDisplayer.DisplayAlert(failureReason);
+                }
                 entity.AbilityFailed(abilityData);
                 return false;
             }
@@ -104,8 +107,11 @@ namespace Gameplay.Managers {
         }
 
         public void QueueAbility(GridEntity entity, IAbilityData abilityData, IAbilityParameters parameters, IAbility abilityToDependOn) {
-            AbilityLegality legality = abilityData.AbilityLegal(parameters, entity, true, abilityToDependOn.PerformerTeam);
-            if (legality != AbilityLegality.Legal) {    // TODO should we allow Legality.NotCurrentlyLegal?
+            AbilityLegality legality = abilityData.AbilityLegal(parameters, entity, true, abilityToDependOn.PerformerTeam, out string failureReason);
+            if (legality == AbilityLegality.IndefinitelyIllegal) {
+                if (!string.IsNullOrEmpty(failureReason)) {
+                    GameManager.Instance.AlertTextDisplayer.DisplayAlert(failureReason);
+                }
                 entity.AbilityFailed(abilityData);
                 return;
             }

@@ -23,7 +23,8 @@ namespace Gameplay.Config.Abilities {
                 true, false, false, true); 
         }
         
-        protected override AbilityLegality AbilityLegalImpl(NullAbilityParameters parameters, GridEntity entity, GameTeam team) {
+        protected override AbilityLegality AbilityLegalImpl(NullAbilityParameters parameters, GridEntity entity, GameTeam team, out string failureReason) {
+            failureReason = null;
             return AbilityLegality.Legal;
         }
 

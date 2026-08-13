@@ -35,7 +35,7 @@ MonoBehaviour:
   Damage: 4
   BonusDamage: 0
   TagsToApplyBonusDamageTo: 
-  NormalMoveTime: 0.43
+  NormalMoveTime: 4
   AddedMovementTimeFromAttacking: 1.8
   PathfindingConfig:
     MoveIconOverride: {fileID: 0}
@@ -69,6 +69,7 @@ MonoBehaviour:
   SharedUnitArmorBonus: 0
   SharedUnitDamageTakenModifierTags: 
   CanRally: 0
+  StructureSellTime: 0
   StartingResourceSet:
     Type: 0
     Amount: 0

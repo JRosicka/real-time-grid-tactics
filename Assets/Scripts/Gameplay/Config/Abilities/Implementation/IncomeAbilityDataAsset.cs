@@ -24,7 +24,9 @@ namespace Gameplay.Config.Abilities {
             // Nothing to do
         }
         
-        protected override AbilityLegality AbilityLegalImpl(NullAbilityParameters parameters, GridEntity entity, GameTeam team) {
+        protected override AbilityLegality AbilityLegalImpl(NullAbilityParameters parameters, GridEntity entity, GameTeam team, out string failureReason) {
+            failureReason = null;
+            
             Vector2Int? entityLocation = entity.Location;
             if (entityLocation == null) return AbilityLegality.IndefinitelyIllegal;
             

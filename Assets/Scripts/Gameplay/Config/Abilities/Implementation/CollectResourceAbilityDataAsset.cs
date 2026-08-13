@@ -27,7 +27,8 @@ namespace Gameplay.Config.Abilities {
             GameManager.Instance.EntitySelectionManager.SelectTargetableAbility(this, selector.Team, null);
         }
         
-        protected override AbilityLegality AbilityLegalImpl(CollectResourceAbilityParameters parameters, GridEntity entity, GameTeam team) {
+        protected override AbilityLegality AbilityLegalImpl(CollectResourceAbilityParameters parameters, GridEntity entity, GameTeam team, out string failureReason) {
+            failureReason = null;
             return AbilityLegality.Legal;
         }
 

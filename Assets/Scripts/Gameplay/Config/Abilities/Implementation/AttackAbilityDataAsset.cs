@@ -25,7 +25,8 @@ namespace Gameplay.Config.Abilities {
             GameManager.Instance.EntitySelectionManager.SelectTargetableAbility(this, selector.Team, null);
         }
         
-        protected override AbilityLegality AbilityLegalImpl(AttackAbilityParameters parameters, GridEntity entity, GameTeam team) {
+        protected override AbilityLegality AbilityLegalImpl(AttackAbilityParameters parameters, GridEntity entity, GameTeam team, out string failureReason) {
+            failureReason = null;
             return CanAttackTarget(entity);
         }
 

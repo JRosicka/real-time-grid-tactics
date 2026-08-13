@@ -49,7 +49,8 @@ namespace Gameplay.Config.Abilities {
             UpdateChargePathVisual(selector, currentlyHoveredCell);
         }
         
-        protected override AbilityLegality AbilityLegalImpl(ChargeAbilityParameters parameters, GridEntity entity, GameTeam team) {
+        protected override AbilityLegality AbilityLegalImpl(ChargeAbilityParameters parameters, GridEntity entity, GameTeam team, out string failureReason) {
+            failureReason = null;
             if (CanChargeToCell(entity, parameters.Destination)) {
                 return AbilityLegality.Legal;
             }

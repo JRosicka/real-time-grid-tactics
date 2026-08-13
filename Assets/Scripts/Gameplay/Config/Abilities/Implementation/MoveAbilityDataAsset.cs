@@ -23,7 +23,9 @@ namespace Gameplay.Config.Abilities {
             GameManager.Instance.EntitySelectionManager.SelectTargetableAbility(this, selector.Team, null);
         }
         
-        protected override AbilityLegality AbilityLegalImpl(MoveAbilityParameters parameters, GridEntity entity, GameTeam team) {
+        protected override AbilityLegality AbilityLegalImpl(MoveAbilityParameters parameters, GridEntity entity, GameTeam team, out string failureReason) {
+            failureReason = null;
+            
             if (!CanTargetCell(parameters.Destination, entity, team, null)) {
                 return AbilityLegality.IndefinitelyIllegal;
             }

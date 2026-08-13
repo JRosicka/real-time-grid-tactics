@@ -1,0 +1,51 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f1f92e0e2cb4422aa0ed887db89b77d7, type: 3}
+  m_Name: Sell Structure Ability
+  m_EditorClassIdentifier: Assembly-CSharp::Gameplay.Config.Abilities.SellStructureDataAsset
+  Data:
+    _contentResourceID: Sell Structure Ability
+    _id: Sell
+    _description: Sell this structure for a 50% refund of the original cost, plus
+      a peasant.
+    _icon: {fileID: 21300000, guid: 3e43f24e145544e38ae08cda571ca32a, type: 3}
+    _iconScaleInSelectionInterface: 1
+    _overrideIconForGrid: {fileID: 0}
+    _flipGridIcon: 0
+    _gridIconColor: {r: 1, g: 0.9060749, b: 0, a: 1}
+    _slotSprites: {fileID: 11400000, guid: 35069bbcc50cd694ba97d615a9a78b90, type: 2}
+    _timerView: {fileID: 5971072852972127787, guid: ed3738731b7b747739ca456d1c5328a6, type: 3}
+    _requirements: []
+    _performDuration: 0
+    _cooldownDuration: 15
+    _channel: {fileID: 11400000, guid: f0a973c5e8bb25644aa85baaa725a551, type: 2}
+    _channelBlockers: []
+    _slotLocation: 9
+    _performOnStart: 0
+    _cooldownOnStart: 0
+    _repeatWhenCooldownFinishes: 0
+    _animateWhenCooldownComplete: 0
+    _selectable: 1
+    _selectableWhenBlocked: 0
+    _autoSelect: 0
+    _selectableForAllPlayers: 0
+    _tryingToPerformCancelsBuilds: 0
+    _tryingToPerformCancelsHoldPosition: 1
+    _blocksDefaultAttack: 0
+    _showTimerOnSelectionInterface: 0
+    _performByDefault: 0
+    _selectionSFX: {fileID: 11400000, guid: 75b6c326a18e3384d897ccf638a3d097, type: 2}
+    _cantPerformSFX: {fileID: 0}
+    _targetedSFX: {fileID: 0}
+    _performedSFX: {fileID: 0}
+    _triggersEntityOrderVoiceLine: 0
+    Peasant: {fileID: 11400000, guid: b52e5f177d13b1b4580a21f9c5ad0bf1, type: 2}

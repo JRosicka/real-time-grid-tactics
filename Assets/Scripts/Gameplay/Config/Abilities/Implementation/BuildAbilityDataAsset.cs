@@ -41,12 +41,14 @@ namespace Gameplay.Config.Abilities {
             GameManager.Instance.SelectionInterface.SetUpBuildSelection(this);
         }
         
-        protected override AbilityLegality AbilityLegalImpl(BuildAbilityParameters parameters, GridEntity entity, GameTeam team) {
+        protected override AbilityLegality AbilityLegalImpl(BuildAbilityParameters parameters, GridEntity entity, GameTeam team, out string failureReason) {
             IGamePlayer player = GameManager.Instance.GetPlayerForTeam(team);
             if (!player.OwnedPurchasablesController.HasRequirementsForPurchase(parameters.Buildable, entity, out string whyNot)) {
-                Debug.Log($"Not building ({parameters.Buildable.ID}) because {whyNot}");
+                failureReason = $"Not building ({parameters.Buildable.ID}) because {whyNot}";
+                Debug.Log(failureReason);
                 return AbilityLegality.IndefinitelyIllegal;
             }
+            failureReason = null;
 
             if (parameters.Buildable is EntityData { IsStructure: true } buildable) {
                 // We need the space to be empty (except for the builder) in order to build a new structure there

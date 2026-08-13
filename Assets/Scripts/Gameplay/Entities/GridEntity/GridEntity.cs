@@ -126,7 +126,7 @@ namespace Gameplay.Entities {
 
         public List<IDeathAction> DeathActions = new();
         
-        public bool FriendlyUnitsCanShareCell => EntityData.FriendlyUnitsCanShareCell && LockedFromFriendlyUnitsEntering;
+        public bool FriendlyUnitsCanShareCell => EntityData.FriendlyUnitsCanShareCell && !LockedFromFriendlyUnitsEntering;
         
         // Client flag
         private bool _unregistered;

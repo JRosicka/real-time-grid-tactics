@@ -48,6 +48,7 @@ MonoBehaviour:
   AttackerTargetPriority: 0
   Abilities:
   - {fileID: 11400000, guid: 565aab4902261724f81a563d917e3d01, type: 2}
+  - {fileID: 11400000, guid: 95889d1df0946fe4780afbfc7aa6a20c, type: 2}
   FriendlyUnitsCanShareCell: 1
   Targetable: 0
   CanBuildFriendlyStructureOnTop: 0
@@ -68,6 +69,7 @@ MonoBehaviour:
   SharedUnitArmorBonus: 0
   SharedUnitDamageTakenModifierTags: 
   CanRally: 0
+  StructureSellTime: 0
   StartingResourceSet:
     Type: 0
     Amount: 0

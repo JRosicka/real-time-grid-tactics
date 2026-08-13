@@ -86,6 +86,7 @@ namespace Gameplay.Config {
         [Tooltip("Tags that shared unit damage taken modifier gets applied to, for units sharing this cell. An empty list makes the damage modifier get applied to everyone. Relevant for structures only.")]
         public List<EntityTag> SharedUnitDamageTakenModifierTags;
         public bool CanRally;
+        public float StructureSellTime;
         public ResourceAmount StartingResourceSet;
         
         public List<DeathActionData> DeathActions;
