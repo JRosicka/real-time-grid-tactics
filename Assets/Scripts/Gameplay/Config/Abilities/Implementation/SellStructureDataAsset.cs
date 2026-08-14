@@ -34,7 +34,7 @@ namespace Gameplay.Config.Abilities {
 
             // Not legal if the structure is producing anything
             if (entity.BuildQueue.Queue(team).Count > 0) {
-                failureReason = "Can not sell while producing anything.";
+                failureReason = "Can not sell while producing units.";
                 return AbilityLegality.IndefinitelyIllegal;
             }
             

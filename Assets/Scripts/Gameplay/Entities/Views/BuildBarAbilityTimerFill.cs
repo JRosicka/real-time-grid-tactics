@@ -6,10 +6,11 @@ namespace Gameplay.Entities {
     /// </summary>
     public class BuildBarAbilityTimerFill : AbilityTimerFill {
         public Image BarFilling;
+        public bool TickDown;
         
         public override void UpdateFillAmount01(float amount) {
-            float invertedAmount = 1f - amount;
-            BarFilling.fillAmount = invertedAmount;
+            float fillAmount = TickDown ? amount : 1f - amount;
+            BarFilling.fillAmount = fillAmount;
         }
     }
 }

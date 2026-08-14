@@ -95,6 +95,7 @@ namespace Gameplay.UI {
                 BuildMenuOpenFromSelection = true;
             }
 
+            // Set up build slots
             foreach (BuildAbilityData.PurchasableDataWithSelectionKey purchasableDataWithSelectionKey in buildData.Buildables) {
                 AbilitySlot slot = AbilitySlots.FirstOrDefault(s => string.Equals(s.Hotkey, purchasableDataWithSelectionKey.selectionKey, StringComparison.CurrentCultureIgnoreCase));
                 if (slot == null) {
@@ -103,6 +104,13 @@ namespace Gameplay.UI {
 
                 BuildAbilitySlotBehavior buildBehavior = new BuildAbilitySlotBehavior(buildData, purchasableDataWithSelectionKey.data, selectedEntity);
                 slot.SetUpSlot(buildBehavior, selectedEntity);
+            }
+            
+            // Set up buttons for any abilities that show in the build selection menu
+            foreach (IAbilityData abilityData in selectedEntity.Abilities.Where(a => a.Selectable && a.AppearsInBuildMenu)) {
+                AbilitySlot slot = AbilitySlots.First(s => s.SlotLocation == abilityData.SlotLocation);
+                DefaultAbilitySlotBehavior abilityBehavior = new DefaultAbilitySlotBehavior(abilityData, selectedEntity);
+                slot.SetUpSlot(abilityBehavior, selectedEntity);
             }
             
             // Set up the cancel button

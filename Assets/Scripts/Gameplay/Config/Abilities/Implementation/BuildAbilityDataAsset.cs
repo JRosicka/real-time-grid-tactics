@@ -44,10 +44,16 @@ namespace Gameplay.Config.Abilities {
         protected override AbilityLegality AbilityLegalImpl(BuildAbilityParameters parameters, GridEntity entity, GameTeam team, out string failureReason) {
             IGamePlayer player = GameManager.Instance.GetPlayerForTeam(team);
             if (!player.OwnedPurchasablesController.HasRequirementsForPurchase(parameters.Buildable, entity, out string whyNot)) {
-                failureReason = $"Not building ({parameters.Buildable.ID}) because {whyNot}";
+                failureReason = $"Not building ({parameters.Buildable.ID}) because {whyNot}.";
                 Debug.Log(failureReason);
                 return AbilityLegality.IndefinitelyIllegal;
             }
+
+            if (entity.ActiveTimers.Select(t => t.Ability.AbilityData).Any(a => a is SellStructureAbilityData)) {
+                failureReason = "Can not build while selling structure.";
+                return AbilityLegality.IndefinitelyIllegal;
+            }
+            
             failureReason = null;
 
             if (parameters.Buildable is EntityData { IsStructure: true } buildable) {

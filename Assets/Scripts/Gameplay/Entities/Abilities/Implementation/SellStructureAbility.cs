@@ -57,7 +57,7 @@ namespace Gameplay.Entities.Abilities {
             // If there are any other units at the structure, then fail.
             if (Data.OccupiedByOtherEntities(Performer)) return false;
             
-            // Lock the structure so that we can't do anything with it or move anything onto it. TODO actually make it so that no commands can be given while the structure is locked
+            // Lock the structure so that we can't move anything onto it.
             Performer.SetLockStatus(true);
             
             return true;

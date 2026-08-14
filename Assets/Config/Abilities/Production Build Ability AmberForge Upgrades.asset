@@ -38,6 +38,7 @@ MonoBehaviour:
     _selectableWhenBlocked: 1
     _autoSelect: 1
     _selectableForAllPlayers: 1
+    _appearsInBuildMenu: 0
     _tryingToPerformCancelsBuilds: 0
     _tryingToPerformCancelsHoldPosition: 1
     _blocksDefaultAttack: 0

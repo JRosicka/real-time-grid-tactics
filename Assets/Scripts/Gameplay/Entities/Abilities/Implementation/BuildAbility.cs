@@ -43,7 +43,7 @@ namespace Gameplay.Entities.Abilities {
             }
         }
 
-        public override bool Cancelable => !AbilityParameters.Buildable.BuildsImmediately && base.Cancelable;
+        public override bool ManuallyCancelable => !AbilityParameters.Buildable.BuildsImmediately && base.ManuallyCancelable;
 
         public override void Cancel() {
             // Refund the amount spent on the build

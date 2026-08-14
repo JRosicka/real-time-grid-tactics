@@ -11,6 +11,7 @@ namespace Gameplay.Entities {
         private GridEntity _entity;
         private GridEntity _resourceEntity;
         private bool _dying;
+        private bool _sold;
 
         public override void Initialize(GridEntity entity) {
             _entity = entity;
@@ -20,7 +21,7 @@ namespace Gameplay.Entities {
             
             IncomeAnimationBehavior.Initialize(entity, ResourceType.Basic);
             DamageAnimationBehavior.Initialize(entity, teamColor);
-            CheckForResourceEntity();
+            ToggleResourceEntity(false);
         }
         
         public override void LethalDamageReceived() {
@@ -35,8 +36,12 @@ namespace Gameplay.Entities {
 
         public override bool DoAbility(IAbility ability, AbilityTimer abilityTimer) {
             switch (ability.AbilityData) {
-                case IncomeAbilityData data:
+                case IncomeAbilityData:
                     IncomeAnimationBehavior.DoIncomeAnimation();
+                    return false;
+                case SellStructureAbilityData:
+                    _sold = true;
+                    ToggleResourceEntity(true);
                     return false;
                 default:
                     return true;
@@ -47,12 +52,15 @@ namespace Gameplay.Entities {
 
         private void EntityCollectionChanged() {
             if (_dying) return;
-            CheckForResourceEntity();
+            ToggleResourceEntity(false);
         }
 
-        private void CheckForResourceEntity() {
+        private void ToggleResourceEntity(bool enable) {
+            // Don't re-hide once we have sold this structure
+            if (_sold && !enable) return;
+            
             _resourceEntity = GameManager.Instance.ResourceEntityFinder.GetMatchingResourceEntity(_entity, _entity.EntityData);
-            _resourceEntity?.ToggleView(false);
+            _resourceEntity?.ToggleView(enable);
         }
     }
 }

@@ -46,7 +46,7 @@ namespace Gameplay.Entities.Abilities {
         }
 
         public abstract bool ShouldShowAbilityTimer { get; }
-        public virtual bool Cancelable => Data.Cancelable;
+        public virtual bool ManuallyCancelable => Data.Cancelable;
 
         public abstract void Cancel();
         public string QueuedAfterAbilityID { get; set; }

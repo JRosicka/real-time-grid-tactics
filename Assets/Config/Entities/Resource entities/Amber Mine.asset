@@ -69,7 +69,7 @@ MonoBehaviour:
   SharedUnitArmorBonus: 0
   SharedUnitDamageTakenModifierTags: 
   CanRally: 0
-  StructureSellTime: 0
+  StructureSellTime: 20
   StartingResourceSet:
     Type: 0
     Amount: 0

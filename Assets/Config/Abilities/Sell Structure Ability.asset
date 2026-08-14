@@ -23,21 +23,25 @@ MonoBehaviour:
     _flipGridIcon: 0
     _gridIconColor: {r: 1, g: 0.9060749, b: 0, a: 1}
     _slotSprites: {fileID: 11400000, guid: 35069bbcc50cd694ba97d615a9a78b90, type: 2}
-    _timerView: {fileID: 5971072852972127787, guid: ed3738731b7b747739ca456d1c5328a6, type: 3}
+    _timerView: {fileID: 5971072852972127787, guid: be08f825ecde94a62a1afbea1976d21e, type: 3}
     _requirements: []
     _performDuration: 0
     _cooldownDuration: 15
-    _channel: {fileID: 11400000, guid: f0a973c5e8bb25644aa85baaa725a551, type: 2}
-    _channelBlockers: []
+    _channel: {fileID: 11400000, guid: 99b5a8e313403471aa0627b46043f9c8, type: 2}
+    _channelBlockers:
+    - {fileID: 11400000, guid: 99b5a8e313403471aa0627b46043f9c8, type: 2}
+    - {fileID: 11400000, guid: a2bb18c2ded749a4e902028c24c166d0, type: 2}
+    - {fileID: 11400000, guid: f0a973c5e8bb25644aa85baaa725a551, type: 2}
     _slotLocation: 9
     _performOnStart: 0
     _cooldownOnStart: 0
     _repeatWhenCooldownFinishes: 0
-    _animateWhenCooldownComplete: 0
+    _animateWhenCooldownComplete: 1
     _selectable: 1
     _selectableWhenBlocked: 0
     _autoSelect: 0
     _selectableForAllPlayers: 0
+    _appearsInBuildMenu: 1
     _tryingToPerformCancelsBuilds: 0
     _tryingToPerformCancelsHoldPosition: 1
     _blocksDefaultAttack: 0

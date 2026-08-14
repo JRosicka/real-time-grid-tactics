@@ -95,6 +95,8 @@ namespace Gameplay.Config.Abilities {
         public bool AutoSelect => _autoSelect;
         [SerializeField] private bool _selectableForAllPlayers;
         public bool SelectableForAllPlayers => _selectableForAllPlayers;
+        [SerializeField] private bool _appearsInBuildMenu;
+        public bool AppearsInBuildMenu => _appearsInBuildMenu;
         public virtual bool Targeted => this is ITargetableAbilityData;
         [SerializeField] private bool _tryingToPerformCancelsBuilds;
         public bool TryingToPerformCancelsBuilds => _tryingToPerformCancelsBuilds;

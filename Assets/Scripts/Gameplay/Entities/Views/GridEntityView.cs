@@ -545,6 +545,9 @@ namespace Gameplay.Entities {
                         timerLocation = _uniqueAbilityTimerLocation;
                     }
                     break;
+                case SellStructureAbility:
+                    timerLocation = _buildTimerLocation;
+                    break;
                 case CollectResourceAbility:
                     timerLocation = _collectTimerLocation;
                     break;

@@ -65,7 +65,7 @@ namespace Gameplay.UI {
             if (buildQueue == null) return null;
             List<BuildAbility> queue = buildQueue.Queue(GameManager.Instance.LocalTeam);
             if (queue.Count == 0) return null;
-            if (!queue.Last().Cancelable) return null;
+            if (!queue.Last().ManuallyCancelable) return null;
 
             return buildQueue;
         }

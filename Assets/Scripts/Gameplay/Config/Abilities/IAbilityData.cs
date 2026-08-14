@@ -74,6 +74,10 @@ namespace Gameplay.Config.Abilities {
         /// </summary>
         bool SelectableForAllPlayers { get; }
         /// <summary>
+        /// Whether this ability should appear in the ability interface when displaying the build menu
+        /// </summary>
+        bool AppearsInBuildMenu { get; }
+        /// <summary>
         /// Whether this ability requires a cell to be targeted when using it
         /// </summary>
         bool Targeted { get; }
