@@ -1898,6 +1898,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _inGame: 0
+  _descriptionFadeSeconds: 0.1
   _settingSubMenuButtons:
   - {fileID: 5719625548785233974}
   - {fileID: 5597313358735718747}
@@ -1920,6 +1921,7 @@ MonoBehaviour:
   - {fileID: 8113510902217016784}
   _settingEntryVerticalLine: {fileID: 8886181659579211246}
   _descriptionText: {fileID: 7860640330585800277}
+  _descriptionCanvasGroup: {fileID: 2982641255053385286}
   _rightClickBehaviorList: {fileID: 50154383833592993}
   _targetCommandBehaviorList: {fileID: 1069096478411754457}
   _masterVolumeSlider: {fileID: 3435479956996324681}
@@ -2740,6 +2742,7 @@ GameObject:
   - component: {fileID: 2206265435931244888}
   - component: {fileID: 3860834592137940546}
   - component: {fileID: 5749041826851597836}
+  - component: {fileID: 2982641255053385286}
   m_Layer: 5
   m_Name: Setting Description Box
   m_TagString: Untagged
@@ -2808,6 +2811,18 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1.3
+--- !u!225 &2982641255053385286
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7105126621425890798}
+  m_Enabled: 1
+  m_Alpha: 0
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &7219113706857132953
 GameObject:
   m_ObjectHideFlags: 0

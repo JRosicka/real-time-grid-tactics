@@ -13,6 +13,7 @@ namespace Gameplay.UI {
         [Header("Config")] 
         [Tooltip("Whether this is a settings menu instance that appears in-game")]
         [SerializeField] private bool _inGame;
+        [SerializeField] private float _descriptionFadeSeconds = .25f;
 
         [Header("References")]
         [SerializeField] private List<SettingSubMenuButton> _settingSubMenuButtons;
@@ -21,6 +22,7 @@ namespace Gameplay.UI {
         [SerializeField] private List<SettingEntry> _settingEntries;
         [SerializeField] private Transform _settingEntryVerticalLine;
         [SerializeField] private TMP_Text _descriptionText;
+        [SerializeField] private CanvasGroup _descriptionCanvasGroup;
         
         [Header("Settings fields")]
         [SerializeField] private SettingDropdownList _rightClickBehaviorList;
@@ -37,6 +39,7 @@ namespace Gameplay.UI {
         [SerializeField] private SettingDropdownList _displayList;
 
         private Action _onDismiss;
+        private bool _descriptionTextEnabled;
         
         public bool Active { get; private set; }
         
@@ -46,6 +49,17 @@ namespace Gameplay.UI {
         private void Start() {
             InitializeMenu();
             InitializeSettingsFields();
+        }
+
+        private void Update() {
+            if ((_descriptionCanvasGroup.alpha <= 0 && !_descriptionTextEnabled) ||
+                (_descriptionCanvasGroup.alpha >= 1 && _descriptionTextEnabled)) {
+                return;
+            }
+            
+            float sign = _descriptionTextEnabled ? 1 : -1;
+            _descriptionCanvasGroup.alpha += sign * (Time.deltaTime / _descriptionFadeSeconds);
+            _descriptionCanvasGroup.alpha = Mathf.Clamp01(_descriptionCanvasGroup.alpha);
         }
 
         public void Open(Action onDismiss) {
@@ -84,7 +98,7 @@ namespace Gameplay.UI {
             _settingSubMenuVerticalLine.position = new Vector2(_settingSubMenuVerticalLine.position.x, selectedButton.HeightWorldPosition);
             _settingEntryVerticalLine.gameObject.SetActive(false);
             
-            _descriptionText.text = string.Empty;
+            ToggleDescriptionText(string.Empty);
             
             // Don't switch submenus if we are hovering over the exit button
             if (selectedButton != _exitButton) {
@@ -98,7 +112,12 @@ namespace Gameplay.UI {
         private void SwitchHoveredSetting(SettingEntry settingEntry) {
             _settingEntryVerticalLine.gameObject.SetActive(true);
             _settingEntryVerticalLine.position = new Vector2(_settingEntryVerticalLine.position.x, settingEntry.HeightWorldPosition);
-            _descriptionText.text = settingEntry.Description;
+            ToggleDescriptionText(settingEntry.Description);
+        }
+
+        private void ToggleDescriptionText(string text) {
+            _descriptionText.text = text;
+            _descriptionTextEnabled = text != string.Empty;
         }
         
         #endregion
