@@ -73,7 +73,7 @@ public class GameSetupManager : MonoBehaviour {
     public bool InputAllowed => 
         !_pauseMenu.Paused 
         && GameRunning 
-        && GameTypeTracker.Instance.AllowInput
+        && GameTypeTracker.Instance.RealGame
         && !GameOver 
         && !GameManager.DisconnectionHandler.Disconnected;
 
@@ -104,7 +104,7 @@ public class GameSetupManager : MonoBehaviour {
         
         GameManager.GameEndManager.GameEnded += HandleGameOver;
         
-        _gameUI.Initialize(GameTypeTracker.Instance.AllowInput);
+        _gameUI.Initialize(GameTypeTracker.Instance.RealGame);
     }
     
     // TODO it would be good to move all of this game over logic to GameEndManager, but we currently can't do server-side logic in that class
@@ -146,7 +146,11 @@ public class GameSetupManager : MonoBehaviour {
     public void NotifyGameOver(GameTeam winner, bool forcedEnd) {
         if (GameOver) return;
         GameOver = true;
-        
+
+        if (GameTypeTracker.Instance.RealGame) {
+            Debug.Log("-----GAME END-----"); 
+        }
+
         GameAudio.Instance.EndMusic();
 
         if (forcedEnd) {
@@ -273,6 +277,9 @@ public class GameSetupManager : MonoBehaviour {
     /// Initialization items that should be performed on each client after map setup is complete
     /// </summary>
     private void PerformClientSidePostMapSetupInitialization() {
+        if (GameTypeTracker.Instance.RealGame) {
+            Debug.Log($"-----GAME START ({GameTypeTracker.Instance.MapID})-----");
+        }
         if (GameManager.CommandManager.EntitiesOnGrid.Entities.Count == 0) {
             GameManager.CommandManager.EntityCollectionChangedEvent += DoPerformClientSidePostMapSetupInitialization;
         } else {

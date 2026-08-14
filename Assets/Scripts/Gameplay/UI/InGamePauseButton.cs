@@ -36,7 +36,7 @@ namespace Gameplay.UI {
         
         public void TogglePauseMenu() {
             if (!GameSetupManager.GameRunning) return;
-            if (!GameTypeTracker.Instance.AllowInput) return;
+            if (!GameTypeTracker.Instance.RealGame) return;
             if (GameSetupManager.GameOver) return;
 
             PauseMenu.TogglePauseMenu();

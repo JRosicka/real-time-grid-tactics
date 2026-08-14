@@ -32,7 +32,7 @@ public class EntitySelectionManager {
 
     public EntitySelectionManager(GameManager gameManager) {
         _gameManager = gameManager;
-        if (_gameManager.GameSetupManager.GameRunning && GameTypeTracker.Instance.AllowInput) {
+        if (_gameManager.GameSetupManager.GameRunning && GameTypeTracker.Instance.RealGame) {
             RegisterEvents();
         } else {
             gameManager.GameSetupManager.GameRunningEvent += RegisterEvents;

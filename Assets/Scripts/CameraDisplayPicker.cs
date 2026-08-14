@@ -27,8 +27,6 @@ public class CameraDisplayPicker : MonoBehaviour {
         if (currentDisplay.name != preferredDisplay.name) {
             Screen.MoveMainWindowTo(preferredDisplay, Vector2Int.zero);
             Debug.Log($"Moved main window from display: {currentDisplay.name} to display: {preferredDisplay.name}");
-        } else {
-            Debug.Log($"Main window already on preferred display: {preferredDisplay.name}");
         }
     }
 }

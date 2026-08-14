@@ -37,7 +37,7 @@ namespace Gameplay.UI {
 
         public void SelectTile(Vector2Int location, GridEntity entityAtLocation) {
             if (!GameManager.Instance.GameSetupManager.GameRunning) return;
-            if (!GameTypeTracker.Instance.AllowInput) return;
+            if (!GameTypeTracker.Instance.RealGame) return;
             
             _hidden = false; 
             _canvasGroup.alpha = 1;
@@ -58,7 +58,7 @@ namespace Gameplay.UI {
 
         private void UpdateColor(GridEntity entityAtLocation) {
             if (!GameManager.Instance.GameSetupManager.GameRunning) return;
-            if (!GameTypeTracker.Instance.AllowInput) return;
+            if (!GameTypeTracker.Instance.RealGame) return;
 
             ReticleSelection reticleSelection = entityAtLocation == null || entityAtLocation.InteractBehavior == null
                 ? ReticleSelection.Neutral

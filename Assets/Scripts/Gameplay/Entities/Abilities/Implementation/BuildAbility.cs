@@ -170,7 +170,6 @@ namespace Gameplay.Entities.Abilities {
         private bool CanPayCost() {
             IGamePlayer player = GameManager.Instance.GetPlayerForTeam(PerformerTeam);
             if (!player.ResourcesController.CanAfford(AbilityParameters.Buildable.Cost)) {
-                Debug.Log($"Not building ({AbilityParameters.Buildable.ID}) because we can't pay the cost");
                 return false;
             }
 

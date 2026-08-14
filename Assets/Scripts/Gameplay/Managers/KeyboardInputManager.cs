@@ -51,7 +51,7 @@ namespace Gameplay.Managers {
 
         private void Update() {
             if (!GameManager.Instance.GameSetupManager.GameRunning) return;
-            if (!GameTypeTracker.Instance.AllowInput) return;
+            if (!GameTypeTracker.Instance.RealGame) return;
             if (GameManager.Instance.GameSetupManager.GameOver) return;
 
             HandleEscape();

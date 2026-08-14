@@ -170,7 +170,7 @@ namespace Gameplay.Managers {
             TimedToggleHoldPositionCommandData data = TimedToggleHoldPositionCommandData.DeserializeFromJson(command.data);
             GridEntity performer = GameManager.Instance.CommandManager.EntitiesOnGrid.GetEntityByID(command.entityID);
             if (!performer) {
-                Debug.LogError($"Could not find performer for command: {command.entityID}, {command.time}, {command.commandType}, {command.data}");
+                LogError($"Could not find performer for command: {command.entityID}, {command.time}, {command.commandType}, {command.data}");
                 return;
             }
             
@@ -181,7 +181,7 @@ namespace Gameplay.Managers {
             TimedCancelAbilityCommandData data = TimedCancelAbilityCommandData.DeserializeFromJson(command.data);
             GridEntity performer = GameManager.Instance.CommandManager.EntitiesOnGrid.GetEntityByID(command.entityID);
             if (!performer) {
-                Debug.LogError($"Could not find performer for command: {command.entityID}, {command.time}, {command.commandType}, {command.data}");
+                LogError($"Could not find performer for command: {command.entityID}, {command.time}, {command.commandType}, {command.data}");
                 return;
             }
             
@@ -194,7 +194,7 @@ namespace Gameplay.Managers {
                 // Check the active timers
                 ability = performer.ActiveTimers.FirstOrDefault(t => t.Ability.UID == abilityUID)?.Ability;
                 if (ability == null) {
-                    Debug.LogError($"Tried to perform a recorded ability cancellation for an ability that doesn't exist! ID: {abilityUID}. Performer: {performer.EntityData.ID}");
+                    LogError($"Tried to perform a recorded ability cancellation for an ability that doesn't exist! ID: {abilityUID}. Performer: {performer.EntityData.ID}");
                     return;
                     // So I have a couple options on how to fix this issue:
                     // 1. Change the ability UIDs to be of the format {performer UID}_{ability type}_{index by order of ability creation per type per performer}, 
@@ -209,6 +209,11 @@ namespace Gameplay.Managers {
             }
             
             GameManager.Instance.CommandManager.CancelAbility(ability, false);
+        }
+
+        private void LogError(string error) {
+            if (!GameManager.Instance.Configuration.LogReplayErrors) return;
+            Debug.LogError(error);
         }
 
         #endregion

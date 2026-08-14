@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Remoting.Messaging;
 using Gameplay.Config.Abilities;
 using Gameplay.Config.Upgrades;
 using UnityEngine;
@@ -16,9 +17,11 @@ namespace Gameplay.Config {
         public MapsConfiguration MapsConfiguration;
         public MapImagesConfiguration MapImagesConfiguration;
         
+        [Header("Misc config fields")]
         [Tooltip("How much extra F-cost (in seconds to move) past the generated ignoring-other-entities path when constructing an account-for-other-entities path. This will be divided by the entity's normal move time.")]
         public float MaxPathFindingFCostBuffer;
         public bool ReactiveAttacksEnabled;
+        public bool LogReplayErrors;
         
         [Header("Player Configs")] 
         public List<PlayerColorData> PlayerColorConfigs;

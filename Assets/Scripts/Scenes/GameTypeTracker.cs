@@ -9,9 +9,9 @@ namespace Scenes {
         public static GameTypeTracker Instance { get; private set; }
         
         /// <summary>
-        /// Whether the user can interact with the game scene at all
+        /// Whether this is a real game (rather than a replay or lobby background game)
         /// </summary>
-        public bool AllowInput { get; private set; }
+        public bool RealGame { get; private set; }
         /// <summary>
         /// Whether any actions should actually happen in the game
         /// </summary>
@@ -55,7 +55,7 @@ namespace Scenes {
 
         public void SetGameType(bool networked, bool allowInput, bool runGame) {
             GameIsNetworked = networked;
-            AllowInput = allowInput;
+            RealGame = allowInput;
             RunGame = runGame;
         }
         

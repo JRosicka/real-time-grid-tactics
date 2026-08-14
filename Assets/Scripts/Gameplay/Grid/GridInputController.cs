@@ -28,7 +28,7 @@ namespace Gameplay.Grid {
         public void Initialize(EntitySelectionManager entitySelectionManager, GameManager gameManager) {
             _entitySelectionManager = entitySelectionManager;
             _gameManager = gameManager;
-            if (_gameManager.GameSetupManager.GameRunning && GameTypeTracker.Instance.AllowInput) {
+            if (_gameManager.GameSetupManager.GameRunning && GameTypeTracker.Instance.RealGame) {
                 RegisterEvents();
             } else {
                 gameManager.GameSetupManager.GameRunningEvent += RegisterEvents;
