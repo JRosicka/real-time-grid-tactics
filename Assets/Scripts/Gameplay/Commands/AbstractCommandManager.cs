@@ -71,7 +71,7 @@ public abstract class AbstractCommandManager : NetworkBehaviour, ICommandManager
     /// Attempts to spawn a new instance of the provided <see cref="GridEntity"/> at the specified location on the game
     /// grid. No-op if another entity already exists in the specified location. 
     /// </summary>
-    public abstract void SpawnEntity(EntityData data, Vector2Int spawnLocation, GameTeam team, GridEntity spawnerEntity, Vector2Int spawnerLocation, bool built, bool playSpawnAnimation);
+    public abstract void SpawnEntity(EntityData data, Vector2Int spawnLocation, GameTeam team, GridEntity spawnerEntity, Vector2Int spawnerLocation, bool built, bool playSpawnAnimation, bool allowRally);
 
     // TODO need to have some way of verifying that these commands are legal for the client to do - especially doing stuff with GridEntites, we gotta own em
     // Maybe we can just make these abstract methods virtual, include a check at the beginning, and then have the overrides call base() at the start
@@ -81,7 +81,7 @@ public abstract class AbstractCommandManager : NetworkBehaviour, ICommandManager
     /// </summary>
     protected abstract void RegisterEntity(GridEntity entity, EntityData data, Vector2Int position, GridEntity entityToIgnore);
     
-    public abstract void UnRegisterEntity(GridEntity entity, bool showDeathAnimation, bool selectStructureAtLocation);
+    public abstract void UnRegisterEntity(GridEntity entity, bool showDeathAnimation, bool selectFriendlyEntityAtLocation);
     public abstract void DestroyEntity(GridEntity entity);
 
     public void MoveEntityToCell(GridEntity entity, Vector2Int destination) {
@@ -104,7 +104,7 @@ public abstract class AbstractCommandManager : NetworkBehaviour, ICommandManager
     public abstract void QueueAbility(IAbility ability, IAbility abilityToDependOn);
     public abstract void MarkAbilityTimerExpired(IAbility ability);
 
-    protected void DoSpawnEntity(EntityData data, Vector2Int spawnLocation, Func<long, GridEntity> spawnFunc, GameTeam team, GridEntity spawnerEntity, Vector2Int spawnerLocation) {
+    protected void DoSpawnEntity(EntityData data, Vector2Int spawnLocation, Func<long, GridEntity> spawnFunc, GameTeam team, GridEntity spawnerEntity, Vector2Int spawnerLocation, bool allowRally) {
         List<GridEntity> entitiesToIgnore = spawnerEntity != null ? new List<GridEntity> {spawnerEntity} : null;
         if (!PathfinderService.CanEntityEnterCell(spawnLocation, data, team, entitiesToIgnore)) {
             return;
@@ -124,8 +124,8 @@ public abstract class AbstractCommandManager : NetworkBehaviour, ICommandManager
         IGamePlayer player = GameManager.Instance.GetPlayerForTeam(team);
         player?.OwnedPurchasablesController.Upgrades.ApplyUpgrades(entityInstance);
 
-        // Handle starting ability
-        if (spawnerEntity != null && spawnerEntity.TargetLocationLogicValue.CanRally && spawnerEntity.TargetLocationLogicValue.CurrentTarget != spawnerLocation) {
+        // Handle rally ability
+        if (allowRally && spawnerEntity != null && spawnerEntity.TargetLocationLogicValue.CanRally && spawnerEntity.TargetLocationLogicValue.CurrentTarget != spawnerLocation) {
             RallyAbilityData rallyAbilityData = spawnerEntity.GetAbilityData<RallyAbilityData>();
             if (rallyAbilityData != null) {
                 CollectResourceAbilityData collectAbilityData = entityInstance.GetAbilityData<CollectResourceAbilityData>();
@@ -172,8 +172,8 @@ public abstract class AbstractCommandManager : NetworkBehaviour, ICommandManager
         EntityUnregisteredEvent?.Invoke(entity.Team);
     }
 
-    protected void DoMarkEntityUnregistered(GridEntity entity, bool showDeathAnimation, bool selectStructureOnLocation) {
-        entity.OnUnregistered(showDeathAnimation, selectStructureOnLocation);
+    protected void DoMarkEntityUnregistered(GridEntity entity, bool showDeathAnimation, bool selectFriendlyEntityAtLocation) {
+        entity.OnUnregistered(showDeathAnimation, selectFriendlyEntityAtLocation);
     }
     
     protected void DoStartPerformingAbility(IAbility ability, bool fromInput) {

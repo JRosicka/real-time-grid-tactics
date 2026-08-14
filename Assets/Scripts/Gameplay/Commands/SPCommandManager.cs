@@ -14,23 +14,24 @@ public class SPCommandManager : AbstractCommandManager {
         AbilityExecutor.Initialize(this, gameManager.GameEndManager, abilityAssignmentManager, true);
     }
 
-    public override void SpawnEntity(EntityData data, Vector2Int spawnLocation, GameTeam team, GridEntity spawnerEntity, Vector2Int spawnerLocation, bool built, bool playSpawnAnimation) {
+    public override void SpawnEntity(EntityData data, Vector2Int spawnLocation, GameTeam team, GridEntity spawnerEntity, Vector2Int spawnerLocation, bool built, bool playSpawnAnimation, bool allowRally) {
         DoSpawnEntity(data, spawnLocation, entityUID => {
-            GridEntity entityInstance = Instantiate(GridEntityPrefab, GridController.GetWorldPosition(spawnLocation), Quaternion.identity, SpawnBucket);
-            
-            entityInstance.ServerInitialize(data, team, spawnLocation, entityUID); 
+            GridEntity entityInstance = Instantiate(GridEntityPrefab, GridController.GetWorldPosition(spawnLocation),
+                Quaternion.identity, SpawnBucket);
+
+            entityInstance.ServerInitialize(data, team, spawnLocation, entityUID);
             entityInstance.ClientInitialize(data, team, built, entityUID, spawnerLocation, playSpawnAnimation);
-            
+
             return entityInstance;
-        }, team, spawnerEntity, spawnerLocation); 
+        }, team, spawnerEntity, spawnerLocation, allowRally);
     }
 
     protected override void RegisterEntity(GridEntity entity, EntityData data, Vector2Int position, GridEntity entityToIgnore) {
         DoRegisterEntity(entity, data, position, entityToIgnore);
     }
 
-    public override void UnRegisterEntity(GridEntity entity, bool showDeathAnimation, bool selectStructureOnLocation) {
-        DoMarkEntityUnregistered(entity, showDeathAnimation, selectStructureOnLocation);
+    public override void UnRegisterEntity(GridEntity entity, bool showDeathAnimation, bool selectFriendlyEntityAtLocation) {
+        DoMarkEntityUnregistered(entity, showDeathAnimation, selectFriendlyEntityAtLocation);
         DoUnRegisterEntity(entity);
     }
 

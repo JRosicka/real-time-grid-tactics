@@ -883,11 +883,11 @@ namespace Gameplay.Entities {
         /// There might be other clients that need this to be around still.
         /// So instead of destroying this, just disallow interaction.
         /// </summary>
-        public void OnUnregistered(bool showDeathAnimation, bool selectStructureOnLocation) {
+        public void OnUnregistered(bool showDeathAnimation, bool selectFriendlyUnitAtLocation) {
             DisallowInteraction();
             
-            if (selectStructureOnLocation && GameManager.Instance.EntitySelectionManager.SelectedEntity == this && Location != null) {
-                GridEntity entityToSelect = GameManager.Instance.GetEntitiesAtLocation(Location.Value)?.Entities.Select(e => e.Entity).FirstOrDefault(e => e.EntityData.IsStructure);
+            if (selectFriendlyUnitAtLocation && GameManager.Instance.EntitySelectionManager.SelectedEntity == this && Location != null) {
+                GridEntity entityToSelect = GameManager.Instance.GetEntitiesAtLocation(Location.Value)?.Entities.Select(e => e.Entity).FirstOrDefault(e => e.Team == Team && e != this);
                 entityToSelect?.Select();
             }
             

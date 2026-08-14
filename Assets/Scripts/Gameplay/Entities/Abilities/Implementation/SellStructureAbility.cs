@@ -43,14 +43,14 @@ namespace Gameplay.Entities.Abilities {
             // Spawn a peasant at the structure location
             SpawnEntity(Data.Peasant, Performer.Location.Value);
             
-            // Unregister and destroy the structure, along with death effect. Select the spawned peasant if the structure was selected. TODO
-            GameManager.Instance.CommandManager.AbilityExecutor.MarkForUnRegistration(Performer, true, false);
+            // Unregister and destroy the structure, along with death effect. Select the spawned peasant if the structure was selected.
+            GameManager.Instance.CommandManager.AbilityExecutor.MarkForUnRegistration(Performer, true, true);
         }
 
         // Server method
         private void SpawnEntity(EntityData entityData, Vector2Int location) {
             if (GameManager.Instance == null) return;
-            GameManager.Instance.CommandManager.SpawnEntity(entityData, location, Performer.Team, Performer, location, false, true);
+            GameManager.Instance.CommandManager.SpawnEntity(entityData, location, Performer.Team, Performer, location, false, true, false);
         }
         
         public override bool TryDoAbilityStartEffect() {

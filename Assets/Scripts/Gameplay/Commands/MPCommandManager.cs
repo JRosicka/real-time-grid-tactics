@@ -19,9 +19,9 @@ public class MPCommandManager : AbstractCommandManager {
         AbilityExecutor.Initialize(this, gameManager.GameEndManager, abilityAssignmentManager, true);
     }
 
-    public override void SpawnEntity(EntityData data, Vector2Int spawnLocation, GameTeam team, GridEntity spawnerEntity, Vector2Int spawnerLocation, bool built, bool playSpawnAnimation) {
+    public override void SpawnEntity(EntityData data, Vector2Int spawnLocation, GameTeam team, GridEntity spawnerEntity, Vector2Int spawnerLocation, bool built, bool playSpawnAnimation, bool allowRally) {
         LogTimestamp(nameof(SpawnEntity));
-        CmdSpawnEntity(data, spawnLocation, team, spawnerEntity, spawnerLocation, built, playSpawnAnimation);
+        CmdSpawnEntity(data, spawnLocation, team, spawnerEntity, spawnerLocation, built, playSpawnAnimation, allowRally);
     }
 
     protected override void RegisterEntity(GridEntity entity, EntityData data, Vector2Int position, GridEntity entityToIgnore) {
@@ -29,9 +29,9 @@ public class MPCommandManager : AbstractCommandManager {
         CmdRegisterEntity(entity, data, position, entityToIgnore);
     }
 
-    public override void UnRegisterEntity(GridEntity entity, bool showDeathAnimation, bool selectStructureAtLocation) {
+    public override void UnRegisterEntity(GridEntity entity, bool showDeathAnimation, bool selectFriendlyEntityAtLocation) {
         LogTimestamp(nameof(UnRegisterEntity));
-        CmdUnRegisterEntity(entity, showDeathAnimation, selectStructureAtLocation);
+        CmdUnRegisterEntity(entity, showDeathAnimation, selectFriendlyEntityAtLocation);
     }
 
     public override void DestroyEntity(GridEntity entity) {
@@ -82,7 +82,7 @@ public class MPCommandManager : AbstractCommandManager {
 
 
     [Command(requiresAuthority = false)]
-    private void CmdSpawnEntity(EntityData data, Vector2Int spawnLocation, GameTeam team, GridEntity entityToIgnore, Vector2Int spawnerLocation, bool built, bool playSpawnAnimation) {
+    private void CmdSpawnEntity(EntityData data, Vector2Int spawnLocation, GameTeam team, GridEntity entityToIgnore, Vector2Int spawnerLocation, bool built, bool playSpawnAnimation, bool allowRally) {
         LogTimestamp(nameof(CmdSpawnEntity));
         DoSpawnEntity(data, spawnLocation, entityUID => {
             GridEntity entityInstance = Instantiate(GridEntityPrefab, GridController.GetWorldPosition(spawnLocation), Quaternion.identity, SpawnBucket);
@@ -92,7 +92,7 @@ public class MPCommandManager : AbstractCommandManager {
             entityInstance.RpcInitialize(data, team, built, entityUID, spawnerLocation, playSpawnAnimation);
             
             return entityInstance;
-        }, team, entityToIgnore, spawnerLocation);
+        }, team, entityToIgnore, spawnerLocation, allowRally);
     }
 
     [Command(requiresAuthority = false)]
@@ -108,11 +108,11 @@ public class MPCommandManager : AbstractCommandManager {
     }
 
     [Command(requiresAuthority = false)]
-    private void CmdUnRegisterEntity(GridEntity entity, bool showDeathAnimation, bool selectStructureAtLocation) {
+    private void CmdUnRegisterEntity(GridEntity entity, bool showDeathAnimation, bool selectFriendlyEntityAtLocation) {
         LogTimestamp(nameof(CmdUnRegisterEntity));
         // TODO it would be better to have these both (entity collection sync and this rpc call) go out at the same time.
         // Can't do that cleanly currently since the entity collection is a syncvar.
-        RpcEntityUnregistered(entity, showDeathAnimation, selectStructureAtLocation);
+        RpcEntityUnregistered(entity, showDeathAnimation, selectFriendlyEntityAtLocation);
         DoUnRegisterEntity(entity);
     }
 
@@ -122,9 +122,9 @@ public class MPCommandManager : AbstractCommandManager {
     }
 
     [ClientRpc]
-    private void RpcEntityUnregistered(GridEntity entity, bool showDeathAnimation, bool selectStructureAtLocation) {
+    private void RpcEntityUnregistered(GridEntity entity, bool showDeathAnimation, bool selectFriendlyEntityAtLocation) {
         LogTimestamp(nameof(RpcEntityUnregistered));
-        DoMarkEntityUnregistered(entity, showDeathAnimation, selectStructureAtLocation);
+        DoMarkEntityUnregistered(entity, showDeathAnimation, selectFriendlyEntityAtLocation);
     }
     
     [ClientRpc]

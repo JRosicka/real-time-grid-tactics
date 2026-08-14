@@ -17,6 +17,7 @@ MonoBehaviour:
   MapsConfiguration: {fileID: 11400000, guid: 56ac6738340180a4ea956ab823147789, type: 2}
   MapImagesConfiguration: {fileID: 11400000, guid: 25c49d316fe9c44309caa673b485e846, type: 2}
   MaxPathFindingFCostBuffer: 36
+  ReactiveAttacksEnabled: 0
   PlayerColorConfigs:
   - {fileID: 11400000, guid: e34410d5f7f6f4a71bd8ec0f4a4b9cb3, type: 2}
   - {fileID: 11400000, guid: b1ff2a553acb040d1911a3247b0b4a80, type: 2}
@@ -77,6 +78,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: d50fba4f48da240b7b8d5c84a17a6d1d, type: 2}
   - {fileID: 11400000, guid: 398205458218140e09d13e7ff7663dc9, type: 2}
   - {fileID: 11400000, guid: 29b46a85b311c4691a019192edc965da, type: 2}
+  - {fileID: 11400000, guid: 95889d1df0946fe4780afbfc7aa6a20c, type: 2}
   Tiles:
   - {fileID: 11400000, guid: 72bba8f070a4e784393726b1ad5d4c16, type: 2}
   - {fileID: 11400000, guid: 25ec46ce372031f4d904f708f269dcb4, type: 2}

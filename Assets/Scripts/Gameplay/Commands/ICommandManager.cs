@@ -16,13 +16,13 @@ using Util;
 /// </summary>
 public interface ICommandManager {
     void Initialize(Transform spawnBucketPrefab, GameManager gameManager, AbilityAssignmentManager abilityAssignmentManager);
-    void SpawnEntity(EntityData data, Vector2Int spawnLocation, GameTeam team, GridEntity spawnerEntity, Vector2Int spawnerLocation, bool built, bool playSpawnAnimation);
+    void SpawnEntity(EntityData data, Vector2Int spawnLocation, GameTeam team, GridEntity spawnerEntity, Vector2Int spawnerLocation, bool built, bool playSpawnAnimation, bool allowRally);
     /// <summary>
     /// Stop keeping track of an entity and also destroy it.
     /// Waits for one update cycle before doing so, so that any commands that the entity is executing in the execution
     /// cycle can be performed.
     /// </summary>
-    void UnRegisterEntity(GridEntity entity, bool showDeathAnimation, bool selectStructureAtLocation);
+    void UnRegisterEntity(GridEntity entity, bool showDeathAnimation, bool selectFriendlyEntityAtLocation);
     void DestroyEntity(GridEntity entity);
     void MoveEntityToCell(GridEntity entity, Vector2Int destination);
     GridEntityCollection.PositionedGridEntityCollection GetEntitiesAtCell(Vector2Int location);
