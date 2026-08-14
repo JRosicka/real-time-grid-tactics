@@ -157,7 +157,7 @@ namespace Gameplay.Managers {
             IAbilityData abilityData = GameManager.Instance.Configuration.GetAbility(data.abilityType).Content;
             GridEntity performer = GameManager.Instance.CommandManager.EntitiesOnGrid.GetEntityByID(command.entityID);
             if (!performer) {
-                Debug.LogError($"Could not find performer for command: {command.entityID}, {command.time}, {command.commandType}, {command.data}");
+                LogError($"Could not find performer for command: {command.entityID}, {command.time}, {command.commandType}, {command.data}");
                 return;
             }
             IAbilityParameters parameters = abilityData.DeserializeParametersFromJson(JsonConvert.DeserializeObject<Dictionary<string, object>>(data.abilityParameterJson));
