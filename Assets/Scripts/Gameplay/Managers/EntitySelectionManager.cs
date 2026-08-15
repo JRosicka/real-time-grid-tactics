@@ -241,13 +241,15 @@ public class EntitySelectionManager {
         if (SelectedEntity.InteractBehavior is not { AllowedToSeeMiscInfo: true }) return;
 
         TargetLocationLogic targetLocationLogic = (TargetLocationLogic)newValue;
-        PathfinderService.Path path = PathfinderService.FindPath(SelectedEntity, targetLocationLogic.CurrentTarget);
-        
         PathVisualizer.PathType pathType = targetLocationLogic.Attacking 
             ? targetLocationLogic.TargetEntity == null 
                 ? PathVisualizer.PathType.AttackMove
                 : PathVisualizer.PathType.TargetAttack
             : PathVisualizer.PathType.Move;
+
+        int range = pathType == PathVisualizer.PathType.TargetAttack ? SelectedEntity.Range : 0;
+        PathfinderService.Path path = PathfinderService.FindPath(SelectedEntity, targetLocationLogic.CurrentTarget, range);
+        
         GridController.VisualizePath(path, pathType, targetLocationLogic.CurrentTarget, targetLocationLogic.HidePathDestination, false, SelectedEntity.EntityData.PathfindingConfig);
     }
 }

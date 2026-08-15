@@ -33,7 +33,7 @@ namespace Gameplay.Config.Abilities {
             if (parameters.BlockedByOccupation && !PathfinderService.CanEntityEnterCell(parameters.Destination, 
                         entity.EntityData, team, new List<GridEntity> { entity })) {
                 // Only consider this legal if we can take a step towards the destination
-                PathfinderService.Path path = GameManager.Instance.PathfinderService.FindPath(entity, parameters.Destination);
+                PathfinderService.Path path = GameManager.Instance.PathfinderService.FindPath(entity, parameters.Destination, 0);
                 List<GridNode> pathNodes = path.Nodes;
                 if (pathNodes.Count < 2) {
                     return AbilityLegality.NotCurrentlyLegal;

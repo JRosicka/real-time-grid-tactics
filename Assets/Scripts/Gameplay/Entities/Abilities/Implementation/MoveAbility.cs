@@ -46,7 +46,7 @@ namespace Gameplay.Entities.Abilities {
         
         protected override (bool, AbilityResult) DoAbilityEffect() {
             // Perform a single move towards the destination
-            PathfinderService.Path path = GameManager.Instance.PathfinderService.FindPath(Performer, AbilityParameters.Destination);
+            PathfinderService.Path path = GameManager.Instance.PathfinderService.FindPath(Performer, AbilityParameters.Destination, 0);
             List<GridNode> pathNodes = path.Nodes;
             if (pathNodes.Count < 2) {
                 // We can not complete the move right now - don't give up skeleton, try again later

@@ -175,7 +175,7 @@ namespace Gameplay.Entities.Abilities {
         /// Move a single cell towards the destination
         /// </summary>
         private void StepTowardsDestination(GridEntity attacker, Vector2Int destination) {
-            PathfinderService.Path path = GameManager.Instance.PathfinderService.FindPath(Performer, destination);
+            PathfinderService.Path path = GameManager.Instance.PathfinderService.FindPath(Performer, destination, 0);
             if (path.Nodes.Count < 2) {
                 return;
             }

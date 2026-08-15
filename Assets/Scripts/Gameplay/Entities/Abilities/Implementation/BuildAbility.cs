@@ -114,7 +114,7 @@ namespace Gameplay.Entities.Abilities {
         /// </summary>
         /// <returns>The location of the best viable cell, or null if no cells are viable.</returns>
         private Vector2Int? GetBestAdjacentCellToSpawn(EntityData entityData) {
-            PathfinderService.Path path = GameManager.Instance.PathfinderService.FindPath(Performer, Performer.TargetLocationLogicValue.CurrentTarget);
+            PathfinderService.Path path = GameManager.Instance.PathfinderService.FindPath(Performer, Performer.TargetLocationLogicValue.CurrentTarget, 0);
             if (path.Nodes.Count >= 2) {
                 // Spawn at the first node along the path to the rally point if we can.
                 Vector2Int firstCellAlongRallyPoint = path.Nodes[1].Location;

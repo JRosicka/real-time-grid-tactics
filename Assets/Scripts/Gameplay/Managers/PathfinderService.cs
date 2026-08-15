@@ -26,7 +26,7 @@ public class PathfinderService {
         public List<GridNode> Nodes;
         /// <summary>
         /// Whether the destination node is the one that was actually requested when finding the path. If false, then
-        /// the destination node is the best alternative we could find. 
+        /// the destination node is the best alternative we could find OR a valid destination node in acceptable range.
         /// </summary>
         public bool ContainsRequestedDestination;
         /// <summary>
@@ -38,10 +38,10 @@ public class PathfinderService {
     /// <summary>
     /// Find the shortest path between an entity and a destination. Uses a basic A* algorithm. Factors in movement costs
     /// per tile.
-    ///
+    /// 
     /// If the destination can not be reached, then we return a path to the best legal alternative location. This is
     /// prioritized by lowest H-cost then by lowest G-cost.
-    ///
+    /// 
     /// Attempts to find the best path while ignoring other entities, then attempts to find the best path while accounting
     /// for other entities.
     /// - If the second path is not too far out of the way compared to the first path, then that second path is used
@@ -50,11 +50,14 @@ public class PathfinderService {
     /// <param name="entity">The entity to traverse the path. Matters for determining movement costs per tile. Also uses
     /// its current location as the path start.</param>
     /// <param name="destination">The location to make a path to</param>
+    /// <param name="acceptableRange">How far away from the given destination is an acceptable actual destination to
+    /// path to. 0 means to match the given destination.</param>
     /// <returns>A path of nodes from the entity's location to the destination</returns>
     /// <exception cref="Exception">If the generated path is too long</exception>
-    public Path FindPath(GridEntity entity, Vector2Int destination) {
+    public Path FindPath(GridEntity entity, Vector2Int destination, int acceptableRange) {
         Vector2Int? entityLocation = entity.Location;
         if (entityLocation == null) {
+            // Entity does not have a location
             return new Path {
                 Nodes = new List<GridNode>(),
                 ContainsRequestedDestination = false,
@@ -63,6 +66,7 @@ public class PathfinderService {
         }
 
         if (entityLocation == destination) {
+            // Entity already at destination
             return new Path {
                 Nodes = new List<GridNode> { new GridNode(entity, GridController.GridData.GetCell(entityLocation.Value), true) },
                 ContainsRequestedDestination = true,
@@ -70,17 +74,20 @@ public class PathfinderService {
             };
         }
 
-        Path pathWhileIgnoringOtherEntities = DoFindPath(entity, entityLocation.Value, destination, true);
+        List<GridData.CellData> validDestinations = GetValidDestinationCells(destination, acceptableRange);
+        
+        // TODO path improvement: I think we need to use acceptableRange here too
+        Path pathWhileIgnoringOtherEntities = DoFindPath(entity, entityLocation.Value, destination, validDestinations, true);
         if (!pathWhileIgnoringOtherEntities.IncludesImpassibleEntities) return pathWhileIgnoringOtherEntities;
 
-        return DoFindPath(entity, entityLocation.Value, destination, false, pathWhileIgnoringOtherEntities);
+        return DoFindPath(entity, entityLocation.Value, destination, validDestinations, false, pathWhileIgnoringOtherEntities);
     }
 
-    private Path DoFindPath(GridEntity entity, Vector2Int entityLocation, Vector2Int destination, bool ignoreOtherEntities, Path? pathIgnoringOtherEntities = null) {
+    private Path DoFindPath(GridEntity entity, Vector2Int entityLocation, Vector2Int requestedDestination, List<GridData.CellData> validDestinationCells, bool ignoreOtherEntities, Path? pathIgnoringOtherEntities = null) {
         int maxSearch = MaxCellsToSearch;
-        if (!entity.CanPathFindToTile(GridController.GridData.GetCell(destination).Tile) 
-                || !CanEntityEnterCell(destination, entity.EntityDataForPathfinding(), entity.Team, forRallying:entity.EntityData.CanRally)) {
-            // Can't go to destination, so let's not overdo the search since we're just gonna pick the best available choice anyway
+        if (!entity.CanPathFindToTile(GridController.GridData.GetCell(requestedDestination).Tile) 
+                || !CanEntityEnterCell(requestedDestination, entity.EntityDataForPathfinding(), entity.Team, forRallying:entity.EntityData.CanRally)) {
+            // Can't go to requested destination, so let's not overdo the search since we're just gonna pick the best available choice anyway
             maxSearch = MaxCellsToSearchWhenWeKnowNoPathExists;
         }
         
@@ -90,10 +97,12 @@ public class PathfinderService {
             : pathIgnoringOtherEntities.Value.Nodes.Last().F + GameManager.Instance.Configuration.MaxPathFindingFCostBuffer / entityTravelTime;
         
         GridNode startNode = new GridNode(entity, GridController.GridData.GetCell(entityLocation), ignoreOtherEntities);
-        startNode.SetH(startNode.GetDistance(destination));
+        startNode.SetH(startNode.GetDistance(requestedDestination));
         
         List<GridNode> toSearch = new List<GridNode> { startNode };
         List<GridNode> processed = new List<GridNode>();
+        
+        List<Vector2Int> validDestinations = validDestinationCells.Select(c => c.Location).ToList();
 
         while (toSearch.Any()) {
             // We always add new items sorted by F cost then H cost, so the first element in the list will be the best 
@@ -103,15 +112,15 @@ public class PathfinderService {
             processed.Add(current);
             toSearch.Remove(current);
             
-            if (current.Location == destination) {
+            if (validDestinations.Contains(current.Location)) {
                 // We have reached the end
-                return ConstructPath(entity, startNode, current, true);
+                return ConstructPath(entity, startNode, current, current.Location == requestedDestination);
             }
             
             if (processed.Count > maxSearch) {
                 // We have not yet found a path after searching for a while, and we have not exhausted all of the tiles 
                 // to search. Pick the best possible alternative destination out of those we have searched.
-                return ConstructBestAlternativePath(entity, processed, startNode, destination, pathIgnoringOtherEntities);
+                return ConstructBestAlternativePath(entity, processed, startNode, requestedDestination, pathIgnoringOtherEntities);
             }
 
             // Search through all the current node's neighbors
@@ -128,7 +137,7 @@ public class PathfinderService {
 
                     if (!inSearch) {
                         // This is the first time we have taken a look at this node, so do some basic one-time setup
-                        neighbor.SetH(neighbor.GetDistance(destination));
+                        neighbor.SetH(neighbor.GetDistance(requestedDestination));
                         if (neighbor.F <= maxFCost) {
                             toSearch.AddSorted(neighbor);
                         }
@@ -143,7 +152,7 @@ public class PathfinderService {
         
         // We ran out of nodes to search without finding a way to the destination, so no path exists. Pick the best
         // possible alternative destination out of those we have searched.
-        return ConstructBestAlternativePath(entity, processed, startNode, destination, pathIgnoringOtherEntities);
+        return ConstructBestAlternativePath(entity, processed, startNode, requestedDestination, pathIgnoringOtherEntities);
     }
 
     /// <summary>
@@ -199,15 +208,15 @@ public class PathfinderService {
         };
     }
 
-    private Path ConstructBestAlternativePath(GridEntity entity, IReadOnlyCollection<GridNode> processed, GridNode startNode, Vector2Int destination, Path? pathIgnoringOtherEntities) {
+    private Path ConstructBestAlternativePath(GridEntity entity, IReadOnlyCollection<GridNode> processed, GridNode startNode, Vector2Int requestedDestination, Path? pathIgnoringOtherEntities) {
         return pathIgnoringOtherEntities == null
             ? ConstructBestAlternativePath_NoConvenientPath(entity, processed, startNode)
-            : ConstructBestAlternativePath_WithConvenientPath(entity, processed, startNode, destination, pathIgnoringOtherEntities.Value);
+            : ConstructBestAlternativePath_WithConvenientPath(entity, processed, startNode, requestedDestination, pathIgnoringOtherEntities.Value);
     }
 
     private Path ConstructBestAlternativePath_NoConvenientPath(GridEntity entity, IReadOnlyCollection<GridNode> processed, GridNode startNode) {
         GridNode bestAlternative;
-                
+        // Prioritize getting the closest to the requested destination (min H cost)
         float minH = processed.Min(n => n.H);
         List<GridNode> closestNodes = processed.Where(n => Mathf.Approximately(n.H, minH)).ToList();
         if (closestNodes.Count > 1) {
@@ -219,17 +228,18 @@ public class PathfinderService {
         return ConstructPath(entity, startNode, bestAlternative, false);
     }
 
-    private Path ConstructBestAlternativePath_WithConvenientPath(GridEntity entity, IReadOnlyCollection<GridNode> processed, GridNode startNode, Vector2Int destination, Path pathIgnoringOtherEntities) {
+    private Path ConstructBestAlternativePath_WithConvenientPath(GridEntity entity, IReadOnlyCollection<GridNode> processed, GridNode startNode, Vector2Int requestedDestination, Path pathIgnoringOtherEntities) {
         GridNode bestAlternative = processed.First();
         GridNode bestAdjacentNodeNotOnPath = null;
         int tieBreakIndex = -1;
         float minDistanceFromConveniencePath = float.MaxValue;
         
+        // Processed isn't sorted, so just iterate through each one. Yuck?
         foreach (GridNode processedNode in processed) {
             float minDistanceFromConveniencePathForThisNode = float.MaxValue;
             int bestIndex = -1;
 
-            if (CellDistanceLogic.DistanceBetweenCells(destination, processedNode.Location) == 1) {
+            if (CellDistanceLogic.DistanceBetweenCells(requestedDestination, processedNode.Location) == 1) {
                 if (bestAdjacentNodeNotOnPath == null || bestAdjacentNodeNotOnPath.G > processedNode.G) {
                     bestAdjacentNodeNotOnPath = processedNode;
                 }
@@ -267,12 +277,16 @@ public class PathfinderService {
             }
         }
 
-        if (bestAdjacentNodeNotOnPath != null && CellDistanceLogic.DistanceBetweenCells(bestAlternative.Location, destination) > 1) {
+        if (bestAdjacentNodeNotOnPath != null && CellDistanceLogic.DistanceBetweenCells(bestAlternative.Location, requestedDestination) > 1) {
             // There is an adjacent node not on the convenient path that is available, and the closest convenient path node is not adjacent. So use the adjacent one. 
             bestAlternative = bestAdjacentNodeNotOnPath;
         }
         
         return ConstructPath(entity, startNode, bestAlternative, false);
+    }
+
+    private List<GridData.CellData> GetValidDestinationCells(Vector2Int destination, int acceptableRange) {
+        return GridController.GridData.GetCellsInRange(destination, acceptableRange).ToList();
     }
 
     public float AngleBetweenCells(Vector2Int cell1, Vector2Int cell2) {
