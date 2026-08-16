@@ -39,9 +39,11 @@ MonoBehaviour:
     _selectableWhenBlocked: 1
     _autoSelect: 0
     _selectableForAllPlayers: 0
+    _appearsInBuildMenu: 0
     _tryingToPerformCancelsBuilds: 0
     _tryingToPerformCancelsHoldPosition: 1
-    _blocksDefaultAttack: 0
+    _activeBlocksDefaultAttack: 0
+    _cooldownBlocksDefaultAttack: 0
     _showTimerOnSelectionInterface: 1
     _performByDefault: 1
     _selectionSFX: {fileID: 11400000, guid: 75b6c326a18e3384d897ccf638a3d097, type: 2}

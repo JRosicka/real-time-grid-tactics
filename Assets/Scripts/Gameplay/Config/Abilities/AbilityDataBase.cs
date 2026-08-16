@@ -102,8 +102,10 @@ namespace Gameplay.Config.Abilities {
         public bool TryingToPerformCancelsBuilds => _tryingToPerformCancelsBuilds;
         [SerializeField] private bool _tryingToPerformCancelsHoldPosition = true;
         public bool TryingToPerformCancelsHoldPosition => _tryingToPerformCancelsHoldPosition;
-        [SerializeField] private bool _blocksDefaultAttack;
-        public bool BlocksDefaultAttack => _blocksDefaultAttack;
+        [FormerlySerializedAs("_blocksDefaultAttack")] [SerializeField] private bool _activeBlocksDefaultAttack;
+        public bool ActiveBlocksDefaultAttack => _activeBlocksDefaultAttack;
+        [SerializeField] private bool _cooldownBlocksDefaultAttack;
+        public bool CooldownBlocksDefaultAttack => _cooldownBlocksDefaultAttack;
         [SerializeField] private bool _showTimerOnSelectionInterface;
         public bool ShowTimerOnSelectionInterface => _showTimerOnSelectionInterface;
         [SerializeField] private bool _performByDefault;

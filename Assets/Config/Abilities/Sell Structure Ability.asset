@@ -44,7 +44,8 @@ MonoBehaviour:
     _appearsInBuildMenu: 1
     _tryingToPerformCancelsBuilds: 0
     _tryingToPerformCancelsHoldPosition: 1
-    _blocksDefaultAttack: 0
+    _activeBlocksDefaultAttack: 1
+    _cooldownBlocksDefaultAttack: 1
     _showTimerOnSelectionInterface: 0
     _performByDefault: 0
     _selectionSFX: {fileID: 11400000, guid: 75b6c326a18e3384d897ccf638a3d097, type: 2}
