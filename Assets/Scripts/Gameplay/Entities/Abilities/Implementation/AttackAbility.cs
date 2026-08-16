@@ -100,7 +100,7 @@ namespace Gameplay.Entities.Abilities {
                         && AbilityParameters.ReactionTarget.Location != null) {
                     // No one in range to attack, so move a cell closer to our destination
                     Vector2Int newTargetLocation = AbilityParameters.ReactionTarget.Location.Value;
-                    StepTowardsDestination(Performer, newTargetLocation);
+                    TryStepTowardsDestination(Performer, newTargetLocation);
                     // Update the destination to the new target location
                     AbilityParameters.Destination = newTargetLocation;
                     return (false, AbilityResult.IncompleteWithoutEffect);
@@ -111,7 +111,12 @@ namespace Gameplay.Entities.Abilities {
             }
             
             // No one in range to attack, so move a cell closer to our destination
-            StepTowardsDestination(Performer, AbilityParameters.Destination);
+            bool success = TryStepTowardsDestination(Performer, AbilityParameters.Destination);
+            if (!success) {
+                // This is an attack move that can't progress any further because the next step is un-traversable terrain. We're done here. 
+                return (false, AbilityResult.CompletedWithoutEffect);
+            }
+            
             return (false, AbilityResult.IncompleteWithoutEffect);
         }
 
@@ -174,10 +179,16 @@ namespace Gameplay.Entities.Abilities {
         /// <summary>
         /// Move a single cell towards the destination
         /// </summary>
-        private void StepTowardsDestination(GridEntity attacker, Vector2Int destination) {
+        /// <returns>True if successful or no move needed, otherwise false if unable to move closer due to the path only
+        /// containing terrain that the performer can not move into</returns>
+        private bool TryStepTowardsDestination(GridEntity attacker, Vector2Int destination) {
             PathfinderService.Path path = GameManager.Instance.PathfinderService.FindPath(Performer, destination, 0);
             if (path.Nodes.Count < 2) {
-                return;
+                if (path.ContainsRequestedDestination || path.PossibleToEverProgress) {
+                    // We can not complete the move right now, but we could be able to later
+                    return true;
+                } 
+                return false;
             }
             
             Vector2Int nextMoveCell = path.Nodes[1].Location;
@@ -188,6 +199,7 @@ namespace Gameplay.Entities.Abilities {
                 BlockedByOccupation = false,
                 PerformAfterAttacks = true
             }, false, true, false, false, attacker.Team);
+            return true;
         }
         
         private void DoAttack(Vector2Int location) {

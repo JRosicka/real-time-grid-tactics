@@ -36,7 +36,14 @@ namespace Gameplay.Config.Abilities {
                 PathfinderService.Path path = GameManager.Instance.PathfinderService.FindPath(entity, parameters.Destination, 0);
                 List<GridNode> pathNodes = path.Nodes;
                 if (pathNodes.Count < 2) {
-                    return AbilityLegality.NotCurrentlyLegal;
+                    if (path.PossibleToEverProgress) {
+                        return AbilityLegality.NotCurrentlyLegal;
+                    } else {
+                        // This is a hack to account for a situation where a move command is set to an adjacent cell
+                        // that both has impassible terrain and is occupied by a unit. We want to report that as
+                        // indefinitely illegal so that it actually gets canceled instead of trying forever.
+                        return AbilityLegality.IndefinitelyIllegal;
+                    }
                 }
             }
 

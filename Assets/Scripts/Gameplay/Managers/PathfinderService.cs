@@ -30,7 +30,15 @@ public class PathfinderService {
         /// </summary>
         public bool ContainsRequestedDestination;
         /// <summary>
-        /// Whether the path contains nodes with entities that the pathing entity can not share with
+        /// Whether the entity could ever be able to move at least somewhat closer to the destination. Even if this path
+        /// does not contain a valid destination, it might be able to at least move closer or move closer later if
+        /// blocking entities get out of the way.  
+        /// </summary>
+        public bool PossibleToEverProgress;
+        /// <summary>
+        /// Whether the path contains nodes with entities that the pathing entity can not share with.
+        /// Used internally during pathfinding. The final path returned from <see cref="PathfinderService.FindPath"/>
+        /// will never have this as true.
         /// </summary>
         public bool IncludesImpassibleEntities;
     }
@@ -61,7 +69,8 @@ public class PathfinderService {
             return new Path {
                 Nodes = new List<GridNode>(),
                 ContainsRequestedDestination = false,
-                IncludesImpassibleEntities = false
+                IncludesImpassibleEntities = false,
+                PossibleToEverProgress = false
             };
         }
 
@@ -70,17 +79,22 @@ public class PathfinderService {
             return new Path {
                 Nodes = new List<GridNode> { new GridNode(entity, GridController.GridData.GetCell(entityLocation.Value), true) },
                 ContainsRequestedDestination = true,
-                IncludesImpassibleEntities = false
+                IncludesImpassibleEntities = false,
+                PossibleToEverProgress = true
             };
         }
 
         List<GridData.CellData> validDestinations = GetValidDestinationCells(destination, acceptableRange);
         
-        // TODO path improvement: I think we need to use acceptableRange here too
         Path pathWhileIgnoringOtherEntities = DoFindPath(entity, entityLocation.Value, destination, validDestinations, true);
-        if (!pathWhileIgnoringOtherEntities.IncludesImpassibleEntities) return pathWhileIgnoringOtherEntities;
+        if (!pathWhileIgnoringOtherEntities.IncludesImpassibleEntities) {
+            pathWhileIgnoringOtherEntities.PossibleToEverProgress = pathWhileIgnoringOtherEntities.Nodes.Count > 1;
+            return pathWhileIgnoringOtherEntities;
+        }
 
-        return DoFindPath(entity, entityLocation.Value, destination, validDestinations, false, pathWhileIgnoringOtherEntities);
+        Path normalPath = DoFindPath(entity, entityLocation.Value, destination, validDestinations, false, pathWhileIgnoringOtherEntities);
+        normalPath.PossibleToEverProgress = pathWhileIgnoringOtherEntities.Nodes.Count > 1;
+        return normalPath;
     }
 
     private Path DoFindPath(GridEntity entity, Vector2Int entityLocation, Vector2Int requestedDestination, List<GridData.CellData> validDestinationCells, bool ignoreOtherEntities, Path? pathIgnoringOtherEntities = null) {
@@ -166,7 +180,8 @@ public class PathfinderService {
             return new Path {
                 Nodes = new List<GridNode>(),
                 ContainsRequestedDestination = false,
-                IncludesImpassibleEntities = false
+                IncludesImpassibleEntities = false,
+                PossibleToEverProgress = false
             };
         }
 
@@ -178,7 +193,8 @@ public class PathfinderService {
         return new Path {
             Nodes = pathNodes,
             ContainsRequestedDestination = true, 
-            IncludesImpassibleEntities = false
+            IncludesImpassibleEntities = false,
+            PossibleToEverProgress = true
         };
 
     }
@@ -206,6 +222,7 @@ public class PathfinderService {
             Nodes = pathNodes,
             ContainsRequestedDestination = originalDestination,
             IncludesImpassibleEntities = containsImpassibleEntities
+            // PossibleToEverProgress determined later
         };
     }
 

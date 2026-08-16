@@ -49,8 +49,13 @@ namespace Gameplay.Entities.Abilities {
             PathfinderService.Path path = GameManager.Instance.PathfinderService.FindPath(Performer, AbilityParameters.Destination, 0);
             List<GridNode> pathNodes = path.Nodes;
             if (pathNodes.Count < 2) {
-                // We can not complete the move right now - don't give up skeleton, try again later
-                return (false, AbilityResult.IncompleteWithoutEffect);
+                if (path.ContainsRequestedDestination || path.PossibleToEverProgress) {
+                    // We can not complete the move right now, but we could be able to later
+                    return (false, AbilityResult.IncompleteWithoutEffect);
+                } 
+
+                // This move must be impossible because of impassible terrain, so we are done here
+                return (false, AbilityResult.CompletedWithoutEffect);
             }
 
             AbilityParameters.NextMoveCell = pathNodes[1].Location;
