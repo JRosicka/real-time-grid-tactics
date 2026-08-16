@@ -69,8 +69,13 @@ namespace Gameplay.Pathfinding {
             }
         }
 
-        public float CostToEnter() {
-            return _entity.MoveTimeToTile(_cellData.Tile);
+        public float CostToEnter(bool validDestination) {
+            // If this is a valid destination, then it is effectively free to enter since we don't actually care about the 
+            // move cooldown (we will have reached the end). BUT we should still scale it just a little itty bit based 
+            // on the actual move cooldown so that we break effective-ties for sorting in favor of tiles that have a lower actual 
+            // move cooldown time. 
+            float multiplier = validDestination ? .01f : 1;
+            return multiplier * _entity.MoveTimeToTile(_cellData.Tile);
         }
         
         public GridNode Connection { get; private set; }

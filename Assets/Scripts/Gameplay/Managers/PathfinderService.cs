@@ -128,7 +128,8 @@ public class PathfinderService {
                 GridNode existingNeighbor = toSearch.FirstOrDefault(s => s.Location == neighbor.Location);
                 bool inSearch = existingNeighbor != null;
                 GridNode neighborBeingSearched = inSearch ? existingNeighbor : neighbor;
-                float costToNeighbor = current.G + neighborBeingSearched.CostToEnter();
+                bool neighborIsValidDestination = validDestinations.Contains(neighborBeingSearched.Location);
+                float costToNeighbor = current.G + neighborBeingSearched.CostToEnter(neighborIsValidDestination);
 
                 if (!inSearch || costToNeighbor < existingNeighbor.G) {
                     // This neighbor has not been processed yet or the current path to it is better than a previously found path
