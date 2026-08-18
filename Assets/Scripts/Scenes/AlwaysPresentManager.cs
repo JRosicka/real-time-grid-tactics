@@ -1,4 +1,5 @@
 using Audio;
+using Game.Network.Discord;
 using Gameplay.Config;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -16,6 +17,7 @@ namespace Scenes {
         [FormerlySerializedAs("_gameNetworkStateManager")] [SerializeField] private GameTypeTracker _gameTypeManager;
         
         private GameAudio _gameAudio;
+        public DiscordManager _discordManager;
 
         /// <summary>
         /// Performs initialization. If initialization was already performed this app session, then destroys the GameObject. 
@@ -38,6 +40,7 @@ namespace Scenes {
             _audioPlayer.Initialize();
             _gameAudio = new GameAudio(_audioPlayer, GameConfigurationLocator.GameConfiguration.AudioConfiguration);
             _sceneLoader.Initialize();
+            _discordManager = new DiscordManager();
         }
         
         private void Update() {

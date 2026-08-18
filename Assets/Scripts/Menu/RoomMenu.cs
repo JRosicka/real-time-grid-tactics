@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Game.Network;
+using Game.Network.Discord;
 using Gameplay.Config;
 using JetBrains.Annotations;
 using Menu;
@@ -67,6 +68,13 @@ public class RoomMenu : MonoBehaviour {
         return AllPlayerSlots.FirstOrDefault(s => s.AssignedPlayer == player);
     }
 
+    private void UpdateDiscordRichPresence() {
+        int playerCount = PlayersInLobby.Count;
+        if (playerCount == 0) return;
+        string playerCountMessage = playerCount == 1 ? "1 Player" : $"{playerCount} Players";
+        DiscordManager.Instance.SetRichPresence("In Lobby", playerCountMessage);
+    }
+    
     void Start() {
         CanvasWidthSetter.Initialize();
         UIScaler.Initialize();
@@ -97,6 +105,8 @@ public class RoomMenu : MonoBehaviour {
         // Maps
         LobbyMapSelectionList.Initialize(GameConfigurationLocator.GameConfiguration, LobbyNetworkBehaviour);
         LobbyMapDisplayer.Initialize(GameConfigurationLocator.GameConfiguration, LobbyNetworkBehaviour);
+
+        UpdateDiscordRichPresence();
     }
     
     private void OnDestroy() {
@@ -207,6 +217,8 @@ public class RoomMenu : MonoBehaviour {
 
         UpdatePlayerReadyStatus();
         ResetReadyButton();
+
+        UpdateDiscordRichPresence();
     }
     
     /// <summary>
@@ -259,6 +271,8 @@ public class RoomMenu : MonoBehaviour {
                 playerSlot.UnassignPlayer();
             }
         }
+        
+        UpdateDiscordRichPresence();
     }
 
     private bool PlayerIsKickable(GameNetworkPlayer player) {

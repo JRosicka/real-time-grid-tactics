@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Game.Network;
+using Game.Network.Discord;
 using Gameplay.UI;
 using Scenes;
 using Steamworks;
@@ -58,6 +59,8 @@ public class MultiplayerMenu : MonoBehaviour {
         LobbyListEntry.LobbyJoinAttemptStarted += PromptJoinIDForLobby;
         
         ShowDisconnectMessageIfAppropriate();
+        
+        DiscordManager.Instance.ResetRichPresence();
     }
 
     private void OnDestroy() {
