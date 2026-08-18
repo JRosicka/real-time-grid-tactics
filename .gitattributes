@@ -1,0 +1,5 @@
+Packages/com.discord.partnersdk/Runtime/Plugins/x86_64/Release/libdiscord_partner_sdk.dbg filter=lfs diff=lfs merge=lfs -text
+Packages/com.discord.partnersdk/Runtime/Plugins/x86_64/Debug/libdiscord_partner_sdk.so filter=lfs diff=lfs merge=lfs -text
+Packages/com.discord.partnersdk/Runtime/Plugins/Debug/discord_partner_sdk.aar filter=lfs diff=lfs merge=lfs -text
+Packages/com.discord.partnersdk/Runtime/Plugins/Debug/libdiscord_partner_sdk.dylib filter=lfs diff=lfs merge=lfs -text
+Packages/com.discord.partnersdk/Runtime/Plugins/x86_64/Debug/libdiscord_partner_sdk.dbg filter=lfs diff=lfs merge=lfs -text
