@@ -383,3 +383,7 @@ MigrationBackup/
 
 # Ionide (cross platform F# VS Code tools) working folder
 .ionide/
+
+# Un-ignore Discord package
+!Packages/com.discord.partnersdk/
+!Packages/com.discord.partnersdk/**
