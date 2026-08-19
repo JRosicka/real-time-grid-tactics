@@ -47,6 +47,10 @@ namespace Game.Network.Discord {
                 Log($"Rich Presence result: {result}");
             });
         }
+
+        public void ClearRichPresence() {
+            _discordClient?.ClearRichPresence();
+        }
         
         private static void OnLog(string message, LoggingSeverity severity) {
             Log($"Log: {severity} - {message}");

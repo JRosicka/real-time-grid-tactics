@@ -17,7 +17,7 @@ namespace Scenes {
         [FormerlySerializedAs("_gameNetworkStateManager")] [SerializeField] private GameTypeTracker _gameTypeManager;
         
         private GameAudio _gameAudio;
-        public DiscordManager _discordManager;
+        private DiscordManager _discordManager;
 
         /// <summary>
         /// Performs initialization. If initialization was already performed this app session, then destroys the GameObject. 
@@ -45,6 +45,10 @@ namespace Scenes {
         
         private void Update() {
             _gameAudio.Update(Time.deltaTime);
+        }
+
+        private void OnApplicationQuit() {
+            _discordManager.ClearRichPresence();
         }
     }
 }
