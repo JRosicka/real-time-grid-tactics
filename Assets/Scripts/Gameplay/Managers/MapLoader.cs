@@ -4,6 +4,7 @@ using Gameplay.Config;
 using Gameplay.Entities;
 using Gameplay.Grid;
 using Gameplay.Managers;
+using JetBrains.Annotations;
 using UnityEngine;
 
 /// <summary>
@@ -46,6 +47,9 @@ public class MapLoader : MonoBehaviour {
         
         InitializeParticlesManagerIfReady();
     }
+
+    [CanBeNull]
+    public string MapName => _currentMap?.displayName;
     
     /// <summary>
     /// Finalize setup after all players are loaded. 

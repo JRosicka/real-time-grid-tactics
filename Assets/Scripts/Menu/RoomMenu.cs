@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Game.Network;
 using Game.Network.Discord;
 using Gameplay.Config;
@@ -68,11 +69,13 @@ public class RoomMenu : MonoBehaviour {
         return AllPlayerSlots.FirstOrDefault(s => s.AssignedPlayer == player);
     }
 
-    private void UpdateDiscordRichPresence() {
+    private async void UpdateDiscordRichPresence(bool resetTimer) {
+        await Task.Delay(100);
+        
         int playerCount = PlayersInLobby.Count;
         if (playerCount == 0) return;
         string playerCountMessage = playerCount == 1 ? "1 Player" : $"{playerCount} Players";
-        DiscordManager.Instance.SetRichPresence("In Lobby", playerCountMessage);
+        DiscordManager.Instance.SetRichPresence("In Lobby", playerCountMessage, resetTimer);
     }
     
     void Start() {
@@ -106,7 +109,7 @@ public class RoomMenu : MonoBehaviour {
         LobbyMapSelectionList.Initialize(GameConfigurationLocator.GameConfiguration, LobbyNetworkBehaviour);
         LobbyMapDisplayer.Initialize(GameConfigurationLocator.GameConfiguration, LobbyNetworkBehaviour);
 
-        UpdateDiscordRichPresence();
+        UpdateDiscordRichPresence(true);
     }
     
     private void OnDestroy() {
@@ -218,7 +221,7 @@ public class RoomMenu : MonoBehaviour {
         UpdatePlayerReadyStatus();
         ResetReadyButton();
 
-        UpdateDiscordRichPresence();
+        UpdateDiscordRichPresence(false);
     }
     
     /// <summary>
@@ -272,7 +275,7 @@ public class RoomMenu : MonoBehaviour {
             }
         }
         
-        UpdateDiscordRichPresence();
+        UpdateDiscordRichPresence(false);
     }
 
     private bool PlayerIsKickable(GameNetworkPlayer player) {

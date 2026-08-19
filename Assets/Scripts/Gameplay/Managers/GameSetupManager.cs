@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Audio;
 using Game.Network;
+using Game.Network.Discord;
 using Gameplay.Config;
 using Gameplay.Entities;
 using Gameplay.Managers;
@@ -279,6 +280,7 @@ public class GameSetupManager : MonoBehaviour {
     private void PerformClientSidePostMapSetupInitialization() {
         if (GameTypeTracker.Instance.RealGame) {
             Debug.Log($"-----GAME START ({GameTypeTracker.Instance.MapID})-----");
+            DiscordManager.Instance.SetRichPresence("In a Match", MapLoader.MapName, true);
         }
         if (GameManager.CommandManager.EntitiesOnGrid.Entities.Count == 0) {
             GameManager.CommandManager.EntityCollectionChangedEvent += DoPerformClientSidePostMapSetupInitialization;

@@ -9,7 +9,7 @@ namespace Game.Network.Discord {
         private const ulong ApplicationID = 1539068505301721138;
 
         private readonly Client _discordClient;
-        private readonly Activity _richPresenceActivity;
+        private ulong _lastStartTimestamp = (ulong)System.DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
 
         public static DiscordManager Instance;
 
@@ -20,40 +20,34 @@ namespace Game.Network.Discord {
             _discordClient.AddLogCallback(OnLog, LoggingSeverity.Warning);
             _discordClient.SetStatusChangedCallback(OnStatusChanged);
             _discordClient.SetApplicationId(ApplicationID);
-
-            _richPresenceActivity = new Activity();
-            AddButton(_richPresenceActivity);
-
-            ResetRichPresence();
         }
 
-        public void SetRichPresence(string details, string state) {
-            _richPresenceActivity.SetType(ActivityTypes.Playing);
-            _richPresenceActivity.SetDetails(details);
-            _richPresenceActivity.SetState(state);
+        public void SetRichPresence(string details, string state, bool resetTimer) {
+            // Details
+            Activity activity = new();
+            activity.SetType(ActivityTypes.Playing);
+            activity.SetDetails(details);
+            activity.SetState(state);
             
-            _discordClient.UpdateRichPresence(_richPresenceActivity, result => {
-                Log($"Rich Presence result: {result}");
-            });
-        }
-
-        public void ResetRichPresence() {
-            SetRichPresence(null, null);
-            
-            _richPresenceActivity.SetType(ActivityTypes.Playing);
-            _discordClient.UpdateRichPresence(_richPresenceActivity, result => {
-                Log($"Rich Presence result: {result}");
-            });
-        }
-
-        private void AddButton(Activity activity) {
-            ActivityButton communityButton = new ActivityButton();
+            // Button
+            ActivityButton communityButton = new();
             communityButton.SetLabel("Join the Community!");
             communityButton.SetUrl("https://discord.gg/1327435939550724147");
-            
             activity.AddButton(communityButton);
-        }
+            
+            // Timer
+            if (resetTimer) {
+                _lastStartTimestamp = (ulong)System.DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
+            }
+            ActivityTimestamps timestamp = new ActivityTimestamps();
+            timestamp.SetStart(_lastStartTimestamp);
+            activity.SetTimestamps(timestamp);
 
+            _discordClient.UpdateRichPresence(activity, result => {
+                Log($"Rich Presence result: {result}");
+            });
+        }
+        
         private static void OnLog(string message, LoggingSeverity severity) {
             Log($"Log: {severity} - {message}");
         }

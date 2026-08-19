@@ -60,7 +60,7 @@ public class MultiplayerMenu : MonoBehaviour {
         
         ShowDisconnectMessageIfAppropriate();
         
-        DiscordManager.Instance.ResetRichPresence();
+        DiscordManager.Instance.SetRichPresence("Main Menu", null, true);
     }
 
     private void OnDestroy() {
