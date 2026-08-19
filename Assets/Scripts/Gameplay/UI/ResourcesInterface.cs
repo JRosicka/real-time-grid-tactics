@@ -35,7 +35,7 @@ namespace Gameplay.UI {
             // Create a view for each player
             foreach (IGamePlayer player in resourcesObserver.ObservedPlayers) {
                 PlayerResourcesView resourcesView = Instantiate(_playerResourcesViewPrefab, _resourcesViewParent);
-                resourcesView.SetPlayerDetails(player.DisplayName, player.ColorData.ColoredButtonData.Normal, localPlayerIsSpectator);
+                resourcesView.SetPlayerDetails(player.DisplayName, player.ColorData.TeamBannerColor, localPlayerIsSpectator);
                 resourcesView.UpdateAmounts(GameConfiguration.CurrencyConfiguration.StartingFoodAmount, GameConfiguration.CurrencyConfiguration.StartingAmberAmount);
                 _playerResourcesViews.Add(player.Team, resourcesView);
             }

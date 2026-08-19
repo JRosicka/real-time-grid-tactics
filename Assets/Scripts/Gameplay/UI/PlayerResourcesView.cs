@@ -14,11 +14,11 @@ namespace Gameplay.UI {
         public TMP_Text BasicResourcesAmount;
         public TMP_Text AdvancedResourcesAmount;
 
-        public void SetPlayerDetails(string playerName, Sprite playerBanner, bool displayBanner) {
+        public void SetPlayerDetails(string playerName, Color playerColor, bool displayBanner) {
             PlayerName.text = playerName;
             if (displayBanner) {
                 PlayerNameZone.SetActive(true);
-                PlayerNameBackground.sprite = playerBanner;
+                PlayerNameBackground.color = playerColor;
             } else {
                 PlayerNameZone.SetActive(false);
             }
