@@ -67,7 +67,7 @@ namespace Game.Network.Discord {
             if (error) {
                 Debug.LogError(message);
             } else {
-                Debug.Log(message);
+                // Debug.Log(message);
             }
         }
     }
