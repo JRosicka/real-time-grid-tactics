@@ -240,7 +240,8 @@ namespace Gameplay.UI {
         private void MenuUIScaleChanged(int scale) {
             PlayerPrefs.SetInt(PlayerPrefsKeys.UIScaleMenu, scale);
             if (!_inGame) {
-                MultiplayerMenu.Instance.UIScaler.SetScale(scale);
+                MultiplayerMenu.Instance?.UIScaler.SetScale(scale);
+                RoomMenu.Instance?.UIScaler.SetScale(scale);
             }
         }
 

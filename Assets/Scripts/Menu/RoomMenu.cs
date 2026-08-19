@@ -36,6 +36,8 @@ public class RoomMenu : MonoBehaviour {
     public Animator CopiedToClipboardAnimator;
     
     public LobbyNetworkBehaviour LobbyNetworkBehaviour;
+
+    public static RoomMenu Instance;
     
     private static GameNetworkManager NetworkManager => (GameNetworkManager)Mirror.NetworkManager.singleton;
     private SteamLobbyService SteamLobbyService => SteamLobbyService.Instance;
@@ -79,6 +81,8 @@ public class RoomMenu : MonoBehaviour {
     }
     
     void Start() {
+        Instance = this;
+        
         CanvasWidthSetter.Initialize();
         UIScaler.Initialize();
         LobbyNetworkBehaviour.Initialize(this);
@@ -113,6 +117,8 @@ public class RoomMenu : MonoBehaviour {
     }
     
     private void OnDestroy() {
+        Instance = null;
+        
         GameNetworkPlayer.PlayerSteamInfoDetermined -= AddUnassignedPlayers;
         GameNetworkPlayer.PlayerReadyStatusChanged -= UpdatePlayerReadyStatus;
         GameNetworkPlayer.PlayerExitedRoom -= UpdatePlayers;

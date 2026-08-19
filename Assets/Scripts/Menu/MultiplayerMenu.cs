@@ -64,6 +64,8 @@ public class MultiplayerMenu : MonoBehaviour {
     }
 
     private void OnDestroy() {
+        Instance = null;
+        
         if (SteamLobbyService.Instance == null || !SteamLobbyService.Instance.SteamEnabled) return;
 
         SteamLobbyService.Instance.OnLobbyCreationComplete -= OnLobbyCreationComplete;
