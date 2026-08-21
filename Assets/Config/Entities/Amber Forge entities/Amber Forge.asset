@@ -47,21 +47,24 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 398205458218140e09d13e7ff7663dc9, type: 2}
   FriendlyUnitsCanShareCell: 0
   Targetable: 0
+  CanBuildFriendlyStructureOnTop: 0
   Attackable: 0
+  CanBlockMovement: 1
   AttackByDefault: 0
   IsResourceExtractor: 0
   ResourceThatThisCanExtract: {fileID: 0}
+  AssociatedResource: 0
   EntityIcon: {fileID: 21300000, guid: a171f8f3ebbd94f9e8d163dc931a93bf, type: 3}
   MovementAndAttackUI: 0
   DisplaySelectionOutline: 1
   BuildQueueSize: 1
   NeverShowBuildQueue: 1
   ControllableByAllPlayers: 1
-  EligibleStructureLocations:
-  - {fileID: 11400000, guid: 21c254da385bdd14eb49ce66d1a541a9, type: 2}
+  EligibleStructureLocations: 03000000
   SharedUnitArmorBonus: 0
   SharedUnitDamageTakenModifierTags: 
   CanRally: 0
+  StructureSellTime: 0
   StartingResourceSet:
     Type: 0
     Amount: 0

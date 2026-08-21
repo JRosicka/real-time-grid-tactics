@@ -67,8 +67,7 @@ MonoBehaviour:
   BuildQueueSize: 5
   NeverShowBuildQueue: 0
   ControllableByAllPlayers: 0
-  EligibleStructureLocations:
-  - {fileID: 11400000, guid: be8d7ccbdc543194e9649f8f9fadbf2b, type: 2}
+  EligibleStructureLocations: 04000000
   SharedUnitArmorBonus: 1
   SharedUnitDamageTakenModifierTags: 
   CanRally: 1
