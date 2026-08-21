@@ -20,7 +20,7 @@ namespace Gameplay.Grid {
         }
 
         private readonly Dictionary<Vector2Int, CellData> _cells = new Dictionary<Vector2Int, CellData>();
-        private readonly Dictionary<GameplayTile, List<CellData>> _tilesByTypeCache = new Dictionary<GameplayTile, List<CellData>>(); 
+        private readonly Dictionary<GameplayTileType, List<CellData>> _tilesByTypeCache = new Dictionary<GameplayTileType, List<CellData>>(); 
 
         public GridData(Tilemap tilemap, GridController gridController) {
             // Create each cell data object
@@ -51,12 +51,12 @@ namespace Gameplay.Grid {
         /// <summary>
         /// Gets all cells of the given tile type
         /// </summary>
-        public List<CellData> GetCells(GameplayTile tileType) {
-            if (_tilesByTypeCache.ContainsKey(tileType)) {
-                return _tilesByTypeCache[tileType];
+        public List<CellData> GetCells(GameplayTileType tileType) {
+            if (_tilesByTypeCache.TryGetValue(tileType, out var trackedCells)) {
+                return trackedCells;
             }
             
-            List<CellData> cells = _cells.Values.Where(c => c.Tile == tileType).ToList();
+            List<CellData> cells = _cells.Values.Where(c => c.Tile.TileType == tileType).ToList();
             _tilesByTypeCache.Add(tileType, cells);
             return cells;
         }

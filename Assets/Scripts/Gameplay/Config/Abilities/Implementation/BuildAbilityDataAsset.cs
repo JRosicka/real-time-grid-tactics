@@ -129,7 +129,7 @@ namespace Gameplay.Config.Abilities {
             List<Vector2Int> viableTargets = new List<Vector2Int>();
             
             // Add each cell with a tile that the structure can be built on
-            foreach (GameplayTile tile in buildableEntity.EligibleStructureLocations) {
+            foreach (GameplayTileType tile in buildableEntity.EligibleStructureLocations) {
                 viableTargets.AddRange(GridController.GridData.GetCells(tile).Select(c => c.Location));
             }
 

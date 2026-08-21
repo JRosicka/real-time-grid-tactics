@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Gameplay.Config;
+using Gameplay.Grid;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -16,6 +17,7 @@ public class GameplayTile : HexagonalRuleTile<GameplayTile.Neighbor> {
     }
 
     public string TileID;
+    public GameplayTileType TileType;
     public float IconScaleInSelectionInterface = 1.4f;
     public bool Selectable;
     public string DisplayName;

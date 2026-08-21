@@ -4,6 +4,7 @@ using Audio;
 using Gameplay.Config.Abilities;
 using Gameplay.Config.DeathAction;
 using Gameplay.Entities;
+using Gameplay.Grid;
 using Gameplay.UI;
 using Mirror;
 using UnityEngine;
@@ -79,7 +80,7 @@ namespace Gameplay.Config {
         
         [Header("Structure config")]
         [Tooltip("Where this can be build. Relevant for structures only.")]
-        public List<GameplayTile> EligibleStructureLocations;
+        public List<GameplayTileType> EligibleStructureLocations;
         [Tooltip("Armor bonus for units on the structure who are taking damage. Relevant for structures only.")]
         [Range(0, 6)]
         public int SharedUnitArmorBonus;

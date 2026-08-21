@@ -10,15 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b75f0e543e98e3e47903f7afef645e13, type: 3}
-  m_Name: Forest Tile
+  m_Name: Forest Autumn Red Tile
   m_EditorClassIdentifier: 
-  m_DefaultSprite: {fileID: 21300000, guid: cf2a7b899fd2146cab899cbeb557357d, type: 3}
+  m_DefaultSprite: {fileID: 21300000, guid: 0db43864cf4c94825835faae95aa885a, type: 3}
   m_DefaultGameObject: {fileID: 0}
   m_DefaultColliderType: 1
   m_TilingRules:
   - m_Id: 0
     m_Sprites:
-    - {fileID: 21300000, guid: cf2a7b899fd2146cab899cbeb557357d, type: 3}
+    - {fileID: 21300000, guid: 0db43864cf4c94825835faae95aa885a, type: 3}
     m_GameObject: {fileID: 0}
     m_MinAnimationSpeed: 1
     m_MaxAnimationSpeed: 1
@@ -30,7 +30,8 @@ MonoBehaviour:
     m_NeighborPositions: []
     m_RuleTransform: 0
   m_FlatTop: 0
-  TileID: forest
+  TileID: forestAutumnRed
+  TileType: 1
   IconScaleInSelectionInterface: 1.4
   Selectable: 1
   DisplayName: Forest

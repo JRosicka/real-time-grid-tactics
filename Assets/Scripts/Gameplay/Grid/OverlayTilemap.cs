@@ -71,18 +71,18 @@ namespace Gameplay.Grid {
             if (_entity.CanMoveOrRally) {
                 // Apply any tile-specific overlays to tiles based on the selected entity's movement restrictions
                 List<GameplayTile> inaccessibleTiles = GameManager.Instance.TileAccessibilityManager.InaccessibleTiles(_entity.EntityDataForPathfinding());
-                SetTiles(inaccessibleTiles, _inaccessibleTile);
+                SetTiles(inaccessibleTiles.Select(t => t.TileType).Distinct(), _inaccessibleTile);
             }
         }
 
         /// <summary>
         /// Apply an overlay to all tiles of the given types
         /// </summary>
-        private void SetTiles(List<GameplayTile> tilesToApplyOverlayTo, TileBase overlayTile) {
+        private void SetTiles(IEnumerable<GameplayTileType> tilesToApplyOverlayTo, TileBase overlayTile) {
             // Find all of the locations of the given tiles
             List<Vector2Int> locationsToModify = new List<Vector2Int>();
-            foreach (GameplayTile tile in tilesToApplyOverlayTo) {
-                locationsToModify.AddRange(GridData.GetCells(tile).Select(c => c.Location));
+            foreach (GameplayTileType tileType in tilesToApplyOverlayTo) {
+                locationsToModify.AddRange(GridData.GetCells(tileType).Select(c => c.Location));
             }
             SetTiles(locationsToModify, overlayTile);
         }
