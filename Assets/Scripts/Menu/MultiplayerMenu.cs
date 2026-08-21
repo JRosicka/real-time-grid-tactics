@@ -149,6 +149,7 @@ public class MultiplayerMenu : MonoBehaviour {
         MenuDialog.SetActive(false);
     }
 
+    // Button currently disabled -- players can only play through creating a multiplayer lobby
     public void OnStartSinglePlayerGameClicked() {
         SceneLoader.Instance.LoadIntoSinglePlayerGame();
     }
@@ -172,6 +173,7 @@ public class MultiplayerMenu : MonoBehaviour {
         JoinByIDMenu.gameObject.SetActive(true);
     }
 
+    // Button currently disabled -- players can only play through creating a multiplayer lobby
     public void OnSinglePlayerButtonClicked() {
         ResetMultiplayerMenu();
 
