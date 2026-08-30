@@ -50,6 +50,7 @@ namespace Gameplay.Entities {
         [SerializeField] private CanvasGroup _mainImageGroup;
         [SerializeField] private ParticleSystem _deathParticleSystem;
         [SerializeField] private GameObject _holdPositionIcon;
+        [SerializeField] private DirectionalArrowController _arrowController;
         
         [Header("Config")]
         [FormerlySerializedAs("SecondsToMoveToAdjacentCell")]
@@ -147,6 +148,8 @@ namespace Gameplay.Entities {
             
             // Spawn animation
             DoSpawnAnimation(spawnerLocation, playSpawnAnimation);
+            
+            _arrowController.Initialize(entity);
         }
 
         public void ToggleView(bool show) {

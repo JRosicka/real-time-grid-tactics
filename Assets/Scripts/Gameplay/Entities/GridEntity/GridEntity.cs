@@ -153,6 +153,7 @@ namespace Gameplay.Entities {
         /// Only triggered on server
         /// </summary>
         public event Action EntityMovedEvent;
+        public event Action EntityMovedClientEvent;
 
         public event Action<GridEntity, GridEntity> AttackTargetUpdated;
         
@@ -594,6 +595,18 @@ namespace Gameplay.Entities {
         // Triggered on server
         public void TriggerEntityMovedEvent() {
             EntityMovedEvent?.Invoke();
+            if (NetworkServer.active) {
+                // MP server
+                EntityMovedRpc();
+            } else if (!NetworkClient.active) {
+                // SP
+                EntityMovedClientEvent?.Invoke();
+            }
+        }
+
+        [ClientRpc]
+        private void EntityMovedRpc() {
+            EntityMovedClientEvent?.Invoke();
         }
 
         /// <summary>
