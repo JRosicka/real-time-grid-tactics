@@ -297,6 +297,8 @@ public class GameSetupManager : MonoBehaviour {
         GameManager.LeaderTracker.Initialize(GameManager.CommandManager);
         
         GameManager.ReplayManager.Initialize();
+
+        GameManager.SetUpFogOfWar();
     }
     
     #region Multiplayer

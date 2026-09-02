@@ -41,6 +41,7 @@ public class GameManager : MonoBehaviour {
     public UIScaler UIScaler;
     public ControlGroupsViewZone ControlGroupsViewZone;
     public WorldParticlesManager ParticlesManager;
+    public FogOfWarDisplayer FogOfWarDisplayer;
     
     public PathfinderService PathfinderService;
     public EntitySelectionManager EntitySelectionManager;
@@ -55,6 +56,7 @@ public class GameManager : MonoBehaviour {
     public TileAccessibilityManager TileAccessibilityManager;
     public ControlGroupsManager ControlGroupsManager;
     public EntityLockTracker EntityLockTracker;
+    [CanBeNull] public FogOfWarManager FogOfWarManager;
     
     public IGamePlayer Player1;
     public IGamePlayer Player2;
@@ -102,6 +104,11 @@ public class GameManager : MonoBehaviour {
     private void OnDestroy() {
         DisconnectionHandler?.UnregisterListeners(); 
         Instance = null;
+    }
+
+    public void SetUpFogOfWar() {
+        FogOfWarManager = new FogOfWarManager(GridController);
+        FogOfWarDisplayer.Initialize(FogOfWarManager);
     }
 
     [CanBeNull]
