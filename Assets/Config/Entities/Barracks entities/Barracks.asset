@@ -72,4 +72,5 @@ MonoBehaviour:
   StartingResourceSet:
     Type: 0
     Amount: 0
+  _highlightBuildableCells: 0
   DeathActions: []

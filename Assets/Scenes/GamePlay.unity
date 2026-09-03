@@ -4336,6 +4336,7 @@ MonoBehaviour:
   _pathVisualizer: {fileID: 1932547287}
   _overlayMap: {fileID: 17099766}
   _inaccessibleTile: {fileID: 11400000, guid: dda43804f0513384d9023e941df94235, type: 2}
+  _highlightTile: {fileID: 11400000, guid: b6b5eed733e2b449083c55433a44ceb1, type: 2}
   _outlineTilemap: {fileID: 1848933317}
   _outOfBoundsTile: {fileID: 11400000, guid: ed4cbd438df4d6447aa91854257d15d0, type: 2}
   _outlineTile: {fileID: 11400000, guid: 614d7e316d440104fab611a801f09890, type: 2}

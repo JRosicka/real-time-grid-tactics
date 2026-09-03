@@ -28,7 +28,9 @@ namespace Gameplay.Grid {
 
         public void UpdateCellOverlaysForAbility(List<Vector2Int> cellsToHighlight, GridEntity entity) {
             if (_entity != entity) {
-                _entity.UnregisteredEvent -= OnEntityUnregistered;
+                if (_entity != null) {
+                    _entity.UnregisteredEvent -= OnEntityUnregistered;
+                }
                 _entity = entity;
                 // Register new entity events
                 if (_entity) {
