@@ -179,7 +179,7 @@ public class EntitySelectionManager {
     }
 
     private void ClearSelectableTiles() {
-        GridController.UpdateSelectableCells(null, SelectedEntity);
+        GridController.UpdateSelectableCells(null, false, SelectedEntity);
     }
 
     public void HoverOverCell(Vector2Int cell) {

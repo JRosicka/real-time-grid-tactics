@@ -13,21 +13,20 @@ namespace Gameplay.Grid {
     /// </summary>
     public class OverlayTilemap {
         private readonly Tilemap _overlayMap;
-        private readonly Tile _inaccessibleTile;
-        private readonly Tile _slightlyDarkenedTile;
+        private readonly Tile _highlightTile;
         private readonly GridController _gridController;
         
         private GridEntity _entity;
 
         private GridData GridData => _gridController.GridData;
 
-        public OverlayTilemap(Tilemap overlayMap, GridController gridController, Tile inaccessibleTile) {
+        public OverlayTilemap(Tilemap overlayMap, GridController gridController, Tile highlightTile) {
             _overlayMap = overlayMap;
             _gridController = gridController;
-            _inaccessibleTile = inaccessibleTile;
+            _highlightTile = highlightTile;
         }
 
-        public void UpdateCellOverlaysForAbility(List<Vector2Int> cells, GridEntity entity) {
+        public void UpdateCellOverlaysForAbility(List<Vector2Int> cellsToHighlight, GridEntity entity) {
             if (_entity != entity) {
                 _entity.UnregisteredEvent -= OnEntityUnregistered;
                 _entity = entity;
@@ -39,39 +38,9 @@ namespace Gameplay.Grid {
             
             ClearOverlays();
 
-            if (cells != null) {
-                // Darken all cells
-                SetAllTiles(_inaccessibleTile);
-                // Un-darken the specified cells
-                SetTiles(cells, null);
-            } else {
-                // Set the overlay tiles to the default for selecting the entity
-                UpdateCellOverlaysForEntity(entity);
-            }
-        }
-
-        public void UpdateCellOverlaysForEntity(GridEntity entity) {
-            if (_entity) {
-                _entity.UnregisteredEvent -= OnEntityUnregistered;
-            }
-
-            _entity = entity;
-            // Register new entity events
-            if (_entity) {
-                _entity.UnregisteredEvent += OnEntityUnregistered;
-            }
-            ApplyEntityMovementTileOverlays();
-        }
-
-        private void ApplyEntityMovementTileOverlays() {
-            ClearOverlays();
-
-            if (_entity == null) return;
-
-            if (_entity.CanMoveOrRally) {
-                // Apply any tile-specific overlays to tiles based on the selected entity's movement restrictions
-                List<GameplayTile> inaccessibleTiles = GameManager.Instance.TileAccessibilityManager.InaccessibleTiles(_entity.EntityDataForPathfinding());
-                SetTiles(inaccessibleTiles.Select(t => t.TileType).Distinct(), _inaccessibleTile);
+            if (cellsToHighlight != null) {
+                // Highlight the specified cells
+                SetTiles(cellsToHighlight, _highlightTile);
             }
         }
 

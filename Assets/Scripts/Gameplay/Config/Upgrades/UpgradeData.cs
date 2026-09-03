@@ -24,6 +24,7 @@ namespace Gameplay.Config.Upgrades {
         public bool Timed => ExpirationSeconds > 0;
         public int OrderIndex;
         public abstract IUpgrade CreateUpgrade(GameTeam team);
+        public override bool HighlightBuildableCells => false;
     }
     
     public static class UpgradeDataSerializer {

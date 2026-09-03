@@ -107,8 +107,9 @@ namespace Gameplay.Config.Abilities {
         }
 
         public void RecalculateTargetableAbilitySelection(GridEntity selector, object targetData) {
-            List<Vector2Int> viableTargets = GetViableTargets(selector, (PurchasableData)targetData);
-            GridController.UpdateSelectableCells(viableTargets, selector);
+            PurchasableData purchasableData = (PurchasableData)targetData;
+            List<Vector2Int> viableTargets = GetViableTargets(selector, purchasableData);
+            GridController.UpdateSelectableCells(viableTargets, purchasableData.HighlightBuildableCells, selector);
         }
 
         public void UpdateHoveredCell(GridEntity selector, Vector2Int? cell) {

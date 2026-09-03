@@ -45,7 +45,7 @@ namespace Gameplay.UI {
                 GameManager.Instance.SelectionInterface.TooltipView.ToggleForTargetableAbility(_buildAbilityData, this);
                 List<Vector2Int> viableTargets = _buildAbilityData.GetViableTargets(SelectedEntity, Buildable);
                 if (viableTargets != null) {
-                    GridController.UpdateSelectableCells(viableTargets, SelectedEntity);
+                    GridController.UpdateSelectableCells(viableTargets, Buildable.HighlightBuildableCells, SelectedEntity);
                 }
             } else {
                 // Try to perform the build ability, but only if the build queue is not full

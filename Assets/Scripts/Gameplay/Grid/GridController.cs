@@ -24,6 +24,7 @@ namespace Gameplay.Grid {
         private OverlayTilemap _overlayTilemap;
         [SerializeField] private Tilemap _overlayMap;
         [SerializeField] private Tile _inaccessibleTile;
+        [SerializeField] private Tile _highlightTile;
         
         // Tilemap for boundaries and cell outlines
         [SerializeField] private Tilemap _outlineTilemap;
@@ -56,7 +57,7 @@ namespace Gameplay.Grid {
         public void Initialize(EntitySelectionManager entitySelectionManager) {
             _entitySelectionManager = entitySelectionManager;
             _pathVisualizer.Initialize();
-            _overlayTilemap = new OverlayTilemap(_overlayMap, this, _inaccessibleTile);
+            _overlayTilemap = new OverlayTilemap(_overlayMap, this, _highlightTile);
             _selectedUnitTracker.Initialize(_selectedUnitReticle, false);
             _targetUnitTracker.Initialize(_targetUnitReticle, true);
             _selectableCells = null;    // Not sure why this is necessary, but it seems to be
@@ -105,7 +106,6 @@ namespace Gameplay.Grid {
         
         public void TrackEntity(GridEntity entity) {
             _selectedUnitTracker.TrackEntity(entity);
-            _overlayTilemap.UpdateCellOverlaysForEntity(entity);
             if (entity != null) {
                 entity.AttackTargetUpdated += UpdateTargetEntity;
                 if (entity.InteractBehavior is { AllowedToSeeMiscInfo: true }) {
@@ -133,14 +133,14 @@ namespace Gameplay.Grid {
         /// Some abilities only allow for certain cells to be selected. Keep track of those and update tile overlays and
         /// the selection reticle to comply. 
         /// </summary>
-        public void UpdateSelectableCells(List<Vector2Int> selectableCells, GridEntity selectedEntity) {
+        public void UpdateSelectableCells(List<Vector2Int> selectableCells, bool highlightSelectableCells, GridEntity selectedEntity) {
             _selectableCells = selectableCells;
             
             // Reset the hover-over-cell functionality to update
             StopHovering();
             GameManager.Instance.GridInputController.ReProcessMousePosition();
             
-            UpdateCellOverlaysForAbility(selectableCells, selectedEntity);
+            UpdateCellOverlaysForAbility(highlightSelectableCells ? selectableCells : null, selectedEntity);
         }
 
         public void HoverOverCell(Vector2Int cell) {

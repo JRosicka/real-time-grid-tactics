@@ -90,6 +90,8 @@ namespace Gameplay.Config {
         [Range(0, 30)]
         public float StructureSellTime;
         public ResourceAmount StartingResourceSet;
+        [SerializeField] private bool _highlightBuildableCells;
+        public override bool HighlightBuildableCells => _highlightBuildableCells;
         
         public List<DeathActionData> DeathActions;
         
