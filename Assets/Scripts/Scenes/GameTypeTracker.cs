@@ -1,3 +1,4 @@
+using Gameplay;
 using Mirror;
 using UnityEngine;
 
@@ -16,6 +17,10 @@ namespace Scenes {
         /// Whether any actions should actually happen in the game
         /// </summary>
         public bool RunGame { get; private set; }
+        /// <summary>
+        /// The Fog of War behavior for this game
+        /// </summary>
+        public FogOfWarSetting FogOfWarSetting { get; private set; }
         /// <summary>
         /// Whether this is a networked (MP) game
         /// </summary>
@@ -62,6 +67,10 @@ namespace Scenes {
         public void SetMap(string mapID, string replayID = null) {
             MapID = mapID;
             ReplayID = replayID;
+        }
+
+        public void SetFogOfWar(FogOfWarSetting setting) {
+            FogOfWarSetting = setting;
         }
         
 #if UNITY_EDITOR

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Audio;
 using Game.Network;
+using Gameplay;
 using Mirror;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -66,6 +67,7 @@ namespace Scenes {
         public async void LoadMainMenu() {
             _targetScene = MainMenuSceneName;
             _gameTypeManager.SetGameType(false, false, true);
+            _gameTypeManager.SetFogOfWar(FogOfWarSetting.None);
             MainMenuGamePreviewManager.PickNextMap();
             await UnloadCurrentScenesAsync(true);
             await LoadScene(MainMenuSceneName, true, true, true, false);
@@ -209,6 +211,7 @@ namespace Scenes {
             string currentSceneName = SceneManager.GetActiveScene().name;
             
             MainMenuGamePreviewManager.Initialize(currentSceneName == MainMenuSceneName);
+            _gameTypeManager.SetFogOfWar(FogOfWarSetting.None);
 
             // Load the loading scene
             SceneManager.LoadScene(LoadingSceneName, LoadSceneMode.Single);
@@ -258,6 +261,7 @@ namespace Scenes {
                     GameAudio.Instance.PlayMenuMusic();
                     MainMenuGamePreviewManager.PickNextMap();
                     _gameTypeManager.SetGameType(false, false, true);
+                    _gameTypeManager.SetFogOfWar(FogOfWarSetting.None);
                     await LoadScene(GameSceneName, false, true, true, true);
                     break;
                 case LobbySceneName:

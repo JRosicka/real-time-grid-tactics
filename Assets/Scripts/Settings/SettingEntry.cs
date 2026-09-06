@@ -19,7 +19,9 @@ namespace Gameplay.UI {
         public float HeightWorldPosition => transform.position.y;
         
         public void Initialize() {
-            _listenerButton.Entered += OnButtonEntered;
+            if (_listenerButton) {
+                _listenerButton.Entered += OnButtonEntered;
+            }
         }
 
         private void OnButtonEntered() {

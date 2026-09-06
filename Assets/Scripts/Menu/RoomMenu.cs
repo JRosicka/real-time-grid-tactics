@@ -3,7 +3,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using Game.Network;
 using Game.Network.Discord;
+using Gameplay;
 using Gameplay.Config;
+using Gameplay.UI;
 using JetBrains.Annotations;
 using Menu;
 using Mirror;
@@ -29,6 +31,7 @@ public class RoomMenu : MonoBehaviour {
     public LobbyMapSelectionList LobbyMapSelectionList;
     public LobbyMapDisplayer LobbyMapDisplayer;
     public Transform ColorMenuParent;
+    public SettingDropdownList FogOfWarSettingDropdown;
     
     public CanvasWidthSetter CanvasWidthSetter;
     public UIScaler UIScaler;
@@ -113,6 +116,11 @@ public class RoomMenu : MonoBehaviour {
         LobbyMapSelectionList.Initialize(GameConfigurationLocator.GameConfiguration, LobbyNetworkBehaviour);
         LobbyMapDisplayer.Initialize(GameConfigurationLocator.GameConfiguration, LobbyNetworkBehaviour);
 
+        // Lobby settings
+        FogOfWarSettingDropdown.Initialize((int)LobbyNetworkBehaviour.FoWSetting, new List<string> {"None", "2 Vision Range", "3 Vision Range"}, NetworkServer.active);
+        FogOfWarSettingDropdown.ValueChanged += FogOfWarSettingChanged;
+        LobbyNetworkBehaviour.FogOfWarChanged += UpdateFogOfWarSettingVisual;
+        
         UpdateDiscordRichPresence(true);
     }
     
@@ -363,6 +371,14 @@ public class RoomMenu : MonoBehaviour {
     private void UpdateLobbyOpenStatus() {
         bool isInGameScene = Mirror.NetworkManager.IsSceneActive(NetworkManager.GameplayScene);
         SteamLobbyService.UpdateCurrentLobbyMetadata(SteamLobbyService.LobbyGameActiveKey, isInGameScene.ToString());
+    }
+
+    private void FogOfWarSettingChanged(int newSetting) {
+        LobbyNetworkBehaviour.TrySwitchFogOfWar((FogOfWarSetting)newSetting);
+    }
+
+    private void UpdateFogOfWarSettingVisual(FogOfWarSetting newSetting) {
+        FogOfWarSettingDropdown.UpdateOption((int)newSetting);
     }
 
     public void StartGame() {

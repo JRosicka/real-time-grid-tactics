@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Audio;
 using Game.Network;
+using Gameplay;
 using Gameplay.Config;
 using Mirror;
 using Scenes;
@@ -38,6 +39,7 @@ namespace Menu {
         public event Action<CSteamID, int, string> PlayerColorAssigned;
         public event Action PlayerSlotsAssigned;
         public event Action<string> MapChanged;
+        public event Action<FogOfWarSetting> FogOfWarChanged;
         
         [SyncVar(hook = nameof(SetMusicSeed))]
         public int MusicSeed;
@@ -48,6 +50,9 @@ namespace Menu {
 
         [SyncVar(hook = nameof(OnMapChanged))]
         public string MapID;
+
+        [SyncVar(hook = nameof(OnFogOfWarChanged))]
+        public FogOfWarSetting FoWSetting;
 
         [SerializeField] private List<PlayerColorData> _availableColors;
         private readonly Dictionary<GameNetworkPlayer, PlayerColorData> _assignedColors = new Dictionary<GameNetworkPlayer, PlayerColorData>();
@@ -67,6 +72,7 @@ namespace Menu {
                     : SceneLoader.Instance.LastLobbyMap;
                 GameTypeTracker.Instance.SetMap(mapToLoad);
                 TrySwitchMap(mapToLoad);
+                TrySwitchFogOfWar(FogOfWarSetting.None);
 
                 if (GameNetworkManager != null) {
                     GameNetworkManager.RoomServerDidDisconnectAction += UnassignColorsForDisconnectedPlayers;
@@ -99,6 +105,15 @@ namespace Menu {
             MapID = mapID;
             OnMapChanged(oldMapID, mapID);
         }
+
+        [Server]
+        public void TrySwitchFogOfWar(FogOfWarSetting setting) {
+            if (!NetworkManager.singleton || !NetworkManager.singleton.CanChangeScene) return;
+
+            FogOfWarSetting oldSetting = FoWSetting;
+            FoWSetting = setting;
+            OnFogOfWarChanged(oldSetting, setting);
+        }
         
         private void OnMapChanged(string oldMapID, string newMapID) {
             // If we are the host and don't have a current map ID, then don't bother switching the map since we already 
@@ -117,6 +132,11 @@ namespace Menu {
 
             await Task.Delay(TimeSpan.FromSeconds(TooCloseMapSwitchProximityTime));
             _mapLoadingLocked = false;
+        }
+
+        private void OnFogOfWarChanged(FogOfWarSetting oldSetting, FogOfWarSetting newSetting) {
+            GameTypeTracker.Instance.SetFogOfWar(newSetting);
+            FogOfWarChanged?.Invoke(newSetting);
         }
         
         [Server]

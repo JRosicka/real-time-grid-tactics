@@ -18,16 +18,21 @@ namespace Gameplay.UI {
         
         private int _value;
         private readonly List<SettingDropdownOption> _options = new List<SettingDropdownOption>();
+        private readonly List<string> _optionTexts = new List<string>();
+        private bool _interactable;
         
         public event Action<int> ValueChanged;
         
-        public void Initialize(int initialValue, List<string> optionTexts) {
+        public void Initialize(int initialValue, List<string> optionTexts, bool interactable = true) {
+            _interactable = interactable;
+            
             // Construct options
             for(int i = 0; i < optionTexts.Count; i++) {
                 SettingDropdownOption option = Instantiate(_dropdownOptionPrefab, _dropdownOptionPrefab.transform.parent);
                 option.Initialize(i, optionTexts[i], SelectOption, i == initialValue);
                 option.gameObject.SetActive(true);
                 _options.Add(option);
+                _optionTexts.Add(optionTexts[i]);
             }
             _dropdownOptionPrefab.gameObject.SetActive(false);
             
@@ -35,6 +40,8 @@ namespace Gameplay.UI {
         }
 
         public void DisplayList() {
+            if (!_interactable) return;
+            
             _dropdownList.SetActive(true);
             _clickBlocker.SetActive(true);
         }
@@ -44,8 +51,22 @@ namespace Gameplay.UI {
             _dropdownList.SetActive(false);
         }
 
-        public void SelectOption(int index, string optionText) {
+        private void SelectOption(int index, string optionText) {
+            if (!_interactable) return;
+            
             SetValue(index, optionText, true);
+
+            for (int i = 0; i < _options.Count; i++) {
+                _options[i].SetSelectedIcon(i == index);
+            }
+        }
+
+        /// <summary>
+        /// For if the dropdown should be updated without sending events
+        /// </summary>
+        /// <param name="index"></param>
+        public void UpdateOption(int index) {
+            SetValue(index, _optionTexts[index], false);
 
             for (int i = 0; i < _options.Count; i++) {
                 _options[i].SetSelectedIcon(i == index);
