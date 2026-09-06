@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using Gameplay.Entities;
 using Gameplay.Grid;
 using UnityEngine;
 
@@ -14,16 +15,21 @@ namespace Gameplay.Managers {
             public bool Hidden;
         }
         
-        // true/false depending on hidden/shown
+        // true/false depending on hidden/shown. Can be empty if FoW is set to None. 
         private readonly Dictionary<Vector2Int, bool> _cellFoWState = new Dictionary<Vector2Int, bool>();
         private readonly GridController _gridController;
+        // Calculated per player
+        private readonly FogOfWarSetting _fowSetting;
         
-        public FogOfWarManager(GridController gridController) {
+        public FogOfWarManager(GridController gridController, FogOfWarSetting fowSetting, bool realGame, GameTeam localTeam) {
             _gridController = gridController;
-            
-            // Initialize cells and set initial FoW state for each cell 
-            foreach (Vector2Int cell in gridController.GetAllCellsInBounds()) {
-                _cellFoWState.Add(cell, DetermineFoWState(cell));
+            _fowSetting = DetermineFoWSettingForMatch(fowSetting, realGame, localTeam);
+
+            if (_fowSetting != FogOfWarSetting.None) {
+                // Initialize cells and set initial FoW state for each cell 
+                foreach (Vector2Int cell in gridController.GetAllCellsInBounds()) {
+                    _cellFoWState.Add(cell, DetermineFoWState(cell));
+                }
             }
         }
         
@@ -32,8 +38,16 @@ namespace Gameplay.Managers {
         }
 
         private bool DetermineFoWState(Vector2Int cell) {
+            if (_fowSetting == FogOfWarSetting.None) return false;
+            
             // TODO read GridController state and perform logic here
             return false;
+        }
+
+        private FogOfWarSetting DetermineFoWSettingForMatch(FogOfWarSetting fowSetting, bool realGame, GameTeam localPlayerTeam) {
+            if (!realGame) return FogOfWarSetting.None;
+            if (localPlayerTeam == GameTeam.Spectator) return FogOfWarSetting.None;
+            return fowSetting;
         }
     }
 }

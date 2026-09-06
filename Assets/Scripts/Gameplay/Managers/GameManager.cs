@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Game.Network;
+using Gameplay;
 using Gameplay.Config;
 using Gameplay.Entities;
 using Gameplay.Grid;
@@ -106,8 +107,8 @@ public class GameManager : MonoBehaviour {
         Instance = null;
     }
 
-    public void SetUpFogOfWar() {
-        FogOfWarManager = new FogOfWarManager(GridController);
+    public void SetUpFogOfWar(FogOfWarSetting fowSetting, bool realGame) {
+        FogOfWarManager = new FogOfWarManager(GridController, fowSetting, realGame, LocalTeam);
         FogOfWarDisplayer.Initialize(FogOfWarManager);
     }
 
