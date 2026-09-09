@@ -68,6 +68,8 @@ namespace Gameplay.Managers {
         }
 
         private void EntityUpdated(GridEntity entity, GridEntityCollectionUpdate updateType, Vector2Int previousLocation, Vector2Int newLocation) {
+            if (entity.InteractBehavior == null || !entity.InteractBehavior.AllowedToSeeMiscInfo) return;
+            
             List<FoWCell> updatedCells;
             switch (updateType) {
                 case GridEntityCollectionUpdate.Register:
