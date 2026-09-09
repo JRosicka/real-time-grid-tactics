@@ -50,7 +50,7 @@ namespace Gameplay.Entities {
         public readonly List<PositionedGridEntityCollection> Entities;
 
         /// <summary>
-        /// Event that triggers when an entity is register or unregistered at a particular location.
+        /// Event that triggers when an entity is registered or unregistered at a particular location.
         /// Static since <see cref="GridEntityCollection"/> constantly gets recreated. 
         /// </summary>
         public static event Action<Vector2Int, GridEntity> EntityUpdatedEvent;

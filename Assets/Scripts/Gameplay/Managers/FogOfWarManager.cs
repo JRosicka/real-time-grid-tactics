@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Gameplay.Entities;
@@ -14,22 +15,51 @@ namespace Gameplay.Managers {
             public Vector2Int Position;
             public bool Hidden;
         }
-        
-        // true/false depending on hidden/shown. Can be empty if FoW is set to None. 
-        private readonly Dictionary<Vector2Int, bool> _cellFoWState = new Dictionary<Vector2Int, bool>();
-        private readonly GridController _gridController;
-        // Calculated per player
-        private readonly FogOfWarSetting _fowSetting;
-        
-        public FogOfWarManager(GridController gridController, FogOfWarSetting fowSetting, bool realGame, GameTeam localTeam) {
-            _gridController = gridController;
-            _fowSetting = DetermineFoWSettingForMatch(fowSetting, realGame, localTeam);
 
-            if (_fowSetting != FogOfWarSetting.None) {
-                // Initialize cells and set initial FoW state for each cell 
+        public Action<List<FoWCell>> FoWUpdated;
+        
+        // Calculated per player
+        public FogOfWarSetting FowSetting { get; }
+
+        // true/false depending on hidden/shown. Can be empty if FoW is set to None. 
+        private readonly Dictionary<Vector2Int, bool> _cellFoWState = new();
+        private readonly GridController _gridController;
+        private readonly ICommandManager _commandManager;
+        private readonly GameTeam _localTeam;
+        
+        // Cached until movement/register/unregister occurs
+        private List<Vector2Int> FriendlyEntityPositions => _commandManager.EntitiesOnGrid.LocationsWithFriendlyEntities(_localTeam);
+        
+        private IEnumerable<Vector2Int> CellsInRange(Vector2Int location) => _gridController.GridData.GetCellsInRange(location, VisionRange).Select(c => c.Location);
+        private int VisionRange => (int)FowSetting;
+
+        public FogOfWarManager(GridController gridController, ICommandManager commandManager, FogOfWarSetting fowSetting, bool realGame, GameTeam localTeam) {
+            _gridController = gridController;
+            _commandManager = commandManager;
+            _localTeam = localTeam;
+            FowSetting = DetermineFoWSettingForMatch(fowSetting, realGame, localTeam);
+
+            if (FowSetting != FogOfWarSetting.None) {
+                // Subscribe to events
+                _commandManager.EntityUpdatedEvent += EntityUpdated;
+                
+                // Initialize cells Set initial FoW state for each cell
                 foreach (Vector2Int cell in gridController.GetAllCellsInBounds()) {
-                    _cellFoWState.Add(cell, DetermineFoWState(cell));
+                    _cellFoWState.Add(cell, true);
                 }
+                
+                // Set initial FoW state for each cell
+                List<Vector2Int> processedCells = new();
+                foreach (Vector2Int location in FriendlyEntityPositions) {
+                    (_, List<Vector2Int> newProcessedCells) = RevealWithinRange(location, processedCells);
+                    processedCells.AddRange(newProcessedCells);
+                }
+            }
+        }
+
+        public void UnregisterListeners() {
+            if (_commandManager != null) {
+                _commandManager.EntityUpdatedEvent -= EntityUpdated;
             }
         }
         
@@ -37,13 +67,77 @@ namespace Gameplay.Managers {
             return _cellFoWState.Select(kvp => new FoWCell { Position = kvp.Key, Hidden = kvp.Value });
         }
 
-        private bool DetermineFoWState(Vector2Int cell) {
-            if (_fowSetting == FogOfWarSetting.None) return false;
+        private void EntityUpdated(GridEntity entity, GridEntityCollectionUpdate updateType, Vector2Int previousLocation, Vector2Int newLocation) {
+            List<FoWCell> updatedCells;
+            switch (updateType) {
+                case GridEntityCollectionUpdate.Register:
+                    (updatedCells, _) = RevealWithinRange(newLocation, null);
+                    break;
+                case GridEntityCollectionUpdate.Unregister:
+                    updatedCells = TryHideWithinRange(previousLocation, null);
+                    break;
+                case GridEntityCollectionUpdate.Move:
+                    // Look through cells viewable from new location, mark as not hidden
+                    List<Vector2Int> processedCells;
+                    (updatedCells, processedCells) = RevealWithinRange(newLocation, null);
             
-            // TODO read GridController state and perform logic here
-            return false;
+                    // Look through cells viewable from old location (and not from new), see if they should be marked as hidden
+                    updatedCells.AddRange(TryHideWithinRange(previousLocation, processedCells));
+
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(updateType), updateType, null);
+            }
+
+            SendUpdatedEvent(updatedCells);
+        }
+        
+        /// <summary>
+        /// Returns a set of cells that were updated and a set of locations that this processed
+        /// </summary>
+        private (List<FoWCell>, List<Vector2Int>) RevealWithinRange(Vector2Int originLocation, List<Vector2Int> cellsToSkip) {
+            List<FoWCell> updatedCells = new();
+            List<Vector2Int> processedCells = CellsInRange(originLocation).ToList();
+            cellsToSkip ??= new List<Vector2Int>();
+            
+            foreach (Vector2Int location in processedCells) {
+                if (cellsToSkip.Contains(location)) continue;
+                
+                bool wasHidden = _cellFoWState[location];
+                if (!wasHidden) continue;
+                
+                _cellFoWState[location] = false;
+                updatedCells.Add(new FoWCell { Position = location, Hidden = false });
+            }
+            
+            return (updatedCells, processedCells);
         }
 
+        private List<FoWCell> TryHideWithinRange(Vector2Int originLocation, List<Vector2Int> cellsToSkip) {
+            List<FoWCell> updatedCells = new();
+            cellsToSkip ??= new List<Vector2Int>();
+            
+            foreach (Vector2Int location in CellsInRange(originLocation)) {
+                if (cellsToSkip.Contains(location)) continue;
+                // We know this was not hidden
+                
+                // Check to see if any other units can see it
+                if (CellsInRange(location).All(l => !FriendlyEntityPositions.Contains(l))) {
+                    // It must be hidden now
+                    _cellFoWState[location] = true;
+                    updatedCells.Add(new FoWCell { Position = location, Hidden = true });
+                }
+            }
+            
+            return updatedCells;
+        }
+
+        private void SendUpdatedEvent(List<FoWCell> updatedCells) {
+            if (updatedCells.Any()) {
+                FoWUpdated?.Invoke(updatedCells);
+            }
+        }
+        
         private FogOfWarSetting DetermineFoWSettingForMatch(FogOfWarSetting fowSetting, bool realGame, GameTeam localPlayerTeam) {
             if (!realGame) return FogOfWarSetting.None;
             if (localPlayerTeam == GameTeam.Spectator) return FogOfWarSetting.None;

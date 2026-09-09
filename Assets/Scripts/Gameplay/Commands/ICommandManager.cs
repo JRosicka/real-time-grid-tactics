@@ -47,7 +47,14 @@ public interface ICommandManager {
     /// An entity was just unregistered (killed). Triggered on server. 
     /// </summary>
     event Action<GameTeam> EntityUnregisteredEvent;
+    /// <summary>
+    /// Client-side event that the entity collection has generally been updated during a collection sync.
+    /// </summary>
     event Action EntityCollectionChangedEvent;
+    /// <summary>
+    /// Client-side event for a single entity getting updated in the collection, with the update info
+    /// </summary>
+    event EntityUpdatedDelegate EntityUpdatedEvent;
     GridEntityCollection EntitiesOnGrid { get; }
     Transform SpawnBucket { get; }
     AbilityExecutor AbilityExecutor { get; }

@@ -64,6 +64,10 @@ public class MPCommandManager : AbstractCommandManager {
         CmdMarkAbilityCooldownExpired(ability);
     }
 
+    protected override void SendCollectionUpdateEvent(GridEntity entity, GridEntityCollectionUpdate updateType, Vector2Int previousLocation, Vector2Int newLocation) {
+        CmdSendEntityUpdateEvent(entity, updateType, previousLocation, newLocation);
+    }
+
     public override void UpdateUpgradeStatus(UpgradeData data, [CanBeNull] GridEntity performer, GameTeam team, UpgradeStatus newStatus) {
         CmdUpdateUpgradeStatus(data, performer, team, newStatus);
     }
@@ -162,6 +166,16 @@ public class MPCommandManager : AbstractCommandManager {
     [ClientRpc]
     private void RpcMarkAbilityCooldownExpired(IAbility ability) {
         DoMarkAbilityTimerExpired(ability, false);
+    }
+
+    [Command(requiresAuthority = false)]
+    private void CmdSendEntityUpdateEvent(GridEntity entity, GridEntityCollectionUpdate updateType, Vector2Int previousLocation, Vector2Int newLocation) {
+        RpcSendEntityUpdateEvent(entity, updateType, previousLocation, newLocation);
+    }
+    
+    [ClientRpc]
+    private void RpcSendEntityUpdateEvent(GridEntity entity, GridEntityCollectionUpdate updateType, Vector2Int previousLocation, Vector2Int newLocation) {
+        DoSendEntityUpdateEvent(entity, updateType, previousLocation, newLocation);
     }
     
     [ClientRpc]

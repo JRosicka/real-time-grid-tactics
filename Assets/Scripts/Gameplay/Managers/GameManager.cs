@@ -103,12 +103,13 @@ public class GameManager : MonoBehaviour {
     }
 
     private void OnDestroy() {
+        FogOfWarManager?.UnregisterListeners();
         DisconnectionHandler?.UnregisterListeners(); 
         Instance = null;
     }
 
     public void SetUpFogOfWar(FogOfWarSetting fowSetting, bool realGame) {
-        FogOfWarManager = new FogOfWarManager(GridController, fowSetting, realGame, LocalTeam);
+        FogOfWarManager = new FogOfWarManager(GridController, CommandManager, fowSetting, realGame, LocalTeam);
         FogOfWarDisplayer.Initialize(FogOfWarManager);
     }
 

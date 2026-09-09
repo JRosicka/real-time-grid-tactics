@@ -61,7 +61,14 @@ public abstract class AbstractCommandManager : NetworkBehaviour, ICommandManager
     /// An entity was just unregistered (killed). Triggered on server. 
     /// </summary>
     public event Action<GameTeam> EntityUnregisteredEvent;
+    /// <summary>
+    /// Client-side event that the entity collection has generally been updated during a collection sync. 
+    /// </summary>
     public event Action EntityCollectionChangedEvent;
+    /// <summary>
+    /// Client-side event for a single entity getting updated in the collection, with the update info
+    /// </summary>
+    public event EntityUpdatedDelegate EntityUpdatedEvent;
 
     public GridEntityCollection EntitiesOnGrid => _entitiesOnGrid;
 
@@ -85,10 +92,11 @@ public abstract class AbstractCommandManager : NetworkBehaviour, ICommandManager
     public abstract void DestroyEntity(GridEntity entity);
 
     public void MoveEntityToCell(GridEntity entity, Vector2Int destination) {
+        Vector2Int previousLocation = entity.Location!.Value;
         _entitiesOnGrid.MoveEntity(entity, destination);
         // We need to update the entity location first so that EntityCollectionChanged listeners get the updated value for the entity location
         entity.UpdateEntityLocation(destination);
-        SyncEntityCollection();
+        SyncEntityCollection(entity, GridEntityCollectionUpdate.Move, previousLocation, destination);
         // Now that the entity collection is synced, we can let listeners know that the entity moved 
         entity.TriggerEntityMovedEvent();
     }
@@ -103,6 +111,8 @@ public abstract class AbstractCommandManager : NetworkBehaviour, ICommandManager
     public abstract void UpdateInProgressAbilities(GridEntity entity);
     public abstract void QueueAbility(IAbility ability, IAbility abilityToDependOn);
     public abstract void MarkAbilityTimerExpired(IAbility ability);
+
+    protected abstract void SendCollectionUpdateEvent(GridEntity entity, GridEntityCollectionUpdate updateType, Vector2Int previousLocation, Vector2Int newLocation);
 
     protected void DoSpawnEntity(EntityData data, Vector2Int spawnLocation, Func<long, GridEntity> spawnFunc, GameTeam team, GridEntity spawnerEntity, Vector2Int spawnerLocation, bool allowRally) {
         List<GridEntity> entitiesToIgnore = spawnerEntity != null ? new List<GridEntity> {spawnerEntity} : null;
@@ -160,15 +170,16 @@ public abstract class AbstractCommandManager : NetworkBehaviour, ICommandManager
         
         _entitiesOnGrid.RegisterEntity(entity, position, data.GetStackOrder(), entityToIgnore);
         entity.Registered = true;
-        SyncEntityCollection();
+        SyncEntityCollection(entity, GridEntityCollectionUpdate.Register, default, position);
         EntityRegisteredEvent?.Invoke(entity.Team);
     }
 
     protected void DoUnRegisterEntity(GridEntity entity) {
+        Vector2Int location = entity.Location!.Value;
         entity.BuildQueue.CancelAllBuilds(GameTeam.Player1);
         entity.BuildQueue.CancelAllBuilds(GameTeam.Player2);
         _entitiesOnGrid.UnRegisterEntity(entity);
-        SyncEntityCollection();
+        SyncEntityCollection(entity, GridEntityCollectionUpdate.Unregister, location, default);
         EntityUnregisteredEvent?.Invoke(entity.Team);
     }
 
@@ -288,18 +299,30 @@ public abstract class AbstractCommandManager : NetworkBehaviour, ICommandManager
         NetworkableField networkableField = (NetworkableField)info.GetMemberValue(parent);
         networkableField.DoUpdateValue(newValue, metadata);
     }
+
+    protected void DoSendEntityUpdateEvent(GridEntity entity, GridEntityCollectionUpdate updateType, Vector2Int previousLocation, Vector2Int newLocation) {
+        EntityUpdatedEvent?.Invoke(entity, updateType, previousLocation, newLocation);
+    }
     
     /// <summary>
     /// Reset the reference for <see cref="_entitiesOnGrid"/> to force a sync across clients. Just updating fields in the class
     /// is not enough to get the sync to occur. 
     /// </summary>
-    private void SyncEntityCollection() {    // TODO: If networking is horribly slow when there are a lot of GridEntities in the game... this is probably why. Kinda yucky. 
+    private void SyncEntityCollection(GridEntity entity, GridEntityCollectionUpdate updateType, Vector2Int previousLocation, Vector2Int newLocation) {
+        // TODO: If networking is horribly slow when there are a lot of GridEntities in the game... this is probably why.
+        // Kinda yucky. Would need to consider switching to an approach of having each client keep track of and modify
+        // its entity collection and have the server communicate changes (unregister, register, moving) whenever they
+        // happen. See the SendCollectionUpdateEvent call below -- ideally the clients could use this to handle updating 
+        // their own GridEntityCollection states. 
         LogTimestamp(nameof(SyncEntityCollection));
         _entitiesOnGrid = new GridEntityCollection(_entitiesOnGrid.Entities);
         if (!GameTypeTracker.Instance.GameIsNetworked) {
             // SP, so syncvars won't work
             EntityCollectionChangedEvent?.Invoke();
         }
+
+        // TODO: Regardless of whether we go with the big change of the above TODO, it would be good to see what current subscribers to EntityCollectionChangedEvent can be switched to just use this more targeted one.
+        SendCollectionUpdateEvent(entity, updateType, previousLocation, newLocation);
     }
     
     [System.Diagnostics.Conditional("AF_LATENCY_TESTING")]

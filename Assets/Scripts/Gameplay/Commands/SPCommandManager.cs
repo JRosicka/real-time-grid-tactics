@@ -65,6 +65,10 @@ public class SPCommandManager : AbstractCommandManager {
         DoMarkAbilityTimerExpired(ability, false);
     }
 
+    protected override void SendCollectionUpdateEvent(GridEntity entity, GridEntityCollectionUpdate updateType, Vector2Int previousLocation, Vector2Int newLocation) {
+        DoSendEntityUpdateEvent(entity, updateType, previousLocation, newLocation);
+    }
+
     public override void UpdateUpgradeStatus(UpgradeData data, [CanBeNull] GridEntity performer, GameTeam team, UpgradeStatus newStatus) {
         DoUpdateUpgradeStatus(data, team, newStatus);
         DoMarkUpgradeStatusUpdated(data, performer, team, newStatus);
