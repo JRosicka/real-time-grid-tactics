@@ -50,6 +50,7 @@ MonoBehaviour:
   CanBuildFriendlyStructureOnTop: 0
   Attackable: 1
   CanBlockMovement: 1
+  HiddenByFoW: 0
   AttackByDefault: 0
   IsResourceExtractor: 0
   ResourceThatThisCanExtract: {fileID: 0}
@@ -60,12 +61,14 @@ MonoBehaviour:
   BuildQueueSize: 5
   NeverShowBuildQueue: 0
   ControllableByAllPlayers: 0
-  EligibleStructureLocations: []
+  EligibleStructureLocations: 
   SharedUnitArmorBonus: 0
   SharedUnitDamageTakenModifierTags: 
   CanRally: 0
+  StructureSellTime: 0
   StartingResourceSet:
     Type: 2
     Amount: 50
+  _highlightBuildableCells: 0
   DeathActions:
   - {fileID: 11400000, guid: 627b6107e883f49b8b1d4cddaa1298ed, type: 2}

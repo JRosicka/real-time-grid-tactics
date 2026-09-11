@@ -1,9 +1,11 @@
 using System.Collections.Generic;
+using System.Linq;
 using Gameplay.Config;
 using Gameplay.Config.Abilities;
 using Gameplay.Config.Upgrades;
 using Gameplay.Entities.Abilities;
 using Gameplay.Entities.Upgrades;
+using Gameplay.Managers;
 using UnityEngine;
 
 namespace Gameplay.Entities {
@@ -12,14 +14,23 @@ namespace Gameplay.Entities {
         [SerializeField] private ParadeAnimationBehavior _paradeAnimationPrefab;
         
         [SerializeField] private InspiringPresenceUpgradeData _inspiringPresenceUpgrade;
-        [SerializeField] private List<ParticleSystem> _inspiringPresenceParticles;
+        [SerializeField] private List<InspiringPresencePositionedParticles> _inspiringPresenceParticles;
 
         private GridEntity _entity;
         private float _timeOfLastDamageReceived;
+        private bool _inspiringPresenceActive;
+        private List<Vector2Int> _cachedAdjacentAndEntityPositions;
+        private Vector2Int? _cachedEntityPosition;
 
         public override void Initialize(GridEntity entity) {
             _entity = entity;
             SetParticleColors();
+        }
+
+        public override void InitializeFoW() {
+            ReEvaluateInspiringPresenceFoW();
+            _entity.EntityMovedClientEvent += ReEvaluateInspiringPresenceFoW;
+            GameManager.Instance.FogOfWarManager!.FoWUpdated += FoWUpdated;
         }
 
         public override void LethalDamageReceived() {
@@ -59,21 +70,64 @@ namespace Gameplay.Entities {
         private void SetParticleColors() {
             PlayerColorData colorData = GameManager.Instance.GetPlayerForTeam(_entity).ColorData;
 
-            foreach (ParticleSystem particles in _inspiringPresenceParticles) {
-                ParticleSystem.MainModule main = particles.main;
-                ParticleSystem.MinMaxGradient colors = main.startColor;
-                colors.colorMin = colorData.BrightParticlesColor1;
-                colors.colorMax = colorData.BrightParticlesColor2;
-                main.startColor = colors;
+            foreach (InspiringPresencePositionedParticles particles in _inspiringPresenceParticles) {
+                particles.Initialize(_entity, colorData);
             }
         }
         
         private void DoInspiringPresenceAnimation(bool enable) {
-            if (enable) {
-                _inspiringPresenceParticles.ForEach(particle => particle.Play());
-            } else {
-                _inspiringPresenceParticles.ForEach(particle => particle.Stop(true, ParticleSystemStopBehavior.StopEmitting));
+            _inspiringPresenceActive = enable;
+            _inspiringPresenceParticles.ForEach(particle => particle.ToggleActive(enable));
+        }
+
+        private void FoWUpdated(List<FogOfWarManager.FoWCell> updatedCells) {
+            if (!_inspiringPresenceActive) return;
+            if (_entity.Location == null) return;
+
+            List<Vector2Int> adjacentAndEntityCells = GetAdjacentAndEntityCells();
+            List<FogOfWarManager.FoWCell> cellsOfInterest = updatedCells.Where(c => adjacentAndEntityCells.Contains(c.Position)).ToList();
+            if (cellsOfInterest.Any()) {
+                UpdateInspiringPresenceFoW(cellsOfInterest);
             }
+        }
+
+        private void ReEvaluateInspiringPresenceFoW() {
+            if (!_inspiringPresenceActive) return;
+            if (GameManager.Instance.FogOfWarManager == null) return;
+
+            List<FogOfWarManager.FoWCell> cells = new();
+            foreach (Vector2Int location in GetAdjacentAndEntityCells()) {
+                cells.Add(new FogOfWarManager.FoWCell {
+                    Position = location,
+                    Hidden = GameManager.Instance.FogOfWarManager.IsLocationHidden(location)
+                });
+            }
+            
+            UpdateInspiringPresenceFoW(cells);
+        }
+
+        /// <summary>
+        /// Actually update the individual inspiring presence particles
+        /// </summary>
+        /// <param name="updatedCells"></param>
+        private void UpdateInspiringPresenceFoW(List<FogOfWarManager.FoWCell> updatedCells) {
+            if (!_inspiringPresenceActive) return;
+
+            foreach (InspiringPresencePositionedParticles particles in _inspiringPresenceParticles) {
+                particles.UpdateFoW(updatedCells);
+            }
+        }
+
+        private List<Vector2Int> GetAdjacentAndEntityCells() {
+            if (_cachedAdjacentAndEntityPositions == null || _cachedEntityPosition == null || _cachedEntityPosition != _entity.Location!.Value) {
+                _cachedEntityPosition = _entity.Location!.Value;
+                _cachedAdjacentAndEntityPositions = GameManager.Instance.GridController.GridData.GetAdjacentCells(_cachedEntityPosition.Value)
+                    .Select(c => c.Location)
+                    .Append(_entity.Location.Value)
+                    .ToList();
+            }
+            
+            return _cachedAdjacentAndEntityPositions;
         }
     }
 }

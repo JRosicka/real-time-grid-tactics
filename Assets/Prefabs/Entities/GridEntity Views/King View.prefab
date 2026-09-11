@@ -9,6 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8084703295163251270}
+  - component: {fileID: 5687048064903928161}
   m_Layer: 0
   m_Name: Radial Particles 5
   m_TagString: Untagged
@@ -37,6 +38,23 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0, y: 0}
+--- !u!114 &5687048064903928161
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 809472605830998471}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e63d1b3ff984afd96d9f3633be5a79f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Gameplay.Entities.InspiringPresencePositionedParticles
+  _adjacent: 1
+  _relativeDirection: 240
+  _particleSystems:
+  - {fileID: 1022895333192572101}
+  - {fileID: 1128161346659752530}
 --- !u!1 &1765656110466771346
 GameObject:
   m_ObjectHideFlags: 0
@@ -46,6 +64,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7000996284271327375}
+  - component: {fileID: 1495006497912107082}
   m_Layer: 0
   m_Name: Radial Particles 4
   m_TagString: Untagged
@@ -74,6 +93,23 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0, y: 0}
+--- !u!114 &1495006497912107082
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1765656110466771346}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e63d1b3ff984afd96d9f3633be5a79f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Gameplay.Entities.InspiringPresencePositionedParticles
+  _adjacent: 1
+  _relativeDirection: 180
+  _particleSystems:
+  - {fileID: 2794194585194372087}
+  - {fileID: 7354247335686457320}
 --- !u!1 &2087502113294369245
 GameObject:
   m_ObjectHideFlags: 0
@@ -83,6 +119,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3879991780950900983}
+  - component: {fileID: 6273642441415398050}
   m_Layer: 0
   m_Name: Radial Particles 2
   m_TagString: Untagged
@@ -111,6 +148,23 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0, y: 0}
+--- !u!114 &6273642441415398050
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2087502113294369245}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e63d1b3ff984afd96d9f3633be5a79f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Gameplay.Entities.InspiringPresencePositionedParticles
+  _adjacent: 1
+  _relativeDirection: 60
+  _particleSystems:
+  - {fileID: 5802538920567384800}
+  - {fileID: 8341926066764776996}
 --- !u!1 &2545813701756416238
 GameObject:
   m_ObjectHideFlags: 0
@@ -120,6 +174,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2901047461777860751}
+  - component: {fileID: 2258968104146691524}
   m_Layer: 0
   m_Name: Radial Particles 6
   m_TagString: Untagged
@@ -148,6 +203,23 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0, y: 0}
+--- !u!114 &2258968104146691524
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2545813701756416238}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e63d1b3ff984afd96d9f3633be5a79f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Gameplay.Entities.InspiringPresencePositionedParticles
+  _adjacent: 1
+  _relativeDirection: 300
+  _particleSystems:
+  - {fileID: 529889644804280855}
+  - {fileID: 6296087961303783741}
 --- !u!1 &5363254161410990535
 GameObject:
   m_ObjectHideFlags: 0
@@ -157,6 +229,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4261695344652653591}
+  - component: {fileID: 1866512368541819888}
   m_Layer: 0
   m_Name: Radial Particles 1
   m_TagString: Untagged
@@ -185,6 +258,23 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0, y: 0}
+--- !u!114 &1866512368541819888
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5363254161410990535}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e63d1b3ff984afd96d9f3633be5a79f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Gameplay.Entities.InspiringPresencePositionedParticles
+  _adjacent: 1
+  _relativeDirection: 0
+  _particleSystems:
+  - {fileID: 3260027253293508493}
+  - {fileID: 7919231414048882425}
 --- !u!1 &6410850425159356906
 GameObject:
   m_ObjectHideFlags: 0
@@ -194,6 +284,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7089032782176824790}
+  - component: {fileID: 5406401183856411301}
   m_Layer: 0
   m_Name: InspiringPresenceParticles
   m_TagString: Untagged
@@ -223,6 +314,23 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &5406401183856411301
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6410850425159356906}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e63d1b3ff984afd96d9f3633be5a79f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Gameplay.Entities.InspiringPresencePositionedParticles
+  _adjacent: 0
+  _relativeDirection: 0
+  _particleSystems:
+  - {fileID: 4307056035763093452}
+  - {fileID: 4365629777143140564}
 --- !u!1 &6989928196566278172
 GameObject:
   m_ObjectHideFlags: 0
@@ -298,6 +406,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8590529871524172622}
+  - component: {fileID: 1215501848511771893}
   m_Layer: 0
   m_Name: Radial Particles 3
   m_TagString: Untagged
@@ -326,6 +435,23 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0, y: 0}
+--- !u!114 &1215501848511771893
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7333446956173644139}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e63d1b3ff984afd96d9f3633be5a79f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Gameplay.Entities.InspiringPresencePositionedParticles
+  _adjacent: 1
+  _relativeDirection: 120
+  _particleSystems:
+  - {fileID: 9100077208763938985}
+  - {fileID: 6371977037336830889}
 --- !u!1001 &153257680714193961
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -745,20 +871,13 @@ MonoBehaviour:
   _paradeAnimationPrefab: {fileID: 6707340433301324933, guid: 8bfba6ab758713b4ba57968413c0410b, type: 3}
   _inspiringPresenceUpgrade: {fileID: 11400000, guid: db985c9c951de4c649817a7823176728, type: 2}
   _inspiringPresenceParticles:
-  - {fileID: 4307056035763093452}
-  - {fileID: 4365629777143140564}
-  - {fileID: 3260027253293508493}
-  - {fileID: 7919231414048882425}
-  - {fileID: 5802538920567384800}
-  - {fileID: 8341926066764776996}
-  - {fileID: 9100077208763938985}
-  - {fileID: 6371977037336830889}
-  - {fileID: 2794194585194372087}
-  - {fileID: 7354247335686457320}
-  - {fileID: 1022895333192572101}
-  - {fileID: 1128161346659752530}
-  - {fileID: 529889644804280855}
-  - {fileID: 6296087961303783741}
+  - {fileID: 5406401183856411301}
+  - {fileID: 1866512368541819888}
+  - {fileID: 6273642441415398050}
+  - {fileID: 1215501848511771893}
+  - {fileID: 1495006497912107082}
+  - {fileID: 5687048064903928161}
+  - {fileID: 2258968104146691524}
 --- !u!224 &8529433540975367840 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 7468620877357481868, guid: 9d77d3ce03b813d42b6c2efebbdefd02, type: 3}

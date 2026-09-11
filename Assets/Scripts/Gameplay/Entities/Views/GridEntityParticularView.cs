@@ -14,5 +14,6 @@ namespace Gameplay.Entities {
         /// <returns>True if generic animation work should be performed, otherwise false</returns>
         public abstract bool DoAbility(IAbility ability, AbilityTimer abilityTimer);
         public abstract void UpgradeApplied(IUpgrade upgrade);
+        public virtual void InitializeFoW() { }
     }
 }

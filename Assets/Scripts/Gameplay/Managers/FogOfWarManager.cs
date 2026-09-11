@@ -62,6 +62,18 @@ namespace Gameplay.Managers {
                 _commandManager.EntityUpdatedEvent -= EntityUpdated;
             }
         }
+
+        public bool IsEntityHidden(GridEntity entity) {
+            if (entity.Location == null) return false;
+            if (!entity.EntityData.HiddenByFoW) return false;
+
+            return IsLocationHidden(entity.Location.Value);
+        }
+
+        public bool IsLocationHidden(Vector2Int location) {
+            if (_cellFoWState.Count == 0) return false;
+            return _cellFoWState[location];
+        }
         
         public IEnumerable<FoWCell> GetAllCells() {
             return _cellFoWState.Select(kvp => new FoWCell { Position = kvp.Key, Hidden = kvp.Value });

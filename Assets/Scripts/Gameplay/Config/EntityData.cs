@@ -62,6 +62,8 @@ namespace Gameplay.Config {
         public bool Attackable = true;
         public bool CanBlockMovement = true;
 
+        public bool HiddenByFoW = true;
+
         public bool AttackByDefault;
 
         public bool IsStructure => Tags.Contains(EntityTag.Structure);

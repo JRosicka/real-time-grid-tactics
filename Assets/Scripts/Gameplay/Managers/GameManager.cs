@@ -63,6 +63,8 @@ public class GameManager : MonoBehaviour {
     public IGamePlayer Player2;
     public GameTeam LocalTeam { get; private set; }
     public int LocalPlayerIndex { get; private set; }
+
+    public event Action FogOfWarInitialized;
     
     private void Awake() {
         if (Instance != null) {
@@ -111,6 +113,7 @@ public class GameManager : MonoBehaviour {
     public void SetUpFogOfWar(FogOfWarSetting fowSetting, bool realGame) {
         FogOfWarManager = new FogOfWarManager(GridController, CommandManager, fowSetting, realGame, LocalTeam);
         FogOfWarDisplayer.Initialize(FogOfWarManager);
+        FogOfWarInitialized?.Invoke();
     }
 
     [CanBeNull]

@@ -149,6 +149,8 @@ namespace Gameplay.Entities {
         public event Action<int> IncomeRateChanged;
         public event Action<bool> HoldingPositionChangedEvent;
         public event Action<List<IAbility>> InProgressAbilitiesUpdatedEvent;
+        public event Action<bool> FogOfWarHiddenStatusChangedEvent;
+        
         /// <summary>
         /// Only triggered on server
         /// </summary>
@@ -264,6 +266,13 @@ namespace Gameplay.Entities {
             // Set up view portion of any in-progress upgrades
             IGamePlayer player = GameManager.Instance.GetPlayerForTeam(team);
             player?.OwnedPurchasablesController.Upgrades.ApplyUpgradeAnimations(this);
+            
+            // Set of fog of war
+            if (GameManager.Instance.FogOfWarManager == null) {
+                GameManager.Instance.FogOfWarInitialized += InitializeFoW;
+            } else {
+                InitializeFoW();
+            }
             
             InitializationStatusHandler.Initialize(null, nameof(InitializationStatusHandler));
             InitializationStatusHandler.SetLocalClientReady();
@@ -930,6 +939,30 @@ namespace Gameplay.Entities {
             CommandManager?.DestroyEntity(this);
         }
         
+        #endregion
+
+        #region Fog of war
+
+        private bool _hiddenByFoW;
+
+        private void InitializeFoW() {
+            _hiddenByFoW = GameManager.Instance.FogOfWarManager!.IsEntityHidden(this);
+            if (EntityData.HiddenByFoW) {
+                GameManager.Instance.FogOfWarManager.FoWUpdated += FogOfWarHiddenStatusChanged;
+            }
+        }
+        
+        private void FogOfWarHiddenStatusChanged(List<FogOfWarManager.FoWCell> foWCells) {
+            if (Location == null || DeadOrDying) return;
+            foreach (FogOfWarManager.FoWCell cell in foWCells) {
+                if (cell.Position == Location.Value) {
+                    _hiddenByFoW = cell.Hidden;
+                    FogOfWarHiddenStatusChangedEvent?.Invoke(cell.Hidden);
+                    return;
+                }
+            }
+        }
+
         #endregion
     }
 }

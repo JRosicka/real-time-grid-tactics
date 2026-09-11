@@ -23,6 +23,7 @@ namespace Gameplay.Entities {
     public sealed class GridEntityView : MonoBehaviour {
         [Header("References")] 
         [SerializeField] private CanvasGroup _mainCanvasGroup;
+        [SerializeField] private CanvasGroup _fowCanvasGroup;
         [SerializeField] private Image _mainImage;
         [SerializeField] private Image _teamColorImage;
         [SerializeField] private GridEntityParticularView _particularView;
@@ -64,6 +65,7 @@ namespace Gameplay.Entities {
         [SerializeField] private AnimationCurve _attackAnimationOutro_curve;
         [SerializeField] private float _attackShakeTriggerTime;
         [SerializeField] private float _timeToDisappearWhenDying = .5f;
+        [SerializeField] private float _fowFadeTime;
         
         
         private Material _selectionMaterial;
@@ -114,6 +116,7 @@ namespace Gameplay.Entities {
             entity.HPHandler.HealedEvent += HealReceived;
             entity.KilledEvent += Killed;
             entity.HoldingPositionChangedEvent += HoldingPositionChanged;
+            entity.FogOfWarHiddenStatusChangedEvent += FogOfWarHiddenStatusChanged;
 
             bool hasHP = entity.MaxHP > 0;
             if (entity.EntityData.IsStructure) {
@@ -150,6 +153,17 @@ namespace Gameplay.Entities {
             DoSpawnAnimation(spawnerLocation, playSpawnAnimation);
             
             _arrowController.Initialize(entity);
+
+            if (GameManager.Instance.FogOfWarManager == null) {
+                GameManager.Instance.FogOfWarInitialized += InitializeFoW;
+            } else {
+                InitializeFoW();
+            }
+        }
+
+        private void InitializeFoW() {
+            SetFoWHiddenStatus(GameManager.Instance.FogOfWarManager!.IsEntityHidden(Entity), false);
+            _particularView.InitializeFoW();
         }
 
         public void ToggleView(bool show) {
@@ -175,6 +189,10 @@ namespace Gameplay.Entities {
             Entity.HPHandler.HealedEvent -= HealReceived;
             Entity.KilledEvent -= Killed;
 
+            if (GameManager.Instance != null) {
+                GameManager.Instance.FogOfWarInitialized -= InitializeFoW;
+            }
+
             if (_dying) {
                 _particularView.LethalDamageReceived();
             }
@@ -186,6 +204,7 @@ namespace Gameplay.Entities {
             // Need to do attack after movement in order to properly handle when both are happening
             UpdateAttack();
             UpdateDeath();
+            UpdateFoW();
         }
 
         private void LateUpdate() {
@@ -512,6 +531,32 @@ namespace Gameplay.Entities {
             _mainImageGroup.alpha = Mathf.Lerp(1, 0, _dyingTime / _timeToDisappearWhenDying);
             if (_dyingTime > _timeToDisappearWhenDying) {
                 _dying = false;
+            }
+        }
+        
+        #endregion
+        #region FoW
+
+        private bool _hiddenByFoW;
+        
+        private void UpdateFoW() {
+            if (_dying) return;
+            if (!_hiddenByFoW && _fowCanvasGroup.alpha >= 1) return;
+            if (_hiddenByFoW && _fowCanvasGroup.alpha == 0) return;
+            
+            float fadeDirection = _hiddenByFoW ? -1 : 1;
+            float fadeAmount = fadeDirection * Time.deltaTime / _fowFadeTime;
+            _fowCanvasGroup.alpha += fadeAmount;
+        }
+
+        private void FogOfWarHiddenStatusChanged(bool hidden) {
+            SetFoWHiddenStatus(hidden, true);
+        }
+
+        private void SetFoWHiddenStatus(bool hidden, bool animate) {
+            _hiddenByFoW = hidden;
+            if (!animate) {
+                _fowCanvasGroup.alpha = hidden ? 0 : 1;
             }
         }
         
