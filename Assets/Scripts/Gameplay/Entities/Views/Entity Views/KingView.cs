@@ -78,6 +78,7 @@ namespace Gameplay.Entities {
         private void DoInspiringPresenceAnimation(bool enable) {
             _inspiringPresenceActive = enable;
             _inspiringPresenceParticles.ForEach(particle => particle.ToggleActive(enable));
+            ReEvaluateInspiringPresenceFoW();
         }
 
         private void FoWUpdated(List<FogOfWarManager.FoWCell> updatedCells) {

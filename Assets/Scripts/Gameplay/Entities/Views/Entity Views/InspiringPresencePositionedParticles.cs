@@ -28,10 +28,10 @@ namespace Gameplay.Entities {
                 main.startColor = colors;
             }
         }
-        
-        private Vector2Int Position => _adjacent 
-            ? _entity.Location!.Value 
-            : CellDistanceLogic.NeighborInDirection(_entity.Location!.Value, _relativeDirection);
+
+        private Vector2Int Position => _adjacent
+            ? CellDistanceLogic.NeighborInDirection(_entity.Location!.Value, _relativeDirection)
+            : _entity.Location!.Value;
 
         public void ToggleActive(bool active) {
             _active = active;
