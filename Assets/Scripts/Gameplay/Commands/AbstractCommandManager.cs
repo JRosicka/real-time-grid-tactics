@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Threading.Tasks;
 using Gameplay.Config;
 using Gameplay.Config.Abilities;
 using Gameplay.Config.Upgrades;
@@ -322,6 +323,12 @@ public abstract class AbstractCommandManager : NetworkBehaviour, ICommandManager
         }
 
         // TODO: Regardless of whether we go with the big change of the above TODO, it would be good to see what current subscribers to EntityCollectionChangedEvent can be switched to just use this more targeted one.
+        // TODO: So.......... for clients, the rpc call for this comes in BEFORE the syncvar gets updated. So we wait a frame for now. 
+        SendCollectionUpdateEventAfterDelay(entity, updateType, previousLocation, newLocation);
+    }
+
+    private async void SendCollectionUpdateEventAfterDelay(GridEntity entity, GridEntityCollectionUpdate updateType, Vector2Int previousLocation, Vector2Int newLocation) {
+        await Awaitable.NextFrameAsync();
         SendCollectionUpdateEvent(entity, updateType, previousLocation, newLocation);
     }
     
