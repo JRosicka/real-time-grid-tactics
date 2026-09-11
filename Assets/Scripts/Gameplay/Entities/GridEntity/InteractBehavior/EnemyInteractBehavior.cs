@@ -8,6 +8,8 @@ namespace Gameplay.Entities {
     public class EnemyInteractBehavior : IInteractBehavior {
         public bool IsLocalTeam => false;
         public bool AllowedToSeeMiscInfo => false;
+        public bool ProvidesVision => false;
+
         public bool AllowedToSeeQueuedBuilds(GameTeam team) {
             return false;
         }

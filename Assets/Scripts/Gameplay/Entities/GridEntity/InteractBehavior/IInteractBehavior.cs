@@ -17,6 +17,11 @@ namespace Gameplay.Entities {
         bool AllowedToSeeMiscInfo { get; }
 
         /// <summary>
+        /// Whether this entity provides vision through fog of war
+        /// </summary>
+        bool ProvidesVision { get; }
+
+        /// <summary>
         /// Whether we should show queued builds for this entity for the given team
         /// </summary>
         bool AllowedToSeeQueuedBuilds(GameTeam team);
