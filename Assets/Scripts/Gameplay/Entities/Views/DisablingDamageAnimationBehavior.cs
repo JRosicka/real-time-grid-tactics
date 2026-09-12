@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Coffee.UIExtensions;
 using Gameplay.Config.Abilities;
 using UnityEngine;
 using Util;
@@ -9,7 +10,7 @@ namespace Gameplay.Entities {
     /// </summary>
     public class DisablingDamageAnimationBehavior : MonoBehaviour {
         public ColorTintBehaviour ColorTintBehaviour;
-        public List<ParticleSystem> DamagedParticles;
+        public UIParticle DamagedParticles;
 
         private bool _damagedAnimationActive;
         private float _damageAnimationTimeRemaining;
@@ -34,12 +35,12 @@ namespace Gameplay.Entities {
         
         private void PlayDamagedAnimation() {
             ColorTintBehaviour.ApplyTint(new List<Color>{ Color.white, _teamColor });
-            DamagedParticles.ForEach(p => p.Play());
+            DamagedParticles.Play();
         }
 
         private void StopDamagedAnimation() {
             ColorTintBehaviour.Reset();
-            DamagedParticles.ForEach(p => p.Stop());
+            DamagedParticles.StopEmission();
         }
 
         private void Update() {
