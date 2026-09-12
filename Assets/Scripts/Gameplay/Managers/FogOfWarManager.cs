@@ -43,7 +43,7 @@ namespace Gameplay.Managers {
                 // Subscribe to events
                 _commandManager.EntityUpdatedEvent += EntityUpdated;
                 
-                // Initialize cells Set initial FoW state for each cell
+                // Initialize cells
                 foreach (Vector2Int cell in gridController.GetAllCellsInBounds()) {
                     _cellFoWState.Add(cell, true);
                 }
@@ -80,7 +80,11 @@ namespace Gameplay.Managers {
         }
 
         private void EntityUpdated(GridEntity entity, GridEntityCollectionUpdate updateType, Vector2Int previousLocation, Vector2Int newLocation) {
-            if (entity.InteractBehavior == null || !entity.InteractBehavior.ProvidesVision) return;
+            if (entity.InteractBehavior == null || !entity.InteractBehavior.ProvidesVision) {
+                // This entity will not modify the map FoW, but the entity might need to visually update within the player's FoW view
+                entity.UpdateFoWHiddenStatus(_cellFoWState[newLocation]);
+                return;
+            }
             
             List<FoWCell> updatedCells;
             switch (updateType) {

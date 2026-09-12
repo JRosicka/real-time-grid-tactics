@@ -50,6 +50,7 @@ MonoBehaviour:
   Attackable: 0
   CanBlockMovement: 0
   HiddenByFoW: 0
+  ProvidesVisionToAnyone: 0
   AttackByDefault: 0
   IsResourceExtractor: 0
   ResourceThatThisCanExtract: {fileID: 0}

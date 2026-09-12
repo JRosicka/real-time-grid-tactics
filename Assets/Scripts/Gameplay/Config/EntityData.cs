@@ -63,6 +63,7 @@ namespace Gameplay.Config {
         public bool CanBlockMovement = true;
 
         public bool HiddenByFoW = true;
+        public bool ProvidesVisionToAnyone = true;
 
         public bool AttackByDefault;
 

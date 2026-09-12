@@ -951,13 +951,23 @@ namespace Gameplay.Entities {
                 GameManager.Instance.FogOfWarManager.FoWUpdated += FogOfWarHiddenStatusChanged;
             }
         }
+
+        public void UpdateFoWHiddenStatus(bool hidden) {
+            if (_hiddenByFoW == hidden) return;
+            if (Location == null || DeadOrDying) return;
+            DoUpdateFoWHiddenStatus(hidden);
+        }
+        
+        private void DoUpdateFoWHiddenStatus(bool hidden) {
+            _hiddenByFoW = hidden;
+            FogOfWarHiddenStatusChangedEvent?.Invoke(hidden);
+        }
         
         private void FogOfWarHiddenStatusChanged(List<FogOfWarManager.FoWCell> foWCells) {
             if (Location == null || DeadOrDying) return;
             foreach (FogOfWarManager.FoWCell cell in foWCells) {
                 if (cell.Position == Location.Value) {
-                    _hiddenByFoW = cell.Hidden;
-                    FogOfWarHiddenStatusChangedEvent?.Invoke(cell.Hidden);
+                    DoUpdateFoWHiddenStatus(cell.Hidden);
                     return;
                 }
             }
