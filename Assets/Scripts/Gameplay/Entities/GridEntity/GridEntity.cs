@@ -959,6 +959,7 @@ namespace Gameplay.Entities {
         }
         
         private void DoUpdateFoWHiddenStatus(bool hidden) {
+            if (!EntityData.HiddenByFoW) return;
             _hiddenByFoW = hidden;
             FogOfWarHiddenStatusChangedEvent?.Invoke(hidden);
         }
