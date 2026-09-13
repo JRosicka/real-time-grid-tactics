@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using Audio;
+using Gameplay.Config;
 using Gameplay.Config.Abilities;
 using Gameplay.Entities;
 using Gameplay.Grid;
@@ -85,19 +86,46 @@ public class EntitySelectionManager {
         GridEntity lastSelectedEntity = SelectedEntity;
         DeselectEntity();
 
-        GridEntityCollection.PositionedGridEntityCollection entitiesAtLocation = _gameManager.GetEntitiesAtLocation(cell);
-        if (entitiesAtLocation == null) {
+        GridEntityCollection.PositionedGridEntityCollection eligibleEntities = _gameManager.GetEntitiesAtLocation(cell)?.Clone();
+
+        if (eligibleEntities == null) {
             // There are no entities at this location. Select the cell itself
             SelectCellTerrain(cell);
         } else {
-            // Select the top entity, or the next entity if we are already selecting an entity at this location
-            GridEntityCollection.OrderedGridEntity orderedEntity = entitiesAtLocation.Entities.FirstOrDefault(c => c.Entity == lastSelectedEntity);
-            if (orderedEntity == null) {
-                entitiesAtLocation.GetTopEntity().Entity.Select();
+            // First remove any ineligible entities due to FoW
+            bool hiddenByFoW = _gameManager.FogOfWarManager!.IsLocationHidden(cell);
+            for (int i = eligibleEntities.Entities.Count - 1; i >= 0; i--) {
+                GridEntity entity = eligibleEntities.Entities[i].Entity;
+                if (hiddenByFoW && !entity.EntityData.SelectableInFoW) {
+                    eligibleEntities.Entities.RemoveAt(i);
+                }
+            }
+            
+            // Next remove any ineligible entities due to there being corresponding hiding entities also present
+            for (int i = eligibleEntities.Entities.Count - 1; i >= 0; i--) {
+                EntityData entityData = eligibleEntities.Entities[i].Entity.EntityData;
+                if (eligibleEntities.Entities.Select(e => e.Entity.EntityData)
+                                            .Where(otherEntityData => otherEntityData != entityData)
+                                            .Any(otherEntityData => otherEntityData.ResourceThatThisCanExtract == entityData)) {
+                    // This is a resource entity that shares a cell with an extractor that extracts it (and we already 
+                    // know that the player can see that extractor since we previously removed entities hidden by FoW)
+                    eligibleEntities.Entities.RemoveAt(i);
+                }
+            }
+
+            if (eligibleEntities.Entities.Count == 0) {
+                // No entities remaining after removals. Select the cell.
+                SelectCellTerrain(cell);
             } else {
-                GridEntity nextEntity = entitiesAtLocation.GetEntityAfter(orderedEntity)?.Entity;
-                if (nextEntity != null) {
-                    nextEntity.Select();
+                // Select the top entity, or the next entity if we are already selecting an entity at this location
+                GridEntityCollection.OrderedGridEntity orderedEntity = eligibleEntities.Entities.FirstOrDefault(c => c.Entity == lastSelectedEntity);
+                if (orderedEntity == null) {
+                    eligibleEntities.GetTopEntity().Entity.Select();
+                } else {
+                    GridEntity nextEntity = eligibleEntities.GetEntityAfter(orderedEntity)?.Entity;
+                    if (nextEntity != null) {
+                        nextEntity.Select();
+                    }
                 }
             }
         }

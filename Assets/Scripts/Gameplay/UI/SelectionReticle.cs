@@ -63,6 +63,10 @@ namespace Gameplay.UI {
             ReticleSelection reticleSelection = entityAtLocation == null || entityAtLocation.InteractBehavior == null
                 ? ReticleSelection.Neutral
                 : entityAtLocation.InteractBehavior.ReticleSelection;
+            if (entityAtLocation != null && GameManager.Instance.FogOfWarManager!.IsEntityHidden(entityAtLocation)) {
+                reticleSelection = ReticleSelection.Neutral;
+            }
+            
             Color selectionColor = reticleSelection switch {
                 ReticleSelection.Ally => AllySelectionColor,
                 ReticleSelection.Enemy => EnemySelectionColor,

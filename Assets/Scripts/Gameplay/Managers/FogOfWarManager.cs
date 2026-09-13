@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Gameplay.Entities;
 using Gameplay.Grid;
+using JetBrains.Annotations;
 using UnityEngine;
 
 namespace Gameplay.Managers {
@@ -63,7 +64,7 @@ namespace Gameplay.Managers {
             }
         }
 
-        public bool IsEntityHidden(GridEntity entity) {
+        public bool IsEntityHidden([NotNull] GridEntity entity) {
             if (entity.Location == null) return false;
             return IsLocationHidden(entity.Location.Value);
         }

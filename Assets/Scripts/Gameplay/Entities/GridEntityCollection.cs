@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Gameplay.Entities;
 using JetBrains.Annotations;
 using Mirror;
 using Sirenix.Utilities;
@@ -292,4 +293,16 @@ namespace Gameplay.Entities {
     }
     
     #endregion
+}
+
+public static class PositionedGridEntityCollectionExtensions {
+    public static GridEntityCollection.PositionedGridEntityCollection Clone(this GridEntityCollection.PositionedGridEntityCollection other) {
+        List<GridEntityCollection.OrderedGridEntity> orderedEntities = other.Entities.Select(clonedEntity => new GridEntityCollection.OrderedGridEntity {
+            Entity = clonedEntity.Entity, Order = clonedEntity.Order,
+        }).ToList();
+        return new GridEntityCollection.PositionedGridEntityCollection {
+            Entities = orderedEntities,
+            Location = other.Location
+        };
+    }
 }
