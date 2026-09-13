@@ -78,6 +78,8 @@ namespace Gameplay.Entities {
 
         private GameAudio GameAudio => GameAudio.Instance;
 
+        private bool _viewToggled = true;
+        
         public void Start() {
             if (!_playedSpawnAnimation) {
                 ToggleView(false);
@@ -167,7 +169,8 @@ namespace Gameplay.Entities {
         }
 
         public void ToggleView(bool show) {
-            _mainCanvasGroup.alpha = show ? 1 : 0;
+            _viewToggled = show;
+            ResolveVisibility(true);
         }
 
         public void ToggleUI(bool active) {
@@ -538,13 +541,14 @@ namespace Gameplay.Entities {
         #region FoW
 
         private bool _hiddenByFoW;
+        private bool ActuallyHiddenByFoW => _hiddenByFoW && !Entity.EntityData.AlwaysShowWhenHiddenByFoW;
         
         private void UpdateFoW() {
             if (_dying) return;
-            if (!_hiddenByFoW && _fowCanvasGroup.alpha >= 1) return;
-            if (_hiddenByFoW && _fowCanvasGroup.alpha == 0) return;
+            if (!ActuallyHiddenByFoW && _fowCanvasGroup.alpha >= 1) return;
+            if (ActuallyHiddenByFoW && _fowCanvasGroup.alpha == 0) return;
             
-            float fadeDirection = _hiddenByFoW ? -1 : 1;
+            float fadeDirection = ActuallyHiddenByFoW ? -1 : 1;
             float fadeAmount = fadeDirection * Time.deltaTime / _fowFadeTime;
             _fowCanvasGroup.alpha += fadeAmount;
         }
@@ -555,8 +559,26 @@ namespace Gameplay.Entities {
 
         private void SetFoWHiddenStatus(bool hidden, bool animate) {
             _hiddenByFoW = hidden;
-            if (!animate) {
-                _fowCanvasGroup.alpha = hidden ? 0 : 1;
+            ResolveVisibility(!animate);
+        }
+
+        /// <summary>
+        /// Immediately resolves visibility of the main and FoW canvases, disregarding any fade animations
+        /// </summary>
+        private void ResolveVisibility(bool resolveFoW) {
+            // Main canvas
+            if (_viewToggled) {
+                _mainCanvasGroup.alpha = 1;
+            } else if (!_viewToggled && (_hiddenByFoW && Entity.EntityData.AlwaysShowWhenHiddenByFoW)) {
+                // Keep it visible even though it is toggled off
+                _mainCanvasGroup.alpha = 1;
+            } else {
+                _mainCanvasGroup.alpha = 0;
+            }
+
+            // FoW canvas
+            if (resolveFoW) {
+                _fowCanvasGroup.alpha = ActuallyHiddenByFoW ? 0 : 1;
             }
         }
         

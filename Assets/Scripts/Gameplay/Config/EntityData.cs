@@ -62,9 +62,12 @@ namespace Gameplay.Config {
         public bool Attackable = true;
         public bool CanBlockMovement = true;
 
-        public bool HiddenByFoW = true;
+        [Header("Fog of war")]
+        public bool SelectableInFoW;
         public bool ProvidesVisionToAnyone = true;
-
+        public bool AlwaysShowWhenHiddenByFoW;
+        
+        [Space]
         public bool AttackByDefault;
 
         public bool IsStructure => Tags.Contains(EntityTag.Structure);

@@ -50,8 +50,9 @@ MonoBehaviour:
   CanBuildFriendlyStructureOnTop: 1
   Attackable: 0
   CanBlockMovement: 0
-  HiddenByFoW: 0
+  SelectableInFoW: 1
   ProvidesVisionToAnyone: 0
+  AlwaysShowWhenHiddenByFoW: 1
   AttackByDefault: 0
   IsResourceExtractor: 0
   ResourceThatThisCanExtract: {fileID: 0}

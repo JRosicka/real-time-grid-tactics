@@ -65,8 +65,6 @@ namespace Gameplay.Managers {
 
         public bool IsEntityHidden(GridEntity entity) {
             if (entity.Location == null) return false;
-            if (!entity.EntityData.HiddenByFoW) return false;
-
             return IsLocationHidden(entity.Location.Value);
         }
 

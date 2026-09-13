@@ -947,9 +947,7 @@ namespace Gameplay.Entities {
 
         private void InitializeFoW() {
             _hiddenByFoW = GameManager.Instance.FogOfWarManager!.IsEntityHidden(this);
-            if (EntityData.HiddenByFoW) {
-                GameManager.Instance.FogOfWarManager.FoWUpdated += FogOfWarHiddenStatusChanged;
-            }
+            GameManager.Instance.FogOfWarManager.FoWUpdated += FogOfWarHiddenStatusChanged;
         }
 
         public void UpdateFoWHiddenStatus(bool hidden) {
@@ -959,7 +957,6 @@ namespace Gameplay.Entities {
         }
         
         private void DoUpdateFoWHiddenStatus(bool hidden) {
-            if (!EntityData.HiddenByFoW) return;
             _hiddenByFoW = hidden;
             FogOfWarHiddenStatusChangedEvent?.Invoke(hidden);
         }
