@@ -973,7 +973,65 @@ MonoBehaviour:
     m_RotationOrder: 4
   _attackShakeTriggerTime: 0.12
   _timeToDisappearWhenDying: 0.4
-  _fowFadeTime: 0.1
+  _fowFadeInTime: 0.1
+  _fowFadeInCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 1
+      outSlope: 1
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 1
+      outSlope: 1
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  _fowFadeOutTime: 0.66
+  _fowFadeOutCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0.00043383165
+      outSlope: 0.00043383165
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.85017663
+      value: 1.0003688
+      inSlope: 0.0034334995
+      outSlope: -4.9939804
+      tangentMode: 1
+      weightedMode: 0
+      inWeight: 0.9978412
+      outWeight: 1
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: -6.676988
+      outSlope: -6.676988
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
   Entity: {fileID: 0}
   _spawnScaleAnimationCurve:
     serializedVersion: 2

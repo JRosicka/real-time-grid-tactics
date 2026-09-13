@@ -65,8 +65,10 @@ namespace Gameplay.Entities {
         [SerializeField] private AnimationCurve _attackAnimationOutro_curve;
         [SerializeField] private float _attackShakeTriggerTime;
         [SerializeField] private float _timeToDisappearWhenDying = .5f;
-        [SerializeField] private float _fowFadeTime;
-        
+        [FormerlySerializedAs("_fowFadeTime")] [SerializeField] private float _fowFadeInTime;
+        [SerializeField] private AnimationCurve _fowFadeInCurve;
+        [SerializeField] private float _fowFadeOutTime;
+        [SerializeField] private AnimationCurve _fowFadeOutCurve;
         
         private Material _selectionMaterial;
         private Material _targetedMaterial;
@@ -542,15 +544,19 @@ namespace Gameplay.Entities {
 
         private bool _hiddenByFoW;
         private bool ActuallyHiddenByFoW => _hiddenByFoW && !Entity.EntityData.AlwaysShowWhenHiddenByFoW;
+        private float _currentFadeProgressTime;
         
         private void UpdateFoW() {
             if (_dying) return;
             if (!ActuallyHiddenByFoW && _fowCanvasGroup.alpha >= 1) return;
             if (ActuallyHiddenByFoW && _fowCanvasGroup.alpha == 0) return;
             
-            float fadeDirection = ActuallyHiddenByFoW ? -1 : 1;
-            float fadeAmount = fadeDirection * Time.deltaTime / _fowFadeTime;
-            _fowCanvasGroup.alpha += fadeAmount;
+            float totalFadeTime = ActuallyHiddenByFoW ? _fowFadeOutTime : _fowFadeInTime;
+            _currentFadeProgressTime = Mathf.Clamp(_currentFadeProgressTime + Time.deltaTime, 0, totalFadeTime);
+            float normalizedFadeTime = _currentFadeProgressTime / totalFadeTime;
+            
+            AnimationCurve curve = ActuallyHiddenByFoW ? _fowFadeOutCurve : _fowFadeInCurve;
+            _fowCanvasGroup.alpha = curve.Evaluate(normalizedFadeTime);
         }
 
         private void FogOfWarHiddenStatusChanged(bool hidden) {
@@ -559,6 +565,7 @@ namespace Gameplay.Entities {
 
         private void SetFoWHiddenStatus(bool hidden, bool animate) {
             _hiddenByFoW = hidden;
+            _currentFadeProgressTime = 0;
             ResolveVisibility(!animate);
         }
 
