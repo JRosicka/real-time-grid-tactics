@@ -19,6 +19,7 @@ namespace Gameplay.Entities {
         
         public void Initialize(GridEntity entity, PlayerColorData colorData) {
             _entity = entity;
+            entity.EntityMovedClientEvent += EntityMoved;
 
             foreach (ParticleSystem particles in _particleSystems) {
                 ParticleSystem.MainModule main = particles.main;
@@ -48,7 +49,16 @@ namespace Gameplay.Entities {
             ToggleView(!fowCell.Hidden);
         }
 
+        private void EntityMoved() {
+            ToggleView(_active);
+        }
+
         private void ToggleView(bool active) {
+            // Additional condition: NEVER have this be active if out of bounds
+            if (active && !GameManager.Instance.GridController.IsInBounds(Position)) {
+                active = false;
+            }
+            
             if (active) {
                 _particleSystems.ForEach(p => p.Play());
             } else {
