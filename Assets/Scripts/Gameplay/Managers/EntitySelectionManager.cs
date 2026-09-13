@@ -1,10 +1,12 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using Audio;
 using Gameplay.Config;
 using Gameplay.Config.Abilities;
 using Gameplay.Entities;
 using Gameplay.Grid;
+using Gameplay.Managers;
 using Gameplay.UI;
 using Scenes;
 using UnityEngine;
@@ -47,6 +49,16 @@ public class EntitySelectionManager {
         if (player != null) {
             player.OwnedPurchasablesController.OwnedPurchasablesChangedEvent += OwnedPurchasablesChanged;
         }
+
+        if (_gameManager.FogOfWarManager == null) {
+            _gameManager.FogOfWarInitialized += InitializeFoW;
+        } else {
+            InitializeFoW();
+        }
+    }
+
+    private void InitializeFoW() {
+        _gameManager.FogOfWarManager!.FoWUpdated += DeselectEntityIfHidden;
     }
 
     #region Entity Selection
@@ -149,6 +161,14 @@ public class EntitySelectionManager {
     private void DeselectEntity() {
         if (SelectedEntity == null) return;
         SelectEntity(null);
+    }
+
+    private void DeselectEntityIfHidden(List<FogOfWarManager.FoWCell> foWCells) {
+        if (SelectedEntity == null) return;
+        if (SelectedEntity.EntityData.SelectableInFoW) return;
+        if (foWCells.Any(c => c.Hidden && c.Position == SelectedEntity.Location)) {
+            DeselectEntity();
+        }
     }
 
     private void EntityCollectionChanged() {
