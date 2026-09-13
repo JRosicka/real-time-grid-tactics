@@ -53,6 +53,7 @@ MonoBehaviour:
   SelectableInFoW: 1
   ProvidesVisionToAnyone: 0
   AlwaysShowWhenHiddenByFoW: 1
+  FoWHidesResourceCount: 0
   AttackByDefault: 0
   IsResourceExtractor: 0
   ResourceThatThisCanExtract: {fileID: 0}

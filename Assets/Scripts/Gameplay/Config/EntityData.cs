@@ -8,6 +8,7 @@ using Gameplay.Grid;
 using Gameplay.UI;
 using Mirror;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Gameplay.Config {
     /// <summary>
@@ -66,6 +67,7 @@ namespace Gameplay.Config {
         public bool SelectableInFoW;
         public bool ProvidesVisionToAnyone = true;
         public bool AlwaysShowWhenHiddenByFoW;
+        public bool FoWHidesResourceCount = true;
         
         [Space]
         public bool AttackByDefault;

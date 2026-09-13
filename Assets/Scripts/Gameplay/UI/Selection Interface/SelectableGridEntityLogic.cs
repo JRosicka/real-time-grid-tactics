@@ -22,6 +22,7 @@ namespace Gameplay.UI {
             entity.CurrentResources.ValueChanged += OnEntityResourceAmountChanged;
             entity.KillCountChanged += KillCountChanged;
             entity.IncomeRateChanged += IncomeRateChanged;
+            entity.FogOfWarHiddenStatusChangedEvent += FoWChanged;
             
             IGamePlayer player = GameManager.Instance.GetPlayerForTeam(entity);
             if (player != null) {
@@ -105,6 +106,13 @@ namespace Gameplay.UI {
             
             // If this entity has starting resources, display for those
             if (Entity.EntityData.StartingResourceSet.Amount > 0) {
+                // Don't actually display the resources if the entity is hidden by FoW
+                if (Entity.EntityData.FoWHidesResourceCount && GameManager.Instance.FogOfWarManager!.IsEntityHidden(Entity)) {
+                    resourceRow.SetActive(true);
+                    resourceLabel.text = "Resources:";
+                    resourceField.text = $"??? {Entity.CurrentResourcesValue.Type.DisplayIcon()}";
+                    return;
+                }
                 resourceAmount = Entity.CurrentResourcesValue;
             }
 
@@ -217,6 +225,7 @@ namespace Gameplay.UI {
             Entity.CurrentResources.ValueChanged -= OnEntityResourceAmountChanged;
             Entity.KillCountChanged -= KillCountChanged;
             Entity.IncomeRateChanged -= IncomeRateChanged;
+            Entity.FogOfWarHiddenStatusChangedEvent -= FoWChanged;
             IGamePlayer player = GameManager.Instance.GetPlayerForTeam(Entity);
             if (player != null) {
                 player.OwnedPurchasablesController.OwnedPurchasablesChangedEvent -= OnOwnedPurchasablesChanged;
@@ -252,12 +261,18 @@ namespace Gameplay.UI {
             _incomeRateField.text = newIncomeRate.ToString();
         }
 
+        private void FoWChanged(bool _) {
+            SetUpResourceView(_resourceRow, _resourceLabel, _resourceField);
+        }
+
         #region Tooltips
         
         private const string DefenseFormatStructure = "{0} occupying this structure receive {1} less damage from attacks.";
         private const string DefenseFormatUnit = "Receives {0} less damage from attacks due to friendly structure.";
         private const string DefenseFormatTerrain = "Receives {0} less damage from attacks due to terrain.";
         private string GetDefenseTooltip() {
+            if (!Entity.EntityData.Attackable) return "";
+            
             int defenseModifier = Entity.GetStructureDefenseModifier();
             if (defenseModifier != 0) {
                 // Defense modifier from structure (friendly or itself)
