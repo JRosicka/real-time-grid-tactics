@@ -79,6 +79,10 @@ namespace Gameplay.Managers {
         }
 
         private void EntityUpdated(GridEntity entity, GridEntityCollectionUpdate updateType, Vector2Int previousLocation, Vector2Int newLocation) {
+            if (entity == null) {
+                Debug.LogWarning("Entity is null, for some reason");
+                return;
+            }
             if (entity.InteractBehavior == null || !entity.InteractBehavior.ProvidesVision) {
                 // This entity will not modify the map FoW, but the entity might need to visually update within the player's FoW view
                 entity.UpdateFoWHiddenStatus(_cellFoWState[newLocation]);
