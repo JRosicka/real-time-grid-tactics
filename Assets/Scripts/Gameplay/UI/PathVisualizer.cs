@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Gameplay.Config;
 using Gameplay.Grid;
+using Gameplay.Managers;
 using Gameplay.Pathfinding;
 using UnityEngine;
 using Util;
@@ -33,6 +34,7 @@ namespace Gameplay.UI {
 
         private GridController GridController => GameManager.Instance.GridController;
         private PathfinderService PathfinderService => GameManager.Instance.PathfinderService;
+        private FogOfWarManager FogOfWarManager => GameManager.Instance.FogOfWarManager;
 
         public void Initialize() {
             _linePool = new GameObjectPool<AbstractDirectionalLine>(_directionalLinePrefab, _lineBucket, _directionalLinePoolSize);
@@ -45,6 +47,12 @@ namespace Gameplay.UI {
         /// </summary>
         public void Visualize(PathfinderService.Path path, PathType pathType, Vector2Int targetLocation, bool hidePathDestination, bool thickLines, EntityPathfindingConfig pathfindingConfig) {
             ClearPath(thickLines);
+
+            if (!thickLines) {
+                // For normal paths, only show regular lines up to the last cell in vision. Cells hidden by FoW (or any 
+                // cells after the first one encountered) should just be discarded. 
+                path = PathWithTrimmedHiddenCells(path);
+            }
             
             // If the path is too short, then no need to place any lines
             if (path.Nodes.Count < 1 
@@ -54,6 +62,23 @@ namespace Gameplay.UI {
             if (!thickLines) {
                 VisualizeStraightLine(path, pathType, targetLocation, hidePathDestination);
             }
+        }
+
+        private PathfinderService.Path PathWithTrimmedHiddenCells(PathfinderService.Path path) {
+            int nodesToInclude = 0;
+            foreach (GridNode node in path.Nodes) {
+                if (FogOfWarManager.IsLocationHidden(node.Location)) {
+                    path.ContainsRequestedDestination = false;
+                    break;
+                }
+                nodesToInclude++;
+            }
+
+            if (nodesToInclude < path.Nodes.Count) {
+                path.Nodes.RemoveRange(nodesToInclude, path.Nodes.Count - nodesToInclude);
+            }
+
+            return path;
         }
         
         private void VisualizeRegularLines(PathfinderService.Path path, PathType pathType, bool hidePathDestination, bool thickLines, EntityPathfindingConfig pathfindingConfig) {

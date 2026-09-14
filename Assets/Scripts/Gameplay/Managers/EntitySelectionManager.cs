@@ -58,7 +58,7 @@ public class EntitySelectionManager {
     }
 
     private void InitializeFoW() {
-        _gameManager.FogOfWarManager!.FoWUpdated += DeselectEntityIfHidden;
+        _gameManager.FogOfWarManager!.FoWUpdated += FogOfWarChanged;
     }
 
     #region Entity Selection
@@ -178,6 +178,13 @@ public class EntitySelectionManager {
             // especially for expensive calculations like the charge ability selection. 
             _selectedTargetableAbility.RecalculateTargetableAbilitySelection(SelectedEntity, _targetData);
         }
+    }
+
+    private void FogOfWarChanged(List<FogOfWarManager.FoWCell> foWCells) {
+        DeselectEntityIfHidden(foWCells);
+        
+        // TODO this can potentially go away if we make the change to update entity collections client-side, since FoW updates happen before the collection changed event
+        EntityCollectionChanged();
     }
 
     private void LockStatusChanged(GameTeam ownerTeam) {
