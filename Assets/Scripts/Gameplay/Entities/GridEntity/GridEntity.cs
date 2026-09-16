@@ -946,8 +946,11 @@ namespace Gameplay.Entities {
         private bool _hiddenByFoW;
 
         private void InitializeFoW() {
-            _hiddenByFoW = GameManager.Instance.FogOfWarManager!.IsEntityHidden(this);
-            GameManager.Instance.FogOfWarManager.FoWUpdated += FogOfWarHiddenStatusChanged;
+            TeamFogOfWarTracker tracker = GameManager.Instance.FogOfWarManager!.GetLocalTeamTracker();
+            _hiddenByFoW = tracker != null && tracker.IsEntityHidden(this);
+            if (tracker != null) {
+                tracker.FoWUpdated += FogOfWarHiddenStatusChanged;
+            }
         }
 
         public void UpdateFoWHiddenStatus(bool hidden) {
@@ -961,9 +964,9 @@ namespace Gameplay.Entities {
             FogOfWarHiddenStatusChangedEvent?.Invoke(hidden);
         }
         
-        private void FogOfWarHiddenStatusChanged(List<FogOfWarManager.FoWCell> foWCells) {
+        private void FogOfWarHiddenStatusChanged(List<TeamFogOfWarTracker.FoWCell> foWCells) {
             if (Location == null || DeadOrDying) return;
-            foreach (FogOfWarManager.FoWCell cell in foWCells) {
+            foreach (TeamFogOfWarTracker.FoWCell cell in foWCells) {
                 if (cell.Position == Location.Value) {
                     DoUpdateFoWHiddenStatus(cell.Hidden);
                     return;

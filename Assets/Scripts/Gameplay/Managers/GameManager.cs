@@ -112,7 +112,7 @@ public class GameManager : MonoBehaviour {
 
     public void SetUpFogOfWar(FogOfWarSetting fowSetting, bool realGame) {
         FogOfWarManager = new FogOfWarManager(GridController, CommandManager, fowSetting, realGame, LocalTeam);
-        FogOfWarDisplayer.Initialize(FogOfWarManager);
+        FogOfWarDisplayer.Initialize(FogOfWarManager, LocalTeam);
         FogOfWarInitialized?.Invoke();
     }
 

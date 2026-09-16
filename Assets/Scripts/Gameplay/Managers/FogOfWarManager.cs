@@ -1,167 +1,77 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using Gameplay.Entities;
 using Gameplay.Grid;
 using JetBrains.Annotations;
+using Scenes;
+using Sirenix.Utilities;
 using UnityEngine;
 
 namespace Gameplay.Managers {
     /// <summary>
     /// Central logic for Fog of War. Handles state management, events, and communicating to entities when FoW state changes. 
     /// Entirely client-side.
+    ///
+    /// Sets up one or more <see cref="TeamFogOfWarTracker"/>s to track state on a per-team basis. The behavior for that:
+    /// - Each client that is a player just needs to track its own FoW, and get that from FoWManager by passing its team (that is the only team FoW it will be tracking)
+    /// - Each client that is a spectator needs to track both players' FoW, and get that from FoWManager by passing its team. The only caller there will be EntitySelectionManager.
+    /// - The server will need to track both players' FoW regardless of spectator or not, and most of the callers will get that from FoWManager by passing the performer team. 
+    ///
+    ///     /// TODO: EntitySelectionManager call and potentially the MoveAbilityDataAsset call (can be called locally via
+    /// AbilityAssignmentManager.StartPerformingAbility, use the entity team) are called client-side and thus should use
+    /// the local team FoW state. Others are from server and should use the performer team's state.
     /// </summary>
     public class FogOfWarManager {
-        public class FoWCell {
-            public Vector2Int Position;
-            public bool Hidden;
-        }
-
-        public Action<List<FoWCell>> FoWUpdated;
-        
-        // Calculated per player
-        public FogOfWarSetting FowSetting { get; }
-
-        // true/false depending on hidden/shown. Can be empty if FoW is set to None. 
-        private readonly Dictionary<Vector2Int, bool> _cellFoWState = new();
-        private readonly GridController _gridController;
-        private readonly ICommandManager _commandManager;
+        private readonly Dictionary<GameTeam, TeamFogOfWarTracker> _teamFogOfWarTrackers = new();
         private readonly GameTeam _localTeam;
         
-        // Cached until movement/register/unregister occurs
-        private List<Vector2Int> FriendlyEntityPositions => _commandManager.EntitiesOnGrid.LocationsWithFriendlyEntities(_localTeam);
+        public FogOfWarSetting LocalFowSetting { get; }
         
-        private IEnumerable<Vector2Int> CellsInRange(Vector2Int location) => _gridController.GridData.GetCellsInRange(location, VisionRange).Select(c => c.Location);
-        private int VisionRange => (int)FowSetting;
-
         public FogOfWarManager(GridController gridController, ICommandManager commandManager, FogOfWarSetting fowSetting, bool realGame, GameTeam localTeam) {
-            _gridController = gridController;
-            _commandManager = commandManager;
             _localTeam = localTeam;
-            FowSetting = DetermineFoWSettingForMatch(fowSetting, realGame, localTeam);
-
-            if (FowSetting != FogOfWarSetting.None) {
-                // Subscribe to events
-                _commandManager.EntityUpdatedEvent += EntityUpdated;
-                
-                // Initialize cells
-                foreach (Vector2Int cell in gridController.GetAllCellsInBounds()) {
-                    _cellFoWState.Add(cell, true);
-                }
-                
-                // Set initial FoW state for each cell
-                List<Vector2Int> processedCells = new();
-                foreach (Vector2Int location in FriendlyEntityPositions) {
-                    (_, List<Vector2Int> newProcessedCells) = RevealWithinRange(location, processedCells);
-                    processedCells.AddRange(newProcessedCells);
-                }
+            FogOfWarSetting fowForMatch = DetermineFoWSettingForMatch(fowSetting, realGame);
+            LocalFowSetting = localTeam == GameTeam.Spectator ? FogOfWarSetting.None : fowForMatch;
+            
+            if (GameTypeTracker.Instance.HostForNetworkedGame || !GameTypeTracker.Instance.GameIsNetworked) {
+                // MP server or SP. Need to track FoW for both teams
+                RegisterFoWForTeam(GameTeam.Player1, fowForMatch, gridController, commandManager);
+                RegisterFoWForTeam(GameTeam.Player2, fowForMatch, gridController, commandManager);
+            } else if (localTeam == GameTeam.Spectator) {
+                // Spectators are able to observe paths for either player, so need to track FoW for both teams
+                RegisterFoWForTeam(GameTeam.Player1, fowForMatch, gridController, commandManager);
+                RegisterFoWForTeam(GameTeam.Player2, fowForMatch, gridController, commandManager);
+            } else {
+                // This is a client on a team. Only need to track the local team. 
+                RegisterFoWForTeam(localTeam, fowForMatch, gridController, commandManager);
             }
         }
 
+        [CanBeNull]
+        public TeamFogOfWarTracker GetTracker(GameTeam team) {
+            if (team == GameTeam.Spectator) return null;
+            
+            if (!_teamFogOfWarTrackers.TryGetValue(team, out TeamFogOfWarTracker tracker)) {
+                Debug.LogError($"No fog of war tracker for team {team}. Registered trackers: {string.Join(", ", _teamFogOfWarTrackers.Keys)}");
+                return null;
+            }
+
+            return tracker;
+        }
+
+        [CanBeNull]
+        public TeamFogOfWarTracker GetLocalTeamTracker() {
+            return GetTracker(_localTeam);
+        }
+        
         public void UnregisterListeners() {
-            if (_commandManager != null) {
-                _commandManager.EntityUpdatedEvent -= EntityUpdated;
-            }
+            _teamFogOfWarTrackers.ForEach(t => t.Value.UnregisterListeners());
         }
 
-        public bool IsEntityHidden([NotNull] GridEntity entity) {
-            if (entity.Location == null) return false;
-            return IsLocationHidden(entity.Location.Value);
-        }
-
-        public bool IsLocationHidden(Vector2Int location) {
-            if (_cellFoWState.Count == 0) return false;
-            return _cellFoWState[location];
+        private void RegisterFoWForTeam(GameTeam team, FogOfWarSetting fowSetting, GridController gridController, ICommandManager commandManager) {
+            _teamFogOfWarTrackers[team] = new TeamFogOfWarTracker(team, fowSetting, gridController, commandManager);
         }
         
-        public IEnumerable<FoWCell> GetAllCells() {
-            return _cellFoWState.Select(kvp => new FoWCell { Position = kvp.Key, Hidden = kvp.Value });
-        }
-
-        private void EntityUpdated(GridEntity entity, GridEntityCollectionUpdate updateType, Vector2Int previousLocation, Vector2Int newLocation) {
-            if (entity == null) {
-                Debug.LogWarning("Entity is null, for some reason");
-                return;
-            }
-            if (entity.InteractBehavior == null || !entity.InteractBehavior.ProvidesVision) {
-                // This entity will not modify the map FoW, but the entity might need to visually update within the player's FoW view
-                entity.UpdateFoWHiddenStatus(_cellFoWState[newLocation]);
-                return;
-            }
-            
-            List<FoWCell> updatedCells;
-            switch (updateType) {
-                case GridEntityCollectionUpdate.Register:
-                    (updatedCells, _) = RevealWithinRange(newLocation, null);
-                    break;
-                case GridEntityCollectionUpdate.Unregister:
-                    updatedCells = TryHideWithinRange(previousLocation, null);
-                    break;
-                case GridEntityCollectionUpdate.Move:
-                    // Look through cells viewable from new location, mark as not hidden
-                    List<Vector2Int> processedCells;
-                    (updatedCells, processedCells) = RevealWithinRange(newLocation, null);
-            
-                    // Look through cells viewable from old location (and not from new), see if they should be marked as hidden
-                    updatedCells.AddRange(TryHideWithinRange(previousLocation, processedCells));
-
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(updateType), updateType, null);
-            }
-
-            SendUpdatedEvent(updatedCells);
-        }
-        
-        /// <summary>
-        /// Returns a set of cells that were updated and a set of locations that this processed
-        /// </summary>
-        private (List<FoWCell>, List<Vector2Int>) RevealWithinRange(Vector2Int originLocation, List<Vector2Int> cellsToSkip) {
-            List<FoWCell> updatedCells = new();
-            List<Vector2Int> processedCells = CellsInRange(originLocation).ToList();
-            cellsToSkip ??= new List<Vector2Int>();
-            
-            foreach (Vector2Int location in processedCells) {
-                if (cellsToSkip.Contains(location)) continue;
-                
-                bool wasHidden = _cellFoWState[location];
-                if (!wasHidden) continue;
-                
-                _cellFoWState[location] = false;
-                updatedCells.Add(new FoWCell { Position = location, Hidden = false });
-            }
-            
-            return (updatedCells, processedCells);
-        }
-
-        private List<FoWCell> TryHideWithinRange(Vector2Int originLocation, List<Vector2Int> cellsToSkip) {
-            List<FoWCell> updatedCells = new();
-            cellsToSkip ??= new List<Vector2Int>();
-            
-            foreach (Vector2Int location in CellsInRange(originLocation)) {
-                if (cellsToSkip.Contains(location)) continue;
-                // We know this was not hidden
-                
-                // Check to see if any other units can see it
-                if (CellsInRange(location).All(l => !FriendlyEntityPositions.Contains(l))) {
-                    // It must be hidden now
-                    _cellFoWState[location] = true;
-                    updatedCells.Add(new FoWCell { Position = location, Hidden = true });
-                }
-            }
-            
-            return updatedCells;
-        }
-
-        private void SendUpdatedEvent(List<FoWCell> updatedCells) {
-            if (updatedCells.Any()) {
-                FoWUpdated?.Invoke(updatedCells);
-            }
-        }
-        
-        private FogOfWarSetting DetermineFoWSettingForMatch(FogOfWarSetting fowSetting, bool realGame, GameTeam localPlayerTeam) {
+        private FogOfWarSetting DetermineFoWSettingForMatch(FogOfWarSetting fowSetting, bool realGame) {
             if (!realGame) return FogOfWarSetting.None;
-            if (localPlayerTeam == GameTeam.Spectator) return FogOfWarSetting.None;
             return fowSetting;
         }
     }

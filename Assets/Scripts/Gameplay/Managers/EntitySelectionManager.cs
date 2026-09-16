@@ -66,7 +66,7 @@ public class EntitySelectionManager {
     public void SelectEntity(GridEntity entity) {
         if (SelectedEntity != null) {
             // Unregister the un-registration event for the previously selected entity
-            SelectedEntity.TargetLocationLogic.ValueChanged -= TryFindPath;
+            SelectedEntity.TargetLocationLogic.ValueChanged -= TryVisualizePath;
             SelectedEntity.UnregisteredEvent -= DeselectEntity;
             SelectedEntity.Deselect();
         }
@@ -82,8 +82,8 @@ public class EntitySelectionManager {
         GridController.TrackEntity(entity);
 
         if (entity != null) {
-            TryFindPath(null, entity.TargetLocationLogic.Value, null);
-            entity.TargetLocationLogic.ValueChanged += TryFindPath;
+            TryVisualizePath(null, entity.TargetLocationLogic.Value, null);
+            entity.TargetLocationLogic.ValueChanged += TryVisualizePath;
             entity.UnregisteredEvent += DeselectEntity;
         } else {
             GridController.ClearPath(false);
@@ -196,7 +196,7 @@ public class EntitySelectionManager {
         if (SelectedEntity == null) return;
         if (!_gameManager.CommandManager.EntitiesOnGrid.IsEntityOnGrid(SelectedEntity)) return;
         // Update the path if necessary
-        TryFindPath(null, SelectedEntity.TargetLocationLogic.Value, null);
+        TryVisualizePath(null, SelectedEntity.TargetLocationLogic.Value, null);
 
         // Update the location if necessary
         if (SelectedEntity.Location == _selectedEntityCurrentLocation) return; 
@@ -289,7 +289,7 @@ public class EntitySelectionManager {
     
     #endregion
 
-    private void TryFindPath(INetworkableFieldValue oldValue, INetworkableFieldValue newValue, object metadata) {
+    private void TryVisualizePath(INetworkableFieldValue oldValue, INetworkableFieldValue newValue, object metadata) {
         if (SelectedEntity == null) return;
         if (!_gameManager.CommandManager.EntitiesOnGrid.IsEntityOnGrid(SelectedEntity)) return; // May be in the middle of getting unregistered
         if (!SelectedEntity.CanMoveOrRally && !SelectedEntity.TargetLocationLogicValue.CanRally) return;

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Gameplay.Entities;
+using Gameplay.Managers;
 using Scenes;
 using UnityEngine;
 using UnityEngine.UI;
@@ -63,7 +64,8 @@ namespace Gameplay.UI {
             ReticleSelection reticleSelection = entityAtLocation == null || entityAtLocation.InteractBehavior == null
                 ? ReticleSelection.Neutral
                 : entityAtLocation.InteractBehavior.ReticleSelection;
-            if (entityAtLocation != null && GameManager.Instance.FogOfWarManager!.IsEntityHidden(entityAtLocation)) {
+            TeamFogOfWarTracker tracker = GameManager.Instance.FogOfWarManager!.GetLocalTeamTracker();
+            if (entityAtLocation != null && tracker != null && tracker.IsEntityHidden(entityAtLocation)) {
                 reticleSelection = ReticleSelection.Neutral;
             }
             

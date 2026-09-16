@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Gameplay.Entities;
 using Gameplay.Managers;
 using UnityEngine;
 
@@ -17,17 +18,18 @@ namespace Gameplay.Grid {
         private FogOfWarManager _fowManager;
 
 
-        public void Initialize(FogOfWarManager fowManager) {
+        public void Initialize(FogOfWarManager fowManager, GameTeam localTeam) {
             _fowManager = fowManager;
             
             // First check to see if any FoW should be present for this player
-            if (fowManager.FowSetting == FogOfWarSetting.None) return;
+            if (fowManager.LocalFowSetting == FogOfWarSetting.None) return;
             
             // Subscribe to events
-            fowManager.FoWUpdated += FogOfWarUpdated;
+            TeamFogOfWarTracker tracker = fowManager.GetLocalTeamTracker();
+            tracker!.FoWUpdated += FogOfWarUpdated;
 
             // Instantiate and set initial FoW state for all cells
-            foreach (FogOfWarManager.FoWCell cell in fowManager.GetAllCells()) {
+            foreach (TeamFogOfWarTracker.FoWCell cell in tracker.GetAllCells()) {
                 CellFogOfWar cellView = Instantiate(_cellFowPrefab, GameManager.Instance.GridController.GetWorldPosition(cell.Position), Quaternion.identity, transform);
                 _cellViews[cell.Position] = cellView;
 
@@ -36,13 +38,14 @@ namespace Gameplay.Grid {
         }
 
         private void OnDestroy() {
-            if (_fowManager != null) {
-                _fowManager.FoWUpdated -= FogOfWarUpdated;
+            TeamFogOfWarTracker tracker = _fowManager?.GetLocalTeamTracker();
+            if (tracker != null) {
+                tracker.FoWUpdated -= FogOfWarUpdated;
             }
         }
 
-        private void FogOfWarUpdated(List<FogOfWarManager.FoWCell> foWCells) {
-            foreach (FogOfWarManager.FoWCell cell in foWCells) {
+        private void FogOfWarUpdated(List<TeamFogOfWarTracker.FoWCell> foWCells) {
+            foreach (TeamFogOfWarTracker.FoWCell cell in foWCells) {
                 _cellViews[cell.Position].SetHiddenState(cell.Hidden, true);
             }
         }

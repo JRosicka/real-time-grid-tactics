@@ -30,7 +30,10 @@ namespace Gameplay.Entities {
         public override void InitializeFoW() {
             ReEvaluateInspiringPresenceFoW();
             _entity.EntityMovedClientEvent += ReEvaluateInspiringPresenceFoW;
-            GameManager.Instance.FogOfWarManager!.FoWUpdated += FoWUpdated;
+            TeamFogOfWarTracker tracker = GameManager.Instance.FogOfWarManager!.GetLocalTeamTracker();
+            if (tracker != null) {
+                tracker.FoWUpdated += FoWUpdated;
+            }
         }
 
         public override void LethalDamageReceived() {
@@ -81,12 +84,12 @@ namespace Gameplay.Entities {
             ReEvaluateInspiringPresenceFoW();
         }
 
-        private void FoWUpdated(List<FogOfWarManager.FoWCell> updatedCells) {
+        private void FoWUpdated(List<TeamFogOfWarTracker.FoWCell> updatedCells) {
             if (!_inspiringPresenceActive) return;
             if (_entity.Location == null) return;
 
             List<Vector2Int> adjacentAndEntityCells = GetAdjacentAndEntityCells();
-            List<FogOfWarManager.FoWCell> cellsOfInterest = updatedCells.Where(c => adjacentAndEntityCells.Contains(c.Position)).ToList();
+            List<TeamFogOfWarTracker.FoWCell> cellsOfInterest = updatedCells.Where(c => adjacentAndEntityCells.Contains(c.Position)).ToList();
             if (cellsOfInterest.Any()) {
                 UpdateInspiringPresenceFoW(cellsOfInterest);
             }
@@ -95,12 +98,14 @@ namespace Gameplay.Entities {
         private void ReEvaluateInspiringPresenceFoW() {
             if (!_inspiringPresenceActive) return;
             if (GameManager.Instance.FogOfWarManager == null) return;
-
-            List<FogOfWarManager.FoWCell> cells = new();
+            TeamFogOfWarTracker tracker = GameManager.Instance.FogOfWarManager.GetLocalTeamTracker();
+            if (tracker == null) return;
+            
+            List<TeamFogOfWarTracker.FoWCell> cells = new();
             foreach (Vector2Int location in GetAdjacentAndEntityCells()) {
-                cells.Add(new FogOfWarManager.FoWCell {
+                cells.Add(new TeamFogOfWarTracker.FoWCell {
                     Position = location,
-                    Hidden = GameManager.Instance.FogOfWarManager.IsLocationHidden(location)
+                    Hidden = tracker.IsLocationHidden(location)
                 });
             }
             
@@ -111,7 +116,7 @@ namespace Gameplay.Entities {
         /// Actually update the individual inspiring presence particles
         /// </summary>
         /// <param name="updatedCells"></param>
-        private void UpdateInspiringPresenceFoW(List<FogOfWarManager.FoWCell> updatedCells) {
+        private void UpdateInspiringPresenceFoW(List<TeamFogOfWarTracker.FoWCell> updatedCells) {
             if (!_inspiringPresenceActive) return;
 
             foreach (InspiringPresencePositionedParticles particles in _inspiringPresenceParticles) {

@@ -4,6 +4,7 @@ using Gameplay.Config;
 using Gameplay.Entities;
 using Gameplay.Entities.Abilities;
 using Gameplay.Entities.BuildQueue;
+using Gameplay.Managers;
 using JetBrains.Annotations;
 using TMPro;
 using Unity.VisualScripting;
@@ -107,7 +108,8 @@ namespace Gameplay.UI {
             // If this entity has starting resources, display for those
             if (Entity.EntityData.StartingResourceSet.Amount > 0) {
                 // Don't actually display the resources if the entity is hidden by FoW
-                if (Entity.EntityData.FoWHidesResourceCount && GameManager.Instance.FogOfWarManager!.IsEntityHidden(Entity)) {
+                TeamFogOfWarTracker tracker = GameManager.Instance.FogOfWarManager!.GetLocalTeamTracker();
+                if (Entity.EntityData.FoWHidesResourceCount && tracker != null && tracker.IsEntityHidden(Entity)) {
                     resourceRow.SetActive(true);
                     resourceLabel.text = "Resources:";
                     resourceField.text = $"??? {Entity.CurrentResourcesValue.Type.DisplayIcon()}";

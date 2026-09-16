@@ -7,6 +7,7 @@ using Gameplay.Config.Abilities;
 using Gameplay.Entities.Abilities;
 using Gameplay.Entities.Upgrades;
 using Gameplay.Grid;
+using Gameplay.Managers;
 using Gameplay.UI;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -166,7 +167,9 @@ namespace Gameplay.Entities {
         }
 
         private void InitializeFoW() {
-            SetFoWHiddenStatus(GameManager.Instance.FogOfWarManager!.IsEntityHidden(Entity), false);
+            TeamFogOfWarTracker tracker = GameManager.Instance.FogOfWarManager!.GetLocalTeamTracker();
+            bool hidden = tracker != null && tracker.IsEntityHidden(Entity);
+            SetFoWHiddenStatus(hidden, false);
             _particularView.InitializeFoW();
         }
 

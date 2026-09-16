@@ -39,11 +39,11 @@ namespace Gameplay.Entities {
             ToggleView(active);
         }
 
-        public void UpdateFoW(List<FogOfWarManager.FoWCell> fowCells) {
+        public void UpdateFoW(List<TeamFogOfWarTracker.FoWCell> fowCells) {
             if (!_active) return;
             
             Vector2Int position = Position;
-            FogOfWarManager.FoWCell fowCell = fowCells.FirstOrDefault(c => c.Position == position);
+            TeamFogOfWarTracker.FoWCell fowCell = fowCells.FirstOrDefault(c => c.Position == position);
             if (fowCell == null) return;
             
             ToggleView(!fowCell.Hidden);
