@@ -84,7 +84,7 @@ namespace Gameplay.Managers {
                 Debug.LogWarning("Entity is null, for some reason");
                 return;
             }
-            if (EntityProvidesVision(entity)) {
+            if (!EntityProvidesVision(entity)) {
                 // This entity will not modify the map FoW, but the entity might need to visually update within the player's FoW view
                 if (_updateEntityVisuals) {
                     entity.UpdateFoWHiddenStatus(_cellFoWState[newLocation]);
