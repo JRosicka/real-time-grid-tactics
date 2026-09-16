@@ -84,9 +84,11 @@ namespace Gameplay.Managers {
                 Debug.LogWarning("Entity is null, for some reason");
                 return;
             }
-            if (_updateEntityVisuals && entity.InteractBehavior is not { ProvidesVision: true }) {
+            if (EntityProvidesVision(entity)) {
                 // This entity will not modify the map FoW, but the entity might need to visually update within the player's FoW view
-                entity.UpdateFoWHiddenStatus(_cellFoWState[newLocation]);
+                if (_updateEntityVisuals) {
+                    entity.UpdateFoWHiddenStatus(_cellFoWState[newLocation]);
+                }
                 return;
             }
             
@@ -155,7 +157,14 @@ namespace Gameplay.Managers {
         }
         
         #endregion
-        
+
+        private bool EntityProvidesVision(GridEntity entity) {
+            if (entity.Team == _team) return true;
+            if (entity.Team.OpponentTeam() == _team) return false;
+            if (_team == GameTeam.Spectator) return true;
+            
+            return false;
+        }
         
         private void SendUpdatedEvent(List<FoWCell> updatedCells) {
             if (updatedCells.Any()) {

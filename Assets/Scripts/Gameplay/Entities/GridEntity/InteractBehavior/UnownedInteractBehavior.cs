@@ -14,8 +14,6 @@ namespace Gameplay.Entities {
         /// </summary>
         public bool AllowedToSeeMiscInfo => GameManager.Instance.LocalTeam == GameTeam.Spectator;
 
-        public bool ProvidesVision => GameManager.Instance.LocalTeam == GameTeam.Spectator;
-
         public bool AllowedToSeeQueuedBuilds(GameTeam team) {
             return GameManager.Instance.LocalTeam == GameTeam.Spectator;
         }

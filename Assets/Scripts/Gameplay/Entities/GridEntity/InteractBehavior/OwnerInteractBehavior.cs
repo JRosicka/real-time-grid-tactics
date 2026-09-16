@@ -17,7 +17,6 @@ namespace Gameplay.Entities {
         
         public bool IsLocalTeam => true;
         public bool AllowedToSeeMiscInfo => true;
-        public bool ProvidesVision => _entity.EntityData.ProvidesVisionToAnyone;
 
         public bool AllowedToSeeQueuedBuilds(GameTeam team) {
             if (_entity.EntityData.ControllableByAllPlayers) {

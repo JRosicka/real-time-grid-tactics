@@ -65,7 +65,6 @@ namespace Gameplay.Config {
 
         [Header("Fog of war")]
         public bool SelectableInFoW;
-        public bool ProvidesVisionToAnyone = true;
         public bool AlwaysShowWhenHiddenByFoW;
         public bool FoWHidesResourceCount = true;
         
