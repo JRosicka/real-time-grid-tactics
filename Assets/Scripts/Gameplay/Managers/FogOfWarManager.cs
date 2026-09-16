@@ -12,13 +12,9 @@ namespace Gameplay.Managers {
     /// Entirely client-side.
     ///
     /// Sets up one or more <see cref="TeamFogOfWarTracker"/>s to track state on a per-team basis. The behavior for that:
-    /// - Each client that is a player just needs to track its own FoW, and get that from FoWManager by passing its team (that is the only team FoW it will be tracking)
-    /// - Each client that is a spectator needs to track both players' FoW, and get that from FoWManager by passing its team. The only caller there will be EntitySelectionManager.
-    /// - The server will need to track both players' FoW regardless of spectator or not, and most of the callers will get that from FoWManager by passing the performer team. 
-    ///
-    ///     /// TODO: EntitySelectionManager call and potentially the MoveAbilityDataAsset call (can be called locally via
-    /// AbilityAssignmentManager.StartPerformingAbility, use the entity team) are called client-side and thus should use
-    /// the local team FoW state. Others are from server and should use the performer team's state.
+    /// - If this is a client that is a player, we just need to track its own team's FoW
+    /// - If this is a client that is a spectator, needs to track both players' FoW for path visualization purposes
+    /// - If this is the server, then we need to track both players' FoW regardless of spectator or not 
     /// </summary>
     public class FogOfWarManager {
         private readonly Dictionary<GameTeam, TeamFogOfWarTracker> _teamFogOfWarTrackers = new();
@@ -47,7 +43,7 @@ namespace Gameplay.Managers {
 
         [CanBeNull]
         public TeamFogOfWarTracker GetTracker(GameTeam team) {
-            if (team == GameTeam.Spectator) return null;
+            if (team is GameTeam.Spectator or GameTeam.Neutral) return null;
             
             if (!_teamFogOfWarTrackers.TryGetValue(team, out TeamFogOfWarTracker tracker)) {
                 Debug.LogError($"No fog of war tracker for team {team}. Registered trackers: {string.Join(", ", _teamFogOfWarTrackers.Keys)}");
@@ -67,7 +63,10 @@ namespace Gameplay.Managers {
         }
 
         private void RegisterFoWForTeam(GameTeam team, FogOfWarSetting fowSetting, GridController gridController, ICommandManager commandManager) {
-            _teamFogOfWarTrackers[team] = new TeamFogOfWarTracker(team, fowSetting, gridController, commandManager);
+            // We only want to directly update the entity visuals from this tracker if it is for the local team, since 
+            // displaying of units only happens through the local team FoW.
+            bool updateEntityVisuals = team == _localTeam;
+            _teamFogOfWarTrackers[team] = new TeamFogOfWarTracker(team, fowSetting, updateEntityVisuals, gridController, commandManager);
         }
         
         private FogOfWarSetting DetermineFoWSettingForMatch(FogOfWarSetting fowSetting, bool realGame) {

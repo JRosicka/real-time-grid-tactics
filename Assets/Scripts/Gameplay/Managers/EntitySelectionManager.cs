@@ -28,6 +28,8 @@ public class EntitySelectionManager {
     /// </summary>
     private System.Object _targetData;
 
+    private TeamFogOfWarTracker _localTeamFowTracker;
+
     private readonly GameManager _gameManager;
     private SelectionInterface SelectionInterface => _gameManager.SelectionInterface;
     private GridController GridController => _gameManager.GridController;
@@ -58,7 +60,10 @@ public class EntitySelectionManager {
     }
 
     private void InitializeFoW() {
-        _gameManager.FogOfWarManager!.FoWUpdated += FogOfWarChanged;
+        _localTeamFowTracker = _gameManager.FogOfWarManager!.GetLocalTeamTracker();
+        if (_localTeamFowTracker != null) {
+            _localTeamFowTracker.FoWUpdated += FogOfWarChanged;
+        }
     }
 
     #region Entity Selection
@@ -105,11 +110,15 @@ public class EntitySelectionManager {
             SelectCellTerrain(cell);
         } else {
             // First remove any ineligible entities due to FoW
-            bool hiddenByFoW = _gameManager.FogOfWarManager!.IsLocationHidden(cell);
-            for (int i = eligibleEntities.Entities.Count - 1; i >= 0; i--) {
-                GridEntity entity = eligibleEntities.Entities[i].Entity;
-                if (hiddenByFoW && !entity.EntityData.SelectableInFoW) {
-                    eligibleEntities.Entities.RemoveAt(i);
+            if (_localTeamFowTracker != null) {
+                bool hiddenByFoW = _localTeamFowTracker.IsLocationHidden(cell);
+                if (hiddenByFoW) {
+                    for (int i = eligibleEntities.Entities.Count - 1; i >= 0; i--) {
+                        GridEntity entity = eligibleEntities.Entities[i].Entity;
+                        if (!entity.EntityData.SelectableInFoW) {
+                            eligibleEntities.Entities.RemoveAt(i);
+                        }
+                    }
                 }
             }
             
@@ -163,7 +172,7 @@ public class EntitySelectionManager {
         SelectEntity(null);
     }
 
-    private void DeselectEntityIfHidden(List<FogOfWarManager.FoWCell> foWCells) {
+    private void DeselectEntityIfHidden(List<TeamFogOfWarTracker.FoWCell> foWCells) {
         if (SelectedEntity == null) return;
         if (SelectedEntity.EntityData.SelectableInFoW) return;
         if (foWCells.Any(c => c.Hidden && c.Position == SelectedEntity.Location)) {
@@ -180,7 +189,7 @@ public class EntitySelectionManager {
         }
     }
 
-    private void FogOfWarChanged(List<FogOfWarManager.FoWCell> foWCells) {
+    private void FogOfWarChanged(List<TeamFogOfWarTracker.FoWCell> foWCells) {
         DeselectEntityIfHidden(foWCells);
         
         // TODO this can potentially go away if we make the change to update entity collections client-side, since FoW updates happen before the collection changed event
@@ -302,9 +311,13 @@ public class EntitySelectionManager {
                 : PathVisualizer.PathType.TargetAttack
             : PathVisualizer.PathType.Move;
 
-        int range = pathType == PathVisualizer.PathType.TargetAttack ? SelectedEntity.Range : 0;
-        PathfinderService.Path path = PathfinderService.FindPath(SelectedEntity, targetLocationLogic.CurrentTarget, range);
+        // Need to get the FoW tracker for the entity's team since its might have a different perception of the best
+        // path than what the actual best path is
+        TeamFogOfWarTracker fowTracker = _gameManager.FogOfWarManager!.GetTracker(SelectedEntity.Team);
         
-        GridController.VisualizePath(path, pathType, targetLocationLogic.CurrentTarget, targetLocationLogic.HidePathDestination, false, SelectedEntity.EntityData.PathfindingConfig);
+        int range = pathType == PathVisualizer.PathType.TargetAttack ? SelectedEntity.Range : 0;
+        PathfinderService.Path path = PathfinderService.FindPath(SelectedEntity, targetLocationLogic.CurrentTarget, range, fowTracker);
+        
+        GridController.VisualizePath(path, pathType, targetLocationLogic.CurrentTarget, targetLocationLogic.HidePathDestination, fowTracker, false, SelectedEntity.EntityData.PathfindingConfig);
     }
 }

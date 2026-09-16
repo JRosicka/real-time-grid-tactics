@@ -21,6 +21,7 @@ namespace Gameplay.Entities {
         [SerializeField] private CanvasGroup _canvasGroup;
 
         private Vector2Int _location;
+        private TeamFogOfWarTracker _fowTracker;
         
         public void Initialize(GridEntity entity) {
             PlayerColorData colorData = GameManager.Instance.GetPlayerForTeam(entity).ColorData;
@@ -36,8 +37,11 @@ namespace Gameplay.Entities {
             _incomeAmountNext.text = $"+{target.IncomeRate.ToString()}";
 
             // Fog of war
-            ToggleFoWHiddenState(GameManager.Instance.FogOfWarManager!.IsLocationHidden(_location));
-            GameManager.Instance.FogOfWarManager.FoWUpdated += FogOfWarUpdated;
+            _fowTracker = GameManager.Instance.FogOfWarManager!.GetLocalTeamTracker();
+            if (_fowTracker != null) {
+                ToggleFoWHiddenState(_fowTracker.IsLocationHidden(_location));
+                _fowTracker.FoWUpdated += FogOfWarUpdated;
+            }
 
             _paradeTextAnimator.Play("ParadeActive");
             _particles.ForEach(p => p.Play());
@@ -45,8 +49,8 @@ namespace Gameplay.Entities {
         }
         
         public void EndParadeAnimation() {
-            if (GameManager.Instance.FogOfWarManager != null) {
-                GameManager.Instance.FogOfWarManager.FoWUpdated -= FogOfWarUpdated;
+            if (_fowTracker != null) {
+                _fowTracker.FoWUpdated -= FogOfWarUpdated;
             }
             Destroy(gameObject);
         }
@@ -59,8 +63,8 @@ namespace Gameplay.Entities {
             _canvasGroup.alpha = hidden ? 0 : 1;
         }
 
-        private void FogOfWarUpdated(List<FogOfWarManager.FoWCell> foWCells) {
-            FogOfWarManager.FoWCell cell = foWCells.FirstOrDefault(c => c.Position == _location);
+        private void FogOfWarUpdated(List<TeamFogOfWarTracker.FoWCell> foWCells) {
+            TeamFogOfWarTracker.FoWCell cell = foWCells.FirstOrDefault(c => c.Position == _location);
             if (cell != null) {
                 ToggleFoWHiddenState(cell.Hidden);
             }

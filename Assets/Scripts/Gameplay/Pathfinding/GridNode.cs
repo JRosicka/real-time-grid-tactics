@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using Gameplay.Entities;
 using Gameplay.Grid;
+using Gameplay.Managers;
+using JetBrains.Annotations;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -24,7 +26,7 @@ namespace Gameplay.Pathfinding {
                 if (_neighbors == null) {
                     _neighbors = new List<GridNode>();
                     foreach (GridData.CellData neighborCell in NeighborCells) {
-                        _neighbors.Add(new GridNode(_entity, neighborCell, _ignoreOtherEntities));
+                        _neighbors.Add(new GridNode(_entity, neighborCell, _ignoreOtherEntities, _fowTracker));
                     }
                 }
 
@@ -44,6 +46,7 @@ namespace Gameplay.Pathfinding {
         /// </summary>
         private readonly float _fastestEnterTime;
         private readonly bool _ignoreOtherEntities;
+        private TeamFogOfWarTracker _fowTracker;
 
         /// <summary>
         /// The fastest possible travel time between this node and the destination. Assumes the fastest entrance speed because this is
@@ -52,15 +55,16 @@ namespace Gameplay.Pathfinding {
         public float GetDistance(Vector2Int destination) => _fastestEnterTime
             * CellDistanceLogic.DistanceBetweenCells(_cellData.Location, destination);
         
-        public GridNode(GridEntity entity, GridData.CellData cellData, bool ignoreOtherEntities) {
+        public GridNode(GridEntity entity, GridData.CellData cellData, bool ignoreOtherEntities, [CanBeNull] TeamFogOfWarTracker fowTracker) {
             _entity = entity;
             _cellData = cellData;
             _fastestEnterTime = GameManager.Instance.TileAccessibilityManager.GetFastestMoveTime(entity.EntityDataForPathfinding());
             _ignoreOtherEntities = ignoreOtherEntities;
+            _fowTracker = fowTracker;
 
             // Don't stop this cell from being walkable due to other entities if this cell is hidden.
             // Still keep _ignoreOtherEntities as-is though for getting neighbors. 
-            bool actuallyWalkable = Walkable || GameManager.Instance.FogOfWarManager!.IsLocationHidden(cellData.Location);
+            bool actuallyWalkable = Walkable || (fowTracker != null && fowTracker.IsLocationHidden(cellData.Location));
             
             Walkable = entity.CanPathFindToTile(cellData.Tile) && (actuallyWalkable || PathfinderService.CanEntityEnterCell(cellData.Location, 
                 entity.EntityDataForPathfinding(), entity.Team, forRallying:entity.EntityDataForPathfinding().CanRally));

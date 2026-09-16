@@ -46,7 +46,7 @@ namespace Gameplay.Entities.Abilities {
         
         protected override (bool, AbilityResult) DoAbilityEffect() {
             // Perform a single move towards the destination
-            PathfinderService.Path path = GameManager.Instance.PathfinderService.FindPath(Performer, AbilityParameters.Destination, 0);
+            PathfinderService.Path path = GameManager.Instance.PathfinderService.FindPath(Performer, AbilityParameters.Destination, 0, GameManager.Instance.FogOfWarManager!.GetTracker(PerformerTeam));
             List<GridNode> pathNodes = path.Nodes;
             if (pathNodes.Count < 2) {
                 if (path.ContainsRequestedDestination || path.PossibleToEverProgress) {

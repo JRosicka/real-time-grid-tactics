@@ -22,6 +22,7 @@ namespace Gameplay.Managers {
         private readonly FogOfWarSetting _fowSetting;
         private readonly GridController _gridController;
         private readonly ICommandManager _commandManager;
+        private readonly bool _updateEntityVisuals;
 
         public Action<List<FoWCell>> FoWUpdated;
         
@@ -31,11 +32,12 @@ namespace Gameplay.Managers {
         private IEnumerable<Vector2Int> CellsInRange(Vector2Int location) => _gridController.GridData.GetCellsInRange(location, VisionRange).Select(c => c.Location);
         private int VisionRange => (int)_fowSetting;
         
-        public TeamFogOfWarTracker(GameTeam team, FogOfWarSetting fowSetting, GridController gridController, ICommandManager commandManager) {
+        public TeamFogOfWarTracker(GameTeam team, FogOfWarSetting fowSetting, bool updateEntityVisuals, GridController gridController, ICommandManager commandManager) {
             _team = team;
             _fowSetting = fowSetting;
             _gridController = gridController;
             _commandManager = commandManager;
+            _updateEntityVisuals = updateEntityVisuals;
             
             if (_fowSetting != FogOfWarSetting.None) {
                 // Subscribe to events
@@ -82,7 +84,7 @@ namespace Gameplay.Managers {
                 Debug.LogWarning("Entity is null, for some reason");
                 return;
             }
-            if (entity.InteractBehavior == null || !entity.InteractBehavior.ProvidesVision) {
+            if (_updateEntityVisuals && entity.InteractBehavior is not { ProvidesVision: true }) {
                 // This entity will not modify the map FoW, but the entity might need to visually update within the player's FoW view
                 entity.UpdateFoWHiddenStatus(_cellFoWState[newLocation]);
                 return;

@@ -182,7 +182,7 @@ namespace Gameplay.Entities.Abilities {
         /// <returns>True if successful or no move needed, otherwise false if unable to move closer due to the path only
         /// containing terrain that the performer can not move into</returns>
         private bool TryStepTowardsDestination(GridEntity attacker, Vector2Int destination) {
-            PathfinderService.Path path = GameManager.Instance.PathfinderService.FindPath(Performer, destination, 0);
+            PathfinderService.Path path = GameManager.Instance.PathfinderService.FindPath(Performer, destination, 0, GameManager.Instance.FogOfWarManager!.GetTracker(PerformerTeam));
             if (path.Nodes.Count < 2) {
                 if (path.ContainsRequestedDestination || path.PossibleToEverProgress) {
                     // We can not complete the move right now, but we could be able to later

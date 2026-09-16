@@ -92,7 +92,7 @@ namespace Gameplay.Entities.Abilities {
         /// Move a single cell towards the destination
         /// </summary>
         private void StepTowardsDestination(GridEntity attacker, Vector2Int destination) {
-            PathfinderService.Path path = GameManager.Instance.PathfinderService.FindPath(Performer, destination, Performer.Range);
+            PathfinderService.Path path = GameManager.Instance.PathfinderService.FindPath(Performer, destination, Performer.Range, GameManager.Instance.FogOfWarManager!.GetTracker(PerformerTeam));
             if (path.Nodes.Count < 2) {
                 return;
             }

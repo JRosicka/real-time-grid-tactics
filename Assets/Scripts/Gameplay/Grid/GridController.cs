@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Gameplay.Config;
 using Gameplay.Entities;
+using Gameplay.Managers;
 using Gameplay.UI;
 using Sirenix.Utilities;
 using UnityEngine;
@@ -185,8 +186,8 @@ namespace Gameplay.Grid {
         }
 
         public void VisualizePath(PathfinderService.Path path, PathVisualizer.PathType pathType, Vector2Int targetLocation, 
-                bool hidePathDestination, bool thickLines, EntityPathfindingConfig pathfindingConfig) {
-            _pathVisualizer.Visualize(path, pathType, targetLocation, hidePathDestination, thickLines, pathfindingConfig);
+                bool hidePathDestination, TeamFogOfWarTracker fowTracker, bool thickLines, EntityPathfindingConfig pathfindingConfig) {
+            _pathVisualizer.Visualize(path, pathType, targetLocation, hidePathDestination, fowTracker, thickLines, pathfindingConfig);
         }
 
         #region Get Cells

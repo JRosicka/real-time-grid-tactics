@@ -4,6 +4,7 @@ using Gameplay.Config;
 using Gameplay.Grid;
 using Gameplay.Managers;
 using Gameplay.Pathfinding;
+using JetBrains.Annotations;
 using UnityEngine;
 using Util;
 
@@ -45,13 +46,13 @@ namespace Gameplay.UI {
         /// <summary>
         /// Lay out a set of <see cref="AbstractDirectionalLine"/>s along a path
         /// </summary>
-        public void Visualize(PathfinderService.Path path, PathType pathType, Vector2Int targetLocation, bool hidePathDestination, bool thickLines, EntityPathfindingConfig pathfindingConfig) {
+        public void Visualize(PathfinderService.Path path, PathType pathType, Vector2Int targetLocation, bool hidePathDestination, [CanBeNull] TeamFogOfWarTracker fowTracker, bool thickLines, EntityPathfindingConfig pathfindingConfig) {
             ClearPath(thickLines);
 
-            if (!thickLines) {
+            if (!thickLines && fowTracker != null) {
                 // For normal paths, only show regular lines up to the last cell in vision. Cells hidden by FoW (or any 
                 // cells after the first one encountered) should just be discarded. 
-                path = PathWithTrimmedHiddenCells(path);
+                path = PathWithTrimmedHiddenCells(path, fowTracker);
             }
             
             // If the path is too short, then no need to place any lines
@@ -64,10 +65,10 @@ namespace Gameplay.UI {
             }
         }
 
-        private PathfinderService.Path PathWithTrimmedHiddenCells(PathfinderService.Path path) {
+        private PathfinderService.Path PathWithTrimmedHiddenCells(PathfinderService.Path path, TeamFogOfWarTracker fowTracker) {
             int nodesToInclude = 0;
             foreach (GridNode node in path.Nodes) {
-                if (FogOfWarManager.IsLocationHidden(node.Location)) {
+                if (fowTracker.IsLocationHidden(node.Location)) {
                     path.ContainsRequestedDestination = false;
                     break;
                 }

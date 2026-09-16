@@ -4,7 +4,9 @@ using System.Linq;
 using Gameplay.Config;
 using Gameplay.Entities;
 using Gameplay.Grid;
+using Gameplay.Managers;
 using Gameplay.Pathfinding;
+using JetBrains.Annotations;
 using UnityEngine;
 using Util;
 
@@ -60,9 +62,10 @@ public class PathfinderService {
     /// <param name="destination">The location to make a path to</param>
     /// <param name="acceptableRange">How far away from the given destination is an acceptable actual destination to
     /// path to. 0 means to match the given destination.</param>
+    /// <param name="fowTracker">The relevant fog of war state</param>
     /// <returns>A path of nodes from the entity's location to the destination</returns>
     /// <exception cref="Exception">If the generated path is too long</exception>
-    public Path FindPath(GridEntity entity, Vector2Int destination, int acceptableRange) {
+    public Path FindPath(GridEntity entity, Vector2Int destination, int acceptableRange, [CanBeNull] TeamFogOfWarTracker fowTracker) {
         Vector2Int? entityLocation = entity.Location;
         if (entityLocation == null) {
             // Entity does not have a location
@@ -77,7 +80,7 @@ public class PathfinderService {
         if (entityLocation == destination) {
             // Entity already at destination
             return new Path {
-                Nodes = new List<GridNode> { new GridNode(entity, GridController.GridData.GetCell(entityLocation.Value), true) },
+                Nodes = new List<GridNode> { new GridNode(entity, GridController.GridData.GetCell(entityLocation.Value), true, fowTracker) },
                 ContainsRequestedDestination = true,
                 IncludesImpassibleEntities = false,
                 PossibleToEverProgress = true
@@ -86,18 +89,18 @@ public class PathfinderService {
 
         List<GridData.CellData> validDestinations = GetValidDestinationCells(destination, acceptableRange);
         
-        Path pathWhileIgnoringOtherEntities = DoFindPath(entity, entityLocation.Value, destination, validDestinations, true);
+        Path pathWhileIgnoringOtherEntities = DoFindPath(entity, entityLocation.Value, destination, validDestinations, true, fowTracker);
         if (!pathWhileIgnoringOtherEntities.IncludesImpassibleEntities) {
             pathWhileIgnoringOtherEntities.PossibleToEverProgress = pathWhileIgnoringOtherEntities.Nodes.Count > 1;
             return pathWhileIgnoringOtherEntities;
         }
 
-        Path normalPath = DoFindPath(entity, entityLocation.Value, destination, validDestinations, false, pathWhileIgnoringOtherEntities);
+        Path normalPath = DoFindPath(entity, entityLocation.Value, destination, validDestinations, false, fowTracker, pathWhileIgnoringOtherEntities);
         normalPath.PossibleToEverProgress = pathWhileIgnoringOtherEntities.Nodes.Count > 1;
         return normalPath;
     }
 
-    private Path DoFindPath(GridEntity entity, Vector2Int entityLocation, Vector2Int requestedDestination, List<GridData.CellData> validDestinationCells, bool ignoreOtherEntities, Path? pathIgnoringOtherEntities = null) {
+    private Path DoFindPath(GridEntity entity, Vector2Int entityLocation, Vector2Int requestedDestination, List<GridData.CellData> validDestinationCells, bool ignoreOtherEntities, [CanBeNull] TeamFogOfWarTracker fowTracker, Path? pathIgnoringOtherEntities = null) {
         int maxSearch = MaxCellsToSearch;
         if (!entity.CanPathFindToTile(GridController.GridData.GetCell(requestedDestination).Tile) 
                 || !CanEntityEnterCell(requestedDestination, entity.EntityDataForPathfinding(), entity.Team, forRallying:entity.EntityData.CanRally)) {
@@ -110,7 +113,7 @@ public class PathfinderService {
             ? float.MaxValue 
             : pathIgnoringOtherEntities.Value.Nodes.Last().F + GameManager.Instance.Configuration.MaxPathFindingFCostBuffer / entityTravelTime;
         
-        GridNode startNode = new GridNode(entity, GridController.GridData.GetCell(entityLocation), ignoreOtherEntities);
+        GridNode startNode = new GridNode(entity, GridController.GridData.GetCell(entityLocation), ignoreOtherEntities, fowTracker);
         startNode.SetH(startNode.GetDistance(requestedDestination));
         
         List<GridNode> toSearch = new List<GridNode> { startNode };
@@ -174,7 +177,7 @@ public class PathfinderService {
     /// Construct a path, but in a straight line from the indicated entity's current location and the target.
     /// Does not account for whether the entity can actually enter every cell along the path. 
     /// </summary>
-    public Path GetPathInStraightLine(GridEntity entity, Vector2Int destination) {
+    public Path GetPathInStraightLine(GridEntity entity, Vector2Int destination, [CanBeNull] TeamFogOfWarTracker fowTracker) {
         Vector2Int? entityLocation = entity.Location;
         if (entityLocation == null) {
             return new Path {
@@ -185,9 +188,9 @@ public class PathfinderService {
             };
         }
 
-        List<GridNode> pathNodes = new() { new GridNode(entity, GridController.GridData.GetCell(entityLocation.Value), false) };
+        List<GridNode> pathNodes = new() { new GridNode(entity, GridController.GridData.GetCell(entityLocation.Value), false, fowTracker) };
         foreach (Vector2Int cell in CellDistanceLogic.GetCellsInStraightLine(entityLocation.Value, destination)) {
-            pathNodes.Add(new GridNode(entity, GridController.GridData.GetCell(cell), false));
+            pathNodes.Add(new GridNode(entity, GridController.GridData.GetCell(cell), false, fowTracker));
         }
         
         return new Path {
