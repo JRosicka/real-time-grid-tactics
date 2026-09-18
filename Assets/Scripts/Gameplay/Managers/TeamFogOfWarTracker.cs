@@ -17,6 +17,7 @@ namespace Gameplay.Managers {
         }
 
         private readonly Dictionary<Vector2Int, bool> _cellFoWState = new();
+        private readonly Dictionary<GridEntity, Action<bool>> _entityListeners = new();
         
         private readonly GameTeam _team;
         private readonly FogOfWarSetting _fowSetting;
@@ -61,6 +62,17 @@ namespace Gameplay.Managers {
             if (_commandManager != null) {
                 _commandManager.EntityUpdatedEvent -= EntityUpdated;
             }
+        }
+        
+        /// <summary>
+        /// Registers to listen for FoW updates for a specific entity. 
+        /// </summary>
+        public void RegisterEntityListener(GridEntity entity, Action<bool> hiddenStateChangedCallback) {
+            _entityListeners[entity] = hiddenStateChangedCallback;
+        }
+
+        public void UnregisterEntityListener(GridEntity entity) {
+            _entityListeners.Remove(entity);
         }
 
         public bool IsEntityHidden([NotNull] GridEntity entity) {
@@ -113,7 +125,7 @@ namespace Gameplay.Managers {
                     throw new ArgumentOutOfRangeException(nameof(updateType), updateType, null);
             }
 
-            SendUpdatedEvent(updatedCells);
+            SendUpdatedEvents(updatedCells);
         }
         
         /// <summary>
@@ -166,9 +178,19 @@ namespace Gameplay.Managers {
             return false;
         }
         
-        private void SendUpdatedEvent(List<FoWCell> updatedCells) {
-            if (updatedCells.Any()) {
-                FoWUpdated?.Invoke(updatedCells);
+        private void SendUpdatedEvents(List<FoWCell> updatedCells) {
+            if (!updatedCells.Any()) return;
+            
+            FoWUpdated?.Invoke(updatedCells);
+
+            foreach (KeyValuePair<GridEntity, Action<bool>> kvp in _entityListeners) {
+                GridEntity entity = kvp.Key;
+                if (entity.DeadOrDying || entity.Location == null) continue;
+                
+                FoWCell cell = updatedCells.FirstOrDefault(cell => cell.Position == entity.Location.Value);
+                if (cell != null) {
+                    kvp.Value.Invoke(cell.Hidden);
+                }
             }
         }
     }

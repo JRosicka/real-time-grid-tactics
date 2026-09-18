@@ -149,6 +149,7 @@ namespace Gameplay.Entities {
         public event Action<int> IncomeRateChanged;
         public event Action<bool> HoldingPositionChangedEvent;
         public event Action<List<IAbility>> InProgressAbilitiesUpdatedEvent;
+        // The local player's FoW state has changed
         public event Action<bool> FogOfWarHiddenStatusChangedEvent;
         
         /// <summary>
@@ -687,7 +688,8 @@ namespace Gameplay.Entities {
                 // Target attack
                 TargetAttackAbilityData data = GetAbilityData<TargetAttackAbilityData>();
                 if (AbilityAssignmentManager.StartPerformingAbility(this, data, new TargetAttackAbilityParameters {
-                        Target = targetEntity
+                        Target = targetEntity,
+                        LastKnownLocation = targetCell
                     }, false, true, true, false)) {
                     SetTargetLocation(targetCell, targetEntity, true);
                 }
@@ -744,6 +746,7 @@ namespace Gameplay.Entities {
             TargetAttackAbilityData data = GetAbilityData<TargetAttackAbilityData>();
             if (AbilityAssignmentManager.StartPerformingAbility(this, data, new TargetAttackAbilityParameters() {
                     Target = targetEntity, 
+                    LastKnownLocation = targetCell
                 }, true, true, true, true)) {
                 GameAudio.Instance.AbilityTargetedSound(data);
                 SetTargetLocation(targetCell, targetEntity, true);

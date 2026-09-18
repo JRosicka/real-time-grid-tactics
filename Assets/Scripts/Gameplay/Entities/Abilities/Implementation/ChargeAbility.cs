@@ -96,7 +96,8 @@ namespace Gameplay.Entities.Abilities {
             } else {
                 TargetAttackAbilityData attackData = Performer.GetAbilityData<TargetAttackAbilityData>();
                 AbilityAssignmentManager.StartPerformingAbility(Performer, attackData, new TargetAttackAbilityParameters {
-                    Target = targetEntity
+                    Target = targetEntity,
+                    LastKnownLocation = targetEntity.Location!.Value
                 }, false, true, true, false);
             }
             

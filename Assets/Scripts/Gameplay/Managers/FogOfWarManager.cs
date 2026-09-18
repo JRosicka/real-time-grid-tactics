@@ -46,7 +46,7 @@ namespace Gameplay.Managers {
             if (team is GameTeam.Spectator or GameTeam.Neutral) return null;
             
             if (!_teamFogOfWarTrackers.TryGetValue(team, out TeamFogOfWarTracker tracker)) {
-                Debug.LogError($"No fog of war tracker for team {team}. Registered trackers: {string.Join(", ", _teamFogOfWarTrackers.Keys)}");
+                Debug.LogWarning($"No fog of war tracker for team {team}. Registered trackers: {string.Join(", ", _teamFogOfWarTrackers.Keys)}");
                 return null;
             }
 

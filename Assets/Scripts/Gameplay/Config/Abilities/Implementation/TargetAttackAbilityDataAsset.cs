@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Gameplay.Entities;
 using Gameplay.Entities.Abilities;
 using UnityEngine;
+using Util;
 
 namespace Gameplay.Config.Abilities {
     [CreateAssetMenu(menuName = "Abilities/TargetAttackAbilityData")]
@@ -36,7 +37,8 @@ namespace Gameplay.Config.Abilities {
         public override IAbilityParameters DeserializeParametersFromJson(Dictionary<string, object> json) {
             GridEntity target = GameManager.Instance.CommandManager.EntitiesOnGrid.GetEntityByID((long)json["Target"]);
             return new TargetAttackAbilityParameters {
-                Target = target
+                Target = target,
+                LastKnownLocation = ((string)json["LastKnownLocation"]).ToVector2Int(),
             };
         }
 
@@ -61,7 +63,8 @@ namespace Gameplay.Config.Abilities {
                 return;
             }
             GameManager.Instance.AbilityAssignmentManager.StartPerformingAbility(selectedEntity, this, new TargetAttackAbilityParameters {
-                Target = target
+                Target = target,
+                LastKnownLocation = cellPosition
             }, true, true, true, true);
             selectedEntity.SetTargetLocation(cellPosition, target, true);
         }

@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Gameplay.Config.Abilities;
 using Gameplay.Grid;
+using Gameplay.Managers;
 using Mirror;
 using Newtonsoft.Json;
 using UnityEngine;
@@ -14,16 +15,16 @@ namespace Gameplay.Entities.Abilities {
     /// </summary>
     public class TargetAttackAbility : AbilityBase<TargetAttackAbilityData, TargetAttackAbilityParameters> {
         public TargetAttackAbilityParameters AbilityParameters => (TargetAttackAbilityParameters) BaseParameters;
-        private GridData GridData => GameManager.Instance.GridController.GridData;
 
         public TargetAttackAbility(TargetAttackAbilityData data, TargetAttackAbilityParameters parameters, GridEntity performer, GameTeam? overrideTeam = null) : base(data, parameters, performer, overrideTeam) {}
 
         public override AbilityExecutionType ExecutionType => AbilityExecutionType.Interaction;
         public override bool ShouldShowAbilityTimer => true;
         protected override float AddedMovementTime => Performer.MovementTimeFromAttacking;
+        private TeamFogOfWarTracker FowTracker => GameManager.Instance.FogOfWarManager!.GetTracker(PerformerTeam);
 
         public override void Cancel() {
-            UnRegisterTargetDeathListener();
+            UnRegisterTargetListeners();
         }
 
         protected override bool CompleteCooldownImpl() {
@@ -34,6 +35,9 @@ namespace Gameplay.Entities.Abilities {
         public override bool TryDoAbilityStartEffect() {
             if (AbilityParameters.Target != null) {
                 AbilityParameters.Target.UnregisteredEvent += DoFollowUpAttackMove;
+                TeamFogOfWarTracker tracker = FowTracker;
+                tracker?.RegisterEntityListener(AbilityParameters.Target, TrackedEntityHiddenStateChanged);
+                AbilityParameters.Target.EntityMovedEvent += TrackedEntityMoved;
             }
             return true;
         }
@@ -43,15 +47,33 @@ namespace Gameplay.Entities.Abilities {
                 .ActiveEntitiesForTeam(Performer.Team)
                 .Contains(Performer)) {
                 // The entity must be in the process of being killed since it is not present in the entities collection
-                UnRegisterTargetDeathListener(); 
+                UnRegisterTargetListeners(); 
                 return (false, AbilityResult.Failed);
             }
 
             // Check to make sure that the performer still exists
             Vector2Int? attackerLocation = Performer == null ? null : Performer.Location;
             if (attackerLocation == null) {
-                UnRegisterTargetDeathListener();
+                UnRegisterTargetListeners();
                 return (false, AbilityResult.Failed);
+            }
+
+            if (!TrackedEntityLocationKnown) {
+                if (attackerLocation == AbilityParameters.LastKnownLocation) {
+                    // We have lost track of the target, and have moved to its last known location without finding it. We're done here. 
+                    UnRegisterTargetListeners();
+                    return (false, AbilityResult.CompletedWithoutEffect);
+                }
+                
+                // If no move available, then don't do anything else for now
+                if (Performer.ActiveTimers.Any(t => t.Ability is MoveAbility)) {
+                    return (false, AbilityResult.IncompleteWithoutEffect);
+                }
+                
+                // Otherwise move closer to the target if not holding position 
+                if (!Performer.HoldingPosition) {
+                    StepTowardsDestination(Performer, AbilityParameters.LastKnownLocation);
+                }
             }
             
             Vector2Int? targetLocation = AbilityParameters.Target == null || AbilityParameters.Target.DeadOrDying 
@@ -59,7 +81,7 @@ namespace Gameplay.Entities.Abilities {
                 : AbilityParameters.Target.Location;
             if (targetLocation == null) {
                 // If the target no longer exists, then it must have been killed or turned into a structure or something. 
-                UnRegisterTargetDeathListener();
+                UnRegisterTargetListeners();
                 return (false, AbilityResult.CompletedWithoutEffect);
             }
 
@@ -121,7 +143,7 @@ namespace Gameplay.Entities.Abilities {
 
         private void DoFollowUpAttackMove() {
             if (!Performer || Performer.DeadOrDying) {
-                UnRegisterTargetDeathListener();
+                UnRegisterTargetListeners();
                 return;
             }
             
@@ -130,27 +152,55 @@ namespace Gameplay.Entities.Abilities {
             }
         }
 
-        private void UnRegisterTargetDeathListener() {
+        private void UnRegisterTargetListeners() {
             if (AbilityParameters?.Target) {
                 AbilityParameters.Target.UnregisteredEvent -= DoFollowUpAttackMove;
+                AbilityParameters.Target.EntityMovedEvent -= TrackedEntityMoved;
+                TeamFogOfWarTracker tracker = FowTracker;
+                tracker?.UnregisterEntityListener(AbilityParameters.Target);
             }
         }
+
+        // Called on server
+        private void TrackedEntityHiddenStateChanged(bool newHidden) {
+            if (!newHidden) {
+                SetLastKnownLocation(AbilityParameters.Target.Location!.Value);
+            }
+        }
+
+        // Called on server
+        private void TrackedEntityMoved() {
+            if (FowTracker == null || !FowTracker.IsEntityHidden(AbilityParameters.Target)) {
+                SetLastKnownLocation(AbilityParameters.Target.Location!.Value);
+            }
+        }
+
+        private void SetLastKnownLocation(Vector2Int location) {
+            AbilityParameters.LastKnownLocation = location;
+        }
+
+        private bool TrackedEntityLocationKnown => AbilityParameters?.Target?.Location != null && AbilityParameters.Target.Location.Value == AbilityParameters.LastKnownLocation;
     }
     
     public class TargetAttackAbilityParameters : IAbilityParameters {
         public GridEntity Target;
+        // For if the entity gets hidden by FoW, from the ability performer's perspective
+        public Vector2Int LastKnownLocation;
         public void Serialize(NetworkWriter writer) {
             writer.Write(Target);
+            writer.WriteVector2Int(LastKnownLocation);
         }
 
         public string SerializeToJson() {
             return JsonConvert.SerializeObject(new Dictionary<string, object> {
                 {"Target", Target?.UID ?? 0},
+                {"LastKnownLocation", LastKnownLocation.ConvertToString()},
             });
         }
 
         public void Deserialize(NetworkReader reader) {
             Target = reader.Read<GridEntity>();
+            LastKnownLocation = reader.ReadVector2Int();
         }
     }
 }
