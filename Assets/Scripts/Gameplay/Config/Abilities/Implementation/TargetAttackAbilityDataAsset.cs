@@ -36,9 +36,14 @@ namespace Gameplay.Config.Abilities {
 
         public override IAbilityParameters DeserializeParametersFromJson(Dictionary<string, object> json) {
             GridEntity target = GameManager.Instance.CommandManager.EntitiesOnGrid.GetEntityByID((long)json["Target"]);
+            Vector2Int lastKnownLocation = json.TryGetValue("LastKnownLocation", out object location)
+                ? ((string)location).ToVector2Int()
+                : target.Location!.Value;
+            bool primed = json.TryGetValue("Primed", out object _) && (bool)json["Primed"];
             return new TargetAttackAbilityParameters {
                 Target = target,
-                LastKnownLocation = ((string)json["LastKnownLocation"]).ToVector2Int(),
+                LastKnownLocation = lastKnownLocation,
+                Primed = primed
             };
         }
 

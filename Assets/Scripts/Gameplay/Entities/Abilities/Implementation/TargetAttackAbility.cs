@@ -33,16 +33,15 @@ namespace Gameplay.Entities.Abilities {
         }
 
         public override bool TryDoAbilityStartEffect() {
-            if (AbilityParameters.Target != null) {
-                AbilityParameters.Target.UnregisteredEvent += DoFollowUpAttackMove;
-                TeamFogOfWarTracker tracker = FowTracker;
-                tracker?.RegisterEntityListener(AbilityParameters.Target, TrackedEntityHiddenStateChanged);
-                AbilityParameters.Target.EntityMovedEvent += TrackedEntityMoved;
-            }
             return true;
         }
 
         protected override (bool, AbilityResult) DoAbilityEffect() {
+            if (!AbilityParameters.Primed) {
+                RegisterTargetListeners();
+                AbilityParameters.Primed = true;
+            }
+            
             if (!GameManager.Instance.CommandManager.EntitiesOnGrid
                 .ActiveEntitiesForTeam(Performer.Team)
                 .Contains(Performer)) {
@@ -72,8 +71,10 @@ namespace Gameplay.Entities.Abilities {
                 
                 // Otherwise move closer to the target if not holding position 
                 if (!Performer.HoldingPosition) {
-                    StepTowardsDestination(Performer, AbilityParameters.LastKnownLocation);
+                    StepTowardsDestination(Performer, AbilityParameters.LastKnownLocation, false);
                 }
+
+                return (false, AbilityResult.IncompleteWithoutEffect);
             }
             
             Vector2Int? targetLocation = AbilityParameters.Target == null || AbilityParameters.Target.DeadOrDying 
@@ -104,7 +105,7 @@ namespace Gameplay.Entities.Abilities {
             
             // Otherwise move closer to the target if not holding position 
             if (!Performer.HoldingPosition) {
-                StepTowardsDestination(Performer, targetLocation.Value);
+                StepTowardsDestination(Performer, targetLocation.Value, true);
             }
             
             return (false, AbilityResult.IncompleteWithoutEffect);
@@ -113,8 +114,8 @@ namespace Gameplay.Entities.Abilities {
         /// <summary>
         /// Move a single cell towards the destination
         /// </summary>
-        private void StepTowardsDestination(GridEntity attacker, Vector2Int destination) {
-            PathfinderService.Path path = GameManager.Instance.PathfinderService.FindPath(Performer, destination, Performer.Range, GameManager.Instance.FogOfWarManager!.GetTracker(PerformerTeam));
+        private void StepTowardsDestination(GridEntity attacker, Vector2Int destination, bool inRangeAcceptable) {
+            PathfinderService.Path path = GameManager.Instance.PathfinderService.FindPath(Performer, destination, inRangeAcceptable ? Performer.Range : 0, GameManager.Instance.FogOfWarManager!.GetTracker(PerformerTeam));
             if (path.Nodes.Count < 2) {
                 return;
             }
@@ -152,13 +153,22 @@ namespace Gameplay.Entities.Abilities {
             }
         }
 
+        private void RegisterTargetListeners() {
+            if (AbilityParameters.Target == null) return;
+            
+            AbilityParameters.Target.UnregisteredEvent += DoFollowUpAttackMove;
+            TeamFogOfWarTracker tracker = FowTracker;
+            tracker?.RegisterEntityListener(AbilityParameters.Target, TrackedEntityHiddenStateChanged);
+            AbilityParameters.Target.EntityMovedEvent += TrackedEntityMoved;
+        }
+
         private void UnRegisterTargetListeners() {
-            if (AbilityParameters?.Target) {
-                AbilityParameters.Target.UnregisteredEvent -= DoFollowUpAttackMove;
-                AbilityParameters.Target.EntityMovedEvent -= TrackedEntityMoved;
-                TeamFogOfWarTracker tracker = FowTracker;
-                tracker?.UnregisterEntityListener(AbilityParameters.Target);
-            }
+            if (!AbilityParameters?.Target) return;
+            
+            AbilityParameters.Target.UnregisteredEvent -= DoFollowUpAttackMove;
+            AbilityParameters.Target.EntityMovedEvent -= TrackedEntityMoved;
+            TeamFogOfWarTracker tracker = FowTracker;
+            tracker?.UnregisterEntityListener(AbilityParameters.Target);
         }
 
         // Called on server
@@ -186,21 +196,26 @@ namespace Gameplay.Entities.Abilities {
         public GridEntity Target;
         // For if the entity gets hidden by FoW, from the ability performer's perspective
         public Vector2Int LastKnownLocation;
+        // Necessary so the ability knows whether it has ran at least one DoAbilityAffect loop, for listener registration purposes
+        public bool Primed;
         public void Serialize(NetworkWriter writer) {
             writer.Write(Target);
             writer.WriteVector2Int(LastKnownLocation);
+            writer.WriteBool(Primed);
         }
 
         public string SerializeToJson() {
             return JsonConvert.SerializeObject(new Dictionary<string, object> {
                 {"Target", Target?.UID ?? 0},
                 {"LastKnownLocation", LastKnownLocation.ConvertToString()},
+                {"Primed", Primed}
             });
         }
 
         public void Deserialize(NetworkReader reader) {
             Target = reader.Read<GridEntity>();
             LastKnownLocation = reader.ReadVector2Int();
+            Primed = reader.ReadBool();
         }
     }
 }
