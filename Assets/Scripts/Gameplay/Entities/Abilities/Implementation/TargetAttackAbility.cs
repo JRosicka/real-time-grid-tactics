@@ -33,15 +33,11 @@ namespace Gameplay.Entities.Abilities {
         }
 
         public override bool TryDoAbilityStartEffect() {
+            RegisterTargetListeners();
             return true;
         }
 
         protected override (bool, AbilityResult) DoAbilityEffect() {
-            if (!AbilityParameters.Primed) {
-                RegisterTargetListeners();
-                AbilityParameters.Primed = true;
-            }
-            
             if (!GameManager.Instance.CommandManager.EntitiesOnGrid
                 .ActiveEntitiesForTeam(Performer.Team)
                 .Contains(Performer)) {
@@ -179,7 +175,7 @@ namespace Gameplay.Entities.Abilities {
         }
 
         // Called on server
-        private void TrackedEntityMoved() {
+        private void TrackedEntityMoved() { // TODO this (and maybe the other listener) change the ability parameters, but that doesn't get applied for some reason. Reverts. 
             if (FowTracker == null || !FowTracker.IsEntityHidden(AbilityParameters.Target)) {
                 SetLastKnownLocation(AbilityParameters.Target.Location!.Value);
             }
@@ -196,26 +192,21 @@ namespace Gameplay.Entities.Abilities {
         public GridEntity Target;
         // For if the entity gets hidden by FoW, from the ability performer's perspective
         public Vector2Int LastKnownLocation;
-        // Necessary so the ability knows whether it has ran at least one DoAbilityAffect loop, for listener registration purposes
-        public bool Primed;
         public void Serialize(NetworkWriter writer) {
             writer.Write(Target);
             writer.WriteVector2Int(LastKnownLocation);
-            writer.WriteBool(Primed);
         }
 
         public string SerializeToJson() {
             return JsonConvert.SerializeObject(new Dictionary<string, object> {
                 {"Target", Target?.UID ?? 0},
                 {"LastKnownLocation", LastKnownLocation.ConvertToString()},
-                {"Primed", Primed}
             });
         }
 
         public void Deserialize(NetworkReader reader) {
             Target = reader.Read<GridEntity>();
             LastKnownLocation = reader.ReadVector2Int();
-            Primed = reader.ReadBool();
         }
     }
 }

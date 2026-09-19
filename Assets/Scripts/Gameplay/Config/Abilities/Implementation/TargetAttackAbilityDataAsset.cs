@@ -39,11 +39,9 @@ namespace Gameplay.Config.Abilities {
             Vector2Int lastKnownLocation = json.TryGetValue("LastKnownLocation", out object location)
                 ? ((string)location).ToVector2Int()
                 : target.Location!.Value;
-            bool primed = json.TryGetValue("Primed", out object _) && (bool)json["Primed"];
             return new TargetAttackAbilityParameters {
                 Target = target,
                 LastKnownLocation = lastKnownLocation,
-                Primed = primed
             };
         }
 
