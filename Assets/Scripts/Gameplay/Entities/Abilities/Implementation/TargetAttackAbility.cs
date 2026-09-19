@@ -1,5 +1,7 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using Gameplay.Commands;
 using Gameplay.Config.Abilities;
 using Gameplay.Grid;
 using Gameplay.Managers;
@@ -22,6 +24,7 @@ namespace Gameplay.Entities.Abilities {
         public override bool ShouldShowAbilityTimer => true;
         protected override float AddedMovementTime => Performer.MovementTimeFromAttacking;
         private TeamFogOfWarTracker FowTracker => GameManager.Instance.FogOfWarManager!.GetTracker(PerformerTeam);
+        private AbilityEventRouter AbilityEventRouter => GameManager.Instance.AbilityEventRouter;
 
         public override void Cancel() {
             UnRegisterTargetListeners();
@@ -152,19 +155,27 @@ namespace Gameplay.Entities.Abilities {
         private void RegisterTargetListeners() {
             if (AbilityParameters.Target == null) return;
             
-            AbilityParameters.Target.UnregisteredEvent += DoFollowUpAttackMove;
+            AbilityEventRouter.RegisterListener<Action>(Performer, UID, 
+                handler => AbilityParameters.Target.UnregisteredEvent += handler,
+                handler => AbilityParameters.Target.UnregisteredEvent -= handler,
+                DoFollowUpAttackMove);
+            AbilityEventRouter.RegisterListener<Action>(Performer, UID, 
+                handler => AbilityParameters.Target.EntityMovedEvent += handler,
+                handler => AbilityParameters.Target.EntityMovedEvent -= handler,
+                TrackedEntityMoved);
             TeamFogOfWarTracker tracker = FowTracker;
-            tracker?.RegisterEntityListener(AbilityParameters.Target, TrackedEntityHiddenStateChanged);
-            AbilityParameters.Target.EntityMovedEvent += TrackedEntityMoved;
+            if (tracker != null) {
+                AbilityEventRouter.RegisterListener<Action<bool>>(Performer, UID,
+                    handler => tracker.RegisterEntityListener(AbilityParameters.Target, handler),
+                    handler => tracker.UnregisterEntityListener(AbilityParameters.Target, handler),
+                    TrackedEntityHiddenStateChanged);
+            }
         }
 
         private void UnRegisterTargetListeners() {
             if (!AbilityParameters?.Target) return;
             
-            AbilityParameters.Target.UnregisteredEvent -= DoFollowUpAttackMove;
-            AbilityParameters.Target.EntityMovedEvent -= TrackedEntityMoved;
-            TeamFogOfWarTracker tracker = FowTracker;
-            tracker?.UnregisterEntityListener(AbilityParameters.Target);
+            AbilityEventRouter.UnregisterListeners(Performer, UID);
         }
 
         // Called on server

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Game.Network;
 using Gameplay;
+using Gameplay.Commands;
 using Gameplay.Config;
 using Gameplay.Entities;
 using Gameplay.Grid;
@@ -58,6 +59,7 @@ public class GameManager : MonoBehaviour {
     public ControlGroupsManager ControlGroupsManager;
     public EntityLockTracker EntityLockTracker;
     [CanBeNull] public FogOfWarManager FogOfWarManager;
+    public AbilityEventRouter AbilityEventRouter;
     
     public IGamePlayer Player1;
     public IGamePlayer Player2;
@@ -81,6 +83,7 @@ public class GameManager : MonoBehaviour {
         LeaderTracker = new LeaderTracker();
         TileAccessibilityManager = new TileAccessibilityManager();
         EntityLockTracker = new EntityLockTracker();
+        AbilityEventRouter = new AbilityEventRouter(((entity, abilityUid) => entity.GetAbilityByUID(abilityUid)));
     }
 
     private void Start() {

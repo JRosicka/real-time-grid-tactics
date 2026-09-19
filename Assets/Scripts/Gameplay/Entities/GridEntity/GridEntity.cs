@@ -486,6 +486,10 @@ namespace Gameplay.Entities {
             return (TAbilityData)EntityData.Abilities.FirstOrDefault(a => a.Content.GetType() == typeof(TAbilityData))?.Content;
         }
 
+        public IAbility GetAbilityByUID(string abilityUID) {
+            return InProgressAbilities.Union(ActiveTimers.Select(t => t.Ability)).Union(QueuedAbilities).FirstOrDefault(a => a.UID == abilityUID);
+        }
+
         public void TriggerAbilityCooldownExpired(IAbility ability, AbilityTimer abilityTimer, bool canceled) {
             AbilityTimerExpiredEvent?.Invoke(ability, abilityTimer);
             if (!canceled && ability.AbilityData.AnimateWhenCooldownComplete) {

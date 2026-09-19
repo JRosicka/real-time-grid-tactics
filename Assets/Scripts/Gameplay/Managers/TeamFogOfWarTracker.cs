@@ -71,8 +71,10 @@ namespace Gameplay.Managers {
             _entityListeners[entity] = hiddenStateChangedCallback;
         }
 
-        public void UnregisterEntityListener(GridEntity entity) {
-            _entityListeners.Remove(entity);
+        public void UnregisterEntityListener(GridEntity entity, Action<bool> hiddenStateChangedCallback) {
+            if (_entityListeners.TryGetValue(entity, out Action<bool> callback) && callback == hiddenStateChangedCallback) {
+                _entityListeners.Remove(entity);
+            }
         }
 
         public bool IsEntityHidden([NotNull] GridEntity entity) {
