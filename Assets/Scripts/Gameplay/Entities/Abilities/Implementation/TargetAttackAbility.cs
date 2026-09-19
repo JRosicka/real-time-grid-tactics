@@ -186,7 +186,7 @@ namespace Gameplay.Entities.Abilities {
         }
 
         // Called on server
-        private void TrackedEntityMoved() { // TODO this (and maybe the other listener) change the ability parameters, but that doesn't get applied for some reason. Reverts. 
+        private void TrackedEntityMoved() {
             if (FowTracker == null || !FowTracker.IsEntityHidden(AbilityParameters.Target)) {
                 SetLastKnownLocation(AbilityParameters.Target.Location!.Value);
             }

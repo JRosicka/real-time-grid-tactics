@@ -1,5 +1,7 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Gameplay.Commands;
 using Gameplay.Config.Abilities;
 using Mirror;
 using Newtonsoft.Json;
@@ -18,15 +20,14 @@ namespace Gameplay.Entities.Abilities {
 
         public override AbilityExecutionType ExecutionType => AbilityExecutionType.PreInteractionGridUpdate;
         public override bool ShouldShowAbilityTimer => true;
+        
+        private AbilityEventRouter AbilityEventRouter => GameManager.Instance.AbilityEventRouter;
 
         public override async void Cancel() {
             if (Performer == null || Performer.DeadOrDying) return;
 
             if (AbilityParameters.Target != null) {
-                AbilityParameters.Target.EntityMovedEvent -= TargetEntityNoLongerValid;
-            }
-            if (AbilityParameters.Target != null) {
-                AbilityParameters.Target.KilledEvent -= TargetEntityNoLongerValid;
+                AbilityEventRouter.UnregisterListeners(Performer, UID);
             }
 
             // Re-perform, but wait a frame so that we get the chance to finish canceling this ability first
@@ -70,10 +71,15 @@ namespace Gameplay.Entities.Abilities {
                 if (CanHeal(target)) {
                     // Start the cooldown timer - we just got a target
                     AbilityParameters.Target = target;
-                    AbilityParameters.Target.EntityMovedEvent -= TargetEntityNoLongerValid;
-                    AbilityParameters.Target.KilledEvent -= TargetEntityNoLongerValid;
-                    AbilityParameters.Target.EntityMovedEvent += TargetEntityNoLongerValid;
-                    AbilityParameters.Target.KilledEvent += TargetEntityNoLongerValid;
+                    
+                    AbilityEventRouter.RegisterListener<Action>(Performer, UID,
+                        handler => target.EntityMovedEvent += handler,
+                        handler => target.EntityMovedEvent -= handler,
+                        TargetEntityNoLongerValid);
+                    AbilityEventRouter.RegisterListener<Action>(Performer, UID,
+                        handler => target.KilledEvent += handler,
+                        handler => target.KilledEvent -= handler,
+                        TargetEntityNoLongerValid);
                 
                     return (true, AbilityResult.IncompleteWithoutEffect);
                 } else {
@@ -102,9 +108,8 @@ namespace Gameplay.Entities.Abilities {
         }
 
         private void TargetEntityNoLongerValid() {
-            AbilityParameters.Target.EntityMovedEvent -= TargetEntityNoLongerValid;
-            AbilityParameters.Target.KilledEvent -= TargetEntityNoLongerValid;
-         
+            AbilityEventRouter.UnregisterListeners(Performer, UID);
+            
             // Cancel the ability timer since the target is no longer heal-able
             GameManager.Instance.CommandManager.CancelAbility(this, false);
         }

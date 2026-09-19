@@ -1,5 +1,7 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using Gameplay.Commands;
 using Gameplay.Config.Abilities;
 using Gameplay.Grid;
 using Mirror;
@@ -18,6 +20,8 @@ namespace Gameplay.Entities.Abilities {
 
         public override AbilityExecutionType ExecutionType => AbilityExecutionType.PreInteractionGridUpdate;
         public override bool ShouldShowAbilityTimer => true;
+
+        private AbilityEventRouter AbilityEventRouter => GameManager.Instance.AbilityEventRouter;
 
         public override void Cancel() {
             // Nothing to do
@@ -47,10 +51,14 @@ namespace Gameplay.Entities.Abilities {
                 }
                 
                 // Otherwise start collection
-                AbilityParameters.Target.UnregisteredEvent -= CancelCollection;
-                AbilityParameters.Target.UnregisteredEvent += CancelCollection;
-                Performer.HPHandler.AttackedEvent -= PerformerAttacked;
-                Performer.HPHandler.AttackedEvent += PerformerAttacked;
+                AbilityEventRouter.RegisterListener<Action>(Performer, UID,
+                    handler => AbilityParameters.Target.UnregisteredEvent += handler,
+                    handler => AbilityParameters.Target.UnregisteredEvent -= handler,
+                    CancelCollection);
+                AbilityEventRouter.RegisterListener<Action<bool>>(Performer, UID,
+                    handler => Performer.HPHandler.AttackedEvent += handler,
+                    handler => Performer.HPHandler.AttackedEvent -= handler,
+                    PerformerAttacked);
                 return (true, AbilityResult.IncompleteWithEffect);
             }
 
@@ -100,9 +108,8 @@ namespace Gameplay.Entities.Abilities {
         }
 
         private void CancelCollection() {
-            AbilityParameters.Target.UnregisteredEvent -= CancelCollection;
-            Performer.HPHandler.AttackedEvent -= PerformerAttacked;
-         
+            AbilityEventRouter.UnregisterListeners(Performer, UID);
+            
             GameManager.Instance.CommandManager.CancelAbility(this, false);
             Performer.SetTargetLocation(Performer.Location!.Value, null, false);
         }
