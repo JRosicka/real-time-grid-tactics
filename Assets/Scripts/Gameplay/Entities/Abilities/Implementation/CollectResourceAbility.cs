@@ -4,6 +4,7 @@ using System.Linq;
 using Gameplay.Commands;
 using Gameplay.Config.Abilities;
 using Gameplay.Grid;
+using Gameplay.UI;
 using Mirror;
 using Newtonsoft.Json;
 using UnityEngine;
@@ -99,11 +100,11 @@ namespace Gameplay.Entities.Abilities {
             if (!AbilityParameters.Target || AbilityParameters.Target.Location == null) {
                 if (Performer.TargetLocationLogicValue.CurrentTarget != Performer.Location.Value ||
                     Performer.TargetLocationLogicValue.TargetEntity != null) {
-                    Performer.SetTargetLocation(Performer.Location.Value, null, false);
+                    Performer.SetTargetLocation(Performer.Location.Value, null, PathVisualizer.PathType.Move);
                 }
             } else if (Performer.TargetLocationLogicValue.CurrentTarget != AbilityParameters.Target.Location.Value || 
                        Performer.TargetLocationLogicValue.TargetEntity != AbilityParameters.Target) {
-                Performer.SetTargetLocation(AbilityParameters.Target.Location.Value, AbilityParameters.Target, false, true);
+                Performer.SetTargetLocation(AbilityParameters.Target.Location.Value, AbilityParameters.Target, PathVisualizer.PathType.Move, true);
             }
         }
 
@@ -111,7 +112,7 @@ namespace Gameplay.Entities.Abilities {
             AbilityEventRouter.UnregisterListeners(Performer, UID);
             
             GameManager.Instance.CommandManager.CancelAbility(this, false);
-            Performer.SetTargetLocation(Performer.Location!.Value, null, false);
+            Performer.SetTargetLocation(Performer.Location!.Value, null, PathVisualizer.PathType.Move);
         }
 
         private void PerformerAttacked(bool lethal) {

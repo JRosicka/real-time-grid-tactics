@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Gameplay.Config.Abilities;
 using Gameplay.Grid;
+using Gameplay.UI;
 using Mirror;
 using Newtonsoft.Json;
 using UnityEngine;
@@ -85,6 +86,7 @@ namespace Gameplay.Entities.Abilities {
                 targetEntity = null;
             }
 
+            PathVisualizer.PathType pathType;
             if (targetEntity == null) {
                 AttackAbilityData attackData = Performer.GetAbilityData<AttackAbilityData>();
                 AbilityAssignmentManager.StartPerformingAbility(Performer, attackData, new AttackAbilityParameters {
@@ -93,15 +95,17 @@ namespace Gameplay.Entities.Abilities {
                     Reaction = false,
                     ReactionTarget = null
                 }, false, true, true, false);
+                pathType = PathVisualizer.PathType.AttackMove;
             } else {
                 TargetAttackAbilityData attackData = Performer.GetAbilityData<TargetAttackAbilityData>();
                 AbilityAssignmentManager.StartPerformingAbility(Performer, attackData, new TargetAttackAbilityParameters {
                     Target = targetEntity,
                     LastKnownLocation = targetEntity.Location!.Value
                 }, false, true, true, false);
+                pathType = PathVisualizer.PathType.TargetAttack;
             }
             
-            Performer.SetTargetLocation(AbilityParameters.ClickLocation, targetEntity, true);
+            Performer.SetTargetLocation(AbilityParameters.ClickLocation, targetEntity, pathType);
         }
     }
 

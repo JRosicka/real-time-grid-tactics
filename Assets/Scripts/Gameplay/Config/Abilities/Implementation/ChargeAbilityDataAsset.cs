@@ -82,7 +82,7 @@ namespace Gameplay.Config.Abilities {
                 Debug.LogWarning("No viable charge location found, that's unexpected.");
                 return;
             }
-            selectedEntity.SetTargetLocation(cellPosition, null, true);
+            selectedEntity.SetTargetLocation(cellPosition, null, PathVisualizer.PathType.AttackMove);
             GameManager.Instance.AbilityAssignmentManager.StartPerformingAbility(selectedEntity, this, new ChargeAbilityParameters {
                 Destination = destination.Value,
                 MoveDestination = destination.Value,

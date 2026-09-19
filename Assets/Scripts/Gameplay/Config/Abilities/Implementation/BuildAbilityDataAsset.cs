@@ -5,6 +5,7 @@ using Gameplay.Entities;
 using Gameplay.Entities.Abilities;
 using Gameplay.Grid;
 using Gameplay.Managers;
+using Gameplay.UI;
 using UnityEngine;
 using Util;
 using Object = UnityEngine.Object;
@@ -98,7 +99,7 @@ namespace Gameplay.Config.Abilities {
             BuildAbilityParameters buildParameters = new BuildAbilityParameters {Buildable = purchasableData, BuildLocation = cellPosition};
             GameManager.Instance.AbilityAssignmentManager.StartPerformingAbility(selectedEntity, this, buildParameters, 
                 true, true, false, true);
-            selectedEntity.SetTargetLocation(cellPosition, null, false, true);
+            selectedEntity.SetTargetLocation(cellPosition, null, PathVisualizer.PathType.Move, true);
             
             if (GameManager.Instance.SelectionInterface.BuildMenuOpenFromSelection) {
                 // Leave the build menu

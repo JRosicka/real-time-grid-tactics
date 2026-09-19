@@ -5,6 +5,7 @@ using Gameplay.Commands;
 using Gameplay.Config.Abilities;
 using Gameplay.Grid;
 using Gameplay.Managers;
+using Gameplay.UI;
 using Mirror;
 using Newtonsoft.Json;
 using UnityEngine;
@@ -62,7 +63,11 @@ namespace Gameplay.Entities.Abilities {
                     UnRegisterTargetListeners();
                     return (false, AbilityResult.CompletedWithoutEffect);
                 }
-                
+
+                if (Performer.TargetLocationLogicValue.TargetEntity != null) {
+                    Performer.SetTargetLocation(AbilityParameters.LastKnownLocation, null, PathVisualizer.PathType.TargetAttack);
+                }
+
                 // If no move available, then don't do anything else for now
                 if (Performer.ActiveTimers.Any(t => t.Ability is MoveAbility)) {
                     return (false, AbilityResult.IncompleteWithoutEffect);
@@ -83,6 +88,11 @@ namespace Gameplay.Entities.Abilities {
                 // If the target no longer exists, then it must have been killed or turned into a structure or something. 
                 UnRegisterTargetListeners();
                 return (false, AbilityResult.CompletedWithoutEffect);
+            }
+            
+            if (Performer.TargetLocationLogicValue.TargetEntity == null) {
+                // This probably needs updating from when we were tracking the last known location
+                Performer.SetTargetLocation(targetLocation.Value, AbilityParameters.Target, PathVisualizer.PathType.TargetAttack);
             }
 
             // Try to attack the target if it is in range

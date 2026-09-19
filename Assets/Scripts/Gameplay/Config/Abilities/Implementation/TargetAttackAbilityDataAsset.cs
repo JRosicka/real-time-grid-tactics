@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Gameplay.Entities;
 using Gameplay.Entities.Abilities;
+using Gameplay.UI;
 using UnityEngine;
 using Util;
 
@@ -69,7 +70,7 @@ namespace Gameplay.Config.Abilities {
                 Target = target,
                 LastKnownLocation = cellPosition
             }, true, true, true, true);
-            selectedEntity.SetTargetLocation(cellPosition, target, true);
+            selectedEntity.SetTargetLocation(cellPosition, target, PathVisualizer.PathType.TargetAttack);
         }
         
         public void RecalculateTargetableAbilitySelection(GridEntity selector, object targetData) {

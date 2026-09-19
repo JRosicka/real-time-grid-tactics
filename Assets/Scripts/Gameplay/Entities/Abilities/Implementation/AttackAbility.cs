@@ -3,6 +3,7 @@ using System.Linq;
 using Gameplay.Config;
 using Gameplay.Config.Abilities;
 using Gameplay.Grid;
+using Gameplay.UI;
 using JetBrains.Annotations;
 using Mirror;
 using Newtonsoft.Json;
@@ -36,7 +37,7 @@ namespace Gameplay.Entities.Abilities {
 
         public override bool TryDoAbilityStartEffect() {
             if (!AbilityParameters.Reaction && !Performer.HoldingPosition) {
-                Performer.SetTargetLocation(AbilityParameters.Destination, null, true);
+                Performer.SetTargetLocation(AbilityParameters.Destination, null, PathVisualizer.PathType.AttackMove);
             }
             return true;
         }

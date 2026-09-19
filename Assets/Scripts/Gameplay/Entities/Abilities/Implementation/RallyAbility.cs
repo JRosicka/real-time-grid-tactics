@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Gameplay.Config.Abilities;
+using Gameplay.UI;
 using Mirror;
 using Newtonsoft.Json;
 using UnityEngine;
@@ -39,8 +40,10 @@ namespace Gameplay.Entities.Abilities {
             if (entityAtDestination && (entityAtDestination.Team == PerformerTeam || (entityAtDestination.Team == GameTeam.Neutral && !entityAtDestination.EntityData.Attackable))) {
                 entityAtDestination = null;
             }
-            bool attacking = Data.RallyingUnitsAreAttackers || entityAtDestination;
-            Performer.SetTargetLocation(AbilityParameters.Destination, entityAtDestination, attacking);
+            PathVisualizer.PathType pathType = entityAtDestination ? PathVisualizer.PathType.TargetAttack
+                : Data.RallyingUnitsAreAttackers ? PathVisualizer.PathType.AttackMove
+                : PathVisualizer.PathType.Move;
+            Performer.SetTargetLocation(AbilityParameters.Destination, entityAtDestination, pathType);
             return (true, AbilityResult.CompletedWithEffect);
         }
     }

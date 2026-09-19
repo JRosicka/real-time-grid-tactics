@@ -203,7 +203,7 @@ namespace Gameplay.Entities {
             }
             
             TargetLocationLogic.ValueChanged += TargetLocationLogicChanged;
-            TargetLocationLogic.UpdateValue(new TargetLocationLogic(EntityData.CanRally, spawnLocation, null, false, false));
+            TargetLocationLogic.UpdateValue(new TargetLocationLogic(EntityData.CanRally, spawnLocation, null, PathVisualizer.PathType.Move, false));
             LastAttackedEntity.UpdateValue(new NetworkableGridEntityValue(null));
             
             // Set up death actions
@@ -356,13 +356,13 @@ namespace Gameplay.Entities {
         private void TargetEntityUpdated() {
             Vector2Int? newLocation = TargetLocationLogicValue.TargetEntity == null ? null : TargetLocationLogicValue.TargetEntity.Location;
             if (newLocation == null) {
-                SetTargetLocation(TargetLocationLogicValue.CurrentTarget, null, TargetLocationLogicValue.Attacking);
+                SetTargetLocation(TargetLocationLogicValue.CurrentTarget, null, TargetLocationLogicValue.PathType);
             } else {
-                SetTargetLocation(newLocation.Value, TargetLocationLogicValue.TargetEntity, TargetLocationLogicValue.Attacking);
+                SetTargetLocation(newLocation.Value, TargetLocationLogicValue.TargetEntity, TargetLocationLogicValue.PathType);
             }
         }
-        public void SetTargetLocation(Vector2Int newTargetLocation, GridEntity targetEntity, bool attacking, bool hidePathDestination = false) {
-            TargetLocationLogic.UpdateValue(new TargetLocationLogic(TargetLocationLogicValue.CanRally, newTargetLocation, targetEntity, attacking, hidePathDestination));
+        public void SetTargetLocation(Vector2Int newTargetLocation, GridEntity targetEntity, PathVisualizer.PathType pathType, bool hidePathDestination = false) {
+            TargetLocationLogic.UpdateValue(new TargetLocationLogic(TargetLocationLogicValue.CanRally, newTargetLocation, targetEntity, pathType, hidePathDestination));
         }
 
         private void UpdateAttackTarget(INetworkableFieldValue oldValue, INetworkableFieldValue newValue, string metadata) {
@@ -529,7 +529,7 @@ namespace Gameplay.Entities {
                 var currentLocation = Location;
                 // The location might be null if the entity is being destroyed 
                 if (currentLocation != null) {
-                    SetTargetLocation(currentLocation.Value, null, false);
+                    SetTargetLocation(currentLocation.Value, null, PathVisualizer.PathType.Move);
                 }
             }
             
@@ -593,7 +593,7 @@ namespace Gameplay.Entities {
                     NextMoveCell = targetCell, 
                     BlockedByOccupation = true
                 }, fromInput, true, true, recordForReplay)) {
-                SetTargetLocation(targetCell, null, false);
+                SetTargetLocation(targetCell, null, PathVisualizer.PathType.Move);
                 if (playTargetSound) {
                     GameAudio.Instance.AbilityTargetedSound(data);
                 }
@@ -670,7 +670,7 @@ namespace Gameplay.Entities {
 
             if (Location != null && TargetLocationLogicValue.TargetEntity == null) {
                 // We are not target a specific unit (via target-attack), so update the rally point
-                SetTargetLocation(Location.Value, null, false);
+                SetTargetLocation(Location.Value, null, PathVisualizer.PathType.Move);
             }
         }
         
@@ -686,7 +686,7 @@ namespace Gameplay.Entities {
                 if (AbilityAssignmentManager.StartPerformingAbility(this, data, new AttackAbilityParameters {
                         Destination = targetCell
                     }, false, true, true, false)) {
-                    SetTargetLocation(targetCell, null, true);
+                    SetTargetLocation(targetCell, null, PathVisualizer.PathType.AttackMove);
                 }
             } else {
                 // Target attack
@@ -695,7 +695,7 @@ namespace Gameplay.Entities {
                         Target = targetEntity,
                         LastKnownLocation = targetCell
                     }, false, true, true, false)) {
-                    SetTargetLocation(targetCell, targetEntity, true);
+                    SetTargetLocation(targetCell, targetEntity, PathVisualizer.PathType.TargetAttack);
                 }
             }
         }
@@ -753,7 +753,7 @@ namespace Gameplay.Entities {
                     LastKnownLocation = targetCell
                 }, true, true, true, true)) {
                 GameAudio.Instance.AbilityTargetedSound(data);
-                SetTargetLocation(targetCell, targetEntity, true);
+                SetTargetLocation(targetCell, targetEntity, PathVisualizer.PathType.TargetAttack);
             }
             return true;
         }
@@ -899,7 +899,7 @@ namespace Gameplay.Entities {
                 }
             } else {
                 // Since there will be no follow up attack queued, just set the target location to track this entity since that's all we will be doing
-                SetTargetLocation(sourceEntity.Location.Value, sourceEntity, true);
+                SetTargetLocation(sourceEntity.Location.Value, sourceEntity, PathVisualizer.PathType.TargetAttack);
             }
         }
         

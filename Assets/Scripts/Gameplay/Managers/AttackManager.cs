@@ -4,6 +4,7 @@ using Gameplay.Config.Abilities;
 using Gameplay.Entities;
 using Gameplay.Entities.Abilities;
 using Gameplay.Entities.Upgrades;
+using Gameplay.UI;
 using JetBrains.Annotations;
 using Sirenix.Utilities;
 using UnityEngine;
@@ -49,7 +50,7 @@ namespace Gameplay.Managers {
             attackLogic.DoAttack(attacker, target, bonusDamage);
             
             if (updateTargetLocation) {
-                attacker.SetTargetLocation(targetLocation, target, true);
+                attacker.SetTargetLocation(targetLocation, target, PathVisualizer.PathType.TargetAttack);
             }
 
             return true;

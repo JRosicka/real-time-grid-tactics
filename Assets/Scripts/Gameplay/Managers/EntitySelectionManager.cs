@@ -303,21 +303,15 @@ public class EntitySelectionManager {
         if (!_gameManager.CommandManager.EntitiesOnGrid.IsEntityOnGrid(SelectedEntity)) return; // May be in the middle of getting unregistered
         if (!SelectedEntity.CanMoveOrRally && !SelectedEntity.TargetLocationLogicValue.CanRally) return;
         if (SelectedEntity.InteractBehavior is not { AllowedToSeeMiscInfo: true }) return;
-
-        TargetLocationLogic targetLocationLogic = (TargetLocationLogic)newValue;
-        PathVisualizer.PathType pathType = targetLocationLogic.Attacking 
-            ? targetLocationLogic.TargetEntity == null 
-                ? PathVisualizer.PathType.AttackMove
-                : PathVisualizer.PathType.TargetAttack
-            : PathVisualizer.PathType.Move;
-
+        
         // Need to get the FoW tracker for the entity's team since its might have a different perception of the best
         // path than what the actual best path is
         TeamFogOfWarTracker fowTracker = _gameManager.FogOfWarManager!.GetTracker(SelectedEntity.Team);
         
-        int range = pathType == PathVisualizer.PathType.TargetAttack ? SelectedEntity.Range : 0;
+        TargetLocationLogic targetLocationLogic = (TargetLocationLogic)newValue;
+        int range = targetLocationLogic.PathType == PathVisualizer.PathType.TargetAttack && targetLocationLogic.TargetEntity != null ? SelectedEntity.Range : 0;
         PathfinderService.Path path = PathfinderService.FindPath(SelectedEntity, targetLocationLogic.CurrentTarget, range, fowTracker);
         
-        GridController.VisualizePath(path, pathType, targetLocationLogic.CurrentTarget, targetLocationLogic.HidePathDestination, fowTracker, false, SelectedEntity.EntityData.PathfindingConfig);
+        GridController.VisualizePath(path, targetLocationLogic.PathType, targetLocationLogic.CurrentTarget, targetLocationLogic.HidePathDestination, fowTracker, false, SelectedEntity.EntityData.PathfindingConfig);
     }
 }

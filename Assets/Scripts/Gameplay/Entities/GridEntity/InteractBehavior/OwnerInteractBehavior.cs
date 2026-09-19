@@ -92,7 +92,7 @@ namespace Gameplay.Entities {
                         Vector2Int? currentLocation = thisEntity.Location;
                         // The location might be null if the entity is being destroyed 
                         if (currentLocation != null) {
-                            thisEntity.SetTargetLocation(currentLocation.Value, null, false);
+                            thisEntity.SetTargetLocation(currentLocation.Value, null, PathVisualizer.PathType.Move);
                         }
                     }
                 } else {

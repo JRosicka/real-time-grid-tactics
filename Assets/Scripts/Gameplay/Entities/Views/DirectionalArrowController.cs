@@ -54,12 +54,7 @@ namespace Gameplay.Entities {
         }
 
         private void TryPointArrow(TargetLocationLogic targetLocationLogic) {
-            PathVisualizer.PathType pathType = !targetLocationLogic.Attacking
-                ? PathVisualizer.PathType.Move
-                : targetLocationLogic.TargetEntity != null
-                    ? PathVisualizer.PathType.TargetAttack
-                    : PathVisualizer.PathType.AttackMove;
-            DoPointArrow(targetLocationLogic.CurrentTarget, pathType);
+            DoPointArrow(targetLocationLogic.CurrentTarget, targetLocationLogic.PathType);
         }
 
         private void DoPointArrow(Vector2Int destination, PathVisualizer.PathType targetType) {
