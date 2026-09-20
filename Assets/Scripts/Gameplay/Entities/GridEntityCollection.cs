@@ -62,7 +62,7 @@ namespace Gameplay.Entities {
             Entities = entities;
         }
         
-        public void RegisterEntity(GridEntity entity, Vector2Int location, int order, GridEntity entityToIgnore = null) {
+        public void RegisterEntity(GridEntity entity, Vector2Int location, int order, GridEntity entityToIgnore = null, bool checkLegality = true) {
             // Check to see if the entity is already registered
             if (Entities.SelectMany(c => c.Entities.Select(o => o.Entity)).Contains(entity)) return;
 
@@ -128,6 +128,22 @@ namespace Gameplay.Entities {
             // Unregister and re-register
             UnRegisterEntity(entity);
             RegisterEntity(entity, newLocation, order);
+        }
+        
+        public void ApplyEntityUpdate(GridEntity entity, GridEntityCollectionUpdate updateType, Vector2Int previousLocation, Vector2Int newLocation) {
+            switch (updateType) {
+                case GridEntityCollectionUpdate.Register:
+                    RegisterEntity(entity, newLocation, entity.EntityData.GetStackOrder(), null, false);
+                    break;
+                case GridEntityCollectionUpdate.Unregister:
+                    UnRegisterEntity(entity);
+                    break;
+                case GridEntityCollectionUpdate.Move:
+                    MoveEntity(entity, newLocation);
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(updateType), updateType, null);
+            }
         }
 
         /// <summary>

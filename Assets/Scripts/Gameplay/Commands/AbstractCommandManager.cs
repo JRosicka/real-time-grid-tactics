@@ -41,13 +41,7 @@ public abstract class AbstractCommandManager : NetworkBehaviour, ICommandManager
     protected GridController GridController => GameManager.Instance.GridController;
     private AbilityAssignmentManager AbilityAssignmentManager => GameManager.Instance.AbilityAssignmentManager;
     
-    // TODO this is where I could add some "is this player allowed to call this on the entity" checks
-    [SyncVar(hook = nameof(OnEntityCollectionChanged))] 
     private GridEntityCollection _entitiesOnGrid = new GridEntityCollection();
-    private void OnEntityCollectionChanged(GridEntityCollection oldValue, GridEntityCollection newValue) {
-        LogTimestamp(nameof(OnEntityCollectionChanged));
-        EntityCollectionChangedEvent?.Invoke();
-    }
 
     public abstract void UpdateUpgradeStatus(UpgradeData data, [CanBeNull] GridEntity performer, GameTeam team, UpgradeStatus newStatus);
     public abstract void MarkUpgradeTimerExpired(UpgradeData upgradeData, GameTeam team);
@@ -302,7 +296,12 @@ public abstract class AbstractCommandManager : NetworkBehaviour, ICommandManager
     }
 
     protected void DoSendEntityUpdateEvent(GridEntity entity, GridEntityCollectionUpdate updateType, Vector2Int previousLocation, Vector2Int newLocation) {
-        EntityUpdatedEvent?.Invoke(entity, updateType, previousLocation, newLocation);
+        if (!NetworkServer.active && NetworkClient.active) {
+            // MP but not server, so the entity collection needs updating
+            _entitiesOnGrid.ApplyEntityUpdate(entity, updateType, previousLocation, newLocation);
+        }
+        EntityCollectionChangedEvent?.Invoke();
+        EntityUpdatedEvent?.Invoke(entity, updateType, previousLocation, newLocation);  // TODO see which listeners subscribed to EntityCollectionChangedEvent can instead subscribe to this more targeted one. 
     }
     
     /// <summary>
@@ -310,25 +309,7 @@ public abstract class AbstractCommandManager : NetworkBehaviour, ICommandManager
     /// is not enough to get the sync to occur. 
     /// </summary>
     private void SyncEntityCollection(GridEntity entity, GridEntityCollectionUpdate updateType, Vector2Int previousLocation, Vector2Int newLocation) {
-        // TODO: If networking is horribly slow when there are a lot of GridEntities in the game... this is probably why.
-        // Kinda yucky. Would need to consider switching to an approach of having each client keep track of and modify
-        // its entity collection and have the server communicate changes (unregister, register, moving) whenever they
-        // happen. See the SendCollectionUpdateEvent call below -- ideally the clients could use this to handle updating 
-        // their own GridEntityCollection states. 
         LogTimestamp(nameof(SyncEntityCollection));
-        _entitiesOnGrid = new GridEntityCollection(_entitiesOnGrid.Entities);
-        if (!GameTypeTracker.Instance.GameIsNetworked) {
-            // SP, so syncvars won't work
-            EntityCollectionChangedEvent?.Invoke();
-        }
-
-        // TODO: Regardless of whether we go with the big change of the above TODO, it would be good to see what current subscribers to EntityCollectionChangedEvent can be switched to just use this more targeted one.
-        // TODO: So.......... for clients, the rpc call for this comes in BEFORE the syncvar gets updated. So we wait a frame for now. 
-        SendCollectionUpdateEventAfterDelay(entity, updateType, previousLocation, newLocation);
-    }
-
-    private async void SendCollectionUpdateEventAfterDelay(GridEntity entity, GridEntityCollectionUpdate updateType, Vector2Int previousLocation, Vector2Int newLocation) {
-        await Awaitable.NextFrameAsync();
         SendCollectionUpdateEvent(entity, updateType, previousLocation, newLocation);
     }
     
