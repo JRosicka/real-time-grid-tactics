@@ -72,6 +72,7 @@ public class EntitySelectionManager {
         if (SelectedEntity != null) {
             // Unregister the un-registration event for the previously selected entity
             SelectedEntity.TargetLocationLogic.ValueChanged -= TryVisualizePath;
+            SelectedEntity.EntityMovedClientEvent -= DeselectEntityIfHidden;
             SelectedEntity.UnregisteredEvent -= DeselectEntity;
             SelectedEntity.Deselect();
         }
@@ -89,6 +90,7 @@ public class EntitySelectionManager {
         if (entity != null) {
             TryVisualizePath(null, entity.TargetLocationLogic.Value, null);
             entity.TargetLocationLogic.ValueChanged += TryVisualizePath;
+            entity.EntityMovedClientEvent += DeselectEntityIfHidden;
             entity.UnregisteredEvent += DeselectEntity;
         } else {
             GridController.ClearPath(false);
@@ -172,11 +174,11 @@ public class EntitySelectionManager {
         SelectEntity(null);
     }
 
-    private void DeselectEntityIfHidden(List<TeamFogOfWarTracker.FoWCell> foWCells) {
+    private void DeselectEntityIfHidden() {
         if (SelectedEntity == null) return;
         if (SelectedEntity.EntityData.SelectableInFoW) return;
         if (_localTeamFowTracker == null) return;   // Only set if we are limited in vision, i.e. if not a spectator
-        if (foWCells.Any(c => c.Hidden && c.Position == SelectedEntity.Location)) {
+        if (_localTeamFowTracker.IsEntityHidden(SelectedEntity)) {
             DeselectEntity();
         }
     }
@@ -191,7 +193,7 @@ public class EntitySelectionManager {
     }
 
     private void FogOfWarChanged(List<TeamFogOfWarTracker.FoWCell> foWCells) {
-        DeselectEntityIfHidden(foWCells);
+        DeselectEntityIfHidden();
         
         // TODO this can potentially go away if we make the change to update entity collections client-side, since FoW updates happen before the collection changed event
         EntityCollectionChanged();
