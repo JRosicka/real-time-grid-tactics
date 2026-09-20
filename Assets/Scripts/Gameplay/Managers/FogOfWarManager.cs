@@ -57,6 +57,18 @@ namespace Gameplay.Managers {
         public TeamFogOfWarTracker GetLocalTeamTracker() {
             return GetTracker(_localTeam);
         }
+
+        /// <summary>
+        /// Retrieve all <see cref="TeamFogOfWarTracker"/>s that the local player is allowed to see.
+        /// - If spectator, can see everything
+        /// - Otherwise can only see the tracker for the corresponding player team
+        /// </summary>
+        /// <returns></returns>
+        public List<TeamFogOfWarTracker> GetObservableTrackers() {
+            return _localTeam == GameTeam.Spectator 
+                ? new List<TeamFogOfWarTracker>(_teamFogOfWarTrackers.Values) 
+                : new List<TeamFogOfWarTracker> { GetLocalTeamTracker() };
+        }
         
         public void UnregisterListeners() {
             _teamFogOfWarTrackers.ForEach(t => t.Value.UnregisterListeners());

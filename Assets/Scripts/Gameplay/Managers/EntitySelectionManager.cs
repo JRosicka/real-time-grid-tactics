@@ -61,8 +61,8 @@ public class EntitySelectionManager {
 
     private void InitializeFoW() {
         _localTeamFowTracker = _gameManager.FogOfWarManager!.GetLocalTeamTracker();
-        if (_localTeamFowTracker != null) {
-            _localTeamFowTracker.FoWUpdated += FogOfWarChanged;
+        foreach (TeamFogOfWarTracker tracker in _gameManager.FogOfWarManager.GetObservableTrackers()) {
+            tracker.FoWUpdated += FogOfWarChanged;
         }
     }
 
@@ -175,6 +175,7 @@ public class EntitySelectionManager {
     private void DeselectEntityIfHidden(List<TeamFogOfWarTracker.FoWCell> foWCells) {
         if (SelectedEntity == null) return;
         if (SelectedEntity.EntityData.SelectableInFoW) return;
+        if (_localTeamFowTracker == null) return;   // Only set if we are limited in vision, i.e. if not a spectator
         if (foWCells.Any(c => c.Hidden && c.Position == SelectedEntity.Location)) {
             DeselectEntity();
         }
