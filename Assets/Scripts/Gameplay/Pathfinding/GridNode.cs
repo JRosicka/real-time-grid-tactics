@@ -61,12 +61,11 @@ namespace Gameplay.Pathfinding {
             _fastestEnterTime = GameManager.Instance.TileAccessibilityManager.GetFastestMoveTime(entity.EntityDataForPathfinding());
             _ignoreOtherEntities = ignoreOtherEntities;
             _fowTracker = fowTracker;
-
-            // Don't stop this cell from being walkable due to other entities if this cell is hidden.
-            // Still keep _ignoreOtherEntities as-is though for getting neighbors. 
-            bool actuallyWalkable = Walkable || (fowTracker != null && fowTracker.IsLocationHidden(cellData.Location));
             
-            Walkable = entity.CanPathFindToTile(cellData.Tile) && (actuallyWalkable || PathfinderService.CanEntityEnterCell(cellData.Location, 
+            // Don't stop this cell from being walkable due to other entities if this cell is hidden.
+            bool hidden = fowTracker != null && fowTracker.IsLocationHidden(cellData.Location);
+            
+            Walkable = entity.CanPathFindToTile(cellData.Tile) && (ignoreOtherEntities || hidden || PathfinderService.CanEntityEnterCell(cellData.Location, 
                 entity.EntityDataForPathfinding(), entity.Team, forRallying:entity.EntityDataForPathfinding().CanRally));
 
             List<Vector2Int> locationsWithFriendlyEntities = GameManager.Instance.CommandManager.EntitiesOnGrid.LocationsWithFriendlyEntities(entity.Team);
