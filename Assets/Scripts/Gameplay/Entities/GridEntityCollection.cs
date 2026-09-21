@@ -81,7 +81,7 @@ namespace Gameplay.Entities {
                 });
                 ClearLocationsWithFriendlyEntitiesCache();
                 EntityUpdatedEvent?.Invoke(location, entity);
-            } else if (checkLegality && CanEntityShareLocation(entity, collectionAtLocation, entityToIgnore)) {
+            } else if (!checkLegality || CanEntityShareLocation(entity, collectionAtLocation, entityToIgnore)) {
                 if (currentEntitiesAtLocation.Any(o => o.Order == order)) {
                     Debug.LogWarning("I see that you're registering an entity in a location that contains another entity with the same order value. Hmmmm this might not behave super well you know, be careful out there!");
                 }
