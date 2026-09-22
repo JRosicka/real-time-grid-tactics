@@ -24,7 +24,7 @@ namespace Gameplay.Entities {
             EntityData entityData = (EntityData)buildAbility.AbilityParameters.Buildable;
             GameTeam team = buildAbility.PerformerTeam;
             
-            Initialize(team, entityData, false, null, false);
+            Initialize(team, entityData, false, buildAbility.AbilityParameters.BuildLocation, team != GameManager.Instance.LocalTeam);
 
             buildAbility.Performer.UnregisteredEvent += RemoveView;
         }

@@ -264,6 +264,8 @@ namespace Gameplay.Entities {
         private async void AttackReceived(bool lethal) {
             // Delay so that the shake times up with the attacker's animation
             await Task.Delay((int)(_attackShakeTriggerTime * 1000));
+            if (Entity == null || GameManager.Instance == null) return;
+            
             ShakeBehaviour.Shake();
             
             if (lethal) {
