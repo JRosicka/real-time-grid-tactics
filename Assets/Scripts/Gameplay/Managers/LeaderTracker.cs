@@ -22,7 +22,7 @@ namespace Gameplay.Managers {
                 _leaders[leader] = leader.Location!.Value;
             }
             
-            commandManager.EntityCollectionChangedEvent += EntityCollectionChanged;
+            commandManager.EntityUpdatedEvent += EntityUpdated;
         }
 
         public bool IsAdjacentToFriendlyLeader(Vector2Int position, GameTeam team) {
@@ -36,13 +36,14 @@ namespace Gameplay.Managers {
             return leader?.Location;
         }
 
-        private void EntityCollectionChanged() {
+        private void EntityUpdated(GridEntity entity, GridEntityCollectionUpdate updateType, Vector2Int previousLocation, Vector2Int newLocation) {
             List<GridEntity> leaders = _leaders.Keys.ToList();
-            foreach (GridEntity leader in leaders) {
-                if (leader.Location != null && leader.Location.Value != _leaders[leader]) {
-                    _leaders[leader] = leader.Location.Value;
-                    LeaderMoved?.Invoke(leader);
-                }
+            if (updateType != GridEntityCollectionUpdate.Move) return;
+            if (!leaders.Contains(entity)) return;
+            
+            if (newLocation != _leaders[entity]) {
+                _leaders[entity] = newLocation;
+                LeaderMoved?.Invoke(entity);
             }
         }
     }

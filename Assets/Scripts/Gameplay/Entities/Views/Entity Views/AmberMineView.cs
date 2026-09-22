@@ -17,7 +17,7 @@ namespace Gameplay.Entities {
             _entity = entity;
             Color teamColor = GameManager.Instance.GetPlayerForTeam(entity).ColorData.TeamColor;
             
-            GameManager.Instance.CommandManager.EntityCollectionChangedEvent += EntityCollectionChanged;
+            GameManager.Instance.CommandManager.EntityUpdatedEvent += EntityUpdated;
 
             IncomeAnimationBehavior.Initialize(entity, ResourceType.Advanced);
             DamageAnimationBehavior.Initialize(entity, teamColor);
@@ -27,7 +27,7 @@ namespace Gameplay.Entities {
         public override void LethalDamageReceived() {
             _dying = true;
             _resourceEntity?.ToggleView(true);
-            GameManager.Instance.CommandManager.EntityCollectionChangedEvent -= EntityCollectionChanged;
+            GameManager.Instance.CommandManager.EntityUpdatedEvent -= EntityUpdated;
         }
         
         public override void NonLethalDamageReceived() {
@@ -50,7 +50,7 @@ namespace Gameplay.Entities {
         
         public override void UpgradeApplied(IUpgrade upgrade) { }
         
-        private void EntityCollectionChanged() {
+        private void EntityUpdated(GridEntity entity, GridEntityCollectionUpdate updateType, Vector2Int previousLocation, Vector2Int newLocation) {
             if (_dying) return;
             ToggleResourceEntity(false);
         }

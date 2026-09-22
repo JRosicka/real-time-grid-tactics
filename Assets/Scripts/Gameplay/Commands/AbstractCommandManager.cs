@@ -301,7 +301,7 @@ public abstract class AbstractCommandManager : NetworkBehaviour, ICommandManager
             _entitiesOnGrid.ApplyEntityUpdate(entity, updateType, previousLocation, newLocation);
         }
         EntityCollectionChangedEvent?.Invoke();
-        EntityUpdatedEvent?.Invoke(entity, updateType, previousLocation, newLocation);  // TODO see which listeners subscribed to EntityCollectionChangedEvent can instead subscribe to this more targeted one. 
+        EntityUpdatedEvent?.Invoke(entity, updateType, previousLocation, newLocation);
     }
     
     /// <summary>

@@ -37,13 +37,17 @@ namespace Gameplay.Managers {
                 || selectedEntity.Team != localTeam
                 || selectedEntity == _entity) return;
             
+            // Unregister the previous listener
+            if (_entity) {
+                _entity.UnregisteredEvent -= UnassignGroup;
+            }
+            
             _entity = GameManager.Instance.EntitySelectionManager.SelectedEntity;
+            _entity.UnregisteredEvent += UnassignGroup;
             ControlGroupAssigned?.Invoke(_entity);
         }
         
-        public void UnassignGroupIfEntityUnregistered(List<GridEntity> entities) {
-            if (entities.Contains(_entity)) return;
-            
+        private void UnassignGroup() {
             _entity = null;
             ControlGroupUnassigned?.Invoke();
         }

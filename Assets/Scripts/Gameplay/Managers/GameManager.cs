@@ -183,7 +183,7 @@ public class GameManager : MonoBehaviour {
 
     public void SetUpControlGroups() {
         ControlGroupsManager = new ControlGroupsManager();
-        ControlGroupsManager.Initialize(CommandManager, LocalTeam);
+        ControlGroupsManager.Initialize();
         ControlGroupsViewZone.Initialize(ControlGroupsManager, LocalTeam);
     }
 
