@@ -65,7 +65,8 @@ namespace Gameplay.Managers {
                 _gameManager.GridController.GetWorldPosition(queuedBuild.BuildLocation), 
                 Quaternion.identity,
                 _gameManager.CommandManager.SpawnBucket);
-            structureSilhouette.Initialize(builder.Team, (EntityData)queuedBuild.Buildable, true);
+            bool hiddenByFow = builder.Team != GameManager.Instance.LocalTeam;
+            structureSilhouette.Initialize(builder.Team, (EntityData)queuedBuild.Buildable, true, queuedBuild.BuildLocation, hiddenByFow);
             
             _queuedStructures.Add(new QueuedBuildInfo {
                 Builder = builder,

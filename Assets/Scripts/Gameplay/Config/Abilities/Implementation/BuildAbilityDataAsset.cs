@@ -163,7 +163,7 @@ namespace Gameplay.Config.Abilities {
         public GameObject CreateIconForTargetedCell(GameTeam selectorTeam, object targetData) {
             EntityData targetEntityData = (EntityData)targetData;
             InProgressBuildingView buildingView = Object.Instantiate(GameManager.Instance.PrefabAtlas.StructureImagesView);
-            buildingView.Initialize(selectorTeam, targetEntityData, true);
+            buildingView.Initialize(selectorTeam, targetEntityData, true, null, false);
             return buildingView.gameObject;
         }
 
