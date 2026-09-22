@@ -1,11 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Gameplay.Commands;
 using Gameplay.Config;
 using Gameplay.Config.Abilities;
 using Gameplay.Config.Upgrades;
 using Gameplay.Entities.Upgrades;
 using Gameplay.Grid;
+using Gameplay.Managers;
 using Mirror;
 using Newtonsoft.Json;
 using UnityEngine;
@@ -28,6 +30,10 @@ namespace Gameplay.Entities.Abilities {
         public BuildAbility(BuildAbilityData data, BuildAbilityParameters parameters, GridEntity performer, GameTeam? overrideTeam) : base(data, parameters, performer, overrideTeam) {
             BuildAbilityData = data;
         }
+        
+        private AbilityEventRouter AbilityEventRouter => GameManager.Instance.AbilityEventRouter;
+        private FogOfWarManager FogOfWarManager => GameManager.Instance.FogOfWarManager;
+
 
         public override AbilityExecutionType ExecutionType => AbilityExecutionType.PreInteractionGridUpdate;
 
@@ -55,6 +61,8 @@ namespace Gameplay.Entities.Abilities {
                 // Cancel the upgrade
                 GameManager.Instance.CommandManager.UpdateUpgradeStatus(upgradeData, Performer, PerformerTeam, UpgradeStatus.NeitherOwnedNorInProgress);
             }
+            
+            UnregisterListeners();
         }
 
         protected override bool CompleteCooldownImpl() {
@@ -62,6 +70,7 @@ namespace Gameplay.Entities.Abilities {
                 return AwardPurchasable();
             }
 
+            UnregisterListeners();
             return true;
         }
 
@@ -73,6 +82,7 @@ namespace Gameplay.Entities.Abilities {
                         // Note that we mark the performer entity as being ignorable since it will probably not be unregistered via
                         // the below command before we check if it's legal to spawn this new one. 
                         SpawnEntity(entityData, AbilityParameters.BuildLocation, AbilityParameters.BuildLocation);
+                        UnregisterListeners();
                         return true;
                     }
                     
@@ -81,7 +91,8 @@ namespace Gameplay.Entities.Abilities {
                         Vector2Int? adjacentCell = GetBestAdjacentCellToSpawn(entityData);
                         if (adjacentCell != null) {
                             SpawnEntity(entityData, adjacentCell.Value, AbilityParameters.BuildLocation);
-                            
+
+                            UnregisterListeners();
                             return true;
                         }
                         return false;
@@ -91,6 +102,7 @@ namespace Gameplay.Entities.Abilities {
                     return false;
                 case UpgradeData upgradeData:
                     GameManager.Instance.CommandManager.UpdateUpgradeStatus(upgradeData, Performer, PerformerTeam, UpgradeStatus.Owned);
+                    UnregisterListeners();
                     return true;
                 default:
                     throw new Exception("Unexpected purchasable data type: " + AbilityParameters.Buildable.GetType());
@@ -114,7 +126,7 @@ namespace Gameplay.Entities.Abilities {
         /// </summary>
         /// <returns>The location of the best viable cell, or null if no cells are viable.</returns>
         private Vector2Int? GetBestAdjacentCellToSpawn(EntityData entityData) {
-            PathfinderService.Path path = GameManager.Instance.PathfinderService.FindPath(Performer, Performer.TargetLocationLogicValue.CurrentTarget, 0, GameManager.Instance.FogOfWarManager!.GetTracker(PerformerTeam));
+            PathfinderService.Path path = GameManager.Instance.PathfinderService.FindPath(Performer, Performer.TargetLocationLogicValue.CurrentTarget, 0, FogOfWarManager!.GetTracker(PerformerTeam));
             if (path.Nodes.Count >= 2) {
                 // Spawn at the first node along the path to the rally point if we can.
                 Vector2Int firstCellAlongRallyPoint = path.Nodes[1].Location;
@@ -146,6 +158,21 @@ namespace Gameplay.Entities.Abilities {
                 return false;
             }
             
+            if (AbilityParameters.Buildable is EntityData { IsStructure: true }) {
+                // Subscribe to FoW and entity collection updates so we can cancel this ability if we see another structure at the build site
+                AbilityEventRouter.RegisterListener<Action>(Performer, UID, 
+                    handler => GameManager.Instance.CommandManager.EntityCollectionChangedEvent += handler,
+                    handler => GameManager.Instance.CommandManager.EntityCollectionChangedEvent -= handler,
+                    EntityCollectionUpdated);
+                TeamFogOfWarTracker tracker = FogOfWarManager!.GetTracker(PerformerTeam);
+                if (tracker != null) {
+                    AbilityEventRouter.RegisterListener<Action<List<TeamFogOfWarTracker.FoWCell>>>(Performer, UID,
+                        handler => tracker.FoWUpdated += handler,
+                        handler => tracker.FoWUpdated -= handler,
+                        FoWUpdated);
+                }
+            }
+            
             // Pay resource cost
             GameManager.Instance.GetPlayerForTeam(PerformerTeam).ResourcesController.Spend(AbilityParameters.Buildable.Cost);
             return true;
@@ -164,6 +191,8 @@ namespace Gameplay.Entities.Abilities {
                 }
             }
 
+            // We are starting to build now
+            UnregisterListeners();
             return (true, AbilityResult.CompletedWithEffect);
         }
         
@@ -174,6 +203,37 @@ namespace Gameplay.Entities.Abilities {
             }
 
             return true;
+        }
+
+        private void FoWUpdated(List<TeamFogOfWarTracker.FoWCell> foWCells) {
+            TeamFogOfWarTracker.FoWCell foWCell = foWCells.FirstOrDefault(c => c.Position == AbilityParameters.BuildLocation);
+            if (foWCell is { Hidden: false }) {
+                // The build location just entered vision for the performer. Assess whether there is a structure there. 
+                if (IsStructureOnBuildLocation()) {
+                    GameManager.Instance.CommandManager.CancelAbility(this, false);
+                }
+            }
+        }
+
+        private void EntityCollectionUpdated() {
+            if (IsBuildLocationHidden()) return;
+            if (IsStructureOnBuildLocation()) {
+                GameManager.Instance.CommandManager.CancelAbility(this, false);
+            }
+        }
+
+        private bool IsBuildLocationHidden() {
+            TeamFogOfWarTracker tracker = FogOfWarManager!.GetTracker(PerformerTeam);
+            return tracker != null && tracker.IsLocationHidden(AbilityParameters.BuildLocation);
+        }
+
+        private bool IsStructureOnBuildLocation() {
+            var entities = GameManager.Instance.GetEntitiesAtLocation(AbilityParameters.BuildLocation);
+            return entities != null && entities.Entities.Any(e => e.Entity.EntityData.IsStructure);
+        }
+
+        private void UnregisterListeners() {
+            AbilityEventRouter.UnregisterListeners(Performer, UID);
         }
     }
 
