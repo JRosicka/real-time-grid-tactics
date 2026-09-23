@@ -56,15 +56,18 @@ namespace Gameplay.Entities {
         }
 
         public void RemoveView() {
-            if (!this) return;
-            
             if (_fowTracker != null) {
                 _fowTracker.FoWUpdated -= FogOfWarUpdated;
             }
+            
+            if (!this) return;
             Destroy(gameObject);
         }
 
         private void SetFoWVisibility(bool hidden) {
+            if (!_fowCanvasGroup) {
+                return;
+            }
             _fowCanvasGroup.alpha = hidden ? 0 : 1f;
         }
 
