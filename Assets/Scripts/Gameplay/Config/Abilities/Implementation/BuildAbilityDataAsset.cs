@@ -26,6 +26,7 @@ namespace Gameplay.Config.Abilities {
         private GridController GridController => GameManager.Instance.GridController;
         private GridEntityCollection EntitiesOnGrid => GameManager.Instance.CommandManager.EntitiesOnGrid;
         private QueuedStructureBuildsManager QueuedStructureBuildsManager => GameManager.Instance.QueuedStructureBuildsManager;
+        private TeamFogOfWarTracker TeamFogOfWarTracker => GameManager.Instance.FogOfWarManager!.GetLocalTeamTracker();
 
         [Serializable]
         public struct PurchasableDataWithSelectionKey {
@@ -150,8 +151,12 @@ namespace Gameplay.Config.Abilities {
                     ret.Add(viableTarget);
                     continue;
                 }
-                if (entities.Entities.All(e => (e.Entity.Team == GameTeam.Neutral && e.Entity.EntityData.CanBuildFriendlyStructureOnTop) || e.Entity == selector)) {
-                    // Entities there, but they are all neutral and buildable on (or the selected unit), so eligible 
+
+                bool cellHidden = TeamFogOfWarTracker?.IsLocationHidden(viableTarget) ?? false;
+                if (entities.Entities.All(e => (e.Entity.Team == GameTeam.Neutral && e.Entity.EntityData.CanBuildFriendlyStructureOnTop) 
+                                               || e.Entity == selector 
+                                               || (cellHidden && !e.Entity.EntityData.AlwaysShowWhenHiddenByFoW))) {
+                    // Entities there, but they are all neutral and buildable on (or the selected unit) (or hidden), so eligible 
                     ret.Add(viableTarget);
                 }
             }

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Gameplay.Entities;
 using Gameplay.Entities.Abilities;
+using Gameplay.Managers;
 using Gameplay.UI;
 using UnityEngine;
 using Util;
@@ -21,6 +22,8 @@ namespace Gameplay.Config.Abilities {
         public override bool CancelableWhileOnCooldown => false;
         public override bool CancelableWhileInProgress => true;
         public override bool Cancelable => true;
+        
+        private TeamFogOfWarTracker TeamFogOfWarTracker => GameManager.Instance.FogOfWarManager!.GetLocalTeamTracker();
 
         public override void SelectAbility(GridEntity selector) {
             GameManager.Instance.EntitySelectionManager.SelectTargetableAbility(this, selector.Team, null);
@@ -57,6 +60,7 @@ namespace Gameplay.Config.Abilities {
             if (target == null) return AbilityLegality.IndefinitelyIllegal;    // Need a target to target-fire
             if (target.Team == selector.Team) return AbilityLegality.IndefinitelyIllegal;  // Can only target enemies
             if (target.Team == GameTeam.Neutral && !target.EntityData.Attackable) return AbilityLegality.IndefinitelyIllegal;  // Can not target friendly neutrals
+            if (target.Location == null || (TeamFogOfWarTracker?.IsLocationHidden(target.Location.Value) ?? false)) return AbilityLegality.IndefinitelyIllegal; // Can not target entities in hidden cells
             return AbilityLegality.Legal;
         }
 
