@@ -10,20 +10,19 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 575c0f3cd9a64c78aaf8481f645c83a4, type: 3}
-  m_Name: Worker Build Ability
+  m_Name: Production Build Ability Workshop
   m_EditorClassIdentifier: 
   Data:
-    _contentResourceID: Worker Build Ability
+    _contentResourceID: Production Build Ability Workshop
     _id: Build
-    _description: Build a structure. After completion, the worker mans the structure
-      for the rest of their days.
+    _description: Build a workshop unit.
     _icon: {fileID: 21300000, guid: dcdb6563c02b6bf43b698eea6b840db7, type: 3}
     _iconScaleInSelectionInterface: 1
     _overrideIconForGrid: {fileID: 0}
     _flipGridIcon: 0
     _gridIconColor: {r: 0, g: 0, b: 0, a: 0}
     _slotSprites: {fileID: 11400000, guid: cf3e96fef80ac354cbbe3535fa2b19bd, type: 2}
-    _timerView: {fileID: 5971072852972127787, guid: ed3738731b7b747739ca456d1c5328a6, type: 3}
+    _timerView: {fileID: 6944947456884090745, guid: 9ce475588c4c24ce98e378449ab05ad3, type: 3}
     _requirements: []
     _performDuration: 0
     _cooldownDuration: 0
@@ -37,32 +36,24 @@ MonoBehaviour:
     _animateWhenCooldownComplete: 0
     _selectable: 1
     _selectableWhenBlocked: 1
-    _autoSelect: 0
+    _autoSelect: 1
     _selectableForAllPlayers: 1
     _appearsInBuildMenu: 0
     _tryingToPerformCancelsBuilds: 0
     _tryingToPerformCancelsHoldPosition: 1
-    _activeBlocksDefaultAttack: 1
-    _cooldownBlocksDefaultAttack: 1
+    _activeBlocksDefaultAttack: 0
+    _cooldownBlocksDefaultAttack: 0
     _showTimerOnSelectionInterface: 0
     _performByDefault: 0
-    _selectionSFX: {fileID: 11400000, guid: 75b6c326a18e3384d897ccf638a3d097, type: 2}
-    _cantPerformSFX: {fileID: 11400000, guid: e1ef9f8ca4fa3c24b95aec39de0a3eaa, type: 2}
-    _targetedSFX: {fileID: 11400000, guid: 05b6c460463864379bf3859627a7ae6e, type: 2}
+    _selectionSFX: {fileID: 11400000, guid: 7d94eda45e38f4db1b1da5805b0e7073, type: 2}
+    _cantPerformSFX: {fileID: 0}
+    _targetedSFX: {fileID: 0}
     _performedSFX: {fileID: 0}
-    _triggersEntityOrderVoiceLine: 1
-    Targetable: 1
+    _triggersEntityOrderVoiceLine: 0
+    Targetable: 0
     UsableEverywhereByBothTeams: 0
     Buildables:
-    - data: {fileID: 11400000, guid: 43174010eb096460f944f7aa4f3b1791, type: 2}
+    - data: {fileID: 11400000, guid: 1e0844ab0a6f9ba408238739b8a38df2, type: 2}
       selectionKey: q
-    - data: {fileID: 11400000, guid: f2089d06c5ba63e40a8078c1636cac5f, type: 2}
+    - data: {fileID: 11400000, guid: 9e426fdef5ac4ba43888ae5a6bcfde08, type: 2}
       selectionKey: w
-    - data: {fileID: 11400000, guid: 5d9e30910c9795b49bea0c2c257e60eb, type: 2}
-      selectionKey: a
-    - data: {fileID: 11400000, guid: 13a02f740ff7d294ca02fe7f547820c0, type: 2}
-      selectionKey: s
-    - data: {fileID: 11400000, guid: da18b7c42637384459734cbbec9ef5b0, type: 2}
-      selectionKey: e
-    - data: {fileID: 11400000, guid: 76f8875c62c05594eb3f5846997423bf, type: 2}
-      selectionKey: d

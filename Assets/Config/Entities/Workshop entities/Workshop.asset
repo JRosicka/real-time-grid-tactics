@@ -1,0 +1,84 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fafa440752424124be5b9cbee86f1e06, type: 3}
+  m_Name: Workshop
+  m_EditorClassIdentifier: 
+  ID: Workshop
+  ShortDescription: Produces wheeled units.
+  Description: Produces wheeled units.
+  Cost:
+  - Type: 1
+    Amount: 75
+  - Type: 2
+    Amount: 50
+  Requirements:
+  - Purchasable: {fileID: 11400000, guid: 76f8875c62c05594eb3f5846997423bf, type: 2}
+    MustBeAdjacent: 0
+    FailedRequirementExplanation: This requires an adjacent Lumber Mill.
+  BuildTime: 30
+  BuildsImmediately: 0
+  BaseSprite: {fileID: 21300000, guid: c2a9ce9aee3b24078bb841dec5ad83c2, type: 3}
+  TeamColorSprite: {fileID: 21300000, guid: b2232653e56324fcb8dc46bee7bcfe4e, type: 3}
+  BaseSpriteIconOverride: {fileID: 0}
+  IconScaleInSelectionInterface: 1
+  _viewPrefab: {fileID: 6373076591908856349, guid: 90935e9d409d9764a8f85ee336a44c3e, type: 3}
+  SelectionSFX: {fileID: 11400000, guid: 6931b56cabbf145a08e2159cfd71e5f3, type: 2}
+  OrderSFX: {fileID: 0}
+  AttackSFX: {fileID: 0}
+  AudioPlacementPrefix: StandardStructure
+  EntityFinishedBuildingSFX: {fileID: 0}
+  HP: 70
+  Range: 0
+  Damage: 0
+  BonusDamage: 0
+  TagsToApplyBonusDamageTo: 
+  NormalMoveTime: 0
+  AddedMovementTimeFromAttacking: 0
+  PathfindingConfig:
+    MoveIconOverride: {fileID: 0}
+    AttackIconOverride: {fileID: 0}
+    TargetAttackIconOverride: {fileID: 0}
+  Tags: 01000000
+  OverrideEntityDataForPathfinding: {fileID: 0}
+  AttackerTargetPriority: 0
+  Abilities:
+  - {fileID: 11400000, guid: f6e8110c5e782004590560ffd692217b, type: 2}
+  - {fileID: 11400000, guid: 930b6968d79224dcba838459c0b63f49, type: 2}
+  - {fileID: 11400000, guid: 95889d1df0946fe4780afbfc7aa6a20c, type: 2}
+  FriendlyUnitsCanShareCell: 1
+  Targetable: 1
+  CanBuildFriendlyStructureOnTop: 0
+  Attackable: 1
+  CanBlockMovement: 1
+  SelectableInFoW: 0
+  AlwaysShowWhenHiddenByFoW: 0
+  FoWHidesResourceCount: 1
+  AttackByDefault: 0
+  IsResourceExtractor: 0
+  ResourceThatThisCanExtract: {fileID: 0}
+  AssociatedResource: 0
+  EntityIcon: {fileID: 21300000, guid: 1421ef7a78eae4fa8b89c21325fd5ee8, type: 3}
+  MovementAndAttackUI: 0
+  DisplaySelectionOutline: 1
+  BuildQueueSize: 5
+  NeverShowBuildQueue: 0
+  ControllableByAllPlayers: 0
+  EligibleStructureLocations: 0000000006000000
+  SharedUnitArmorBonus: 0
+  SharedUnitDamageTakenModifierTags: 
+  CanRally: 1
+  StructureSellTime: 20
+  StartingResourceSet:
+    Type: 0
+    Amount: 0
+  _highlightBuildableCells: 0
+  DeathActions: []
