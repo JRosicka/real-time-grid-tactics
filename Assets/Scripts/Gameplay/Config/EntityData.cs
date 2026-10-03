@@ -70,6 +70,7 @@ namespace Gameplay.Config {
         
         [Space]
         public bool AttackByDefault;
+        public bool CanAttack = true;
 
         public bool IsStructure => Tags.Contains(EntityTag.Structure);
         public bool IsResourceExtractor;
