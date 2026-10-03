@@ -21,7 +21,11 @@ MonoBehaviour:
     Amount: 75
   - Type: 2
     Amount: 75
-  Requirements: []
+  Requirements:
+  - Purchasable: {fileID: 11400000, guid: 43174010eb096460f944f7aa4f3b1791, type: 2}
+    AlternativePurchasable: {fileID: 11400000, guid: f2089d06c5ba63e40a8078c1636cac5f, type: 2}
+    MustBeAdjacent: 0
+    FailedRequirementExplanation: This requires a Barracks or Stable.
   BuildTime: 30
   BuildsImmediately: 0
   BaseSprite: {fileID: 21300000, guid: c2b978f35d2142d44844d2906d476230, type: 3}

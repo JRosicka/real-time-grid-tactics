@@ -44,7 +44,7 @@ namespace Gameplay.Config.Abilities {
         
         protected override AbilityLegality AbilityLegalImpl(BuildAbilityParameters parameters, GridEntity entity, GameTeam team, out string failureReason) {
             IGamePlayer player = GameManager.Instance.GetPlayerForTeam(team);
-            if (!player.OwnedPurchasablesController.HasRequirementsForPurchase(parameters.Buildable, entity, out string whyNot)) {
+            if (!player.OwnedPurchasablesController.HasRequirementsForPurchase(parameters.Buildable, parameters.BuildLocation, out string whyNot)) {
                 failureReason = $"Not building ({parameters.Buildable.ID}) because {whyNot}.";
                 Debug.Log(failureReason);
                 return AbilityLegality.IndefinitelyIllegal;
