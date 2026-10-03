@@ -49,6 +49,8 @@ namespace Gameplay.Entities.Abilities {
         public virtual bool ManuallyCancelable => Data.Cancelable;
 
         public abstract void Cancel();
+        public virtual void Fail() { }
+
         public string QueuedAfterAbilityID { get; set; }
 
         // Server method

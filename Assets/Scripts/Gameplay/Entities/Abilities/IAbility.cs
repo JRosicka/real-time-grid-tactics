@@ -34,6 +34,10 @@ namespace Gameplay.Entities.Abilities {
         bool ManuallyCancelable { get; }
         void Cancel();
         /// <summary>
+        /// The ability finished executing on the server with a fail state.
+        /// </summary>
+        void Fail();
+        /// <summary>
         /// Start performing the ability after this ability (by id) finishes
         /// </summary>
         string QueuedAfterAbilityID { get; set; }

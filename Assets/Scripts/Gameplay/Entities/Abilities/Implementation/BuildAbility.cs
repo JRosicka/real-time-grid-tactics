@@ -51,7 +51,15 @@ namespace Gameplay.Entities.Abilities {
 
         public override bool ManuallyCancelable => !AbilityParameters.Buildable.BuildsImmediately && base.ManuallyCancelable;
 
+        public override void Fail() {
+            RefundAndCancel();
+        }
+        
         public override void Cancel() {
+            RefundAndCancel();
+        }
+
+        private void RefundAndCancel() {
             // Refund the amount spent on the build
             foreach (ResourceAmount resources in AbilityParameters.Buildable.Cost) {
                 GameManager.Instance.GetPlayerForTeam(PerformerTeam).ResourcesController.Earn(resources);

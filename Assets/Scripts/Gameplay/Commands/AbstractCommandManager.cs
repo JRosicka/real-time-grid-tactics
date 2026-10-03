@@ -284,7 +284,13 @@ public abstract class AbstractCommandManager : NetworkBehaviour, ICommandManager
         return true;
     }
 
+    // Server method
     protected void DoAbilityFailed(IAbility ability) {
+        ability.Fail();
+    }
+    
+    // Client method
+    protected void UpdateClientForAbilityFailed(IAbility ability) {
         ability.Performer.AbilityFailed(ability.AbilityData);
     }
 
