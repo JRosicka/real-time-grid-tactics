@@ -32,7 +32,8 @@ namespace Gameplay.Config.Abilities {
         public GridController GridController => GameManager.Instance.GridController;
         public EntitySelectionManager EntitySelectionManager => GameManager.Instance.EntitySelectionManager;
         public ICommandManager CommandManager => GameManager.Instance.CommandManager;
-        
+        private TeamFogOfWarTracker TeamFogOfWarTracker => GameManager.Instance.FogOfWarManager!.GetLocalTeamTracker();
+
         public override bool CancelableWhileOnCooldown => false;
         public override bool CancelableWhileInProgress => false;
         public override bool Cancelable => false;
@@ -171,7 +172,7 @@ namespace Gameplay.Config.Abilities {
 
         /// <summary>
         /// Given a set of a straight line of cells, get the closest cell (that can be legally traveled to) to the given
-        /// origin, along with the distance. Ties are broken by whichever cell is father along the path. 
+        /// origin, along with the distance. Ties are broken by whichever cell is further along the path. 
         /// </summary>
         private (Vector2Int?, int) GetClosestLegalCell(Vector2Int origin, List<GridData.CellData> cells, GridEntity selector, int range) {
             List<Vector2Int> viableCells = GetViableCells(cells, selector);
@@ -197,7 +198,11 @@ namespace Gameplay.Config.Abilities {
             if (viableCells.Count > indexAlongLine + 1) {
                 Vector2Int oneFurtherCell = viableCells[indexAlongLine + 1];
                 GridEntity entityAtCell = CommandManager.GetEntitiesAtCell(oneFurtherCell)?.GetTopEntity()?.Entity;
-                if (entityAtCell != null && (entityAtCell.Team == selector.Team.OpponentTeam() || entityAtCell.Team == GameTeam.Neutral && entityAtCell.EntityData.Attackable)) {
+                if (entityAtCell != null 
+                        && (!TeamFogOfWarTracker?.IsLocationHidden(oneFurtherCell) ?? true) 
+                        && (entityAtCell.Team == selector.Team.OpponentTeam() 
+                            || entityAtCell.Team == GameTeam.Neutral && entityAtCell.EntityData.Attackable)
+                        ) {
                     closestCell = oneFurtherCell;
                     closestDistance = CellDistanceLogic.DistanceBetweenCells(origin, oneFurtherCell);
                 }
@@ -224,6 +229,11 @@ namespace Gameplay.Config.Abilities {
                 if (tileAccessibilityManager.InaccessibleTiles(selector.EntityData).Contains(cell.Tile) 
                         || tileAccessibilityManager.SlowTiles(selector.EntityData).Contains(cell.Tile)) {
                     return true;
+                }
+                
+                // Can not go through a cell if it is hidden
+                if (TeamFogOfWarTracker?.IsLocationHidden(cell.Location) ?? false) {
+                    return false;
                 }
                 
                 // Can not go through a cell if it contains any unit or any enemy structure (friendly structures are fine)
@@ -259,6 +269,10 @@ namespace Gameplay.Config.Abilities {
                 GridEntity entityAtCell = locationsWithEntities
                     .FirstOrDefault(l => l.Location == cell.Location)
                     ?.GetTopEntity()?.Entity;
+                if (TeamFogOfWarTracker?.IsLocationHidden(cell.Location) ?? false) {
+                    // Can't charge into a hidden cell
+                    break; 
+                } 
                 if (entityAtCell != null) {
                     // Can not target a cell with a friendly unit that we can't share the cell with
                     if ((entityAtCell.Team == selector.Team || entityAtCell.Team == GameTeam.Neutral) && !entityAtCell.FriendlyUnitsCanShareCell) {
