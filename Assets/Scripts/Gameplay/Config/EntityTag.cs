@@ -9,7 +9,9 @@ namespace Gameplay.Config {
         Leader = 5,
         Worker = 6,
         Resource = 7,
-        ResourceCollector = 8
+        ResourceCollector = 8,
+        Wheeled = 9,
+        Siege = 10
     }
 
     public static class EntityTagExtensions {

@@ -110,7 +110,11 @@ namespace Gameplay.UI {
 
         private bool FulfillsRequirementsToBuild(out string whyNot) {
             IGamePlayer player = GameManager.Instance.GetPlayerForTeam(SelectedEntity);
-            return player.OwnedPurchasablesController.HasRequirementsForPurchase(Buildable, SelectedEntity, out whyNot);
+            
+            // If this is for a targetable build (a peasant going to build a structure), then ignore adjacency requirements for now
+            Vector2Int? buildLocation = _buildAbilityData.Targetable ? null : SelectedEntity.Location;
+            
+            return player.OwnedPurchasablesController.HasRequirementsForPurchase(Buildable, buildLocation, out whyNot);
         }
 
         public void SetUpSprites(Image abilityImage, Image secondaryAbilityImage, AbilitySlotBackgroundView abilitySlotBackground) {

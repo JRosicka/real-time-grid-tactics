@@ -49,6 +49,7 @@ public class MPCommandManager : AbstractCommandManager {
     }
     [Server]
     public override void AbilityFailed(IAbility ability) {
+        DoAbilityFailed(ability);
         RpcAbilityFailed(ability);
     }
 
@@ -209,7 +210,7 @@ public class MPCommandManager : AbstractCommandManager {
     [ClientRpc]    // TODO probably just target the client of the player who tried to do the ability
     private void RpcAbilityFailed(IAbility ability) {
         LogTimestamp(nameof(RpcAbilityFailed));
-        DoAbilityFailed(ability);
+        UpdateClientForAbilityFailed(ability);
     }
 
     [Command(requiresAuthority = false)]

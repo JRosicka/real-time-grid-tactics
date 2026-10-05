@@ -36,7 +36,7 @@ namespace Gameplay.Config.Abilities {
 
         public override bool CancelableWhileOnCooldown => true;
         public override bool CancelableWhileInProgress => true;
-        public override bool Cancelable => true;
+        public override bool ManuallyCancelable => true;
         public override bool Targeted => Targetable;
 
         public override void SelectAbility(GridEntity selector) {
@@ -45,7 +45,7 @@ namespace Gameplay.Config.Abilities {
         
         protected override AbilityLegality AbilityLegalImpl(BuildAbilityParameters parameters, GridEntity entity, GameTeam team, out string failureReason) {
             IGamePlayer player = GameManager.Instance.GetPlayerForTeam(team);
-            if (!player.OwnedPurchasablesController.HasRequirementsForPurchase(parameters.Buildable, entity, out string whyNot)) {
+            if (!player.OwnedPurchasablesController.HasRequirementsForPurchase(parameters.Buildable, parameters.BuildLocation, out string whyNot)) {
                 failureReason = $"Not building ({parameters.Buildable.ID}) because {whyNot}.";
                 Debug.Log(failureReason);
                 return AbilityLegality.IndefinitelyIllegal;

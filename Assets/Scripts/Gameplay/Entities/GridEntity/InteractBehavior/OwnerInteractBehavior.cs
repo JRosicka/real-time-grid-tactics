@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Audio;
 using Gameplay.Config;
 using Gameplay.Config.Abilities;
 using Gameplay.Entities.Abilities;
+using Gameplay.Managers;
 using Gameplay.UI;
 using UnityEngine;
 
@@ -65,9 +65,17 @@ namespace Gameplay.Entities {
                 }
             }
             
+            // Do not target entities if they are hidden by FoW
+            TeamFogOfWarTracker tracker = GameManager.Instance.FogOfWarManager!.GetLocalTeamTracker();
+            bool cellHidden = tracker != null && tracker.IsLocationHidden(targetCell);
+            
             // Target the top entity
             List<GridEntity> entitiesAtLocation = GameManager.Instance.CommandManager.EntitiesOnGrid.EntitiesAtLocation(targetCell)
-                ?.Entities?.OrderByDescending(o => o.Order).Select(e => e.Entity).ToList();
+                ?.Entities
+                ?.OrderByDescending(o => o.Order)
+                .Select(e => e.Entity)
+                .Where(e => !cellHidden || e.EntityData.AlwaysShowWhenHiddenByFoW)
+                .ToList();
             if (entitiesAtLocation == null || entitiesAtLocation.Count == 0) {
                 // No entities at target cell, so do default ability
                 DoDefaultCommand(thisEntity, targetCell);

@@ -58,6 +58,10 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 9a1d0599b667f47309b0c327306a69ce, type: 2}
   - {fileID: 11400000, guid: a2899be04b8f54805a7f62c027e3675d, type: 2}
   - {fileID: 11400000, guid: f3eb88eee96a64370827475771891374, type: 2}
+  - {fileID: 11400000, guid: 76f8875c62c05594eb3f5846997423bf, type: 2}
+  - {fileID: 11400000, guid: da18b7c42637384459734cbbec9ef5b0, type: 2}
+  - {fileID: 11400000, guid: 1e0844ab0a6f9ba408238739b8a38df2, type: 2}
+  - {fileID: 11400000, guid: 9e426fdef5ac4ba43888ae5a6bcfde08, type: 2}
   Abilities:
   - {fileID: 11400000, guid: ec15a049dabc53b4d92ab14b2871752c, type: 2}
   - {fileID: 11400000, guid: a5c4aba93e508274894c2c6bfc4b751e, type: 2}
@@ -80,6 +84,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 398205458218140e09d13e7ff7663dc9, type: 2}
   - {fileID: 11400000, guid: 29b46a85b311c4691a019192edc965da, type: 2}
   - {fileID: 11400000, guid: 95889d1df0946fe4780afbfc7aa6a20c, type: 2}
+  - {fileID: 11400000, guid: f6e8110c5e782004590560ffd692217b, type: 2}
+  - {fileID: 11400000, guid: d71b96ee75c11e945bee71a9a9e35e21, type: 2}
   Tiles:
   - {fileID: 11400000, guid: 72bba8f070a4e784393726b1ad5d4c16, type: 2}
   - {fileID: 11400000, guid: 2aa79153f5cae451c961f4d64878d6a3, type: 2}

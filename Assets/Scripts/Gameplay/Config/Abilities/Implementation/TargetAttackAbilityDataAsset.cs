@@ -21,7 +21,7 @@ namespace Gameplay.Config.Abilities {
 
         public override bool CancelableWhileOnCooldown => false;
         public override bool CancelableWhileInProgress => true;
-        public override bool Cancelable => true;
+        public override bool ManuallyCancelable => true;
         
         private TeamFogOfWarTracker TeamFogOfWarTracker => GameManager.Instance.FogOfWarManager!.GetLocalTeamTracker();
 

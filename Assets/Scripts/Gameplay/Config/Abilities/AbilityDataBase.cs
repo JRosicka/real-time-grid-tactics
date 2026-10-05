@@ -5,7 +5,6 @@ using Gameplay.Entities;
 using Gameplay.Entities.Abilities;
 using Gameplay.UI;
 using Mirror;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -80,7 +79,7 @@ namespace Gameplay.Config.Abilities {
         public bool CanBeCanceled => CancelableWhileOnCooldown || CancelableWhileInProgress;
         public abstract bool CancelableWhileOnCooldown { get; }
         public abstract bool CancelableWhileInProgress { get; }
-        public abstract bool Cancelable { get; }
+        public abstract bool ManuallyCancelable { get; }
 
         [SerializeField] private bool _repeatWhenCooldownFinishes;
         public bool RepeatWhenCooldownFinishes => _repeatWhenCooldownFinishes;

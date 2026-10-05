@@ -1,4 +1,5 @@
 using System;
+using UnityEngine;
 
 namespace Gameplay.Config {
     /// <summary>
@@ -7,6 +8,8 @@ namespace Gameplay.Config {
     [Serializable]
     public class PurchasableRequirement {
         public PurchasableData Purchasable;
+        [Tooltip("Either this OR the above Purchasable must be owned to fulfill this requirement. ")]
+        public PurchasableData AlternativePurchasable;
         /// <summary>
         /// Whether the purchasable needs to be adjacent to the purchasing entity
         /// </summary>

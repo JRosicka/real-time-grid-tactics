@@ -70,6 +70,7 @@ namespace Gameplay.Config {
         
         [Space]
         public bool AttackByDefault;
+        public bool CanAttack = true;
 
         public bool IsStructure => Tags.Contains(EntityTag.Structure);
         public bool IsResourceExtractor;
@@ -99,7 +100,10 @@ namespace Gameplay.Config {
         public ResourceAmount StartingResourceSet;
         [SerializeField] private bool _highlightBuildableCells;
         public override bool HighlightBuildableCells => _highlightBuildableCells;
+        [Tooltip("Whether this structure can be boosted by the boost ability")]
+        public bool Boostable;
         
+        [Space]
         public List<DeathActionData> DeathActions;
         
         /// <summary>

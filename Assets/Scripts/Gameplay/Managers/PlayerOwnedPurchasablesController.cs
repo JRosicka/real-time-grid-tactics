@@ -57,21 +57,27 @@ public class PlayerOwnedPurchasablesController : NetworkBehaviour {
         }
     }
 
-    public bool HasRequirementsForPurchase(PurchasableData purchasable, GridEntity purchaser, out string whyNot) {
+    /// <summary>
+    /// Whether we can legally purchase the purchasable based on it requirements.
+    /// <see cref="buildLocation"/> can be provided or null. If null, we don't care about the location. If provided,
+    /// then any adjacency requirements will use it to determine if adjacent entities exist.
+    /// </summary>
+    public bool HasRequirementsForPurchase(PurchasableData purchasable, Vector2Int? buildLocation, out string whyNot) {
         List<PurchasableData> ownedPurchasables = OwnedPurchasables;
         foreach (PurchasableRequirement requirement in purchasable.Requirements) {
-            if (!ownedPurchasables.Contains(requirement.Purchasable)) {
+            if (!ownedPurchasables.Contains(requirement.Purchasable) && (requirement.AlternativePurchasable == null || !ownedPurchasables.Contains(requirement.AlternativePurchasable))) {
                 whyNot = requirement.FailedRequirementExplanation;
                 return false;
             }
-            if (requirement.MustBeAdjacent) {
-                if (requirement.Purchasable != GameManager.Instance.Configuration.KingEntityData) {
-                    throw new Exception("Game does not support a non-King adjacent required purchasable");
-                }
-
-                if (!GameManager.Instance.LeaderTracker.IsAdjacentToFriendlyLeader(purchaser.Location!.Value, _player.Team)) {
-                    whyNot = requirement.FailedRequirementExplanation;
-                    return false;
+            if (requirement.MustBeAdjacent && buildLocation != null) {
+                if (requirement.Purchasable == GameManager.Instance.Configuration.KingEntityData) {
+                    // An adjacent King is required
+                    if (!GameManager.Instance.LeaderTracker.IsAdjacentToFriendlyLeader(buildLocation.Value, _player.Team)) {
+                        whyNot = requirement.FailedRequirementExplanation;
+                        return false;
+                    }
+                } else {
+                    // TODO check for requirement adjacency to buildLocation
                 }
             }
         }

@@ -73,6 +73,8 @@ namespace Gameplay.Entities {
         private NetworkableField _lockedFromFriendlyUnitsEnteringField;
         // Only relevant for structures that can share with friendly units
         private bool LockedFromFriendlyUnitsEntering => ((NetworkableBoolValue)_lockedFromFriendlyUnitsEnteringField?.Value)?.Value ?? false;
+        private NetworkableField _activeBoostsField;
+        private BoostRegistrations _activeBoosts => ((NetworkableBoostRegistrationsValue)_activeBoostsField?.Value)?.Value ?? new BoostRegistrations();
 
         // Abilities
         /// <summary>
@@ -151,6 +153,7 @@ namespace Gameplay.Entities {
         public event Action<List<IAbility>> InProgressAbilitiesUpdatedEvent;
         // The local player's FoW state has changed
         public event Action<bool> FogOfWarHiddenStatusChangedEvent;
+        public event Action<BoostRegistrations> BoostRegistrationsChanged;
         
         /// <summary>
         /// Only triggered on server
@@ -175,6 +178,7 @@ namespace Gameplay.Entities {
             _additionalMovementTimeFromAttackingField = new NetworkableField(this, nameof(_additionalMovementTimeFromAttackingField), new NetworkableFloatValue(0));
             _holdingPositionNetworkableField = new NetworkableField(this, nameof(_holdingPositionNetworkableField), new NetworkableBoolValue(false));
             _lockedFromFriendlyUnitsEnteringField = new NetworkableField(this, nameof(_lockedFromFriendlyUnitsEnteringField), new NetworkableBoolValue(false));
+            _activeBoostsField = new NetworkableField(this, nameof(_activeBoostsField), new NetworkableBoostRegistrationsValue(new BoostRegistrations()));
         }
 
         /// <summary>
@@ -284,6 +288,7 @@ namespace Gameplay.Entities {
             _incomeRateField.ValueChanged += (_, _, _) => IncomeRateChanged?.Invoke(IncomeRate);
             _holdingPositionNetworkableField.ValueChanged += (_, _, _) => HoldingPositionChangedEvent?.Invoke(HoldingPosition);
             _lockedFromFriendlyUnitsEnteringField.ValueChanged += UpdateLockStatus;
+            _activeBoostsField.ValueChanged += (_, _, _) => BoostRegistrationsChanged?.Invoke(_activeBoosts);
             
             Interactable = true;
         } 
@@ -947,7 +952,6 @@ namespace Gameplay.Entities {
         }
         
         #endregion
-
         #region Fog of war
 
         private bool _hiddenByFoW;
@@ -981,6 +985,30 @@ namespace Gameplay.Entities {
             }
         }
 
+        #endregion
+        #region Boosts
+
+        public void RegisterBoost(GridEntity boostProvider, float boostAmount) {
+            BoostRegistrations boosts = _activeBoosts;
+            boosts.Boosts.RemoveAll(b => b.Item1 == boostProvider);
+            boosts.Boosts.Add((boostProvider, boostAmount));
+            _activeBoostsField.UpdateValue(new NetworkableBoostRegistrationsValue(boosts));
+        }
+
+        public void UnRegisterBoost(GridEntity boostProvider) {
+            BoostRegistrations boosts = _activeBoosts;
+            boosts.Boosts.RemoveAll(b => b.Item1 == boostProvider);
+            _activeBoostsField.UpdateValue(new NetworkableBoostRegistrationsValue(boosts));
+        }
+
+        public float GetTotalBoostAmount() {
+            return _activeBoosts.GetTotalBoostAmount();
+        }
+
+        public bool ContainsBoost(GridEntity boostProvider) {
+            return _activeBoosts.Boosts.Any(b => b.Item1 == boostProvider);
+        }
+        
         #endregion
     }
 }

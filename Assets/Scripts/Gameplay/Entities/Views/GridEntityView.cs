@@ -122,6 +122,7 @@ namespace Gameplay.Entities {
             entity.KilledEvent += Killed;
             entity.HoldingPositionChangedEvent += HoldingPositionChanged;
             entity.FogOfWarHiddenStatusChangedEvent += FogOfWarHiddenStatusChanged;
+            entity.BoostRegistrationsChanged += BoostRegistrationsChanged;
 
             bool hasHP = entity.MaxHP > 0;
             if (entity.EntityData.IsStructure) {
@@ -196,6 +197,9 @@ namespace Gameplay.Entities {
             Entity.HPHandler.AttackedEvent -= AttackReceived;
             Entity.HPHandler.HealedEvent -= HealReceived;
             Entity.KilledEvent -= Killed;
+            Entity.HoldingPositionChangedEvent -= HoldingPositionChanged;
+            Entity.FogOfWarHiddenStatusChangedEvent -= FogOfWarHiddenStatusChanged;
+            Entity.BoostRegistrationsChanged -= BoostRegistrationsChanged;
 
             if (GameManager.Instance != null) {
                 GameManager.Instance.FogOfWarInitialized -= InitializeFoW;
@@ -600,6 +604,11 @@ namespace Gameplay.Entities {
             if (!(Entity?.InteractBehavior?.AllowedToSeeMiscInfo ?? false)) return;
             
             _holdPositionIcon.SetActive(newHoldingPosition);
+        }
+
+        private void BoostRegistrationsChanged(BoostRegistrations newBoostRegistrations) {
+            // TODO
+            Debug.Log($"~~~~ Boost registrations updated. New boost amount: {newBoostRegistrations.GetTotalBoostAmount()}");
         }
         
         private void CreateTimerView(IAbility ability, AbilityTimer abilityTimer) {

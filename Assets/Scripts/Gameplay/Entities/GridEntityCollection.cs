@@ -149,6 +149,7 @@ namespace Gameplay.Entities {
         /// <summary>
         /// The <see cref="GridEntity"/>s at the given location, or null if no entity exists there.
         /// </summary>
+        [CanBeNull]
         public PositionedGridEntityCollection EntitiesAtLocation(Vector2Int location) {
             return Entities.FirstOrDefault(e => e.Location == location);
         }

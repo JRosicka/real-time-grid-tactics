@@ -51,6 +51,7 @@ public class SPCommandManager : AbstractCommandManager {
     }
     public override void AbilityFailed(IAbility ability) {
         DoAbilityFailed(ability);
+        UpdateClientForAbilityFailed(ability);
     }
 
     public override void UpdateInProgressAbilities(GridEntity entity) {

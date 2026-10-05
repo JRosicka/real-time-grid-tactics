@@ -25,11 +25,9 @@ namespace Gameplay.Entities.Abilities {
     /// </summary>
     public class BuildAbility : AbilityBase<BuildAbilityData, BuildAbilityParameters> {
         public BuildAbilityParameters AbilityParameters => (BuildAbilityParameters) BaseParameters;
-        public BuildAbilityData BuildAbilityData { get; private set; }
+        public BuildAbilityData BuildAbilityData => Data;
 
-        public BuildAbility(BuildAbilityData data, BuildAbilityParameters parameters, GridEntity performer, GameTeam? overrideTeam) : base(data, parameters, performer, overrideTeam) {
-            BuildAbilityData = data;
-        }
+        public BuildAbility(BuildAbilityData data, BuildAbilityParameters parameters, GridEntity performer, GameTeam? overrideTeam) : base(data, parameters, performer, overrideTeam) { }
         
         private AbilityEventRouter AbilityEventRouter => GameManager.Instance.AbilityEventRouter;
         private FogOfWarManager FogOfWarManager => GameManager.Instance.FogOfWarManager;
@@ -51,7 +49,15 @@ namespace Gameplay.Entities.Abilities {
 
         public override bool ManuallyCancelable => !AbilityParameters.Buildable.BuildsImmediately && base.ManuallyCancelable;
 
+        public override void Fail() {
+            RefundAndCancel();
+        }
+        
         public override void Cancel() {
+            RefundAndCancel();
+        }
+
+        private void RefundAndCancel() {
             // Refund the amount spent on the build
             foreach (ResourceAmount resources in AbilityParameters.Buildable.Cost) {
                 GameManager.Instance.GetPlayerForTeam(PerformerTeam).ResourcesController.Earn(resources);

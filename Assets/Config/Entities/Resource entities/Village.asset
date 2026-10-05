@@ -57,7 +57,11 @@ MonoBehaviour:
   CanBuildFriendlyStructureOnTop: 0
   Attackable: 1
   CanBlockMovement: 1
+  SelectableInFoW: 0
+  AlwaysShowWhenHiddenByFoW: 0
+  FoWHidesResourceCount: 1
   AttackByDefault: 0
+  CanAttack: 0
   IsResourceExtractor: 1
   ResourceThatThisCanExtract: {fileID: 11400000, guid: 007fafa82b51345319298048e99631e6, type: 2}
   AssociatedResource: 1
@@ -76,4 +80,5 @@ MonoBehaviour:
     Type: 0
     Amount: 0
   _highlightBuildableCells: 1
+  Boostable: 1
   DeathActions: []
