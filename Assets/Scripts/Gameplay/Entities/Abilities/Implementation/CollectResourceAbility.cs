@@ -55,11 +55,11 @@ namespace Gameplay.Entities.Abilities {
                 AbilityEventRouter.RegisterListener<Action>(Performer, UID,
                     handler => AbilityParameters.Target.UnregisteredEvent += handler,
                     handler => AbilityParameters.Target.UnregisteredEvent -= handler,
-                    CancelCollection);
+                    CancelCollection, nameof(CancelCollection));
                 AbilityEventRouter.RegisterListener<Action<bool>>(Performer, UID,
                     handler => Performer.HPHandler.AttackedEvent += handler,
                     handler => Performer.HPHandler.AttackedEvent -= handler,
-                    PerformerAttacked);
+                    PerformerAttacked, nameof(PerformerAttacked));
                 return (true, AbilityResult.IncompleteWithEffect);
             }
 
@@ -109,7 +109,7 @@ namespace Gameplay.Entities.Abilities {
         }
 
         private void CancelCollection() {
-            AbilityEventRouter.UnregisterListeners(Performer, UID);
+            AbilityEventRouter.UnregisterListeners(UID);
             
             GameManager.Instance.CommandManager.CancelAbility(this, false);
             Performer.SetTargetLocation(Performer.Location!.Value, null, PathVisualizer.PathType.Move);

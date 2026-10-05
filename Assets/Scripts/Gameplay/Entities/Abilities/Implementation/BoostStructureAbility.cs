@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using Gameplay.Commands;
-using Gameplay.Config;
 using Gameplay.Config.Abilities;
 using JetBrains.Annotations;
 using Mirror;
@@ -27,6 +26,8 @@ namespace Gameplay.Entities.Abilities {
             if (AbilityParameters.Target != null && AbilityParameters.Target.ContainsBoost(Performer)) {
                 AbilityParameters.Target.UnRegisterBoost(Performer);
             }
+            
+            AbilityEventRouter.UnregisterListeners(UID);
         }
         
         protected override bool CompleteCooldownImpl() {
@@ -37,6 +38,11 @@ namespace Gameplay.Entities.Abilities {
             if (AbilityParameters.Target == null) {
                 AbilityParameters.Target = PickAdjacentStructureToBoost();
             }
+            
+            AbilityEventRouter.RegisterListener<Action<GameTeam>>(Performer, UID, 
+                handler => GameManager.Instance.CommandManager.EntityRegisteredEvent += handler,
+                handler => GameManager.Instance.CommandManager.EntityRegisteredEvent -= handler,
+                EntityRegistered, nameof(EntityRegistered));
 
             return true;
         }
@@ -81,15 +87,26 @@ namespace Gameplay.Entities.Abilities {
                 AbilityEventRouter.RegisterListener<Action>(Performer, UID, 
                     handler => entity.UnregisteredEvent += handler,
                     handler => entity.UnregisteredEvent -= handler,
-                    TargetEntityUnregistered);
+                    TargetEntityUnregistered, nameof(TargetEntityUnregistered));
             }
             
             return entity;
         }
 
         private void TargetEntityUnregistered() {
-            AbilityEventRouter.UnregisterListeners(Performer, UID);
+            AbilityEventRouter.UnregisterListener(UID, nameof(TargetEntityUnregistered));
             AbilityParameters.Target = PickAdjacentStructureToBoost();
+        }
+
+        private void EntityRegistered(GameTeam team) {
+            if (team != PerformerTeam) return;
+            if (AbilityParameters.Target != null) return;
+            
+            // See if we should apply this boost ability to the new entity
+            GridEntity newEntity = PickAdjacentStructureToBoost();
+            if (newEntity != null) {
+                AbilityParameters.Target = newEntity;
+            }
         }
     }
 

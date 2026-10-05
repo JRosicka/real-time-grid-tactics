@@ -168,24 +168,24 @@ namespace Gameplay.Entities.Abilities {
             AbilityEventRouter.RegisterListener<Action>(Performer, UID, 
                 handler => AbilityParameters.Target.UnregisteredEvent += handler,
                 handler => AbilityParameters.Target.UnregisteredEvent -= handler,
-                DoFollowUpAttackMove);
+                DoFollowUpAttackMove, nameof(DoFollowUpAttackMove));
             AbilityEventRouter.RegisterListener<Action>(Performer, UID, 
                 handler => AbilityParameters.Target.EntityMovedEvent += handler,
                 handler => AbilityParameters.Target.EntityMovedEvent -= handler,
-                TrackedEntityMoved);
+                TrackedEntityMoved, nameof(TrackedEntityMoved));
             TeamFogOfWarTracker tracker = FowTracker;
             if (tracker != null) {
                 AbilityEventRouter.RegisterListener<Action<bool>>(Performer, UID,
                     handler => tracker.RegisterEntityListener(AbilityParameters.Target, handler),
                     handler => tracker.UnregisterEntityListener(AbilityParameters.Target, handler),
-                    TrackedEntityHiddenStateChanged);
+                    TrackedEntityHiddenStateChanged, nameof(TrackedEntityHiddenStateChanged));
             }
         }
 
         private void UnRegisterTargetListeners() {
             if (!AbilityParameters?.Target) return;
             
-            AbilityEventRouter.UnregisterListeners(Performer, UID);
+            AbilityEventRouter.UnregisterListeners(UID);
         }
 
         // Called on server

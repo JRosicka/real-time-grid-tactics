@@ -169,13 +169,13 @@ namespace Gameplay.Entities.Abilities {
                 AbilityEventRouter.RegisterListener<Action>(Performer, UID, 
                     handler => GameManager.Instance.CommandManager.EntityCollectionChangedEvent += handler,
                     handler => GameManager.Instance.CommandManager.EntityCollectionChangedEvent -= handler,
-                    EntityCollectionUpdated);
+                    EntityCollectionUpdated, nameof(EntityCollectionUpdated));
                 TeamFogOfWarTracker tracker = FogOfWarManager!.GetTracker(PerformerTeam);
                 if (tracker != null) {
                     AbilityEventRouter.RegisterListener<Action<List<TeamFogOfWarTracker.FoWCell>>>(Performer, UID,
                         handler => tracker.FoWUpdated += handler,
                         handler => tracker.FoWUpdated -= handler,
-                        FoWUpdated);
+                        FoWUpdated, nameof(FoWUpdated));
                 }
             }
             
@@ -239,7 +239,7 @@ namespace Gameplay.Entities.Abilities {
         }
 
         private void UnregisterListeners() {
-            AbilityEventRouter.UnregisterListeners(Performer, UID);
+            AbilityEventRouter.UnregisterListeners(UID);
         }
     }
 

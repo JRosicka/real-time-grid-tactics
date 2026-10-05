@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using Gameplay.Entities;
@@ -20,6 +21,7 @@ namespace Gameplay.Commands {
     /// </summary>
     public class AbilityEventRouter {
         private class Subscription {
+            public string SubscriptionID;
             public Delegate ProxyDelegate;
             public Action Unsubscribe;
         }
@@ -35,7 +37,7 @@ namespace Gameplay.Commands {
             _instanceLookup = instanceLookup;
         }
 
-        public void RegisterListener<TDelegate>(GridEntity entity, string uid, Action<TDelegate> subscribe, Action<TDelegate> unsubscribe, TDelegate listener)
+        public void RegisterListener<TDelegate>(GridEntity entity, string uid, Action<TDelegate> subscribe, Action<TDelegate> unsubscribe, TDelegate listener, string subscriptionID)
                                                 where TDelegate : Delegate {
             MethodInfo method = listener.Method;
             TDelegate proxy = CreateProxyDelegate<TDelegate>(entity, uid, method);
@@ -47,12 +49,27 @@ namespace Gameplay.Commands {
             }
 
             list.Add(new Subscription {
+                SubscriptionID = subscriptionID,
                 ProxyDelegate = proxy,
                 Unsubscribe = () => unsubscribe(proxy)
             });
         }
 
-        public void UnregisterListeners(GridEntity entity, string uid) {
+        public void UnregisterListener(string uid, string subscriptionID) {
+            if (!_subscriptions.TryGetValue(uid, out List<Subscription> list)) return;
+
+            Subscription toUnsubscribe = list.FirstOrDefault(s => s.SubscriptionID == subscriptionID);
+            if (toUnsubscribe == null) return;
+            
+            toUnsubscribe.Unsubscribe();
+            
+            list.Remove(toUnsubscribe);
+            if (list.Count == 0) {
+                _subscriptions.Remove(uid);
+            }
+        }
+
+        public void UnregisterListeners(string uid) {
             if (!_subscriptions.TryGetValue(uid, out List<Subscription> list)) return;
 
             foreach (Subscription subscription in list) {
