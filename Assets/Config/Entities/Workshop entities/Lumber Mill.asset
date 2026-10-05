@@ -53,6 +53,7 @@ MonoBehaviour:
   OverrideEntityDataForPathfinding: {fileID: 0}
   AttackerTargetPriority: 0
   Abilities:
+  - {fileID: 11400000, guid: d71b96ee75c11e945bee71a9a9e35e21, type: 2}
   - {fileID: 11400000, guid: 95889d1df0946fe4780afbfc7aa6a20c, type: 2}
   FriendlyUnitsCanShareCell: 1
   Targetable: 1
@@ -82,4 +83,5 @@ MonoBehaviour:
     Type: 0
     Amount: 0
   _highlightBuildableCells: 1
+  Boostable: 0
   DeathActions: []

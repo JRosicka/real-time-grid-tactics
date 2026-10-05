@@ -20,7 +20,7 @@ namespace Gameplay.Config.Abilities {
 
         public override bool CancelableWhileOnCooldown => false;
         public override bool CancelableWhileInProgress => true;
-        public override bool Cancelable => true;
+        public override bool ManuallyCancelable => true;
 
         public override void SelectAbility(GridEntity selector) {
             GameManager.Instance.EntitySelectionManager.SelectTargetableAbility(this, selector.Team, null);

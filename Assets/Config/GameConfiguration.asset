@@ -85,6 +85,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 29b46a85b311c4691a019192edc965da, type: 2}
   - {fileID: 11400000, guid: 95889d1df0946fe4780afbfc7aa6a20c, type: 2}
   - {fileID: 11400000, guid: f6e8110c5e782004590560ffd692217b, type: 2}
+  - {fileID: 11400000, guid: d71b96ee75c11e945bee71a9a9e35e21, type: 2}
   Tiles:
   - {fileID: 11400000, guid: 72bba8f070a4e784393726b1ad5d4c16, type: 2}
   - {fileID: 11400000, guid: 2aa79153f5cae451c961f4d64878d6a3, type: 2}

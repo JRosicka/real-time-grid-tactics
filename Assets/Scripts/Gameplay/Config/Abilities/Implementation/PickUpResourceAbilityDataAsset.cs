@@ -15,7 +15,7 @@ namespace Gameplay.Config.Abilities {
     public class PickUpResourceAbilityData : AbilityDataBase<NullAbilityParameters> {
         public override bool CancelableWhileOnCooldown => false;
         public override bool CancelableWhileInProgress => false;
-        public override bool Cancelable => false;
+        public override bool ManuallyCancelable => false;
 
         public override void SelectAbility(GridEntity selector) {
             // Nothing to do

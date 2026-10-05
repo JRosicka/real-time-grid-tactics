@@ -77,4 +77,5 @@ MonoBehaviour:
     Type: 0
     Amount: 0
   _highlightBuildableCells: 1
+  Boostable: 1
   DeathActions: []

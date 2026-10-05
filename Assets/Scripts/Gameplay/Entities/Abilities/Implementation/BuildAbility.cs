@@ -25,11 +25,9 @@ namespace Gameplay.Entities.Abilities {
     /// </summary>
     public class BuildAbility : AbilityBase<BuildAbilityData, BuildAbilityParameters> {
         public BuildAbilityParameters AbilityParameters => (BuildAbilityParameters) BaseParameters;
-        public BuildAbilityData BuildAbilityData { get; private set; }
+        public BuildAbilityData BuildAbilityData => Data;
 
-        public BuildAbility(BuildAbilityData data, BuildAbilityParameters parameters, GridEntity performer, GameTeam? overrideTeam) : base(data, parameters, performer, overrideTeam) {
-            BuildAbilityData = data;
-        }
+        public BuildAbility(BuildAbilityData data, BuildAbilityParameters parameters, GridEntity performer, GameTeam? overrideTeam) : base(data, parameters, performer, overrideTeam) { }
         
         private AbilityEventRouter AbilityEventRouter => GameManager.Instance.AbilityEventRouter;
         private FogOfWarManager FogOfWarManager => GameManager.Instance.FogOfWarManager;

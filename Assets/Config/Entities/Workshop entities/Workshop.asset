@@ -22,6 +22,7 @@ MonoBehaviour:
     Amount: 50
   Requirements:
   - Purchasable: {fileID: 11400000, guid: 76f8875c62c05594eb3f5846997423bf, type: 2}
+    AlternativePurchasable: {fileID: 0}
     MustBeAdjacent: 0
     FailedRequirementExplanation: This requires an adjacent Lumber Mill.
   BuildTime: 30
@@ -82,4 +83,5 @@ MonoBehaviour:
     Type: 0
     Amount: 0
   _highlightBuildableCells: 0
+  Boostable: 1
   DeathActions: []

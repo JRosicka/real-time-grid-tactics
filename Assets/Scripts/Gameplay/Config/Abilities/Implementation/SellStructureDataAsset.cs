@@ -20,7 +20,7 @@ namespace Gameplay.Config.Abilities {
         
         public override bool CancelableWhileOnCooldown => true;
         public override bool CancelableWhileInProgress => false;
-        public override bool Cancelable => false;
+        public override bool ManuallyCancelable => false;
 
         public override void SelectAbility(GridEntity selector) {
             GameManager.Instance.AbilityAssignmentManager.StartPerformingAbility(selector, this, new NullAbilityParameters(), true, false, false, true); 

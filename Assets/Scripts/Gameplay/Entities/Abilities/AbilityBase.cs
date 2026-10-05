@@ -46,7 +46,7 @@ namespace Gameplay.Entities.Abilities {
         }
 
         public abstract bool ShouldShowAbilityTimer { get; }
-        public virtual bool ManuallyCancelable => Data.Cancelable;
+        public virtual bool ManuallyCancelable => Data.ManuallyCancelable;
 
         public abstract void Cancel();
         public virtual void Fail() { }

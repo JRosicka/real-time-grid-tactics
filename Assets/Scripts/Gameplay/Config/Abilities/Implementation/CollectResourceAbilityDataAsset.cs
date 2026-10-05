@@ -18,7 +18,7 @@ namespace Gameplay.Config.Abilities {
         
         public override bool CancelableWhileOnCooldown => true;
         public override bool CancelableWhileInProgress => true;
-        public override bool Cancelable => true;
+        public override bool ManuallyCancelable => true;
         public override bool Targeted => true;
         
         private GridEntityCollection EntitiesOnGrid => GameManager.Instance.CommandManager.EntitiesOnGrid;

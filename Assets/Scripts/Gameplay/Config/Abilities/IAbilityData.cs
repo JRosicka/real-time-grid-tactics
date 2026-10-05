@@ -50,7 +50,7 @@ namespace Gameplay.Config.Abilities {
         /// <summary>
         /// Whether this ability can be canceled manually (i.e. by user input). 
         /// </summary>
-        bool Cancelable { get; }
+        bool ManuallyCancelable { get; }
         /// <summary>
         /// Whether to perform view logic when the cooldown is complete instead of when the ability is triggered 
         /// </summary>

@@ -100,7 +100,10 @@ namespace Gameplay.Config {
         public ResourceAmount StartingResourceSet;
         [SerializeField] private bool _highlightBuildableCells;
         public override bool HighlightBuildableCells => _highlightBuildableCells;
+        [Tooltip("Whether this structure can be boosted by the boost ability")]
+        public bool Boostable;
         
+        [Space]
         public List<DeathActionData> DeathActions;
         
         /// <summary>
