@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Gameplay.Entities;
 using Gameplay.Entities.Abilities;
+using Gameplay.Grid;
 using Gameplay.Pathfinding;
 using Gameplay.UI;
 using UnityEngine;
@@ -99,5 +100,7 @@ namespace Gameplay.Config.Abilities {
         
         public string AbilityVerb => "move";
         public bool ShowIconOnGridWhenSelected => true;
+        public bool DeselectAfterAttempt => true;
+        public List<MouseClick> DefaultAllowableClicks => new() { MouseClick.Left };
     }
 }

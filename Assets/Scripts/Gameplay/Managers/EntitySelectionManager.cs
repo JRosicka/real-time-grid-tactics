@@ -265,15 +265,27 @@ public class EntitySelectionManager {
     /// Use the selected targetable ability if we have one and can use it at the selected cell.
     /// <returns>True if we have a targetable ability selected and have attempted to use it, otherwise False.</returns>
     /// </summary>
-    public bool TryUseTargetableAbility(Vector2Int clickedCell) {
+    public bool TryUseTargetableAbility(Vector2Int clickedCell, bool rightClick) {
         if (_selectedTargetableAbility == null) return false;
+        
+        if (rightClick) {
+            // If enabled in the settings, allow for executing targetable commands with right click
+            bool allowRightClickTargetCommands = PlayerPrefs.GetInt(PlayerPrefsKeys.TargetCommandBehaviorKey, 0) == 1
+                                                 || _selectedTargetableAbility.DefaultAllowableClicks.Contains(MouseClick.Right);
+            if (!allowRightClickTargetCommands) return false;
+        } else {
+            bool allowLeftClickTargetCommands = _selectedTargetableAbility.DefaultAllowableClicks.Contains(MouseClick.Left);
+            if (!allowLeftClickTargetCommands) return false;
+        }
 
         if (!_selectedTargetableAbility.CanTargetCell(clickedCell, SelectedEntity, _gameManager.LocalTeam, _targetData)) {
             // We clicked on a cell that the ability cannot be used on. Deselect the ability. 
             GameManager.Instance.AlertTextDisplayer.DisplayAlert($"Cannot {_selectedTargetableAbility.AbilityVerb} there.");
             GameAudio.Instance.InvalidSound();
             GameAudio.Instance.InvalidAbilitySound(_selectedTargetableAbility);
-            DeselectTargetableAbility();
+            if (_selectedTargetableAbility.DeselectAfterAttempt) {
+                DeselectTargetableAbility();
+            }
             return true;
         }
 
@@ -295,7 +307,9 @@ public class EntitySelectionManager {
 
         // This targetable ability will get performed
         _selectedTargetableAbility.DoTargetableAbility(clickedCell, SelectedEntity, _gameManager.LocalTeam, _targetData);
-        DeselectTargetableAbility();
+        if (_selectedTargetableAbility.DeselectAfterAttempt) {
+            DeselectTargetableAbility();
+        }
         return true;
     }
     

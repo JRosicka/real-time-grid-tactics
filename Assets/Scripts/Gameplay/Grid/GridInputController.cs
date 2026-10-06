@@ -10,13 +10,6 @@ namespace Gameplay.Grid {
     /// Processes mouse input for interacting with elements on the grid
     /// </summary>
     public class GridInputController : MonoBehaviour {
-        private enum MouseClick { 
-            None = -1,
-            Left = 0,
-            Middle = 1,
-            Right = 2
-        }
-
         [SerializeField] private GridController _gridController;
         [SerializeField] private CameraManager _cameraManager;
 
@@ -124,16 +117,14 @@ namespace Gameplay.Grid {
                     UpdateEntitySpawnConfiguration(clickPosition);
 #endif
                     // See if we have a targetable ability we want to use. If so, use it.
-                    if (_entitySelectionManager.TryUseTargetableAbility(clickPosition)) {
+                    if (_entitySelectionManager.TryUseTargetableAbility(clickPosition, false)) {
                         return;
                     }
                     // Otherwise select whatever is at the clicked cell
                     _entitySelectionManager.SelectCell(clickPosition);
                     break;
                 case MouseClick.Right:
-                    // If enabled in the settings, allow for executing targetable commands with right click
-                    bool allowRightClickTargetCommands = PlayerPrefs.GetInt(PlayerPrefsKeys.TargetCommandBehaviorKey, 0) == 1;
-                    if (allowRightClickTargetCommands && _entitySelectionManager.TryUseTargetableAbility(clickPosition)) {
+                    if (_entitySelectionManager.TryUseTargetableAbility(clickPosition, true)) {
                         return;
                     }
                     _entitySelectionManager.TryInteractWithCell(clickPosition);

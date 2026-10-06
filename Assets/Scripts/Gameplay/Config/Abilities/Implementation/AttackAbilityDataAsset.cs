@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Gameplay.Entities;
 using Gameplay.Entities.Abilities;
+using Gameplay.Grid;
 using Gameplay.UI;
 using UnityEngine;
 using Util;
@@ -91,5 +92,7 @@ namespace Gameplay.Config.Abilities {
 
         public string AbilityVerb => "attack";
         public bool ShowIconOnGridWhenSelected => true;
+        public bool DeselectAfterAttempt => true;
+        public List<MouseClick> DefaultAllowableClicks => new() { MouseClick.Left };
     }
 }

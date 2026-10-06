@@ -740,6 +740,7 @@ namespace Gameplay.Entities {
         public bool TryTargetEntity(GridEntity targetEntity, Vector2Int targetCell) {
             TargetType targetType = GetTargetType(targetEntity);
             
+            // TODO we omega need a way to make this generic. If you are reading thing and thinking of just hard-coding something else in, DON'T do that. Just fix it now man. Pay off the debt, your soul will be lighter.
             CollectResourceAbilityData collectResourceData = GetAbilityData<CollectResourceAbilityData>();
             if (targetType == TargetType.Neutral && collectResourceData != null &&
                     collectResourceData.CollectableResourceEntities.Contains(targetEntity.EntityData)) {
@@ -747,6 +748,15 @@ namespace Gameplay.Entities {
                         Target = targetEntity, 
                     }, true, true, true, true)) {
                     GameAudio.Instance.AbilityTargetedSound(collectResourceData);
+                }
+                return true;
+            }
+            BoostStructureAbilityData boostStructureData = GetAbilityData<BoostStructureAbilityData>();
+            if (targetType == TargetType.Ally && boostStructureData != null && targetEntity.EntityData.Boostable) {
+                if (AbilityAssignmentManager.StartPerformingAbility(this, boostStructureData, new BoostStructureAbilityParameters() {
+                        Target = targetEntity, 
+                    }, true, true, true, true)) {
+                    GameAudio.Instance.AbilityTargetedSound(boostStructureData);
                 }
                 return true;
             }

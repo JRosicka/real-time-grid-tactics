@@ -29,6 +29,8 @@ namespace Gameplay.Config.Abilities {
 
         public override void SelectAbility(GridEntity selector) {
             GameManager.Instance.EntitySelectionManager.SelectTargetableAbility(this, selector.Team, null);
+            List<Vector2Int> viableTargets = GetViableTargets(selector);
+            GridController.UpdateSelectableCells(viableTargets, true, selector); 
         }
         
         protected override AbilityLegality AbilityLegalImpl(BoostStructureAbilityParameters parameters, GridEntity entity, GameTeam team, out string failureReason) {
@@ -107,6 +109,8 @@ namespace Gameplay.Config.Abilities {
         }
 
         public string AbilityVerb => "boost";
-        public bool ShowIconOnGridWhenSelected => true;
+        public bool ShowIconOnGridWhenSelected => false;
+        public bool DeselectAfterAttempt => false;
+        public List<MouseClick> DefaultAllowableClicks => new() { MouseClick.Right };
     }
 }

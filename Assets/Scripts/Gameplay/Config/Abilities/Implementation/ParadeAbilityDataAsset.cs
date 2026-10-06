@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Gameplay.Entities;
 using Gameplay.Entities.Abilities;
+using Gameplay.Grid;
 using UnityEngine;
 
 namespace Gameplay.Config.Abilities {
@@ -83,5 +84,7 @@ namespace Gameplay.Config.Abilities {
 
         public string AbilityVerb => "perform a parade";
         public bool ShowIconOnGridWhenSelected => true;
+        public bool DeselectAfterAttempt => true;
+        public List<MouseClick> DefaultAllowableClicks => new() { MouseClick.Left };
     }
 }

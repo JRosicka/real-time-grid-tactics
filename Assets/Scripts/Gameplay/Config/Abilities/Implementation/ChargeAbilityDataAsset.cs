@@ -123,6 +123,8 @@ namespace Gameplay.Config.Abilities {
         
         public string AbilityVerb => "charge";
         public bool ShowIconOnGridWhenSelected => false;
+        public bool DeselectAfterAttempt => true;
+        public List<MouseClick> DefaultAllowableClicks => new() { MouseClick.Left };
 
         public int GetBonusDamage(GameTeam team) {
             return HasChargeUpgrade(team) ? BonusDamageFromUpgrade : 0;

@@ -1,5 +1,7 @@
+using System.Collections.Generic;
 using Gameplay.Entities;
 using Gameplay.Entities.Abilities;
+using Gameplay.Grid;
 using JetBrains.Annotations;
 using UnityEngine;
 
@@ -44,5 +46,7 @@ namespace Gameplay.Config.Abilities {
         GameObject CreateIconForTargetedCell(GameTeam selectorTeam, object targetData);
         string AbilityVerb { get; }
         bool ShowIconOnGridWhenSelected { get; }
+        bool DeselectAfterAttempt { get; }
+        List<MouseClick> DefaultAllowableClicks { get; }
     }
 }

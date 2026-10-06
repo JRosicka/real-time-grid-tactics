@@ -174,5 +174,7 @@ namespace Gameplay.Config.Abilities {
 
         public string AbilityVerb => "build";
         public bool ShowIconOnGridWhenSelected => false;
+        public bool DeselectAfterAttempt => true;
+        public List<MouseClick> DefaultAllowableClicks => new() { MouseClick.Left };
     }
 }
