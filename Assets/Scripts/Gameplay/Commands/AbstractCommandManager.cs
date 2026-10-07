@@ -180,6 +180,7 @@ public abstract class AbstractCommandManager : NetworkBehaviour, ICommandManager
         Vector2Int location = entity.Location!.Value;
         entity.BuildQueue.CancelAllBuilds(GameTeam.Player1);
         entity.BuildQueue.CancelAllBuilds(GameTeam.Player2);
+        GameManager.Instance.AbilityAssignmentManager.CancelAllAbilities(entity, false);
         _entitiesOnGrid.UnRegisterEntity(entity);
         SyncEntityCollection(entity, GridEntityCollectionUpdate.Unregister, location, default);
         EntityUnregisteredEvent?.Invoke(entity.Team);
