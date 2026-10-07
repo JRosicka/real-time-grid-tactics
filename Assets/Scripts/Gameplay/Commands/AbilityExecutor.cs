@@ -129,6 +129,7 @@ public class AbilityExecutor : MonoBehaviour {
         }
         
         // Then, update the in-progress abilities for each client, but only for the entities whose in-progress ability set changed
+        _dirtyInProgressAbilityEntities.RemoveAll(e => !e);
         _dirtyInProgressAbilityEntities.ForEach(e => _commandManager.UpdateInProgressAbilities(e));
         _dirtyInProgressAbilityEntities.Clear();
         
