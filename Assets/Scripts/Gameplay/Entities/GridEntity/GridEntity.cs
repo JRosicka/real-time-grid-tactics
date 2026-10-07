@@ -302,7 +302,7 @@ namespace Gameplay.Entities {
         
         private void Update() {
             List<AbilityTimer> activeTimersCopy = new List<AbilityTimer>(ActiveTimers);
-            activeTimersCopy.ForEach(t => t.UpdateTimer(Time.deltaTime * TimerSpeedMultiplier));
+            activeTimersCopy.ForEach(t => t.UpdateTimer(Time.deltaTime * TimerSpeedMultiplier * GetTotalBoostAmount()));
         }
 
         private void UpdateLockStatus(INetworkableFieldValue oldValue, INetworkableFieldValue newValue, string metadata) {
@@ -1011,12 +1011,12 @@ namespace Gameplay.Entities {
             _activeBoostsField.UpdateValue(new NetworkableBoostRegistrationsValue(boosts));
         }
 
-        public float GetTotalBoostAmount() {
-            return _activeBoosts.GetTotalBoostAmount();
-        }
-
         public bool ContainsBoost(GridEntity boostProvider) {
             return _activeBoosts.Boosts.Any(b => b.Item1 == boostProvider);
+        }
+        
+        private float GetTotalBoostAmount() {
+            return _activeBoosts.GetTotalBoostAmount();
         }
         
         #endregion
