@@ -63,6 +63,7 @@ namespace Gameplay.Entities.Abilities {
             // Check to see if this ability is registered for the target entity. If not, register it so its effect is applied.
             if (!AbilityParameters.Target.ContainsBoost(Performer)) {
                 AbilityParameters.Target.RegisterBoost(Performer, Data.BoostAmount);
+                return (false, AbilityResult.IncompleteWithEffect);
             }
             
             // Otherwise nothing has changed

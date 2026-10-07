@@ -47,6 +47,13 @@ namespace Gameplay.Grid {
         private EntitySelectionManager _entitySelectionManager;
 
         private List<Vector2Int> _selectableCells;
+        
+        /// <summary>
+        /// Whether <see cref="_invalidTargetedAbilityLocationIcon"/> should be visible when highlighting over an
+        /// unselectable cell
+        /// </summary>
+        private bool _showInvalidIconWhenHovering;
+        
         /// <summary>
         /// GameObject to hover over the selected cell to indicate the selected targetable ability
         /// </summary>
@@ -134,8 +141,9 @@ namespace Gameplay.Grid {
         /// Some abilities only allow for certain cells to be selected. Keep track of those and update tile overlays and
         /// the selection reticle to comply. 
         /// </summary>
-        public void UpdateSelectableCells(List<Vector2Int> selectableCells, bool highlightSelectableCells, GridEntity selectedEntity) {
+        public void UpdateSelectableCells(List<Vector2Int> selectableCells, bool highlightSelectableCells, bool showInvalidIconWhenHovering, GridEntity selectedEntity) {
             _selectableCells = selectableCells;
+            _showInvalidIconWhenHovering = showInvalidIconWhenHovering;
             
             // Reset the hover-over-cell functionality to update
             StopHovering();
@@ -148,7 +156,7 @@ namespace Gameplay.Grid {
             _mouseReticle.SelectTile(cell, GameManager.Instance.GetTopEntityAtLocation(cell));
             
             // Show/hide the invalid icon depending on if we can use the ability here
-            if (_selectableCells != null && !_selectableCells.Contains(cell)) {
+            if (_showInvalidIconWhenHovering && _selectableCells != null && !_selectableCells.Contains(cell)) {
                 _invalidTargetedAbilityLocationIcon.gameObject.SetActive(true);
             } else {
                 _invalidTargetedAbilityLocationIcon.gameObject.SetActive(false);

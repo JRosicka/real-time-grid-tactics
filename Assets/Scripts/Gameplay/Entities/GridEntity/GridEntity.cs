@@ -553,7 +553,7 @@ namespace Gameplay.Entities {
         /// </summary>
         public void AbilityPerformed(IAbility abilityInstance) {
             AbilityTimer abilityTimer = ActiveTimers.FirstOrDefault(t => t.Ability.UID == abilityInstance.UID);
-            if (abilityTimer == null) {
+            if (abilityTimer == null && !abilityInstance.AbilityData.SendEffectPerformedEventsEvenWithNoTimer) {
                 return;
             }
 

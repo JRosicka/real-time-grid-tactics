@@ -90,7 +90,7 @@ namespace Gameplay.Config.Abilities {
             // Nothing to do
         }
 
-        public void Deselect() {
+        public void Deselect(GridEntity selector) {
             // Nothing to do
         }
 

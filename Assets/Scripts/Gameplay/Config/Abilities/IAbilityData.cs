@@ -89,6 +89,7 @@ namespace Gameplay.Config.Abilities {
         bool TryingToPerformCancelsHoldPosition { get; }
         bool ActiveBlocksDefaultAttack { get; }
         bool CooldownBlocksDefaultAttack { get; }
+        bool SendEffectPerformedEventsEvenWithNoTimer { get; }
         /// <summary>
         /// Whether we should show a visual for the ability cooldown timer on the selection interface's <see cref="AbilitySlot"/>
         /// for this ability. 

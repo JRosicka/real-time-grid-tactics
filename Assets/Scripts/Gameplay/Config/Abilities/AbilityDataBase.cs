@@ -105,6 +105,8 @@ namespace Gameplay.Config.Abilities {
         public bool ActiveBlocksDefaultAttack => _activeBlocksDefaultAttack;
         [SerializeField] private bool _cooldownBlocksDefaultAttack;
         public bool CooldownBlocksDefaultAttack => _cooldownBlocksDefaultAttack;
+        [SerializeField] private bool _sendEffectPerformedEventsEvenWithNoTimer;
+        public bool SendEffectPerformedEventsEvenWithNoTimer => _sendEffectPerformedEventsEvenWithNoTimer;
         [SerializeField] private bool _showTimerOnSelectionInterface;
         public bool ShowTimerOnSelectionInterface => _showTimerOnSelectionInterface;
         [SerializeField] private bool _performByDefault;

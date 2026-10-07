@@ -30,7 +30,8 @@ namespace Gameplay.Config.Abilities {
         public override void SelectAbility(GridEntity selector) {
             GameManager.Instance.EntitySelectionManager.SelectTargetableAbility(this, selector.Team, null);
             List<Vector2Int> viableTargets = GetViableTargets(selector);
-            GridController.UpdateSelectableCells(viableTargets, true, selector); 
+            GridController.UpdateSelectableCells(viableTargets, true, false, selector);
+            selector.AbilityPerformedEvent += SelectorPerformedAbility;
         }
         
         protected override AbilityLegality AbilityLegalImpl(BoostStructureAbilityParameters parameters, GridEntity entity, GameTeam team, out string failureReason) {
@@ -74,11 +75,11 @@ namespace Gameplay.Config.Abilities {
 
         public void OwnedPurchasablesChanged(GridEntity selector) {
             List<Vector2Int> viableTargets = GetViableTargets(selector);
-            GridController.UpdateSelectableCells(viableTargets, true, selector);
+            GridController.UpdateSelectableCells(viableTargets, true, false, selector);
         }
 
-        public void Deselect() {
-            // Nothing to do
+        public void Deselect(GridEntity selector) {
+            selector.AbilityPerformedEvent -= SelectorPerformedAbility;
         }
 
         public List<Vector2Int> GetViableTargets(GridEntity selector) {
@@ -87,9 +88,10 @@ namespace Gameplay.Config.Abilities {
             // Add each cell adjacent to the selector
             List<Vector2Int> viableTargets = GridController.GridData.GetAdjacentCells(selector.Location.Value).Select(c => c.Location).ToList();
             
-            // Remove any that don't contain friendly boostable structures
+            // Remove any that don't contain friendly boostable structures or structures that are already being boosted by this
             for (int i = viableTargets.Count - 1; i >= 0; i--) {
-                if (!GetBoostableEntity(viableTargets[i], selector.Team)) {
+                GridEntity boostableEntity = GetBoostableEntity(viableTargets[i], selector.Team);
+                if (!boostableEntity || boostableEntity.ContainsBoost(selector)) {
                     viableTargets.RemoveAt(i);
                 }
             }
@@ -112,5 +114,14 @@ namespace Gameplay.Config.Abilities {
         public bool ShowIconOnGridWhenSelected => false;
         public bool DeselectAfterAttempt => false;
         public List<MouseClick> DefaultAllowableClicks => new() { MouseClick.Right };
+
+        private void SelectorPerformedAbility(IAbility ability, AbilityTimer abilityTimer) {
+            // If the selector just performed a boost ability, we need to re-evaluate the boostable locations (can't boost 
+            // a structure it is already boosting)
+            if (ability.AbilityData.GetType() == GetType()) {
+                List<Vector2Int> viableTargets = GetViableTargets(ability.Performer);
+                GridController.UpdateSelectableCells(viableTargets, true, false, ability.Performer);
+            }
+        }
     }
 }

@@ -29,13 +29,13 @@ MonoBehaviour:
     _cooldownDuration: 0
     _channel: {fileID: 11400000, guid: a2bb18c2ded749a4e902028c24c166d0, type: 2}
     _channelBlockers: []
-    _slotLocation: 1
+    _slotLocation: 0
     _performOnStart: 1
     _cooldownOnStart: 0
     _repeatWhenCooldownFinishes: 0
     _animateWhenCooldownComplete: 0
-    _selectable: 1
-    _selectableWhenBlocked: 1
+    _selectable: 0
+    _selectableWhenBlocked: 0
     _autoSelect: 1
     _selectableForAllPlayers: 0
     _appearsInBuildMenu: 0
@@ -43,6 +43,7 @@ MonoBehaviour:
     _tryingToPerformCancelsHoldPosition: 0
     _activeBlocksDefaultAttack: 0
     _cooldownBlocksDefaultAttack: 0
+    _sendEffectPerformedEventsEvenWithNoTimer: 1
     _showTimerOnSelectionInterface: 0
     _performByDefault: 0
     _selectionSFX: {fileID: 11400000, guid: 75b6c326a18e3384d897ccf638a3d097, type: 2}

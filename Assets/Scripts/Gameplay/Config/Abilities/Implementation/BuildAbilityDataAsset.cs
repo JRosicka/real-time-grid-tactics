@@ -111,7 +111,7 @@ namespace Gameplay.Config.Abilities {
         public void RecalculateTargetableAbilitySelection(GridEntity selector, object targetData) {
             PurchasableData purchasableData = (PurchasableData)targetData;
             List<Vector2Int> viableTargets = GetViableTargets(selector, purchasableData);
-            GridController.UpdateSelectableCells(viableTargets, purchasableData.HighlightBuildableCells, selector);
+            GridController.UpdateSelectableCells(viableTargets, purchasableData.HighlightBuildableCells, true, selector);
         }
 
         public void UpdateHoveredCell(GridEntity selector, Vector2Int? cell) {
@@ -122,7 +122,7 @@ namespace Gameplay.Config.Abilities {
             // Nothing to do
         }
 
-        public void Deselect() {
+        public void Deselect(GridEntity selector) {
             // Nothing to do
         }
 

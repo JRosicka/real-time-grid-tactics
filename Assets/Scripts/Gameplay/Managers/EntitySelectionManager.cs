@@ -230,7 +230,7 @@ public class EntitySelectionManager {
     public bool DeselectTargetableAbility() {
         bool targetableAbilityWasSelected = _selectedTargetableAbility != null;
         if (targetableAbilityWasSelected) {
-            _selectedTargetableAbility.Deselect();
+            _selectedTargetableAbility.Deselect(SelectedEntity);
             GameManager.Instance.GridIconDisplayer.DisplayOverHoveredCell(_selectedTargetableAbility, null);
         }
         _selectedTargetableAbility = null;
@@ -246,7 +246,7 @@ public class EntitySelectionManager {
     }
 
     private void ClearSelectableTiles() {
-        GridController.UpdateSelectableCells(null, false, SelectedEntity);
+        GridController.UpdateSelectableCells(null, false, false, SelectedEntity);
     }
 
     public void HoverOverCell(Vector2Int cell) {

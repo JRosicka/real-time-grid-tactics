@@ -34,7 +34,7 @@ namespace Gameplay.Config.Abilities {
         /// The targetable ability was just deselected. Occurs both when being selected due to the ability being performed
         /// and when being deselected via canceling. 
         /// </summary>
-        void Deselect();
+        void Deselect(GridEntity selector);
         /// <summary>
         /// Whether we should move to the target cell before attempting to do the ability
         /// </summary>

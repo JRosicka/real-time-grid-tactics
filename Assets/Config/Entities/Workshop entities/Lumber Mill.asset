@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ID: Lumber Mill
   ShortDescription: Unlocks the Workshop and boosts structures.
-  Description: Allows for building adjacent Workshops. Boosts build speed and resource
-    collection speed by <X> for one adjacent structure.
+  Description: Allows for building adjacent Workshops. Boosts production speed and
+    resource collection speed by 35% for one adjacent structure.
   Cost:
   - Type: 1
     Amount: 75

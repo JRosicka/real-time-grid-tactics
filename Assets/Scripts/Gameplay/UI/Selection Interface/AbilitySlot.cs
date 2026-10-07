@@ -208,7 +208,7 @@ namespace Gameplay.UI {
         }
 
         private void OnAbilityTimersChanged(IAbility ability, AbilityTimer timer) {
-            if (_slotBehavior == null) return; 
+            if (_slotBehavior == null || timer == null) return; 
             if (_slotBehavior.CaresAboutAbilityChannels || timer.Ability.AbilityData.SlotLocation == SlotLocation) {
                 CheckAvailability();
             }

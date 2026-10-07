@@ -112,7 +112,7 @@ namespace Gameplay.Config.Abilities {
             return player.OwnedPurchasablesController.HasUpgrade(ChargeUpgrade);
         }
 
-        public void Deselect() {
+        public void Deselect(GridEntity selector) {
             HideChargePathVisual();
         }
 
