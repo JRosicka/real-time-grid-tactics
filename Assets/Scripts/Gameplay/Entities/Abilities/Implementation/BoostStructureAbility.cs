@@ -12,7 +12,7 @@ namespace Gameplay.Entities.Abilities {
     /// <see cref="IAbility"/> for boosting the production speed and income of an adjacent structure
     /// </summary>
     public class BoostStructureAbility : AbilityBase<BoostStructureAbilityData, BoostStructureAbilityParameters> {
-        private BoostStructureAbilityParameters AbilityParameters => (BoostStructureAbilityParameters) BaseParameters;
+        public BoostStructureAbilityParameters AbilityParameters => (BoostStructureAbilityParameters) BaseParameters;
 
         public BoostStructureAbility(BoostStructureAbilityData data, BoostStructureAbilityParameters parameters, GridEntity performer, GameTeam? overrideTeam) : base(data, parameters, performer, overrideTeam) { }
         private System.Random RNG => GameManager.Instance.SeedManager.GetRNG(Performer.UID);
