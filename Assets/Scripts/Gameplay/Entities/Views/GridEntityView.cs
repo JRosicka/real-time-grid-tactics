@@ -53,6 +53,7 @@ namespace Gameplay.Entities {
         [SerializeField] private ParticleSystem _deathParticleSystem;
         [SerializeField] private GameObject _holdPositionIcon;
         [SerializeField] private DirectionalArrowController _arrowController;
+        [SerializeField] private Transform _boostTarget;
         
         [Header("Config")]
         [FormerlySerializedAs("SecondsToMoveToAdjacentCell")]
@@ -78,6 +79,8 @@ namespace Gameplay.Entities {
         public GridEntity Entity;
         
         public event Action KillAnimationFinishedEvent;
+
+        public Vector2 BoostPosition => _boostTarget.position;
 
         private GameAudio GameAudio => GameAudio.Instance;
 
@@ -122,7 +125,6 @@ namespace Gameplay.Entities {
             entity.KilledEvent += Killed;
             entity.HoldingPositionChangedEvent += HoldingPositionChanged;
             entity.FogOfWarHiddenStatusChangedEvent += FogOfWarHiddenStatusChanged;
-            entity.BoostRegistrationsChanged += BoostRegistrationsChanged;
 
             bool hasHP = entity.MaxHP > 0;
             if (entity.EntityData.IsStructure) {
@@ -199,7 +201,6 @@ namespace Gameplay.Entities {
             Entity.KilledEvent -= Killed;
             Entity.HoldingPositionChangedEvent -= HoldingPositionChanged;
             Entity.FogOfWarHiddenStatusChangedEvent -= FogOfWarHiddenStatusChanged;
-            Entity.BoostRegistrationsChanged -= BoostRegistrationsChanged;
 
             if (GameManager.Instance != null) {
                 GameManager.Instance.FogOfWarInitialized -= InitializeFoW;
@@ -604,11 +605,6 @@ namespace Gameplay.Entities {
             if (!(Entity?.InteractBehavior?.AllowedToSeeMiscInfo ?? false)) return;
             
             _holdPositionIcon.SetActive(newHoldingPosition);
-        }
-
-        private void BoostRegistrationsChanged(BoostRegistrations newBoostRegistrations) {
-            // TODO
-            Debug.Log($"~~~~ Boost registrations updated. New boost amount: {newBoostRegistrations.GetTotalBoostAmount()}");
         }
         
         private void CreateTimerView(IAbility ability, AbilityTimer abilityTimer) {

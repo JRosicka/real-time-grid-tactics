@@ -1,8 +1,11 @@
 using Gameplay.Entities.Abilities;
 using Gameplay.Entities.Upgrades;
+using UnityEngine;
 
 namespace Gameplay.Entities {
     public class LumberMillView : GridEntityParticularView {
+        [SerializeField] private BoostRayController _boostRayController;
+        
         public override void Initialize(GridEntity entity) { }
         public override void LethalDamageReceived() { }
         public override void NonLethalDamageReceived() { }
@@ -10,7 +13,7 @@ namespace Gameplay.Entities {
         public override bool DoAbility(IAbility ability, AbilityTimer abilityTimer) {
             switch (ability) {
                 case BoostStructureAbility boostAbility:
-                    DoBoostAnimation(boostAbility.Performer, boostAbility.AbilityParameters.Target);
+                    DoBoostAnimation(boostAbility.AbilityParameters.Target);
                     return false;
                 default:
                     return true;
@@ -19,8 +22,8 @@ namespace Gameplay.Entities {
 
         public override void UpgradeApplied(IUpgrade upgrade) { }
 
-        private void DoBoostAnimation(GridEntity performer, GridEntity target) {
-            
+        private void DoBoostAnimation(GridEntity target) {
+            _boostRayController.Activate(target);
         }
     }
 }

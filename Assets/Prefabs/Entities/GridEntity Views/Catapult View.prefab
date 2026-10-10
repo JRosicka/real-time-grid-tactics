@@ -75,7 +75,7 @@ PrefabInstance:
     - target: {fileID: 5299271008241535793, guid: 9d77d3ce03b813d42b6c2efebbdefd02, type: 3}
       propertyPath: _particularView
       value: 
-      objectReference: {fileID: 536875670929435029}
+      objectReference: {fileID: 3704277928816195721}
     - target: {fileID: 5413136849338133239, guid: 9d77d3ce03b813d42b6c2efebbdefd02, type: 3}
       propertyPath: m_SizeDelta.x
       value: 0
@@ -190,14 +190,14 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 2517421855927553431, guid: 9d77d3ce03b813d42b6c2efebbdefd02, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 536875670929435029}
+      addedObject: {fileID: 3704277928816195721}
   m_SourcePrefab: {fileID: 100100000, guid: 9d77d3ce03b813d42b6c2efebbdefd02, type: 3}
 --- !u!1 &236104011512999305 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2517421855927553431, guid: 9d77d3ce03b813d42b6c2efebbdefd02, type: 3}
   m_PrefabInstance: {fileID: 2425578244529659934}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &536875670929435029
+--- !u!114 &3704277928816195721
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -206,9 +206,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 236104011512999305}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6d0f8f6cfdc34cdd9b28e76135075f5a, type: 3}
+  m_Script: {fileID: 11500000, guid: ab0d87a2d36449b49c4348afc26cbf8f, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: Assembly-CSharp::Gameplay.Entities.CatapultView
   EntityView: {fileID: 7504026570216467247}
 --- !u!114 &7504026570216467247 stripped
 MonoBehaviour:

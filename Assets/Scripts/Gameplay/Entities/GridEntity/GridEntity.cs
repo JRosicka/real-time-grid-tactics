@@ -132,7 +132,7 @@ namespace Gameplay.Entities {
         
         // Client flag
         private bool _unregistered;
-        private GridEntityView _view;
+        public GridEntityView View { get; private set; }
         
         // Events
         public event Action<IAbility, AbilityTimer> AbilityPerformedEvent;
@@ -319,12 +319,12 @@ namespace Gameplay.Entities {
         private void SetupView(Vector2Int spawnerLocation, bool playSpawnAnimation) {
             int stackOrder = EntityData.GetStackOrder();
             ViewCanvas.sortingOrder = stackOrder;
-            _view = Instantiate(EntityData.ViewPrefab, ViewCanvas.transform);
-            _view.Initialize(this, stackOrder, spawnerLocation, playSpawnAnimation);
+            View = Instantiate(EntityData.ViewPrefab, ViewCanvas.transform);
+            View.Initialize(this, stackOrder, spawnerLocation, playSpawnAnimation);
         }
 
         public void ToggleView(bool show) {
-            _view.ToggleView(show);
+            View.ToggleView(show);
         }
         
         #endregion
@@ -937,7 +937,7 @@ namespace Gameplay.Entities {
             
             if (showDeathAnimation) {
                 // When the view is done animating death, mark this client as ready to die so that the server knows when it can destroy this entity
-                _view.KillAnimationFinishedEvent += DeathStatusHandler.SetLocalClientReady;
+                View.KillAnimationFinishedEvent += DeathStatusHandler.SetLocalClientReady;
             } else {
                 // Skip animation, immediately mark as ready to die
                 DeathStatusHandler.SetLocalClientReady();

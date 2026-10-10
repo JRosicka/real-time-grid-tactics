@@ -10,10 +10,9 @@ namespace Gameplay.Entities {
         private static readonly int BaseColor = Shader.PropertyToID("_BaseColor");
         private static readonly int AlphaStrength = Shader.PropertyToID("_AlphaStrength");
         private static readonly int BaseMap = Shader.PropertyToID("_BaseMap");
-
+        
         [Header("Endpoints")]
         [SerializeField] private Transform _source;
-        [SerializeField] private Transform _target;
 
         [Header("Line Renderers")]
         [SerializeField] private LineRenderer _coreLine;
@@ -43,9 +42,6 @@ namespace Gameplay.Entities {
         [Tooltip("How quickly the noise pattern travels from source to target.")]
         [SerializeField] private float _noiseTravelSpeed = 2.5f;
 
-        [Tooltip("Random-looking offset into the noise field.")]
-        [SerializeField] private float _noiseSeed = 13.37f;
-
         [Header("Appearance")]
         [SerializeField] private float _coreWidth = 0.05f;
         [SerializeField] private float _glowWidth = 0.16f;
@@ -74,29 +70,32 @@ namespace Gameplay.Entities {
         [SerializeField] private Vector3 _planeNormal = Vector3.forward;
 
         private Vector3[] _positions;
+        private Vector2 _targetPosition;
 
+        private float _noiseSeed;
+        
         private Material _coreMaterial;
         private Material _glowMaterial;
 
         private float _textureOffset;
-        
-        private void Awake() {
-            Initialize();
-        }
 
-        private void OnEnable() {
-            Initialize();
-        }
+        private bool _active;
 
         private void LateUpdate() {
-            if (_source == null || _target == null) return;
+            if (!_active) return;
 
             UpdateBeam();
             UpdateTexture();
         }
 
         [Button]
-        private void Initialize() {
+        public void Initialize(Vector2 targetWorldPosition) {
+            _active = true;
+            _coreLine.enabled = true;
+            _glowLine.enabled = true;
+            _targetPosition = targetWorldPosition;
+            _noiseSeed = Random.Range(0f, 1f);
+            
             _pointCount = Mathf.Max(_pointCount, 2);
 
             EnsurePositionArray();
@@ -120,6 +119,12 @@ namespace Gameplay.Entities {
                 _glowMaterial.SetColor(BaseColor, _glowColor);
                 _coreMaterial.SetFloat(AlphaStrength, _coreAlphaPower);
             }
+        }
+
+        public void Hide() {
+            _active = false;
+            _coreLine.enabled = false;
+            _glowLine.enabled = false;
         }
 
         private void InitializeLine(LineRenderer line, float width) {
@@ -155,7 +160,7 @@ namespace Gameplay.Entities {
             EnsurePositionArray();
 
             Vector3 start = _source.position;
-            Vector3 end = _target.position;
+            Vector3 end = _targetPosition;
 
             Vector3 delta = end - start;
 
