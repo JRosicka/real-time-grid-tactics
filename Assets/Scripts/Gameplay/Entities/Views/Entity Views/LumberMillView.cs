@@ -5,8 +5,10 @@ using UnityEngine;
 namespace Gameplay.Entities {
     public class LumberMillView : GridEntityParticularView {
         [SerializeField] private BoostRayController _boostRayController;
-        
-        public override void Initialize(GridEntity entity) { }
+
+        public override void Initialize(GridEntity entity) {
+            _boostRayController.Initialize(entity);
+        }
         public override void LethalDamageReceived() { }
         public override void NonLethalDamageReceived() { }
 
