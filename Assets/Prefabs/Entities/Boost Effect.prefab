@@ -220,15 +220,14 @@ MonoBehaviour:
   _endpointFalloff: 1.88
   _noiseEndpointTaper: 0.15
   _noiseTravelSpeed: 7.3
-  _noiseSeed: 12.67
   _coreWidth: 10
   _glowWidth: 45
-  _coreColor: {r: 0.50261766, g: 0.58472353, b: 1.9999998, a: 1}
-  _glowColor: {r: 0.20942402, g: 0.27468437, b: 2, a: 0.62352943}
+  _coreColor: {r: 0.50261766, g: 0.58472353, b: 1.9999998, a: 0.5882353}
+  _glowColor: {r: 0.20942402, g: 0.27468437, b: 2, a: 0.83137256}
   _coreAlphaStrength: 2.5
   _coreAlphaPower: 1.5
   _textureScrollSpeed: 15
-  _textureTilesPerUnit: 0.15
+  _textureTilesPerUnit: 0.02
   _planeNormal: {x: 0, y: 0, z: 1}
 --- !u!1 &4874821006364659222
 GameObject:

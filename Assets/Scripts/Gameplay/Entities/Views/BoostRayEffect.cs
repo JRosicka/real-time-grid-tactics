@@ -1,3 +1,4 @@
+using Gameplay.Config;
 using Gameplay.Entities.Abilities;
 using Sirenix.OdinInspector;
 using UnityEngine;
@@ -86,6 +87,15 @@ namespace Gameplay.Entities {
 
             UpdateBeam();
             UpdateTexture();
+        }
+
+        public void SetColors(PlayerColorData colorData) {
+            _coreColor.r = colorData.TeamColor.r;
+            _coreColor.g = colorData.TeamColor.g;
+            _coreColor.b = colorData.TeamColor.b;
+            _glowColor.r = colorData.TeamColor.r;
+            _glowColor.g = colorData.TeamColor.g;
+            _glowColor.b = colorData.TeamColor.b;
         }
 
         [Button]

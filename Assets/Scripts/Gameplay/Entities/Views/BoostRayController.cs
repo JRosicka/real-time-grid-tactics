@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Gameplay.Config;
 using Gameplay.Managers;
 using UnityEngine;
 
@@ -16,6 +17,10 @@ namespace Gameplay.Entities {
         
         public void Initialize(GridEntity booster) {
             _booster = booster;
+            
+            PlayerColorData colorData = GameManager.Instance.GetPlayerForTeam(booster).ColorData;
+            _effect.SetColors(colorData);
+            
             InitializeFogOfWar();
         }
 
