@@ -9,7 +9,10 @@ namespace Gameplay.Entities {
         public override void Initialize(GridEntity entity) {
             _boostRayController.Initialize(entity);
         }
-        public override void LethalDamageReceived() { }
+
+        public override void LethalDamageReceived() {
+            _boostRayController.TearDown();
+        }
         public override void NonLethalDamageReceived() { }
 
         public override bool DoAbility(IAbility ability, AbilityTimer abilityTimer) {

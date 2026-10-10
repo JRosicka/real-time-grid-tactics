@@ -18,6 +18,11 @@ namespace Gameplay.Entities {
             _booster = booster;
             InitializeFogOfWar();
         }
+
+        public void TearDown() {
+            Deactivate();
+            _fowTracker.FoWUpdated -= FogOfWarUpdated;
+        }
         
         public void Activate(GridEntity target) {
             _target = target;
