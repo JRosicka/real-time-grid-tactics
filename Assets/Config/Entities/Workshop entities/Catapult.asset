@@ -39,7 +39,7 @@ MonoBehaviour:
   Damage: 12
   BonusDamage: 0
   TagsToApplyBonusDamageTo: 
-  NormalMoveTime: 1.5
+  NormalMoveTime: 5
   AddedMovementTimeFromAttacking: 0
   PathfindingConfig:
     MoveIconOverride: {fileID: 0}
@@ -61,6 +61,7 @@ MonoBehaviour:
   AlwaysShowWhenHiddenByFoW: 0
   FoWHidesResourceCount: 1
   AttackByDefault: 1
+  CanAttack: 1
   IsResourceExtractor: 0
   ResourceThatThisCanExtract: {fileID: 0}
   AssociatedResource: 0
@@ -79,4 +80,5 @@ MonoBehaviour:
     Type: 0
     Amount: 0
   _highlightBuildableCells: 0
+  Boostable: 0
   DeathActions: []

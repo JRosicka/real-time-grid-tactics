@@ -5,6 +5,7 @@ using Gameplay.Config;
 using Gameplay.Config.Upgrades;
 using Gameplay.Entities;
 using Gameplay.Entities.Upgrades;
+using Gameplay.Grid;
 using JetBrains.Annotations;
 using Mirror;
 using Scenes;
@@ -77,7 +78,19 @@ public class PlayerOwnedPurchasablesController : NetworkBehaviour {
                         return false;
                     }
                 } else {
-                    // TODO check for requirement adjacency to buildLocation
+                    // Check for requirement adjacency to buildLocation
+                    IEnumerable<Vector2Int> viableLocations = CellDistanceLogic.Neighbors(buildLocation.Value);
+                    foreach (Vector2Int location in viableLocations) {
+                        List<GridEntity> viableEntities = GameManager.Instance.CommandManager.EntitiesOnGrid.EntitiesAtLocation(location)?.Entities?.Select(e => e.Entity).ToList() ?? new List<GridEntity>();
+                        if (viableEntities.Any(e =>
+                                e.EntityData == requirement.Purchasable ||
+                                e.EntityData == requirement.AlternativePurchasable)) {
+                            whyNot = null;
+                            return true;
+                        }
+                    }
+                    whyNot = requirement.FailedRequirementExplanation; 
+                    return false;
                 }
             }
         }

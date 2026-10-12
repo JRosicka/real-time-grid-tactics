@@ -23,7 +23,7 @@ MonoBehaviour:
   Requirements:
   - Purchasable: {fileID: 11400000, guid: 76f8875c62c05594eb3f5846997423bf, type: 2}
     AlternativePurchasable: {fileID: 0}
-    MustBeAdjacent: 0
+    MustBeAdjacent: 1
     FailedRequirementExplanation: This requires an adjacent Lumber Mill.
   BuildTime: 30
   BuildsImmediately: 0
@@ -42,14 +42,14 @@ MonoBehaviour:
   Damage: 0
   BonusDamage: 0
   TagsToApplyBonusDamageTo: 
-  NormalMoveTime: 0
+  NormalMoveTime: 2.5
   AddedMovementTimeFromAttacking: 0
   PathfindingConfig:
     MoveIconOverride: {fileID: 0}
     AttackIconOverride: {fileID: 0}
     TargetAttackIconOverride: {fileID: 0}
   Tags: 01000000
-  OverrideEntityDataForPathfinding: {fileID: 0}
+  OverrideEntityDataForPathfinding: {fileID: 11400000, guid: 1e0844ab0a6f9ba408238739b8a38df2, type: 2}
   AttackerTargetPriority: 0
   Abilities:
   - {fileID: 11400000, guid: f6e8110c5e782004590560ffd692217b, type: 2}
