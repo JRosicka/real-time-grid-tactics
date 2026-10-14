@@ -29,4 +29,31 @@ namespace Gameplay.Entities {
             return new NetworkableBoostRegistrationsValue(new BoostRegistrations(boosts));
         }
     }
+    
+    [Serializable]
+    public class NetworkableGridEntityListValue : INetworkableFieldValue {
+        public List<GridEntity> Value;
+        public NetworkableGridEntityListValue(List<GridEntity> value) {
+            Value = value;
+        }
+
+        public string ID => nameof(NetworkableGridEntityListValue);
+
+        public void SerializeValue(NetworkWriter writer) {
+            writer.WriteInt(Value.Count);
+            foreach (GridEntity entity in Value) {
+                writer.Write(entity);
+            }
+        }
+
+        public static NetworkableGridEntityListValue Deserialize(NetworkReader reader) {
+            List<GridEntity> entities = new();
+            
+            int count = reader.ReadInt();
+            for (int i = 0; i < count; i++) {
+                entities.Add(reader.Read<GridEntity>());
+            }
+            return new NetworkableGridEntityListValue(entities);
+        }
+    }
 }

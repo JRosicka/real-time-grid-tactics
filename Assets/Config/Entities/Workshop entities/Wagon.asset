@@ -39,18 +39,19 @@ MonoBehaviour:
   Damage: 0
   BonusDamage: 0
   TagsToApplyBonusDamageTo: 
-  NormalMoveTime: 2.25
+  NormalMoveTime: 2
   AddedMovementTimeFromAttacking: 0
   PathfindingConfig:
     MoveIconOverride: {fileID: 0}
     AttackIconOverride: {fileID: 0}
     TargetAttackIconOverride: {fileID: 0}
-  Tags: 09000000
+  Tags: 090000000b000000
   OverrideEntityDataForPathfinding: {fileID: 0}
   AttackerTargetPriority: 3
   Abilities:
   - {fileID: 11400000, guid: ec15a049dabc53b4d92ab14b2871752c, type: 2}
   - {fileID: 11400000, guid: a23c69f58674b4c0790e0e27e2d0dbcb, type: 2}
+  - {fileID: 11400000, guid: be30ace6a93c04d47a84ecbf8de02652, type: 2}
   FriendlyUnitsCanShareCell: 0
   Targetable: 1
   CanBuildFriendlyStructureOnTop: 0
@@ -80,4 +81,5 @@ MonoBehaviour:
     Amount: 0
   _highlightBuildableCells: 0
   Boostable: 0
+  BaseCarryCapacity: 1
   DeathActions: []

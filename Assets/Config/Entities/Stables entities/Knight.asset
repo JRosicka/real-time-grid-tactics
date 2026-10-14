@@ -22,6 +22,7 @@ MonoBehaviour:
     Amount: 125
   Requirements:
   - Purchasable: {fileID: 11400000, guid: 9ab6d58fde8294daa9c3c7a99e68cb87, type: 2}
+    AlternativePurchasable: {fileID: 0}
     MustBeAdjacent: 0
     FailedRequirementExplanation: You must own the High-Protein Horse Feed upgrade.
   BuildTime: 45
@@ -47,7 +48,7 @@ MonoBehaviour:
     MoveIconOverride: {fileID: 0}
     AttackIconOverride: {fileID: 0}
     TargetAttackIconOverride: {fileID: 0}
-  Tags: 02000000
+  Tags: 020000000b000000
   OverrideEntityDataForPathfinding: {fileID: 0}
   AttackerTargetPriority: 3
   Abilities:
@@ -61,7 +62,11 @@ MonoBehaviour:
   CanBuildFriendlyStructureOnTop: 0
   Attackable: 1
   CanBlockMovement: 1
+  SelectableInFoW: 0
+  AlwaysShowWhenHiddenByFoW: 0
+  FoWHidesResourceCount: 1
   AttackByDefault: 1
+  CanAttack: 1
   IsResourceExtractor: 0
   ResourceThatThisCanExtract: {fileID: 0}
   AssociatedResource: 0
@@ -71,11 +76,15 @@ MonoBehaviour:
   BuildQueueSize: 5
   NeverShowBuildQueue: 0
   ControllableByAllPlayers: 0
-  EligibleStructureLocations: []
+  EligibleStructureLocations: 
   SharedUnitArmorBonus: 0
   SharedUnitDamageTakenModifierTags: 
   CanRally: 0
+  StructureSellTime: 0
   StartingResourceSet:
     Type: 0
     Amount: 0
+  _highlightBuildableCells: 0
+  Boostable: 0
+  BaseCarryCapacity: 0
   DeathActions: []

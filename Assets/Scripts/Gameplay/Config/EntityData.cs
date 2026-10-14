@@ -102,6 +102,8 @@ namespace Gameplay.Config {
         public override bool HighlightBuildableCells => _highlightBuildableCells;
         [Tooltip("Whether this structure can be boosted by the boost ability")]
         public bool Boostable;
+
+        public int BaseCarryCapacity;
         
         [Space]
         public List<DeathActionData> DeathActions;

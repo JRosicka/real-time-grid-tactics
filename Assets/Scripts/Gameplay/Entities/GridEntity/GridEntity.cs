@@ -74,7 +74,11 @@ namespace Gameplay.Entities {
         // Only relevant for structures that can share with friendly units
         private bool LockedFromFriendlyUnitsEntering => ((NetworkableBoolValue)_lockedFromFriendlyUnitsEnteringField?.Value)?.Value ?? false;
         private NetworkableField _activeBoostsField;
-        private BoostRegistrations _activeBoosts => ((NetworkableBoostRegistrationsValue)_activeBoostsField?.Value)?.Value ?? new BoostRegistrations();
+        private BoostRegistrations ActiveBoosts => ((NetworkableBoostRegistrationsValue)_activeBoostsField?.Value)?.Value ?? new BoostRegistrations();
+        private NetworkableField _carriedEntitiesField;
+        [NotNull] public List<GridEntity> CarriedEntities => ((NetworkableGridEntityListValue)_carriedEntitiesField.Value)?.Value ?? new List<GridEntity>();
+        private NetworkableField _carryCapacityField;
+        public int CarryCapacity => ((NetworkableIntegerValue)_carryCapacityField.Value)?.Value ?? 0;
 
         // Abilities
         /// <summary>
@@ -179,6 +183,8 @@ namespace Gameplay.Entities {
             _holdingPositionNetworkableField = new NetworkableField(this, nameof(_holdingPositionNetworkableField), new NetworkableBoolValue(false));
             _lockedFromFriendlyUnitsEnteringField = new NetworkableField(this, nameof(_lockedFromFriendlyUnitsEnteringField), new NetworkableBoolValue(false));
             _activeBoostsField = new NetworkableField(this, nameof(_activeBoostsField), new NetworkableBoostRegistrationsValue(new BoostRegistrations()));
+            _carriedEntitiesField = new NetworkableField(this, nameof(_carriedEntitiesField), new NetworkableGridEntityListValue(new List<GridEntity>()));
+            _carryCapacityField = new NetworkableField(this, nameof(_carryCapacityField), new NetworkableIntegerValue(0));
         }
 
         /// <summary>
@@ -209,6 +215,9 @@ namespace Gameplay.Entities {
             TargetLocationLogic.ValueChanged += TargetLocationLogicChanged;
             TargetLocationLogic.UpdateValue(new TargetLocationLogic(EntityData.CanRally, spawnLocation, null, PathVisualizer.PathType.Move, false));
             LastAttackedEntity.UpdateValue(new NetworkableGridEntityValue(null));
+            if (data.BaseCarryCapacity > 0) {
+                _carryCapacityField.UpdateValue(new NetworkableIntegerValue(data.BaseCarryCapacity));
+            }
             
             // Set up death actions
             foreach (DeathActionData deathActionData in EntityData.DeathActions) {
@@ -288,7 +297,7 @@ namespace Gameplay.Entities {
             _incomeRateField.ValueChanged += (_, _, _) => IncomeRateChanged?.Invoke(IncomeRate);
             _holdingPositionNetworkableField.ValueChanged += (_, _, _) => HoldingPositionChangedEvent?.Invoke(HoldingPosition);
             _lockedFromFriendlyUnitsEnteringField.ValueChanged += UpdateLockStatus;
-            _activeBoostsField.ValueChanged += (_, _, _) => BoostRegistrationsChanged?.Invoke(_activeBoosts);
+            _activeBoostsField.ValueChanged += (_, _, _) => BoostRegistrationsChanged?.Invoke(ActiveBoosts);
             
             Interactable = true;
         } 
@@ -725,8 +734,30 @@ namespace Gameplay.Entities {
             _additionalMovementTimeFromAttackingField.UpdateValue(new NetworkableFloatValue(newAdditionalMovementTime));
         }
 
-        public void SetHoldingPosition(bool newHoldingPosition) {
+        private void SetHoldingPosition(bool newHoldingPosition) {
             _holdingPositionNetworkableField.UpdateValue(new NetworkableBoolValue(newHoldingPosition));
+        }
+        
+        public void SetCarryCapacity(int newCarryCapacity) {
+            _carryCapacityField.UpdateValue(new NetworkableIntegerValue(newCarryCapacity));
+        }
+
+        /// <summary>
+        /// Validation should be handled by the caller
+        /// </summary>
+        public void PickUpEntity(GridEntity entity) {
+            List<GridEntity> entities = CarriedEntities;
+            entities.Add(entity);
+            _carriedEntitiesField.UpdateValue(new NetworkableGridEntityListValue(entities));
+        }
+
+        /// <summary>
+        /// Validation should be handled by the caller
+        /// </summary>
+        public void DropEntity(GridEntity entity) {
+            List<GridEntity> entities = CarriedEntities;
+            entities.Remove(entity);
+            _carriedEntitiesField.UpdateValue(new NetworkableGridEntityListValue(entities));
         }
 
         public float MovementTimeFromAttacking => EntityData.AddedMovementTimeFromAttacking + AdditionalMovementTimeFromAttacking;
@@ -999,24 +1030,24 @@ namespace Gameplay.Entities {
         #region Boosts
 
         public void RegisterBoost(GridEntity boostProvider, float boostAmount) {
-            BoostRegistrations boosts = _activeBoosts;
+            BoostRegistrations boosts = ActiveBoosts;
             boosts.Boosts.RemoveAll(b => b.Item1 == boostProvider);
             boosts.Boosts.Add((boostProvider, boostAmount));
             _activeBoostsField.UpdateValue(new NetworkableBoostRegistrationsValue(boosts));
         }
 
         public void UnRegisterBoost(GridEntity boostProvider) {
-            BoostRegistrations boosts = _activeBoosts;
+            BoostRegistrations boosts = ActiveBoosts;
             boosts.Boosts.RemoveAll(b => b.Item1 == boostProvider);
             _activeBoostsField.UpdateValue(new NetworkableBoostRegistrationsValue(boosts));
         }
 
         public bool ContainsBoost(GridEntity boostProvider) {
-            return _activeBoosts.Boosts.Any(b => b.Item1 == boostProvider);
+            return ActiveBoosts.Boosts.Any(b => b.Item1 == boostProvider);
         }
         
         private float GetTotalBoostAmount() {
-            return _activeBoosts.GetTotalBoostAmount();
+            return ActiveBoosts.GetTotalBoostAmount();
         }
         
         #endregion

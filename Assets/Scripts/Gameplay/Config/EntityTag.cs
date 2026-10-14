@@ -11,7 +11,8 @@ namespace Gameplay.Config {
         Resource = 7,
         ResourceCollector = 8,
         Wheeled = 9,
-        Siege = 10
+        Siege = 10,
+        Massive = 11,
     }
 
     public static class EntityTagExtensions {
@@ -25,6 +26,9 @@ namespace Gameplay.Config {
                 EntityTag.Worker => "workers",
                 EntityTag.Resource => "resources",
                 EntityTag.ResourceCollector => "resource collection structures",
+                EntityTag.Wheeled => "wheeled units",
+                EntityTag.Siege => "siege units",
+                EntityTag.Massive => "massive units",
                 _ => throw new ArgumentOutOfRangeException(nameof(tag), tag, null)
             };
         }

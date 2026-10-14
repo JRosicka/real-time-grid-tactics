@@ -42,6 +42,7 @@ MonoBehaviour:
     _tryingToPerformCancelsHoldPosition: 1
     _activeBlocksDefaultAttack: 1
     _cooldownBlocksDefaultAttack: 1
+    _sendEffectPerformedEventsEvenWithNoTimer: 0
     _showTimerOnSelectionInterface: 0
     _performByDefault: 0
     _selectionSFX: {fileID: 0}

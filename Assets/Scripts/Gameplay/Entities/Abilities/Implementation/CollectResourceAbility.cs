@@ -86,10 +86,11 @@ namespace Gameplay.Entities.Abilities {
                 return;
             }
             
+            Vector2Int nextMoveCell = path.Nodes[1].Location;
             MoveAbilityData moveAbilityData = attacker.GetAbilityData<MoveAbilityData>();
             AbilityAssignmentManager.StartPerformingAbility(attacker, moveAbilityData, new MoveAbilityParameters {
-                Destination = destination,
-                NextMoveCell = destination,
+                Destination = nextMoveCell,
+                NextMoveCell = nextMoveCell,
                 BlockedByOccupation = false,
                 PerformAfterAttacks = true
             }, false, false, false, false, attacker.Team);
