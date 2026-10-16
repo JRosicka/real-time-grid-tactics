@@ -30,7 +30,7 @@ namespace Gameplay.UI {
         private Vector2Int _currentLocation;
         private bool _hidden;
         
-        private void Start() {
+        public void Initialize() {
             if (_listenForEntityUpdates) {
                 GameManager.Instance.CommandManager.EntitiesOnGrid.EntityUpdatedEvent += OnTileUpdated;
             }

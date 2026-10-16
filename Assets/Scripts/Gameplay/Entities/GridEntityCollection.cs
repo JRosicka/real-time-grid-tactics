@@ -49,21 +49,15 @@ namespace Gameplay.Entities {
             }
         }
 
-        public readonly List<PositionedGridEntityCollection> Entities;
+        public readonly List<PositionedGridEntityCollection> Entities = new List<PositionedGridEntityCollection>();
         
         // Entities that are not actually on the grid, but still registered (i.e. being carried by something)
-        private readonly List<GridEntity> _entitiesOffGrid;
+        private readonly List<GridEntity> _entitiesOffGrid = new List<GridEntity>();
 
         /// <summary>
         /// Event that triggers when an entity is registered or unregistered at a particular location.
         /// </summary>
         public event Action<Vector2Int, GridEntity> EntityUpdatedEvent;
-
-        public GridEntityCollection() : this(new List<PositionedGridEntityCollection>()) { }
-
-        public GridEntityCollection(List<PositionedGridEntityCollection> entities) {
-            Entities = entities;
-        }
         
         #region Entity Operations
         

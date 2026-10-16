@@ -292,6 +292,8 @@ public class GameSetupManager : MonoBehaviour {
     private void DoPerformClientSidePostMapSetupInitialization() {
         GameManager.CommandManager.EntityCollectionChangedEvent -= DoPerformClientSidePostMapSetupInitialization;
         GameManager.SetUpControlGroups();
+
+        GameManager.GridController.HandlePostMapSetup();
         
         GameManager.AmberForgeAvailabilityNotifier.Initialize();
         GameManager.LeaderTracker.Initialize(GameManager.CommandManager);
@@ -446,7 +448,7 @@ public class GameSetupManager : MonoBehaviour {
         NetworkServer.Spawn(newManager.gameObject);
         GameManager.SetupCommandManager(newManager);
 
-        // Tell clients to look for the command controller and player GameObjects
+        // Tell clients to look for the command manager and player GameObjects
         MPSetupHandler.RpcAssignPlayers();
     }
 

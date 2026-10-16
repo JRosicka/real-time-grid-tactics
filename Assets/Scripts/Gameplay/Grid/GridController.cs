@@ -72,6 +72,12 @@ namespace Gameplay.Grid {
             _invalidTargetedAbilityLocationIcon.gameObject.SetActive(false);
         }
 
+        public void HandlePostMapSetup() {
+            _mouseReticle.Initialize();
+            _selectedUnitReticle.Initialize();
+            _targetUnitReticle.Initialize();
+        }
+
         /// <summary>
         /// Assigns gameplay tiles and outline/out-of-bounds tiles to the grid
         /// </summary>
