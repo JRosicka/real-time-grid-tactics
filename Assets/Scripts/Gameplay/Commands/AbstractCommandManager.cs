@@ -103,7 +103,7 @@ public abstract class AbstractCommandManager : NetworkBehaviour, ICommandManager
         
         _entitiesOnGrid.RemoveEntityFromGrid(entity);
         // We need to update the entity location first so that EntityCollectionChanged listeners get the updated value for the entity location
-        entity.UpdateEntityLocation(default); // TODO pass null and unassign
+        entity.UpdateEntityLocation(null); // TODO pass null and unassign
         SyncEntityCollection(entity, GridEntityCollectionUpdate.RemoveFromGrid, default, default);
         // Now that the entity collection is synced, we can let listeners know that the entity was removed 
         entity.TriggerEntityMovedEvent();

@@ -616,8 +616,8 @@ namespace Gameplay.Entities {
         }
         
         // Triggered on server
-        public void UpdateEntityLocation(Vector2Int newLocation) {
-            _location.UpdateValue(new NetworkableVector2IntegerValue(newLocation));
+        public void UpdateEntityLocation(Vector2Int? newLocation) {
+            _location.UpdateValue(newLocation == null ? null : new NetworkableVector2IntegerValue(newLocation.Value));
         }
         
         // Triggered on server

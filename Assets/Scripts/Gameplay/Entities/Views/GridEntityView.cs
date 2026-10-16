@@ -213,6 +213,7 @@ namespace Gameplay.Entities {
 
         private void Update() {
             UpdateSpawn();
+            UpdatePickUpAnimation();
             UpdateMove();
             // Need to do attack after movement in order to properly handle when both are happening
             UpdateAttack();
@@ -304,6 +305,13 @@ namespace Gameplay.Entities {
                 case TargetAttackAbilityData:
                     DoAttackAnimationFromTargetAttackAbility((TargetAttackAbility) ability);
                     break;
+                case PickUpUnitAbilityData:
+                    ((PickUpUnitAbility)ability).AbilityParameters.Target.View.DoGenericPickedUpAnimation(Entity.Location!.Value);
+                    break;
+                // case DropOffUnitAbilityData:
+                //     DropOffUnitAbility dropOffAbility = (DropOffUnitAbility)ability;
+                //     dropOffAbility.AbilityParameters.Target.View.DoGenericDroppedOffAnimation(Entity.Location, dropOffAbility.AbilityParameters.Destination);
+                //     break;
             }
         }
 
@@ -597,6 +605,74 @@ namespace Gameplay.Entities {
             if (resolveFoW) {
                 _fowCanvasGroup.alpha = ActuallyHiddenByFoW ? 0 : 1;
             }
+        }
+        
+        #endregion
+        #region Pickup/Dropoff
+        
+        private Vector2 _pickUpStartPosition;
+        private Vector2 _pickUpTargetPosition;
+        private Vector2? _pickUpCurrentPosition;
+        private float _pickUpTime;
+        private bool _pickingUp;
+
+        private void DoGenericPickedUpAnimation(Vector2Int carrierLocation) {
+            // Do the reverse of the spawn animation toward the carrier
+            DoPickUpAnimation(carrierLocation);
+        }
+
+        private void DoGenericDroppedOffAnimation(Vector2Int carrierLocation, Vector2Int dropOffLocation) {
+            ToggleView(true);
+            
+            // Treat like a spawn
+            transform.position = GameManager.Instance.GridController.GetWorldPosition(dropOffLocation);
+            DoSpawnAnimation(carrierLocation, true);
+        }
+        
+        private void DoPickUpAnimation(Vector2Int carrierLocation) {
+            _pickUpStartPosition = transform.position;
+            _pickUpTargetPosition =  GameManager.Instance.GridController.GetWorldPosition(carrierLocation);
+            _pickUpTime = 0;
+            _pickingUp = true;
+
+            // Face the x-direction that we are going
+            SetFacingDirection(_pickUpStartPosition, _pickUpTargetPosition);
+            
+            DoUpdatePickUpAnimation();
+        }
+
+        private void UpdatePickUpAnimation() {
+            if (!_pickingUp) return;
+
+            if (_moving) {
+                // We are moving, so instantly finish the pick up animation to not disrupt that
+                EndPickUpAnimationEarly();
+                return;
+            }
+
+            _pickUpTime += Time.deltaTime;
+            DoUpdatePickUpAnimation();
+        }
+        
+        private void DoUpdatePickUpAnimation() {
+            // Lerp across spawn location AnimationCurve from starting position to carrier location (converted to worldspace)
+            float moveEvaluationProgress = _spawnMoveAnimationCurve.Evaluate(_pickUpTime / _spawnLengthSeconds);
+            _pickUpCurrentPosition = Vector2.Lerp(_pickUpStartPosition, _pickUpTargetPosition, moveEvaluationProgress);
+            transform.position = _pickUpCurrentPosition.Value;
+            
+            if (_pickUpTime > _spawnLengthSeconds) {
+                _pickUpCurrentPosition = null;
+                _pickingUp = false;
+                ToggleView(false);
+            }
+        }
+
+        private void EndPickUpAnimationEarly() {
+            float moveEvaluationProgress = _spawnMoveAnimationCurve.Evaluate(1);
+            transform.position = Vector2.Lerp(_pickUpStartPosition, _pickUpTargetPosition, moveEvaluationProgress);
+            
+            _pickUpCurrentPosition = null;
+            _pickingUp = false;
         }
         
         #endregion
