@@ -22,6 +22,7 @@ namespace Gameplay.Entities {
             return true;
         }
 
+        // Server method
         public static bool TryPickUp(GridEntity carrier, GridEntity passenger) {
             if (!CanPickUp(carrier, passenger)) return false;
 
@@ -29,13 +30,13 @@ namespace Gameplay.Entities {
             if (!CellDistanceLogic.Neighbors(carrier.Location!.Value).Contains(passenger.Location!.Value)) return false;
 
             carrier.PickUpEntity(passenger);
-            
-            // TODO
+
+            GameManager.Instance.CommandManager.RemoveEntityFromGrid(passenger);
 
             return true;
         }
 
-        public static AbilityLegality CanDropOff(GridEntity carrier, GridEntity passenger, Vector2Int location) {
+        public static AbilityLegality CanDropOff(GridEntity carrier, GridEntity passenger) {
             if (carrier == null || carrier.Location == null || carrier.DeadOrDying) return AbilityLegality.IndefinitelyIllegal;
             if (passenger == null || passenger.Location != null || passenger.DeadOrDying) return AbilityLegality.IndefinitelyIllegal;   // passenger does not have a location
             
@@ -45,8 +46,9 @@ namespace Gameplay.Entities {
             return AbilityLegality.Legal;
         }
 
+        // Server method
         public static bool TryDropOff(GridEntity carrier, GridEntity passenger, Vector2Int location) {
-            if (CanDropOff(carrier, passenger, location) != AbilityLegality.Legal) return false;
+            if (CanDropOff(carrier, passenger) != AbilityLegality.Legal) return false;
 
             // The location must be open
             if (!PathfinderService.CanEntityEnterCell(location, passenger.EntityData, passenger.Team)) return false;

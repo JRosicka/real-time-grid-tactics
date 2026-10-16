@@ -32,7 +32,7 @@ namespace Gameplay.UI {
         
         private void Start() {
             if (_listenForEntityUpdates) {
-                GridEntityCollection.EntityUpdatedEvent += OnTileUpdated;
+                GameManager.Instance.CommandManager.EntitiesOnGrid.EntityUpdatedEvent += OnTileUpdated;
             }
         }
 

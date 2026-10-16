@@ -95,6 +95,30 @@ public abstract class AbstractCommandManager : NetworkBehaviour, ICommandManager
         // Now that the entity collection is synced, we can let listeners know that the entity moved 
         entity.TriggerEntityMovedEvent();
     }
+
+    public void RemoveEntityFromGrid(GridEntity entity) {
+        entity.BuildQueue.CancelAllBuilds(GameTeam.Player1);
+        entity.BuildQueue.CancelAllBuilds(GameTeam.Player2);
+        GameManager.Instance.AbilityAssignmentManager.CancelAllAbilities(entity, false);
+        
+        _entitiesOnGrid.RemoveEntityFromGrid(entity);
+        // We need to update the entity location first so that EntityCollectionChanged listeners get the updated value for the entity location
+        entity.UpdateEntityLocation(default); // TODO pass null and unassign
+        SyncEntityCollection(entity, GridEntityCollectionUpdate.RemoveFromGrid, default, default);
+        // Now that the entity collection is synced, we can let listeners know that the entity was removed 
+        entity.TriggerEntityMovedEvent();
+    }
+
+    public void PutEntityBackOnGrid(GridEntity entity, Vector2Int destination) {
+        _entitiesOnGrid.PutEntityBackOnGrid(entity, destination);
+        // We need to update the entity location first so that EntityCollectionChanged listeners get the updated value for the entity location
+        entity.UpdateEntityLocation(destination);
+        SyncEntityCollection(entity, GridEntityCollectionUpdate.PutBackOnGrid, default, destination);
+        // Now that the entity collection is synced, we can let listeners know that the entity was added 
+        entity.TriggerEntityMovedEvent();
+        
+        // TODO trigger on start abilities?
+    }
     
     public GridEntityCollection.PositionedGridEntityCollection GetEntitiesAtCell(Vector2Int location) {
         return _entitiesOnGrid.EntitiesAtLocation(location);

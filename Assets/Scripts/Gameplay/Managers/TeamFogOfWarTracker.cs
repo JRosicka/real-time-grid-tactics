@@ -109,9 +109,11 @@ namespace Gameplay.Managers {
             List<FoWCell> updatedCells;
             switch (updateType) {
                 case GridEntityCollectionUpdate.Register:
+                case GridEntityCollectionUpdate.PutBackOnGrid:
                     (updatedCells, _) = RevealWithinRange(newLocation, null);
                     break;
                 case GridEntityCollectionUpdate.Unregister:
+                case GridEntityCollectionUpdate.RemoveFromGrid:
                     updatedCells = TryHideWithinRange(previousLocation, null);
                     break;
                 case GridEntityCollectionUpdate.Move:

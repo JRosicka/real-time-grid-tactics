@@ -7,7 +7,9 @@ namespace Gameplay.Entities {
     public enum GridEntityCollectionUpdate {
         Register,
         Unregister,
-        Move
+        Move,
+        RemoveFromGrid,
+        PutBackOnGrid,
     }
     
     public delegate void EntityUpdatedDelegate(GridEntity entity, GridEntityCollectionUpdate updateType, Vector2Int previousLocation, Vector2Int newLocation);

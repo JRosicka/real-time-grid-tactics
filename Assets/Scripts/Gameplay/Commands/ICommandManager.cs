@@ -25,6 +25,8 @@ public interface ICommandManager {
     void UnRegisterEntity(GridEntity entity, bool showDeathAnimation, bool selectFriendlyEntityAtLocation);
     void DestroyEntity(GridEntity entity);
     void MoveEntityToCell(GridEntity entity, Vector2Int destination);
+    public void RemoveEntityFromGrid(GridEntity entity);
+    public void PutEntityBackOnGrid(GridEntity entity, Vector2Int destination);
     GridEntityCollection.PositionedGridEntityCollection GetEntitiesAtCell(Vector2Int location);
     /// <summary>
     /// Tell the server to start the process of performing an ability. Triggers an execution of active abilities in <see cref="AbilityExecutor"/>
