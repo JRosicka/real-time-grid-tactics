@@ -130,7 +130,7 @@ namespace Gameplay.Entities {
         }
 
         public void RemoveEntityFromGrid(GridEntity entity) {
-            if (entity == null || entity.DeadOrDying || entity.Location == null) return;
+            if (entity == null || entity.DeadOrDying) return;
             if (_entitiesOffGrid.Contains(entity)) {
                 Debug.LogError("Attempted to remove an entity that is already off the grid");
                 return;
