@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Audio;
 using Gameplay.Config;
@@ -27,6 +28,7 @@ namespace Gameplay.Entities {
         [SerializeField] private CanvasGroup _fowCanvasGroup;
         [SerializeField] private Image _mainImage;
         [SerializeField] private Image _teamColorImage;
+        [SerializeField] private List<Image> _additionalTeamColorImages;
         [SerializeField] private GridEntityParticularView _particularView;
         [SerializeField] private GameObject _bottomUISection;
         [SerializeField] private AbilityTimerFill _moveTimerFill;
@@ -111,6 +113,10 @@ namespace Gameplay.Entities {
                 _teamColorImage.gameObject.SetActive(true);
             } else {
                 _teamColorImage.gameObject.SetActive(false);
+            }
+
+            if (_additionalTeamColorImages.Any() && player != null) {
+                _additionalTeamColorImages.ForEach(i => i.color = player.ColorData.TeamColor);
             }
             
             entity.PerformAnimationEvent += DoAbility;

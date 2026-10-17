@@ -27,7 +27,7 @@ namespace Gameplay.UI {
         public void Initialize(IUpgrade upgrade, IGamePlayer player) {
             _upgrade = upgrade;
             _icon.sprite = upgrade.UpgradeData.BaseSpriteIconOverride == null ? upgrade.UpgradeData.BaseSprite : upgrade.UpgradeData.BaseSpriteIconOverride;
-            _background.sprite = player.ColorData.ColoredButtonData.Normal;
+            _background.sprite = upgrade.UpgradeData.TeamColorSpriteIconOverride == null ? player.ColorData.ColoredButtonData.Normal : upgrade.UpgradeData.TeamColorSpriteIconOverride;
             _timerBackground.sprite = player.ColorData.ColoredButtonData.Normal;
             
             _tooltip.Initialize(upgrade);

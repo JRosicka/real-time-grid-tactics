@@ -124,7 +124,7 @@ namespace Gameplay.UI {
             if (Buildable.TeamColorSprite == null) {
                 secondaryAbilityImage.gameObject.SetActive(false);
             } else {
-                secondaryAbilityImage.sprite = Buildable.TeamColorSprite;
+                secondaryAbilityImage.sprite = Buildable.TeamColorSpriteIconOverride == null ? Buildable.TeamColorSprite : Buildable.TeamColorSpriteIconOverride;
                 secondaryAbilityImage.color = GameManager.Instance.GetPlayerForTeam(SelectedEntity).ColorData.TeamColor;
                 secondaryAbilityImage.gameObject.SetActive(true);
             }
