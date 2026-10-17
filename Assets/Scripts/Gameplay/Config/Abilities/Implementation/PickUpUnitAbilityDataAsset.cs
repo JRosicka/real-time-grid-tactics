@@ -19,7 +19,7 @@ namespace Gameplay.Config.Abilities {
         public override bool ManuallyCancelable => true;
         public override IAbilityParameters OnStartParameters => new PickUpUnitAbilityParameters { Target = null };
 
-        public override void SelectAbility(GridEntity selector) {
+        public override void SelectAbility(GridEntity selector, object selectData) {
             GameManager.Instance.EntitySelectionManager.SelectTargetableAbility(this, selector.Team, null);
         }
         

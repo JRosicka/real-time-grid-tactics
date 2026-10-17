@@ -23,7 +23,7 @@ namespace Gameplay.Config.Abilities {
             return $"Heals occupying units by {HealAmount} HP every {CooldownDuration}s.";
         }
         
-        public override void SelectAbility(GridEntity selector) {
+        public override void SelectAbility(GridEntity selector, object selectData) {
             // Nothing to do
         }
         

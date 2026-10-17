@@ -308,10 +308,10 @@ namespace Gameplay.Entities {
                 case PickUpUnitAbilityData:
                     ((PickUpUnitAbility)ability).AbilityParameters.Target.View.DoGenericPickedUpAnimation(Entity.Location!.Value);
                     break;
-                // case DropOffUnitAbilityData:
-                //     DropOffUnitAbility dropOffAbility = (DropOffUnitAbility)ability;
-                //     dropOffAbility.AbilityParameters.Target.View.DoGenericDroppedOffAnimation(Entity.Location, dropOffAbility.AbilityParameters.Destination);
-                //     break;
+                case DropOffUnitAbilityData:
+                    DropOffUnitAbility dropOffAbility = (DropOffUnitAbility)ability;
+                    dropOffAbility.AbilityParameters.Target.View.DoGenericDroppedOffAnimation(Entity.Location!.Value, dropOffAbility.AbilityParameters.DropOffLocation);
+                    break;
             }
         }
 

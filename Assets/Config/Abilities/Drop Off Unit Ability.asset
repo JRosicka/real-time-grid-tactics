@@ -9,14 +9,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 92b6b92b40a94e6db858925d72b757aa, type: 3}
-  m_Name: Pick Up Unit Ability Data Asset
-  m_EditorClassIdentifier: Assembly-CSharp::Gameplay.Config.Abilities.PickUpUnitAbilityDataAsset
+  m_Script: {fileID: 11500000, guid: c45be78a0cce48aab2960dbab5d601d7, type: 3}
+  m_Name: Drop Off Unit Ability
+  m_EditorClassIdentifier: Assembly-CSharp::Gameplay.Config.Abilities.DropOffUnitAbilityDataAsset
   Data:
-    _contentResourceID: Pick Up Unit Ability Data Asset
-    _id: Pick Up
-    _description: Pick up a friendly unit.
-    _icon: {fileID: 21300000, guid: dcdb6563c02b6bf43b698eea6b840db7, type: 3}
+    _contentResourceID: Drop Off Unit Ability
+    _id: 
+    _description: 
+    _icon: {fileID: 0}
     _iconScaleInSelectionInterface: 1
     _overrideIconForGrid: {fileID: 0}
     _flipGridIcon: 0
@@ -26,10 +26,9 @@ MonoBehaviour:
     _requirements: []
     _performDuration: 0
     _cooldownDuration: 0
-    _channel: {fileID: 11400000, guid: a2bb18c2ded749a4e902028c24c166d0, type: 2}
-    _channelBlockers:
-    - {fileID: 11400000, guid: a2bb18c2ded749a4e902028c24c166d0, type: 2}
-    _slotLocation: 1
+    _channel: {fileID: 11400000, guid: 34e49ddc4511a404c9f63aec4466a3a5, type: 2}
+    _channelBlockers: []
+    _slotLocation: 2
     _performOnStart: 0
     _cooldownOnStart: 0
     _repeatWhenCooldownFinishes: 0

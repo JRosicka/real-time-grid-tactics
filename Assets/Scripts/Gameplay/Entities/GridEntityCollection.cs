@@ -175,7 +175,7 @@ namespace Gameplay.Entities {
             int order = entity.EntityData.GetStackOrder();
             
             // Remove
-            _entitiesOffGrid.Add(entity);
+            _entitiesOffGrid.Remove(entity);
 
             // Place
             PositionedGridEntityCollection collectionAtLocation = EntitiesAtLocation(location);

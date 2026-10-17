@@ -142,7 +142,7 @@ namespace Gameplay.Config.Abilities {
         ///
         /// This method can assume that the selector entity can legally select the ability (no cooldown, etc)
         /// </summary>
-        public abstract void SelectAbility(GridEntity selector);
+        public abstract void SelectAbility(GridEntity selector, object selectData);
         
         /// <summary>
         /// Whether the ability is legal to be used with the given parameters (valid target, player has enough money, cooldowns, etc).

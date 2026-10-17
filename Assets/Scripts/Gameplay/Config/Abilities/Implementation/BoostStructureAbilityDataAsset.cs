@@ -27,7 +27,7 @@ namespace Gameplay.Config.Abilities {
         
         public override IAbilityParameters OnStartParameters => new BoostStructureAbilityParameters { Target = null };
 
-        public override void SelectAbility(GridEntity selector) {
+        public override void SelectAbility(GridEntity selector, object selectData) {
             GameManager.Instance.EntitySelectionManager.SelectTargetableAbility(this, selector.Team, null);
             List<Vector2Int> viableTargets = GetViableTargets(selector);
             GridController.UpdateSelectableCells(viableTargets, true, false, selector);

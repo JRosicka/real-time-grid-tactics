@@ -26,7 +26,7 @@ namespace Gameplay.Config.Abilities {
         
         private TeamFogOfWarTracker TeamFogOfWarTracker => GameManager.Instance.FogOfWarManager!.GetLocalTeamTracker();
 
-        public override void SelectAbility(GridEntity selector) {
+        public override void SelectAbility(GridEntity selector, object selectData) {
             GameManager.Instance.EntitySelectionManager.SelectTargetableAbility(this, selector.Team, null);
         }
         

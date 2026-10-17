@@ -38,7 +38,7 @@ namespace Gameplay.UI {
                 GameAudio.Instance.AbilitySelectSound(_abilityData);
             }
 
-            _abilityData.SelectAbility(_selectedEntity);
+            _abilityData.SelectAbility(_selectedEntity, null);
             if (_abilityData is ITargetableAbilityData targetableAbilityData) {
                 GameManager.Instance.SelectionInterface.TooltipView.ToggleForTargetableAbility(targetableAbilityData, this);
                 GameManager.Instance.GridIconDisplayer.DisplayOverCurrentHoveredCell(targetableAbilityData);

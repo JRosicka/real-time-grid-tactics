@@ -171,7 +171,7 @@ namespace Gameplay.UI {
         private static void PerformAutoSelectionAbilities(GridEntity entity) {
             foreach (IAbilityData abilityData in entity.Abilities.Where(a => a.AutoSelect)) {
                 if (abilityData.SelectableForAllPlayers || entity.Team == GameManager.Instance.LocalTeam) {
-                    abilityData.SelectAbility(entity);
+                    abilityData.SelectAbility(entity, null);
                 }
             }
         }

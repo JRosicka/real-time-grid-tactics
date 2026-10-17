@@ -18,7 +18,7 @@ namespace Gameplay.Config.Abilities {
         public override bool CancelableWhileInProgress => false;
         public override bool ManuallyCancelable => false;
 
-        public override void SelectAbility(GridEntity selector) {
+        public override void SelectAbility(GridEntity selector, object selectData) {
             GameManager.Instance.AbilityAssignmentManager.StartPerformingAbility(selector, this, new NullAbilityParameters(), 
                 true, false, false, true); 
         }

@@ -36,19 +36,19 @@ namespace Gameplay.Entities {
             return true;
         }
 
-        public static AbilityLegality CanDropOff(GridEntity carrier, GridEntity passenger) {
-            if (carrier == null || carrier.Location == null || carrier.DeadOrDying) return AbilityLegality.IndefinitelyIllegal;
-            if (passenger == null || passenger.Location != null || passenger.DeadOrDying) return AbilityLegality.IndefinitelyIllegal;   // passenger does not have a location
+        public static bool CanDropOff(GridEntity carrier, GridEntity passenger) {
+            if (carrier == null || carrier.Location == null || carrier.DeadOrDying) return false;
+            if (passenger == null || passenger.Location != null || passenger.DeadOrDying) return false;   // passenger does not have a location
             
             // Carrier must be carrying the passenger
-            if (!carrier.CarriedEntities.Contains(passenger)) return AbilityLegality.IndefinitelyIllegal;
+            if (!carrier.CarriedEntities.Contains(passenger)) return false;
             
-            return AbilityLegality.Legal;
+            return true;
         }
 
         // Server method
         public static bool TryDropOff(GridEntity carrier, GridEntity passenger, Vector2Int location) {
-            if (CanDropOff(carrier, passenger) != AbilityLegality.Legal) return false;
+            if (!CanDropOff(carrier, passenger)) return false;
 
             // The location must be open
             if (!PathfinderService.CanEntityEnterCell(location, passenger.EntityData, passenger.Team)) return false;
@@ -58,7 +58,7 @@ namespace Gameplay.Entities {
 
             carrier.DropEntity(passenger);
             
-            // TODO
+            GameManager.Instance.CommandManager.PutEntityBackOnGrid(passenger, location);
 
             return true;
         }

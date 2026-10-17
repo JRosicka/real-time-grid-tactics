@@ -107,7 +107,7 @@ namespace Gameplay.Config.Abilities {
         /// Respond to the user input intending to use this ability. Do not actually perform the ability (unless there is
         /// nothing else to do first) - rather, handle any client-side stuff by sending events to prompt for further input. 
         /// </summary>
-        void SelectAbility(GridEntity selector);
+        void SelectAbility(GridEntity selector, object selectData);
 
         /// <summary>
         /// Whether the ability is legal to be used with the given parameters (valid target, player has enough money, cooldowns, etc).

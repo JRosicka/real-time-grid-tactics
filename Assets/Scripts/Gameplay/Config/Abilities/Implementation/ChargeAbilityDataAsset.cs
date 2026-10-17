@@ -44,7 +44,7 @@ namespace Gameplay.Config.Abilities {
                 : "";
         }
 
-        public override void SelectAbility(GridEntity selector) {
+        public override void SelectAbility(GridEntity selector, object selectData) {
             EntitySelectionManager.SelectTargetableAbility(this, selector.Team, null);
             Vector2Int? currentlyHoveredCell = GameManager.Instance.GridInputController.CurrentHoveredCell;
             UpdateChargePathVisual(selector, currentlyHoveredCell);

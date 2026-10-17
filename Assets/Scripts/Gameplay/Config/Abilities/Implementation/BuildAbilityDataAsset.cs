@@ -39,7 +39,7 @@ namespace Gameplay.Config.Abilities {
         public override bool ManuallyCancelable => true;
         public override bool Targeted => Targetable;
 
-        public override void SelectAbility(GridEntity selector) {
+        public override void SelectAbility(GridEntity selector, object selectData) {
             GameManager.Instance.SelectionInterface.SetUpBuildSelection(this);
         }
         

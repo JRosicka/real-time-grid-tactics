@@ -26,7 +26,7 @@ namespace Gameplay.Config.Abilities {
         public bool RallyingUnitsAreAttackers;
         public bool RallyingUnitsCanTargetAttack;
 
-        public override void SelectAbility(GridEntity selector) {
+        public override void SelectAbility(GridEntity selector, object selectData) {
             // Nothing to do
         }
         
