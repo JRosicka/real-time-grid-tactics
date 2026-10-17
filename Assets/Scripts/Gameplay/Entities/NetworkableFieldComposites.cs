@@ -1,8 +1,31 @@
 using System;
 using System.Collections.Generic;
 using Mirror;
+using UnityEngine;
 
 namespace Gameplay.Entities {
+    [Serializable]
+    public class NetworkableVector2IntegerValue : INetworkableFieldValue {
+        public Vector2Int? Value;
+        public NetworkableVector2IntegerValue(Vector2Int? value) {
+            Value = value;
+        }
+
+        public string ID => nameof(NetworkableVector2IntegerValue);
+
+        public void SerializeValue(NetworkWriter writer) {
+            writer.WriteBool(Value != null);
+            if (Value != null) {
+                writer.WriteVector2Int(Value.Value);
+            }
+        }
+
+        public static NetworkableVector2IntegerValue Deserialize(NetworkReader reader) {
+            bool valueIsNotNull = reader.ReadBool();
+            return new NetworkableVector2IntegerValue(valueIsNotNull ? reader.ReadVector2Int() : null);
+        }
+    }
+
     [Serializable]
     public class NetworkableBoostRegistrationsValue : INetworkableFieldValue {
         public BoostRegistrations Value;

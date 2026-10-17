@@ -173,7 +173,7 @@ namespace Gameplay.Entities {
         private void Awake() {
             CurrentResources = new NetworkableField(this, nameof(CurrentResources), new ResourceAmount());
             TargetLocationLogic = new NetworkableField(this, nameof(TargetLocationLogic), new TargetLocationLogic());
-            _location = new NetworkableField(this, nameof(_location), new NetworkableVector2IntegerValue(new Vector2Int(0, 0)));
+            _location = new NetworkableField(this, nameof(_location), new NetworkableVector2IntegerValue(null));
             LastAttackedEntity = new NetworkableField(this, nameof(LastAttackedEntity), new NetworkableGridEntityValue(null));
             _killCountField = new NetworkableField(this, nameof(_killCountField), new NetworkableIntegerValue(0));
             _incomeRateField = new NetworkableField(this, nameof(_incomeRateField), new NetworkableIntegerValue(0));
@@ -617,7 +617,7 @@ namespace Gameplay.Entities {
         
         // Triggered on server
         public void UpdateEntityLocation(Vector2Int? newLocation) {
-            _location.UpdateValue(newLocation == null ? null : new NetworkableVector2IntegerValue(newLocation.Value));
+            _location.UpdateValue(new NetworkableVector2IntegerValue(newLocation));
         }
         
         // Triggered on server

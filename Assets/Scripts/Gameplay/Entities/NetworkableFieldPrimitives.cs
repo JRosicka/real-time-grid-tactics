@@ -56,24 +56,6 @@ namespace Gameplay.Entities {
             return new NetworkableFloatValue(reader.ReadFloat());
         }
     }
-
-    [Serializable]
-    public class NetworkableVector2IntegerValue : INetworkableFieldValue {
-        public Vector2Int Value;
-        public NetworkableVector2IntegerValue(Vector2Int value) {
-            Value = value;
-        }
-
-        public string ID => nameof(NetworkableVector2IntegerValue);
-
-        public void SerializeValue(NetworkWriter writer) {
-            writer.WriteVector2Int(Value);
-        }
-
-        public static NetworkableVector2IntegerValue Deserialize(NetworkReader reader) {
-            return new NetworkableVector2IntegerValue(reader.ReadVector2Int());
-        }
-    }
     
     [Serializable]
     public class NetworkableGridEntityValue : INetworkableFieldValue {
