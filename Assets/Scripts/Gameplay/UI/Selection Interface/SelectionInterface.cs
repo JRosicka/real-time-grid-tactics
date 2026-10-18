@@ -37,6 +37,8 @@ namespace Gameplay.UI {
         [SerializeField] private TMP_Text _killCountField;
         [SerializeField] private GameObject _incomeRateRow;
         [SerializeField] private TMP_Text _incomeRateField;
+        [SerializeField] private GameObject _armorRow;
+        [SerializeField] private TMP_Text _armorField;
 
         [SerializeField] private HoverableInfoIcon _defenseHoverableInfoIcon;
         [SerializeField] private HoverableInfoIcon _attackHoverableInfoIcon;
@@ -161,6 +163,8 @@ namespace Gameplay.UI {
             _displayedSelectable.SetUpBuildQueueView(_buildQueueForStructure, _buildQueueForWorker);
             _displayedSelectable.SetUpKillCountView(_killCountRow, _killCountField);
             _displayedSelectable.SetUpIncomeRateView(_incomeRateRow, _incomeRateField);
+            _displayedSelectable.SetUpArmorView(_armorRow, _armorField);
+            
             _displayedSelectable.SetUpHoverableInfo(_defenseHoverableInfoIcon, _attackHoverableInfoIcon, _moveHoverableInfoIcon, _healHoverableInfoIcon);
         }
         

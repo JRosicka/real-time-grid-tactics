@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Gameplay.Config;
@@ -24,6 +25,7 @@ namespace Gameplay.UI {
             entity.KillCountChanged += KillCountChanged;
             entity.IncomeRateChanged += IncomeRateChanged;
             entity.FogOfWarHiddenStatusChangedEvent += FoWChanged;
+            entity.ArmorField.ValueChanged += ArmorChanged;
             
             IGamePlayer player = GameManager.Instance.GetPlayerForTeam(entity);
             if (player != null) {
@@ -183,6 +185,21 @@ namespace Gameplay.UI {
             }
         }
 
+        private GameObject _armorRow;
+        private TMP_Text _armorField;
+        public void SetUpArmorView(GameObject armorRow, TMP_Text armorField) {
+            _armorRow = armorRow;
+            _armorField = armorField;
+            
+            if (Entity.Armor > 0) {
+                armorRow.SetActive(true);
+                armorField.text = $"{Entity.Armor}";
+            } else {
+                armorRow.SetActive(false);
+                armorField.text = string.Empty;
+            }
+        }
+
         private HoverableInfoIcon _defenseHoverableInfoIcon;
         private HoverableInfoIcon _attackHoverableInfoIcon;
         private HoverableInfoIcon _moveHoverableInfoIcon;
@@ -228,6 +245,7 @@ namespace Gameplay.UI {
             Entity.KillCountChanged -= KillCountChanged;
             Entity.IncomeRateChanged -= IncomeRateChanged;
             Entity.FogOfWarHiddenStatusChangedEvent -= FoWChanged;
+            Entity.ArmorField.ValueChanged -= ArmorChanged;
             IGamePlayer player = GameManager.Instance.GetPlayerForTeam(Entity);
             if (player != null) {
                 player.OwnedPurchasablesController.OwnedPurchasablesChangedEvent -= OnOwnedPurchasablesChanged;
@@ -267,36 +285,53 @@ namespace Gameplay.UI {
             SetUpResourceView(_resourceRow, _resourceLabel, _resourceField);
         }
 
+        private void ArmorChanged(INetworkableFieldValue oldValue, INetworkableFieldValue newValue, string metadata) {
+            SetUpArmorView(_armorRow, _armorField);
+        }
+
         #region Tooltips
-        
+
+        private const string DefenseFormatArmor = "Receives {0} less damage from attacks due to armor.";
         private const string DefenseFormatStructure = "{0} occupying this structure receive {1} less damage from attacks.";
         private const string DefenseFormatUnit = "Receives {0} less damage from attacks due to friendly structure.";
         private const string DefenseFormatTerrain = "Receives {0} less damage from attacks due to terrain.";
         private string GetDefenseTooltip() {
-            if (!Entity.EntityData.Attackable) return "";
+            if (!Entity.EntityData.Attackable) return string.Empty;
+
+            string tooltip = string.Empty;
+            
+            // Armor bonus
+            int armorBonus = Entity.Armor;
+            if (armorBonus > 0) {
+                tooltip = string.Format(DefenseFormatArmor, armorBonus);
+            }
             
             int defenseModifier = Entity.GetStructureDefenseModifier();
             if (defenseModifier != 0) {
+                if (tooltip != string.Empty) tooltip += "\n";
+
                 // Defense modifier from structure (friendly or itself)
                 if (Entity.EntityData.IsStructure) {
                     string entitiesReceivingDefense = "all units";
                     if (Entity.EntityData.SharedUnitDamageTakenModifierTags.Count > 0) {
                         entitiesReceivingDefense = GetStringListForEntityTags(Entity.EntityData.SharedUnitDamageTakenModifierTags);
                     }
-                    return string.Format(DefenseFormatStructure, entitiesReceivingDefense, defenseModifier).FirstCharacterToUpper();
+                    tooltip += string.Format(DefenseFormatStructure, entitiesReceivingDefense, defenseModifier).FirstCharacterToUpper();
+                } else {
+                    tooltip += string.Format(DefenseFormatUnit, defenseModifier);
                 }
-            
-                return string.Format(DefenseFormatUnit, defenseModifier);
             }
             
             defenseModifier = Entity.GetTerrainDefenseModifier();
             // ReSharper disable once CompareOfFloatsByEqualityOperator
             if (defenseModifier != 0) {
+                if (tooltip != string.Empty) tooltip += "\n";
+                
                 // Defense modifier from terrain
-                return string.Format(DefenseFormatTerrain, defenseModifier);
+                tooltip += string.Format(DefenseFormatTerrain, defenseModifier);
             }
             
-            return "";
+            return tooltip;
         }
         
         private const string AttackFormat = "Deals {0} additional damage to {1}.";

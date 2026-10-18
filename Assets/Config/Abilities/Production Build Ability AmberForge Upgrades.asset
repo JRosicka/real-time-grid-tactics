@@ -64,3 +64,5 @@ MonoBehaviour:
       selectionKey: a
     - data: {fileID: 11400000, guid: 9ab6d58fde8294daa9c3c7a99e68cb87, type: 2}
       selectionKey: s
+    - data: {fileID: 11400000, guid: 765318da089874bb4ae8751658085900, type: 2}
+      selectionKey: d

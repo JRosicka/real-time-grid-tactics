@@ -79,6 +79,8 @@ namespace Gameplay.Entities {
         [NotNull] public List<GridEntity> CarriedEntities => ((NetworkableGridEntityListValue)_carriedEntitiesField.Value)?.Value ?? new List<GridEntity>();
         private NetworkableField _carryCapacityField;
         public int CarryCapacity => ((NetworkableIntegerValue)_carryCapacityField.Value)?.Value ?? 0;
+        public NetworkableField ArmorField;
+        public int Armor => ((NetworkableIntegerValue)ArmorField.Value)?.Value ?? 0;
 
         // Abilities
         /// <summary>
@@ -185,6 +187,7 @@ namespace Gameplay.Entities {
             _activeBoostsField = new NetworkableField(this, nameof(_activeBoostsField), new NetworkableBoostRegistrationsValue(new BoostRegistrations()));
             _carriedEntitiesField = new NetworkableField(this, nameof(_carriedEntitiesField), new NetworkableGridEntityListValue(new List<GridEntity>()));
             _carryCapacityField = new NetworkableField(this, nameof(_carryCapacityField), new NetworkableIntegerValue(0));
+            ArmorField = new NetworkableField(this, nameof(ArmorField), new NetworkableIntegerValue(0));
         }
 
         /// <summary>
@@ -217,6 +220,9 @@ namespace Gameplay.Entities {
             LastAttackedEntity.UpdateValue(new NetworkableGridEntityValue(null));
             if (data.BaseCarryCapacity > 0) {
                 _carryCapacityField.UpdateValue(new NetworkableIntegerValue(data.BaseCarryCapacity));
+            }
+            if (data.ArmorBonus > 0) {
+                ArmorField.UpdateValue(new NetworkableIntegerValue(data.ArmorBonus));
             }
             
             // Set up death actions
@@ -738,8 +744,12 @@ namespace Gameplay.Entities {
             _holdingPositionNetworkableField.UpdateValue(new NetworkableBoolValue(newHoldingPosition));
         }
         
-        public void SetCarryCapacity(int newCarryCapacity) {
-            _carryCapacityField.UpdateValue(new NetworkableIntegerValue(newCarryCapacity));
+        public void UpdateCarryCapacity(int carryCapacityChange) {
+            _carryCapacityField.UpdateValue(new NetworkableIntegerValue(CarryCapacity + carryCapacityChange));
+        }
+
+        public void UpdateArmor(int armorChange) {
+            ArmorField.UpdateValue(new NetworkableIntegerValue(Armor + armorChange));
         }
 
         /// <summary>

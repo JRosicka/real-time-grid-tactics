@@ -30,6 +30,8 @@ namespace Gameplay.UI {
         void SetUpBuildQueueView(BuildQueueView buildQueueForStructure, BuildQueueView buildQueueForWorker);
         void SetUpKillCountView(GameObject killCountRow, TMP_Text killCountField);
         void SetUpIncomeRateView(GameObject incomeRateRow, TMP_Text incomeRateField);
+        void SetUpArmorView(GameObject armorRow, TMP_Text armorField);
+        
         void SetUpHoverableInfo(HoverableInfoIcon defenseHoverableInfoIcon, HoverableInfoIcon attackHoverableInfoIcon, HoverableInfoIcon moveHoverableInfoIcon, HoverableInfoIcon healHoverableInfoIcon);
 
         void UnregisterListeners();

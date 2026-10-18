@@ -37,6 +37,7 @@ namespace Gameplay.Config {
         
         [Header("Stats")] 
         public int HP;
+        public int ArmorBonus;
         public int Range;
         public int Damage;
         public int BonusDamage;

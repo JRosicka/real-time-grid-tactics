@@ -82,6 +82,8 @@ namespace Gameplay.Entities {
             if (!EntityData.IsStructure) {
                 damage -= _gridEntity.GetStructureDefenseModifier();
             }
+
+            damage -= _gridEntity.Armor;
             
             // Minimum of 1 damage
             damage = Mathf.Max(1, damage);
