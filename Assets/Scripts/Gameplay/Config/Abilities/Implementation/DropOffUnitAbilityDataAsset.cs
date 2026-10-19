@@ -22,11 +22,9 @@ namespace Gameplay.Config.Abilities {
         public override IAbilityParameters OnStartParameters => new DropOffUnitAbilityParameters { Target = null, DropOffLocation = default };
 
         public override void SelectAbility(GridEntity selector, object selectData) {
-            // TODO pass in the target entity and send that as data when clicking on a specific carried entity
-            GridEntity carriedEntity = null;
-            if (selectData == null) {
-                carriedEntity = selector.CarriedEntities.FirstOrDefault();
-            }
+            GridEntity carriedEntity = selectData == null 
+                ? selector.CarriedEntities.FirstOrDefault() 
+                : (GridEntity)selectData;
             GameManager.Instance.EntitySelectionManager.SelectTargetableAbility(this, selector.Team, carriedEntity);
         }
         

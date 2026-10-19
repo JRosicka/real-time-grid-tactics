@@ -75,8 +75,8 @@ namespace Gameplay.Entities {
         private bool LockedFromFriendlyUnitsEntering => ((NetworkableBoolValue)_lockedFromFriendlyUnitsEnteringField?.Value)?.Value ?? false;
         private NetworkableField _activeBoostsField;
         private BoostRegistrations ActiveBoosts => ((NetworkableBoostRegistrationsValue)_activeBoostsField?.Value)?.Value ?? new BoostRegistrations();
-        private NetworkableField _carriedEntitiesField;
-        [NotNull] public List<GridEntity> CarriedEntities => ((NetworkableGridEntityListValue)_carriedEntitiesField.Value)?.Value ?? new List<GridEntity>();
+        public NetworkableField CarriedEntitiesField;
+        [NotNull] public List<GridEntity> CarriedEntities => ((NetworkableGridEntityListValue)CarriedEntitiesField.Value)?.Value ?? new List<GridEntity>();
         private NetworkableField _carryCapacityField;
         public int CarryCapacity => ((NetworkableIntegerValue)_carryCapacityField.Value)?.Value ?? 0;
         public NetworkableField ArmorField;
@@ -185,7 +185,7 @@ namespace Gameplay.Entities {
             _holdingPositionNetworkableField = new NetworkableField(this, nameof(_holdingPositionNetworkableField), new NetworkableBoolValue(false));
             _lockedFromFriendlyUnitsEnteringField = new NetworkableField(this, nameof(_lockedFromFriendlyUnitsEnteringField), new NetworkableBoolValue(false));
             _activeBoostsField = new NetworkableField(this, nameof(_activeBoostsField), new NetworkableBoostRegistrationsValue(new BoostRegistrations()));
-            _carriedEntitiesField = new NetworkableField(this, nameof(_carriedEntitiesField), new NetworkableGridEntityListValue(new List<GridEntity>()));
+            CarriedEntitiesField = new NetworkableField(this, nameof(CarriedEntitiesField), new NetworkableGridEntityListValue(new List<GridEntity>()));
             _carryCapacityField = new NetworkableField(this, nameof(_carryCapacityField), new NetworkableIntegerValue(0));
             ArmorField = new NetworkableField(this, nameof(ArmorField), new NetworkableIntegerValue(0));
         }
@@ -758,7 +758,7 @@ namespace Gameplay.Entities {
         public void PickUpEntity(GridEntity entity) {
             List<GridEntity> entities = CarriedEntities;
             entities.Add(entity);
-            _carriedEntitiesField.UpdateValue(new NetworkableGridEntityListValue(entities));
+            CarriedEntitiesField.UpdateValue(new NetworkableGridEntityListValue(entities));
         }
 
         /// <summary>
@@ -767,7 +767,7 @@ namespace Gameplay.Entities {
         public void DropEntity(GridEntity entity) {
             List<GridEntity> entities = CarriedEntities;
             entities.Remove(entity);
-            _carriedEntitiesField.UpdateValue(new NetworkableGridEntityListValue(entities));
+            CarriedEntitiesField.UpdateValue(new NetworkableGridEntityListValue(entities));
         }
 
         public float MovementTimeFromAttacking => EntityData.AddedMovementTimeFromAttacking + AdditionalMovementTimeFromAttacking;

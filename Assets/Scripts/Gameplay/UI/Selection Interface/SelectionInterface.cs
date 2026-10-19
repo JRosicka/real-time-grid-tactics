@@ -49,6 +49,7 @@ namespace Gameplay.UI {
         [SerializeField] private BuildQueueView _buildQueueForWorker;
         
         [SerializeField] private AbilityInterface AbilityInterface;
+        [SerializeField] private CarriedUnitsInterface _carriedUnitsInterface;
 
         private ISelectableObjectLogic _displayedSelectable;
 
@@ -56,6 +57,7 @@ namespace Gameplay.UI {
         
         public void Initialize() {
             ToggleViews(false, null);
+            _carriedUnitsInterface.Initialize();
         }
 
         /// <summary>
@@ -72,6 +74,7 @@ namespace Gameplay.UI {
             UpdateEntityInfo();
             
             AbilityInterface.SetUpForEntity(entity);
+            _carriedUnitsInterface.SetUpForEntity(entity);
             
             ToggleViews(true, selectedEntity);
             
@@ -124,6 +127,7 @@ namespace Gameplay.UI {
             
             // Hide everything
             ToggleViews(false, null);
+            _carriedUnitsInterface.HideInterface();
             
             DeselectActiveAbility();
         }
