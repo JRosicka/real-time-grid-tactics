@@ -41,8 +41,8 @@ namespace Gameplay.UI {
             
             PlayerColorData colorData = GameManager.Instance.GetPlayerForTeam(gridEntity)?.ColorData;
             
-            EntityIcon.sprite = gridEntity.EntityData.BaseSprite;
-            EntityColorsIcon.sprite = gridEntity.EntityData.TeamColorSprite;
+            EntityIcon.sprite = gridEntity.EntityData.BaseSpriteIconOverride != null ? gridEntity.EntityData.BaseSpriteIconOverride : gridEntity.EntityData.BaseSprite;
+            EntityColorsIcon.sprite = gridEntity.EntityData.TeamColorSpriteIconOverride != null ? gridEntity.EntityData.TeamColorSpriteIconOverride : gridEntity.EntityData.TeamColorSprite;
             EntityColorsIcon.color = colorData!.TeamColor;
 
             float scale = gridEntity.EntityData.IconScaleInSelectionInterface;
