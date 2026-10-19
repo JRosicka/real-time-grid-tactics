@@ -101,10 +101,11 @@ public abstract class AbstractCommandManager : NetworkBehaviour, ICommandManager
         entity.BuildQueue.CancelAllBuilds(GameTeam.Player2);
         GameManager.Instance.AbilityAssignmentManager.CancelAllAbilities(entity, false);
         
+        Vector2Int previousLocation = entity.Location!.Value;
         _entitiesOnGrid.RemoveEntityFromGrid(entity);
         // We need to update the entity location first so that EntityCollectionChanged listeners get the updated value for the entity location
         entity.UpdateEntityLocation(null);
-        SyncEntityCollection(entity, GridEntityCollectionUpdate.RemoveFromGrid, default, default);
+        SyncEntityCollection(entity, GridEntityCollectionUpdate.RemoveFromGrid, previousLocation, default);
         // Now that the entity collection is synced, we can let listeners know that the entity was removed 
         entity.TriggerEntityMovedEvent();
     }
