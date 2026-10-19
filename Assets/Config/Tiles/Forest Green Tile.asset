@@ -41,7 +41,7 @@ MonoBehaviour:
   SpeedModifierTags:
   - Tag: 3
     SlowFactor: 1.667
-  InaccessibleTags: 0100000002000000
+  InaccessibleTags: 010000000200000009000000
   InaccessibleEntities: []
   _armorBonus: 2
   _defenseBoostTags: 03000000

@@ -276,6 +276,8 @@ MonoBehaviour:
     SlowFactor: 0.8
   - Tag: 3
     SlowFactor: 0.8
+  - Tag: 9
+    SlowFactor: 0.6
   InaccessibleTags: 
   InaccessibleEntities: []
   _armorBonus: 0
