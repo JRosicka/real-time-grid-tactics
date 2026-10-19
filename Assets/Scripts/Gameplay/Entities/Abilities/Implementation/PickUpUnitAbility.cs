@@ -32,11 +32,10 @@ namespace Gameplay.Entities.Abilities {
         }
         
         protected override (bool, AbilityResult) DoAbilityEffect() {
-            if (!Performer
-                || Performer.Location == null
-                || !AbilityParameters.Target 
-                || AbilityParameters.Target.Location == null 
-                || AbilityParameters.Target.DeadOrDying) {
+            if (!Performer || Performer.Location == null || !AbilityParameters.Target || AbilityParameters.Target.Location == null || AbilityParameters.Target.DeadOrDying) {
+                if (Performer && Performer.Location != null) {
+                    Performer.SetTargetLocation(Performer.Location.Value, null, PathVisualizer.PathType.Move);
+                }
                 return (false, AbilityResult.CompletedWithoutEffect);
             }
             
@@ -46,6 +45,7 @@ namespace Gameplay.Entities.Abilities {
             if (CellDistanceLogic.Neighbors(Performer.Location.Value).Contains(AbilityParameters.Target.Location.Value)) {
                 if (EntityPickUpLogic.TryPickUp(Performer, AbilityParameters.Target)) {
                     // Success
+                    Performer.SetTargetLocation(Performer.Location.Value, null, PathVisualizer.PathType.Move);
                     return (true, AbilityResult.CompletedWithEffect);
                 }
                 

@@ -52,7 +52,7 @@ namespace Gameplay.Entities {
         public readonly List<PositionedGridEntityCollection> Entities = new List<PositionedGridEntityCollection>();
         
         // Entities that are not actually on the grid, but still registered (i.e. being carried by something)
-        private readonly List<GridEntity> _entitiesOffGrid = new List<GridEntity>();
+        public readonly List<GridEntity> EntitiesOffGrid = new List<GridEntity>();
 
         /// <summary>
         /// Event that triggers when an entity is registered or unregistered at a particular location.
@@ -131,7 +131,7 @@ namespace Gameplay.Entities {
 
         public void RemoveEntityFromGrid(GridEntity entity) {
             if (entity == null || entity.DeadOrDying) return;
-            if (_entitiesOffGrid.Contains(entity)) {
+            if (EntitiesOffGrid.Contains(entity)) {
                 Debug.LogError("Attempted to remove an entity that is already off the grid");
                 return;
             }
@@ -151,7 +151,7 @@ namespace Gameplay.Entities {
             }
             
             // Add to off-grid collection
-            _entitiesOffGrid.Add(entity);
+            EntitiesOffGrid.Add(entity);
             
             // Send the event with whatever is left over here, if anything
             ClearLocationsWithFriendlyEntitiesCache();
@@ -163,7 +163,7 @@ namespace Gameplay.Entities {
         /// </summary>
         public void PutEntityBackOnGrid(GridEntity entity, Vector2Int location) {
             if (entity == null || entity.DeadOrDying) return;
-            if (!_entitiesOffGrid.Contains(entity)) {
+            if (!EntitiesOffGrid.Contains(entity)) {
                 Debug.LogError("Attempted to place an entity that is not off the grid");
                 return;
             }
@@ -175,7 +175,7 @@ namespace Gameplay.Entities {
             int order = entity.EntityData.GetStackOrder();
             
             // Remove
-            _entitiesOffGrid.Remove(entity);
+            EntitiesOffGrid.Remove(entity);
 
             // Place
             PositionedGridEntityCollection collectionAtLocation = EntitiesAtLocation(location);
