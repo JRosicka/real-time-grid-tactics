@@ -48,7 +48,10 @@ namespace Gameplay.Config.Abilities {
             GridEntity target = (GridEntity)targetData;
             if (target == null) return false;
             
-            return EntityPickUpLogic.CanDropOff(selectedEntity, target);
+            if (!EntityPickUpLogic.CanDropOff(selectedEntity, target)) return false;
+            if (!PathfinderService.CanEntityEnterCell(cellPosition, target.EntityData, target.Team)) return false;
+            if (!target.CanPathFindToTile(GameManager.Instance.GridController.GridData.GetCell(cellPosition).Tile)) return false;
+            return true;
         }
         
         public void DoTargetableAbility(Vector2Int cellPosition, GridEntity selectedEntity, GameTeam selectorTeam, object targetData) {
