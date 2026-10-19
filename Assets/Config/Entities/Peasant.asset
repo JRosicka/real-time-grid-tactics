@@ -24,6 +24,7 @@ MonoBehaviour:
   BaseSprite: {fileID: 21300000, guid: ed4ee885f53e648d793562a121ad09c0, type: 3}
   TeamColorSprite: {fileID: 21300000, guid: 567c06e63fed747a1a51b0130547fc22, type: 3}
   BaseSpriteIconOverride: {fileID: 0}
+  TeamColorSpriteIconOverride: {fileID: 0}
   IconScaleInSelectionInterface: 1.4
   _viewPrefab: {fileID: 7504026570216467247, guid: 686dc4cbc73b78143bd1b59d2ee8fed0, type: 3}
   SelectionSFX: {fileID: 11400000, guid: 8355d0a86edc34249859d2b4bdfbe8d6, type: 2}
@@ -32,6 +33,7 @@ MonoBehaviour:
   AudioPlacementPrefix: Peasant
   EntityFinishedBuildingSFX: {fileID: 0}
   HP: 26
+  ArmorBonus: 0
   Range: 1
   Damage: 2
   BonusDamage: 0
@@ -57,17 +59,22 @@ MonoBehaviour:
   CanBuildFriendlyStructureOnTop: 0
   Attackable: 1
   CanBlockMovement: 1
+  SelectableInFoW: 0
+  AlwaysShowWhenHiddenByFoW: 0
+  FoWHidesResourceCount: 1
   AttackByDefault: 1
+  CanAttack: 1
   IsResourceExtractor: 0
   ResourceThatThisCanExtract: {fileID: 0}
   AssociatedResource: 0
   EntityIcon: {fileID: 0}
-  MovementAndAttackUI: 1
+  MovementUI: 1
+  AttackUI: 1
   DisplaySelectionOutline: 1
   BuildQueueSize: 5
   NeverShowBuildQueue: 0
   ControllableByAllPlayers: 0
-  EligibleStructureLocations: []
+  EligibleStructureLocations: 
   SharedUnitArmorBonus: 0
   SharedUnitDamageTakenModifierTags: 
   CanRally: 0
@@ -75,4 +82,7 @@ MonoBehaviour:
   StartingResourceSet:
     Type: 0
     Amount: 0
+  _highlightBuildableCells: 0
+  Boostable: 0
+  BaseCarryCapacity: 0
   DeathActions: []

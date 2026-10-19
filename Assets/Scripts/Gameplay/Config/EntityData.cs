@@ -78,7 +78,8 @@ namespace Gameplay.Config {
         public EntityData ResourceThatThisCanExtract;
         public ResourceType AssociatedResource;
         public Sprite EntityIcon;
-        public bool MovementAndAttackUI;
+        [FormerlySerializedAs("MovementAndAttackUI")] public bool MovementUI;
+        public bool AttackUI;
         public bool DisplaySelectionOutline = true;
         public bool ShowSpawnAnimation => !IsStructure;
 

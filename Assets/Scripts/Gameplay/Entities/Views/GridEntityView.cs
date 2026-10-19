@@ -30,7 +30,8 @@ namespace Gameplay.Entities {
         [SerializeField] private Image _teamColorImage;
         [SerializeField] private List<Image> _additionalTeamColorImages;
         [SerializeField] private GridEntityParticularView _particularView;
-        [SerializeField] private GameObject _bottomUISection;
+        [SerializeField] private GameObject _movementUISection;
+        [SerializeField] private GameObject _attackUISection;
         [SerializeField] private AbilityTimerFill _moveTimerFill;
         [SerializeField] private AbilityTimerFill _attackTimerFill;
         [SerializeField] private Transform _buildTimerLocation;
@@ -151,7 +152,8 @@ namespace Gameplay.Entities {
                 _unitUIFrame.ForEach(g => g.SetActive(hasHP));
                 _structureUIFrame.SetActive(false);
             }
-            _bottomUISection.SetActive(entity.EntityData.MovementAndAttackUI);
+            _movementUISection.SetActive(entity.EntityData.MovementUI);
+            _attackUISection.SetActive(entity.EntityData.AttackUI);
 
             _particularView.Initialize(entity);
 

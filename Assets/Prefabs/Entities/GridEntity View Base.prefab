@@ -829,8 +829,10 @@ MonoBehaviour:
   _fowCanvasGroup: {fileID: 2722830224597267211}
   _mainImage: {fileID: 133772266710080777}
   _teamColorImage: {fileID: 6941450737904846212}
+  _additionalTeamColorImages: []
   _particularView: {fileID: 0}
-  _bottomUISection: {fileID: 328665122645140225}
+  _movementUISection: {fileID: 5193744382658690052}
+  _attackUISection: {fileID: 5090515305287165812}
   _moveTimerFill: {fileID: 4920203166991295456}
   _attackTimerFill: {fileID: 8950056860784553850}
   _buildTimerLocation: {fileID: 3854032831165729420}
