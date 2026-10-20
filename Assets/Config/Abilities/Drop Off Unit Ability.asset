@@ -14,20 +14,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Gameplay.Config.Abilities.DropOffUnitAbilityDataAsset
   Data:
     _contentResourceID: Drop Off Unit Ability
-    _id: 
-    _description: 
-    _icon: {fileID: 0}
+    _id: Drop Off
+    _description: Drop off a carried unit.
+    _icon: {fileID: 21300000, guid: 402bbcd3976d1db4a84cca1b1207cd23, type: 3}
     _iconScaleInSelectionInterface: 1
     _overrideIconForGrid: {fileID: 0}
     _flipGridIcon: 0
-    _gridIconColor: {r: 0, g: 0, b: 0, a: 0}
-    _slotSprites: {fileID: 11400000, guid: d0d738e1fc6aa4d44bf07394a33af6b7, type: 2}
+    _gridIconColor: {r: 1, g: 1, b: 1, a: 1}
+    _slotSprites: {fileID: 11400000, guid: b6dc2ea2ecec99b49a269017e51ecd1b, type: 2}
     _timerView: {fileID: 0}
     _requirements: []
     _performDuration: 0
     _cooldownDuration: 0
     _channel: {fileID: 11400000, guid: 34e49ddc4511a404c9f63aec4466a3a5, type: 2}
-    _channelBlockers: []
+    _channelBlockers:
+    - {fileID: 11400000, guid: 34e49ddc4511a404c9f63aec4466a3a5, type: 2}
     _slotLocation: 2
     _performOnStart: 0
     _cooldownOnStart: 0

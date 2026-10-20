@@ -16,12 +16,12 @@ MonoBehaviour:
     _contentResourceID: Pick Up Unit Ability
     _id: Pick Up
     _description: Pick up a friendly unit.
-    _icon: {fileID: 21300000, guid: dcdb6563c02b6bf43b698eea6b840db7, type: 3}
+    _icon: {fileID: 21300000, guid: 3f4a3808cfcee524ea423ee5755eea6a, type: 3}
     _iconScaleInSelectionInterface: 1
     _overrideIconForGrid: {fileID: 0}
     _flipGridIcon: 0
-    _gridIconColor: {r: 0, g: 0, b: 0, a: 0}
-    _slotSprites: {fileID: 11400000, guid: d0d738e1fc6aa4d44bf07394a33af6b7, type: 2}
+    _gridIconColor: {r: 1, g: 1, b: 1, a: 1}
+    _slotSprites: {fileID: 11400000, guid: b6dc2ea2ecec99b49a269017e51ecd1b, type: 2}
     _timerView: {fileID: 0}
     _requirements: []
     _performDuration: 0
