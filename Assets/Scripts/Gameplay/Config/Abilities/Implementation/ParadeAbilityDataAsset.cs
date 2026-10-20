@@ -23,7 +23,11 @@ namespace Gameplay.Config.Abilities {
         public override void SelectAbility(GridEntity selector, object selectData) {
             GameManager.Instance.EntitySelectionManager.SelectTargetableAbility(this, selector.Team, null);
         }
-        
+
+        public override bool TryUseAbilityAutomatically(GridEntity selector, GridEntity target, GridEntity.TargetType targetType, Vector2Int targetCell) {
+            throw new NotImplementedException();
+        }
+
         protected override AbilityLegality AbilityLegalImpl(ParadeAbilityParameters parameters, GridEntity performer, GameTeam team, out string failureReason) {
             failureReason = null;
             return AbilityLegalityAtResourceCollector(performer, parameters.Target);

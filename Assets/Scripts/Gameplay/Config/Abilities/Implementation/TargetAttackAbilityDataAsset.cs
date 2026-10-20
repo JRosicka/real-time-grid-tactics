@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Audio;
 using Gameplay.Entities;
 using Gameplay.Entities.Abilities;
 using Gameplay.Grid;
@@ -29,7 +30,22 @@ namespace Gameplay.Config.Abilities {
         public override void SelectAbility(GridEntity selector, object selectData) {
             GameManager.Instance.EntitySelectionManager.SelectTargetableAbility(this, selector.Team, null);
         }
-        
+
+        public override bool TryUseAbilityAutomatically(GridEntity selector, GridEntity target, GridEntity.TargetType targetType, Vector2Int targetCell) {
+            if (targetType != GridEntity.TargetType.Attackable) {
+                return false;
+            }
+
+            if (GameManager.Instance.AbilityAssignmentManager.StartPerformingAbility(selector, this, new TargetAttackAbilityParameters() {
+                    Target = target, 
+                    LastKnownLocation = targetCell
+                }, true, true, true, true)) {
+                GameAudio.Instance.AbilityTargetedSound(this);
+                selector.SetTargetLocation(targetCell, target, PathVisualizer.PathType.TargetAttack);
+            }
+            return true;
+        }
+
         protected override AbilityLegality AbilityLegalImpl(TargetAttackAbilityParameters parameters, GridEntity entity, GameTeam team, out string failureReason) {
             failureReason = null;
             return CanAttackTarget(parameters.Target, entity);

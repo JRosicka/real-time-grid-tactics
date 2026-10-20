@@ -502,7 +502,7 @@ namespace Gameplay.Entities {
         #region Abilities
         
         [CanBeNull]
-        public TAbilityData GetAbilityData<TAbilityData>() {
+        public TAbilityData GetAbilityData<TAbilityData>() where TAbilityData : IAbilityData {
             return (TAbilityData)EntityData.Abilities.FirstOrDefault(a => a.Content.GetType() == typeof(TAbilityData))?.Content;
         }
 
@@ -780,38 +780,13 @@ namespace Gameplay.Entities {
 
         public bool TryTargetEntity(GridEntity targetEntity, Vector2Int targetCell) {
             TargetType targetType = GetTargetType(targetEntity);
-            
-            // TODO we omega need a way to make this generic. If you are reading thing and thinking of just hard-coding something else in, DON'T do that. Just fix it now man. Pay off the debt, your soul will be lighter.
-            CollectResourceAbilityData collectResourceData = GetAbilityData<CollectResourceAbilityData>();
-            if (targetType == TargetType.Neutral && collectResourceData != null &&
-                    collectResourceData.CollectableResourceEntities.Contains(targetEntity.EntityData)) {
-                if (AbilityAssignmentManager.StartPerformingAbility(this, collectResourceData, new CollectResourceAbilityParameters() {
-                        Target = targetEntity, 
-                    }, true, true, true, true)) {
-                    GameAudio.Instance.AbilityTargetedSound(collectResourceData);
-                }
-                return true;
-            }
-            BoostStructureAbilityData boostStructureData = GetAbilityData<BoostStructureAbilityData>();
-            if (targetType == TargetType.Ally && boostStructureData != null && targetEntity.EntityData.Boostable) {
-                if (AbilityAssignmentManager.StartPerformingAbility(this, boostStructureData, new BoostStructureAbilityParameters() {
-                        Target = targetEntity, 
-                    }, true, true, true, true)) {
-                    GameAudio.Instance.AbilityTargetedSound(boostStructureData);
-                }
-                return true;
+
+            foreach (AbilityDataScriptableObject abilityDataObject in EntityData.AbilitiesToAutomaticallyTargetEntitiesWith) {
+                bool success = abilityDataObject.Content.TryUseAbilityAutomatically(this, targetEntity, targetType, targetCell);
+                if (success) return true;
             }
 
-            if (targetType != TargetType.Attackable) return false;
-            TargetAttackAbilityData data = GetAbilityData<TargetAttackAbilityData>();
-            if (AbilityAssignmentManager.StartPerformingAbility(this, data, new TargetAttackAbilityParameters() {
-                    Target = targetEntity, 
-                    LastKnownLocation = targetCell
-                }, true, true, true, true)) {
-                GameAudio.Instance.AbilityTargetedSound(data);
-                SetTargetLocation(targetCell, targetEntity, PathVisualizer.PathType.TargetAttack);
-            }
-            return true;
+            return false;
         }
 
         public TargetType GetTargetType(GridEntity targetEntity) {

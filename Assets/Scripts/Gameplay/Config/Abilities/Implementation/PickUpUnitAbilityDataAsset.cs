@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Audio;
 using Gameplay.Entities;
 using Gameplay.Entities.Abilities;
 using Gameplay.Grid;
@@ -22,10 +23,24 @@ namespace Gameplay.Config.Abilities {
         public override void SelectAbility(GridEntity selector, object selectData) {
             GameManager.Instance.EntitySelectionManager.SelectTargetableAbility(this, selector.Team, null);
         }
-        
+
+        public override bool TryUseAbilityAutomatically(GridEntity selector, GridEntity target, GridEntity.TargetType targetType, Vector2Int targetCell) {
+            if (targetType != GridEntity.TargetType.Ally || target.EntityData.IsStructure) {
+                return false;
+            }
+
+            if (GameManager.Instance.AbilityAssignmentManager.StartPerformingAbility(selector, this,
+                    new PickUpUnitAbilityParameters() {
+                        Target = target,
+                    }, true, true, true, true)) {
+                GameAudio.Instance.AbilityTargetedSound(this);
+            }
+            return true;
+        }
+
         protected override AbilityLegality AbilityLegalImpl(PickUpUnitAbilityParameters parameters, GridEntity performer, GameTeam team, out string failureReason) {
-            failureReason = null;
-            return EntityPickUpLogic.CanPickUp(performer, parameters.Target) ? AbilityLegality.Legal : AbilityLegality.NotCurrentlyLegal;
+            failureReason = "Cannot pick up there.";
+            return EntityPickUpLogic.CanPickUp(performer, parameters.Target) ? AbilityLegality.Legal : AbilityLegality.IndefinitelyIllegal;
         }
         
         protected override IAbility CreateAbilityImpl(PickUpUnitAbilityParameters parameters, GridEntity performer, GameTeam? overrideTeam) {

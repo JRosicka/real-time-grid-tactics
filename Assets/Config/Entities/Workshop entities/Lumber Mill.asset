@@ -31,6 +31,7 @@ MonoBehaviour:
   BaseSprite: {fileID: 21300000, guid: c2b978f35d2142d44844d2906d476230, type: 3}
   TeamColorSprite: {fileID: 21300000, guid: 52bddbbc5e8ec7344b1185ffff6b0ee8, type: 3}
   BaseSpriteIconOverride: {fileID: 0}
+  TeamColorSpriteIconOverride: {fileID: 0}
   IconScaleInSelectionInterface: 1
   _viewPrefab: {fileID: 6373076591908856349, guid: e561e0fa327b5dc47b98b65e7c44f1b4, type: 3}
   SelectionSFX: {fileID: 11400000, guid: 6931b56cabbf145a08e2159cfd71e5f3, type: 2}
@@ -39,6 +40,7 @@ MonoBehaviour:
   AudioPlacementPrefix: StandardStructure
   EntityFinishedBuildingSFX: {fileID: 0}
   HP: 55
+  ArmorBonus: 0
   Range: 0
   Damage: 0
   BonusDamage: 0
@@ -55,6 +57,8 @@ MonoBehaviour:
   Abilities:
   - {fileID: 11400000, guid: d71b96ee75c11e945bee71a9a9e35e21, type: 2}
   - {fileID: 11400000, guid: 95889d1df0946fe4780afbfc7aa6a20c, type: 2}
+  AbilitiesToAutomaticallyTargetEntitiesWith:
+  - {fileID: 11400000, guid: d71b96ee75c11e945bee71a9a9e35e21, type: 2}
   FriendlyUnitsCanShareCell: 1
   Targetable: 1
   CanBuildFriendlyStructureOnTop: 0
@@ -69,7 +73,8 @@ MonoBehaviour:
   ResourceThatThisCanExtract: {fileID: 0}
   AssociatedResource: 0
   EntityIcon: {fileID: 21300000, guid: 5216057989d01e2479875973957704f8, type: 3}
-  MovementAndAttackUI: 0
+  MovementUI: 0
+  AttackUI: 0
   DisplaySelectionOutline: 1
   BuildQueueSize: 5
   NeverShowBuildQueue: 0
@@ -84,4 +89,5 @@ MonoBehaviour:
     Amount: 0
   _highlightBuildableCells: 1
   Boostable: 0
+  BaseCarryCapacity: 0
   DeathActions: []

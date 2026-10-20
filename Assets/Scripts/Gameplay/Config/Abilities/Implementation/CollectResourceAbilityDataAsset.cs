@@ -1,9 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Audio;
 using Gameplay.Entities;
 using Gameplay.Entities.Abilities;
 using Gameplay.Grid;
+using Gameplay.Managers;
 using UnityEngine;
 
 namespace Gameplay.Config.Abilities {
@@ -27,7 +29,20 @@ namespace Gameplay.Config.Abilities {
         public override void SelectAbility(GridEntity selector, object selectData) {
             GameManager.Instance.EntitySelectionManager.SelectTargetableAbility(this, selector.Team, null);
         }
-        
+
+        public override bool TryUseAbilityAutomatically(GridEntity selector, GridEntity targetEntity, GridEntity.TargetType targetType, Vector2Int targetCell) {
+            if (targetType != GridEntity.TargetType.Neutral || !CollectableResourceEntities.Contains(targetEntity.EntityData)) {
+                return false;
+            }
+            
+            if (GameManager.Instance.AbilityAssignmentManager.StartPerformingAbility(selector, this, new CollectResourceAbilityParameters() {
+                    Target = targetEntity, 
+                }, true, true, true, true)) {
+                GameAudio.Instance.AbilityTargetedSound(this);
+            }
+            return true;
+        }
+
         protected override AbilityLegality AbilityLegalImpl(CollectResourceAbilityParameters parameters, GridEntity entity, GameTeam team, out string failureReason) {
             failureReason = null;
             return AbilityLegality.Legal;

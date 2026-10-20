@@ -68,7 +68,8 @@ namespace Gameplay.Entities {
             // Do not target entities if they are hidden by FoW
             TeamFogOfWarTracker tracker = GameManager.Instance.FogOfWarManager!.GetLocalTeamTracker();
             bool cellHidden = tracker != null && tracker.IsLocationHidden(targetCell);
-            
+            GameManager.Instance.EntitySelectionManager.DeselectTargetableAbility();
+
             // Target the top entity
             List<GridEntity> entitiesAtLocation = GameManager.Instance.CommandManager.EntitiesOnGrid.EntitiesAtLocation(targetCell)
                 ?.Entities
@@ -86,11 +87,20 @@ namespace Gameplay.Entities {
                 // See if we should target this entity
                 if (targetEntity != null && targetEntity.Team == GameTeam.Neutral && !targetEntity.EntityData.Targetable) {
                     DoDefaultCommand(thisEntity, targetCell);
-                } else if (targetEntity != null && thisEntity.Team != targetEntity.Team) {
+                    return;
+                }
+                
+                if (targetEntity != null) {
                     if (!TryTargetEntity(thisEntity, targetEntity, targetCell)) {
                         DoDefaultCommand(thisEntity, targetCell);
                     }
-                } else if (locationContainsThisEntity) {
+
+                    if (thisEntity.Team == targetEntity.Team) {
+                        return;
+                    }   // Otherwise we still want to do the below checks
+                }
+                
+                if (locationContainsThisEntity) {
                     // We are right-clicking the selected entity's cell? Cancel all move and attack abilities. (and collection) 
                     List<IAbility> abilitiesToCancel = thisEntity.GetAbilities(new List<Type> {typeof(MoveAbility), typeof(AttackAbility), typeof(TargetAttackAbility), typeof(CollectResourceAbility)});
                     if (abilitiesToCancel.Any()) {
@@ -103,12 +113,10 @@ namespace Gameplay.Entities {
                             thisEntity.SetTargetLocation(currentLocation.Value, null, PathVisualizer.PathType.Move);
                         }
                     }
-                } else {
-                    DoDefaultCommand(thisEntity, targetCell);
+                    return;
                 }
+                DoDefaultCommand(thisEntity, targetCell);
             }
-            
-            GameManager.Instance.EntitySelectionManager.DeselectTargetableAbility();
         }
 
         private void DoDefaultCommand(GridEntity thisEntity, Vector2Int targetCell) {

@@ -26,7 +26,11 @@ namespace Gameplay.Config.Abilities {
         public override void SelectAbility(GridEntity selector, object selectData) {
             // Nothing to do
         }
-        
+
+        public override bool TryUseAbilityAutomatically(GridEntity selector, GridEntity target, GridEntity.TargetType targetType, Vector2Int targetCell) {
+            throw new NotImplementedException();
+        }
+
         protected override AbilityLegality AbilityLegalImpl(HealAbilityParameters parameters, GridEntity entity, GameTeam team, out string failureReason) {
             failureReason = null;
             return AbilityLegality.Legal;

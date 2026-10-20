@@ -22,7 +22,11 @@ namespace Gameplay.Config.Abilities {
             GameManager.Instance.AbilityAssignmentManager.StartPerformingAbility(selector, this, new NullAbilityParameters(), 
                 true, false, false, true); 
         }
-        
+
+        public override bool TryUseAbilityAutomatically(GridEntity selector, GridEntity target, GridEntity.TargetType targetType, Vector2Int targetCell) {
+            throw new NotImplementedException();
+        }
+
         protected override AbilityLegality AbilityLegalImpl(NullAbilityParameters parameters, GridEntity entity, GameTeam team, out string failureReason) {
             failureReason = null;
             return AbilityLegality.Legal;

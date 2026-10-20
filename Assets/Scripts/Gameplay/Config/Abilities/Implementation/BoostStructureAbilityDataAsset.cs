@@ -1,9 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Audio;
 using Gameplay.Entities;
 using Gameplay.Entities.Abilities;
 using Gameplay.Grid;
+using Gameplay.Managers;
 using JetBrains.Annotations;
 using UnityEngine;
 
@@ -33,7 +35,20 @@ namespace Gameplay.Config.Abilities {
             GridController.UpdateSelectableCells(viableTargets, true, false, selector);
             selector.AbilityPerformedEvent += SelectorPerformedAbility;
         }
-        
+
+        public override bool TryUseAbilityAutomatically(GridEntity selector, GridEntity targetEntity, GridEntity.TargetType targetType, Vector2Int targetCell) {
+            if (targetType != GridEntity.TargetType.Ally || !targetEntity.EntityData.Boostable) {
+                return false;
+            }
+            
+            if (GameManager.Instance.AbilityAssignmentManager.StartPerformingAbility(selector, this, new BoostStructureAbilityParameters() {
+                    Target = targetEntity, 
+                }, true, true, true, true)) {
+                GameAudio.Instance.AbilityTargetedSound(this);
+            }
+            return true;
+        }
+
         protected override AbilityLegality AbilityLegalImpl(BoostStructureAbilityParameters parameters, GridEntity entity, GameTeam team, out string failureReason) {
             failureReason = null;
             return AbilityLegality.Legal;

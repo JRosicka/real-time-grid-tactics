@@ -42,7 +42,11 @@ namespace Gameplay.Config.Abilities {
         public override void SelectAbility(GridEntity selector, object selectData) {
             GameManager.Instance.SelectionInterface.SetUpBuildSelection(this);
         }
-        
+
+        public override bool TryUseAbilityAutomatically(GridEntity selector, GridEntity target, GridEntity.TargetType targetType, Vector2Int targetCell) {
+            throw new NotImplementedException();
+        }
+
         protected override AbilityLegality AbilityLegalImpl(BuildAbilityParameters parameters, GridEntity entity, GameTeam team, out string failureReason) {
             IGamePlayer player = GameManager.Instance.GetPlayerForTeam(team);
             if (!player.OwnedPurchasablesController.HasRequirementsForPurchase(parameters.Buildable, parameters.BuildLocation, out string whyNot)) {

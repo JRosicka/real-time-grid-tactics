@@ -49,7 +49,11 @@ namespace Gameplay.Config.Abilities {
             Vector2Int? currentlyHoveredCell = GameManager.Instance.GridInputController.CurrentHoveredCell;
             UpdateChargePathVisual(selector, currentlyHoveredCell);
         }
-        
+
+        public override bool TryUseAbilityAutomatically(GridEntity selector, GridEntity target, GridEntity.TargetType targetType, Vector2Int targetCell) {
+            throw new NotImplementedException();
+        }
+
         protected override AbilityLegality AbilityLegalImpl(ChargeAbilityParameters parameters, GridEntity entity, GameTeam team, out string failureReason) {
             failureReason = null;
             if (CanChargeToCell(entity, parameters.Destination)) {

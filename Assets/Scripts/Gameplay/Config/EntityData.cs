@@ -57,6 +57,8 @@ namespace Gameplay.Config {
         public EntityData OverrideEntityDataForPathfinding;
         public TargetPriority AttackerTargetPriority;
         public List<AbilityDataScriptableObject> Abilities;
+        [Tooltip("When right-clicking on an entity with no ability selected, try to evaluate these (in order, limit 1) if able")]
+        public List<AbilityDataScriptableObject> AbilitiesToAutomaticallyTargetEntitiesWith;
         [Tooltip("Whether friendly (non-structure) entities can enter (spawn, move, etc) a cell with this entity. If this entity is neutral, then this applies to all units.")]
         public bool FriendlyUnitsCanShareCell;
         public bool Targetable = true;

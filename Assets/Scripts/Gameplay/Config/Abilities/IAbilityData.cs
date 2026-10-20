@@ -4,6 +4,7 @@ using Gameplay.Entities;
 using Gameplay.Entities.Abilities;
 using Gameplay.UI;
 using Mirror;
+using UnityEditor.Build;
 using UnityEngine;
 
 namespace Gameplay.Config.Abilities {
@@ -108,6 +109,11 @@ namespace Gameplay.Config.Abilities {
         /// nothing else to do first) - rather, handle any client-side stuff by sending events to prompt for further input. 
         /// </summary>
         void SelectAbility(GridEntity selector, object selectData);
+
+        /// <summary>
+        /// Returns true if successful, otherwise false if ineligible
+        /// </summary>
+        bool TryUseAbilityAutomatically(GridEntity selector, GridEntity targetEntity, GridEntity.TargetType targetType, Vector2Int targetCell);
 
         /// <summary>
         /// Whether the ability is legal to be used with the given parameters (valid target, player has enough money, cooldowns, etc).

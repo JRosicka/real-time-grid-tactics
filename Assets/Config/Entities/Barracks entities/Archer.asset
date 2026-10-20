@@ -54,6 +54,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: ab5b4bce08f844c0fb5f4803fe352787, type: 2}
   - {fileID: 11400000, guid: a23c69f58674b4c0790e0e27e2d0dbcb, type: 2}
   - {fileID: 11400000, guid: fb30d761c934740269c2ba10068b2423, type: 2}
+  AbilitiesToAutomaticallyTargetEntitiesWith:
+  - {fileID: 11400000, guid: fb30d761c934740269c2ba10068b2423, type: 2}
   FriendlyUnitsCanShareCell: 0
   Targetable: 1
   CanBuildFriendlyStructureOnTop: 0

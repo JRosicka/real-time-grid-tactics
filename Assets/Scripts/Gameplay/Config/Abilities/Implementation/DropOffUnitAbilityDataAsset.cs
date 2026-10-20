@@ -27,7 +27,11 @@ namespace Gameplay.Config.Abilities {
                 : (GridEntity)selectData;
             GameManager.Instance.EntitySelectionManager.SelectTargetableAbility(this, selector.Team, carriedEntity);
         }
-        
+
+        public override bool TryUseAbilityAutomatically(GridEntity selector, GridEntity target, GridEntity.TargetType targetType, Vector2Int targetCell) {
+            throw new NotImplementedException();
+        }
+
         protected override AbilityLegality AbilityLegalImpl(DropOffUnitAbilityParameters parameters, GridEntity performer, GameTeam team, out string failureReason) {
             failureReason = null;
             return EntityPickUpLogic.CanDropOff(performer, parameters.Target) ? AbilityLegality.Legal : AbilityLegality.NotCurrentlyLegal;
