@@ -15,6 +15,8 @@ namespace Gameplay.Config {
         public AudioFile GameWinSound;
         public AudioFile GameStartSound;
         public AudioFile ArrowLandSound;
+        public AudioFile PickUpSound;
+        public AudioFile DropOffSound;
         public AudioFile ConstructionSound;
         public AudioFile MenuThumpSound;
         public AudioFile ParadeStartSound;

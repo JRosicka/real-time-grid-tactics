@@ -50,4 +50,4 @@ MonoBehaviour:
     _cantPerformSFX: {fileID: 0}
     _targetedSFX: {fileID: 11400000, guid: 05b6c460463864379bf3859627a7ae6e, type: 2}
     _performedSFX: {fileID: 0}
-    _triggersEntityOrderVoiceLine: 1
+    _triggersEntityOrderVoiceLine: 0

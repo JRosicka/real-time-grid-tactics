@@ -19,6 +19,8 @@ MonoBehaviour:
   GameWinSound: {fileID: 11400000, guid: 94e2ee86fc2a0451997e916a6d222fbc, type: 2}
   GameStartSound: {fileID: 11400000, guid: 3741a2894c1c14f178b9e257d4edd0f7, type: 2}
   ArrowLandSound: {fileID: 11400000, guid: 64ae387a4a7e147a791106e91ceace64, type: 2}
+  PickUpSound: {fileID: 11400000, guid: f54437be01f4d5c448d8fce3809409eb, type: 2}
+  DropOffSound: {fileID: 11400000, guid: d8112dea6ddbe3b438f30c97fa6c6cf5, type: 2}
   ConstructionSound: {fileID: 11400000, guid: da23988a9967b4927af46b1cc8f94ce5, type: 2}
   MenuThumpSound: {fileID: 11400000, guid: b78e9e80b25a16b4cba44176837ce178, type: 2}
   ParadeStartSound: {fileID: 11400000, guid: 61ee60136eb0c4f3baf86101b4908912, type: 2}

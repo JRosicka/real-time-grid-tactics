@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6063da4928234ad0a56a9debc5d444d6, type: 3}
+  m_Name: Catapult Select
+  m_EditorClassIdentifier: Assembly-CSharp::Audio.AudioFileCollection
+  AudioFiles:
+  - {fileID: 11400000, guid: 28d79eac434fc964b9f67976c93196a0, type: 2}
+  - {fileID: 11400000, guid: 25eda1f73922b0f4080e09de489e3eb5, type: 2}
+  - {fileID: 11400000, guid: 397ed62cb5a25c9448b692be64b28900, type: 2}
+  - {fileID: 11400000, guid: 130e0d79455ee9a478affdeeaa0f1b06, type: 2}

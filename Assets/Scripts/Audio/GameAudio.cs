@@ -156,6 +156,14 @@ namespace Audio {
             TryPlaySFX(_audioConfiguration.ArrowLandSound, AudioClipName(_audioConfiguration.ArrowLandSound));
         }
 
+        public void PickUpSound() {
+            TryPlaySFX(_audioConfiguration.PickUpSound, AudioClipName(_audioConfiguration.PickUpSound));
+        }
+        
+        public void DropOffSound() {
+            TryPlaySFX(_audioConfiguration.DropOffSound, AudioClipName(_audioConfiguration.DropOffSound));
+        }
+
         public void ConstructionSound() {
             TryPlaySFX(_audioConfiguration.ConstructionSound, AudioClipName(_audioConfiguration.ConstructionSound));
         }

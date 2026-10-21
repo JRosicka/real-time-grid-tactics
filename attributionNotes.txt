@@ -1,5 +1,107 @@
+
+
+
+
+
+
+
+freesound.org sounds used: 
+anvil glow/anvil two stir: no attribution
+https://freesound.org/people/sonically_sound/sounds/632762/
+march 1/2/3/4: no attribution
+https://freesound.org/people/stib/sounds/240732/
+hit impact sword 1/2/3: no attribution
+https://freesound.org/people/CogFireStudios/sounds/547035/
+https://freesound.org/people/CogFireStudios/sounds/547036/
+https://freesound.org/people/CogFireStudios/sounds/547042/
+sword hits: https://freesound.org/people/Artninja/sounds/816366/?
+MCU_corvus_glaive_inspired_sword_stab_sound_FINAL_07162025 by Artninja -- https://freesound.org/s/816366/ -- License: Attribution 4.0
+knight command 1, 2: Horse Snort by iainmccurdy -- https://freesound.org/s/571365/ -- License: Attribution 4.0
+horseman selection 1, 2, 3, 4: horse snort.wav by bruno.auzet -- https://freesound.org/s/538697/ -- License: Creative Commons 0
+Set of buttons: 
+S_UI_Click_Stereo_0021.wav by yake01 -- https://freesound.org/s/575869/ -- License: Creative Commons 0
+S_UI_Click_Stereo_0003.wav by yake01 -- https://freesound.org/s/575867/ -- License: Creative Commons 0
+S_UI_Error_Stereo_02.wav by yake01 -- https://freesound.org/s/575769/ -- License: Creative Commons 0
+Hammer anvil: 
+HAMMER_2.wav by pablodavilla -- https://freesound.org/s/592111/ -- License: Creative Commons 0
+
+Person icon: 
+<a href="https://www.flaticon.com/free-icons/human" title="human icons">Human icons created by KP Arts - Flaticon</a>
+
+
+
+MUSIC:
+Match:
+03. Terran One
+
+Track 1
+https://opengameart.org/content/unused-music
+
+Wasteland Showdown
+https://opengameart.org/content/wasteland-showdown-battle-music?destination=node/12773
+
+Battle
+https://opengameart.org/content/medieval-battle
+
+Exploration
+https://opengameart.org/content/medieval-exploration
+
+Unicorn Catchers
+https://opengameart.org/content/unicorn-catchers
+
+War Theme
+https://opengameart.org/content/war-theme
+
+Tiny Swords Duel
+https://opengameart.org/content/tiny-swords-duel
+
+Western Heartland
+https://opengameart.org/content/western-heartland
+
+
+
+Lobby:
+The Bards Tale
+https://opengameart.org/content/medieval-the-bards-tale
+
+Magical Theme
+https://opengameart.org/content/magical-theme
+
+Minstrel Dance
+https://opengameart.org/content/medieval-minstrel-dance
+
+CHIPTUNE Minstrel Dance
+https://opengameart.org/content/chiptune-medieval-minstrel-dance
+
+Death is Just Another Path
+https://opengameart.org/content/death-is-just-another-path
+
+The Old Tower Inn
+https://opengameart.org/content/medieval-the-old-tower-inn
+
+Woodland Fantasy
+https://opengameart.org/content/woodland-fantasy
+
+
+Confetti particles:
+https://opengameart.org/content/confetti-particle
+
+
+
+
+
+
 Parade start sound:
 electric woosh by HadaHector -- https://freesound.org/s/446383/ -- License: Attribution 4.0
 
 Fireball woosh during AF upgrade particles: 
 Fireball, Woosh, Pass, fast by julianmateo_ -- https://freesound.org/s/522705/ -- License: Creative Commons 0
+
+Catapult rocks landing:
+bassy_small_fate_stay_night_impact_jump_or_land_sound_11212025 by Artninja -- https://freesound.org/s/834347/ -- License: Attribution 4.0
+
+Wagon unload:
+Toaster by derjuli -- https://freesound.org/s/693391/ -- License: Creative Commons 0
+
+Wagon load:
+Satisfying Plastic Handle Unlock by LordForklift -- https://freesound.org/s/448393/ -- License: Creative Commons 0

@@ -33,7 +33,7 @@ MonoBehaviour:
     _performOnStart: 0
     _cooldownOnStart: 0
     _repeatWhenCooldownFinishes: 0
-    _animateWhenCooldownComplete: 0
+    _animateWhenCooldownComplete: 1
     _selectable: 1
     _selectableWhenBlocked: 1
     _autoSelect: 0
@@ -50,4 +50,4 @@ MonoBehaviour:
     _cantPerformSFX: {fileID: 0}
     _targetedSFX: {fileID: 11400000, guid: 05b6c460463864379bf3859627a7ae6e, type: 2}
     _performedSFX: {fileID: 0}
-    _triggersEntityOrderVoiceLine: 1
+    _triggersEntityOrderVoiceLine: 0

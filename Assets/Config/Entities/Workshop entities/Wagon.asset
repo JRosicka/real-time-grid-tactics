@@ -30,8 +30,8 @@ MonoBehaviour:
   TeamColorSpriteIconOverride: {fileID: 0}
   IconScaleInSelectionInterface: 1.3
   _viewPrefab: {fileID: 7504026570216467247, guid: 15227caa3e69eda449325e94e37a9772, type: 3}
-  SelectionSFX: {fileID: 0}
-  OrderSFX: {fileID: 0}
+  SelectionSFX: {fileID: 11400000, guid: 495a5d5f4d05d6f4d8b49b61cbffe0d0, type: 2}
+  OrderSFX: {fileID: 11400000, guid: ce890b9378515934e8b021d8f1a0cf53, type: 2}
   AttackSFX: {fileID: 0}
   AudioPlacementPrefix: Wagon
   EntityFinishedBuildingSFX: {fileID: 0}
