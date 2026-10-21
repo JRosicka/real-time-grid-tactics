@@ -18,9 +18,9 @@ MonoBehaviour:
     on roads.
   Cost:
   - Type: 1
-    Amount: 50
+    Amount: 75
   - Type: 2
-    Amount: 25
+    Amount: 0
   Requirements: []
   BuildTime: 30
   BuildsImmediately: 0
