@@ -89,7 +89,7 @@ namespace Gameplay.Config.Abilities {
         }
 
         public string AbilityVerb => "pick up";
-        public bool ShowIconOnGridWhenSelected => false;
+        public bool ShowIconOnGridWhenSelected => true;
         public bool DeselectAfterAttempt => true;
         public List<MouseClick> DefaultAllowableClicks => new() { MouseClick.Left };
     }
