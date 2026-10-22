@@ -14,7 +14,7 @@ namespace Gameplay.Managers {
         public event Action ControlGroupUnassigned;
 
         public void SelectControlGroup() {
-            if (!_entity || _entity.DeadOrDying) return;
+            if (!_entity.IsActive()) return;
             _entity.Select();
         }
 
@@ -32,10 +32,7 @@ namespace Gameplay.Managers {
             if (localTeam is not (GameTeam.Player1 or GameTeam.Player2)) return;
             
             GridEntity selectedEntity = GameManager.Instance.EntitySelectionManager.SelectedEntity;
-            if (!selectedEntity
-                || selectedEntity.DeadOrDying
-                || selectedEntity.Team != localTeam
-                || selectedEntity == _entity) return;
+            if (!selectedEntity.IsActive() || selectedEntity.Team != localTeam || selectedEntity == _entity) return;
             
             // Unregister the previous listener
             if (_entity) {

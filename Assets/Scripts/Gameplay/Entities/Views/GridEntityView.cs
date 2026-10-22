@@ -240,7 +240,7 @@ namespace Gameplay.Entities {
         }
 
         private void DoAbility(IAbility ability, AbilityTimer abilityTimer) {
-            if (Entity == null || Entity.DeadOrDying) return;
+            if (!Entity.IsActive()) return;
             if (_particularView.DoAbility(ability, abilityTimer)) {
                 DoGenericAbility(ability);
             }

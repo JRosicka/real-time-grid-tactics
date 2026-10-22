@@ -992,7 +992,7 @@ namespace Gameplay.Entities {
 
         public void UpdateFoWHiddenStatus(bool hidden) {
             if (_hiddenByFoW == hidden) return;
-            if (Location == null || DeadOrDying) return;
+            if (DeadOrDying) return;
             DoUpdateFoWHiddenStatus(hidden);
         }
         

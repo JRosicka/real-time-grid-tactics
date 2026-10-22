@@ -87,7 +87,7 @@ namespace Gameplay.Managers {
         /// </summary>
         private bool IsAmberForgeUpgradeAvailable(GridEntity amberForge) {
             if (!_friendlyKingEntity) return false;
-            if (!amberForge || amberForge.DeadOrDying || amberForge.Location == null) return false;
+            if (!amberForge.IsActive()) return false;
 
             // Check cooldown timers
             if (amberForge.ActiveTimers.Any(t => t.Ability is BuildAbility && t.Team == _friendlyKingEntity.Team)) return false;

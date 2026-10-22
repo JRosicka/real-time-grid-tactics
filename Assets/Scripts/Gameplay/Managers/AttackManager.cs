@@ -28,17 +28,12 @@ namespace Gameplay.Managers {
         /// </summary>
         /// <returns>True if an attack was successfully performed, otherwise false</returns>
         public bool PerformAttack(GridEntity attacker, GridEntity target, int bonusDamage, bool updateTargetLocation) {
-            if (target == null || target.DeadOrDying) {
-                Debug.LogWarning("Target object is dead");
-                return false;
-            }
-
-            if (target.Location == null) {
-                Debug.LogWarning("Target location is null");
+            if (!target.IsActive()) {
+                Debug.LogWarning("Target entity is inactive");
                 return false;
             }
             
-            Vector2Int targetLocation = target.Location.Value;
+            Vector2Int targetLocation = target.Location!.Value;
             
             AttackAbilityData attackAbilityData = attacker.GetAbilityData<AttackAbilityData>();
             if (attackAbilityData == null) {

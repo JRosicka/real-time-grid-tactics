@@ -31,7 +31,7 @@ namespace Gameplay.Entities.Abilities {
         }
         
         protected override (bool, AbilityResult) DoAbilityEffect() {
-            if (!Performer.Registered || Performer.DeadOrDying || Performer.Location == null) return (false, AbilityResult.Failed);
+            if (!Performer.IsActive()) return (false, AbilityResult.Failed);
 
             if (AbilityParameters.Target != null) {
                 // This is a targeted version of the ability, so detect and cancel any non-targeted instances of this ability
@@ -42,14 +42,14 @@ namespace Gameplay.Entities.Abilities {
             }
             
             // Is target dead?
-            if (AbilityParameters.Target == null || !AbilityParameters.Target.Registered || AbilityParameters.Target.DeadOrDying || AbilityParameters.Target.Location == null) {
+            if (!AbilityParameters.Target.IsActive()) {
                 AbilityParameters.Target = null;
             }
             
             GridEntity target = AbilityParameters.Target;
             if (target == null) {
                 // Look for a target at the performer's current location
-                target = GameManager.Instance.ResourceEntityFinder.GetResourceCollectorAtLocation(Performer.Location.Value);
+                target = GameManager.Instance.ResourceEntityFinder.GetResourceCollectorAtLocation(Performer.Location!.Value);
                 if (target == null || target.Location == null) {
                     return (false, AbilityResult.IncompleteWithoutEffect);
                 }
@@ -57,7 +57,7 @@ namespace Gameplay.Entities.Abilities {
             
             // Check to see if not currently at target
             Vector2Int targetLocation = target.Location!.Value;
-            if (Performer.Location.Value != targetLocation) return (false, AbilityResult.IncompleteWithoutEffect);
+            if (Performer.Location!.Value != targetLocation) return (false, AbilityResult.IncompleteWithoutEffect);
             
             // Do effect
             target.SetIncomeRate(target.IncomeRate + 1);

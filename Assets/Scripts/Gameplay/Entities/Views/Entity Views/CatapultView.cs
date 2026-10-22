@@ -27,7 +27,7 @@ namespace Gameplay.Entities {
         public override void UpgradeApplied(IUpgrade upgrade) { }
 
         private void DoAttackAnimation(GridEntity performer, GridEntity target) {
-            if (target.DeadOrDying) return;
+            if (!target.IsActive()) return;
 
             Vector2Int? attackLocation = performer.Location;
             Vector2Int? targetLocation = target.Location;

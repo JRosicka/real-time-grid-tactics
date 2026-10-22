@@ -34,15 +34,15 @@ namespace Gameplay.Entities.Abilities {
         }
         
         protected override (bool, AbilityResult) DoAbilityEffect() {
-            if (!Performer || Performer.Location == null || !AbilityParameters.Target || AbilityParameters.Target.Location != null || AbilityParameters.Target.DeadOrDying) {
-                if (Performer && Performer.Location != null) {
-                    Performer.SetTargetLocation(Performer.Location.Value, null, PathVisualizer.PathType.Move);
+            if (!Performer.IsActive() || !AbilityParameters.Target || AbilityParameters.Target.Location != null || AbilityParameters.Target.DeadOrDying) {
+                if (Performer.IsActive()) {
+                    Performer.SetTargetLocation(Performer.Location!.Value, null, PathVisualizer.PathType.Move);
                 }
                 return (false, AbilityResult.CompletedWithoutEffect);
             }
             
             // Try to drop off the target if we are adjacent
-            if (CellDistanceLogic.Neighbors(Performer.Location.Value).Contains(AbilityParameters.DropOffLocation)) {
+            if (CellDistanceLogic.Neighbors(Performer.Location!.Value).Contains(AbilityParameters.DropOffLocation)) {
                 if (EntityPickUpLogic.TryDropOff(Performer, AbilityParameters.Target, AbilityParameters.DropOffLocation)) {
                     // Success
                     Performer.SetTargetLocation(Performer.Location.Value, null, PathVisualizer.PathType.Move);

@@ -72,8 +72,8 @@ namespace Gameplay.Entities {
         }
 
         public void Update() {
-            Vector2Int? targetLocation = _target == null ? null : _target.Location;
-            if (targetLocation == null || _target.DeadOrDying) {
+            Vector2Int? targetLocation = _target.IsActive() ? _target.Location : null;
+            if (targetLocation == null) {
                 Destroy(gameObject);
                 return;
             }

@@ -25,7 +25,7 @@ namespace Gameplay.Entities.Abilities {
         }
 
         private void AwardSellEffect() {
-            if (Performer == null || Performer.DeadOrDying || Performer.Location == null) return;
+            if (!Performer.IsActive()) return;
             
             // Give resources equal to half of the structure cost, rounded down
             foreach (ResourceAmount resourceAmount in Performer.EntityData.Cost) {
@@ -41,7 +41,7 @@ namespace Gameplay.Entities.Abilities {
             Performer.SetLockStatus(false);
             
             // Spawn a peasant at the structure location
-            SpawnEntity(Data.Peasant, Performer.Location.Value);
+            SpawnEntity(Data.Peasant, Performer.Location!.Value);
             
             // Unregister and destroy the structure, along with death effect. Select the spawned peasant if the structure was selected.
             GameManager.Instance.CommandManager.AbilityExecutor.MarkForUnRegistration(Performer, true, true);

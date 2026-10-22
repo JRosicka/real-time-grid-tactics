@@ -48,7 +48,7 @@ namespace Gameplay.Entities {
         private async void EntityMoved() {
             // Need to delay since this move might have happened before updating the target location. When using move/attack abilities, the effect happens before the target location gets updated. 
             await Task.Delay(100);
-            if (!this || _entity.DeadOrDying || _entity.Location == null) return;
+            if (!this || !_entity.IsActive()) return;
             
             TryPointArrow(_entity.TargetLocationLogicValue);
         }
@@ -58,10 +58,10 @@ namespace Gameplay.Entities {
         }
 
         private void DoPointArrow(Vector2Int destination, PathVisualizer.PathType targetType) {
-            if (_entity.DeadOrDying || _entity.Location == null) return;
+            if (!_entity.IsActive()) return;
 
             bool wasActive = _active;
-            ToggleArrow(destination != _entity.Location.Value);
+            ToggleArrow(destination != _entity.Location!.Value);
             
             // Arrow color
             _arrowFill.color = targetType switch {

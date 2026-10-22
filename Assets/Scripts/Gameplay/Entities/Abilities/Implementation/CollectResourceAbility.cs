@@ -34,18 +34,14 @@ namespace Gameplay.Entities.Abilities {
         }
 
         protected override (bool, AbilityResult) DoAbilityEffect() {
-            if (!Performer
-                || Performer.Location == null
-                || !AbilityParameters.Target 
-                || AbilityParameters.Target.Location == null 
-                || AbilityParameters.Target.DeadOrDying) {
+            if (!Performer.IsActive() || !AbilityParameters.Target.IsActive()) {
                 return (false, AbilityResult.CompletedWithoutEffect);
             }
             
             UpdateTargetLocation();
 
             // Try to collect the target if at that location
-            if (Performer.Location.Value == AbilityParameters.Target.Location.Value) {
+            if (Performer.Location!.Value == AbilityParameters.Target.Location!.Value) {
                 if (Performer.ActiveTimers.Any(t => t.Ability.AbilityData.Channel == AbilityData.Channel)) {
                     // We are in range of the target, but collecting is in-progress. Do nothing for now. 
                     return (false, AbilityResult.IncompleteWithoutEffect);

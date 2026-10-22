@@ -48,7 +48,7 @@ namespace Gameplay.Entities.Abilities {
         }
         
         protected override (bool, AbilityResult) DoAbilityEffect() {
-            if (AbilityParameters.Target != null && (AbilityParameters.Target.DeadOrDying || AbilityParameters.Target.Location == null)) {
+            if (AbilityParameters.Target != null && !AbilityParameters.Target.IsActive()) {
                 AbilityParameters.Target = PickAdjacentStructureToBoost();
                 if (AbilityParameters.Target == null) {
                     // Newly null, so indicate that an effect happened so the animation updates. Otherwise that will happen below. 

@@ -32,9 +32,9 @@ namespace Gameplay.Entities.Abilities {
         }
         
         protected override (bool, AbilityResult) DoAbilityEffect() {
-            if (!Performer || Performer.Location == null || !AbilityParameters.Target || AbilityParameters.Target.Location == null || AbilityParameters.Target.DeadOrDying) {
-                if (Performer && Performer.Location != null) {
-                    Performer.SetTargetLocation(Performer.Location.Value, null, PathVisualizer.PathType.Move);
+            if (!Performer.IsActive() || !AbilityParameters.Target.IsActive()) {
+                if (Performer.IsActive()) {
+                    Performer.SetTargetLocation(Performer.Location!.Value, null, PathVisualizer.PathType.Move);
                 }
                 return (false, AbilityResult.CompletedWithoutEffect);
             }
@@ -42,7 +42,7 @@ namespace Gameplay.Entities.Abilities {
             UpdateTargetLocation();
             
             // Try to pick up the target if we are adjacent
-            if (CellDistanceLogic.Neighbors(Performer.Location.Value).Contains(AbilityParameters.Target.Location.Value)) {
+            if (CellDistanceLogic.Neighbors(Performer.Location!.Value).Contains(AbilityParameters.Target.Location!.Value)) {
                 if (EntityPickUpLogic.TryPickUp(Performer, AbilityParameters.Target)) {
                     // Success
                     Performer.SetTargetLocation(Performer.Location.Value, null, PathVisualizer.PathType.Move);

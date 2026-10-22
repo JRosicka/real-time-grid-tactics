@@ -10,8 +10,8 @@ namespace Gameplay.Entities {
     /// </summary>
     public static class EntityPickUpLogic {
         public static bool CanPickUp(GridEntity carrier, GridEntity passenger) {
-            if (carrier == null || carrier.Location == null || carrier.DeadOrDying) return false;
-            if (passenger == null || passenger.Location == null || passenger.DeadOrDying) return false;
+            if (!carrier.IsActive()) return false;
+            if (!passenger.IsActive()) return false;
 
             if (!EntityCanEverBePickedUp(passenger, carrier.Team)) return false;
             
@@ -37,7 +37,7 @@ namespace Gameplay.Entities {
         }
 
         public static bool CanDropOff(GridEntity carrier, GridEntity passenger) {
-            if (carrier == null || carrier.Location == null || carrier.DeadOrDying) return false;
+            if (!carrier.IsActive()) return false;
             if (passenger == null || passenger.Location != null || passenger.DeadOrDying) return false;   // passenger does not have a location
             
             // Carrier must be carrying the passenger

@@ -98,10 +98,10 @@ namespace Gameplay.Config.Abilities {
         }
 
         public List<Vector2Int> GetViableTargets(GridEntity selector) {
-            if (selector == null || selector.DeadOrDying || selector.Location == null) return new List<Vector2Int>();
+            if (!selector.IsActive()) return new List<Vector2Int>();
             
             // Add each cell adjacent to the selector
-            List<Vector2Int> viableTargets = GridController.GridData.GetAdjacentCells(selector.Location.Value).Select(c => c.Location).ToList();
+            List<Vector2Int> viableTargets = GridController.GridData.GetAdjacentCells(selector.Location!.Value).Select(c => c.Location).ToList();
             
             // Remove any that don't contain friendly boostable structures or structures that are already being boosted by this
             for (int i = viableTargets.Count - 1; i >= 0; i--) {
@@ -117,7 +117,7 @@ namespace Gameplay.Config.Abilities {
         [CanBeNull]
         public GridEntity GetBoostableEntity(Vector2Int location, GameTeam team) {
             List<GridEntity> entitiesAtLocation = EntitiesOnGrid.EntitiesAtLocation(location)?.Entities?.Select(e => e.Entity).ToList() ?? new List<GridEntity>();
-            return entitiesAtLocation.FirstOrDefault(e => e.EntityData.IsStructure && e.EntityData.Boostable && e.Team == team && e.Location != null && !e.DeadOrDying);
+            return entitiesAtLocation.FirstOrDefault(e => e.IsActive() && e.EntityData.IsStructure && e.EntityData.Boostable && e.Team == team);
         }
 
         public bool MoveToTargetCellFirst => false;

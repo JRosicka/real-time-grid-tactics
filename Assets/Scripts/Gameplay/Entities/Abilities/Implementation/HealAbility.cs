@@ -24,7 +24,7 @@ namespace Gameplay.Entities.Abilities {
         private AbilityEventRouter AbilityEventRouter => GameManager.Instance.AbilityEventRouter;
 
         public override async void Cancel() {
-            if (Performer == null || Performer.DeadOrDying) return;
+            if (!Performer.IsActive()) return;
 
             if (AbilityParameters.Target != null) {
                 AbilityEventRouter.UnregisterListeners(UID);
@@ -57,11 +57,10 @@ namespace Gameplay.Entities.Abilities {
         }
         
         protected override (bool, AbilityResult) DoAbilityEffect() {
-            if (!Performer.Registered || Performer.DeadOrDying) return (false, AbilityResult.Failed);
-            Vector2Int? location = Performer.Location;
-            if (location == null) return (false, AbilityResult.Failed);
+            if (!Performer.IsActive()) return (false, AbilityResult.Failed);
+            Vector2Int location = Performer.Location!.Value;
             
-            GridEntity target = GameManager.Instance.GetTopEntityAtLocation(location.Value);
+            GridEntity target = GameManager.Instance.GetTopEntityAtLocation(location);
             if (target == Performer) {
                 // Nothing on this structure
                 target = null;
@@ -104,7 +103,7 @@ namespace Gameplay.Entities.Abilities {
         }
 
         private bool CanHeal(GridEntity target) {
-            return target != null && !target.DeadOrDying && target.HPHandler.CurrentHP < target.MaxHP;
+            return target.IsActive() && target.HPHandler.CurrentHP < target.MaxHP;
         }
 
         private void TargetEntityNoLongerValid() {

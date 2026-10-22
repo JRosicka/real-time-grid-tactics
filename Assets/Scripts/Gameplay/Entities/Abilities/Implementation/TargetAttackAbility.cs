@@ -51,7 +51,7 @@ namespace Gameplay.Entities.Abilities {
             }
 
             // Check to make sure that the performer still exists
-            Vector2Int? attackerLocation = Performer == null ? null : Performer.Location;
+            Vector2Int? attackerLocation = Performer.IsActive() ? Performer.Location : null;
             if (attackerLocation == null) {
                 UnRegisterTargetListeners();
                 return (false, AbilityResult.Failed);
@@ -81,9 +81,7 @@ namespace Gameplay.Entities.Abilities {
                 return (false, AbilityResult.IncompleteWithoutEffect);
             }
             
-            Vector2Int? targetLocation = AbilityParameters.Target == null || AbilityParameters.Target.DeadOrDying 
-                ? null 
-                : AbilityParameters.Target.Location;
+            Vector2Int? targetLocation = AbilityParameters.Target.IsActive() ? AbilityParameters.Target.Location : null;
             if (targetLocation == null) {
                 // If the target no longer exists, then it must have been killed or turned into a structure or something. 
                 UnRegisterTargetListeners();
@@ -152,7 +150,7 @@ namespace Gameplay.Entities.Abilities {
         }
 
         private void DoFollowUpAttackMove() {
-            if (!Performer || Performer.DeadOrDying) {
+            if (!Performer.IsActive()) {
                 UnRegisterTargetListeners();
                 return;
             }
@@ -190,14 +188,14 @@ namespace Gameplay.Entities.Abilities {
 
         // Called on server
         private void TrackedEntityHiddenStateChanged(bool newHidden) {
-            if (!newHidden) {
+            if (!newHidden && AbilityParameters.Target.IsActive()) {
                 SetLastKnownLocation(AbilityParameters.Target.Location!.Value);
             }
         }
 
         // Called on server
         private void TrackedEntityMoved() {
-            if (FowTracker == null || !FowTracker.IsEntityHidden(AbilityParameters.Target)) {
+            if (FowTracker == null || !FowTracker.IsEntityHidden(AbilityParameters.Target) && AbilityParameters.Target.IsActive()) {
                 SetLastKnownLocation(AbilityParameters.Target.Location!.Value);
             }
         }
@@ -206,7 +204,7 @@ namespace Gameplay.Entities.Abilities {
             AbilityParameters.LastKnownLocation = location;
         }
 
-        private bool TrackedEntityLocationKnown => AbilityParameters?.Target?.Location != null && AbilityParameters.Target.Location.Value == AbilityParameters.LastKnownLocation;
+        private bool TrackedEntityLocationKnown => AbilityParameters != null && AbilityParameters.Target.IsActive() &&  AbilityParameters.Target.Location!.Value == AbilityParameters.LastKnownLocation;
     }
     
     public class TargetAttackAbilityParameters : IAbilityParameters {

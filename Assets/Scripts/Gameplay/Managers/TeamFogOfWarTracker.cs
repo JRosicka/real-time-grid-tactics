@@ -189,9 +189,9 @@ namespace Gameplay.Managers {
 
             foreach (KeyValuePair<GridEntity, Action<bool>> kvp in _entityListeners) {
                 GridEntity entity = kvp.Key;
-                if (entity.DeadOrDying || entity.Location == null) continue;
+                if (!entity.IsActive()) continue;
                 
-                FoWCell cell = updatedCells.FirstOrDefault(cell => cell.Position == entity.Location.Value);
+                FoWCell cell = updatedCells.FirstOrDefault(cell => cell.Position == entity.Location!.Value);
                 if (cell != null) {
                     kvp.Value.Invoke(cell.Hidden);
                 }

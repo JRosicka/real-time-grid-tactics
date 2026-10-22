@@ -76,7 +76,7 @@ namespace Gameplay.Entities.Abilities {
         }
 
         private void PerformFollowUpAttackMove(GridEntity targetEntity) {
-            if (targetEntity != null && targetEntity.DeadOrDying) {
+            if (!targetEntity.IsActive()) {
                 // Could happen if we just did a charge-attack on this entity and that attack killed it
                 targetEntity = null;
             }

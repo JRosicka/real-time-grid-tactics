@@ -97,10 +97,9 @@ namespace Gameplay.Entities.Abilities {
 
             if (AbilityParameters.Reaction) {
                 if (AbilityParameters.ReactionTarget != null
-                        && !AbilityParameters.ReactionTarget.DeadOrDying
-                        && AbilityParameters.ReactionTarget.Location != null) {
+                        && AbilityParameters.ReactionTarget.IsActive()) {
                     // No one in range to attack, so move a cell closer to our destination
-                    Vector2Int newTargetLocation = AbilityParameters.ReactionTarget.Location.Value;
+                    Vector2Int newTargetLocation = AbilityParameters.ReactionTarget.Location!.Value;
                     TryStepTowardsDestination(Performer, newTargetLocation);
                     // Update the destination to the new target location
                     AbilityParameters.Destination = newTargetLocation;
@@ -153,7 +152,7 @@ namespace Gameplay.Entities.Abilities {
             enemiesInRange = enemiesInRange
                 .Where(e => e.EntityData.AttackerTargetPriority == highestPriority)
                 .ToList();
-            if (AbilityParameters.Reaction && AbilityParameters.ReactionTarget != null && !AbilityParameters.ReactionTarget.DeadOrDying) {
+            if (AbilityParameters.Reaction && !AbilityParameters.ReactionTarget.IsActive()) {
                 // Potential targets must have a priority at least as high as the attacker we are reacting to
                 enemiesInRange.RemoveAll(e => e.EntityData.AttackerTargetPriority <
                                               AbilityParameters.ReactionTarget.EntityData.AttackerTargetPriority);

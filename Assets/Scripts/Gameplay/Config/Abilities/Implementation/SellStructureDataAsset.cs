@@ -32,7 +32,7 @@ namespace Gameplay.Config.Abilities {
 
         protected override AbilityLegality AbilityLegalImpl(NullAbilityParameters parameters, GridEntity entity, GameTeam team, out string failureReason) {
             failureReason = null;
-            if (entity == null || entity.DeadOrDying || entity.Location == null) {
+            if (!entity.IsActive()) {
                 return AbilityLegality.IndefinitelyIllegal;
             }
 
