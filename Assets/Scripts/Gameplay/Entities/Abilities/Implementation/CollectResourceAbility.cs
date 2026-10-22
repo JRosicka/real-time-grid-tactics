@@ -109,7 +109,9 @@ namespace Gameplay.Entities.Abilities {
             AbilityEventRouter.UnregisterListeners(UID);
             
             GameManager.Instance.CommandManager.CancelAbility(this, false);
-            Performer.SetTargetLocation(Performer.Location!.Value, null, PathVisualizer.PathType.Move);
+            if (Performer.IsActive()) {
+                Performer.SetTargetLocation(Performer.Location!.Value, null, PathVisualizer.PathType.Move);
+            }
         }
 
         private void PerformerAttacked(bool lethal) {

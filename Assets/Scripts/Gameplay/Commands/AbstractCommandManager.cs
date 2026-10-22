@@ -106,6 +106,7 @@ public abstract class AbstractCommandManager : NetworkBehaviour, ICommandManager
         // We need to update the entity location first so that EntityCollectionChanged listeners get the updated value for the entity location
         entity.UpdateEntityLocation(null);
         SyncEntityCollection(entity, GridEntityCollectionUpdate.RemoveFromGrid, previousLocation, default);
+        entity.SetCarriedStatus(true);
         // Now that the entity collection is synced, we can let listeners know that the entity was removed 
         entity.TriggerEntityMovedEvent();
     }
@@ -115,6 +116,7 @@ public abstract class AbstractCommandManager : NetworkBehaviour, ICommandManager
         // We need to update the entity location first so that EntityCollectionChanged listeners get the updated value for the entity location
         entity.UpdateEntityLocation(destination);
         SyncEntityCollection(entity, GridEntityCollectionUpdate.PutBackOnGrid, default, destination);
+        entity.SetCarriedStatus(false);
         // Now that the entity collection is synced, we can let listeners know that the entity was added 
         entity.TriggerEntityMovedEvent();
         

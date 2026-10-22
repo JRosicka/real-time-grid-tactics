@@ -20,6 +20,7 @@ namespace Gameplay.Entities {
         public void Initialize(GridEntity entity, PlayerColorData colorData) {
             _entity = entity;
             entity.EntityMovedClientEvent += EntityMoved;
+            entity.CarriedStateChanged += EntityCarriedStatusChanged;
 
             foreach (ParticleSystem particles in _particleSystems) {
                 ParticleSystem.MainModule main = particles.main;
@@ -36,11 +37,17 @@ namespace Gameplay.Entities {
 
         public void ToggleActive(bool active) {
             _active = active;
-            ToggleView(active);
+            if (_entity.IsActive()) {
+                ToggleView(active);
+            }
         }
 
         public void UpdateFoW(List<TeamFogOfWarTracker.FoWCell> fowCells) {
             if (!_active) return;
+            if (!_entity.IsActive()) {
+                ToggleView(false);
+                return;
+            }
             
             Vector2Int position = Position;
             TeamFogOfWarTracker.FoWCell fowCell = fowCells.FirstOrDefault(c => c.Position == position);
@@ -50,7 +57,11 @@ namespace Gameplay.Entities {
         }
 
         private void EntityMoved() {
-            ToggleView(_active);
+            ToggleView(_entity.IsActive() && _active);
+        }
+
+        private void EntityCarriedStatusChanged(bool newCarried) {
+            ToggleView(_entity.IsActive() && _active);
         }
 
         private void ToggleView(bool active) {

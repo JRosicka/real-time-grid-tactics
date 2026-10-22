@@ -47,7 +47,7 @@ namespace Gameplay.Entities.Abilities {
             }
             
             GridEntity target = AbilityParameters.Target;
-            if (target == null) {
+            if (!target.IsActive()) {
                 // Look for a target at the performer's current location
                 target = GameManager.Instance.ResourceEntityFinder.GetResourceCollectorAtLocation(Performer.Location!.Value);
                 if (target == null || target.Location == null) {
@@ -56,7 +56,7 @@ namespace Gameplay.Entities.Abilities {
             }
             
             // Check to see if not currently at target
-            Vector2Int targetLocation = target.Location!.Value;
+            Vector2Int targetLocation = target!.Location!.Value;
             if (Performer.Location!.Value != targetLocation) return (false, AbilityResult.IncompleteWithoutEffect);
             
             // Do effect

@@ -65,6 +65,7 @@ namespace Gameplay.Entities {
         }
 
         private void DoParadeAnimation() {
+            if (!_entity.IsActive()) return;
             ParadeAnimationBehavior animationBehavior = Instantiate(_paradeAnimationPrefab, GameManager.Instance.CommandManager.SpawnBucket);
             animationBehavior.transform.position = GameManager.Instance.GridController.GetWorldPosition(_entity.Location!.Value);
             animationBehavior.Initialize(_entity);
@@ -86,7 +87,7 @@ namespace Gameplay.Entities {
 
         private void FoWUpdated(List<TeamFogOfWarTracker.FoWCell> updatedCells) {
             if (!_inspiringPresenceActive) return;
-            if (_entity.Location == null) return;
+            if (!_entity.IsActive()) return;
 
             List<Vector2Int> adjacentAndEntityCells = GetAdjacentAndEntityCells();
             List<TeamFogOfWarTracker.FoWCell> cellsOfInterest = updatedCells.Where(c => adjacentAndEntityCells.Contains(c.Position)).ToList();
@@ -97,6 +98,7 @@ namespace Gameplay.Entities {
 
         private void ReEvaluateInspiringPresenceFoW() {
             if (!_inspiringPresenceActive) return;
+            if (!_entity.IsActive()) return;
             if (GameManager.Instance.FogOfWarManager == null) return;
             TeamFogOfWarTracker tracker = GameManager.Instance.FogOfWarManager.GetLocalTeamTracker();
             if (tracker == null) return;

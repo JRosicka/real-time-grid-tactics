@@ -315,12 +315,16 @@ namespace Gameplay.Entities {
                     break;
                 case PickUpUnitAbilityData:
                     GameAudio.Instance.PickUpSound();
-                    ((PickUpUnitAbility)ability).AbilityParameters.Target.View.DoGenericPickedUpAnimation(Entity.Location!.Value);
+                    if (Entity.IsActive()) {
+                        ((PickUpUnitAbility)ability).AbilityParameters.Target.View.DoGenericPickedUpAnimation(Entity.Location!.Value);
+                    }
                     break;
                 case DropOffUnitAbilityData:
                     GameAudio.Instance.DropOffSound();
-                    DropOffUnitAbility dropOffAbility = (DropOffUnitAbility)ability;
-                    dropOffAbility.AbilityParameters.Target.View.DoGenericDroppedOffAnimation(Entity.Location!.Value, dropOffAbility.AbilityParameters.DropOffLocation);
+                    if (Entity.IsActive()) {
+                        DropOffUnitAbility dropOffAbility = (DropOffUnitAbility)ability;
+                        dropOffAbility.AbilityParameters.Target.View.DoGenericDroppedOffAnimation(Entity.Location!.Value, dropOffAbility.AbilityParameters.DropOffLocation);
+                    }
                     break;
             }
         }

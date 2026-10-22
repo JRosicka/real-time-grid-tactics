@@ -81,6 +81,8 @@ namespace Gameplay.Entities {
         public int CarryCapacity => ((NetworkableIntegerValue)_carryCapacityField.Value)?.Value ?? 0;
         public NetworkableField ArmorField;
         public int Armor => ((NetworkableIntegerValue)ArmorField.Value)?.Value ?? 0;
+        public NetworkableField _carriedField;
+        public bool Carried => ((NetworkableBoolValue)_carriedField?.Value)?.Value ?? false;
 
         // Abilities
         /// <summary>
@@ -160,6 +162,7 @@ namespace Gameplay.Entities {
         // The local player's FoW state has changed
         public event Action<bool> FogOfWarHiddenStatusChangedEvent;
         public event Action<BoostRegistrations> BoostRegistrationsChanged;
+        public event Action<bool> CarriedStateChanged;
         
         /// <summary>
         /// Only triggered on server
@@ -188,6 +191,7 @@ namespace Gameplay.Entities {
             CarriedEntitiesField = new NetworkableField(this, nameof(CarriedEntitiesField), new NetworkableGridEntityListValue(new List<GridEntity>()));
             _carryCapacityField = new NetworkableField(this, nameof(_carryCapacityField), new NetworkableIntegerValue(0));
             ArmorField = new NetworkableField(this, nameof(ArmorField), new NetworkableIntegerValue(0));
+            _carriedField = new NetworkableField(this, nameof(_carriedField), new NetworkableBoolValue(false));
         }
 
         /// <summary>
@@ -304,7 +308,8 @@ namespace Gameplay.Entities {
             _holdingPositionNetworkableField.ValueChanged += (_, _, _) => HoldingPositionChangedEvent?.Invoke(HoldingPosition);
             _lockedFromFriendlyUnitsEnteringField.ValueChanged += UpdateLockStatus;
             _activeBoostsField.ValueChanged += (_, _, _) => BoostRegistrationsChanged?.Invoke(ActiveBoosts);
-            
+            _carriedField.ValueChanged += (_, _, _) => CarriedStateChanged?.Invoke(Carried);
+
             Interactable = true;
         } 
         
@@ -326,6 +331,10 @@ namespace Gameplay.Entities {
 
         public void SetLockStatus(bool newStatus) {
             _lockedFromFriendlyUnitsEnteringField.UpdateValue(new NetworkableBoolValue(newStatus));
+        }
+
+        public void SetCarriedStatus(bool newStatus) {
+            _carriedField.UpdateValue(new NetworkableBoolValue(newStatus));
         }
 
         #endregion
@@ -863,6 +872,10 @@ namespace Gameplay.Entities {
         public int GetStructureDefenseModifier() {
             if (EntityData.IsStructure) {
                 return EntityData.SharedUnitArmorBonus;
+            }
+
+            if (!this.IsActive()) {
+                return 0;
             }
 
             List<GridEntity> structuresAtLocation = GameManager.Instance.CommandManager.EntitiesOnGrid.EntitiesAtLocation(Location!.Value)?.Entities

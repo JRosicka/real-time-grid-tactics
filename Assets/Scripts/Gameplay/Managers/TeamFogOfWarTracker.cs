@@ -187,13 +187,12 @@ namespace Gameplay.Managers {
             
             FoWUpdated?.Invoke(updatedCells);
 
-            foreach (KeyValuePair<GridEntity, Action<bool>> kvp in _entityListeners) {
-                GridEntity entity = kvp.Key;
+            foreach ((GridEntity entity, var updateAction) in _entityListeners) {
                 if (!entity.IsActive()) continue;
                 
                 FoWCell cell = updatedCells.FirstOrDefault(cell => cell.Position == entity.Location!.Value);
                 if (cell != null) {
-                    kvp.Value.Invoke(cell.Hidden);
+                    updateAction.Invoke(cell.Hidden);
                 }
             }
         }
