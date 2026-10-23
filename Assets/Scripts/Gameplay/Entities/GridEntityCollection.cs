@@ -133,8 +133,8 @@ namespace Gameplay.Entities {
             RegisterEntity(entity, newLocation, order);
         }
 
-        public void RemoveEntityFromGrid(GridEntity entity) {
-            if (!entity.IsActive()) return;
+        public void RemoveEntityFromGrid(GridEntity entity, bool validate) {
+            if (validate && !entity.IsActive()) return;
             if (EntitiesOffGrid.Contains(entity)) {
                 Debug.LogError("Attempted to remove an entity that is already off the grid");
                 return;
@@ -165,17 +165,15 @@ namespace Gameplay.Entities {
         /// <summary>
         /// Does not check for placement legality!
         /// </summary>
-        public void PutEntityBackOnGrid(GridEntity entity, Vector2Int location, bool validate) {
+        public void PutEntityBackOnGrid(GridEntity entity, Vector2Int location) {
             if (entity == null || entity.DeadOrDying) return;
-            if (validate) {
-                if (!EntitiesOffGrid.Contains(entity)) {
-                    Debug.LogError("Attempted to place an entity that is not off the grid");
-                    return;
-                }
-                if (IsEntityOnGrid(entity)) {
-                    Debug.LogError("Attempted to place an entity that is already on the grid");
-                    return;
-                }
+            if (!EntitiesOffGrid.Contains(entity)) {
+                Debug.LogError("Attempted to place an entity that is not off the grid");
+                return;
+            }
+            if (IsEntityOnGrid(entity)) {
+                Debug.LogError("Attempted to place an entity that is already on the grid");
+                return;
             }
 
             int order = entity.EntityData.GetStackOrder();
@@ -227,10 +225,10 @@ namespace Gameplay.Entities {
                     MoveEntity(entity, newLocation);
                     break;
                 case GridEntityCollectionUpdate.RemoveFromGrid:
-                    RemoveEntityFromGrid(entity);
+                    RemoveEntityFromGrid(entity, false);
                     break;
                 case GridEntityCollectionUpdate.PutBackOnGrid:
-                    PutEntityBackOnGrid(entity, newLocation, false);
+                    PutEntityBackOnGrid(entity, newLocation);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(updateType), updateType, null);

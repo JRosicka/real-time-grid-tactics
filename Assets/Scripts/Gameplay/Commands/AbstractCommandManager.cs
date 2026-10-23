@@ -102,7 +102,7 @@ public abstract class AbstractCommandManager : NetworkBehaviour, ICommandManager
         GameManager.Instance.AbilityAssignmentManager.CancelAllAbilities(entity, false);
         
         Vector2Int previousLocation = entity.Location!.Value;
-        _entitiesOnGrid.RemoveEntityFromGrid(entity);
+        _entitiesOnGrid.RemoveEntityFromGrid(entity, true);
         // We need to update the entity location first so that EntityCollectionChanged listeners get the updated value for the entity location
         entity.UpdateEntityLocation(null);
         SyncEntityCollection(entity, GridEntityCollectionUpdate.RemoveFromGrid, previousLocation, default);
@@ -112,7 +112,7 @@ public abstract class AbstractCommandManager : NetworkBehaviour, ICommandManager
     }
 
     public void PutEntityBackOnGrid(GridEntity entity, Vector2Int destination) {
-        _entitiesOnGrid.PutEntityBackOnGrid(entity, destination, true);
+        _entitiesOnGrid.PutEntityBackOnGrid(entity, destination);
         // We need to update the entity location first so that EntityCollectionChanged listeners get the updated value for the entity location
         entity.UpdateEntityLocation(destination);
         SyncEntityCollection(entity, GridEntityCollectionUpdate.PutBackOnGrid, default, destination);
