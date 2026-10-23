@@ -165,15 +165,17 @@ namespace Gameplay.Entities {
         /// <summary>
         /// Does not check for placement legality!
         /// </summary>
-        public void PutEntityBackOnGrid(GridEntity entity, Vector2Int location) {
+        public void PutEntityBackOnGrid(GridEntity entity, Vector2Int location, bool validate) {
             if (entity == null || entity.DeadOrDying) return;
-            if (!EntitiesOffGrid.Contains(entity)) {
-                Debug.LogError("Attempted to place an entity that is not off the grid");
-                return;
-            }
-            if (IsEntityOnGrid(entity)) {
-                Debug.LogError("Attempted to place an entity that is already on the grid");
-                return;
+            if (validate) {
+                if (!EntitiesOffGrid.Contains(entity)) {
+                    Debug.LogError("Attempted to place an entity that is not off the grid");
+                    return;
+                }
+                if (IsEntityOnGrid(entity)) {
+                    Debug.LogError("Attempted to place an entity that is already on the grid");
+                    return;
+                }
             }
 
             int order = entity.EntityData.GetStackOrder();
@@ -228,7 +230,7 @@ namespace Gameplay.Entities {
                     RemoveEntityFromGrid(entity);
                     break;
                 case GridEntityCollectionUpdate.PutBackOnGrid:
-                    PutEntityBackOnGrid(entity, newLocation);
+                    PutEntityBackOnGrid(entity, newLocation, false);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(updateType), updateType, null);

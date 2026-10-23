@@ -112,7 +112,7 @@ public abstract class AbstractCommandManager : NetworkBehaviour, ICommandManager
     }
 
     public void PutEntityBackOnGrid(GridEntity entity, Vector2Int destination) {
-        _entitiesOnGrid.PutEntityBackOnGrid(entity, destination);
+        _entitiesOnGrid.PutEntityBackOnGrid(entity, destination, true);
         // We need to update the entity location first so that EntityCollectionChanged listeners get the updated value for the entity location
         entity.UpdateEntityLocation(destination);
         SyncEntityCollection(entity, GridEntityCollectionUpdate.PutBackOnGrid, default, destination);
