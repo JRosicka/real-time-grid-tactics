@@ -43,7 +43,7 @@ namespace Gameplay.Entities.Abilities {
             
             // Try to drop off the target if we are adjacent
             if (CellDistanceLogic.Neighbors(Performer.Location!.Value).Contains(AbilityParameters.DropOffLocation)) {
-                if (EntityPickUpLogic.TryDropOff(Performer, AbilityParameters.Target, AbilityParameters.DropOffLocation)) {
+                if (EntityPickUpLogic.TryDropOff(Performer, AbilityParameters.Target, AbilityParameters.DropOffLocation, false)) {
                     // Success
                     Performer.SetTargetLocation(Performer.Location.Value, null, PathVisualizer.PathType.Move);
                     return (true, AbilityResult.CompletedWithEffect);

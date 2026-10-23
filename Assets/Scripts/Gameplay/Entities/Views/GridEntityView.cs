@@ -635,7 +635,7 @@ namespace Gameplay.Entities {
             DoPickUpAnimation(carrierLocation);
         }
 
-        private void DoGenericDroppedOffAnimation(Vector2Int carrierLocation, Vector2Int dropOffLocation) {
+        public void DoGenericDroppedOffAnimation(Vector2Int carrierLocation, Vector2Int dropOffLocation) {
             ToggleView(true);
             
             // Treat like a spawn

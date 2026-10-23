@@ -98,6 +98,10 @@ namespace Gameplay.Entities {
         public void UnRegisterEntity(GridEntity entity) {
             PositionedGridEntityCollection collection = Entities.FirstOrDefault(c => c.Entities.Any(o => o.Entity == entity));
             if (collection == null) {
+                if (EntitiesOffGrid.Contains(entity)) {
+                    EntitiesOffGrid.Remove(entity);
+                    return;
+                }
                 Debug.LogError("Attempted to unregister an entity that is not registered");
                 return;
             }

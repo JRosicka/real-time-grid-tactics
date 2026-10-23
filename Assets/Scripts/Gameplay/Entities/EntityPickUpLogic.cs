@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using Gameplay.Config;
 using Gameplay.Entities.Abilities;
@@ -36,8 +37,8 @@ namespace Gameplay.Entities {
             return true;
         }
 
-        public static bool CanDropOff(GridEntity carrier, GridEntity passenger) {
-            if (!carrier.IsActive()) return false;
+        public static bool CanDropOff(GridEntity carrier, GridEntity passenger, bool requireActive = true) {
+            if (requireActive && !carrier.IsActive()) return false;
             if (passenger == null || passenger.Location != null || passenger.DeadOrDying) return false;   // passenger does not have a location
             
             // Carrier must be carrying the passenger
@@ -47,14 +48,15 @@ namespace Gameplay.Entities {
         }
 
         // Server method
-        public static bool TryDropOff(GridEntity carrier, GridEntity passenger, Vector2Int location) {
-            if (!CanDropOff(carrier, passenger)) return false;
+        public static bool TryDropOff(GridEntity carrier, GridEntity passenger, Vector2Int location, bool ignoreCarrier, bool requireActive = true) {
+            if (!CanDropOff(carrier, passenger, false)) return false;
 
             // The location must be open
-            if (!PathfinderService.CanEntityEnterCell(location, passenger.EntityData, passenger.Team)) return false;
+            List<GridEntity> entitiesToIgnore = ignoreCarrier ? new List<GridEntity> {carrier} : null;
+            if (!PathfinderService.CanEntityEnterCell(location, passenger.EntityData, passenger.Team, entitiesToIgnore)) return false;
             
-            // Carrier must be adjacent
-            if (!CellDistanceLogic.Neighbors(carrier.Location!.Value).Contains(location)) return false;
+            // Carrier must be in range
+            if (carrier.Location!.Value != location && !CellDistanceLogic.Neighbors(carrier.Location!.Value).Contains(location)) return false;
 
             carrier.DropEntity(passenger);
             

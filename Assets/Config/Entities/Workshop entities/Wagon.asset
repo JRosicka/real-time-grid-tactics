@@ -88,4 +88,5 @@ MonoBehaviour:
   _highlightBuildableCells: 0
   Boostable: 0
   BaseCarryCapacity: 1
-  DeathActions: []
+  DeathActions:
+  - {fileID: 11400000, guid: db3fc380752f4f44687afb2810d88c82, type: 2}

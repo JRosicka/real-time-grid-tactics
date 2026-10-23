@@ -113,7 +113,7 @@ namespace Gameplay.Entities {
             return Time.time - LastAttackedTime;
         }
         
-        private void Kill([NotNull] GridEntity sourceEntity) {
+        public void Kill([NotNull] GridEntity sourceEntity) {
             if (MarkedForDeath) return;
             MarkedForDeath = true;
             
