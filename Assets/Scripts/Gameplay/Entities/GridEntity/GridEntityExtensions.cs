@@ -7,7 +7,6 @@ namespace Gameplay.Entities {
         /// <returns></returns>
         public static bool IsActive(this GridEntity entity) {
             if (!entity) return false;
-            if (!entity.Registered) return false;
             if (entity.DeadOrDying) return false;
             if (entity.Location == null) return false;
 

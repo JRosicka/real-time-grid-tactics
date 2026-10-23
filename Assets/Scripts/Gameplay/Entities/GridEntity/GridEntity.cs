@@ -105,7 +105,7 @@ namespace Gameplay.Entities {
 
         // Misc fields and properties
         [HideInInspector] 
-        public bool Registered;
+        public bool Registered; // Server field
         [HideInInspector] 
         public EntityData EntityData;
         public NetworkableField LastAttackedEntity;
