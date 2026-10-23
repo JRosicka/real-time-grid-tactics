@@ -221,8 +221,8 @@ namespace Gameplay.Entities {
 
         private void Update() {
             UpdateSpawn();
-            UpdatePickUpAnimation();
             UpdateMove();
+            UpdatePickUpAnimation();
             // Need to do attack after movement in order to properly handle when both are happening
             UpdateAttack();
             UpdateDeath();
@@ -434,6 +434,11 @@ namespace Gameplay.Entities {
 
         private void UpdateMove() {
             if (!_moving) return;
+
+            if (_pickingUp) {
+                EndMoveAnimationEarly();
+                return;
+            }
             
             _moveTime += Time.deltaTime;
             transform.position = Vector2.Lerp(_movementStartPosition, _movementTargetPosition, _moveTime / _secondsToMoveToAdjacentCell);
@@ -441,6 +446,11 @@ namespace Gameplay.Entities {
             if (_moveTime > _secondsToMoveToAdjacentCell) {
                 _moving = false;
             }
+        }
+
+        private void EndMoveAnimationEarly() {
+            transform.position = _movementTargetPosition;
+            _moving = false;
         }
         
         #endregion
@@ -657,13 +667,7 @@ namespace Gameplay.Entities {
 
         private void UpdatePickUpAnimation() {
             if (!_pickingUp) return;
-
-            if (_moving) {
-                // We are moving, so instantly finish the pick up animation to not disrupt that
-                EndPickUpAnimationEarly();
-                return;
-            }
-
+            
             _pickUpTime += Time.deltaTime;
             DoUpdatePickUpAnimation();
         }
@@ -679,14 +683,6 @@ namespace Gameplay.Entities {
                 _pickingUp = false;
                 ToggleView(false);
             }
-        }
-
-        private void EndPickUpAnimationEarly() {
-            float moveEvaluationProgress = _spawnMoveAnimationCurve.Evaluate(1);
-            transform.position = Vector2.Lerp(_pickUpStartPosition, _pickUpTargetPosition, moveEvaluationProgress);
-            
-            _pickUpCurrentPosition = null;
-            _pickingUp = false;
         }
         
         #endregion
