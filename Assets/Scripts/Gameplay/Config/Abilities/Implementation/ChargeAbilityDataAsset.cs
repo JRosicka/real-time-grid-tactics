@@ -32,7 +32,7 @@ namespace Gameplay.Config.Abilities {
         public GridController GridController => GameManager.Instance.GridController;
         public EntitySelectionManager EntitySelectionManager => GameManager.Instance.EntitySelectionManager;
         public ICommandManager CommandManager => GameManager.Instance.CommandManager;
-        private TeamFogOfWarTracker TeamFogOfWarTracker => GameManager.Instance.FogOfWarManager!.GetLocalTeamTracker();
+        private TeamFogOfWarTracker TeamFogOfWarTracker(GameTeam team) => GameManager.Instance.FogOfWarManager!.GetTracker(team);
 
         public override bool CancelableWhileOnCooldown => false;
         public override bool CancelableWhileInProgress => false;
@@ -205,7 +205,7 @@ namespace Gameplay.Config.Abilities {
                 Vector2Int oneFurtherCell = viableCells[indexAlongLine + 1];
                 GridEntity entityAtCell = CommandManager.GetEntitiesAtCell(oneFurtherCell)?.GetTopEntity()?.Entity;
                 if (entityAtCell != null 
-                        && (!TeamFogOfWarTracker?.IsLocationHidden(oneFurtherCell) ?? true) 
+                        && (!TeamFogOfWarTracker(selector.Team)?.IsLocationHidden(oneFurtherCell) ?? true) 
                         && (entityAtCell.Team == selector.Team.OpponentTeam() 
                             || entityAtCell.Team == GameTeam.Neutral && entityAtCell.EntityData.Attackable)
                         ) {
@@ -238,7 +238,7 @@ namespace Gameplay.Config.Abilities {
                 }
                 
                 // Can not go through a cell if it is hidden
-                if (TeamFogOfWarTracker?.IsLocationHidden(cell.Location) ?? false) {
+                if (TeamFogOfWarTracker(selector.Team)?.IsLocationHidden(cell.Location) ?? false) {
                     return false;
                 }
                 
@@ -275,7 +275,7 @@ namespace Gameplay.Config.Abilities {
                 GridEntity entityAtCell = locationsWithEntities
                     .FirstOrDefault(l => l.Location == cell.Location)
                     ?.GetTopEntity()?.Entity;
-                if (TeamFogOfWarTracker?.IsLocationHidden(cell.Location) ?? false) {
+                if (TeamFogOfWarTracker(selector.Team)?.IsLocationHidden(cell.Location) ?? false) {
                     // Can't charge into a hidden cell
                     break; 
                 } 
