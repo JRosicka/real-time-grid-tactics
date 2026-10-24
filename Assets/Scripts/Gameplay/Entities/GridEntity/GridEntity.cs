@@ -892,7 +892,7 @@ namespace Gameplay.Entities {
         }
 
         public int GetTerrainDefenseModifier() {
-            return CurrentTileType!.GetDefenseModifier(EntityData);
+            return CurrentTileType == null ? 0 : CurrentTileType.GetDefenseModifier(EntityData);
         }
 
         public void TryRespondToAttack(GridEntity sourceEntity) {
