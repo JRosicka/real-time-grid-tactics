@@ -35,7 +35,7 @@ namespace Gameplay.Managers {
             
             Vector2Int targetLocation = target.Location!.Value;
             
-            AttackAbilityData attackAbilityData = attacker.GetAbilityData<AttackAbilityData>();
+            IAttackAbilityData attackAbilityData = attacker.GetAbilityData<IAttackAbilityData>();
             if (attackAbilityData == null) {
                 Debug.LogWarning("Tried to perform an attack with an entity that does not have an attack ability");
                 return false;

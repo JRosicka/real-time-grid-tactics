@@ -105,6 +105,10 @@ namespace Gameplay.Config.Abilities {
             UpdateChargePathVisual(selector, cell);
             GameManager.Instance.GridIconDisplayer.DisplayOverHoveredCell(this, cell);
         }
+        
+        public void UpdateHoveredVertex(GridEntity selector, HashSet<Vector2Int> cellsAroundHoveredVertex) {
+            // Nothing to do
+        }
 
         public void OwnedPurchasablesChanged(GridEntity selector) {
             Vector2Int? currentlyHoveredCell = GameManager.Instance.GridInputController.CurrentHoveredCell;

@@ -253,8 +253,13 @@ public class EntitySelectionManager {
         _selectedTargetableAbility?.UpdateHoveredCell(SelectedEntity, cell);
     }
 
+    public void HoverOverVertex(HashSet<Vector2Int> cellsAroundHoveredVertex) {
+        _selectedTargetableAbility?.UpdateHoveredVertex(SelectedEntity, cellsAroundHoveredVertex);
+    }
+
     public void StopHovering() {
         _selectedTargetableAbility?.UpdateHoveredCell(SelectedEntity, null);
+        _selectedTargetableAbility?.UpdateHoveredVertex(SelectedEntity, null);
     }
 
     public void OwnedPurchasablesChanged() {

@@ -1,0 +1,53 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 28803cf3c8ef48aea0ca906c46bb9c7b, type: 3}
+  m_Name: Catapult Attack Ability
+  m_EditorClassIdentifier: Assembly-CSharp::Gameplay.Config.Abilities.CatapultAttackAbilityDataAsset
+  Data:
+    _contentResourceID: Catapult Attack Ability
+    _id: Target Attack
+    _description: Target an area to repeatedly attack there.
+    _icon: {fileID: 21300000, guid: 45c8ed6b1c7304c2b8c2da42a84e8873, type: 3}
+    _iconScaleInSelectionInterface: 1
+    _overrideIconForGrid: {fileID: 21300000, guid: dc250a32bcb7a47cdb6d2aeb98bb903b, type: 3}
+    _flipGridIcon: 0
+    _gridIconColor: {r: 0.8509804, g: 0.42352942, b: 0.03529412, a: 1}
+    _slotSprites: {fileID: 11400000, guid: c443d76e6475d324c8295e3d9741d1a1, type: 2}
+    _timerView: {fileID: 3613232002330387423, guid: f40c3d65f7969d74995aff7c067ce52a, type: 3}
+    _requirements: []
+    _performDuration: 0
+    _cooldownDuration: 3
+    _channel: {fileID: 11400000, guid: 98e93cf2e89779d4494a08d38620b523, type: 2}
+    _channelBlockers: []
+    _slotLocation: 6
+    _performOnStart: 0
+    _cooldownOnStart: 0
+    _repeatWhenCooldownFinishes: 0
+    _animateWhenCooldownComplete: 0
+    _selectable: 1
+    _selectableWhenBlocked: 1
+    _autoSelect: 0
+    _selectableForAllPlayers: 0
+    _appearsInBuildMenu: 0
+    _tryingToPerformCancelsBuilds: 1
+    _tryingToPerformCancelsHoldPosition: 0
+    _activeBlocksDefaultAttack: 1
+    _cooldownBlocksDefaultAttack: 1
+    _sendEffectPerformedEventsEvenWithNoTimer: 0
+    _showTimerOnSelectionInterface: 1
+    _performByDefault: 0
+    _selectionSFX: {fileID: 11400000, guid: 70eefff0cc3d841c3b7dfa1f4c7fc5f5, type: 2}
+    _cantPerformSFX: {fileID: 0}
+    _targetedSFX: {fileID: 11400000, guid: 05b6c460463864379bf3859627a7ae6e, type: 2}
+    _performedSFX: {fileID: 0}
+    _triggersEntityOrderVoiceLine: 1
+    _attackType: 3

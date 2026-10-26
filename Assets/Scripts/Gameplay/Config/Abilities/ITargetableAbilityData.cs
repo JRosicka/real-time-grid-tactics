@@ -27,6 +27,10 @@ namespace Gameplay.Config.Abilities {
         /// </summary>
         void UpdateHoveredCell(GridEntity selector, Vector2Int? cell);
         /// <summary>
+        /// Perform any ability selection logic in response to the player hovering the mouse closer to a different vertex
+        /// </summary>
+        void UpdateHoveredVertex(GridEntity selector, [CanBeNull] HashSet<Vector2Int> cellsAroundHoveredVertex);
+        /// <summary>
         /// Triggered when the owned purchasables collection for the local player has been updated
         /// </summary>
         void OwnedPurchasablesChanged(GridEntity selector);

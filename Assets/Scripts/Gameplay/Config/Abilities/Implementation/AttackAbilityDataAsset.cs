@@ -16,8 +16,9 @@ namespace Gameplay.Config.Abilities {
     /// attacking anything on the way)
     /// </summary>
     [Serializable]
-    public class AttackAbilityData : AbilityDataBase<AttackAbilityParameters>, ITargetableAbilityData {
-        public AttackAbilityLogicType AttackType;
+    public class AttackAbilityData : AbilityDataBase<AttackAbilityParameters>, ITargetableAbilityData, IAttackAbilityData {
+        [SerializeField] private AttackAbilityLogicType _attackType;
+        public AttackAbilityLogicType AttackType => _attackType;
 
         public override bool CancelableWhileOnCooldown => false;
         public override bool CancelableWhileInProgress => true;
@@ -79,6 +80,10 @@ namespace Gameplay.Config.Abilities {
 
         public void UpdateHoveredCell(GridEntity selector, Vector2Int? cell) {
             GameManager.Instance.GridIconDisplayer.DisplayOverHoveredCell(this, cell);
+        }
+
+        public void UpdateHoveredVertex(GridEntity selector, HashSet<Vector2Int> cellsAroundHoveredVertex) {
+            // Nothing to do
         }
 
         public void OwnedPurchasablesChanged(GridEntity selector) {

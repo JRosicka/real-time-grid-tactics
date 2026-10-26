@@ -88,6 +88,10 @@ namespace Gameplay.Config.Abilities {
             GameManager.Instance.GridIconDisplayer.DisplayOverHoveredCell(this, cell);
         }
 
+        public void UpdateHoveredVertex(GridEntity selector, HashSet<Vector2Int> cellsAroundHoveredVertex) {
+            // Nothing to do
+        }
+
         public void OwnedPurchasablesChanged(GridEntity selector) {
             List<Vector2Int> viableTargets = GetViableTargets(selector);
             GridController.UpdateSelectableCells(viableTargets, true, false, selector);

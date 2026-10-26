@@ -5,6 +5,7 @@ namespace Gameplay.Entities.Abilities {
     public enum AttackAbilityLogicType {
         None = 0,
         NormalMelee = 1,
-        ArcherArrow = 2
+        ArcherArrow = 2,
+        CatapultRocks = 3,
     }
 }

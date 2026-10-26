@@ -73,6 +73,10 @@ namespace Gameplay.Config.Abilities {
         public void UpdateHoveredCell(GridEntity selector, Vector2Int? cell) {
             GameManager.Instance.GridIconDisplayer.DisplayOverHoveredCell(this, cell);
         }
+        public void UpdateHoveredVertex(GridEntity selector, HashSet<Vector2Int> cellsAroundHoveredVertex) {
+            // Nothing to do
+        }
+        
         public void OwnedPurchasablesChanged(GridEntity selector) {
             // Nothing to do
         }

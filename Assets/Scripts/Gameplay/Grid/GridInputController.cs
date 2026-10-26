@@ -1,7 +1,9 @@
 using System;
-using System.Runtime.CompilerServices;
+using System.Collections.Generic;
+using System.Linq;
 using Gameplay.Config;
 using Scenes;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -17,6 +19,7 @@ namespace Gameplay.Grid {
         private GameManager _gameManager;
         
         public Vector2Int? CurrentHoveredCell { get; private set; }
+        public HashSet<Vector2Int> CurrentClosestVertex { get; private set; }  // Represented by the three cells around said vertex
 
         public void Initialize(EntitySelectionManager entitySelectionManager, GameManager gameManager) {
             _entitySelectionManager = entitySelectionManager;
@@ -53,12 +56,23 @@ namespace Gameplay.Grid {
         }
         
         public void ProcessMouseMove(PointerEventData eventData) {
-            Vector2Int mousePos = _gridController.GetCellPosition(eventData.pointerCurrentRaycast.worldPosition);
-            if (mousePos == CurrentHoveredCell) return;
-            if (!_gridController.IsInBounds(mousePos)) return;
-            CurrentHoveredCell = mousePos;
+            Vector3 worldPos = eventData.pointerCurrentRaycast.worldPosition;
+            Vector2Int mousePos = _gridController.GetCellPosition(worldPos);
             
-            _gridController.HoverOverCell(mousePos);
+            if (!_gridController.IsInBounds(mousePos)) return;
+            
+            // Update the current hovered cell if it changed
+            if (mousePos != CurrentHoveredCell) {
+                CurrentHoveredCell = mousePos;
+                _gridController.HoverOverCell(mousePos);
+            }
+            
+            // Update the closest vertex if it changed
+            HashSet<Vector2Int> closestVertex = _gridController.GetClosestVertexPosition(worldPos);
+            if (CurrentClosestVertex == null || !closestVertex.SequenceEqual(CurrentClosestVertex)) {
+                CurrentClosestVertex = closestVertex;
+                _gridController.HoverOverVertex(closestVertex);
+            }
         }
 
         public void ReProcessMousePosition() {
@@ -69,6 +83,7 @@ namespace Gameplay.Grid {
 
         public void ProcessMouseExit() {
             CurrentHoveredCell = null;
+            CurrentClosestVertex = null;
             _gridController.StopHovering();
         }
         

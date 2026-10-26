@@ -4,6 +4,7 @@ using Gameplay.Config;
 using Gameplay.Entities;
 using Gameplay.Managers;
 using Gameplay.UI;
+using JetBrains.Annotations;
 using Sirenix.Utilities;
 using UnityEngine;
 using UnityEngine.Tilemaps;
@@ -171,6 +172,10 @@ namespace Gameplay.Grid {
             _entitySelectionManager.HoverOverCell(cell);
         }
 
+        public void HoverOverVertex(HashSet<Vector2Int> cellsAroundVertex) {
+            _entitySelectionManager.HoverOverVertex(cellsAroundVertex);
+        }
+
         public void StopHovering() {
             _mouseReticle.Hide();
             _entitySelectionManager.StopHovering();
@@ -290,6 +295,26 @@ namespace Gameplay.Grid {
         public Vector2Int GetCellPosition(Vector2 worldPosition) {
             Vector2Int cellPosition = (Vector2Int) _grid.WorldToCell(worldPosition);
             return cellPosition;
+        }
+
+        /// <summary>
+        /// Returns the three cells (in grid space) around the vertex closest to the given world position.
+        /// 
+        /// Note that this can only return vertices that do have three real cells around them. So vertices that
+        /// are along the perimeter of the grid cannot be returned -- in the case where the mouse is closest to one of
+        /// these, the next-closest eligible vertex is returned instead. 
+        /// </summary>
+        [NotNull]
+        public HashSet<Vector2Int> GetClosestVertexPosition(Vector2 worldPosition) {
+            Vector2Int cellPosition = GetCellPosition(worldPosition);
+            
+            // Determine the distance of each neighboring cell. The two closest cells win. 
+            return GridData.GetAdjacentCells(cellPosition)
+                .Select(c => c.Location)
+                .OrderBy(l => (GetWorldPosition(l) - cellPosition).magnitude)
+                .Take(2)
+                .Append(cellPosition)
+                .ToHashSet();
         }
         
         #endregion
