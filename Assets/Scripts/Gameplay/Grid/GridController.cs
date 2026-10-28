@@ -17,6 +17,7 @@ namespace Gameplay.Grid {
     public class GridController : MonoBehaviour {
         public const float CellWidth = 0.8659766f;
         public const float CellWidthWithBuffer = 0.88f;
+        public const float CellHeight = 1f;
     
         [SerializeField] private UnityEngine.Grid _grid;
         [SerializeField] private Tilemap _gameplayTilemap;
@@ -309,14 +310,39 @@ namespace Gameplay.Grid {
             Vector2Int cellPosition = GetCellPosition(worldPosition);
             
             // Determine the distance of each neighboring cell. The two closest cells win. 
-            return GridData.GetAdjacentCells(cellPosition)
+            List<Vector2Int> cellsToConsider = GridData.GetAdjacentCells(cellPosition)
                 .Select(c => c.Location)
-                .OrderBy(l => (GetWorldPosition(l) - cellPosition).magnitude)
-                .Take(2)
-                .Append(cellPosition)
-                .ToHashSet();
+                .Where(IsInBounds) 
+                .OrderBy(l => (GetWorldPosition(l) - worldPosition).magnitude)
+                .ToList();
+            HashSet<Vector2Int> returnCells = new HashSet<Vector2Int>() { cellPosition };
+            foreach (Vector2Int cell in cellsToConsider.TakeWhile(_ => returnCells.Count != 3)) {
+                if (returnCells.Count < 2) {
+                    // Haven't taken a cell yet, so take this closest one
+                    returnCells.Add(cell);
+                } else if (CellDistanceLogic.Neighbors(cell).Contains(cellsToConsider[0])) {
+                    // Only take the cell if it is adjacent to the closest
+                    returnCells.Add(cell);
+                }
+            }
+
+            return returnCells;
         }
-        
+
+        public Vector2 GetWorldPosition(HashSet<Vector2Int> cellsAroundVertex) {
+            Vector2 halfCellHeight = new Vector2(0, CellHeight / 2f);
+            
+            int yMax = cellsAroundVertex.Select(c => c.y).Max();
+            bool wideTop = cellsAroundVertex.Count(c => c.y == yMax) == 2;
+            if (wideTop) {
+                Vector2Int bottom = cellsAroundVertex.First(c => c.y != yMax);
+                return GetWorldPosition(bottom) + halfCellHeight;
+            } else {
+                Vector2Int top = cellsAroundVertex.First(c => c.y == yMax);
+                return GetWorldPosition(top) - halfCellHeight;
+            }
+        }
+
         #endregion
     }
 }

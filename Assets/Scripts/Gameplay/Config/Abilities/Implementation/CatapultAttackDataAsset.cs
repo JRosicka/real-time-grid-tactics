@@ -21,6 +21,10 @@ namespace Gameplay.Config.Abilities {
     [Serializable]
     public class CatapultAttackAbilityData : AbilityDataBase<CatapultAttackAbilityParameters>, ITargetableAbilityData, IAttackAbilityData {
         [SerializeField] private AttackAbilityLogicType _attackType;
+        
+        private GridReticleVisualizer GridReticleVisualizer => GameManager.Instance.GridReticleVisualizer;
+        
+        
         public AttackAbilityLogicType AttackType => _attackType;
 
         public override bool CancelableWhileOnCooldown => false;
@@ -103,16 +107,11 @@ namespace Gameplay.Config.Abilities {
 
         private void UpdateAimVisual(GridEntity selector, HashSet<Vector2Int> cellsAroundHoveredVertex) {
             if (cellsAroundHoveredVertex == null) {
-                // TODO hide visual
+                GridReticleVisualizer.HideCatapultAimReticle();
                 return;
             }
 
-            int yMax = cellsAroundHoveredVertex.Select(c => c.y).Max();
-            if (cellsAroundHoveredVertex.Count(c => c.y == yMax) == 2) {
-                // TODO Use wide-topped visual
-            } else {
-                // TODO Use wide-bottomed visual
-            }
+            GridReticleVisualizer.UpdateCatapultAimReticle(cellsAroundHoveredVertex);
         }
 
         #endregion

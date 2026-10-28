@@ -44,6 +44,7 @@ public class GameManager : MonoBehaviour {
     public ControlGroupsViewZone ControlGroupsViewZone;
     public WorldParticlesManager ParticlesManager;
     public FogOfWarDisplayer FogOfWarDisplayer;
+    public GridReticleVisualizer GridReticleVisualizer;
     
     public PathfinderService PathfinderService;
     public EntitySelectionManager EntitySelectionManager;
