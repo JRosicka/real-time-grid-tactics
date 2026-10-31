@@ -101,7 +101,7 @@ namespace Gameplay.Config.Abilities {
         public bool DeselectAfterAttempt => true;
         public List<MouseClick> DefaultAllowableClicks => new() { MouseClick.Left };
 
-        private HashSet<Vector2Int> GetCellsInRange(GridEntity performer) {
+        public HashSet<Vector2Int> GetCellsInRange(GridEntity performer) {
             if (!performer.IsActive()) return new HashSet<Vector2Int>();
             
             return GridData.GetCellsInRange(performer.Location!.Value, Range(performer))
@@ -110,7 +110,7 @@ namespace Gameplay.Config.Abilities {
                 .ToHashSet();
         }
         
-        private int Range(GridEntity performer) => HasCatapultUpgrade(performer.Team) ? performer.Range + 1 : performer.Range;
+        public int Range(GridEntity performer) => HasCatapultUpgrade(performer.Team) ? performer.Range + 1 : performer.Range;
         
         private bool HasCatapultUpgrade(GameTeam team) {
             IGamePlayer player = GameManager.Instance.GetPlayerForTeam(team);

@@ -33,27 +33,31 @@ namespace Gameplay.Entities.Abilities {
         }
 
         public override bool TryDoAbilityStartEffect() {
-            if (!Performer.HoldingPosition) {
-                // Performer.SetTargetLocation(AbilityParameters.Destination, null, PathVisualizer.PathType.AttackMove);
-            }
+            // Performer.SetTargetLocation(AbilityParameters.Destination, null, PathVisualizer.PathType.AttackMove);
             return true;
         }
 
         protected override (bool, AbilityResult) DoAbilityEffect() {
             Vector2Int? attackerLocation = Performer.Location;
             if (attackerLocation == null) {
-                // The entity must be in the process of being killed since it is not present in the entities collection
+                // The entity must be in the process of being killed (or is picked up) since it is not present in the entities collection
                 return (false, AbilityResult.Failed);
             }
-            
-            // First check to see if there is anything in range to attack
-            List<GridEntity> viableTargets = DetermineTargetsForAttackMove(Performer, attackerLocation.Value);  // TODO-abilities if this is too expensive to do every update tick when there are a lot of entities, then we might need to keep track of when the last collection update occurred, and cache that in the parameters and check it before performing this operation.  
-            if (viableTargets != null && viableTargets.Any()) {
-                if (Performer.ActiveTimers.Any(t => t.Ability.AbilityData.Channel == AbilityData.Channel)) {
-                    // We are in range of a target, but attacking is on cooldown. Do nothing for now. 
-                    return (false, AbilityResult.IncompleteWithoutEffect);
-                }
 
+            if (Performer.ActiveTimers.Any(t => t.Ability.AbilityData.Channel == AbilityData.Channel)) {
+                // We are in range of a target, but attacking is on cooldown. Do nothing for now. 
+                return (false, AbilityResult.IncompleteWithoutEffect);
+            }
+
+            // If we are targeting a particular location, try to fire there
+            if (AbilityParameters.TargetCells is { Count: > 0 }) {
+                DoAttack(AbilityParameters.TargetCells);
+                return (true, AbilityResult.IncompleteWithEffect);
+            } 
+            
+            // Otherwise find a valid target if one exists
+            List<GridEntity> viableTargets = DetermineTargetsForAttackMove(Performer, attackerLocation.Value);
+            if (viableTargets != null && viableTargets.Any()) {
                 // Pick the target
                 GridEntity target;
                 if (viableTargets.Count == 1) {
@@ -66,33 +70,19 @@ namespace Gameplay.Entities.Abilities {
                 return (true, AbilityResult.IncompleteWithEffect);
             }
 
+            TryClearLastAttackedEntity();
+
+            return (false, AbilityResult.IncompleteWithoutEffect);
+        }
+
+        private void TryClearLastAttackedEntity() {
             if (Performer.LastAttackedEntityValue != null) {
                 // We are not immediately doing an attack when it is available, so clear the last attack target
                 Performer.LastAttackedEntity.UpdateValue(new NetworkableGridEntityValue(null));
             }
-
-            // // If we are at the destination, then just keep performing the attack move at the current location in case 
-            // // anything else comes in range 
-            // if (attackerLocation == AbilityParameters.Destination) {
-            //     if (AbilityParameters.Reaction) {
-            //         // But not for reactions, we want those to actually end.
-            //         return (false, AbilityResult.CompletedWithoutEffect);
-            //     }
-            //     return (false, AbilityResult.IncompleteWithoutEffect);
-            // }
-            
-            // If the attacker is holding position, then don't try to move closer
-            if (Performer.HoldingPosition) {
-                return (false, AbilityResult.IncompleteWithoutEffect);
-            }
-            
-            // If no move available, then don't do anything else for now
-            if (Performer.ActiveTimers.Any(t => t.Ability is MoveAbility)) {
-                return (false, AbilityResult.IncompleteWithoutEffect);
-            }
-            
-            return (false, AbilityResult.IncompleteWithoutEffect);
         }
+
+        private int Range => Data.Range(Performer);
 
         /// <summary>
         /// Try to find available targets in range for this attack move
@@ -103,7 +93,7 @@ namespace Gameplay.Entities.Abilities {
             Vector2Int? attackerLocation = attacker.Location;
             if (attackerLocation == null) return null;
             
-            List<Vector2Int> cellsInRange = GridData.GetCellsInRange(location, attacker.Range)
+            List<Vector2Int> cellsInRange = GridData.GetCellsInRange(location, Range)
                 .Select(c => c.Location)
                 .ToList();
             // Only get the top entities - can't attack an entity under another entity
@@ -144,17 +134,30 @@ namespace Gameplay.Entities.Abilities {
             enemiesInRange = enemiesInRange.OrderBy(e => e.UID).ToList();
             return enemiesInRange;
         }
-        
+
         private void DoAttack(Vector2Int location) {
-            // Even though we have our target, we need to check if there is any viable target on top of the target. If so, 
-            // then the attack needs to go towards whatever entity is on top of the stack. Them's the rules. 
-            GridEntity target = GameManager.Instance.GetTopEntityAtLocation(location);
-            if (target == null) {
-                Debug.LogWarning("Unexpectedly failed to find the attack target");
-                return;
-            }
+            List<Vector2Int> targetCells = new List<Vector2Int> { location };
             
-            GameManager.Instance.AttackManager.PerformAttack(Performer, target, 0, false);
+            // Pick random (eligible) adjacent cells to the location to include in the attack, favoring cells closer to the performer
+            var cellsInRange = Data.GetCellsInRange(Performer);
+            List<Vector2Int> eligibleAdjacentCells = GridData.GetAdjacentCells(location)
+                .Select(c => c.Location)
+                .Where(c => cellsInRange.Contains(c))
+                .OrderBy(c => CellDistanceLogic.DistanceBetweenCells(c, Performer.Location.Value))
+                .ToList();
+            
+            // Pick the closest to be in the target group
+            targetCells.Add(eligibleAdjacentCells.First());
+            
+            // Get the third cell. It might not be a real cell if this is on the edge of the map!
+            List<Vector2Int> eligibleThirdCells = CellDistanceLogic.Neighbors(targetCells[0]).Intersect(CellDistanceLogic.Neighbors(targetCells[1])).ToList();
+            targetCells.Add(eligibleThirdCells.OrderBy(c => CellDistanceLogic.DistanceBetweenCells(c, Performer.Location.Value)).First());
+            
+            DoAttack(targetCells.ToHashSet());
+        }
+        
+        private void DoAttack(HashSet<Vector2Int> location) {
+            GameManager.Instance.AttackManager.PerformAttack(Performer, location, 0, true);
         }
     }
 

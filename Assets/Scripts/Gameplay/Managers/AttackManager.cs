@@ -4,6 +4,7 @@ using Gameplay.Config.Abilities;
 using Gameplay.Entities;
 using Gameplay.Entities.Abilities;
 using Gameplay.Entities.Upgrades;
+using Gameplay.Grid;
 using Gameplay.UI;
 using JetBrains.Annotations;
 using Sirenix.Utilities;
@@ -51,6 +52,28 @@ namespace Gameplay.Managers {
             return true;
         }
 
+        public bool PerformAttack(GridEntity attacker, HashSet<Vector2Int> targetLocations, int bonusDamage, bool updateTargetLocation) {
+            IAttackAbilityData attackAbilityData = attacker.GetAbilityData<IAttackAbilityData>();
+            if (attackAbilityData == null) {
+                Debug.LogWarning("Tried to perform an attack with an entity that does not have an attack ability");
+                return false;
+            }
+
+            IAttackLogic attackLogic = AttackAbilityLogicFactory.CreateAttackLogic(attackAbilityData.AttackType);
+            attackLogic.DoAttack(attacker, targetLocations, bonusDamage);
+
+            if (updateTargetLocation) {
+                // Pick one of the locations closest to the attacker
+                int minDistance = targetLocations.Min(l => CellDistanceLogic.DistanceBetweenCells(attacker.Location!.Value, l));
+                List<Vector2Int> eligibleTargetLocations = targetLocations.Where(l => CellDistanceLogic.DistanceBetweenCells(attacker.Location!.Value, l) == minDistance).ToList();
+                Vector2Int targetLocation = eligibleTargetLocations[GameManager.Instance.SeedManager.GetRNG(attacker.UID).Next(0, eligibleTargetLocations.Count)];
+                
+                attacker.SetTargetLocation(targetLocation, null, PathVisualizer.PathType.TargetAttack);
+            }
+
+            return true;
+        }
+
         /// <summary>
         /// Deal damage from an attack. The damage does not actually get dealt right away - it gets recorded and applied
         /// during the next round of ability execution.
@@ -79,7 +102,6 @@ namespace Gameplay.Managers {
         }
 
         private static void DoDealDamage([NotNull] GridEntity attacker, GridEntity target, int bonusDamage) {
-            attacker.LastAttackedEntity.UpdateValue(new NetworkableGridEntityValue(target));
             if (target.Location == null) {
                 Debug.LogWarning("Entity received attack but it is not registered or unregistered");
                 return;
@@ -90,9 +112,11 @@ namespace Gameplay.Managers {
             bool killed = target.HPHandler.ReceiveAttackFromEntity(attacker, bonusDamage);
             target.TryRespondToAttack(attacker);
 
-            // TODO For splash damage, this should gather a total amount of kills in the given instant in order to account for multiple kills at once (splash damage)
             if (killed) {
+                attacker.LastAttackedEntity.UpdateValue(new NetworkableGridEntityValue(null));
                 attacker.IncrementKillCount();
+            } else {
+                attacker.LastAttackedEntity.UpdateValue(new NetworkableGridEntityValue(target));
             }
         }
     }

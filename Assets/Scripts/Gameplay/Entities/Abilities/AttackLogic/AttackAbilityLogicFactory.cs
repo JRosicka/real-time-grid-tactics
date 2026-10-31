@@ -1,5 +1,4 @@
 using System;
-using Gameplay.Config.Abilities;
 
 namespace Gameplay.Entities.Abilities {
     /// <summary>
@@ -11,6 +10,7 @@ namespace Gameplay.Entities.Abilities {
                 AttackAbilityLogicType.None => null,
                 AttackAbilityLogicType.NormalMelee => new MeleeAttackLogic(),
                 AttackAbilityLogicType.ArcherArrow => new ArcherArrowAttackLogic(),
+                AttackAbilityLogicType.CatapultRocks => new CatapultAttackLogic(),
                 _ => throw new ArgumentOutOfRangeException()
             };
         }

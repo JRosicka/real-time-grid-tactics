@@ -3004,6 +3004,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ArcherArrow: {fileID: 6713023327431512938, guid: 7ae4d1f5989894796b824bc120222926, type: 3}
+  CatapultRocks: {fileID: 7617044373295951459, guid: a2b18a758cb9eac4ea4dd03cf7d2d352, type: 3}
   StructureImagesView: {fileID: 5769588006877291633, guid: d46915fc53def4d80b9c3622b0a711d1, type: 3}
 --- !u!1 &1153804042
 GameObject:

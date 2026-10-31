@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Gameplay.Grid;
 using Mirror;
 using Scenes;
@@ -26,6 +27,10 @@ namespace Gameplay.Entities.Abilities {
             }
 
             arrow.Initialize(attacker, target, bonusDamage);
+        }
+
+        public void DoAttack(GridEntity attacker, HashSet<Vector2Int> targetLocations, int bonusDamage) {
+            throw new System.NotImplementedException();
         }
     }
 }
