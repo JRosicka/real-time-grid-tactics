@@ -30,9 +30,25 @@ namespace Util {
             return str;
         }
 
-        public static List<Vector2Int> ToVector2Ints(this string vectorsString) {
+        public static List<Vector2Int> ToVector2IntList(this string vectorsString) {
             string[] vectorStrings = vectorsString.Split('|').ToArray();
             return vectorStrings.Select(vectorString => vectorString.ToVector2Int()).ToList();
+        }
+        
+        public static string ConvertToString(this HashSet<Vector2Int> vectors) {
+            string str = string.Empty;
+            foreach (Vector2Int vector in vectors) {
+                if (str != string.Empty) {
+                    str += "|";
+                }
+                str += $"({vector.x},{vector.y})";
+            }
+            return str;
+        }
+
+        public static HashSet<Vector2Int> ToVector2IntSet(this string vectorsString) {
+            string[] vectorStrings = vectorsString.Split('|').ToArray();
+            return vectorStrings.Select(vectorString => vectorString.ToVector2Int()).ToHashSet();
         }
     }
 }

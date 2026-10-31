@@ -44,6 +44,10 @@ namespace Gameplay.Grid {
             return directions.Select(direction => cell + direction);
         }
 
+        public static bool AreCellsAdjacent(this Vector2Int cell, Vector2Int other) {
+            return Neighbors(cell).Contains(other);
+        }
+
         public static Vector2Int NeighborInDirection(Vector2Int cell, DirectionAngle direction) {
             Vector2Int[] directions = cell.y % 2 == 0 ? DirectionsWhenYIsEven : DirectionsWhenYIsOdd;
             return direction switch {

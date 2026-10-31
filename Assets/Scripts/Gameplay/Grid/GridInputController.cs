@@ -20,6 +20,7 @@ namespace Gameplay.Grid {
         
         public Vector2Int? CurrentHoveredCell { get; private set; }
         public HashSet<Vector2Int> CurrentClosestVertex { get; private set; }  // Represented by the three cells around said vertex
+        public Vector2 CurrentMousePosition { get; private set; }
 
         public void Initialize(EntitySelectionManager entitySelectionManager, GameManager gameManager) {
             _entitySelectionManager = entitySelectionManager;
@@ -56,21 +57,29 @@ namespace Gameplay.Grid {
         }
         
         public void ProcessMouseMove(PointerEventData eventData) {
-            Vector3 worldPos = eventData.pointerCurrentRaycast.worldPosition;
-            Vector2Int mousePos = _gridController.GetCellPosition(worldPos);
+            CurrentMousePosition = eventData.pointerCurrentRaycast.worldPosition;
+            Vector2Int mousePos = _gridController.GetCellPosition(CurrentMousePosition);
             
             if (!_gridController.IsInBounds(mousePos)) return;
             
             // Update the current hovered cell if it changed
-            if (mousePos != CurrentHoveredCell) {
+            bool newHoveredCell = CurrentHoveredCell != mousePos;
+            if (newHoveredCell) {
                 CurrentHoveredCell = mousePos;
-                _gridController.HoverOverCell(mousePos);
             }
             
             // Update the closest vertex if it changed
-            HashSet<Vector2Int> closestVertex = _gridController.GetClosestVertexPosition(worldPos);
-            if (CurrentClosestVertex == null || !closestVertex.SequenceEqual(CurrentClosestVertex)) {
+            HashSet<Vector2Int> closestVertex = _gridController.GetClosestVertexPosition(CurrentMousePosition);
+            bool newHoveredVertex = CurrentClosestVertex == null || !closestVertex.SequenceEqual(CurrentClosestVertex);
+            if (newHoveredVertex) {
                 CurrentClosestVertex = closestVertex;
+            }
+
+            // Invoke these events after possibly updating both cached fields
+            if (newHoveredCell) {
+                _gridController.HoverOverCell(mousePos);
+            }
+            if (newHoveredVertex) {
                 _gridController.HoverOverVertex(closestVertex);
             }
         }

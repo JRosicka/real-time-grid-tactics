@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Gameplay.Config.Upgrades;
 using Gameplay.Entities;
 using Gameplay.Entities.Abilities;
 using Gameplay.Grid;
@@ -21,9 +22,11 @@ namespace Gameplay.Config.Abilities {
     [Serializable]
     public class CatapultAttackAbilityData : AbilityDataBase<CatapultAttackAbilityParameters>, ITargetableAbilityData, IAttackAbilityData {
         [SerializeField] private AttackAbilityLogicType _attackType;
+        [SerializeField] private UpgradeData _catapultUpgrade;
         
         private GridReticleVisualizer GridReticleVisualizer => GameManager.Instance.GridReticleVisualizer;
-        
+        private GridController GridController => GameManager.Instance.GridController;
+        private GridData GridData => GridController.GridData;
         
         public AttackAbilityLogicType AttackType => _attackType;
 
@@ -53,7 +56,7 @@ namespace Gameplay.Config.Abilities {
 
         public override IAbilityParameters DeserializeParametersFromJson(Dictionary<string, object> json) {
             return new CatapultAttackAbilityParameters {
-                TargetCells = ((string)json["TargetCells"]).ToVector2Ints()
+                TargetCells = ((string)json["TargetCells"]).ToVector2IntSet()
             };
         }
 
@@ -62,13 +65,8 @@ namespace Gameplay.Config.Abilities {
         }
         
         public void DoTargetableAbility(Vector2Int cellPosition, GridEntity selectedEntity, GameTeam selectorTeam, System.Object targetData) {
-            GridEntity target = GameManager.Instance.GetTopEntityAtLocation(cellPosition);    // Only able to target the top entity!
-            if (target != null && target.Team == selectedEntity.Team) {
-                target = null;
-            }
-            GameManager.Instance.AbilityAssignmentManager.StartPerformingAbility(selectedEntity, this, new AttackAbilityParameters {
-                    Target = target, 
-                    Destination = cellPosition
+            GameManager.Instance.AbilityAssignmentManager.StartPerformingAbility(selectedEntity, this, new CatapultAttackAbilityParameters() {
+                    TargetCells = ClosestLegalAimVertex(selectedEntity, GameManager.Instance.GridInputController.CurrentClosestVertex),
                 }, true, true, true, true);
             selectedEntity.SetTargetLocation(cellPosition, null, PathVisualizer.PathType.AttackMove);
         }
@@ -78,7 +76,7 @@ namespace Gameplay.Config.Abilities {
         }
 
         public void UpdateHoveredCell(GridEntity selector, Vector2Int? cell) {
-            // Nothing to do
+            UpdateAimVisual(selector, GameManager.Instance.GridInputController.CurrentClosestVertex);
         }
         
         public void UpdateHoveredVertex(GridEntity selector, HashSet<Vector2Int> cellsAroundHoveredVertex) {
@@ -99,10 +97,26 @@ namespace Gameplay.Config.Abilities {
         }
 
         public string AbilityVerb => "attack";
-        public bool ShowIconOnGridWhenSelected => true;
+        public bool ShowIconOnGridWhenSelected => false;
         public bool DeselectAfterAttempt => true;
         public List<MouseClick> DefaultAllowableClicks => new() { MouseClick.Left };
 
+        private HashSet<Vector2Int> GetCellsInRange(GridEntity performer) {
+            if (!performer.IsActive()) return new HashSet<Vector2Int>();
+            
+            return GridData.GetCellsInRange(performer.Location!.Value, Range(performer))
+                .Select(c => c.Location)
+                .Where(l => l != performer.Location!.Value)
+                .ToHashSet();
+        }
+        
+        private int Range(GridEntity performer) => HasCatapultUpgrade(performer.Team) ? performer.Range + 1 : performer.Range;
+        
+        private bool HasCatapultUpgrade(GameTeam team) {
+            IGamePlayer player = GameManager.Instance.GetPlayerForTeam(team);
+            return player.OwnedPurchasablesController.HasUpgrade(_catapultUpgrade);
+        }
+        
         #region Visuals and Aiming
 
         private void UpdateAimVisual(GridEntity selector, HashSet<Vector2Int> cellsAroundHoveredVertex) {
@@ -111,7 +125,54 @@ namespace Gameplay.Config.Abilities {
                 return;
             }
 
-            GridReticleVisualizer.UpdateCatapultAimReticle(cellsAroundHoveredVertex);
+            GridReticleVisualizer.UpdateCatapultAimReticle(ClosestLegalAimVertex(selector, cellsAroundHoveredVertex));
+        }
+
+        private HashSet<Vector2Int> ClosestLegalAimVertex(GridEntity selector, HashSet<Vector2Int> cellsAroundHoveredVertex) {
+            HashSet<Vector2Int> cellsInRange = GetCellsInRange(selector);
+            if (cellsAroundHoveredVertex.All(l => cellsInRange.Contains(l))) {
+                return cellsAroundHoveredVertex;
+            }
+            
+            // Pick the closest in-range vertex to display the aim visual
+            // First, get the distance of the closest legal cell to the hovered cell. Track the in-range cells that are closest to any of the hovered cells (probably a tie for multiple cells)
+            int minDistance = int.MaxValue;
+            List<Vector2Int> closestInRangeCells = new List<Vector2Int>();
+            foreach (Vector2Int cell in cellsInRange) {
+                foreach (Vector2Int hoveredCell in cellsAroundHoveredVertex) {
+                    int distance = CellDistanceLogic.DistanceBetweenCells(cell, hoveredCell);
+                    if (distance < minDistance) {
+                        minDistance = distance;
+                        closestInRangeCells.Clear();
+                        closestInRangeCells.Add(cell);
+                    } else if (distance == minDistance && !closestInRangeCells.Contains(cell)) {
+                        closestInRangeCells.Add(cell);
+                    }
+                }
+            }
+            
+            // Get all the in-range vertices that all of those closest cells are a part of
+            List<HashSet<Vector2Int>> eligibleVertices = new List<HashSet<Vector2Int>>();
+            foreach (Vector2Int cell in closestInRangeCells) {
+                // Get the set of in-range vertices for this cell
+                List<Vector2Int> eligibleAdjacentCells = GridData.GetAdjacentCells(cell)
+                    .Select(c => c.Location)
+                    .Where(c => cellsInRange.Contains(c))
+                    .ToList();
+                // Get the vertices that include eligible cells
+                foreach (Vector2Int adjacentCell in eligibleAdjacentCells) {
+                    foreach (Vector2Int otherAdjacentCell in eligibleAdjacentCells.Where(c => c.AreCellsAdjacent(adjacentCell))) {
+                        HashSet<Vector2Int> newVertex = new HashSet<Vector2Int> { cell, adjacentCell, otherAdjacentCell };
+                        if (!eligibleVertices.Contains(newVertex)) {
+                            eligibleVertices.Add(newVertex);
+                        }
+                    }
+                }
+            }
+            
+            // Determine which one of those vertices is closest in world space to the current mouse position
+            Vector2 currentMousePos = GameManager.Instance.GridInputController.CurrentMousePosition;
+            return eligibleVertices.OrderBy(v => (GridController.GetWorldPosition(v) - currentMousePos).magnitude).First();
         }
 
         #endregion

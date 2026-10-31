@@ -159,7 +159,7 @@ namespace Gameplay.Entities.Abilities {
     }
 
     public class CatapultAttackAbilityParameters : IAbilityParameters {
-        public List<Vector2Int> TargetCells;    // If empty, then auto-attack an area with an enemy
+        public HashSet<Vector2Int> TargetCells;    // If empty, then auto-attack an area with an enemy
         public void Serialize(NetworkWriter writer) {
             writer.WriteInt(TargetCells.Count);
             foreach (Vector2Int targetCell in TargetCells) {
@@ -174,7 +174,7 @@ namespace Gameplay.Entities.Abilities {
         }
 
         public void Deserialize(NetworkReader reader) {
-            List<Vector2Int> cells = new List<Vector2Int>();
+            HashSet<Vector2Int> cells = new HashSet<Vector2Int>();
             int count = reader.ReadInt();
             for (int i = 0; i < count; i++) {
                 cells.Add(reader.ReadVector2Int());
