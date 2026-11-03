@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 4980711058622280136}
   - component: {fileID: 974917957214945022}
   - component: {fileID: 7617044373295951459}
-  - component: {fileID: 6713023327431512938}
   - component: {fileID: 7661962196556062758}
   - component: {fileID: 800815875163214562}
   - component: {fileID: 5954563357265282386}
@@ -40,7 +39,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 24.599922, y: 1.2787814}
-  m_SizeDelta: {x: 0.22, y: 0.08}
+  m_SizeDelta: {x: 0.4, y: 0.4}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &974917957214945022
 CanvasRenderer:
@@ -64,32 +63,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Gameplay.Entities.CatapultRocks
   syncMode: 0
   syncInterval: 0.1
-  CloseEnoughAmount: 0.05
-  Speed: 0
-  MaxLifetimeSeconds: 0
-  AttackPathCurve:
-    serializedVersion: 2
-    m_Curve: []
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
---- !u!114 &6713023327431512938
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 58514246982734065}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 323ba29e9c3d4ce29ca946b4799f9628, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  syncMode: 0
-  syncInterval: 0.1
-  CloseEnoughAmount: 0.5
-  Speed: 7
-  MaxLifetimeSeconds: 0.5
+  Speed: 2
+  MaxLifetimeSeconds: 3
   AttackPathCurve:
     serializedVersion: 2
     m_Curve:
@@ -136,16 +111,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.4245283, g: 0.25832146, b: 0.25832146, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 3625043607559282579, guid: 5bda453a04223824cb3bb6358ec6c491, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 20d5a080dd43f2748a24e5e954f24ed7, type: 3}
   m_Type: 0
-  m_PreserveAspect: 0
+  m_PreserveAspect: 1
   m_FillCenter: 1
   m_FillMethod: 4
   m_FillAmount: 1

@@ -13,7 +13,7 @@ namespace Gameplay.Entities.Abilities {
     /// <summary>
     /// <see cref="IAbility"/> for area-of-effect attacks.
     /// </summary>
-    public class CatapultAttackAbility : AbilityBase<CatapultAttackAbilityData, CatapultAttackAbilityParameters> {
+    public class CatapultAttackAbility : AbilityBase<CatapultAttackAbilityData, CatapultAttackAbilityParameters>, IAttackAbility {
         public CatapultAttackAbilityParameters AbilityParameters => (CatapultAttackAbilityParameters) BaseParameters;
         private GridData GridData => GameManager.Instance.GridController.GridData;
         

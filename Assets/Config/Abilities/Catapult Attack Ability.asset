@@ -51,3 +51,4 @@ MonoBehaviour:
     _performedSFX: {fileID: 0}
     _triggersEntityOrderVoiceLine: 1
     _attackType: 3
+    _catapultUpgrade: {fileID: 0}

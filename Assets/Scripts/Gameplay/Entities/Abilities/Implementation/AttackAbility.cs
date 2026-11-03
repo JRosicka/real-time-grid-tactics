@@ -15,7 +15,7 @@ namespace Gameplay.Entities.Abilities {
     /// <see cref="IAbility"/> for attacking. For doing an attack move (moving towards a target cell and
     /// attacking anything on the way)
     /// </summary>
-    public class AttackAbility : AbilityBase<AttackAbilityData, AttackAbilityParameters> {
+    public class AttackAbility : AbilityBase<AttackAbilityData, AttackAbilityParameters>, IAttackAbility {
         public AttackAbilityParameters AbilityParameters => (AttackAbilityParameters) BaseParameters;
         private GridData GridData => GameManager.Instance.GridController.GridData;
         

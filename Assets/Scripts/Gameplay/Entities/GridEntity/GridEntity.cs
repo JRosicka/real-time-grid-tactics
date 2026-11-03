@@ -512,7 +512,7 @@ namespace Gameplay.Entities {
         
         [CanBeNull]
         public TAbilityData GetAbilityData<TAbilityData>() where TAbilityData : IAbilityData {
-            return (TAbilityData)EntityData.Abilities.FirstOrDefault(a => a.Content.GetType() == typeof(TAbilityData))?.Content;
+            return (TAbilityData)EntityData.Abilities.FirstOrDefault(a => a.Content is TAbilityData)?.Content;
         }
 
         public IAbility GetAbilityByUID(string abilityUID) {

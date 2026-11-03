@@ -16,7 +16,7 @@ namespace Gameplay.Entities.Abilities {
     /// <see cref="IAbility"/> for attacking. Attacks a specific <see cref="GridEntity"/> and moves towards it
     /// if out of range.
     /// </summary>
-    public class TargetAttackAbility : AbilityBase<TargetAttackAbilityData, TargetAttackAbilityParameters> {
+    public class TargetAttackAbility : AbilityBase<TargetAttackAbilityData, TargetAttackAbilityParameters>, IAttackAbility {
         public TargetAttackAbilityParameters AbilityParameters => (TargetAttackAbilityParameters) BaseParameters;
 
         public TargetAttackAbility(TargetAttackAbilityData data, TargetAttackAbilityParameters parameters, GridEntity performer, GameTeam? overrideTeam = null) : base(data, parameters, performer, overrideTeam) {}

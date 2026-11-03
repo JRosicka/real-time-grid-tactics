@@ -274,8 +274,20 @@ public class AbilityExecutor : MonoBehaviour {
                         Destination = location.Value
                     }, false, true, false, false);
                 }
+            } else {
+                CatapultAttackAbilityData catapultData = entity.GetAbilityData<CatapultAttackAbilityData>();
+                if (catapultData != null) {
+                    // Don't perform default attack if there are any abilities that block it
+                    if (!entity.InProgressAbilities.Any(a => a.AbilityData.ActiveBlocksDefaultAttack) &&
+                        !entity.ActiveTimers.Any(t => t.Ability.AbilityData.CooldownBlocksDefaultAttack)) {
+                        _abilityAssignmentManager.StartPerformingAbility(entity, catapultData, new CatapultAttackAbilityParameters { },
+                            false, true, false, false);
+                    }
+                }
             }
         }
+        
+        // TODO this whole method is a mess. Need a generic way to get abilities to perform by default and get default parameters (which I think might already exist?). Do this next time I would otherwise add an ability here!!
 
         foreach (AbilityDataScriptableObject ability in entity.EntityData.Abilities) {
             if (ability.Content.PerformByDefault) {

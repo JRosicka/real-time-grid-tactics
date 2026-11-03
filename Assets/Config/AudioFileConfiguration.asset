@@ -19,6 +19,9 @@ MonoBehaviour:
   GameWinSound: {fileID: 11400000, guid: 94e2ee86fc2a0451997e916a6d222fbc, type: 2}
   GameStartSound: {fileID: 11400000, guid: 3741a2894c1c14f178b9e257d4edd0f7, type: 2}
   ArrowLandSound: {fileID: 11400000, guid: 64ae387a4a7e147a791106e91ceace64, type: 2}
+  CatapultRocksLandSounds:
+  - {fileID: 11400000, guid: ec51efb177c6815459d506876c125ec6, type: 2}
+  - {fileID: 11400000, guid: 2a59292456efd7646b68330c8961e231, type: 2}
   PickUpSound: {fileID: 11400000, guid: f54437be01f4d5c448d8fce3809409eb, type: 2}
   DropOffSound: {fileID: 11400000, guid: d8112dea6ddbe3b438f30c97fa6c6cf5, type: 2}
   ConstructionSound: {fileID: 11400000, guid: da23988a9967b4927af46b1cc8f94ce5, type: 2}

@@ -27,6 +27,8 @@ namespace Audio {
         
         private readonly Dictionary<string, AudioFile> _lastPlayedAbilitySelectionSFX = new Dictionary<string, AudioFile>();
         private readonly Dictionary<string, AudioFile> _lastPlayedAbilityCantPerformSFX = new Dictionary<string, AudioFile>();
+
+        private readonly Dictionary<string, AudioFile> _lastPlayedCatapultRockSFX = new Dictionary<string, AudioFile>();
         private readonly Dictionary<string, float> _sfxCooldownTimes = new Dictionary<string, float>();
         
         public GameAudio(AudioPlayer audioPlayer, AudioFileConfiguration audioConfiguration) {
@@ -154,6 +156,10 @@ namespace Audio {
 
         public void ArrowLandSound() {
             TryPlaySFX(_audioConfiguration.ArrowLandSound, AudioClipName(_audioConfiguration.ArrowLandSound));
+        }
+
+        public void CatapultRocksLandSound(GridEntity catapultEntity) {
+            ChooseAndPlayEntitySound(catapultEntity, _audioConfiguration.CatapultRocksLandSounds, _lastPlayedCatapultRockSFX, "catapultRocksLand");
         }
 
         public void PickUpSound() {

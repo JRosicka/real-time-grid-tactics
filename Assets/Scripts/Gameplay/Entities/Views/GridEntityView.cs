@@ -731,8 +731,7 @@ namespace Gameplay.Entities {
 
             AbilityTimerFill timerFill;
             switch (abilityTimer.Ability) {
-                case AttackAbility:
-                case TargetAttackAbility:
+                case IAttackAbility:
                     timerFill = _attackTimerFill;
                     break;
                 case MoveAbility:
