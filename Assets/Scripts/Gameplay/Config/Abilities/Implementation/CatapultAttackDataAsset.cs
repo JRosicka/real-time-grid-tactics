@@ -68,7 +68,10 @@ namespace Gameplay.Config.Abilities {
             GameManager.Instance.AbilityAssignmentManager.StartPerformingAbility(selectedEntity, this, new CatapultAttackAbilityParameters() {
                     TargetCells = ClosestLegalAimVertex(selectedEntity, GameManager.Instance.GridInputController.CurrentClosestVertex),
                 }, true, true, true, true);
-            selectedEntity.SetTargetLocation(cellPosition, null, PathVisualizer.PathType.AttackMove);
+            
+            selectedEntity.SetTargetLocation(cellPosition, null, PathVisualizer.PathType.TargetAttack);
+
+            UpdateAimVisual(selectedEntity, null);
         }
 
         public void RecalculateTargetableAbilitySelection(GridEntity selector, object targetData) {
@@ -88,7 +91,7 @@ namespace Gameplay.Config.Abilities {
         }
 
         public void Deselect(GridEntity selector) {
-            // Nothing to do
+            UpdateAimVisual(selector, null);
         }
 
         public bool MoveToTargetCellFirst => false;
