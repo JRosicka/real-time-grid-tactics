@@ -206,8 +206,8 @@ namespace Gameplay.Grid {
         }
 
         public void VisualizePath(PathfinderService.Path path, PathVisualizer.PathType pathType, Vector2Int targetLocation, 
-                bool hidePathDestination, TeamFogOfWarTracker fowTracker, bool thickLines, EntityPathfindingConfig pathfindingConfig) {
-            _pathVisualizer.Visualize(path, pathType, targetLocation, hidePathDestination, fowTracker, thickLines, pathfindingConfig);
+                bool hidePathDestination, TeamFogOfWarTracker fowTracker, bool thickLines, EntityPathfindingConfig pathfindingConfig, bool forceStraightLine) {
+            _pathVisualizer.Visualize(path, pathType, targetLocation, hidePathDestination, fowTracker, thickLines, pathfindingConfig, forceStraightLine);
         }
 
         #region Get Cells

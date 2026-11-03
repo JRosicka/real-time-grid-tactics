@@ -3,6 +3,7 @@ using System.Linq;
 using Gameplay.Config;
 using Gameplay.Config.Abilities;
 using Gameplay.Grid;
+using Gameplay.UI;
 using JetBrains.Annotations;
 using Mirror;
 using Newtonsoft.Json;
@@ -33,7 +34,6 @@ namespace Gameplay.Entities.Abilities {
         }
 
         public override bool TryDoAbilityStartEffect() {
-            // Performer.SetTargetLocation(AbilityParameters.Destination, null, PathVisualizer.PathType.AttackMove);
             return true;
         }
 
@@ -44,13 +44,15 @@ namespace Gameplay.Entities.Abilities {
                 return (false, AbilityResult.Failed);
             }
 
-            if (Performer.ActiveTimers.Any(t => t.Ability.AbilityData.Channel == AbilityData.Channel)) {
-                // We are in range of a target, but attacking is on cooldown. Do nothing for now. 
-                return (false, AbilityResult.IncompleteWithoutEffect);
-            }
-
+            bool activeTimer = Performer.ActiveTimers.Any(t => t.Ability.AbilityData.Channel == AbilityData.Channel);
+            
             // If we are targeting a particular location, try to fire there
             if (AbilityParameters.TargetCells is { Count: > 0 }) {
+                if (activeTimer) {
+                    // We are in range of a target, but attacking is on cooldown. Do nothing for now. 
+                    return (false, AbilityResult.IncompleteWithoutEffect);
+                }
+
                 DoAttack(AbilityParameters.TargetCells);
                 return (true, AbilityResult.IncompleteWithEffect);
             } 
@@ -58,6 +60,11 @@ namespace Gameplay.Entities.Abilities {
             // Otherwise find a valid target if one exists
             List<GridEntity> viableTargets = DetermineTargetsForAttackMove(Performer, attackerLocation.Value);
             if (viableTargets != null && viableTargets.Any()) {
+                if (activeTimer) {
+                    // We are in range of a target, but attacking is on cooldown. Do nothing for now. 
+                    return (false, AbilityResult.IncompleteWithoutEffect);
+                }
+
                 // Pick the target
                 GridEntity target;
                 if (viableTargets.Count == 1) {
@@ -71,6 +78,8 @@ namespace Gameplay.Entities.Abilities {
             }
 
             TryClearLastAttackedEntity();
+            
+            Performer.SetTargetLocation(attackerLocation.Value, null, PathVisualizer.PathType.AttackMove);
 
             return (false, AbilityResult.IncompleteWithoutEffect);
         }

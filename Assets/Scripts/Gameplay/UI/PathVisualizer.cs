@@ -46,9 +46,17 @@ namespace Gameplay.UI {
         /// <summary>
         /// Lay out a set of <see cref="AbstractDirectionalLine"/>s along a path
         /// </summary>
-        public void Visualize(PathfinderService.Path path, PathType pathType, Vector2Int targetLocation, bool hidePathDestination, [CanBeNull] TeamFogOfWarTracker fowTracker, bool thickLines, EntityPathfindingConfig pathfindingConfig) {
+        public void Visualize(PathfinderService.Path path, PathType pathType, Vector2Int targetLocation, bool hidePathDestination, 
+                [CanBeNull] TeamFogOfWarTracker fowTracker, bool thickLines, EntityPathfindingConfig pathfindingConfig, bool forceStraightLine) {
             ClearPath(thickLines);
 
+            if (forceStraightLine && !thickLines) {
+                // Just show the straight line (as the crow flies) path
+                path.Nodes.RemoveRange(1, path.Nodes.Count - 1);
+                VisualizeStraightLine(path, pathType, targetLocation, hidePathDestination);
+                return;
+            }
+            
             if (!thickLines && fowTracker != null) {
                 // For normal paths, only show regular lines up to the last cell in vision. Cells hidden by FoW (or any 
                 // cells after the first one encountered) should just be discarded. 
@@ -56,12 +64,11 @@ namespace Gameplay.UI {
             }
             
             // If the path is too short, then no need to place any lines
-            if (path.Nodes.Count < 1 
-                || (path.Nodes.Count < 2 && path.ContainsRequestedDestination)) return;
+            if (path.Nodes.Count < 1 || (path.Nodes.Count < 2 && path.ContainsRequestedDestination)) return;
             
             VisualizeRegularLines(path, pathType, hidePathDestination, thickLines, pathfindingConfig);
             if (!thickLines) {
-                VisualizeStraightLine(path, pathType, targetLocation, hidePathDestination);
+                VisualizeStraightLine(path, pathType, targetLocation, hidePathDestination || pathType == PathType.TargetAttack);
             }
         }
 
@@ -143,11 +150,9 @@ namespace Gameplay.UI {
             
             // The regular-lines portion of the path gets all the way to the end, so nothing more to draw here
             if (pathNodes.Last().Location == targetLocation) return;
-
-            bool includeTargetNode = pathType != PathType.TargetAttack && !hidePathDestination;
             
             // If the entity is at the end of the path and adjacent to the destination AND we don't want to draw on the last node, then nothing to do
-            if (startLocation == finalNodeLocation && !includeTargetNode && CellDistanceLogic.DistanceBetweenCells(finalNodeLocation, targetLocation) == 1) return;
+            if (startLocation == finalNodeLocation && hidePathDestination && CellDistanceLogic.DistanceBetweenCells(finalNodeLocation, targetLocation) == 1) return;
             
             // Figure out where the base line should be (middle of final cell to middle of target cell)
             GridController gridController = GameManager.Instance.GridController;
@@ -160,7 +165,7 @@ namespace Gameplay.UI {
                 _straightDirectionalLine.MaskOrigin();
             }
             
-            if (!includeTargetNode) {
+            if (hidePathDestination) {
                 // We only want to go to the edge of the target cell instead of the middle
                 _straightDirectionalLine.MaskEnd();
             }

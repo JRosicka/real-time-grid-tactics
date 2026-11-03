@@ -15,7 +15,7 @@ MonoBehaviour:
   _currentCheats:
     CheatsEnabled: 1
     PlayerMoney: 5000
-    RemoveBuildTime: 0
+    RemoveBuildTime: 1
     ControlAllPlayers: 1
     SpawnData:
     - Team: 1
