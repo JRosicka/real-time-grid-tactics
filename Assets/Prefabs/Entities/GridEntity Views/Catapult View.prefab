@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 190438438468539991}
   - component: {fileID: 8185308575164768075}
   - component: {fileID: 2968785768726661234}
+  - component: {fileID: 712095539526373035}
   m_Layer: 0
   m_Name: Catapult Arm
   m_TagString: Untagged
@@ -32,13 +33,14 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 5590598606486428672}
+  - {fileID: 6158015294714497804}
   m_Father: {fileID: 4036841640921873708}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_Pivot: {x: 0.5, y: 0.35}
 --- !u!222 &190438438468539991
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -100,6 +102,28 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 4
   m_TargetDisplay: 0
+--- !u!95 &712095539526373035
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1957462915395512698}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: f5da2e7b629628c42857c32f5d13404d, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &4173846923843289815
 GameObject:
   m_ObjectHideFlags: 0
@@ -281,11 +305,11 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 4036841640921873708}
+  m_Father: {fileID: 5602790662869532414}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -23.9, y: 5.9}
+  m_AnchoredPosition: {x: -23.900002, y: 5.899994}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1803030255683418681
@@ -678,9 +702,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 1850096103034985778, guid: 9d77d3ce03b813d42b6c2efebbdefd02, type: 3}
       insertIndex: -1
       addedObject: {fileID: 5602790662869532414}
-    - targetCorrespondingSourceObject: {fileID: 1850096103034985778, guid: 9d77d3ce03b813d42b6c2efebbdefd02, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 6158015294714497804}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 2517421855927553431, guid: 9d77d3ce03b813d42b6c2efebbdefd02, type: 3}
       insertIndex: -1
@@ -704,6 +725,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Gameplay.Entities.CatapultView
   EntityView: {fileID: 7504026570216467247}
+  CatapultArmAnimator: {fileID: 712095539526373035}
 --- !u!224 &4036841640921873708 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 1850096103034985778, guid: 9d77d3ce03b813d42b6c2efebbdefd02, type: 3}

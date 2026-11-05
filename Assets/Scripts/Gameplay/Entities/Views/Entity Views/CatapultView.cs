@@ -1,4 +1,3 @@
-using Audio;
 using Gameplay.Entities.Abilities;
 using Gameplay.Entities.Upgrades;
 using UnityEngine;
@@ -6,6 +5,7 @@ using UnityEngine;
 namespace Gameplay.Entities {
     public class CatapultView : GridEntityParticularView {
         public GridEntityView EntityView;
+        public Animator CatapultArmAnimator;
 
         public override void Initialize(GridEntity entity) { }
         public override void LethalDamageReceived() { }
@@ -13,11 +13,8 @@ namespace Gameplay.Entities {
 
         public override bool DoAbility(IAbility ability, AbilityTimer abilityTimer) {
             switch (ability) {
-                case AttackAbility attackAbility:
-                    DoAttackAnimation(attackAbility.Performer, attackAbility.AbilityParameters.Target);
-                    return false;
-                case TargetAttackAbility targetAttackAbility:
-                    DoAttackAnimation(targetAttackAbility.Performer, targetAttackAbility.AbilityParameters.Target);
+                case CatapultAttackAbility attackAbility:
+                    DoAttackAnimation(attackAbility.Performer);
                     return false;
                 default:
                     return true;
@@ -26,16 +23,11 @@ namespace Gameplay.Entities {
         
         public override void UpgradeApplied(IUpgrade upgrade) { }
 
-        private void DoAttackAnimation(GridEntity performer, GridEntity target) {
-            if (!target.IsActive()) return;
-
-            Vector2Int? attackLocation = performer.Location;
-            Vector2Int? targetLocation = target.Location;
-
-            if (attackLocation == null || targetLocation == null) return;
-            EntityView.SetFacingDirection(attackLocation.Value, targetLocation.Value);
-
-            GameAudio.Instance.EntityAttackSound(performer);
+        private void DoAttackAnimation(GridEntity performer) {
+            if (!performer.IsActive()) return;
+            
+            // Just handle the arm moving. Rock launching animation handled in <see cref="CatapultRocks">
+            CatapultArmAnimator.Play("CatapultLaunch");
         }
     }
 }

@@ -3,9 +3,11 @@ using System.Linq;
 using Audio;
 using Gameplay.Entities.Abilities;
 using Gameplay.Grid;
+using Gameplay.Managers;
 using Mirror;
 using Scenes;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Gameplay.Entities {
     /// <summary>
@@ -14,25 +16,39 @@ namespace Gameplay.Entities {
     /// </summary>
     public class CatapultRocks : NetworkBehaviour {
         public float Speed;
-        public float MaxLifetimeSeconds;
-        public AnimationCurve AttackPathCurve;
+        public float DistanceFromTargetToPlayRocksLandingAnimation;
+        public Animator RocksLaunchAnimator;
+        public RocksLandingAnimation RocksLandingAnimationPrefabNarrowTop;
+        public RocksLandingAnimation RocksLandingAnimationPrefabWideTop;
+        public Transform RocksToLaunch;
 
         private GridEntity _attacker;
         private HashSet<Vector2Int> _targetCells;
         private GridController _gridController;
         private bool _actuallyDamageTarget;
-        private Vector3 _originalLocation;
-        private Vector3 _lastLocation;
+        private Vector2Int _originalLocation;
+        private Vector3 _originalWorldPosition;
         private Vector3 _targetWorldPosition;
         private float _currentProgress;
         private float _startingDistance;
-        private int _signInt;
+        private bool _facingRight;
         private bool _initialized;
         private int _bonusDamage;
-        private float _lifetimeSeconds;
+        private bool _playedRocksLandingAnimation;
+
+        private TeamFogOfWarTracker LocalFoWTracker => GameManager.Instance.FogOfWarManager?.GetLocalTeamTracker();
 
         /// <summary>
-        /// Should only be called on the server/SP. Sets up logic for moving the arrow to the target. 
+        /// Should only be called on the server/SP. Sets up logic for moving catapult rocks to the target.
+        /// Unlike <see cref="ArcherArrow"/>, this does not animate projectiles continuously to the target. Instead,
+        /// it handles them in phases:
+        /// - A launch animation is played where the rocks shoot out at an upward angle and quickly disappear
+        /// - A <see cref="CatapultTargetReticle"/> gets shown to all players for the target location
+        /// - This quietly tracks the distance the projectile travel without associated visuals. The farther the target,
+        ///   the longer it takes to reach the destination.
+        /// - When the invisible projectile is near the destination, an animation plays for the rocks landing on all the
+        ///   targets.
+        /// FoW is considered for all the visuals.
         /// </summary>
         public void Initialize(GridEntity attacker, HashSet<Vector2Int> targetCells, int bonusDamage) {
             _initialized = true;
@@ -55,58 +71,93 @@ namespace Gameplay.Entities {
                 Destroy(gameObject);
                 return;
             }
-            
+
             _attacker = attacker;
             _targetCells = targetCells;
             _gridController = GameManager.Instance.GridController;
             _actuallyDamageTarget = actuallyDamageTarget;
-            _originalLocation = transform.position;
-            _lastLocation = _originalLocation;
+            _originalLocation = attackerLocation.Value;
+            _originalWorldPosition = transform.position;
             _targetWorldPosition = _gridController.GetWorldPosition(targetCells);
             _startingDistance = Vector2.Distance(_originalLocation, _targetWorldPosition);
-            float xDif = _targetWorldPosition.x - _gridController.GetWorldPosition(attackerLocation.Value).x;
-            _signInt = xDif < 0 ? -1 : 1;
+            float xDif = _targetWorldPosition.x - _originalWorldPosition.x;
+            _facingRight = xDif > 0;
+            
+            SetLaunchableRocksFacingDirection();
+            SetCatapultFacingDirection();
+            PlayLaunchAnimation();
+
+            GameAudio.Instance.EntityAttackSound(_attacker);
         }
 
         public void Update() {
-            _lifetimeSeconds += Time.deltaTime;
-            if (_lifetimeSeconds >= MaxLifetimeSeconds) {
-                Debug.LogWarning("Took too long for the arrow to reach its target! Hitting now.");
-                HitTargets();
-                return;
+            // Move towards the target
+            _currentProgress += Time.deltaTime * Speed;
+            
+            // See if we should start the rocks landing animation
+            if (!_playedRocksLandingAnimation && _startingDistance - _currentProgress <= DistanceFromTargetToPlayRocksLandingAnimation) {
+                PlayRocksLandingAnimation();
             }
             
-            // Lob towards the target
-            _currentProgress += Time.deltaTime * Speed / _startingDistance;
-            if (_currentProgress >= 1) {
+            // See if we should hit the target
+            if (_currentProgress >= _startingDistance) {
                 HitTargets();
-                return;
             }
-        
-            Vector3 currentPosition = Vector3.Lerp(_originalLocation, _targetWorldPosition, _currentProgress);
-            Vector2 perpendicular = Vector2.Perpendicular(_targetWorldPosition - _originalLocation);
-            currentPosition += _signInt * AttackPathCurve.Evaluate(_currentProgress) * (Vector3)perpendicular;
-            transform.position = currentPosition;
-        
-            float degreeRotation = Mathf.Rad2Deg * Mathf.Atan2(currentPosition.y - _lastLocation.y, currentPosition.x - _lastLocation.x);
-            transform.rotation = Quaternion.Euler(0, 0, degreeRotation);
-            
-            _lastLocation = transform.position;
         }
-        
+
         private void HitTargets() {
             if (_actuallyDamageTarget) {
                 foreach (Vector2Int cell in _targetCells) {
-                    GridEntity entityAtCell = GameManager.Instance.CommandManager.GetEntitiesAtCell(cell)?.GetTopEntity()?.Entity;
+                    GridEntity entityAtCell = GameManager.Instance.CommandManager.GetEntitiesAtCell(cell)
+                        ?.GetTopEntity()?.Entity;
                     // Only apply damage to opponents
                     if (entityAtCell != null && entityAtCell.Team == _attacker.Team.OpponentTeam()) {
                         GameManager.Instance.AttackManager.DealDamage(_attacker, entityAtCell, _bonusDamage);
                     }
                 }
             }
-            
+
             GameAudio.Instance.CatapultRocksLandSound(_attacker);
             Destroy(gameObject);
+        }
+
+        private void SetCatapultFacingDirection() {
+            bool faceRight = (_originalWorldPosition - _targetWorldPosition).x < 0;
+            _attacker.View.SetFacingDirection(faceRight);
+        }
+
+        private void PlayLaunchAnimation() {
+            if (LocalFoWTracker?.IsLocationHidden(_originalLocation) ?? false) return;
+            
+            RocksLaunchAnimator.Play("LaunchRocks");
+        }
+
+        private void PlayRocksLandingAnimation() {
+            _playedRocksLandingAnimation = true;
+            
+            // Need at least one target cell to be visible
+            foreach (Vector2Int cell in _targetCells) {
+                if (LocalFoWTracker?.IsLocationHidden(_originalLocation) ?? false) continue;
+                
+                int yMax = _targetCells.Select(c => c.y).Max();
+                bool wideTop = _targetCells.Count(c => c.y == yMax) == 2;
+
+                RocksLandingAnimation prefab = wideTop ? RocksLandingAnimationPrefabWideTop : RocksLandingAnimationPrefabNarrowTop;
+                RocksLandingAnimation rocksLanding = Instantiate(prefab, GameManager.Instance.CommandManager.SpawnBucket);
+                rocksLanding.transform.position = GameManager.Instance.GridController.GetWorldPosition(_targetCells);
+                rocksLanding.SetFacingDirection(_facingRight);
+                return;
+            }
+        }
+
+        private void SetLaunchableRocksFacingDirection() {
+            Vector3 localScale = RocksToLaunch.localScale;
+            float scaleX = localScale.x;
+            
+            if ((_facingRight && scaleX > 0) || (!_facingRight && scaleX < 0)) return;
+            
+            localScale = new Vector3(scaleX * -1, localScale.y, localScale.z);
+            RocksToLaunch.localScale = localScale;
         }
     }
 }

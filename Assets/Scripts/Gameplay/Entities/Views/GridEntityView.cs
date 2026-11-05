@@ -751,6 +751,10 @@ namespace Gameplay.Entities {
             if (Mathf.Approximately(xDifference, 0)) return;
             
             bool faceRight = targetPosition.x - currentPosition.x > 0;
+            SetFacingDirection(faceRight);
+        }
+
+        public void SetFacingDirection(bool faceRight) {
             Vector3 localScale = _directionContainer.transform.localScale;
             float scaleX = localScale.x;
             
