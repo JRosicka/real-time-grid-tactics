@@ -36,6 +36,10 @@ namespace Gameplay.Config.Abilities {
                 return AbilityLegality.IndefinitelyIllegal;
             }
 
+            if (entity.SiegeState != SiegeState.Unsieged) {
+                return AbilityLegality.NotCurrentlyLegal;
+            }
+
             if (parameters.BlockedByOccupation && !PathfinderService.CanEntityEnterCell(parameters.Destination, 
                         entity.EntityData, team, new List<GridEntity> { entity })) {
                 // Only consider this legal if we can take a step towards the destination

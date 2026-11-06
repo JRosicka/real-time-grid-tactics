@@ -24,7 +24,6 @@ namespace Gameplay.Config.Abilities {
         ColoredButtonData SlotSprites { get; }
         NetworkableTimerView NetworkableTimerViewPrefab { get; }
         List<PurchasableData> Requirements { get; }
-        float PerformDuration { get; }
         float CooldownDuration { get; }
         AbilityChannel Channel { get; }
         List<AbilityChannel> ChannelBlockers { get; }

@@ -44,11 +44,12 @@ namespace Gameplay.Entities.Abilities {
                 return (false, AbilityResult.Failed);
             }
 
-            bool activeTimer = Performer.ActiveTimers.Any(t => t.Ability.AbilityData.Channel == AbilityData.Channel);
+            bool notAllowedToAttack = Performer.SiegeState != SiegeState.Sieged 
+                                   || Performer.ActiveTimers.Any(t => t.Ability.AbilityData.Channel == AbilityData.Channel);
             
             // If we are targeting a particular location, try to fire there
             if (AbilityParameters.TargetCells is { Count: > 0 }) {
-                if (activeTimer) {
+                if (notAllowedToAttack) {
                     // We are in range of a target, but attacking is on cooldown. Do nothing for now. 
                     return (false, AbilityResult.IncompleteWithoutEffect);
                 }
@@ -60,7 +61,7 @@ namespace Gameplay.Entities.Abilities {
             // Otherwise find a valid target if one exists
             List<GridEntity> viableTargets = DetermineTargetsForAttackMove(Performer, attackerLocation.Value);
             if (viableTargets != null && viableTargets.Any()) {
-                if (activeTimer) {
+                if (notAllowedToAttack) {
                     // We are in range of a target, but attacking is on cooldown. Do nothing for now. 
                     return (false, AbilityResult.IncompleteWithoutEffect);
                 }

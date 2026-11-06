@@ -49,11 +49,6 @@ namespace Gameplay.Config.Abilities {
         [SerializeField] private List<PurchasableData> _requirements;
         public List<PurchasableData> Requirements => _requirements;
         
-        // TODO no functionality for this yet
-        [Range(0f, 10f)]
-        [SerializeField] private float _performDuration;
-        public float PerformDuration => _performDuration;
-        
         [Range(0f, 60f)]
         [SerializeField] private float _cooldownDuration;
         public float CooldownDuration => _cooldownDuration;

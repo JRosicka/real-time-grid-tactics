@@ -79,4 +79,22 @@ namespace Gameplay.Entities {
             return new NetworkableGridEntityListValue(entities);
         }
     }
+    
+    [Serializable]
+    public class NetworkableSiegeStateValue : INetworkableFieldValue {
+        public SiegeState Value;
+        public NetworkableSiegeStateValue(SiegeState value) {
+            Value = value;
+        }
+
+        public string ID => nameof(NetworkableSiegeStateValue);
+
+        public void SerializeValue(NetworkWriter writer) {
+            writer.WriteInt((int)Value);
+        }
+
+        public static NetworkableSiegeStateValue Deserialize(NetworkReader reader) {
+            return new NetworkableSiegeStateValue((SiegeState)reader.ReadInt());
+        }
+    }
 }

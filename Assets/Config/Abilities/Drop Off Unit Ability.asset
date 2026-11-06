@@ -24,7 +24,6 @@ MonoBehaviour:
     _slotSprites: {fileID: 11400000, guid: b6dc2ea2ecec99b49a269017e51ecd1b, type: 2}
     _timerView: {fileID: 0}
     _requirements: []
-    _performDuration: 0
     _cooldownDuration: 0
     _channel: {fileID: 11400000, guid: 34e49ddc4511a404c9f63aec4466a3a5, type: 2}
     _channelBlockers:

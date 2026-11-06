@@ -81,8 +81,10 @@ namespace Gameplay.Entities {
         public int CarryCapacity => ((NetworkableIntegerValue)_carryCapacityField.Value)?.Value ?? 0;
         public NetworkableField ArmorField;
         public int Armor => ((NetworkableIntegerValue)ArmorField.Value)?.Value ?? 0;
-        public NetworkableField _carriedField;
-        public bool Carried => ((NetworkableBoolValue)_carriedField?.Value)?.Value ?? false;
+        private NetworkableField _carriedField;
+        private bool Carried => ((NetworkableBoolValue)_carriedField?.Value)?.Value ?? false;
+        private NetworkableField _siegeStateField;
+        public SiegeState SiegeState => ((NetworkableSiegeStateValue)_siegeStateField?.Value)?.Value ?? SiegeState.Unsieged;
 
         // Abilities
         /// <summary>
@@ -163,6 +165,7 @@ namespace Gameplay.Entities {
         public event Action<bool> FogOfWarHiddenStatusChangedEvent;
         public event Action<BoostRegistrations> BoostRegistrationsChanged;
         public event Action<bool> CarriedStateChanged;
+        public event Action<SiegeState> SiegeStateChanged;
         
         /// <summary>
         /// Only triggered on server
@@ -192,6 +195,7 @@ namespace Gameplay.Entities {
             _carryCapacityField = new NetworkableField(this, nameof(_carryCapacityField), new NetworkableIntegerValue(0));
             ArmorField = new NetworkableField(this, nameof(ArmorField), new NetworkableIntegerValue(0));
             _carriedField = new NetworkableField(this, nameof(_carriedField), new NetworkableBoolValue(false));
+            _siegeStateField = new NetworkableField(this, nameof(_siegeStateField), new NetworkableSiegeStateValue(SiegeState.Unsieged));
         }
 
         /// <summary>
@@ -309,6 +313,7 @@ namespace Gameplay.Entities {
             _lockedFromFriendlyUnitsEnteringField.ValueChanged += UpdateLockStatus;
             _activeBoostsField.ValueChanged += (_, _, _) => BoostRegistrationsChanged?.Invoke(ActiveBoosts);
             _carriedField.ValueChanged += (_, _, _) => CarriedStateChanged?.Invoke(Carried);
+            _siegeStateField.ValueChanged += (_, _, _) => SiegeStateChanged?.Invoke(SiegeState);
 
             Interactable = true;
         } 
@@ -335,6 +340,10 @@ namespace Gameplay.Entities {
 
         public void SetCarriedStatus(bool newStatus) {
             _carriedField.UpdateValue(new NetworkableBoolValue(newStatus));
+        }
+
+        public void SetSiegeState(SiegeState newState) {
+            _siegeStateField.UpdateValue(new NetworkableSiegeStateValue(newState));
         }
 
         #endregion
