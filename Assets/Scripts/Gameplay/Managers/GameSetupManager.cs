@@ -293,7 +293,7 @@ public class GameSetupManager : MonoBehaviour {
         GameManager.CommandManager.EntityCollectionChangedEvent -= DoPerformClientSidePostMapSetupInitialization;
         GameManager.SetUpControlGroups();
         
-        GameManager.GridReticleVisualizer.Initialize(GameManager.GetPlayerForTeam(GameManager.LocalTeam).ColorData);
+        GameManager.GridReticleVisualizer.Initialize(GameManager.LocalTeam);
 
         GameManager.GridController.HandlePostMapSetup();
         

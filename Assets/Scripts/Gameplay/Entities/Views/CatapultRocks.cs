@@ -7,7 +7,6 @@ using Gameplay.Managers;
 using Mirror;
 using Scenes;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace Gameplay.Entities {
     /// <summary>
@@ -35,6 +34,7 @@ namespace Gameplay.Entities {
         private bool _initialized;
         private int _bonusDamage;
         private bool _playedRocksLandingAnimation;
+        private CatapultTargetReticle _catapultTargetReticle;
 
         private TeamFogOfWarTracker LocalFoWTracker => GameManager.Instance.FogOfWarManager?.GetLocalTeamTracker();
 
@@ -87,6 +87,8 @@ namespace Gameplay.Entities {
             SetCatapultFacingDirection();
             PlayLaunchAnimation();
 
+            _catapultTargetReticle = GameManager.Instance.GridReticleVisualizer.ShowIncomingCatapultTarget(targetCells, attacker);
+
             GameAudio.Instance.EntityAttackSound(_attacker);
         }
 
@@ -118,6 +120,8 @@ namespace Gameplay.Entities {
             }
 
             GameAudio.Instance.CatapultRocksLandSound(_attacker);
+            
+            _catapultTargetReticle.Hide();
             Destroy(gameObject);
         }
 
@@ -136,18 +140,16 @@ namespace Gameplay.Entities {
             _playedRocksLandingAnimation = true;
             
             // Need at least one target cell to be visible
-            foreach (Vector2Int cell in _targetCells) {
-                if (LocalFoWTracker?.IsLocationHidden(_originalLocation) ?? false) continue;
-                
-                int yMax = _targetCells.Select(c => c.y).Max();
-                bool wideTop = _targetCells.Count(c => c.y == yMax) == 2;
+            if (_targetCells.All(cell => LocalFoWTracker?.IsLocationHidden(cell) ?? false)) return;
+            
+            // Play the animation since at least one target is visible
+            int yMax = _targetCells.Select(c => c.y).Max();
+            bool wideTop = _targetCells.Count(c => c.y == yMax) == 2;
 
-                RocksLandingAnimation prefab = wideTop ? RocksLandingAnimationPrefabWideTop : RocksLandingAnimationPrefabNarrowTop;
-                RocksLandingAnimation rocksLanding = Instantiate(prefab, GameManager.Instance.CommandManager.SpawnBucket);
-                rocksLanding.transform.position = GameManager.Instance.GridController.GetWorldPosition(_targetCells);
-                rocksLanding.SetFacingDirection(_facingRight);
-                return;
-            }
+            RocksLandingAnimation prefab = wideTop ? RocksLandingAnimationPrefabWideTop : RocksLandingAnimationPrefabNarrowTop;
+            RocksLandingAnimation rocksLanding = Instantiate(prefab, GameManager.Instance.CommandManager.SpawnBucket);
+            rocksLanding.transform.position = GameManager.Instance.GridController.GetWorldPosition(_targetCells);
+            rocksLanding.SetFacingDirection(_facingRight);
         }
 
         private void SetLaunchableRocksFacingDirection() {

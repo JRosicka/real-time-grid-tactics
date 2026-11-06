@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Gameplay.Config;
+using Gameplay.Entities;
 using UnityEngine;
 
 namespace Gameplay.Grid {
@@ -8,17 +9,32 @@ namespace Gameplay.Grid {
     /// </summary>
     public class GridReticleVisualizer : MonoBehaviour {
         [SerializeField] private CatapultTargetReticle _catapultAimReticle;
+        [SerializeField] private CatapultTargetReticle _incomingCatapultShotPrefab;
 
-        public void Initialize(PlayerColorData localPlayerColors) {
-            _catapultAimReticle.SetTeam(localPlayerColors);
+        public void Initialize(GameTeam localTeam) {
+            _catapultAimReticle.Initialize(localTeam, false);
         }
         
-        public void UpdateCatapultAimReticle(HashSet<Vector2Int> cellsAroundVertex) {
-            _catapultAimReticle.UpdateLocation(cellsAroundVertex);
+        #region Catapult Aim Reticle
+        
+        public void UpdateCatapultAimReticle(HashSet<Vector2Int> vertex) {
+            _catapultAimReticle.UpdateLocation(vertex);
         }
 
         public void HideCatapultAimReticle() {
             _catapultAimReticle.Hide();
         }
+
+        #endregion
+        #region Catapult Incoming Reticle
+        
+        public CatapultTargetReticle ShowIncomingCatapultTarget(HashSet<Vector2Int> vertex, GridEntity attacker) {
+            CatapultTargetReticle newReticle = Instantiate(_incomingCatapultShotPrefab, GameManager.Instance.CommandManager.SpawnBucket);
+            newReticle.Initialize(attacker.Team, true);
+            newReticle.UpdateLocation(vertex);
+            return newReticle;
+        }
+        
+        #endregion
     }
 }
