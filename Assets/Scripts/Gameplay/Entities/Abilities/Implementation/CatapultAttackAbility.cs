@@ -171,7 +171,7 @@ namespace Gameplay.Entities.Abilities {
     }
 
     public class CatapultAttackAbilityParameters : IAbilityParameters {
-        public HashSet<Vector2Int> TargetCells;    // If empty, then auto-attack an area with an enemy
+        public HashSet<Vector2Int> TargetCells = new HashSet<Vector2Int>();    // If empty, then auto-attack an area with an enemy
         public void Serialize(NetworkWriter writer) {
             writer.WriteInt(TargetCells.Count);
             foreach (Vector2Int targetCell in TargetCells) {
