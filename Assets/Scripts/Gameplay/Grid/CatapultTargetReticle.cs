@@ -47,11 +47,12 @@ namespace Gameplay.Grid {
         
         public void UpdateLocation(HashSet<Vector2Int> vertex) {
             _active = true;
-            UpdateFoWHiddenStatus(null);
-            UpdateVisibility();
             
             transform.position = GameManager.Instance.GridController.GetWorldPosition(vertex);
             _location = vertex;
+            
+            UpdateFoWHiddenStatus(null);
+            UpdateVisibility();
             
             int yMax = vertex.Select(c => c.y).Max();
             bool wideTop = vertex.Count(c => c.y == yMax) == 2;
