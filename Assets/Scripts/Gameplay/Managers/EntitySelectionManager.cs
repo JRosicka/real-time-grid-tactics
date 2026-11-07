@@ -335,6 +335,6 @@ public class EntitySelectionManager {
         PathfinderService.Path path = PathfinderService.FindPath(SelectedEntity, targetLocationLogic.CurrentTarget, range, fowTracker);
         
         GridController.VisualizePath(path, targetLocationLogic.PathType, targetLocationLogic.CurrentTarget, 
-            targetLocationLogic.HidePathDestination, fowTracker, false, SelectedEntity.EntityData.PathfindingConfig, false); // TODO force straight line if attacker is sieged
+            targetLocationLogic.HidePathDestination, fowTracker, false, SelectedEntity.EntityData.PathfindingConfig, SelectedEntity.SiegeState != SiegeState.Unsieged);
     }
 }

@@ -4,8 +4,8 @@ using UnityEngine;
 
 namespace Gameplay.Entities {
     public class CatapultView : GridEntityParticularView {
-        public GridEntityView EntityView;
         public Animator CatapultArmAnimator;
+        public float DefaultSiegeTime = 3f;
 
         public override void Initialize(GridEntity entity) { }
         public override void LethalDamageReceived() { }
@@ -15,6 +15,12 @@ namespace Gameplay.Entities {
             switch (ability) {
                 case CatapultAttackAbility attackAbility:
                     DoAttackAnimation(attackAbility.Performer);
+                    return false;
+                case SiegeAbility:
+                    DoSiegeAnimation(abilityTimer);
+                    return false;
+                case UnsiegeAbility:
+                    DoUnsiegeAnimation(abilityTimer);
                     return false;
                 default:
                     return true;
@@ -27,7 +33,18 @@ namespace Gameplay.Entities {
             if (!performer.IsActive()) return;
             
             // Just handle the arm moving. Rock launching animation handled in <see cref="CatapultRocks">
+            CatapultArmAnimator.speed = 1;
             CatapultArmAnimator.Play("CatapultLaunch");
+        }
+
+        private void DoSiegeAnimation(AbilityTimer timer) {
+            CatapultArmAnimator.speed = DefaultSiegeTime / timer.InitialTimeRemaining;
+            CatapultArmAnimator.Play("CatapultSiege");
+        }
+        
+        private void DoUnsiegeAnimation(AbilityTimer timer) {
+            CatapultArmAnimator.speed = DefaultSiegeTime / timer.InitialTimeRemaining;
+            CatapultArmAnimator.Play("CatapultUnsiege");
         }
     }
 }

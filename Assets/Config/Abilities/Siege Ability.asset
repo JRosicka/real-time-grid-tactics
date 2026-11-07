@@ -22,7 +22,7 @@ MonoBehaviour:
     _flipGridIcon: 0
     _gridIconColor: {r: 0, g: 0, b: 0, a: 0}
     _slotSprites: {fileID: 11400000, guid: 35069bbcc50cd694ba97d615a9a78b90, type: 2}
-    _timerView: {fileID: 6944947456884090745, guid: 9ce475588c4c24ce98e378449ab05ad3, type: 3}
+    _timerView: {fileID: 5971072852972127787, guid: 13b1806cdc66ce84887a7d8203e4cbc7, type: 3}
     _requirements: []
     _cooldownDuration: 3
     _channel: {fileID: 11400000, guid: a2bb18c2ded749a4e902028c24c166d0, type: 2}
