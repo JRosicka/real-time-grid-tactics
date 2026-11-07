@@ -57,10 +57,12 @@ namespace Gameplay.Grid {
         }
         
         public void ProcessMouseMove(PointerEventData eventData) {
-            CurrentMousePosition = eventData.pointerCurrentRaycast.worldPosition;
-            Vector2Int mousePos = _gridController.GetCellPosition(CurrentMousePosition);
+            Vector2 newMousePosition= eventData.pointerCurrentRaycast.worldPosition;
+            Vector2Int mousePos = _gridController.GetCellPosition(newMousePosition);
             
-            if (!_gridController.IsInBounds(mousePos)) return;
+            if (IsWorldPositionProbablyIneligible(newMousePosition) || !_gridController.IsInBounds(mousePos)) return;
+            
+            CurrentMousePosition = newMousePosition;
             
             // Update the current hovered cell if it changed
             bool newHoveredCell = CurrentHoveredCell != mousePos;
@@ -133,6 +135,13 @@ namespace Gameplay.Grid {
 
         public void ProcessZoom(float zoomDelta) {
             _cameraManager.Zoom(zoomDelta > 0);
+        }
+
+        /// <summary>
+        /// If a given world position is *exactly* (0, 0), then it's probably because the mouse left the grid. 
+        /// </summary>
+        private bool IsWorldPositionProbablyIneligible(Vector2 worldPosition) {
+            return worldPosition is { x: 0, y: 0 };
         }
 
         private void TryClickOnCell(MouseClick clickType, Vector2Int clickPosition) {
