@@ -18,7 +18,6 @@ namespace Gameplay.Grid {
         [SerializeField] private Image _innerReticle;
         [SerializeField] private Animator _animator;
 
-        private GameTeam _team;
         private HashSet<Vector2Int> _location;
         private bool _hiddenByFoW;
         private bool _active;
@@ -27,13 +26,12 @@ namespace Gameplay.Grid {
         private bool _markedForDestruction;
         
         private GameManager GameManager => GameManager.Instance;
-        private TeamFogOfWarTracker FowTracker => GameManager.Instance.FogOfWarManager!.GetTracker(_team);
+        private TeamFogOfWarTracker FowTracker => GameManager.Instance.FogOfWarManager!.GetLocalTeamTracker();
 
         public void Initialize(GameTeam team, bool playFastAnimation) {
             Color color = GameManager.GetPlayerForTeam(team).ColorData.TeamColor;
             _outerReticle.color = color;
             _innerReticle.color = color;
-            _team = team;
 
             _animationName = playFastAnimation ? FastAnimation : AimAnimation;
             
