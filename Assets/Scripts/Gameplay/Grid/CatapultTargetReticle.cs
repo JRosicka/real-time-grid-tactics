@@ -50,7 +50,6 @@ namespace Gameplay.Grid {
             _location = vertex;
             
             UpdateFoWHiddenStatus(null);
-            UpdateVisibility();
             
             int yMax = vertex.Select(c => c.y).Max();
             bool wideTop = vertex.Count(c => c.y == yMax) == 2;
