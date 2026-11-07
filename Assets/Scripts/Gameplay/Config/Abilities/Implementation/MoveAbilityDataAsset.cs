@@ -36,7 +36,11 @@ namespace Gameplay.Config.Abilities {
                 return AbilityLegality.IndefinitelyIllegal;
             }
 
-            if (entity.SiegeState != SiegeState.Unsieged) {
+            if (entity.SiegeState is SiegeState.Sieged or SiegeState.Sieging) {
+                return AbilityLegality.IndefinitelyIllegal;
+            }
+
+            if (entity.SiegeState == SiegeState.Unsieging) {
                 return AbilityLegality.NotCurrentlyLegal;
             }
 
