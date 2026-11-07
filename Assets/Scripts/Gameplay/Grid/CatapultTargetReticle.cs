@@ -47,6 +47,7 @@ namespace Gameplay.Grid {
         
         public void UpdateLocation(HashSet<Vector2Int> vertex) {
             _active = true;
+            UpdateFoWHiddenStatus(null);
             UpdateVisibility();
             
             transform.position = GameManager.Instance.GridController.GetWorldPosition(vertex);
