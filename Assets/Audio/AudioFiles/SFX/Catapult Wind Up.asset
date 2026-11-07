@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Catapult Wind Up
   m_EditorClassIdentifier: Assembly-CSharp::Audio.AudioFile
   Clip: {fileID: 8300000, guid: fb9c69da66e0f134ab77afcdfa5f7891, type: 3}
-  Volume: 0.214
+  Volume: 0.639
   AudioLayer: 0
   Interruptible: 0
   PlayDuringReplay: 1

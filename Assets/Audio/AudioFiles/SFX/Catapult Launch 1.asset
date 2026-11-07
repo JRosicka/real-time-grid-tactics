@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Catapult Launch 1
   m_EditorClassIdentifier: Assembly-CSharp::Audio.AudioFile
   Clip: {fileID: 8300000, guid: 4587024d58bc8ee43882b444eecb9b30, type: 3}
-  Volume: 0.214
+  Volume: 0.68
   AudioLayer: 0
   Interruptible: 0
   PlayDuringReplay: 1
