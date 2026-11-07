@@ -18,6 +18,7 @@ namespace Gameplay.Entities {
                 nameof(NetworkableGridEntityValue) => NetworkableGridEntityValue.Deserialize(reader),
                 nameof(NetworkableBoostRegistrationsValue) => NetworkableBoostRegistrationsValue.Deserialize(reader),
                 nameof(NetworkableGridEntityListValue) => NetworkableGridEntityListValue.Deserialize(reader),
+                nameof(NetworkableSiegeStateValue) => NetworkableSiegeStateValue.Deserialize(reader),
                 _ => throw new Exception($"No deserializer found for {nameof(INetworkableFieldValue)} with ID {id}")
             };
         }
