@@ -65,11 +65,14 @@ namespace Gameplay.Config.Abilities {
         }
         
         public void DoTargetableAbility(Vector2Int cellPosition, GridEntity selectedEntity, GameTeam selectorTeam, System.Object targetData) {
-            GameManager.Instance.AbilityAssignmentManager.StartPerformingAbility(selectedEntity, this, new CatapultAttackAbilityParameters() {
-                    TargetCells = ClosestLegalAimVertex(selectedEntity, GameManager.Instance.GridInputController.CurrentClosestVertex),
+            HashSet<Vector2Int> closestVertex = ClosestLegalAimVertex(selectedEntity, GameManager.Instance.GridInputController.CurrentClosestVertex);
+            if (closestVertex != null) {
+                GameManager.Instance.AbilityAssignmentManager.StartPerformingAbility(selectedEntity, this, new CatapultAttackAbilityParameters() {
+                    TargetCells = closestVertex,
                 }, true, true, true, true);
             
-            selectedEntity.SetTargetLocation(cellPosition, null, PathVisualizer.PathType.TargetAttack);
+                selectedEntity.SetTargetLocation(cellPosition, null, PathVisualizer.PathType.TargetAttack);
+            }
 
             UpdateAimVisual(selectedEntity, null);
         }
@@ -123,10 +126,16 @@ namespace Gameplay.Config.Abilities {
                 return;
             }
 
-            GridReticleVisualizer.UpdateCatapultAimReticle(ClosestLegalAimVertex(selector, cellsAroundHoveredVertex));
+            HashSet<Vector2Int> closestVertex = ClosestLegalAimVertex(selector, cellsAroundHoveredVertex);
+            if (closestVertex == null) {
+                GridReticleVisualizer.HideCatapultAimReticle();
+                return;
+            }
+            
+            GridReticleVisualizer.UpdateCatapultAimReticle(closestVertex);
         }
 
-        private HashSet<Vector2Int> ClosestLegalAimVertex(GridEntity selector, HashSet<Vector2Int> cellsAroundHoveredVertex) {
+        [CanBeNull] private HashSet<Vector2Int> ClosestLegalAimVertex(GridEntity selector, HashSet<Vector2Int> cellsAroundHoveredVertex) {
             HashSet<Vector2Int> cellsInRange = GetCellsInRange(selector);
             if (cellsAroundHoveredVertex.All(l => cellsInRange.Contains(l))) {
                 return cellsAroundHoveredVertex;
@@ -170,6 +179,10 @@ namespace Gameplay.Config.Abilities {
             
             // Determine which one of those vertices is closest in world space to the current mouse position
             Vector2 currentMousePos = GameManager.Instance.GridInputController.CurrentMousePosition;
+            if (eligibleVertices.Count == 0) {
+                // Not legal, probably because the player is aiming at the corner of the map
+                return null;
+            }
             return eligibleVertices.OrderBy(v => (GridController.GetWorldPosition(v) - currentMousePos).magnitude).First();
         }
 
