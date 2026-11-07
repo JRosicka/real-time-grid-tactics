@@ -45,7 +45,6 @@ namespace Gameplay.Entities {
         [Header("Stats")]
         public int MaxHP;
         public float MoveTime;
-        public int Range;
         public int Damage;
 
         // NetworkableFields and composition objects
@@ -85,6 +84,8 @@ namespace Gameplay.Entities {
         private bool Carried => ((NetworkableBoolValue)_carriedField?.Value)?.Value ?? false;
         private NetworkableField _siegeStateField;
         public SiegeState SiegeState => ((NetworkableSiegeStateValue)_siegeStateField?.Value)?.Value ?? SiegeState.Unsieged;
+        private NetworkableField _rangeField;
+        public int Range => ((NetworkableIntegerValue)_rangeField?.Value)?.Value ?? EntityData.Range;
 
         // Abilities
         /// <summary>
@@ -166,6 +167,7 @@ namespace Gameplay.Entities {
         public event Action<BoostRegistrations> BoostRegistrationsChanged;
         public event Action<bool> CarriedStateChanged;
         public event Action<SiegeState> SiegeStateChanged;
+        public event Action<int> RangeChanged;
         
         /// <summary>
         /// Only triggered on server
@@ -196,6 +198,7 @@ namespace Gameplay.Entities {
             ArmorField = new NetworkableField(this, nameof(ArmorField), new NetworkableIntegerValue(0));
             _carriedField = new NetworkableField(this, nameof(_carriedField), new NetworkableBoolValue(false));
             _siegeStateField = new NetworkableField(this, nameof(_siegeStateField), new NetworkableSiegeStateValue(SiegeState.Unsieged));
+            _rangeField = new NetworkableField(this, nameof(_rangeField), new NetworkableIntegerValue(0));
         }
 
         /// <summary>
@@ -232,6 +235,7 @@ namespace Gameplay.Entities {
             if (data.ArmorBonus > 0) {
                 ArmorField.UpdateValue(new NetworkableIntegerValue(data.ArmorBonus));
             }
+            _rangeField.UpdateValue(new NetworkableIntegerValue(EntityData.Range));
             
             // Set up death actions
             foreach (DeathActionData deathActionData in EntityData.DeathActions) {
@@ -314,6 +318,7 @@ namespace Gameplay.Entities {
             _activeBoostsField.ValueChanged += (_, _, _) => BoostRegistrationsChanged?.Invoke(ActiveBoosts);
             _carriedField.ValueChanged += (_, _, _) => CarriedStateChanged?.Invoke(Carried);
             _siegeStateField.ValueChanged += (_, _, _) => SiegeStateChanged?.Invoke(SiegeState);
+            _rangeField.ValueChanged += (_, _, _) => RangeChanged?.Invoke(Range);
 
             Interactable = true;
         } 
@@ -321,7 +326,6 @@ namespace Gameplay.Entities {
         private void SetupStats() {
             MaxHP = EntityData.HP;
             MoveTime = EntityData.NormalMoveTime;
-            Range = EntityData.Range;
             Damage = EntityData.Damage;
         }
         
@@ -344,6 +348,10 @@ namespace Gameplay.Entities {
 
         public void SetSiegeState(SiegeState newState) {
             _siegeStateField.UpdateValue(new NetworkableSiegeStateValue(newState));
+        }
+
+        public void UpdateRange(int newRange) {
+            _rangeField.UpdateValue(new NetworkableIntegerValue(newRange));
         }
 
         #endregion
@@ -721,19 +729,23 @@ namespace Gameplay.Entities {
             if (targetEntity == null) {
                 // Attack move
                 AttackAbilityData data = GetAbilityData<AttackAbilityData>();
-                if (AbilityAssignmentManager.StartPerformingAbility(this, data, new AttackAbilityParameters {
-                        Destination = targetCell
-                    }, false, true, true, false)) {
-                    SetTargetLocation(targetCell, null, PathVisualizer.PathType.AttackMove);
+                if (data != null) {
+                    if (AbilityAssignmentManager.StartPerformingAbility(this, data, new AttackAbilityParameters {
+                            Destination = targetCell
+                        }, false, true, true, false)) {
+                        SetTargetLocation(targetCell, null, PathVisualizer.PathType.AttackMove);
+                    }
                 }
             } else {
                 // Target attack
                 TargetAttackAbilityData data = GetAbilityData<TargetAttackAbilityData>();
-                if (AbilityAssignmentManager.StartPerformingAbility(this, data, new TargetAttackAbilityParameters {
-                        Target = targetEntity,
-                        LastKnownLocation = targetCell
-                    }, false, true, true, false)) {
-                    SetTargetLocation(targetCell, targetEntity, PathVisualizer.PathType.TargetAttack);
+                if (data != null) {
+                    if (AbilityAssignmentManager.StartPerformingAbility(this, data, new TargetAttackAbilityParameters {
+                            Target = targetEntity,
+                            LastKnownLocation = targetCell
+                        }, false, true, true, false)) {
+                        SetTargetLocation(targetCell, targetEntity, PathVisualizer.PathType.TargetAttack);
+                    }
                 }
             }
         }

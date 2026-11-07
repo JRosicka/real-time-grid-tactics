@@ -1,0 +1,754 @@
+fileFormatVersion: 2
+guid: 2e8773efe5162d647bc213cdc14a9fa4
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -5513731470017385083
+    second: wagon-small_0
+  - first:
+      213: -5974505228166789255
+    second: wagon-small_1
+  - first:
+      213: -6255482972292614754
+    second: wagon-small_2
+  - first:
+      213: 4602430421483584010
+    second: wagon-small_3
+  - first:
+      213: -8364599760504080716
+    second: wagon-small_4
+  - first:
+      213: -259829555087263296
+    second: wagon-small_5
+  - first:
+      213: 9036514745681324940
+    second: wagon-small_6
+  - first:
+      213: 8399991534498508371
+    second: wagon-small_7
+  - first:
+      213: 7038211659203254493
+    second: wagon-small_8
+  - first:
+      213: -1371628023192257322
+    second: wagon-small_9
+  - first:
+      213: -5503753963363629477
+    second: wagon-small_10
+  - first:
+      213: -6969214494960535002
+    second: wagon-small_11
+  - first:
+      213: 1284792002466512874
+    second: wagon-small_12
+  - first:
+      213: 8772370280171434059
+    second: wagon-small_13
+  - first:
+      213: 2713081816214246259
+    second: wagon-small_14
+  - first:
+      213: 7107096200334902248
+    second: wagon-small_15
+  - first:
+      213: -6044956234381542472
+    second: wagon-small_16
+  - first:
+      213: -697677171010108160
+    second: wagon-small_17
+  - first:
+      213: -253672596353750216
+    second: wagon-small_18
+  - first:
+      213: -8479801246006308516
+    second: wagon-small_19
+  - first:
+      213: 6911412524931343477
+    second: wagon-small_20
+  - first:
+      213: 7791479811880718274
+    second: wagon-small_21
+  - first:
+      213: 3937997381366581312
+    second: wagon-small_22
+  - first:
+      213: 8332187774695071861
+    second: wagon-small_23
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 1
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WindowsStoreApps
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: wagon-small_0
+      rect:
+        serializedVersion: 2
+        x: 151
+        y: 279
+        width: 90
+        height: 215
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 58da8b6e07a4b73b0800000000000000
+      internalID: -5513731470017385083
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: wagon-small_1
+      rect:
+        serializedVersion: 2
+        x: 230
+        y: 279
+        width: 107
+        height: 216
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9778766362b461da0800000000000000
+      internalID: -5974505228166789255
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: wagon-small_2
+      rect:
+        serializedVersion: 2
+        x: 353
+        y: 279
+        width: 108
+        height: 221
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e957ef1316f0039a0800000000000000
+      internalID: -6255482972292614754
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: wagon-small_3
+      rect:
+        serializedVersion: 2
+        x: 449
+        y: 279
+        width: 140
+        height: 244
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a0afaf7651e1fdf30800000000000000
+      internalID: 4602430421483584010
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: wagon-small_4
+      rect:
+        serializedVersion: 2
+        x: 533
+        y: 263
+        width: 65
+        height: 69
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4b636dad5d8faeb80800000000000000
+      internalID: -8364599760504080716
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: wagon-small_5
+      rect:
+        serializedVersion: 2
+        x: 160
+        y: 215
+        width: 41
+        height: 49
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0c930e27566e46cf0800000000000000
+      internalID: -259829555087263296
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: wagon-small_6
+      rect:
+        serializedVersion: 2
+        x: 193
+        y: 215
+        width: 35
+        height: 25
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c8b2aef9846286d70800000000000000
+      internalID: 9036514745681324940
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: wagon-small_7
+      rect:
+        serializedVersion: 2
+        x: 216
+        y: 228
+        width: 25
+        height: 35
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 35e621aabc3c29470800000000000000
+      internalID: 8399991534498508371
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: wagon-small_8
+      rect:
+        serializedVersion: 2
+        x: 256
+        y: 228
+        width: 26
+        height: 35
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: dd892d8c630cca160800000000000000
+      internalID: 7038211659203254493
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: wagon-small_9
+      rect:
+        serializedVersion: 2
+        x: 270
+        y: 215
+        width: 34
+        height: 25
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6dc77a1849ff6fce0800000000000000
+      internalID: -1371628023192257322
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: wagon-small_10
+      rect:
+        serializedVersion: 2
+        x: 296
+        y: 215
+        width: 98
+        height: 49
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b5600923eecbe93b0800000000000000
+      internalID: -5503753963363629477
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: wagon-small_11
+      rect:
+        serializedVersion: 2
+        x: 386
+        y: 215
+        width: 34
+        height: 25
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 62abf506750684f90800000000000000
+      internalID: -6969214494960535002
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: wagon-small_12
+      rect:
+        serializedVersion: 2
+        x: 408
+        y: 228
+        width: 25
+        height: 35
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: aef7745e48f74d110800000000000000
+      internalID: 1284792002466512874
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: wagon-small_13
+      rect:
+        serializedVersion: 2
+        x: 449
+        y: 228
+        width: 25
+        height: 35
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b40ffc3ba48bdb970800000000000000
+      internalID: 8772370280171434059
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: wagon-small_14
+      rect:
+        serializedVersion: 2
+        x: 462
+        y: 215
+        width: 35
+        height: 25
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 373950e898dc6a520800000000000000
+      internalID: 2713081816214246259
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: wagon-small_15
+      rect:
+        serializedVersion: 2
+        x: 488
+        y: 215
+        width: 131
+        height: 49
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8e38d75d65a71a260800000000000000
+      internalID: 7107096200334902248
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: wagon-small_16
+      rect:
+        serializedVersion: 2
+        x: 193
+        y: 174
+        width: 34
+        height: 26
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8bbb7e615500c1ca0800000000000000
+      internalID: -6044956234381542472
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: wagon-small_17
+      rect:
+        serializedVersion: 2
+        x: 216
+        y: 152
+        width: 25
+        height: 34
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0050b063f4a5156f0800000000000000
+      internalID: -697677171010108160
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: wagon-small_18
+      rect:
+        serializedVersion: 2
+        x: 256
+        y: 152
+        width: 26
+        height: 34
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 83b651d1e16ca7cf0800000000000000
+      internalID: -253672596353750216
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: wagon-small_19
+      rect:
+        serializedVersion: 2
+        x: 270
+        y: 174
+        width: 34
+        height: 26
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c5111e5d1b1b15a80800000000000000
+      internalID: -8479801246006308516
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: wagon-small_20
+      rect:
+        serializedVersion: 2
+        x: 386
+        y: 174
+        width: 34
+        height: 26
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 574e7bcb2154aef50800000000000000
+      internalID: 6911412524931343477
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: wagon-small_21
+      rect:
+        serializedVersion: 2
+        x: 408
+        y: 152
+        width: 25
+        height: 34
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2cf07cd9b95e02c60800000000000000
+      internalID: 7791479811880718274
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: wagon-small_22
+      rect:
+        serializedVersion: 2
+        x: 449
+        y: 152
+        width: 25
+        height: 34
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 04806c201c396a630800000000000000
+      internalID: 3937997381366581312
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: wagon-small_23
+      rect:
+        serializedVersion: 2
+        x: 462
+        y: 174
+        width: 35
+        height: 26
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5706d80a2a0e1a370800000000000000
+      internalID: 8332187774695071861
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      wagon-small_0: -5513731470017385083
+      wagon-small_1: -5974505228166789255
+      wagon-small_10: -5503753963363629477
+      wagon-small_11: -6969214494960535002
+      wagon-small_12: 1284792002466512874
+      wagon-small_13: 8772370280171434059
+      wagon-small_14: 2713081816214246259
+      wagon-small_15: 7107096200334902248
+      wagon-small_16: -6044956234381542472
+      wagon-small_17: -697677171010108160
+      wagon-small_18: -253672596353750216
+      wagon-small_19: -8479801246006308516
+      wagon-small_2: -6255482972292614754
+      wagon-small_20: 6911412524931343477
+      wagon-small_21: 7791479811880718274
+      wagon-small_22: 3937997381366581312
+      wagon-small_23: 8332187774695071861
+      wagon-small_3: 4602430421483584010
+      wagon-small_4: -8364599760504080716
+      wagon-small_5: -259829555087263296
+      wagon-small_6: 9036514745681324940
+      wagon-small_7: 8399991534498508371
+      wagon-small_8: 7038211659203254493
+      wagon-small_9: -1371628023192257322
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

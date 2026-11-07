@@ -6,6 +6,7 @@ using Gameplay.Entities;
 using Gameplay.Entities.Abilities;
 using Gameplay.Grid;
 using Gameplay.UI;
+using JetBrains.Annotations;
 using UnityEngine;
 using Util;
 
@@ -22,7 +23,6 @@ namespace Gameplay.Config.Abilities {
     [Serializable]
     public class CatapultAttackAbilityData : AbilityDataBase<CatapultAttackAbilityParameters>, ITargetableAbilityData, IAttackAbilityData {
         [SerializeField] private AttackAbilityLogicType _attackType;
-        [SerializeField] private UpgradeData _catapultUpgrade;
         
         private GridReticleVisualizer GridReticleVisualizer => GameManager.Instance.GridReticleVisualizer;
         private GridController GridController => GameManager.Instance.GridController;
@@ -87,7 +87,7 @@ namespace Gameplay.Config.Abilities {
         }
         
         public void OwnedPurchasablesChanged(GridEntity selector) {
-            // Nothing to do
+            UpdateAimVisual(selector, GameManager.Instance.GridInputController.CurrentClosestVertex);
         }
 
         public void Deselect(GridEntity selector) {
@@ -113,12 +113,7 @@ namespace Gameplay.Config.Abilities {
                 .ToHashSet();
         }
         
-        public int Range(GridEntity performer) => HasCatapultUpgrade(performer.Team) ? performer.Range + 1 : performer.Range;
-        
-        private bool HasCatapultUpgrade(GameTeam team) {
-            IGamePlayer player = GameManager.Instance.GetPlayerForTeam(team);
-            return player.OwnedPurchasablesController.HasUpgrade(_catapultUpgrade);
-        }
+        public int Range(GridEntity performer) => performer.Range;
         
         #region Visuals and Aiming
 

@@ -26,6 +26,7 @@ namespace Gameplay.UI {
             entity.IncomeRateChanged += IncomeRateChanged;
             entity.FogOfWarHiddenStatusChangedEvent += FoWChanged;
             entity.ArmorField.ValueChanged += ArmorChanged;
+            entity.RangeChanged += RangeChanged;
             
             IGamePlayer player = GameManager.Instance.GetPlayerForTeam(entity);
             if (player != null) {
@@ -138,10 +139,15 @@ namespace Gameplay.UI {
             }
         }
 
+        private GameObject _rangeRow;
+        private TMP_Text _rangeField;
         public void SetUpRangeView(GameObject rangeRow, TMP_Text rangeField) {
-            if (Entity.EntityData.Range > 0) {
+            _rangeRow = rangeRow;
+            _rangeField = rangeField;
+            
+            if (Entity.Range > 0) {
                 rangeRow.SetActive(true);
-                rangeField.text = Entity.EntityData.Range.ToString();
+                rangeField.text = Entity.Range.ToString();
             } else {
                 rangeRow.SetActive(false);
             }
@@ -246,6 +252,8 @@ namespace Gameplay.UI {
             Entity.IncomeRateChanged -= IncomeRateChanged;
             Entity.FogOfWarHiddenStatusChangedEvent -= FoWChanged;
             Entity.ArmorField.ValueChanged -= ArmorChanged;
+            Entity.RangeChanged -= RangeChanged;
+            
             IGamePlayer player = GameManager.Instance.GetPlayerForTeam(Entity);
             if (player != null) {
                 player.OwnedPurchasablesController.OwnedPurchasablesChangedEvent -= OnOwnedPurchasablesChanged;
@@ -287,6 +295,10 @@ namespace Gameplay.UI {
 
         private void ArmorChanged(INetworkableFieldValue oldValue, INetworkableFieldValue newValue, string metadata) {
             SetUpArmorView(_armorRow, _armorField);
+        }
+
+        private void RangeChanged(int newValue) {
+            SetUpRangeView(_rangeRow, _rangeField);
         }
 
         #region Tooltips

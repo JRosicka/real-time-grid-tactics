@@ -9,32 +9,27 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b29fac6bf452484b8c484e359cd7b422, type: 3}
-  m_Name: Wagon Upgrade
-  m_EditorClassIdentifier: Assembly-CSharp::Gameplay.Config.Upgrades.WagonUpgradeData
-  ID: Horse-Drawn Carriages
-  ShortDescription: Capacity and Armor upgrade for Wagons.
-  Description: Enables Wagons to carry 2 normal units or 1 massive unit. +1 Armor
-    bonus to Wagons.
+  m_Script: {fileID: 11500000, guid: b323f6b7783a4a80ba3b94e8ed4eec38, type: 3}
+  m_Name: Catapult Upgrade
+  m_EditorClassIdentifier: Assembly-CSharp::Gameplay.Config.Upgrades.CatapultUpgradeData
+  ID: Catapult Protractors
+  ShortDescription: Catapult range upgrade.
+  Description: Adds +1 attack range for Catapult units.
   Cost:
   - Type: 2
-    Amount: 75
+    Amount: 100
   Requirements:
   - Purchasable: {fileID: 11400000, guid: da18b7c42637384459734cbbec9ef5b0, type: 2}
     AlternativePurchasable: {fileID: 0}
     MustBeAdjacent: 0
-    FailedRequirementExplanation: Requires a Workskhop and a Stable.
-  - Purchasable: {fileID: 11400000, guid: f2089d06c5ba63e40a8078c1636cac5f, type: 2}
-    AlternativePurchasable: {fileID: 0}
-    MustBeAdjacent: 0
-    FailedRequirementExplanation: Requires a Workskhop and a Stable.
+    FailedRequirementExplanation: You must own a Workshop.
   - Purchasable: {fileID: 11400000, guid: f8a9d9571b0a8324587b160065ca7fce, type: 2}
     AlternativePurchasable: {fileID: 0}
     MustBeAdjacent: 1
     FailedRequirementExplanation: Your King must be adjacent to the Amber Forge.
   BuildTime: 90
   BuildsImmediately: 1
-  BaseSprite: {fileID: 21300012, guid: 90891868e4a838b44bd8113f502ab48f, type: 3}
+  BaseSprite: {fileID: 21300000, guid: 21ba6b278750c7743b9438bd0064f429, type: 3}
   TeamColorSprite: {fileID: 0}
   BaseSpriteIconOverride: {fileID: 0}
   TeamColorSpriteIconOverride: {fileID: 0}
@@ -43,7 +38,6 @@ MonoBehaviour:
   ApplyToGridEntitiesUponCompletion: 1
   ApplyToGridEntitiesWhenTheySpawn: 1
   ExpirationSeconds: 0
-  OrderIndex: 600
-  WagonData: {fileID: 11400000, guid: 1e0844ab0a6f9ba408238739b8a38df2, type: 2}
-  ArmorBonus: 1
-  CapacityBonus: 1
+  OrderIndex: 700
+  CatapultEntity: {fileID: 11400000, guid: 9e426fdef5ac4ba43888ae5a6bcfde08, type: 2}
+  RangeIncrease: 1

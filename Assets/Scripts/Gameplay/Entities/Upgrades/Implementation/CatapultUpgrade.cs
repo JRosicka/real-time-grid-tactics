@@ -1,24 +1,24 @@
 using Gameplay.Config.Upgrades;
-using UnityEngine;
 
 namespace Gameplay.Entities.Upgrades {
-    public class Test1Upgrade : AbstractUpgrade<Test1UpgradeData> {
-        public Test1Upgrade(Test1UpgradeData data, GameTeam team) : base(data, team) {}
+    public class CatapultUpgrade : AbstractUpgrade<CatapultUpgradeData> {
+        public CatapultUpgrade(CatapultUpgradeData data, GameTeam team) : base(data, team) {}
         
         protected override void ApplyGlobalEffect() {
-            Debug.Log("Test 1 upgrade applied");
+            // Nothing to do
         }
         public override void ApplyUpgrade(GridEntity friendlyEntity) {
-            Debug.Log($"Test 1 upgrade applied to entity {friendlyEntity.EntityData.ID}");
+            if (friendlyEntity.EntityData != Data.CatapultEntity) return;
+            friendlyEntity.UpdateRange(friendlyEntity.Range + Data.RangeIncrease);
         }
 
         protected override void RemoveGlobalEffect() {
-            Debug.Log("Test 1 upgrade removed");
+            // Nothing to do
         }
         public override void RemoveUpgrade(GridEntity friendlyEntity) {
-            Debug.Log($"Test 1 upgrade removed from entity {friendlyEntity.EntityData.ID}");
+            // Nothing to do
         }
-        
+
         protected override void TimerStartedLocally() {
             // Nothing to do
         }
