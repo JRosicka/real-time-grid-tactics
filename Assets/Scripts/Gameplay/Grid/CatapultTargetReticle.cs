@@ -33,6 +33,7 @@ namespace Gameplay.Grid {
             Color color = GameManager.GetPlayerForTeam(team).ColorData.TeamColor;
             _outerReticle.color = color;
             _innerReticle.color = color;
+            _team = team;
 
             _animationName = playFastAnimation ? FastAnimation : AimAnimation;
             
@@ -56,7 +57,7 @@ namespace Gameplay.Grid {
             transform.eulerAngles = wideTop ? new Vector3(0, 0, 0) : new Vector3(0, 0, 60);
         }
 
-        public void Hide(bool markForDestruction = false) {
+        public void Hide(bool markForDestruction) {
             _active = false;
             UpdateVisibility();
             if (markForDestruction) {

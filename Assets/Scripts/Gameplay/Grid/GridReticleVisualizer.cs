@@ -22,7 +22,7 @@ namespace Gameplay.Grid {
         }
 
         public void HideCatapultAimReticle() {
-            _catapultAimReticle.Hide();
+            _catapultAimReticle.Hide(false);
         }
 
         #endregion

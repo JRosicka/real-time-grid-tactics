@@ -121,7 +121,7 @@ namespace Gameplay.Entities {
 
             GameAudio.Instance.CatapultRocksLandSound(_attacker);
             
-            _catapultTargetReticle.Hide();
+            _catapultTargetReticle.Hide(true);
             Destroy(gameObject);
         }
 
