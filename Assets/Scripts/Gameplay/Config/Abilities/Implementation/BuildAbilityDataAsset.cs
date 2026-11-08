@@ -54,11 +54,6 @@ namespace Gameplay.Config.Abilities {
                 Debug.Log(failureReason);
                 return AbilityLegality.IndefinitelyIllegal;
             }
-
-            if (entity.ActiveTimers.Select(t => t.Ability.AbilityData).Any(a => a is SellStructureAbilityData)) {
-                failureReason = "Can not build while selling structure.";
-                return AbilityLegality.IndefinitelyIllegal;
-            }
             
             failureReason = null;
 
@@ -80,6 +75,16 @@ namespace Gameplay.Config.Abilities {
                 return AbilityLegality.NotCurrentlyLegal;
             }
 
+            return AbilityLegality.Legal;
+        }
+
+        public override AbilityLegality CanEntityUseAbility(GridEntity entity, GameTeam team, out string failureReason) {
+            if (entity.ActiveTimers.Select(t => t.Ability.AbilityData).Any(a => a is SellStructureAbilityData)) {
+                failureReason = "Can not build while selling structure.";
+                return AbilityLegality.IndefinitelyIllegal;
+            }
+
+            failureReason = null;
             return AbilityLegality.Legal;
         }
 

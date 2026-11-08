@@ -30,6 +30,11 @@ namespace Gameplay.Config.Abilities {
 
         protected override AbilityLegality AbilityLegalImpl(NullAbilityParameters parameters, GridEntity entity, GameTeam team, out string failureReason) {
             failureReason = null;
+            return AbilityLegality.Legal;
+        }
+
+        public override AbilityLegality CanEntityUseAbility(GridEntity entity, GameTeam team, out string failureReason) {
+            failureReason = null;
             
             Vector2Int? entityLocation = entity.Location;
             if (entityLocation == null) return AbilityLegality.IndefinitelyIllegal;

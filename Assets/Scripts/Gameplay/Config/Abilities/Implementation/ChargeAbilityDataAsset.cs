@@ -63,6 +63,11 @@ namespace Gameplay.Config.Abilities {
             return AbilityLegality.IndefinitelyIllegal;
         }
 
+        public override AbilityLegality CanEntityUseAbility(GridEntity entity, GameTeam team, out string failureReason) {
+            failureReason = null;
+            return AbilityLegality.Legal;
+        }
+
         protected override IAbility CreateAbilityImpl(ChargeAbilityParameters parameters, GridEntity performer, GameTeam? overrideTeam) {
             return new ChargeAbility(this, parameters, performer, overrideTeam);
         }

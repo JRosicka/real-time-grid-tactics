@@ -148,16 +148,23 @@ namespace Gameplay.Config.Abilities {
         /// the ability. If the server check fails, let the client know. 
         /// </summary>
         public AbilityLegality AbilityLegal(IAbilityParameters parameters, GridEntity entity, bool ignoreBlockingTimers, GameTeam team, out string failureReason) {
-            AbilityLegality legality = GameManager.Instance.AbilityAssignmentManager.CanEntityUseAbility(entity, this, ignoreBlockingTimers, team);
+            AbilityLegality legality = GameManager.Instance.AbilityAssignmentManager.CanEntityUseAbility(entity, this, ignoreBlockingTimers, team, out failureReason);
             if (legality != AbilityLegality.Legal) {
-                failureReason = null;
                 return legality;
             }
             return AbilityLegalImpl((T) parameters, entity, team, out failureReason);
         }
         
+        /// <summary>
+        /// Whether this specific ability is legal given the game state and the specific parameters we want to execute it with.
+        /// </summary>
         protected abstract AbilityLegality AbilityLegalImpl(T parameters, GridEntity entity, GameTeam team, out string failureReason);
 
+        /// <summary>
+        /// Whether this specific ability is legal given the game state. Does not consider any particular parameters to execute with.
+        /// </summary>
+        public abstract AbilityLegality CanEntityUseAbility(GridEntity entity, GameTeam team, out string failureReason);
+        
         /// <summary>
         /// Create an instance of this ability, passing in any user input. This created instance should be passed to the
         /// server. 

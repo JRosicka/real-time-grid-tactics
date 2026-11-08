@@ -123,6 +123,11 @@ namespace Gameplay.Config.Abilities {
         AbilityLegality AbilityLegal(IAbilityParameters parameters, GridEntity entity, bool ignoreBlockingTimers, GameTeam team, out string failureReason);
         
         /// <summary>
+        /// Whether this specific ability is legal given the game state. Does not consider any particular parameters to execute with.
+        /// </summary>
+        AbilityLegality CanEntityUseAbility(GridEntity entity, GameTeam team, out string failureReason);
+
+        /// <summary>
         /// Create an instance of this ability, passing in any user input. This created instance should be passed to the
         /// server.
         /// </summary>

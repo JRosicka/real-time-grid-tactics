@@ -54,6 +54,11 @@ namespace Gameplay.Config.Abilities {
             return AbilityLegality.Legal;
         }
 
+        public override AbilityLegality CanEntityUseAbility(GridEntity entity, GameTeam team, out string failureReason) {
+            failureReason = null;
+            return AbilityLegality.Legal;
+        }
+
         protected override IAbility CreateAbilityImpl(BoostStructureAbilityParameters parameters, GridEntity performer, GameTeam? overrideTeam) {
             return new BoostStructureAbility(this, parameters, performer, overrideTeam);
         }

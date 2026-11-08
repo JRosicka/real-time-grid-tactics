@@ -18,7 +18,9 @@ namespace Gameplay.Managers {
 
         #region Availability checks
         
-        public AbilityLegality CanEntityUseAbility(GridEntity entity, IAbilityData data, bool ignoreBlockingTimers, GameTeam team) {
+        public AbilityLegality CanEntityUseAbility(GridEntity entity, IAbilityData data, bool ignoreBlockingTimers, GameTeam team, out string failureReason) {
+            failureReason = null;
+            
             // Is this entity set up to use this ability?
             if (!entity.Abilities.Contains(data)) {
                 return AbilityLegality.IndefinitelyIllegal;
@@ -36,7 +38,7 @@ namespace Gameplay.Managers {
                 return AbilityLegality.NotCurrentlyLegal;
             }
 
-            return AbilityLegality.Legal;
+            return data.CanEntityUseAbility(entity, team, out failureReason);
         }
 
         public bool IsAbilityChannelOnCooldownForEntity(GridEntity entity, AbilityChannel channel, out List<AbilityTimer> timers) {

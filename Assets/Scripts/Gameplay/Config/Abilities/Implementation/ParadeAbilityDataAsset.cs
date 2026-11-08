@@ -32,7 +32,12 @@ namespace Gameplay.Config.Abilities {
             failureReason = null;
             return AbilityLegalityAtResourceCollector(performer, parameters.Target);
         }
-        
+
+        public override AbilityLegality CanEntityUseAbility(GridEntity entity, GameTeam team, out string failureReason) {
+            failureReason = null;
+            return AbilityLegality.Legal;
+        }
+
         protected override IAbility CreateAbilityImpl(ParadeAbilityParameters parameters, GridEntity performer, GameTeam? overrideTeam) {
             return new ParadeAbility(this, parameters, performer, overrideTeam);
         }

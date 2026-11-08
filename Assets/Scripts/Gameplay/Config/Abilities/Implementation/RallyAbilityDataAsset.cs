@@ -39,6 +39,11 @@ namespace Gameplay.Config.Abilities {
             return AbilityLegality.Legal;
         }
 
+        public override AbilityLegality CanEntityUseAbility(GridEntity entity, GameTeam team, out string failureReason) {
+            failureReason = null;
+            return AbilityLegality.Legal;
+        }
+
         protected override IAbility CreateAbilityImpl(RallyAbilityParameters parameters, GridEntity performer, GameTeam? overrideTeam) {
             return new RallyAbility(this, parameters, performer, overrideTeam);
         }

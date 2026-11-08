@@ -42,7 +42,12 @@ namespace Gameplay.Config.Abilities {
             failureReason = "Cannot pick up there.";
             return EntityPickUpLogic.CanPickUp(performer, parameters.Target) ? AbilityLegality.Legal : AbilityLegality.IndefinitelyIllegal;
         }
-        
+
+        public override AbilityLegality CanEntityUseAbility(GridEntity entity, GameTeam team, out string failureReason) {
+            failureReason = null;
+            return AbilityLegality.Legal;
+        }
+
         protected override IAbility CreateAbilityImpl(PickUpUnitAbilityParameters parameters, GridEntity performer, GameTeam? overrideTeam) {
             return new PickUpUnitAbility(this, parameters, performer, overrideTeam);
         }

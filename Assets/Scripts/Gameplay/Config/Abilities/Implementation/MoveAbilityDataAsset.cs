@@ -36,14 +36,6 @@ namespace Gameplay.Config.Abilities {
                 return AbilityLegality.IndefinitelyIllegal;
             }
 
-            if (entity.SiegeState is SiegeState.Sieged or SiegeState.Sieging) {
-                return AbilityLegality.IndefinitelyIllegal;
-            }
-
-            if (entity.SiegeState == SiegeState.Unsieging) {
-                return AbilityLegality.NotCurrentlyLegal;
-            }
-
             if (parameters.BlockedByOccupation && !PathfinderService.CanEntityEnterCell(parameters.Destination, 
                         entity.EntityData, team, new List<GridEntity> { entity })) {
                 // Only consider this legal if we can take a step towards the destination
@@ -59,6 +51,20 @@ namespace Gameplay.Config.Abilities {
                         return AbilityLegality.IndefinitelyIllegal;
                     }
                 }
+            }
+
+            return AbilityLegality.Legal;
+        }
+
+        public override AbilityLegality CanEntityUseAbility(GridEntity entity, GameTeam team, out string failureReason) {
+            failureReason = null;
+            
+            if (entity.SiegeState is SiegeState.Sieged or SiegeState.Sieging) {
+                return AbilityLegality.IndefinitelyIllegal;
+            }
+
+            if (entity.SiegeState == SiegeState.Unsieging) {
+                return AbilityLegality.NotCurrentlyLegal;
             }
 
             return AbilityLegality.Legal;

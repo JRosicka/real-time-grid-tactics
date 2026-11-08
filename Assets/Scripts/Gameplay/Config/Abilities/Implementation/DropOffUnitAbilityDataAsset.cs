@@ -36,7 +36,12 @@ namespace Gameplay.Config.Abilities {
             failureReason = null;
             return EntityPickUpLogic.CanDropOff(performer, parameters.Target) ? AbilityLegality.Legal : AbilityLegality.NotCurrentlyLegal;
         }
-        
+
+        public override AbilityLegality CanEntityUseAbility(GridEntity entity, GameTeam team, out string failureReason) {
+            failureReason = null;
+            return AbilityLegality.Legal;
+        }
+
         protected override IAbility CreateAbilityImpl(DropOffUnitAbilityParameters parameters, GridEntity performer, GameTeam? overrideTeam) {
             return new DropOffUnitAbility(this, parameters, performer, overrideTeam);
         }

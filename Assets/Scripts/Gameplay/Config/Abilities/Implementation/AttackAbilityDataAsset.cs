@@ -34,6 +34,11 @@ namespace Gameplay.Config.Abilities {
 
         protected override AbilityLegality AbilityLegalImpl(AttackAbilityParameters parameters, GridEntity entity, GameTeam team, out string failureReason) {
             failureReason = null;
+            return AbilityLegality.Legal;
+        }
+
+        public override AbilityLegality CanEntityUseAbility(GridEntity entity, GameTeam team, out string failureReason) {
+            failureReason = null;
             return CanAttackTarget(entity);
         }
 
