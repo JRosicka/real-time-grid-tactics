@@ -16,6 +16,8 @@ namespace Gameplay.Entities {
     /// </summary>
     public class CatapultRocks : NetworkBehaviour {
         public float Speed;
+        [Tooltip("This is a fake 'distance' that gets added onto the actual distance for the purpose of determining how long it takes for the projectile to reach its target")]
+        public float BaseDistance = .5f;
         public float DistanceFromTargetToPlayRocksLandingAnimation;
         public Animator RocksLaunchAnimator;
         public RocksLandingAnimation RocksLandingAnimationPrefabNarrowTop;
@@ -83,7 +85,7 @@ namespace Gameplay.Entities {
             _originalLocation = attackerLocation.Value;
             _originalWorldPosition = transform.position;
             _targetWorldPosition = _gridController.GetWorldPosition(targetCells);
-            _startingDistance = Vector2.Distance(_originalLocation, _targetWorldPosition);
+            _startingDistance = Vector2.Distance(_originalWorldPosition, _targetWorldPosition) + BaseDistance;
             float xDif = _targetWorldPosition.x - _originalWorldPosition.x;
             _facingRight = xDif > 0;
             

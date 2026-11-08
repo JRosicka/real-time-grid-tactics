@@ -63,7 +63,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Gameplay.Entities.CatapultRocks
   syncMode: 0
   syncInterval: 0.1
-  Speed: 1
+  Speed: 0.9
+  BaseDistance: 1
   DistanceFromTargetToPlayRocksLandingAnimation: 0.5
   RocksLaunchAnimator: {fileID: 5378500424816384021}
   RocksLandingAnimationPrefabNarrowTop: {fileID: 2687184367492099003, guid: 6a58c0d5b6a6d5d408d99206e372e676, type: 3}
