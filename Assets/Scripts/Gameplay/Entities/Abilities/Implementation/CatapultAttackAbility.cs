@@ -3,6 +3,7 @@ using System.Linq;
 using Gameplay.Config;
 using Gameplay.Config.Abilities;
 using Gameplay.Grid;
+using Gameplay.Managers;
 using Gameplay.UI;
 using JetBrains.Annotations;
 using Mirror;
@@ -23,6 +24,7 @@ namespace Gameplay.Entities.Abilities {
         public override AbilityExecutionType ExecutionType => AbilityExecutionType.Interaction;
         public override bool ShouldShowAbilityTimer => true;
         protected override float AddedMovementTime => Performer.MovementTimeFromAttacking;
+        private TeamFogOfWarTracker FowTracker => GameManager.Instance.FogOfWarManager!.GetTracker(PerformerTeam);
 
         public override void Cancel() {
             // Nothing to do
@@ -59,7 +61,7 @@ namespace Gameplay.Entities.Abilities {
             } 
             
             // Otherwise find a valid target if one exists
-            List<GridEntity> viableTargets = DetermineTargetsForAttackMove(Performer, attackerLocation.Value);
+            List<GridEntity> viableTargets = DetermineTargetsForAttackMove(Performer, attackerLocation.Value, FowTracker);
             if (viableTargets != null && viableTargets.Any()) {
                 if (notAllowedToAttack) {
                     // We are in range of a target, but attacking is on cooldown. Do nothing for now. 
@@ -99,7 +101,7 @@ namespace Gameplay.Entities.Abilities {
         /// </summary>
         /// <returns>A list of viable targets, or null if there are no valid targets</returns>
         [ItemCanBeNull]
-        private List<GridEntity> DetermineTargetsForAttackMove(GridEntity attacker, Vector2Int location) {
+        private List<GridEntity> DetermineTargetsForAttackMove(GridEntity attacker, Vector2Int location, TeamFogOfWarTracker fowTracker) {
             Vector2Int? attackerLocation = attacker.Location;
             if (attackerLocation == null) return null;
             
@@ -118,6 +120,9 @@ namespace Gameplay.Entities.Abilities {
                     .Where(e => e.Location != null && cellsInRange.Contains(e.Location.Value) && e.EntityData.Attackable)
                     .ToList();
             }
+            
+            // Don't consider entities that are hidden by FoW
+            enemiesInRange.RemoveAll(fowTracker.IsEntityHidden);
             
             if (enemiesInRange.Count == 0) return null;
 
