@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Audio;
@@ -31,10 +32,13 @@ namespace Gameplay.Entities {
         private float _currentProgress;
         private float _startingDistance;
         private bool _facingRight;
-        private bool _initialized;
+        private bool _startedInitializing;
+        private bool _doneInitializing;
         private int _bonusDamage;
         private bool _playedRocksLandingAnimation;
         private CatapultTargetReticle _catapultTargetReticle;
+        private bool _alreadyDestroyed;
+        private bool _targetHit;
 
         private TeamFogOfWarTracker LocalFoWTracker => GameManager.Instance.FogOfWarManager?.GetLocalTeamTracker();
 
@@ -51,7 +55,7 @@ namespace Gameplay.Entities {
         /// FoW is considered for all the visuals.
         /// </summary>
         public void Initialize(GridEntity attacker, HashSet<Vector2Int> targetCells, int bonusDamage) {
-            _initialized = true;
+            _startedInitializing = true;
             _bonusDamage = bonusDamage;
             DoInitialize(attacker, targetCells, true);
             if (GameTypeTracker.Instance.GameIsNetworked) {
@@ -61,7 +65,7 @@ namespace Gameplay.Entities {
 
         [ClientRpc]
         private void RpcInitialize(GridEntity attacker, List<Vector2Int> targetCells) {
-            if (_initialized) return;
+            if (_startedInitializing) return;
             DoInitialize(attacker, targetCells.ToHashSet(), false);
         }
 
@@ -90,6 +94,7 @@ namespace Gameplay.Entities {
             _catapultTargetReticle = GameManager.Instance.GridReticleVisualizer.ShowIncomingCatapultTarget(targetCells, attacker);
 
             GameAudio.Instance.EntityAttackSound(_attacker);
+            _doneInitializing = true;
         }
 
         public void Update() {
@@ -107,7 +112,17 @@ namespace Gameplay.Entities {
             }
         }
 
+        private void OnDestroy() {
+            if (!_doneInitializing) return;
+            if (_targetHit) return;
+            
+            // This is the client getting destroyed by the server, but the target was not visually hit on this client. Do that now. 
+            _alreadyDestroyed = true;
+            HitTargets();
+        }
+
         private void HitTargets() {
+            _targetHit = true;
             if (_actuallyDamageTarget) {
                 foreach (Vector2Int cell in _targetCells) {
                     GridEntity entityAtCell = GameManager.Instance.CommandManager.GetEntitiesAtCell(cell)
@@ -122,7 +137,9 @@ namespace Gameplay.Entities {
             GameAudio.Instance.CatapultRocksLandSound(_attacker);
             
             _catapultTargetReticle.Hide(true);
-            Destroy(gameObject);
+            if (!_alreadyDestroyed) {
+                Destroy(gameObject);
+            }
         }
 
         private void SetCatapultFacingDirection() {
