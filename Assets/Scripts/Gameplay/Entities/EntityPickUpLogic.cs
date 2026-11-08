@@ -3,6 +3,7 @@ using System.Linq;
 using Gameplay.Config;
 using Gameplay.Entities.Abilities;
 using Gameplay.Grid;
+using Gameplay.UI;
 using UnityEngine;
 
 namespace Gameplay.Entities {
@@ -31,9 +32,10 @@ namespace Gameplay.Entities {
             if (!CellDistanceLogic.Neighbors(carrier.Location!.Value).Contains(passenger.Location!.Value)) return false;
 
             carrier.PickUpEntity(passenger);
-
             GameManager.Instance.CommandManager.RemoveEntityFromGrid(passenger);
 
+            passenger.SetTargetLocation(carrier.Location.Value, null, PathVisualizer.PathType.Move);
+            
             return true;
         }
 
@@ -59,9 +61,10 @@ namespace Gameplay.Entities {
             if (carrier.Location!.Value != location && !CellDistanceLogic.Neighbors(carrier.Location!.Value).Contains(location)) return false;
 
             carrier.DropEntity(passenger);
-            
             GameManager.Instance.CommandManager.PutEntityBackOnGrid(passenger, location);
 
+            passenger.SetTargetLocation(location, null, PathVisualizer.PathType.Move);
+            
             return true;
         }
 
