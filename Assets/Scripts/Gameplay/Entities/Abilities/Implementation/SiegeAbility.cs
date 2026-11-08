@@ -1,4 +1,6 @@
+using System.Linq;
 using Gameplay.Config.Abilities;
+using Gameplay.UI;
 
 namespace Gameplay.Entities.Abilities {
     /// <summary>
@@ -27,6 +29,13 @@ namespace Gameplay.Entities.Abilities {
         protected override (bool, AbilityResult) DoAbilityEffect() {
             if (Performer.SiegeState != SiegeState.Unsieged) {
                 return (false, AbilityResult.IncompleteWithoutEffect);
+            }
+            
+            // We are actually beginning the siege now. Cancel any in-progress catapult move.
+            MoveAbility inProgressMove = Performer.InProgressAbilities.OfType<MoveAbility>().FirstOrDefault();
+            if (inProgressMove != null) {
+                GameManager.Instance.CommandManager.CancelAbility(inProgressMove, false);
+                Performer.SetTargetLocation(Performer.Location!.Value, null, PathVisualizer.PathType.Move);
             }
             
             // Real siege happens at the end of cooldown
