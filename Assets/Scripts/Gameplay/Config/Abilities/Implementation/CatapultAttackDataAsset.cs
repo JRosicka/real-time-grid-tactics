@@ -41,8 +41,11 @@ namespace Gameplay.Config.Abilities {
         }
 
         public override bool TryUseAbilityAutomatically(GridEntity selector, GridEntity target, GridEntity.TargetType targetType, Vector2Int targetCell) {
-            // TODO
-            throw new NotImplementedException();
+            if (selector.SiegeState is SiegeState.Unsieged or SiegeState.Unsieging) return false;
+            if (!target.IsActive()) return false;
+            
+            TargetCell(target.Location!.Value, selector);
+            return true;
         }
 
         protected override AbilityLegality AbilityLegalImpl(CatapultAttackAbilityParameters parameters, GridEntity entity, GameTeam team, out string failureReason) {
@@ -75,6 +78,10 @@ namespace Gameplay.Config.Abilities {
         }
         
         public void DoTargetableAbility(Vector2Int cellPosition, GridEntity selectedEntity, GameTeam selectorTeam, System.Object targetData) {
+            TargetCell(cellPosition, selectedEntity);
+        }
+
+        private void TargetCell(Vector2Int cellPosition, GridEntity selectedEntity) {
             HashSet<Vector2Int> closestVertex = ClosestLegalAimVertex(selectedEntity, GameManager.Instance.GridInputController.CurrentClosestVertex);
             if (closestVertex != null) {
                 GameManager.Instance.AbilityAssignmentManager.StartPerformingAbility(selectedEntity, this, new CatapultAttackAbilityParameters() {
