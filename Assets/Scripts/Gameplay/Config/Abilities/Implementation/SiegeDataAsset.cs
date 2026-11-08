@@ -36,13 +36,12 @@ namespace Gameplay.Config.Abilities {
                 return AbilityLegality.IndefinitelyIllegal;
             }
 
-            // Only legal if unsieged (or sieging)
-            if (entity.SiegeState is SiegeState.Unsieged or SiegeState.Sieging) {
-                return AbilityLegality.Legal;
+            // Not legal if already sieged
+            if (entity.SiegeState == SiegeState.Sieged) {
+                return AbilityLegality.IndefinitelyIllegal;
             }
             
-            // Otherwise illegal
-            return AbilityLegality.IndefinitelyIllegal;
+            return AbilityLegality.Legal;
         }
 
         protected override IAbility CreateAbilityImpl(NullAbilityParameters parameters, GridEntity performer, GameTeam? overrideTeam) {

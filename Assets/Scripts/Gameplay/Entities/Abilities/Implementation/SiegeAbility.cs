@@ -21,12 +21,16 @@ namespace Gameplay.Entities.Abilities {
         }
         
         public override bool TryDoAbilityStartEffect() {
-            Performer.SetSiegeState(SiegeState.Sieging);
             return true;
         }
         
         protected override (bool, AbilityResult) DoAbilityEffect() {
+            if (Performer.SiegeState != SiegeState.Unsieged) {
+                return (false, AbilityResult.IncompleteWithoutEffect);
+            }
+            
             // Real siege happens at the end of cooldown
+            Performer.SetSiegeState(SiegeState.Sieging);
             return (true, AbilityResult.CompletedWithEffect);
         }
     }

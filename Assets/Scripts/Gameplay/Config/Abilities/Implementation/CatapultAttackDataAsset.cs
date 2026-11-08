@@ -52,6 +52,11 @@ namespace Gameplay.Config.Abilities {
 
         public override AbilityLegality CanEntityUseAbility(GridEntity entity, GameTeam team, out string failureReason) {
             failureReason = null;
+
+            if (entity.SiegeState is SiegeState.Unsieged or SiegeState.Unsieging) {
+                return AbilityLegality.NotCurrentlyLegal;
+            }
+            
             return AbilityLegality.Legal;
         }
 
