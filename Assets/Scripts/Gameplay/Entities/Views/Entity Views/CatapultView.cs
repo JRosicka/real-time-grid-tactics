@@ -1,3 +1,4 @@
+using Audio;
 using Gameplay.Entities.Abilities;
 using Gameplay.Entities.Upgrades;
 using UnityEngine;
@@ -40,11 +41,15 @@ namespace Gameplay.Entities {
         private void DoSiegeAnimation(AbilityTimer timer) {
             CatapultArmAnimator.speed = DefaultSiegeTime / timer.InitialTimeRemaining;
             CatapultArmAnimator.Play("CatapultSiege");
+
+            GameAudio.Instance.SiegeSound();
         }
         
         private void DoUnsiegeAnimation(AbilityTimer timer) {
             CatapultArmAnimator.speed = DefaultSiegeTime / timer.InitialTimeRemaining;
             CatapultArmAnimator.Play("CatapultUnsiege");
+            
+            GameAudio.Instance.SiegeSound();
         }
     }
 }

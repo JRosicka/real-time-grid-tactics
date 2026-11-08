@@ -192,6 +192,10 @@ namespace Audio {
             }
         }
 
+        public void SiegeSound() {
+            TryPlaySFX(_audioConfiguration.SiegeSound, AudioClipName(_audioConfiguration.SiegeSound));
+        }
+
         public void GameStartSound() {
             TryPlaySFX(_audioConfiguration.GameStartSound, AudioClipName(_audioConfiguration.GameStartSound));
         }
