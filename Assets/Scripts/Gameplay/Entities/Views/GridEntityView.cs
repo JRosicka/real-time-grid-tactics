@@ -291,8 +291,11 @@ namespace Gameplay.Entities {
             ColorFlashBehaviour.Flash();
         }
 
-        private void HealReceived() {
+        private void HealReceived(bool fullyHealed) {
             _healAnimator.Play("Heal");
+            if (fullyHealed && Entity.Team == GameManager.Instance.LocalTeam) {
+                GameManager.Instance.AlertTextDisplayer.DisplayAlertWithCooldown("fully-healed", 15, $"{Entity.DisplayName} fully healed.");
+            }
         }
 
         /// <summary>

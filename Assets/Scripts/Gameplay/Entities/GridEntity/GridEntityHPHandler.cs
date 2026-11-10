@@ -15,7 +15,7 @@ namespace Gameplay.Entities {
         public event Action HPChangedEvent;
         // Parameter is true if lethal damage is received, otherwise false
         public event Action<bool> AttackedEvent;
-        public event Action HealedEvent;
+        public event Action<bool> HealedEvent;
         
         [SerializeField] private GridEntity _gridEntity;
         private EntityData EntityData => _gridEntity.EntityData;
@@ -49,7 +49,7 @@ namespace Gameplay.Entities {
             
             bool fromGameEffect = Convert.ToBoolean(metadata);
             if (fromGameEffect && oldHPInt.Value < newHPInt.Value) {
-                HealedEvent?.Invoke();
+                HealedEvent?.Invoke(newHPInt.Value == _gridEntity.MaxHP);
             } else if (fromGameEffect && oldHPInt.Value > newHPInt.Value) {
                 AttackedEvent?.Invoke(newHPInt.Value <= 0);
             }
