@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ID: Knight
   ShortDescription: Powerful cavalry unit.
-  Description: Powerful cavalry unit. Requires High-Protein Horse Feed.
+  Description: Powerful cavalry unit. Requires the High-Protein Horse Feed upgrade.
   Cost:
   - Type: 1
     Amount: 125
