@@ -14,7 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ID: Amber Forge
   ShortDescription: Researches powerful upgrades.
-  Description: Move your King to an adjacent tile in order to research powerful upgrades.
+  Description: Move your King to an adjacent tile in order to instantly research
+    powerful upgrades. Global 90s cooldown between researches.
   Cost: []
   Requirements: []
   BuildTime: 0
@@ -22,6 +23,7 @@ MonoBehaviour:
   BaseSprite: {fileID: 21300000, guid: 79cb111de4a8b486083049344c580e4d, type: 3}
   TeamColorSprite: {fileID: 0}
   BaseSpriteIconOverride: {fileID: 0}
+  TeamColorSpriteIconOverride: {fileID: 0}
   IconScaleInSelectionInterface: 1
   _viewPrefab: {fileID: 6373076591908856349, guid: 71e787fd29b557941b66de4409e178f9, type: 3}
   SelectionSFX: {fileID: 0}
@@ -30,6 +32,7 @@ MonoBehaviour:
   AudioPlacementPrefix: AmberForge
   EntityFinishedBuildingSFX: {fileID: 0}
   HP: 0
+  ArmorBonus: 0
   Range: 0
   Damage: 0
   BonusDamage: 0
@@ -45,6 +48,7 @@ MonoBehaviour:
   AttackerTargetPriority: 0
   Abilities:
   - {fileID: 11400000, guid: 398205458218140e09d13e7ff7663dc9, type: 2}
+  AbilitiesToAutomaticallyTargetEntitiesWith: []
   FriendlyUnitsCanShareCell: 0
   Targetable: 0
   CanBuildFriendlyStructureOnTop: 0
@@ -59,7 +63,8 @@ MonoBehaviour:
   ResourceThatThisCanExtract: {fileID: 0}
   AssociatedResource: 0
   EntityIcon: {fileID: 21300000, guid: a171f8f3ebbd94f9e8d163dc931a93bf, type: 3}
-  MovementAndAttackUI: 0
+  MovementUI: 0
+  AttackUI: 0
   DisplaySelectionOutline: 1
   BuildQueueSize: 1
   NeverShowBuildQueue: 1
@@ -73,4 +78,6 @@ MonoBehaviour:
     Type: 0
     Amount: 0
   _highlightBuildableCells: 0
+  Boostable: 0
+  BaseCarryCapacity: 0
   DeathActions: []
