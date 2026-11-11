@@ -29,7 +29,13 @@ namespace Gameplay.Grid {
         private TeamFogOfWarTracker FowTracker => GameManager.Instance.FogOfWarManager!.GetLocalTeamTracker();
 
         public void Initialize(GameTeam team, bool playFastAnimation) {
-            Color color = GameManager.GetPlayerForTeam(team).ColorData.TeamColor;
+            IGamePlayer localPlayer = GameManager.GetPlayerForTeam(team);
+            if (localPlayer == null) {
+                Destroy(gameObject);
+                return;
+            }
+            
+            Color color = localPlayer.ColorData.TeamColor;
             _outerReticle.color = color;
             _innerReticle.color = color;
 
