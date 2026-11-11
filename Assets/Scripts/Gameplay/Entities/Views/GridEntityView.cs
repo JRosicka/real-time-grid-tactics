@@ -317,16 +317,17 @@ namespace Gameplay.Entities {
                     DoAttackAnimationFromTargetAttackAbility((TargetAttackAbility) ability);
                     break;
                 case PickUpUnitAbilityData:
-                    GameAudio.Instance.PickUpSound();
+                    GridEntity targetEntity = ((PickUpUnitAbility)ability).AbilityParameters.Target;
+                    GameAudio.Instance.PickUpSound(Entity.Location!.Value);
                     if (Entity.IsActive()) {
-                        ((PickUpUnitAbility)ability).AbilityParameters.Target.View.DoGenericPickedUpAnimation(Entity.Location!.Value);
+                        targetEntity.View.DoGenericPickedUpAnimation(Entity.Location.Value);
                     }
                     break;
                 case DropOffUnitAbilityData:
-                    GameAudio.Instance.DropOffSound();
+                    DropOffUnitAbilityParameters dropOffParameters = ((DropOffUnitAbility)ability).AbilityParameters;
+                    GameAudio.Instance.DropOffSound(dropOffParameters.DropOffLocation);
                     if (Entity.IsActive()) {
-                        DropOffUnitAbility dropOffAbility = (DropOffUnitAbility)ability;
-                        dropOffAbility.AbilityParameters.Target.View.DoGenericDroppedOffAnimation(Entity.Location!.Value, dropOffAbility.AbilityParameters.DropOffLocation);
+                        dropOffParameters.Target.View.DoGenericDroppedOffAnimation(Entity.Location!.Value, dropOffParameters.DropOffLocation);
                     }
                     break;
             }

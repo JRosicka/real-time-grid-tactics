@@ -277,7 +277,7 @@ namespace Gameplay.Entities {
                 InteractBehavior = new OwnerInteractBehavior(this);
                 if (built) {
                     // Play the sound effect
-                    GameAudio.Instance.EntityFinishedBuildingSound(EntityData);
+                    GameAudio.Instance.EntityFinishedBuildingSound(EntityData, spawnerLocation);
                 }
             } else if (GameManager.Instance.Cheats.ControlAllPlayers) {
                 _normallyWouldBeAnEnemyButIsControllableDueToCheats = true;

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Audio;
 using Game.Network;
 using Gameplay;
 using Gameplay.Commands;
@@ -111,12 +112,14 @@ public class GameManager : MonoBehaviour {
     private void OnDestroy() {
         FogOfWarManager?.UnregisterListeners();
         DisconnectionHandler?.UnregisterListeners(); 
+        GameAudio.Instance.UnregisterFowTracker();
         Instance = null;
     }
 
     public void SetUpFogOfWar(FogOfWarSetting fowSetting, bool realGame) {
         FogOfWarManager = new FogOfWarManager(GridController, CommandManager, fowSetting, realGame, LocalTeam);
         FogOfWarDisplayer.Initialize(FogOfWarManager, LocalTeam);
+        GameAudio.Instance.RegisterFowTracker(FogOfWarManager.GetLocalTeamTracker());
         FogOfWarInitialized?.Invoke();
     }
 

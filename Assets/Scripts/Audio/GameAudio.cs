@@ -3,6 +3,7 @@ using System.Linq;
 using Gameplay.Config;
 using Gameplay.Config.Abilities;
 using Gameplay.Entities;
+using Gameplay.Managers;
 using JetBrains.Annotations;
 using UnityEngine;
 
@@ -30,6 +31,8 @@ namespace Audio {
 
         private readonly Dictionary<string, AudioFile> _lastPlayedCatapultRockSFX = new Dictionary<string, AudioFile>();
         private readonly Dictionary<string, float> _sfxCooldownTimes = new Dictionary<string, float>();
+
+        private TeamFogOfWarTracker _fowTracker;
         
         public GameAudio(AudioPlayer audioPlayer, AudioFileConfiguration audioConfiguration) {
             _audioPlayer = audioPlayer;
@@ -37,6 +40,14 @@ namespace Audio {
             PlaylistManager = new PlaylistManager(audioPlayer, audioConfiguration);
             
             Instance = this;
+        }
+
+        public void RegisterFowTracker(TeamFogOfWarTracker fowTracker) {
+            _fowTracker = fowTracker;
+        }
+
+        public void UnregisterFowTracker() {
+            _fowTracker = null;
         }
 
         public void Update(float deltaTime) {
@@ -65,7 +76,7 @@ namespace Audio {
         }
 
         public void ButtonClickDownSound() {
-            TryPlaySFX(_audioConfiguration.ButtonClickDownSound, AudioClipName(_audioConfiguration.ButtonClickDownSound));
+            TryPlaySFX(_audioConfiguration.ButtonClickDownSound, AudioClipName(_audioConfiguration.ButtonClickDownSound), null, false);
         }
 
         public void ButtonClickUpSound() {
@@ -73,27 +84,27 @@ namespace Audio {
         }
 
         public void ButtonClickInGameSound() {
-            TryPlaySFX(_audioConfiguration.ButtonClickInGameSound, AudioClipName(_audioConfiguration.ButtonClickInGameSound));
+            TryPlaySFX(_audioConfiguration.ButtonClickInGameSound, AudioClipName(_audioConfiguration.ButtonClickInGameSound), null, false);
         }
 
         public void MenuThumpSound() {
-            TryPlaySFX(_audioConfiguration.MenuThumpSound, AudioClipName(_audioConfiguration.MenuThumpSound));
+            TryPlaySFX(_audioConfiguration.MenuThumpSound, AudioClipName(_audioConfiguration.MenuThumpSound), null, false);
         }
 
         public void InvalidSound() {
-            TryPlaySFX(_audioConfiguration.InvalidSound, AudioClipName(_audioConfiguration.InvalidSound));
+            TryPlaySFX(_audioConfiguration.InvalidSound, AudioClipName(_audioConfiguration.InvalidSound), null, false);
         }
 
         public void EntitySelectionSound(GridEntity entity) {
-            ChooseAndPlayEntitySound(entity, entity.EntityData.SelectionSFX?.AudioFiles, _lastPlayedSelectionSFX, "selection");
+            ChooseAndPlayEntitySound(entity, entity.EntityData.SelectionSFX?.AudioFiles, _lastPlayedSelectionSFX, "selection", entity.Location);
         }
 
         public void EntityOrderSound(GridEntity entity) {
-            ChooseAndPlayEntitySound(entity, entity.EntityData.OrderSFX?.AudioFiles, _lastPlayedOrderSFX, "order");
+            ChooseAndPlayEntitySound(entity, entity.EntityData.OrderSFX?.AudioFiles, _lastPlayedOrderSFX, "order", entity.Location);
         }
 
         public void EntityAttackSound(GridEntity entity) {
-            ChooseAndPlayEntitySound(entity, entity.EntityData.AttackSFX?.AudioFiles, _lastPlayedAttackSFX, "attack");
+            ChooseAndPlayEntitySound(entity, entity.EntityData.AttackSFX?.AudioFiles, _lastPlayedAttackSFX, "attack", entity.Location);
         }
         
         public void AbilitySelectSound(IAbilityData abilityData) {
@@ -105,14 +116,14 @@ namespace Audio {
         }
         
         public void AbilityTargetedSound(ITargetableAbilityData abilityData) {
-            TryPlaySFX(abilityData.TargetedSFX, AudioClipName(abilityData.TargetedSFX));
+            TryPlaySFX(abilityData.TargetedSFX, AudioClipName(abilityData.TargetedSFX), null, false);
         }
 
         public void AbilityPerformedSound(IAbilityData abilityData) {
-            TryPlaySFX(abilityData.PerformedSFX, AudioClipName(abilityData.PerformedSFX)); 
+            TryPlaySFX(abilityData.PerformedSFX, AudioClipName(abilityData.PerformedSFX), null, false); 
         }
 
-        private void ChooseAndPlayEntitySound(GridEntity entity, List<AudioFile> audioFiles, Dictionary<string, AudioFile> lastPlayedSounds, string audioPlacement) {
+        private void ChooseAndPlayEntitySound(GridEntity entity, List<AudioFile> audioFiles, Dictionary<string, AudioFile> lastPlayedSounds, string audioPlacement, Vector2Int? sourceLocation) {
             if (audioFiles == null || audioFiles.Count == 0) return;
 
             AudioFile soundToPlay;
@@ -127,7 +138,7 @@ namespace Audio {
                 soundToPlay = soundsToPickFrom[Random.Range(0, soundsToPickFrom.Count)];
             }
             
-            bool played = TryPlaySFX(soundToPlay, $"{entity.EntityData.AudioPlacementPrefix}_{audioPlacement}", entity);
+            bool played = TryPlaySFX(soundToPlay, $"{entity.EntityData.AudioPlacementPrefix}_{audioPlacement}", sourceLocation, true, entity);
             if (played) {
                 lastPlayedSounds[entity.EntityData.ID] = soundToPlay;
             }
@@ -148,74 +159,91 @@ namespace Audio {
                 soundToPlay = soundsToPickFrom[Random.Range(0, soundsToPickFrom.Count)];
             }
             
-            bool played = TryPlaySFX(soundToPlay, $"{abilityData.ContentResourceID}_{audioPlacement}");
+            bool played = TryPlaySFX(soundToPlay, $"{abilityData.ContentResourceID}_{audioPlacement}", null, false);
             if (played) {
                 lastPlayedSounds[abilityData.ContentResourceID] = soundToPlay;
             }
         }
 
-        public void ArrowLandSound() {
-            TryPlaySFX(_audioConfiguration.ArrowLandSound, AudioClipName(_audioConfiguration.ArrowLandSound));
+        public void ArrowLandSound(Vector2Int sourceLocation) {
+            TryPlaySFX(_audioConfiguration.ArrowLandSound, AudioClipName(_audioConfiguration.ArrowLandSound), sourceLocation, true);
         }
 
-        public void CatapultRocksLandSound(GridEntity catapultEntity) {
-            ChooseAndPlayEntitySound(catapultEntity, _audioConfiguration.CatapultRocksLandSounds, _lastPlayedCatapultRockSFX, "catapultRocksLand");
+        public void CatapultRocksLandSound(GridEntity catapultEntity, HashSet<Vector2Int> sourceLocations) {
+            // Try to find a location that is not hidden by FoW
+            Vector2Int? locationToUse = null;
+            if (_fowTracker != null) {
+                foreach (Vector2Int location in sourceLocations) {
+                    if (_fowTracker.IsLocationHidden(location)) continue;
+                    locationToUse = location;
+                    break;
+                }
+            } else {
+                locationToUse = sourceLocations.First();
+            }
+            if (locationToUse == null) return;
+
+            ChooseAndPlayEntitySound(catapultEntity, _audioConfiguration.CatapultRocksLandSounds, _lastPlayedCatapultRockSFX, "catapultRocksLand", locationToUse);
         }
 
-        public void PickUpSound() {
-            TryPlaySFX(_audioConfiguration.PickUpSound, AudioClipName(_audioConfiguration.PickUpSound));
+        public void PickUpSound(Vector2Int? sourceLocation) {
+            TryPlaySFX(_audioConfiguration.PickUpSound, AudioClipName(_audioConfiguration.PickUpSound), sourceLocation, true);
         }
         
-        public void DropOffSound() {
-            TryPlaySFX(_audioConfiguration.DropOffSound, AudioClipName(_audioConfiguration.DropOffSound));
+        public void DropOffSound(Vector2Int sourceLocation) {
+            TryPlaySFX(_audioConfiguration.DropOffSound, AudioClipName(_audioConfiguration.DropOffSound), sourceLocation, true);
         }
 
-        public void ConstructionSound() {
-            TryPlaySFX(_audioConfiguration.ConstructionSound, AudioClipName(_audioConfiguration.ConstructionSound));
+        public void ConstructionSound(Vector2Int sourceLocation) {
+            TryPlaySFX(_audioConfiguration.ConstructionSound, AudioClipName(_audioConfiguration.ConstructionSound), sourceLocation, true);
         }
 
-        public void ParadeStartSound() {
-            TryPlaySFX(_audioConfiguration.ParadeStartSound, AudioClipName(_audioConfiguration.ParadeStartSound));
+        public void ParadeStartSound(Vector2Int sourceLocation) {
+            TryPlaySFX(_audioConfiguration.ParadeStartSound, AudioClipName(_audioConfiguration.ParadeStartSound), sourceLocation, true);
         }
 
-        public void ParadeUpgradeSound() {
-            TryPlaySFX(_audioConfiguration.ParadeUpgradeSound, AudioClipName(_audioConfiguration.ParadeUpgradeSound));
+        public void ParadeUpgradeSound(Vector2Int sourceLocation) {
+            TryPlaySFX(_audioConfiguration.ParadeUpgradeSound, AudioClipName(_audioConfiguration.ParadeUpgradeSound), sourceLocation, true);
         }
 
         public void FlameWooshSound() {
-            TryPlaySFX(_audioConfiguration.FlameWooshSound, AudioClipName(_audioConfiguration.FlameWooshSound));
+            TryPlaySFX(_audioConfiguration.FlameWooshSound, AudioClipName(_audioConfiguration.FlameWooshSound), null, false);
         }
 
-        public void EntityFinishedBuildingSound(EntityData entityData) {
+        public void EntityFinishedBuildingSound(EntityData entityData, Vector2Int sourceLocation) {
             if (entityData.EntityFinishedBuildingSFX?.Clip != null) {
-                TryPlaySFX(entityData.EntityFinishedBuildingSFX, AudioClipName(entityData.EntityFinishedBuildingSFX));
+                TryPlaySFX(entityData.EntityFinishedBuildingSFX, AudioClipName(entityData.EntityFinishedBuildingSFX), sourceLocation, true);
             }
         }
 
-        public void SiegeSound() {
-            TryPlaySFX(_audioConfiguration.SiegeSound, AudioClipName(_audioConfiguration.SiegeSound));
+        public void SiegeSound(Vector2Int? sourceLocation) {
+            TryPlaySFX(_audioConfiguration.SiegeSound, AudioClipName(_audioConfiguration.SiegeSound), sourceLocation, true);
         }
 
         public void GameStartSound() {
-            TryPlaySFX(_audioConfiguration.GameStartSound, AudioClipName(_audioConfiguration.GameStartSound));
+            TryPlaySFX(_audioConfiguration.GameStartSound, AudioClipName(_audioConfiguration.GameStartSound), null, false);
         }
         
         public void GameWinSound() {
-            TryPlaySFX(_audioConfiguration.GameWinSound, AudioClipName(_audioConfiguration.GameWinSound));
+            TryPlaySFX(_audioConfiguration.GameWinSound, AudioClipName(_audioConfiguration.GameWinSound), null, false);
         }
         
         public void GameLossSound() {
-            TryPlaySFX(_audioConfiguration.GameLossSound, AudioClipName(_audioConfiguration.GameLossSound));
+            TryPlaySFX(_audioConfiguration.GameLossSound, AudioClipName(_audioConfiguration.GameLossSound), null, false);
         }
         
-        private bool TryPlaySFX(AudioFile audioFile, string audioPlacement, GridEntity performer = null) {
+        private bool TryPlaySFX(AudioFile audioFile, string audioPlacement, Vector2Int? sourceLocation, bool hiddenByFow, GridEntity performer = null) {
             if (audioFile == null || audioFile.Clip == null) return false;
             if (GameManager.Instance == null) return false;
             if (GameManager.Instance.ReplayManager.PlayingReplay && !audioFile.PlayDuringReplay) return false;
             if (!audioFile.AllowInQuickSuccession) {
-                if (_sfxCooldownTimes.ContainsKey(audioPlacement)) return false;
-                _sfxCooldownTimes[audioPlacement] = MinAmountOfTimeBetweenSameSounds;
+                if (!_sfxCooldownTimes.TryAdd(audioPlacement, MinAmountOfTimeBetweenSameSounds)) return false;
             }
+
+            if (hiddenByFow && _fowTracker != null && sourceLocation != null && _fowTracker.IsLocationHidden(sourceLocation.Value)) {
+                return false;
+            }
+            
             return _audioPlayer.TryPlaySFX(audioFile, performer?.UID ?? -1);
         }
 

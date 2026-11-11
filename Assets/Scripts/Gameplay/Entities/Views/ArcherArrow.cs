@@ -130,7 +130,7 @@ namespace Gameplay.Entities {
                 GameManager.Instance.AttackManager.DealDamage(_attacker, _target, _bonusDamage);
             }
             
-            GameAudio.Instance.ArrowLandSound();
+            GameAudio.Instance.ArrowLandSound(_lastTargetLocation);
             Destroy(gameObject);
         }
     }

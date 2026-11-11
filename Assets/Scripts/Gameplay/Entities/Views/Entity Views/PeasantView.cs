@@ -57,7 +57,7 @@ namespace Gameplay.Entities {
             _animator.Play("WorkerBuild");
 
             if (GameManager.Instance.LocalTeam == GameTeam.Spectator || buildAbility.PerformerTeam == GameManager.Instance.LocalTeam) {
-                GameAudio.Instance.ConstructionSound();
+                GameAudio.Instance.ConstructionSound(buildAbility.AbilityParameters.BuildLocation);
             }
 
             _controlsScale = true;

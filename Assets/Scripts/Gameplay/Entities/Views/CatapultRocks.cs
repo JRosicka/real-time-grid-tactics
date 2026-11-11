@@ -136,7 +136,7 @@ namespace Gameplay.Entities {
                 }
             }
 
-            GameAudio.Instance.CatapultRocksLandSound(_attacker);
+            GameAudio.Instance.CatapultRocksLandSound(_attacker, _targetCells);
             
             _catapultTargetReticle.Hide(true);
             if (!_alreadyDestroyed) {

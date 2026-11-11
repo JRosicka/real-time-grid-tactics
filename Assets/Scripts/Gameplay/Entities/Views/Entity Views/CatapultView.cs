@@ -1,4 +1,5 @@
 using Audio;
+using Gameplay.Config;
 using Gameplay.Entities.Abilities;
 using Gameplay.Entities.Upgrades;
 using UnityEngine;
@@ -8,7 +9,11 @@ namespace Gameplay.Entities {
         public Animator CatapultArmAnimator;
         public float DefaultSiegeTime = 3f;
 
-        public override void Initialize(GridEntity entity) { }
+        private GridEntity _gridEntity;
+
+        public override void Initialize(GridEntity entity) {
+            _gridEntity = entity;
+        }
         public override void LethalDamageReceived() { }
         public override void NonLethalDamageReceived() { }
 
@@ -42,14 +47,14 @@ namespace Gameplay.Entities {
             CatapultArmAnimator.speed = DefaultSiegeTime / timer.InitialTimeRemaining;
             CatapultArmAnimator.Play("CatapultSiege");
 
-            GameAudio.Instance.SiegeSound();
+            GameAudio.Instance.SiegeSound(_gridEntity.Location);
         }
         
         private void DoUnsiegeAnimation(AbilityTimer timer) {
             CatapultArmAnimator.speed = DefaultSiegeTime / timer.InitialTimeRemaining;
             CatapultArmAnimator.Play("CatapultUnsiege");
             
-            GameAudio.Instance.SiegeSound();
+            GameAudio.Instance.SiegeSound(_gridEntity.Location);
         }
     }
 }

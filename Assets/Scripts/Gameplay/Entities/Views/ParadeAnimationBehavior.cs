@@ -45,7 +45,7 @@ namespace Gameplay.Entities {
 
             _paradeTextAnimator.Play("ParadeActive");
             _particles.ForEach(p => p.Play());
-            GameAudio.Instance.ParadeStartSound();
+            GameAudio.Instance.ParadeStartSound(_location);
         }
         
         public void EndParadeAnimation() {
@@ -56,7 +56,7 @@ namespace Gameplay.Entities {
         }
 
         public void PlayUpgradeSound() {
-            GameAudio.Instance.ParadeUpgradeSound();
+            GameAudio.Instance.ParadeUpgradeSound(_location);
         }
 
         private void ToggleFoWHiddenState(bool hidden) {
