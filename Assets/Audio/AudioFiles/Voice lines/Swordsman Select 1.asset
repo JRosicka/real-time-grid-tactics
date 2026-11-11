@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Swordsman Select 1
   m_EditorClassIdentifier: Assembly-CSharp::Audio.AudioFile
   Clip: {fileID: 8300000, guid: 2cb536d8c599d244cb4c4589267fd6cd, type: 3}
-  Volume: 0.741
+  Volume: 0.674
   AudioLayer: 2
   Interruptible: 1
   PlayDuringReplay: 0
