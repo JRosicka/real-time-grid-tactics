@@ -18,6 +18,7 @@ namespace Audio {
         private const float DecibelCoefficient = 14.4269504089f;
 
         private const float GlobalVolumeMultiplier = 1.5f;
+        private const float GlobalMusicVolumeMultiplier = .75f;
         
         public static AudioManager Instance;
 
@@ -190,7 +191,7 @@ namespace Audio {
         }
         
         public void SetMusicVolume(float newVolume) {
-            Mixer.SetFloat(PlayerPrefsKeys.MusicVolumeKey, ToDecibels(newVolume * GlobalVolumeMultiplier));
+            Mixer.SetFloat(PlayerPrefsKeys.MusicVolumeKey, ToDecibels(newVolume * GlobalVolumeMultiplier * GlobalMusicVolumeMultiplier));
         }
 
         /// <summary> 
