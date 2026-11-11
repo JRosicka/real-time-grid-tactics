@@ -257,7 +257,8 @@ namespace Gameplay.Entities {
         }
 
         private void Selected() {
-            if (Entity.Team == GameManager.Instance.LocalTeam) {
+            if (Entity.Team.OpponentTeam() != GameManager.Instance.LocalTeam) {
+                // Play for spectators and for the owner of the entity
                 GameAudio.EntitySelectionSound(Entity);
             }
 
