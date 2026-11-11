@@ -88,6 +88,7 @@ namespace Gameplay.Grid {
 
         private void UpdateFoWHiddenStatus(List<TeamFogOfWarTracker.FoWCell> _) {
             if (_location == null) return;
+            if (FowTracker == null) return;
 
             _hiddenByFoW = _location.All(c => FowTracker.IsLocationHidden(c));
             UpdateVisibility();
