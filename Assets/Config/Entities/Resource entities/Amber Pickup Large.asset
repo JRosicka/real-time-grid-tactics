@@ -1,0 +1,82 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fafa440752424124be5b9cbee86f1e06, type: 3}
+  m_Name: Amber Pickup Large
+  m_EditorClassIdentifier: 
+  ID: Amber Pickup
+  ShortDescription: Awards 50 <sprite name="amber">.
+  Description: Awards 50 <sprite name="amber"> when collected by a peasant. Collection
+    is disrupted when under attack.
+  Cost: []
+  Requirements: []
+  BuildTime: 0
+  BuildsImmediately: 0
+  BaseSprite: {fileID: 21300000, guid: 8e4bdbf73c2bf3f41904c35534e47f7a, type: 3}
+  TeamColorSprite: {fileID: 0}
+  BaseSpriteIconOverride: {fileID: 0}
+  TeamColorSpriteIconOverride: {fileID: 0}
+  IconScaleInSelectionInterface: 1.2
+  _viewPrefab: {fileID: 7504026570216467247, guid: 78b08ce0b332daf45b93879b7c041498, type: 3}
+  SelectionSFX: {fileID: 0}
+  OrderSFX: {fileID: 0}
+  AttackSFX: {fileID: 0}
+  AudioPlacementPrefix: Pickup
+  EntityFinishedBuildingSFX: {fileID: 0}
+  HP: 0
+  ArmorBonus: 0
+  Range: 0
+  Damage: 0
+  BonusDamage: 0
+  TagsToApplyBonusDamageTo: 
+  NormalMoveTime: 0
+  AddedMovementTimeFromAttacking: 0
+  PathfindingConfig:
+    MoveIconOverride: {fileID: 0}
+    AttackIconOverride: {fileID: 0}
+    TargetAttackIconOverride: {fileID: 0}
+  Tags: 07000000
+  OverrideEntityDataForPathfinding: {fileID: 0}
+  AttackerTargetPriority: 0
+  Abilities: []
+  AbilitiesToAutomaticallyTargetEntitiesWith: []
+  FriendlyUnitsCanShareCell: 1
+  Targetable: 1
+  CanBuildFriendlyStructureOnTop: 0
+  Attackable: 0
+  CanBlockMovement: 0
+  SelectableInFoW: 1
+  AlwaysShowWhenHiddenByFoW: 1
+  FoWHidesResourceCount: 0
+  AttackByDefault: 0
+  CanAttack: 0
+  IsResourceExtractor: 0
+  ResourceThatThisCanExtract: {fileID: 0}
+  AssociatedResource: 0
+  EntityIcon: {fileID: 0}
+  MovementUI: 0
+  AttackUI: 0
+  DisplaySelectionOutline: 1
+  BuildQueueSize: 5
+  NeverShowBuildQueue: 0
+  ControllableByAllPlayers: 0
+  EligibleStructureLocations: 
+  SharedUnitArmorBonus: 0
+  SharedUnitDamageTakenModifierTags: 
+  CanRally: 0
+  StructureSellTime: 0
+  StartingResourceSet:
+    Type: 2
+    Amount: 50
+  _highlightBuildableCells: 0
+  Boostable: 0
+  BaseCarryCapacity: 0
+  DeathActions: []

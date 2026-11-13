@@ -16,6 +16,7 @@ MonoBehaviour:
     _contentResourceID: Collect Resource Pickup
     _id: Collect
     _description: Collect a resource pickup, harvesting its resource value when complete.
+      Collection is disrupted when under attack.
     _icon: {fileID: 21300000, guid: 12aa24159353b479f96a8b7047e9c32c, type: 3}
     _iconScaleInSelectionInterface: 1.2
     _overrideIconForGrid: {fileID: 0}

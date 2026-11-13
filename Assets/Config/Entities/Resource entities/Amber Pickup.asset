@@ -13,16 +13,18 @@ MonoBehaviour:
   m_Name: Amber Pickup
   m_EditorClassIdentifier: 
   ID: Amber Pickup
-  ShortDescription: Awards 50 <sprite name="amber">.
-  Description: Awards 50 <sprite name="amber"> when collected by a peasant.
+  ShortDescription: Awards 25 <sprite name="amber">.
+  Description: Awards 25 <sprite name="amber"> when collected by a peasant. Collection
+    is disrupted when under attack.
   Cost: []
   Requirements: []
   BuildTime: 0
   BuildsImmediately: 0
-  BaseSprite: {fileID: 21300000, guid: 176fa3504053b45e4a626bbe7e84c071, type: 3}
+  BaseSprite: {fileID: 21300000, guid: 1a67731a5a338d44db5b70bf8911f1f8, type: 3}
   TeamColorSprite: {fileID: 0}
   BaseSpriteIconOverride: {fileID: 0}
-  IconScaleInSelectionInterface: 0.8
+  TeamColorSpriteIconOverride: {fileID: 0}
+  IconScaleInSelectionInterface: 1.2
   _viewPrefab: {fileID: 7504026570216467247, guid: 5680ffc72868c4b7ca826f22458ecd72, type: 3}
   SelectionSFX: {fileID: 0}
   OrderSFX: {fileID: 0}
@@ -30,6 +32,7 @@ MonoBehaviour:
   AudioPlacementPrefix: Pickup
   EntityFinishedBuildingSFX: {fileID: 0}
   HP: 0
+  ArmorBonus: 0
   Range: 0
   Damage: 0
   BonusDamage: 0
@@ -44,6 +47,7 @@ MonoBehaviour:
   OverrideEntityDataForPathfinding: {fileID: 0}
   AttackerTargetPriority: 0
   Abilities: []
+  AbilitiesToAutomaticallyTargetEntitiesWith: []
   FriendlyUnitsCanShareCell: 1
   Targetable: 1
   CanBuildFriendlyStructureOnTop: 0
@@ -58,7 +62,8 @@ MonoBehaviour:
   ResourceThatThisCanExtract: {fileID: 0}
   AssociatedResource: 0
   EntityIcon: {fileID: 0}
-  MovementAndAttackUI: 0
+  MovementUI: 0
+  AttackUI: 0
   DisplaySelectionOutline: 1
   BuildQueueSize: 5
   NeverShowBuildQueue: 0
@@ -70,6 +75,8 @@ MonoBehaviour:
   StructureSellTime: 0
   StartingResourceSet:
     Type: 2
-    Amount: 50
+    Amount: 25
   _highlightBuildableCells: 0
+  Boostable: 0
+  BaseCarryCapacity: 0
   DeathActions: []
