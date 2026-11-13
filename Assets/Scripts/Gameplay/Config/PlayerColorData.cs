@@ -11,6 +11,7 @@ namespace Gameplay.Config {
         public bool Pickable = true; 
         public Color TeamColor;
         public Color DarkTeamColor;
+        public Color UIFrameTeamColor;
         public ColoredButtonData ColoredButtonData;
         public Color TeamBannerColor;
         public Color DeathParticlesColor1;

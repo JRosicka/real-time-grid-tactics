@@ -848,12 +848,20 @@ MonoBehaviour:
   ColorFlashBehaviour: {fileID: 1530196826150473110}
   _unitHealthBar: {fileID: 2271217030354002039}
   _structureHealthBar: {fileID: 3296355212887048963}
-  _structureHealthBarImage: {fileID: 3396406605549919443}
   _unitUIFrame:
   - {fileID: 5193744382658690052}
   - {fileID: 5090515305287165812}
   - {fileID: 2772119137875160398}
   _structureUIFrame: {fileID: 8421533844678055575}
+  _colorableUIFrameElements:
+  - {fileID: 8238160611010202798}
+  - {fileID: 123794953298675579}
+  - {fileID: 2809659226722496284}
+  - {fileID: 8984875443462941007}
+  - {fileID: 8263332720716146814}
+  - {fileID: 2341630719959906058}
+  - {fileID: 7975032589834037677}
+  - {fileID: 2535802443455568456}
   _entityIcon: {fileID: 7567422964868029}
   _thingsToHideWhenDying:
   - {fileID: 3797823565097640948}
@@ -2289,7 +2297,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0, g: 0.9960785, b: 0, a: 1}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1

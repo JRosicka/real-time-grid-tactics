@@ -47,9 +47,9 @@ namespace Gameplay.Entities {
         [SerializeField] private ColorFlashBehaviour ColorFlashBehaviour;
         [SerializeField] private VisualBarV2 _unitHealthBar;
         [SerializeField] private VisualBarV2 _structureHealthBar;
-        [SerializeField] private Image _structureHealthBarImage;
         [SerializeField] private List<GameObject> _unitUIFrame;
         [SerializeField] private GameObject _structureUIFrame;
+        [SerializeField] private List<Image> _colorableUIFrameElements;
         [SerializeField] private Image _entityIcon;
         [SerializeField] private List<CanvasGroup> _thingsToHideWhenDying;
         [SerializeField] private CanvasGroup _mainImageGroup;
@@ -140,7 +140,6 @@ namespace Gameplay.Entities {
                     _entityIcon.sprite = entity.EntityData.EntityIcon;
                     if (teamColor) {
                         _entityIcon.color = teamColor.TeamColor;
-                        _structureHealthBarImage.color = teamColor.TeamColor;
                     }
                 }
                 _unitUIFrame.ForEach(g => g.SetActive(false));
@@ -151,6 +150,11 @@ namespace Gameplay.Entities {
                 }
                 _unitUIFrame.ForEach(g => g.SetActive(hasHP));
                 _structureUIFrame.SetActive(false);
+            }
+            if (teamColor) {
+                foreach (Image colorableElement in _colorableUIFrameElements) {
+                    colorableElement.color = teamColor.UIFrameTeamColor;
+                }
             }
             _movementUISection.SetActive(entity.EntityData.MovementUI);
             _attackUISection.SetActive(entity.EntityData.AttackUI);
