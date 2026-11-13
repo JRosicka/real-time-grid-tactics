@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using Gameplay.Config;
 using Gameplay.Config.Abilities;
 using Gameplay.Entities;
 using Gameplay.Entities.Abilities;
@@ -17,7 +19,7 @@ namespace Gameplay.UI {
         string Name { get; }
         string ShortDescription { get; }
         string LongDescription { get; }
-        string TagsText { get; }
+        List<EntityTag> Tags { get; }
         bool DisplayHP { get; }
         [CanBeNull] BuildAbility InProgressBuild { get; }
         Color TeamBannerColor { get; }

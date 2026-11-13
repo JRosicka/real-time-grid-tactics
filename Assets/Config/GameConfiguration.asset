@@ -112,3 +112,4 @@ MonoBehaviour:
   - {fileID: 11400000, guid: ad6cbc05b10ed484490c8fe56dd589c2, type: 2}
   KingEntityData: {fileID: 11400000, guid: f8a9d9571b0a8324587b160065ca7fce, type: 2}
   AmberForgeEntityData: {fileID: 11400000, guid: e16d9fca1b51810438ab31661f34df6f, type: 2}
+  EntityTags: {fileID: 11400000, guid: 0f0199d159f0c264ca0bd4450c91645a, type: 2}

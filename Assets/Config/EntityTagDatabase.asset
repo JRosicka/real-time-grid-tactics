@@ -1,0 +1,49 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ea425478e047463899bb2522426daa22, type: 3}
+  m_Name: EntityTagDatabase
+  m_EditorClassIdentifier: Assembly-CSharp::Gameplay.Config.EntityTagDatabase
+  EntityTags:
+  - Tag: 1
+    Description: Can not move. Does stuff.
+    Visible: 1
+  - Tag: 2
+    Description: Fast. Takes extra damage from Spearmen.
+    Visible: 1
+  - Tag: 3
+    Description: Nothing special.
+    Visible: 1
+  - Tag: 4
+    Description: Can move onto mountain cells. Speed is unaffected by terrain.
+    Visible: 1
+  - Tag: 5
+    Description: If this unit dies, you LOSE.
+    Visible: 1
+  - Tag: 6
+    Description: Can build structures.
+    Visible: 1
+  - Tag: 7
+    Description: Provides resources when harvested.
+    Visible: 1
+  - Tag: 8
+    Description: Can harvest resources on the associated cell this is built on.
+    Visible: 1
+  - Tag: 9
+    Description: Travels especially fast on road cells.
+    Visible: 1
+  - Tag: 10
+    Description: Has a siege mode which enables attacks, but immobilizes the unit
+      until it leaves siege mode.
+    Visible: 1
+  - Tag: 11
+    Description: Takes up two capacity slots when carried.
+    Visible: 1

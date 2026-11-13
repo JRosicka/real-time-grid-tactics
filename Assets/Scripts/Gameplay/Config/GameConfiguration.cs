@@ -41,6 +41,9 @@ namespace Gameplay.Config {
         public EntityData KingEntityData;
         public EntityData AmberForgeEntityData;
 
+        [Header("Tags")] 
+        public EntityTagDatabase EntityTags;
+        
         private void OnValidate() {
             if (Purchasables.Select(d => d.ID).Distinct().ToList().Count < Purchasables.Count) {
                 Debug.LogError($"Detected entries with duplicate IDs in {Purchasables}. Don't do that!");

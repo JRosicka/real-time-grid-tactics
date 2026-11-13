@@ -21,7 +21,7 @@ namespace Gameplay.UI {
         [SerializeField] private Image EntityColorsIcon;
         [SerializeField] private TMP_Text NameField;
         [SerializeField] private TMP_Text DescriptionField;
-        [SerializeField] private TMP_Text TagsField;
+        [SerializeField] private SelectionInterfaceTagsView TagsView;
         
         [SerializeField] private HealthDisplay _healthDisplay;
         [SerializeField] private GameObject MovesRow;
@@ -157,7 +157,7 @@ namespace Gameplay.UI {
 
             NameField.text = _displayedSelectable.Name;
             DescriptionField.text = _displayedSelectable.ShortDescription;
-            TagsField.text = _displayedSelectable.TagsText;
+            TagsView.SetUpTags(_displayedSelectable.Tags);
 
             _healthDisplay.gameObject.SetActive(_displayedSelectable.DisplayHP);
             _displayedSelectable.SetUpMoveView(MovesRow, MovesField);

@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using Gameplay.Config;
 using Gameplay.Entities;
 using Gameplay.Entities.Abilities;
 using Gameplay.Entities.BuildQueue;
@@ -21,7 +23,7 @@ namespace Gameplay.UI {
         public string Name => _tile.DisplayName;
         public string ShortDescription => _tile.ShortDescription;
         public string LongDescription => _tile.LongDescription;
-        public string TagsText => string.Empty;
+        public List<EntityTag> Tags => new();
         public bool DisplayHP => false;
         public BuildAbility InProgressBuild => null;
         public Color TeamBannerColor => GameManager.Instance.Configuration.NeutralColors.TeamBannerColor;
