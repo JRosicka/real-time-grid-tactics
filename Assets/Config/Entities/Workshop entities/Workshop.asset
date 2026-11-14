@@ -14,7 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ID: Workshop
   ShortDescription: Produces wheeled units.
-  Description: Produces wheeled units.
+  Description: High-tech structure that produces wheeled units. Must be adjacent
+    to a friendly Lumber Mill.
   Cost:
   - Type: 1
     Amount: 75

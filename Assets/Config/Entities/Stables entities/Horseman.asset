@@ -14,7 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ID: Horseman
   ShortDescription: Speedy cavalry unit.
-  Description: Speedy cavalry unit. Deals extra damage to Villages and Amber Mines.
+  Description: Speedy cavalry unit. Deals extra damage to Villages and Amber Mines
+    -- good at harassing the opponent's economy.
   Cost:
   - Type: 1
     Amount: 75

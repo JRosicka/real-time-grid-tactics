@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ID: Barracks
   ShortDescription: Produces infantry units.
-  Description: Produces infantry units.
+  Description: Produces infantry units, which are fairly well-rounded.
   Cost:
   - Type: 1
     Amount: 75
@@ -24,6 +24,7 @@ MonoBehaviour:
   BaseSprite: {fileID: 21300000, guid: c2a9ce9aee3b24078bb841dec5ad83c2, type: 3}
   TeamColorSprite: {fileID: 21300000, guid: b2232653e56324fcb8dc46bee7bcfe4e, type: 3}
   BaseSpriteIconOverride: {fileID: 0}
+  TeamColorSpriteIconOverride: {fileID: 0}
   IconScaleInSelectionInterface: 1
   _viewPrefab: {fileID: 6373076591908856349, guid: fe97602c9548e534eb21b66e57e65290, type: 3}
   SelectionSFX: {fileID: 11400000, guid: 6931b56cabbf145a08e2159cfd71e5f3, type: 2}
@@ -32,6 +33,7 @@ MonoBehaviour:
   AudioPlacementPrefix: StandardStructure
   EntityFinishedBuildingSFX: {fileID: 11400000, guid: f50217de9fec24773960372f3af38dc3, type: 2}
   HP: 70
+  ArmorBonus: 0
   Range: 0
   Damage: 0
   BonusDamage: 0
@@ -49,6 +51,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 0918ae4f6b3b09a42a15b2ea44c2bdf8, type: 2}
   - {fileID: 11400000, guid: 930b6968d79224dcba838459c0b63f49, type: 2}
   - {fileID: 11400000, guid: 95889d1df0946fe4780afbfc7aa6a20c, type: 2}
+  AbilitiesToAutomaticallyTargetEntitiesWith: []
   FriendlyUnitsCanShareCell: 1
   Targetable: 1
   CanBuildFriendlyStructureOnTop: 0
@@ -63,7 +66,8 @@ MonoBehaviour:
   ResourceThatThisCanExtract: {fileID: 0}
   AssociatedResource: 0
   EntityIcon: {fileID: 21300000, guid: 520f35c555538426c9fbbcb5190c1500, type: 3}
-  MovementAndAttackUI: 0
+  MovementUI: 0
+  AttackUI: 0
   DisplaySelectionOutline: 1
   BuildQueueSize: 5
   NeverShowBuildQueue: 0
@@ -78,4 +82,5 @@ MonoBehaviour:
     Amount: 0
   _highlightBuildableCells: 0
   Boostable: 1
+  BaseCarryCapacity: 0
   DeathActions: []
