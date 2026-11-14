@@ -24,7 +24,7 @@ namespace Gameplay.UI {
             } else {
                 _timerTextContainer.gameObject.SetActive(false);
             }
-            base.Initialize(upgrade.UpgradeData.Description);
+            base.Initialize(upgrade.UpgradeData.Description, false);
         }
         
         private void SetUpTimer(IUpgrade upgrade) {

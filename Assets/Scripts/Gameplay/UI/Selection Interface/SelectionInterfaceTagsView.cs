@@ -15,7 +15,7 @@ namespace Gameplay.UI {
             _hoverableTagPrefab.gameObject.SetActive(false);
         }
 
-        public async void SetUpTags(List<EntityTag> tags) {
+        public void SetUpTags(List<EntityTag> tags) {
             ClearTags();
             
             EntityTagDatabase entityTags = GameManager.Instance.Configuration.EntityTags;

@@ -12,7 +12,7 @@ namespace Gameplay.UI {
 
         public void Initialize(EntityTagData entityTagData) {
             _tagText.text = entityTagData.Tag.ToString();
-            ShowIcon(entityTagData.Description);
+            ShowIcon(entityTagData.Description, true);
         }
     }
 }

@@ -9,8 +9,8 @@ namespace Gameplay.UI {
     public class HoverableInfoIcon : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler {
         [SerializeField] private HoverableTooltip _tooltip;
 
-        public void ShowIcon(string tooltipText) {
-            _tooltip.Initialize(tooltipText);
+        public void ShowIcon(string tooltipText, bool adjustTooltipWindow) {
+            _tooltip.Initialize(tooltipText, adjustTooltipWindow);
             gameObject.SetActive(true);
         }
 

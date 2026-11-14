@@ -72,12 +72,12 @@ namespace Gameplay.UI {
         public void SetUpHoverableInfo(HoverableInfoIcon defenseHoverableInfoIcon, HoverableInfoIcon attackHoverableInfoIcon, HoverableInfoIcon moveHoverableInfoIcon, HoverableInfoIcon healHoverableInfoIcon) {
             string defenseTooltip = _tile.GetDefenseTooltip();
             if (!string.IsNullOrEmpty(defenseTooltip)) {
-                defenseHoverableInfoIcon.ShowIcon(defenseTooltip);
+                defenseHoverableInfoIcon.ShowIcon(defenseTooltip, false);
             }
 
             string movementTooltip = _tile.GetMovementTooltip();
             if (!string.IsNullOrEmpty(movementTooltip)) {
-                moveHoverableInfoIcon.ShowIcon(movementTooltip);
+                moveHoverableInfoIcon.ShowIcon(movementTooltip, false);
             }
         }
 

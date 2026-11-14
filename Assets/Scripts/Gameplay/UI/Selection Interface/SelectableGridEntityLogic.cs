@@ -218,28 +218,28 @@ namespace Gameplay.UI {
             
             string defenseTooltip = GetDefenseTooltip();
             if (!string.IsNullOrEmpty(defenseTooltip)) {
-                defenseHoverableInfoIcon.ShowIcon(defenseTooltip);
+                defenseHoverableInfoIcon.ShowIcon(defenseTooltip, false);
             } else {
                 defenseHoverableInfoIcon.HideIcon();
             }
             
             string attackTooltip = GetAttackTooltip();
             if (!string.IsNullOrEmpty(attackTooltip)) {
-                attackHoverableInfoIcon.ShowIcon(attackTooltip);
+                attackHoverableInfoIcon.ShowIcon(attackTooltip, false);
             } else {
                 attackHoverableInfoIcon.HideIcon();
             }
 
             string moveTooltip = GetMoveTooltip();
             if (!string.IsNullOrEmpty(moveTooltip)) {
-                moveHoverableInfoIcon.ShowIcon(moveTooltip);
+                moveHoverableInfoIcon.ShowIcon(moveTooltip, false);
             } else {
                 moveHoverableInfoIcon.HideIcon();
             }
 
             string healTooltip = GetHealTooltip();
             if (!string.IsNullOrEmpty(healTooltip)) {
-                healHoverableInfoIcon.ShowIcon(healTooltip);
+                healHoverableInfoIcon.ShowIcon(healTooltip, false);
             } else {
                 healHoverableInfoIcon.HideIcon();
             }

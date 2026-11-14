@@ -2463,7 +2463,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Gameplay.UI.SelectionInterfaceTagsView
   _hoverableTagPrefab: {fileID: 830229371942204627}
-  _layoutGroup: {fileID: 2003546998158894408}
 --- !u!114 &2003546998158894408
 MonoBehaviour:
   m_ObjectHideFlags: 0
