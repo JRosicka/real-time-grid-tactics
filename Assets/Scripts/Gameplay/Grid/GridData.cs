@@ -82,6 +82,9 @@ namespace Gameplay.Grid {
         /// </summary>
         public List<CellData> GetCellsInRange(Vector2Int location, int range) {
             CellData currentCell = GetCell(location);
+            if (currentCell == null) {
+                return new List<CellData>();
+            }
             List<CellData> ret = new List<CellData>() { currentCell };
             List<CellData> searching = new List<CellData> { currentCell };
             List<CellData> toAdd = new List<CellData>();
