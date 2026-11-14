@@ -32,6 +32,7 @@ namespace Scenes {
 
         public event Action<string> SceneLoaded;
         public string LastLobbyMap;
+        public FogOfWarSetting LastLobbyFow;
         
         private string _targetScene;
         
@@ -97,6 +98,10 @@ namespace Scenes {
             if (_switchMapTask == null || _switchMapTask.IsCompleted) {
                 _switchMapTask = DoSwitchLoadedMap();
             }
+        }
+
+        public void SetLastLobbyFow(FogOfWarSetting fowSetting) {
+            LastLobbyFow = fowSetting;
         }
 
         private Task _switchMapTask;

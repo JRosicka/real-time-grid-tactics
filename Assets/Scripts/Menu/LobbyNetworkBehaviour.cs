@@ -72,7 +72,8 @@ namespace Menu {
                     : SceneLoader.Instance.LastLobbyMap;
                 GameTypeTracker.Instance.SetMap(mapToLoad);
                 TrySwitchMap(mapToLoad);
-                TrySwitchFogOfWar(FogOfWarSetting.None);
+                FogOfWarSetting fowSetting = SceneLoader.Instance.LastLobbyFow;
+                TrySwitchFogOfWar(fowSetting, true);
 
                 if (GameNetworkManager != null) {
                     GameNetworkManager.RoomServerDidDisconnectAction += UnassignColorsForDisconnectedPlayers;
@@ -107,8 +108,8 @@ namespace Menu {
         }
 
         [Server]
-        public void TrySwitchFogOfWar(FogOfWarSetting setting) {
-            if (!NetworkManager.singleton || !NetworkManager.singleton.CanChangeScene) return;
+        public void TrySwitchFogOfWar(FogOfWarSetting setting, bool force) {
+            if (!NetworkManager.singleton || (!force && !NetworkManager.singleton.CanChangeScene)) return;
 
             FogOfWarSetting oldSetting = FoWSetting;
             FoWSetting = setting;
@@ -136,6 +137,7 @@ namespace Menu {
 
         private void OnFogOfWarChanged(FogOfWarSetting oldSetting, FogOfWarSetting newSetting) {
             GameTypeTracker.Instance.SetFogOfWar(newSetting);
+            SceneLoader.Instance.SetLastLobbyFow(newSetting);
             FogOfWarChanged?.Invoke(newSetting);
         }
         

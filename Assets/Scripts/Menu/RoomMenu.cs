@@ -375,7 +375,7 @@ public class RoomMenu : MonoBehaviour {
     }
 
     private void FogOfWarSettingChanged(int newSettingIndex) {
-        LobbyNetworkBehaviour.TrySwitchFogOfWar(newSettingIndex.ToFogOfWarSetting());
+        LobbyNetworkBehaviour.TrySwitchFogOfWar(newSettingIndex.ToFogOfWarSetting(), false);
     }
 
     private void UpdateFogOfWarSettingVisual(FogOfWarSetting newSetting) {
