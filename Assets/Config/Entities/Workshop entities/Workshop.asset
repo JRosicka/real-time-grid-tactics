@@ -37,7 +37,7 @@ MonoBehaviour:
   OrderSFX: {fileID: 0}
   AttackSFX: {fileID: 0}
   AudioPlacementPrefix: StandardStructure
-  EntityFinishedBuildingSFX: {fileID: 0}
+  EntityFinishedBuildingSFX: {fileID: 11400000, guid: 892d652d93706bd40826a14107cf051c, type: 2}
   HP: 70
   ArmorBonus: 0
   Range: 0

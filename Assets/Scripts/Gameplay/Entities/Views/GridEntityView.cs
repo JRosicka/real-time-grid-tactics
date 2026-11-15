@@ -300,6 +300,7 @@ namespace Gameplay.Entities {
             _healAnimator.Play("Heal");
             if (fullyHealed && Entity.Team == GameManager.Instance.LocalTeam) {
                 GameManager.Instance.AlertTextDisplayer.DisplayAlertWithCooldown("fully-healed", 15, $"{Entity.DisplayName} fully healed.");
+                GameAudio.Instance.UnitFullyHealedSound();
             }
         }
 

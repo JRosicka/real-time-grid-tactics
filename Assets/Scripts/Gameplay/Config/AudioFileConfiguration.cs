@@ -28,5 +28,8 @@ namespace Gameplay.Config {
         [Header("Music")]
         public List<MusicAudioFile> MenuMusic;
         public List<MusicAudioFile> InGameMusic;
+        
+        [Header("Voice Lines")]
+        public AudioFile UnitFullyHealedLine;
     }
 }

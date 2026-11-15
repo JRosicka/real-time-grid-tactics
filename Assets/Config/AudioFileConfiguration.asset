@@ -48,3 +48,4 @@ MonoBehaviour:
   - {fileID: 11400000, guid: f19556ccad327124cb8f9a4c5ba9bb4c, type: 2}
   - {fileID: 11400000, guid: e2ef14118974969419a9082cb6f7be78, type: 2}
   - {fileID: 11400000, guid: 9d501cff8dd84174ab29adbcc01cb85e, type: 2}
+  UnitFullyHealedLine: {fileID: 11400000, guid: c1f018c34327bb4428ce3cfa0e03933b, type: 2}

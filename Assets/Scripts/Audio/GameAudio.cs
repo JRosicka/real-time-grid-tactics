@@ -231,6 +231,10 @@ namespace Audio {
         public void GameLossSound() {
             TryPlaySFX(_audioConfiguration.GameLossSound, AudioClipName(_audioConfiguration.GameLossSound), null, false);
         }
+
+        public void UnitFullyHealedSound() {
+            TryPlaySFX(_audioConfiguration.UnitFullyHealedLine, AudioClipName(_audioConfiguration.UnitFullyHealedLine), null, false);
+        }
         
         private bool TryPlaySFX(AudioFile audioFile, string audioPlacement, Vector2Int? sourceLocation, bool hiddenByFow, GridEntity performer = null) {
             if (audioFile == null || audioFile.Clip == null) return false;

@@ -47,7 +47,7 @@ MonoBehaviour:
     _showTimerOnSelectionInterface: 1
     _performByDefault: 1
     _selectionSFX: {fileID: 11400000, guid: 75b6c326a18e3384d897ccf638a3d097, type: 2}
-    _cantPerformSFX: {fileID: 0}
+    _cantPerformSFX: {fileID: 11400000, guid: a5d7267e9ea4f3d43adb296b2125b57e, type: 2}
     _targetedSFX: {fileID: 11400000, guid: 05b6c460463864379bf3859627a7ae6e, type: 2}
     _performedSFX: {fileID: 0}
     _triggersEntityOrderVoiceLine: 1
