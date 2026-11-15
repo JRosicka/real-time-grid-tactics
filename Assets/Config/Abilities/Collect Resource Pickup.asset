@@ -54,3 +54,5 @@ MonoBehaviour:
     CollectableResourceEntities:
     - {fileID: 11400000, guid: f3eb88eee96a64370827475771891374, type: 2}
     - {fileID: 11400000, guid: a2899be04b8f54805a7f62c027e3675d, type: 2}
+    - {fileID: 11400000, guid: a61b080479ad65749ab7b899c3b50b10, type: 2}
+    - {fileID: 11400000, guid: 3d9f374f574e4cb4e83215dae69cd14a, type: 2}

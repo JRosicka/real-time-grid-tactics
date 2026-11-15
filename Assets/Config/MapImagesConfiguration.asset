@@ -22,3 +22,6 @@ MonoBehaviour:
   - MapID: oakcrest
     PreviewImage: {fileID: 21300000, guid: 057177d111e574692b5dcdee6d82e9ab, type: 3}
     FullMapImage: {fileID: 21300000, guid: c1eb054914d5c4962b7f3cf34481bb52, type: 3}
+  - MapID: patchtown
+    PreviewImage: {fileID: 21300000, guid: 057177d111e574692b5dcdee6d82e9ab, type: 3}
+    FullMapImage: {fileID: 21300000, guid: c1eb054914d5c4962b7f3cf34481bb52, type: 3}
