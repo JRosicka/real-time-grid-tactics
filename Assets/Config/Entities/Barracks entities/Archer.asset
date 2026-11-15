@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: Archer
   m_EditorClassIdentifier: 
   ID: Archer
-  ShortDescription: Standard ranged unit.
-  Description: Standard ranged unit. Can attack up to two tiles away.
+  ShortDescription: Quick, fragile ranged unit.
+  Description: Quick, fragile ranged unit. Can attack up to two cells away.
   Cost:
   - Type: 1
     Amount: 75

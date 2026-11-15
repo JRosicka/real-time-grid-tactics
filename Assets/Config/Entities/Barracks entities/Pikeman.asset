@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: Pikeman
   m_EditorClassIdentifier: 
   ID: Pikeman
-  ShortDescription: Anti-cavalry unit.
-  Description: Anti-cavalry unit. Deals high damage to cavalry units and low damage
-    to everything else.
+  ShortDescription: Cheap anti-cavalry unit.
+  Description: Cheap anti-cavalry unit. Deals high damage to cavalry units and low
+    damage to everything else.
   Cost:
   - Type: 1
     Amount: 50

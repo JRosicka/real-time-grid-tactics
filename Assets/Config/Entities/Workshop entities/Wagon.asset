@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ID: Wagon
   ShortDescription: Speedy transport unit.
-  Description: Transport unit that can carry friendly units. Travels much faster
-    on roads.
+  Description: Speedy transport unit that can carry friendly units. Can quickly maneuver
+    units in a fight to gain a tactical advantage. Travels much faster on roads.
   Cost:
   - Type: 1
     Amount: 75

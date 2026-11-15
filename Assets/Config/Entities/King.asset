@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ID: King
   ShortDescription: Leader unit.
-  Description: 'Slay the opponent''s King to win the game! Can interact with the
-    Amber Forge and perform parades at resource gathering structures. '
+  Description: 'Slay the opponent''s King to win the game! Can research upgrades
+    at the Amber Forge and perform parades at resource collector structures. '
   Cost: []
   Requirements: []
   BuildTime: 1

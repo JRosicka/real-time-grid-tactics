@@ -13,8 +13,9 @@ MonoBehaviour:
   m_Name: Swordsman
   m_EditorClassIdentifier: 
   ID: Swordsman
-  ShortDescription: Standard melee unit.
-  Description: Standard melee unit.
+  ShortDescription: Cheap, reliable melee unit.
+  Description: Cheap, reliable melee unit. Does well against most melee units, but
+    poorly against ranged units.
   Cost:
   - Type: 1
     Amount: 50
