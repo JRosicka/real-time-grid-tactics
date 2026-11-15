@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Gameplay.Config.Upgrades.CatapultUpgradeData
   ID: Catapult Protractors
   ShortDescription: Catapult range upgrade.
-  Description: Adds +1 attack range for Catapult units.
+  Description: Adds +1 attack range for Catapults.
   Cost:
   - Type: 2
     Amount: 100
