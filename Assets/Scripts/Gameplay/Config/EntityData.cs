@@ -102,6 +102,8 @@ namespace Gameplay.Config {
         [Range(0, 30)]
         public float StructureSellTime;
         public ResourceAmount StartingResourceSet;
+        [Tooltip("The multiplier to apply to pickup time for other entities trying to pick this up")]
+        public float PickUpMultiplier = 1f;
         [SerializeField] private bool _highlightBuildableCells;
         public override bool HighlightBuildableCells => _highlightBuildableCells;
         [Tooltip("Whether this structure can be boosted by the boost ability")]

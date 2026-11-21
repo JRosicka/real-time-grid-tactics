@@ -29,13 +29,13 @@ MonoBehaviour:
     _channel: {fileID: 11400000, guid: e53d1693004b22b4aaf5ee5caa8e749d, type: 2}
     _channelBlockers:
     - {fileID: 11400000, guid: e53d1693004b22b4aaf5ee5caa8e749d, type: 2}
-    _slotLocation: 2
+    _slotLocation: 0
     _performOnStart: 0
     _cooldownOnStart: 0
     _repeatWhenCooldownFinishes: 0
     _animateWhenCooldownComplete: 0
-    _selectable: 1
-    _selectableWhenBlocked: 1
+    _selectable: 0
+    _selectableWhenBlocked: 0
     _autoSelect: 0
     _selectableForAllPlayers: 0
     _appearsInBuildMenu: 0
@@ -51,6 +51,8 @@ MonoBehaviour:
     _targetedSFX: {fileID: 0}
     _performedSFX: {fileID: 0}
     _triggersEntityOrderVoiceLine: 1
+    BasePickupTime: 5
+    LongPickupTime: 15
     CollectableResourceEntities:
     - {fileID: 11400000, guid: f3eb88eee96a64370827475771891374, type: 2}
     - {fileID: 11400000, guid: a2899be04b8f54805a7f62c027e3675d, type: 2}

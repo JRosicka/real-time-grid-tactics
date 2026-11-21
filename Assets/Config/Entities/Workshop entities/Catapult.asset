@@ -55,7 +55,9 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 3599016c2415e46ef99d5bd25e8ed57e, type: 2}
   - {fileID: 11400000, guid: 5335958551affdc4993a2b30692ddb21, type: 2}
   - {fileID: 11400000, guid: e36b70603b650b543b4f2339c061b8e9, type: 2}
+  - {fileID: 11400000, guid: 29b46a85b311c4691a019192edc965da, type: 2}
   AbilitiesToAutomaticallyTargetEntitiesWith:
+  - {fileID: 11400000, guid: 29b46a85b311c4691a019192edc965da, type: 2}
   - {fileID: 11400000, guid: 3599016c2415e46ef99d5bd25e8ed57e, type: 2}
   FriendlyUnitsCanShareCell: 0
   Targetable: 1
@@ -85,6 +87,7 @@ MonoBehaviour:
   StartingResourceSet:
     Type: 0
     Amount: 0
+  PickUpMultiplier: 1
   _highlightBuildableCells: 0
   Boostable: 0
   BaseCarryCapacity: 0

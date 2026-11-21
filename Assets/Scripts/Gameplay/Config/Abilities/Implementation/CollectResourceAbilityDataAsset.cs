@@ -17,6 +17,9 @@ namespace Gameplay.Config.Abilities {
     /// </summary>
     [Serializable]
     public class CollectResourceAbilityData : AbilityDataBase<CollectResourceAbilityParameters>, ITargetableAbilityData {
+        public float BasePickupTime;
+        public float LongPickupTime;
+        
         public List<EntityData> CollectableResourceEntities;
         
         public override bool CancelableWhileOnCooldown => true;

@@ -20,10 +20,10 @@ MonoBehaviour:
     Description: Fast. Takes extra damage from Spearmen.
     Visible: 1
   - Tag: 3
-    Description: Nothing special.
+    Description: Can move into forests.
     Visible: 1
   - Tag: 4
-    Description: Can move onto mountain cells. Speed is unaffected by terrain.
+    Description: Can move onto mountains. Speed is unaffected by terrain.
     Visible: 1
   - Tag: 5
     Description: If this unit dies, you LOSE.
@@ -38,7 +38,7 @@ MonoBehaviour:
     Description: Can harvest resources on the associated cell this is built on.
     Visible: 1
   - Tag: 9
-    Description: Travels especially fast on road cells.
+    Description: Travels especially fast on roads.
     Visible: 1
   - Tag: 10
     Description: Has a siege mode which enables attacks, but immobilizes the unit
@@ -46,4 +46,7 @@ MonoBehaviour:
     Visible: 1
   - Tag: 11
     Description: Takes up two capacity slots when carried.
+    Visible: 1
+  - Tag: 12
+    Description: Takes thrice the normal amount of time to pick up resources.
     Visible: 1
