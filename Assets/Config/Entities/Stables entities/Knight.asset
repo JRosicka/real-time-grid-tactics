@@ -14,18 +14,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ID: Knight
   ShortDescription: Powerful cavalry unit.
-  Description: Powerful, expensive cavalry unit. High damage and mobility. Requires
-    the High-Protein Horse Feed upgrade.
+  Description: Powerful, expensive cavalry unit. High damage and mobility.
   Cost:
   - Type: 1
     Amount: 125
   - Type: 2
     Amount: 125
-  Requirements:
-  - Purchasable: {fileID: 11400000, guid: 9ab6d58fde8294daa9c3c7a99e68cb87, type: 2}
-    AlternativePurchasable: {fileID: 0}
-    MustBeAdjacent: 0
-    FailedRequirementExplanation: You must own the High-Protein Horse Feed upgrade.
+  Requirements: []
   BuildTime: 45
   BuildsImmediately: 0
   BaseSprite: {fileID: 21300000, guid: 39af4f5fcf6309945b217e525c572273, type: 3}
@@ -40,7 +35,7 @@ MonoBehaviour:
   AudioPlacementPrefix: Knight
   EntityFinishedBuildingSFX: {fileID: 0}
   HP: 75
-  ArmorBonus: 0
+  ArmorBonus: 1
   Range: 1
   Damage: 14
   BonusDamage: 0

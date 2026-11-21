@@ -14,16 +14,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ID: High-Protein Horse Feed
   ShortDescription: Range + damage upgrade for the charge ability, unlocks Knights.
-  Description: Adds +1 range and +4 attack damage to the cavalry charge ability.
-    Unlocks Knights. Requires a stable.
+  Description: Adds +1 range and +4 attack damage to the cavalry charge ability,
+    and enables charging through friendly units. Requires a stable.
   Cost:
   - Type: 2
     Amount: 50
   Requirements:
   - Purchasable: {fileID: 11400000, guid: f2089d06c5ba63e40a8078c1636cac5f, type: 2}
+    AlternativePurchasable: {fileID: 0}
     MustBeAdjacent: 0
     FailedRequirementExplanation: You must own a Stable.
   - Purchasable: {fileID: 11400000, guid: f8a9d9571b0a8324587b160065ca7fce, type: 2}
+    AlternativePurchasable: {fileID: 0}
     MustBeAdjacent: 1
     FailedRequirementExplanation: Your King must be adjacent to the Amber Forge.
   BuildTime: 90
@@ -31,6 +33,7 @@ MonoBehaviour:
   BaseSprite: {fileID: 21300000, guid: b57c4120c8015b744a4fc3667c7fba31, type: 3}
   TeamColorSprite: {fileID: 0}
   BaseSpriteIconOverride: {fileID: 0}
+  TeamColorSpriteIconOverride: {fileID: 0}
   IconScaleInSelectionInterface: 1
   Repeatable: 0
   ApplyToGridEntitiesUponCompletion: 0

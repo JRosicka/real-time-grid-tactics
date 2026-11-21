@@ -267,6 +267,10 @@ namespace Gameplay.Config.Abilities {
                 if (!entityAtCell.EntityData.CanBlockMovement) {
                     return false;
                 }
+                // Must be a friendly/neutral blocking unit here. Allow charging if we have the upgrade
+                if (HasChargeUpgrade(selector.Team)) {
+                    return false;
+                }
 
                 return true;
             }
@@ -290,7 +294,7 @@ namespace Gameplay.Config.Abilities {
                 } 
                 if (entityAtCell != null) {
                     // Can not target a cell with a friendly unit that we can't share the cell with
-                    if ((entityAtCell.Team == selector.Team || entityAtCell.Team == GameTeam.Neutral) && !entityAtCell.FriendlyUnitsCanShareCell) {
+                    if ((entityAtCell.Team == selector.Team || entityAtCell.Team == GameTeam.Neutral) && !entityAtCell.FriendlyUnitsCanShareCell && !HasChargeUpgrade(selector.Team)) {
                         break;
                     }
                 } else if (tileAccessibilityManager.InaccessibleTiles(selector.EntityData).Contains(cell.Tile) 
