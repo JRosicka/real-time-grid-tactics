@@ -273,9 +273,9 @@ MonoBehaviour:
   LongDescription: Makes all units go zoomy fast.
   SpeedModifierTags:
   - Tag: 2
-    SlowFactor: 0.8
+    SlowFactor: 0.75
   - Tag: 3
-    SlowFactor: 0.8
+    SlowFactor: 0.75
   - Tag: 9
     SlowFactor: 0.6
   InaccessibleTags: 
