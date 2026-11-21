@@ -35,7 +35,7 @@ MonoBehaviour:
   AttackSFX: {fileID: 0}
   AudioPlacementPrefix: Wagon
   EntityFinishedBuildingSFX: {fileID: 0}
-  HP: 40
+  HP: 42
   ArmorBonus: 0
   Range: 1
   Damage: 0

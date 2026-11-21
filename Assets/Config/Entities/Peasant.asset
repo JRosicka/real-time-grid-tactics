@@ -32,7 +32,7 @@ MonoBehaviour:
   AttackSFX: {fileID: 11400000, guid: df78dc31d26354146935f2a8872ac735, type: 2}
   AudioPlacementPrefix: Peasant
   EntityFinishedBuildingSFX: {fileID: 0}
-  HP: 26
+  HP: 20
   ArmorBonus: 0
   Range: 1
   Damage: 2

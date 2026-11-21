@@ -33,7 +33,7 @@ MonoBehaviour:
   AttackSFX: {fileID: 11400000, guid: 32433d8a1fb4b451faf9bcd31937c2e1, type: 2}
   AudioPlacementPrefix: Swordsman
   EntityFinishedBuildingSFX: {fileID: 0}
-  HP: 48
+  HP: 44
   ArmorBonus: 0
   Range: 1
   Damage: 8

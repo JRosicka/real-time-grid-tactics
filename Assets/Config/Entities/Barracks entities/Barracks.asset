@@ -32,7 +32,7 @@ MonoBehaviour:
   AttackSFX: {fileID: 0}
   AudioPlacementPrefix: StandardStructure
   EntityFinishedBuildingSFX: {fileID: 11400000, guid: f50217de9fec24773960372f3af38dc3, type: 2}
-  HP: 70
+  HP: 80
   ArmorBonus: 0
   Range: 0
   Damage: 0
@@ -80,6 +80,7 @@ MonoBehaviour:
   StartingResourceSet:
     Type: 0
     Amount: 0
+  PickUpMultiplier: 1
   _highlightBuildableCells: 0
   Boostable: 1
   BaseCarryCapacity: 0
