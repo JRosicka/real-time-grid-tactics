@@ -14,12 +14,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ID: Amber Aura
   ShortDescription: Temporary speed boost to all timers.
-  Description: Speeds up all friendly timers by 25% for 30 seconds.
+  Description: Speeds up all friendly timers by 35% for 30 seconds.
   Cost:
   - Type: 2
-    Amount: 100
+    Amount: 50
   Requirements:
   - Purchasable: {fileID: 11400000, guid: f8a9d9571b0a8324587b160065ca7fce, type: 2}
+    AlternativePurchasable: {fileID: 0}
     MustBeAdjacent: 1
     FailedRequirementExplanation: Your King must be adjacent to the Amber Forge.
   BuildTime: 90
@@ -27,10 +28,11 @@ MonoBehaviour:
   BaseSprite: {fileID: 21300000, guid: e0ed8fc4bfdf1694ab1ddd43321b4155, type: 3}
   TeamColorSprite: {fileID: 0}
   BaseSpriteIconOverride: {fileID: 0}
+  TeamColorSpriteIconOverride: {fileID: 0}
   IconScaleInSelectionInterface: 1
   Repeatable: 1
   ApplyToGridEntitiesUponCompletion: 1
   ApplyToGridEntitiesWhenTheySpawn: 1
   ExpirationSeconds: 30
   OrderIndex: 100
-  TimerSpeedMultiplier: 1.25
+  TimerSpeedMultiplier: 1.35
