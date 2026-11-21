@@ -13,6 +13,7 @@ namespace Gameplay.Config {
         Wheeled = 9,
         Siege = 10,
         Massive = 11,
+        Delicate = 12,
     }
 
     public static class EntityTagExtensions {
@@ -29,6 +30,7 @@ namespace Gameplay.Config {
                 EntityTag.Wheeled => "wheeled units",
                 EntityTag.Siege => "siege units",
                 EntityTag.Massive => "massive units",
+                EntityTag.Delicate => "frail units",
                 _ => throw new ArgumentOutOfRangeException(nameof(tag), tag, null)
             };
         }

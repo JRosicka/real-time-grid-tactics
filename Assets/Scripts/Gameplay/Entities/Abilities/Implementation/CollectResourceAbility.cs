@@ -2,8 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Gameplay.Commands;
+using Gameplay.Config;
 using Gameplay.Config.Abilities;
-using Gameplay.Grid;
 using Gameplay.UI;
 using Mirror;
 using Newtonsoft.Json;
@@ -21,7 +21,12 @@ namespace Gameplay.Entities.Abilities {
 
         public override AbilityExecutionType ExecutionType => AbilityExecutionType.PreInteractionGridUpdate;
         public override bool ShouldShowAbilityTimer => true;
+        public override float CooldownDuration => BasePickupTime * AbilityParameters.Target.EntityData.PickUpMultiplier;
 
+        private float BasePickupTime => Performer.Tags.Contains(EntityTag.Delicate)
+            ? Data.LongPickupTime
+            : Data.BasePickupTime;
+        
         private AbilityEventRouter AbilityEventRouter => GameManager.Instance.AbilityEventRouter;
 
         public override void Cancel() {

@@ -43,7 +43,7 @@ MonoBehaviour:
     MoveIconOverride: {fileID: 0}
     AttackIconOverride: {fileID: 0}
     TargetAttackIconOverride: {fileID: 0}
-  Tags: 0500000003000000
+  Tags: 05000000030000000c000000
   OverrideEntityDataForPathfinding: {fileID: 0}
   AttackerTargetPriority: 3
   Abilities:
@@ -52,7 +52,9 @@ MonoBehaviour:
   - {fileID: 11400000, guid: ddf18332952084d23850a96e2fddd976, type: 2}
   - {fileID: 11400000, guid: a23c69f58674b4c0790e0e27e2d0dbcb, type: 2}
   - {fileID: 11400000, guid: 2f4545e8d76a04b89857caffdb6d37bb, type: 2}
+  - {fileID: 11400000, guid: 29b46a85b311c4691a019192edc965da, type: 2}
   AbilitiesToAutomaticallyTargetEntitiesWith:
+  - {fileID: 11400000, guid: 29b46a85b311c4691a019192edc965da, type: 2}
   - {fileID: 11400000, guid: ddf18332952084d23850a96e2fddd976, type: 2}
   FriendlyUnitsCanShareCell: 0
   Targetable: 1
@@ -82,6 +84,7 @@ MonoBehaviour:
   StartingResourceSet:
     Type: 0
     Amount: 0
+  PickUpMultiplier: 1
   _highlightBuildableCells: 0
   Boostable: 0
   BaseCarryCapacity: 0

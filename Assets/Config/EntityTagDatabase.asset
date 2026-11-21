@@ -47,3 +47,6 @@ MonoBehaviour:
   - Tag: 11
     Description: Takes up two capacity slots when carried.
     Visible: 1
+  - Tag: 12
+    Description: Takes thrice the normal amount of time to pick up resources.
+    Visible: 1

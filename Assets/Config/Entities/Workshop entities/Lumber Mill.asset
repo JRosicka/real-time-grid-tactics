@@ -87,6 +87,7 @@ MonoBehaviour:
   StartingResourceSet:
     Type: 0
     Amount: 0
+  PickUpMultiplier: 1
   _highlightBuildableCells: 1
   Boostable: 0
   BaseCarryCapacity: 0

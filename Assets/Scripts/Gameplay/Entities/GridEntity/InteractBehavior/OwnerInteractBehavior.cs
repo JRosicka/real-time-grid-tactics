@@ -58,11 +58,12 @@ namespace Gameplay.Entities {
                     GameManager.Instance.AlertTextDisplayer.DisplayAlert("You must cancel the structure first.");
                     return;
                 }
-                if (thisEntity.ActiveTimers.Any(t => t.Ability is CollectResourceAbility)) {
-                    GameManager.Instance.EntitySelectionManager.DeselectTargetableAbility();
-                    GameManager.Instance.AlertTextDisplayer.DisplayAlert("You must cancel the the resource collection first.");
-                    return;
-                }
+            }
+            
+            if (thisEntity.ActiveTimers.Any(t => t.Ability is CollectResourceAbility)) {
+                GameManager.Instance.EntitySelectionManager.DeselectTargetableAbility();
+                GameManager.Instance.AlertTextDisplayer.DisplayAlert("You must cancel the the resource collection first.");
+                return;
             }
             
             // Do not target entities if they are hidden by FoW

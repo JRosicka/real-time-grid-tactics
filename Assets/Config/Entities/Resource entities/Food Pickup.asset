@@ -15,7 +15,7 @@ MonoBehaviour:
   ID: Small Food Pickup
   ShortDescription: Awards 25 <sprite name="food">.
   Description: Awards 25 <sprite name="food"> when collected by a peasant. Collection
-    is disrupted when under attack.
+    takes 5s (15s for delicate units).
   Cost: []
   Requirements: []
   BuildTime: 0
@@ -76,6 +76,7 @@ MonoBehaviour:
   StartingResourceSet:
     Type: 1
     Amount: 25
+  PickUpMultiplier: 1
   _highlightBuildableCells: 0
   Boostable: 0
   BaseCarryCapacity: 0
