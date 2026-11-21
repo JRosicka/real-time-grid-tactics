@@ -21,9 +21,11 @@ MonoBehaviour:
     Amount: 50
   Requirements:
   - Purchasable: {fileID: 11400000, guid: 43174010eb096460f944f7aa4f3b1791, type: 2}
+    AlternativePurchasable: {fileID: 0}
     MustBeAdjacent: 0
     FailedRequirementExplanation: You must own a Barracks.
   - Purchasable: {fileID: 11400000, guid: f8a9d9571b0a8324587b160065ca7fce, type: 2}
+    AlternativePurchasable: {fileID: 0}
     MustBeAdjacent: 1
     FailedRequirementExplanation: Your King must be adjacent to the Amber Forge.
   BuildTime: 90
@@ -31,6 +33,7 @@ MonoBehaviour:
   BaseSprite: {fileID: 21300000, guid: 5f27dbeabdfd4c746aeaca92a471076d, type: 3}
   TeamColorSprite: {fileID: 0}
   BaseSpriteIconOverride: {fileID: 0}
+  TeamColorSpriteIconOverride: {fileID: 0}
   IconScaleInSelectionInterface: 1
   Repeatable: 0
   ApplyToGridEntitiesUponCompletion: 1
@@ -39,6 +42,6 @@ MonoBehaviour:
   OrderIndex: 400
   ArcherData: {fileID: 11400000, guid: 938107a9fc68aa54586e46f7860fc6ff, type: 2}
   SlowTerrainSpeedModifierIntensity: 0
-  AdditionalMovementTimeFromAttacking: -1
+  AdditionalMovementTimeFromAttacking: -1.4
   MoveTooltipMessage: Not slowed by Forests.<br>Move cooldown penalty after attacking
     reduced by 0.5s.
