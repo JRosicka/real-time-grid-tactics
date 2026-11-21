@@ -40,7 +40,7 @@ MonoBehaviour:
     units.
   SpeedModifierTags:
   - Tag: 3
-    SlowFactor: 1.667
+    SlowFactor: 1.5
   InaccessibleTags: 010000000200000009000000
   InaccessibleEntities: []
   _armorBonus: 2
