@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fafa440752424124be5b9cbee86f1e06, type: 3}
   m_Name: Food Pickup
   m_EditorClassIdentifier: 
-  ID: Small Food Pickup
+  ID: Smol Food Pickup
   ShortDescription: Awards 25 <sprite name="food">.
   Description: Awards 25 <sprite name="food"> when collected by a peasant. Collection
     takes 5s (15s for delicate units).

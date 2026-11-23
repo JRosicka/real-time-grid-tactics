@@ -38,10 +38,10 @@ MonoBehaviour:
   HP: 60
   ArmorBonus: 0
   Range: 2
-  Damage: 12
+  Damage: 20
   BonusDamage: 0
   TagsToApplyBonusDamageTo: 
-  NormalMoveTime: 5
+  NormalMoveTime: 5.5
   AddedMovementTimeFromAttacking: 0
   PathfindingConfig:
     MoveIconOverride: {fileID: 0}
