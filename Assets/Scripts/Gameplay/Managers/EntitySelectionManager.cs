@@ -283,11 +283,16 @@ public class EntitySelectionManager {
             if (!allowLeftClickTargetCommands) return false;
         }
 
-        if (!_selectedTargetableAbility.CanTargetCell(clickedCell, SelectedEntity, _gameManager.LocalTeam, _targetData)) {
+        if (!_selectedTargetableAbility.CanTargetCell(clickedCell, SelectedEntity, _gameManager.LocalTeam, _targetData, out string whyNot)) {
             // We clicked on a cell that the ability cannot be used on. Deselect the ability. 
-            GameManager.Instance.AlertTextDisplayer.DisplayAlert($"Cannot {_selectedTargetableAbility.AbilityVerb} there.");
+            string alertString = $"Cannot {_selectedTargetableAbility.AbilityVerb} there.";
+            if (!string.IsNullOrEmpty(whyNot)) {
+                alertString += $" {whyNot}";
+            }
+            GameManager.Instance.AlertTextDisplayer.DisplayAlert(alertString);
             GameAudio.Instance.InvalidSound();
             GameAudio.Instance.InvalidAbilitySound(_selectedTargetableAbility);
+            
             if (_selectedTargetableAbility.DeselectAfterAttempt) {
                 DeselectTargetableAbility();
             }

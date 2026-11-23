@@ -48,7 +48,8 @@ namespace Gameplay.Config.Abilities {
             };
         }
 
-        public bool CanTargetCell(Vector2Int cellPosition, GridEntity selectedEntity, GameTeam selectorTeam, object targetData) {
+        public bool CanTargetCell(Vector2Int cellPosition, GridEntity selectedEntity, GameTeam selectorTeam, object targetData, out string whyNot) {
+            whyNot = null;
             GridEntity resourceCollector = GameManager.Instance.ResourceEntityFinder.GetResourceCollectorAtLocation(cellPosition);
             return AbilityLegalityAtResourceCollector(selectedEntity, resourceCollector) == AbilityLegality.Legal;
         }

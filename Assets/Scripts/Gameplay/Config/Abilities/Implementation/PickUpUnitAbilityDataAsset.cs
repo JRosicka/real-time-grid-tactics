@@ -40,7 +40,11 @@ namespace Gameplay.Config.Abilities {
 
         protected override AbilityLegality AbilityLegalImpl(PickUpUnitAbilityParameters parameters, GridEntity performer, GameTeam team, out string failureReason) {
             failureReason = "Cannot pick up there.";
-            return EntityPickUpLogic.CanPickUp(performer, parameters.Target) ? AbilityLegality.Legal : AbilityLegality.IndefinitelyIllegal;
+            AbilityLegality legality = EntityPickUpLogic.CanPickUp(performer, parameters.Target, out string whyNot) ? AbilityLegality.Legal : AbilityLegality.IndefinitelyIllegal;
+            if (!string.IsNullOrEmpty(whyNot)) {
+                failureReason += $" {whyNot}";
+            }
+            return legality;
         }
 
         public override AbilityLegality CanEntityUseAbility(GridEntity entity, GameTeam team, out string failureReason) {
@@ -58,11 +62,12 @@ namespace Gameplay.Config.Abilities {
             };
         }
 
-        public bool CanTargetCell(Vector2Int cellPosition, GridEntity selectedEntity, GameTeam selectorTeam, object targetData) {
+        public bool CanTargetCell(Vector2Int cellPosition, GridEntity selectedEntity, GameTeam selectorTeam, object targetData, out string whyNot) {
+            whyNot = null;
             GridEntity target = GameManager.Instance.GetTopEntityAtLocation(cellPosition);
             if (target == null) return false;
             
-            return EntityPickUpLogic.CanPickUp(selectedEntity, target);
+            return EntityPickUpLogic.CanPickUp(selectedEntity, target, out whyNot);
         }
         
         public void DoTargetableAbility(Vector2Int cellPosition, GridEntity selectedEntity, GameTeam selectorTeam, object targetData) {

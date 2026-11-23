@@ -53,7 +53,8 @@ namespace Gameplay.Config.Abilities {
             };
         }
 
-        public bool CanTargetCell(Vector2Int cellPosition, GridEntity selectedEntity, GameTeam selectorTeam, object targetData) {
+        public bool CanTargetCell(Vector2Int cellPosition, GridEntity selectedEntity, GameTeam selectorTeam, object targetData, out string whyNot) {
+            whyNot = null;
             GridEntity target = (GridEntity)targetData;
             if (target == null) return false;
             

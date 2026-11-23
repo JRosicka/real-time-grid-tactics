@@ -32,7 +32,7 @@ namespace Gameplay.Config.Abilities {
         protected override AbilityLegality AbilityLegalImpl(MoveAbilityParameters parameters, GridEntity entity, GameTeam team, out string failureReason) {
             failureReason = null;
             
-            if (!CanTargetCell(parameters.Destination, entity, team, null)) {
+            if (!CanTargetCell(parameters.Destination, entity, team, null, out failureReason)) {
                 return AbilityLegality.IndefinitelyIllegal;
             }
 
@@ -83,7 +83,8 @@ namespace Gameplay.Config.Abilities {
             };
         }
 
-        public bool CanTargetCell(Vector2Int cellPosition, GridEntity selectedEntity, GameTeam selectorTeam, object targetData) {
+        public bool CanTargetCell(Vector2Int cellPosition, GridEntity selectedEntity, GameTeam selectorTeam, object targetData, out string whyNot) {
+            whyNot = null;
             if (selectedEntity == null) return false;
             if (selectedEntity.Team != selectorTeam) return false;
             return true;

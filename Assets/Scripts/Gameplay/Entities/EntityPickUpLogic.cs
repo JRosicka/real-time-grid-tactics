@@ -11,7 +11,8 @@ namespace Gameplay.Entities {
     /// Logic for picking up, dropping off, and assessing capacity for entities.
     /// </summary>
     public static class EntityPickUpLogic {
-        public static bool CanPickUp(GridEntity carrier, GridEntity passenger) {
+        public static bool CanPickUp(GridEntity carrier, GridEntity passenger, out string whyNot) {
+            whyNot = null;
             if (!carrier.IsActive()) return false;
             if (!passenger.IsActive()) return false;
 
@@ -19,14 +20,17 @@ namespace Gameplay.Entities {
             
             // Must have space
             int size = EntitySize(passenger);
-            if (size > AvailableCapacity(carrier)) return false;
+            if (size > AvailableCapacity(carrier)) {
+                whyNot = "Not enough capacity.";
+                return false;
+            }
             
             return true;
         }
 
         // Server method
         public static bool TryPickUp(GridEntity carrier, GridEntity passenger) {
-            if (!CanPickUp(carrier, passenger)) return false;
+            if (!CanPickUp(carrier, passenger, out string _)) return false;
 
             // Must be adjacent
             if (!CellDistanceLogic.Neighbors(carrier.Location!.Value).Contains(passenger.Location!.Value)) return false;

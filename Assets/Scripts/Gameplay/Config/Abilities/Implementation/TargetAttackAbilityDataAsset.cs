@@ -72,7 +72,8 @@ namespace Gameplay.Config.Abilities {
             };
         }
 
-        public bool CanTargetCell(Vector2Int cellPosition, GridEntity selectedEntity, GameTeam selectorTeam, System.Object targetData) {
+        public bool CanTargetCell(Vector2Int cellPosition, GridEntity selectedEntity, GameTeam selectorTeam, System.Object targetData, out string whyNot) {
+            whyNot = null;
             GridEntity target = GameManager.Instance.GetTopEntityAtLocation(cellPosition);
             AbilityLegality legality = CanAttackTarget(target, selectedEntity);
             return legality == AbilityLegality.Legal;
