@@ -153,16 +153,14 @@ namespace Gameplay.Entities.Abilities {
         private void DoAttack(Vector2Int location) {
             List<Vector2Int> targetCells = new List<Vector2Int> { location };
             
-            // Pick random (eligible) adjacent cells to the location to include in the attack, favoring cells closer to the performer
+            // Pick random (eligible) adjacent cells to the location to include in the attack, favoring cells that contain enemy units, then cells further from the performer
             var cellsInRange = Data.GetCellsInRange(Performer);
-            List<Vector2Int> eligibleAdjacentCells = GridData.GetAdjacentCells(location)
+            targetCells.Add(GridData.GetAdjacentCells(location)
                 .Select(c => c.Location)
                 .Where(c => cellsInRange.Contains(c))
-                .OrderBy(c => CellDistanceLogic.DistanceBetweenCells(c, Performer.Location.Value))
-                .ToList();
-            
-            // Pick the closest to be in the target group
-            targetCells.Add(eligibleAdjacentCells.First());
+                .OrderByDescending(c => GameManager.Instance.GetTopEntityAtLocation(c)?.Team.OpponentTeam() == PerformerTeam ? 1 : 0)
+                .ThenByDescending(c => CellDistanceLogic.DistanceBetweenCells(c, Performer.Location.Value))
+                .First());
             
             // Get the third cell. It might not be a real cell if this is on the edge of the map!
             List<Vector2Int> eligibleThirdCells = CellDistanceLogic.Neighbors(targetCells[0]).Intersect(CellDistanceLogic.Neighbors(targetCells[1])).ToList();

@@ -216,7 +216,7 @@ namespace Scenes {
             string currentSceneName = SceneManager.GetActiveScene().name;
             
             MainMenuGamePreviewManager.Initialize(currentSceneName == MainMenuSceneName);
-            _gameTypeManager.SetFogOfWar(FogOfWarSetting.TwoRange);
+            _gameTypeManager.SetFogOfWar(FogOfWarSetting.ThreeRange);
 
             // Load the loading scene
             SceneManager.LoadScene(LoadingSceneName, LoadSceneMode.Single);
