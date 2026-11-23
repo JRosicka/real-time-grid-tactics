@@ -57,7 +57,7 @@ namespace Gameplay.Entities.Abilities {
                     handler => AbilityParameters.Target.UnregisteredEvent += handler,
                     handler => AbilityParameters.Target.UnregisteredEvent -= handler,
                     CancelCollection, nameof(CancelCollection));
-                AbilityEventRouter.RegisterListener<Action<bool>>(Performer, UID,
+                AbilityEventRouter.RegisterListener<Action<bool, bool>>(Performer, UID,
                     handler => Performer.HPHandler.AttackedEvent += handler,
                     handler => Performer.HPHandler.AttackedEvent -= handler,
                     PerformerAttacked, nameof(PerformerAttacked));
@@ -119,7 +119,7 @@ namespace Gameplay.Entities.Abilities {
             }
         }
 
-        private void PerformerAttacked(bool lethal) {
+        private void PerformerAttacked(bool lethal, bool disabling) {
             CancelCollection();
         }
         

@@ -37,7 +37,7 @@ namespace Gameplay.Entities {
         
         public void DoIncomeAnimation() {
             IncomeAbilityData incomeAbilityData = _entity.GetAbilityData<IncomeAbilityData>();
-            if (incomeAbilityData != null && _entity.HPHandler.TimeSinceLastReceivedAttack() >= incomeAbilityData.CooldownSecondsFromBeingAttacked) {
+            if (incomeAbilityData != null && _entity.HPHandler.TimeSinceLastReceivedDisablingAttack() >= incomeAbilityData.CooldownSecondsFromBeingAttacked) {
                 _incomeText.text = string.Format(_incomeTextFormat, _entity.IncomeRate, _textIconGlyph);
                 _incomeText.color = _textColor;
                 _animator.Play("ShowIncome");

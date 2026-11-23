@@ -217,7 +217,7 @@ namespace Gameplay.Entities {
             SetupStats();
 
             // NetworkableFields
-            HPHandler.SetCurrentHP(EntityData.HP, false);
+            HPHandler.SetCurrentHP(EntityData.HP, false, false);
             CurrentResources.UpdateValue(EntityData.StartingResourceSet);
             _location.UpdateValue(new NetworkableVector2IntegerValue(spawnLocation));
 

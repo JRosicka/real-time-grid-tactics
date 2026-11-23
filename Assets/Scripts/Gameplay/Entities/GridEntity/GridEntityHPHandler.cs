@@ -1,8 +1,9 @@
 using System;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Gameplay.Config;
 using Gameplay.Entities.DeathAction;
-using JetBrains.Annotations;
 using Mirror;
 using UnityEngine;
 
@@ -13,8 +14,10 @@ namespace Gameplay.Entities {
     /// </summary>
     public class GridEntityHPHandler : NetworkBehaviour {
         public event Action HPChangedEvent;
-        // Parameter is true if lethal damage is received, otherwise false
-        public event Action<bool> AttackedEvent;
+        // Parameters are:
+        // - True if lethal damage is received, otherwise false
+        // - True if the attack is disabling, otherwise false
+        public event Action<bool, bool> AttackedEvent;
         public event Action<bool> HealedEvent;
         
         [SerializeField] private GridEntity _gridEntity;
@@ -24,22 +27,34 @@ namespace Gameplay.Entities {
         public bool MarkedForDeath { get; private set; }
 
         public int CurrentHP => ((NetworkableIntegerValue)_currentHP?.Value)?.Value ?? 0;
-        private float LastAttackedTime => ((NetworkableFloatValue)_lastAttackedTime?.Value)?.Value ?? 0;
+        private float LastDisablingAttackedTime => ((NetworkableFloatValue)_lastDisablingAttackedTime?.Value)?.Value ?? 0;
         
         private NetworkableField _currentHP;
-        private NetworkableField _lastAttackedTime;
+        private NetworkableField _lastDisablingAttackedTime;
 
         private void Awake() {
             _currentHP = new NetworkableField(this, nameof(_currentHP), new NetworkableIntegerValue(0));
             _currentHP.ValueChanged += HPChanged;
             
-            _lastAttackedTime = new NetworkableField(this, nameof(_lastAttackedTime), new NetworkableFloatValue(-1000));
+            _lastDisablingAttackedTime = new NetworkableField(this, nameof(_lastDisablingAttackedTime), new NetworkableFloatValue(-1000));
         }
         
         #region Update HP
         
-        public void SetCurrentHP(int newHP, bool fromGameEffect) {
-            _currentHP.UpdateValue(new NetworkableIntegerValue(newHP), fromGameEffect.ToString());
+        [Serializable]
+        [SuppressMessage("ReSharper", "InconsistentNaming")]
+        private struct HPChangedMetadata {
+            public bool fromGameEffect;
+            public bool disabling;
+        }
+        
+        public void SetCurrentHP(int newHP, bool fromGameEffect, bool disabling) {
+            string metadata = JsonUtility.ToJson(new HPChangedMetadata {
+                fromGameEffect = fromGameEffect,
+                disabling = disabling
+            });
+            
+            _currentHP.UpdateValue(new NetworkableIntegerValue(newHP), metadata);
         }
 
         private void HPChanged(INetworkableFieldValue oldHP, INetworkableFieldValue newHP, string metadata) {
@@ -47,11 +62,11 @@ namespace Gameplay.Entities {
             NetworkableIntegerValue newHPInt = (NetworkableIntegerValue)newHP;
             HPChangedEvent?.Invoke();
             
-            bool fromGameEffect = Convert.ToBoolean(metadata);
-            if (fromGameEffect && oldHPInt.Value < newHPInt.Value) {
+            HPChangedMetadata metadataStruct = JsonUtility.FromJson<HPChangedMetadata>(metadata);
+            if (metadataStruct.fromGameEffect && oldHPInt.Value < newHPInt.Value) {
                 HealedEvent?.Invoke(newHPInt.Value == _gridEntity.MaxHP);
-            } else if (fromGameEffect && oldHPInt.Value > newHPInt.Value) {
-                AttackedEvent?.Invoke(newHPInt.Value <= 0);
+            } else if (metadataStruct.fromGameEffect && oldHPInt.Value > newHPInt.Value) {
+                AttackedEvent?.Invoke(newHPInt.Value <= 0, metadataStruct.disabling);
             }
         }
         
@@ -61,8 +76,12 @@ namespace Gameplay.Entities {
         /// Deal damage. Server only. 
         /// True if this results in the entity dying, otherwise false
         /// </returns>
-        public bool ReceiveAttackFromEntity([NotNull] GridEntity sourceEntity, int bonusDamage) {
-            _lastAttackedTime.UpdateValue(new NetworkableFloatValue(Time.time));
+        public bool ReceiveAttackFromEntity([JetBrains.Annotations.NotNull] GridEntity sourceEntity, int bonusDamage) {
+            // Only non-delicate units' attacks disable
+            bool disabling = !sourceEntity.EntityData.Tags.Contains(EntityTag.Delicate);
+            if (disabling) {
+                _lastDisablingAttackedTime.UpdateValue(new NetworkableFloatValue(Time.time));
+            }
 
             // Get base damage
             int damage = sourceEntity.Damage;
@@ -88,7 +107,7 @@ namespace Gameplay.Entities {
             // Minimum of 1 damage
             damage = Mathf.Max(1, damage);
             
-            SetCurrentHP(CurrentHP - Mathf.RoundToInt(damage), true);
+            SetCurrentHP(CurrentHP - Mathf.RoundToInt(damage), true, disabling);
 
             if (CurrentHP <= 0) {
                 Kill(sourceEntity);
@@ -103,17 +122,17 @@ namespace Gameplay.Entities {
 
             int newHP = CurrentHP + healAmount;
             newHP = Mathf.Min(newHP, _gridEntity.MaxHP);
-            SetCurrentHP(newHP, true);
+            SetCurrentHP(newHP, true, false);
         }
 
         /// <summary>
-        /// Returns the amount of seconds since the last attack. 
+        /// Returns the amount of seconds since the last attack that could "disable" this unit (i.e. disable income collection)
         /// </summary>
-        public float TimeSinceLastReceivedAttack() {
-            return Time.time - LastAttackedTime;
+        public float TimeSinceLastReceivedDisablingAttack() {
+            return Time.time - LastDisablingAttackedTime;
         }
         
-        public void Kill([NotNull] GridEntity sourceEntity) {
+        public void Kill([JetBrains.Annotations.NotNull] GridEntity sourceEntity) {
             if (MarkedForDeath) return;
             MarkedForDeath = true;
             

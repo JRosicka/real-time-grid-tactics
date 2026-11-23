@@ -30,8 +30,10 @@ namespace Gameplay.Entities {
             GameManager.Instance.CommandManager.EntityUpdatedEvent -= EntityUpdated;
         }
         
-        public override void NonLethalDamageReceived() {
-            DamageAnimationBehavior.HandleDamageReceived();
+        public override void NonLethalDamageReceived(bool disabling) {
+            if (disabling) {
+                DamageAnimationBehavior.HandleDamageReceived();
+            }
         }
 
         public override bool DoAbility(IAbility ability, AbilityTimer abilityTimer) {

@@ -16,7 +16,7 @@ namespace Gameplay.Entities {
             _entity = entity;
         }
         public override void LethalDamageReceived() { }
-        public override void NonLethalDamageReceived() { }
+        public override void NonLethalDamageReceived(bool disabling) { }
 
         public override bool DoAbility(IAbility ability, AbilityTimer abilityTimer) {
             return ability.AbilityData switch {

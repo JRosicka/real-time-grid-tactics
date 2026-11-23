@@ -13,7 +13,7 @@ namespace Gameplay.Entities {
         public override void LethalDamageReceived() {
             _boostRayController.TearDown();
         }
-        public override void NonLethalDamageReceived() { }
+        public override void NonLethalDamageReceived(bool disabling) { }
 
         public override bool DoAbility(IAbility ability, AbilityTimer abilityTimer) {
             switch (ability) {

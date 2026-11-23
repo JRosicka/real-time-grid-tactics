@@ -280,7 +280,7 @@ namespace Gameplay.Entities {
             _mainImage.material = targeted ? _targetedMaterial : null;
         }
 
-        private async void AttackReceived(bool lethal) {
+        private async void AttackReceived(bool lethal, bool disabling) {
             // Delay so that the shake times up with the attacker's animation
             await Task.Delay((int)(_attackShakeTriggerTime * 1000));
             if (Entity == null || GameManager.Instance == null) return;
@@ -290,7 +290,7 @@ namespace Gameplay.Entities {
             if (lethal) {
                 _particularView.LethalDamageReceived();
             } else {
-                _particularView.NonLethalDamageReceived();
+                _particularView.NonLethalDamageReceived(disabling);
             }
             
             ColorFlashBehaviour.Flash();

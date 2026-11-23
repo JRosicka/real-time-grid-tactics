@@ -7,7 +7,7 @@ namespace Gameplay.Entities {
         public virtual bool ControlsScale => false;
         public abstract void Initialize(GridEntity entity);
         public abstract void LethalDamageReceived();
-        public abstract void NonLethalDamageReceived();
+        public abstract void NonLethalDamageReceived(bool disabling);
         /// <summary>
         /// Perform any entity-specific animations for the given ability.
         /// </summary>

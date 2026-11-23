@@ -25,7 +25,7 @@ namespace Gameplay.Entities {
                 _currentResourceEntityBeingBuiltOn = null;
             }
         }
-        public override void NonLethalDamageReceived() { }
+        public override void NonLethalDamageReceived(bool disabling) { }
 
         public override bool DoAbility(IAbility ability, AbilityTimer abilityTimer) {
             switch (ability) {

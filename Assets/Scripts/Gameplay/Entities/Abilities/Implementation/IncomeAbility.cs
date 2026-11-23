@@ -1,5 +1,3 @@
-using System.Linq;
-using Gameplay.Config;
 using Gameplay.Config.Abilities;
 using UnityEngine;
 
@@ -28,7 +26,7 @@ namespace Gameplay.Entities.Abilities {
             if (resourceEntity.CurrentResourcesValue.Amount <= 0) return true;
             
             // Don't reward if this entity has received an attack recently
-            if (Performer.HPHandler.TimeSinceLastReceivedAttack() < Data.CooldownSecondsFromBeingAttacked) return true;
+            if (Performer.HPHandler.TimeSinceLastReceivedDisablingAttack() < Data.CooldownSecondsFromBeingAttacked) return true;
 
             // Subtract the income amount from the resource entity
             ResourceAmount resourceAmount = new ResourceAmount(resourceEntity.CurrentResourcesValue);

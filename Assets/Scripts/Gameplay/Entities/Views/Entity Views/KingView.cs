@@ -40,7 +40,7 @@ namespace Gameplay.Entities {
             DoInspiringPresenceAnimation(false);
         }
         
-        public override void NonLethalDamageReceived() {
+        public override void NonLethalDamageReceived(bool disabling) {
             if (_entity.Team != GameManager.Instance.LocalTeam) return;
             if (Time.time - _timeOfLastDamageReceived < _minSecondsBetweenUnderAttackAlerts) return;
             

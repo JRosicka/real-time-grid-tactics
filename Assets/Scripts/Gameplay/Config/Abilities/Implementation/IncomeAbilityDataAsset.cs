@@ -46,7 +46,7 @@ namespace Gameplay.Config.Abilities {
             if (resourceEntity.CurrentResourcesValue.Amount <= 0) return AbilityLegality.NotCurrentlyLegal;
             
             // Not legal if this entity has received an attack recently
-            if (entity.HPHandler.TimeSinceLastReceivedAttack() <= CooldownSecondsFromBeingAttacked) return AbilityLegality.NotCurrentlyLegal;
+            if (entity.HPHandler.TimeSinceLastReceivedDisablingAttack() <= CooldownSecondsFromBeingAttacked) return AbilityLegality.NotCurrentlyLegal;
             
             return AbilityLegality.Legal;
         }
