@@ -256,13 +256,17 @@ namespace Gameplay.Entities {
             return AllEntities(justTop).Where(e => e.Team == team).ToList();
         }
 
-        public List<GridEntity> AllEntities(bool justTop = false) {
+        public List<GridEntity> AllEntities(bool justTop = false, bool includeOffGrid = false) {
             if (justTop) {
                 return Entities.Select(c => c.GetTopEntity()?.Entity).NotNull().ToList();
             }
-            return Entities.SelectMany(c => c.Entities)
+            List<GridEntity> entities = Entities.SelectMany(c => c.Entities)
                 .Select(o => o.Entity)
                 .ToList();
+            if (includeOffGrid) {
+                entities = entities.Union(EntitiesOffGrid).ToList();
+            }
+            return entities;
         }
 
         public bool IsEntityOnGrid(GridEntity entity) {
@@ -270,7 +274,7 @@ namespace Gameplay.Entities {
         }
 
         public GridEntity GetEntityByID(long entityID) {
-            return AllEntities().FirstOrDefault(e => e.UID == entityID);
+            return AllEntities(includeOffGrid:true).FirstOrDefault(e => e.UID == entityID);
         }
 
         private Dictionary<GameTeam, List<Vector2Int>> _locationsWithFriendlyEntities = new Dictionary<GameTeam, List<Vector2Int>>();

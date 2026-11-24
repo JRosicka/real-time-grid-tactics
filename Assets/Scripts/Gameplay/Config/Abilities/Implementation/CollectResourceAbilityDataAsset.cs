@@ -61,7 +61,9 @@ namespace Gameplay.Config.Abilities {
         }
 
         public override IAbilityParameters DeserializeParametersFromJson(Dictionary<string, object> json) {
-            return new NullAbilityParameters();
+            return new CollectResourceAbilityParameters() {
+                Target = GameManager.Instance.CommandManager.EntitiesOnGrid.GetEntityByID((long)json["Target"])
+            };
         }
 
         public bool CanTargetCell(Vector2Int cellPosition, GridEntity selectedEntity, GameTeam selectorTeam, object targetData, out string whyNot) {
