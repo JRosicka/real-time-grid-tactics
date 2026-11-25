@@ -8,12 +8,18 @@ public static class PersistentDataUpdater {
     public static void UpdateData() {
         int previousVersion = PlayerPrefs.GetInt(PlayerPrefsKeys.LastSeenVersionKey, 0);
         
-        // 0.6.0
+        // Updating from before 0.6.0
         if (previousVersion < 00600) {
             // Reset all audio prefs since we now have a full audio pass
             PlayerPrefs.DeleteKey(PlayerPrefsKeys.MusicVolumeKey);
             PlayerPrefs.DeleteKey(PlayerPrefsKeys.SoundEffectVolumeKey);
             PlayerPrefs.DeleteKey(PlayerPrefsKeys.VoiceLineVolumeKey);
+        }
+        
+        // Updating from before 0.7.0
+        if (previousVersion < 00700) {
+            // Set to move-command by default
+            PlayerPrefs.SetInt(PlayerPrefsKeys.RightClickBehaviorKey, 1);
         }
         
         PlayerPrefs.SetInt(PlayerPrefsKeys.LastSeenVersionKey, VersionUtil.GetVersionNumber());
