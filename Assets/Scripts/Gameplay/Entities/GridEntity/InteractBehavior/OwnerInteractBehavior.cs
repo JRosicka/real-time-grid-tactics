@@ -118,7 +118,7 @@ namespace Gameplay.Entities {
 
         private void DoDefaultCommand(GridEntity thisEntity, Vector2Int targetCell) {
             bool attack = PlayerPrefs.GetInt(PlayerPrefsKeys.RightClickBehaviorKey, 0) == 0;
-            if (attack) {
+            if (attack && thisEntity.GetAbilityData<AttackAbilityData>() != null) {
                 thisEntity.TryAttack(targetCell, null);
             } else {
                 thisEntity.TryMoveToCell(targetCell, true, true, true);
