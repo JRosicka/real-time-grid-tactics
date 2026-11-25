@@ -32,9 +32,6 @@ namespace Gameplay.Entities {
                 case BuildAbility buildAbility:
                     DoBuildAnimation(buildAbility, abilityTimer);
                     return false;
-                case CollectResourceAbility collectResourceAbility:
-                    DoCollectResourceAnimation(abilityTimer);
-                    return false;
                 default:
                     return true;
             }
@@ -66,11 +63,6 @@ namespace Gameplay.Entities {
             _controlsScale = true;
         }
 
-        private void DoCollectResourceAnimation(AbilityTimer abilityTimer) {
-            abilityTimer.ExpiredEvent += CollectResourceAbilityCompleted;
-            _animator.Play("CollectResource");
-        }
-
         private void BuildAbilityCompleted(bool canceled) {
             // Hide the temporary building visual
             Destroy(_buildingViewInstance.gameObject);
@@ -84,11 +76,6 @@ namespace Gameplay.Entities {
                 _currentResourceEntityBeingBuiltOn = null;
             }
 
-            _controlsScale = false;
-        }
-
-        private void CollectResourceAbilityCompleted(bool canceled) {
-            _animator.Play("Idle");
             _controlsScale = false;
         }
     }

@@ -88,6 +88,8 @@ namespace Gameplay.Entities {
         private GameAudio GameAudio => GameAudio.Instance;
 
         private bool _viewToggled = true;
+        private bool _controlsScale;
+        private bool ControlsScale => _controlsScale && _particularView.ControlsScale;
         
         public void Start() {
             if (!_playedSpawnAnimation) {
@@ -234,7 +236,7 @@ namespace Gameplay.Entities {
         }
 
         private void LateUpdate() {
-            if (!Mathf.Approximately(_unitView.localScale.x, _scaleEvaluationProgress) && !_particularView.ControlsScale) {
+            if (!Mathf.Approximately(_unitView.localScale.x, _scaleEvaluationProgress) && !ControlsScale) {
                 _unitView.localScale = new Vector3(_scaleEvaluationProgress, _scaleEvaluationProgress, _scaleEvaluationProgress);
             }
             
@@ -246,7 +248,7 @@ namespace Gameplay.Entities {
         private void DoAbility(IAbility ability, AbilityTimer abilityTimer) {
             if (!Entity.IsActive()) return;
             if (_particularView.DoAbility(ability, abilityTimer)) {
-                DoGenericAbility(ability);
+                DoGenericAbility(ability, abilityTimer);
             }
         }
 
@@ -308,7 +310,7 @@ namespace Gameplay.Entities {
         /// Catch-all for generic ability view behavior. Subclasses should call this in their default cases for their
         /// <see cref="DoAbility"/> overrides.
         /// </summary>
-        private void DoGenericAbility(IAbility ability) {
+        private void DoGenericAbility(IAbility ability, AbilityTimer abilityTimer) {
             switch (ability.AbilityData) {
                 case ChargeAbilityData:
                     DoGenericChargeAnimation((ChargeAbility)ability);
@@ -335,6 +337,9 @@ namespace Gameplay.Entities {
                     if (Entity.IsActive()) {
                         dropOffParameters.Target.View.DoGenericDroppedOffAnimation(Entity.Location!.Value, dropOffParameters.DropOffLocation);
                     }
+                    break;
+                case CollectResourceAbilityData:
+                    DoCollectResourceAnimation(abilityTimer);
                     break;
             }
         }
@@ -693,6 +698,19 @@ namespace Gameplay.Entities {
                 _pickingUp = false;
                 ToggleView(false);
             }
+        }
+        
+        #endregion
+        #region Resource Collection
+        
+        private void DoCollectResourceAnimation(AbilityTimer abilityTimer) {
+            abilityTimer.ExpiredEvent += CollectResourceAbilityCompleted;
+            _unitAnimator.Play("CollectResource");
+        }
+
+        private void CollectResourceAbilityCompleted(bool canceled) {
+            _unitAnimator.Play("Idle");
+            _controlsScale = false;
         }
         
         #endregion
