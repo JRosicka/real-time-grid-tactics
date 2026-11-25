@@ -27,7 +27,7 @@ PluginImporter:
         DefaultValueInitialized: true
         OS: AnyOS
     iOS:
-      enabled: 1
+      enabled: 0
       settings:
         AddToEmbeddedBinaries: true
         CPU: AnyCPU
