@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Gameplay.Entities.Abilities;
 using Gameplay.Entities.Upgrades;
@@ -33,6 +34,12 @@ namespace Gameplay.Entities {
             }
         }
 
+        private void OnDestroy() {
+            if (LocalTracker != null) {
+                LocalTracker.FoWUpdated -= FoWUpdated;
+            }
+        }
+
         private void FoWUpdated(List<TeamFogOfWarTracker.FoWCell> foWCells) {
             ReEvaluateFoWHiddenStatus();
         }
@@ -42,6 +49,7 @@ namespace Gameplay.Entities {
 
             bool hidden = LocalTracker.IsEntityHidden(_entity);
             foreach (ParticleSystem particles in _smokeParticleSystems) {
+                if (particles == null) continue;
                 if (hidden) {
                     particles.Stop();
                 } else {
