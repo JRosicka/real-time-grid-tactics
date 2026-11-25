@@ -124,7 +124,6 @@ namespace Gameplay.Grid {
             };
 
             TryClickOnCell(click, mousePos);
-            Debug.Log(mousePos);
         }
         
         public void ProcessClickDown(PointerEventData eventData) {
