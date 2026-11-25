@@ -89,7 +89,7 @@ namespace Gameplay.Entities {
 
         private bool _viewToggled = true;
         private bool _controlsScale;
-        private bool ControlsScale => _controlsScale && _particularView.ControlsScale;
+        private bool ControlsScale => _controlsScale || _particularView.ControlsScale; 
         
         public void Start() {
             if (!_playedSpawnAnimation) {
