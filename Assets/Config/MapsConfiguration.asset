@@ -9744,9 +9744,9 @@ MonoBehaviour:
       - Data: {fileID: 11400000, guid: 991ad2a1d6801ee40b831e7850e0ff35, type: 2}
         SpawnLocation:
           Location: {x: -1, y: -1}
-      - Data: {fileID: 11400000, guid: 991ad2a1d6801ee40b831e7850e0ff35, type: 2}
+      - Data: {fileID: 11400000, guid: 9e426fdef5ac4ba43888ae5a6bcfde08, type: 2}
         SpawnLocation:
-          Location: {x: 0, y: 0}
+          Location: {x: -2, y: 1}
       - Data: {fileID: 11400000, guid: 938107a9fc68aa54586e46f7860fc6ff, type: 2}
         SpawnLocation:
           Location: {x: -2, y: 0}

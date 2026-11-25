@@ -23,5 +23,5 @@ MonoBehaviour:
     PreviewImage: {fileID: 21300000, guid: 057177d111e574692b5dcdee6d82e9ab, type: 3}
     FullMapImage: {fileID: 21300000, guid: c1eb054914d5c4962b7f3cf34481bb52, type: 3}
   - MapID: patchtown
-    PreviewImage: {fileID: 21300000, guid: 057177d111e574692b5dcdee6d82e9ab, type: 3}
-    FullMapImage: {fileID: 21300000, guid: c1eb054914d5c4962b7f3cf34481bb52, type: 3}
+    PreviewImage: {fileID: 21300000, guid: 38974d6a2b81048c88294cc40517fa94, type: 3}
+    FullMapImage: {fileID: 21300000, guid: b814729d278b3414f939edce70d35ef2, type: 3}

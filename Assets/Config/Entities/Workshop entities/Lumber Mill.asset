@@ -20,7 +20,7 @@ MonoBehaviour:
   - Type: 1
     Amount: 50
   - Type: 2
-    Amount: 50
+    Amount: 25
   Requirements:
   - Purchasable: {fileID: 11400000, guid: 43174010eb096460f944f7aa4f3b1791, type: 2}
     AlternativePurchasable: {fileID: 11400000, guid: f2089d06c5ba63e40a8078c1636cac5f, type: 2}
